@@ -1,0 +1,291 @@
+UNDER THE CODE
+A unified theory of how computers actually work
+
+(Per-section visual map / production checklist: see figures.txt)
+
+
+WHAT THIS BOOK IS FOR
+======================
+
+This is not a textbook of facts. It is a book about perspective — about
+learning to see the modern world the way a computer scientist sees it.
+After reading it, the reader should be able to look at any piece of
+software, any network, any device, and resolve it into the layers it is
+made of: the silicon, the gate, the instruction, the kernel, the language,
+the protocol, the encryption, the architecture. To recognize that each of
+those layers is the result of specific human decisions, made by specific
+people, in specific historical moments, in response to specific
+constraints. To recognize the mathematics that runs underneath each one.
+To recognize where security lives in each one and where it does not.
+
+The aspiration is total immersion in the universe of computer science:
+
+  - Technical depth — every term defined in-line, every mechanism explained
+    visually before it is named, no compression for compression's sake.
+    A reader needs no AI, no Wikipedia, no companion lectures to follow.
+
+  - Mathematical reality — the math is the lens, not a side topic.
+    Boolean algebra → set theory → information theory → control theory →
+    number theory → graph theory → queueing → consensus theory. Every
+    chapter shows the math underneath what it describes, and shows it as
+    something that *had to be there*, not as decoration.
+
+  - Sociological and historical context — every chapter anchors its topic
+    in the people who built it and the world they were building it in.
+    The Bell Labs of the 1940s. The RAND Corporation under Cold War
+    contract. The Xerox PARC of 1973. The CERN of 1989. The Helsinki
+    bedroom of 1991. People doing real work in real places under real
+    constraints, not encyclopedia parentheticals.
+
+  - Dramatic register — moments of consequence are foregrounded, told as
+    stories. The Bombe shortening WWII. The Patriot missile clock-drift
+    that killed 28 soldiers at Dhahran. Tanenbaum and Torvalds in 1992.
+    The Morris worm taking ten percent of the internet down in 1988. The
+    Pakistan/YouTube BGP hijack in 2008. Each is a moment where the layers
+    we describe failed in the world, and the failure mattered.
+
+  - Security as backbone — woven into every chapter, never isolated.
+    Buffer overflow in the chapter on stacks. Dirty COW in the chapter on
+    the kernel. SQL injection in the chapter on databases. TLS in the
+    chapter on cryptography. There is no security chapter the reader could
+    skip, because security is in the chapter on every layer.
+
+  - Visual-first explanation — every concept introduced through a diagram
+    before words. Then words explain the diagram. Then more diagrams
+    deepen it. The reader never has to imagine an unillustrated structure.
+
+The reader who finishes the book has not memorized facts. They have
+acquired a way of seeing — the discipline of resolving the layers, the
+recognition of who built each one and why, and the ability to follow any
+line of bytes from voltage on a wire to JSON on a screen and back.
+
+
+PART I — THE PHYSICAL WORLD
+The substrate. From electricity to the boundary where software begins.
+Chapter 1: The Machine Beneath Everything
+The world before software. How civilization arrived at the idea of a computer.
+
+01 — Why does any of this exist? (Turing 1936, war urgency, Bombe and Colossus)
+02 — The Transistor (vacuum tubes, Bell Labs 1947, integrated circuits, Moore's Law)
+03 — Von Neumann's insight (instructions are data, the bottleneck)
+04 — The CPU (fetch-decode-execute, ISA, pipelining, speculative execution)
+05 — The Kernel — introductory (privilege rings, system calls, UNIX origin story)
+06 — Memory (the hierarchy, virtual memory at a high level, buffer overflow preview)
+
+Chapter 2: The Algebra of Switches
+The mathematics that runs on the substrate. Boole, Shannon, gates, arithmetic.
+
+01 — Why binary (electrical robustness, Setun and ternary, bit/byte)
+02 — Boole 1847 (Victorian schoolteacher, Laws of Thought, Shannon's master's thesis 1937)
+03 — Logic gates (AND/OR/NOT, NAND universality, DeMorgan's laws)
+04 — Arithmetic from logic (half adder → full adder → ALU, ripple-carry, 5+3=8 worked example)
+05 — Two's complement (negative numbers, subtraction by addition, integer overflow exploits)
+06 — Floating point (IEEE 754, why 0.1+0.2≠0.3, NaN/infinity, Patriot missile)
+
+Chapter 3: The Language the CPU Speaks
+What your code becomes when it meets the metal. The first true programming language.
+
+01 — ISA (x86, ARM, RISC-V, RISC vs CISC, why Rosetta 2 is possible)
+02 — Registers (RAX/RBX history, RIP and program control, calling convention preview)
+03 — The stack (virtual address space, push/pop, stack frames)
+04 — Function calls (System V ABI, call/ret semantics, worked C-to-asm example)
+05 — Buffer overflow (the exact mechanism, smashing the return address, Aleph One 1996)
+06 — Defenses (stack canaries, ASLR, DEP/NX, ROP chains as the modern bypass)
+
+Bridge — The Boundary
+The hardware face of the kernel. Everything Part I built — transistors, gates, the
+CPU, the stack, memory — combines here into the enabling conditions for software
+to own the machine. We do not yet open the kernel. We show what the silicon must
+provide before any kernel can exist at all. This closes Part I and walks the reader
+across the seam into Part II, where the kernel is examined from the inside.
+
+01 — Kernel mode vs user mode (the CPU privilege bit; ring 0 vs ring 3 anchored in real x86 and ARM mechanisms; how a single bit divides every instruction the CPU can execute)
+02 — The trap mechanism (interrupts, exceptions, the syscall/svc instruction; the hardware path of a system call step-by-step; the hand-off between user code and kernel code as silicon, not policy)
+03 — The MMU as the kernel's enforcer (the page-table walker as a hardware unit; the TLB as silicon cache; how memory isolation is physically enforced rather than conventionally agreed)
+04 — The timer that owns time (the hardware timer interrupt; why preemption is impossible without it; the single piece of silicon that makes multitasking — and therefore everything else — possible)
+05 — Talking to the world (memory-mapped I/O, DMA, the interrupt-driven device model; how a keystroke physically reaches a process; the hardware channels every driver depends on)
+06 — What the kernel must therefore be (synthesis: given the above hardware, the kernel is the minimum program that turns these primitives into abstractions all other software can use; explicit hand-off to Part II)
+
+
+PART II — THE SOFTWARE LAYER
+The kernel as a real program, and the languages humans write on top of it.
+
+Note on the kernel's two-chapter treatment: the kernel appears in this book twice,
+by design. Part I closes with the Bridge — The Boundary, which examines the kernel
+from the hardware side: privilege rings as a CPU bit, the trap as a wire-level
+mechanism, the MMU as silicon. That chapter answers "what does the hardware have to
+provide before a kernel can exist at all?" Part II then opens with Chapter 4, which
+examines the kernel from the software side: its anatomy, scheduling algorithms, the
+data structures behind virtual memory, filesystems, IPC, and kernel security. Same
+object, two genuinely different perspectives. The reader meets the kernel first as a
+hardware pact, then as a piece of code.
+
+Chapter 4: The Code That Owns the Machine
+The kernel as a real program. Examined in the detail it deserves.
+
+01 — Anatomy (monolithic vs microkernel, the Tanenbaum-Torvalds debate, hybrid kernels, kernel modules)
+02 — Scheduling (cooperative vs preemptive, FCFS/SJF/RR/MLFQ/CFS, queueing theory and Little's Law, real-time scheduling)
+03 — Virtual memory (multi-level page tables, the TLB, page faults, mmap and copy-on-write fork, Dirty COW)
+04 — Filesystems (inodes, hard links, "everything is a file," journaling, copy-on-write filesystems)
+05 — IPC (pipes, signals, shared memory, semaphores, UNIX sockets, Doug McIlroy and the pipe philosophy)
+06 — Security (privilege escalation, containers vs VMs, namespaces and cgroups, eBPF and sandboxed kernel code)
+
+Chapter 5: C — The Language That Built Everything
+The language UNIX itself was written in. Why a portable language was the central insight.
+
+01 — The portability problem (rewriting UNIX for each new machine, BCPL → B → C)
+02 — Ritchie and Thompson at Bell Labs (the PDP-11, The C Programming Language 1978)
+03 — Pointers as math (addresses are integers, pointer arithmetic, arrays as syntactic sugar for pointers)
+04 — Manual memory management (malloc/free, the heap revisited, leaks vs use-after-free)
+05 — Undefined behavior (signed overflow, dereferencing null, the optimizer's cruel logic)
+06 — Why C survives (kernels, embedded, performance-critical paths; the price you pay)
+
+Chapter 6: C++ — When C Needed to Think in Objects
+Object orientation as a strategy for managing complexity at scale.
+
+01 — The complexity problem (1980s software engineering crisis, large systems unmanageable in C)
+02 — Stroustrup at Bell Labs (Simula influence, "C with Classes," 1985)
+03 — Classes, inheritance, polymorphism (encapsulation as a tool, vtables and dynamic dispatch)
+04 — RAII (resource acquisition is initialization, destructors as deterministic cleanup)
+05 — The performance contract (zero-cost abstractions, why game engines and trading systems chose it)
+06 — Modern C++ (smart pointers, move semantics, the language eating its own complexity)
+
+Chapter 7: Python — The Language That Chose Humans Over Machines
+The opposite trade-off. Productivity over performance, dynamism over rigor.
+
+01 — Compiled vs interpreted (the source-to-execution pipeline, why interpretation costs)
+02 — Van Rossum 1989-91 (Christmas project, ABC influence, "executable pseudocode")
+03 — Dynamic typing (duck typing, types as runtime properties, type theory implications)
+04 — The GIL and concurrency (why one Python thread runs at a time, asyncio as the workaround)
+05 — How Python is built (CPython internals, bytecode, why it's slow and why nobody minds)
+06 — Why Python won data science (NumPy as a thin wrapper over C/Fortran, the two-language strategy)
+
+
+PART III — THE NETWORK
+The wire out of the CPU, across the room, around the planet.
+Chapter 8: The Wire
+Physical layer. Where information theory meets electrical engineering.
+
+01 — Bridge from Part I (the transistor signal extends; voltage on a wire becomes voltage across a continent)
+02 — Electrons, photons, radio waves (copper, fiber, wireless — three substrates, same idea)
+03 — Shannon's information theory 1948 (entropy, channel capacity, the mathematical limit of communication)
+04 — Encoding (Manchester, NRZ, modulation; how bits ride on continuous waveforms)
+05 — Local networks (Ethernet, MAC addresses, collision domains, switches)
+06 — The OSI and TCP/IP layer models (why we draw boundaries between physical, link, network, transport, application)
+
+Chapter 9: Packets — How the Internet Decided to Work
+The architectural choice that made the internet possible.
+
+01 — The phone company's view (circuit switching, dedicated lines, why it doesn't scale)
+02 — ARPANET 1969 (Baran, Davies, Kleinrock, packet switching as a Cold War design)
+03 — IP — the Internet Protocol (addresses, fragmentation, best-effort delivery)
+04 — Routing (autonomous systems, BGP, the internet as a graph that no one owns)
+05 — IPv4 vs IPv6 (running out of addresses, the long migration, why it's still incomplete)
+06 — Security woven in (IP spoofing, BGP hijacking, the Pakistan/YouTube incident, route leaks)
+
+Chapter 10: TCP — The Problem of Reliability
+Building a reliable connection on top of an unreliable network.
+
+01 — UDP first (the simplest possible thing — fire and forget — and where it suffices)
+02 — Why TCP (segmentation, ordering, reliability, flow control as engineering goals)
+03 — The three-way handshake (SYN, SYN-ACK, ACK; what each segment actually means)
+04 — Flow and congestion control (windows, slow start, AIMD as control theory; mathematical proof of fairness)
+05 — Modern variants (CUBIC, BBR, QUIC; why HTTP/3 abandons TCP)
+06 — Attacks (SYN floods and SYN cookies, RST injection, TCP hijacking)
+
+Chapter 11: HTTP, DNS, TLS — The Web
+What "a website" is at the protocol level.
+
+01 — Berners-Lee 1989 (CERN, the web as a layer above the internet, the original design)
+02 — HTTP (request-response, statelessness, methods, status codes; what curl actually does)
+03 — DNS (the internet's phone book, recursive resolution, root servers, the security disaster)
+04 — Cryptography intro (one-way functions, symmetric vs asymmetric, hash functions; deeper version in Ch 14)
+05 — TLS (handshake step by step, certificates, the chain of trust, perfect forward secrecy)
+06 — Modern web stack (HTTP/2 multiplexing, HTTP/3 over QUIC, what changed and why)
+
+Chapter 12: JavaScript — The Language That Shouldn't Have Worked
+The browser needed scripting. The result is now everywhere.
+
+01 — The browser problem (static HTML wasn't enough, Java applets failed)
+02 — Eich 1995 (ten days at Netscape, the Mocha/LiveScript/JavaScript naming chaos)
+03 — The event loop (single-threaded but non-blocking, callbacks → Promises → async/await)
+04 — Node.js 2009 (V8 outside the browser, why JS escaped to the server)
+05 — The DOM and rendering (how the browser turns HTML+CSS+JS into pixels)
+06 — Web security (same-origin policy, XSS, CSRF, CSP, how attacks evolved)
+
+
+PART IV — DATA AND SECURITY
+Where information lives, and how it stays trustworthy.
+Chapter 13: SQL and the Mathematics of Data
+The relational model and why it dominates fifty years later.
+
+01 — Codd 1970 (IBM Research, the original paper, set theory as the foundation)
+02 — Relational algebra (selection, projection, join as actual mathematical operations)
+03 — SQL the language (DDL vs DML, query planning, why declarative beat imperative)
+04 — ACID and transactions (atomicity, consistency, isolation, durability; write-ahead logs)
+05 — Indexes (B-trees, hash indexes, the physical structure beneath query speed)
+06 — SQL injection (the most common database attack, parameterized queries, defense in depth)
+
+Chapter 14: Cryptography — The Math That Keeps Secrets
+Number theory in production.
+
+01 — The historical arc (Caesar cipher, Vigenère, Enigma, the Cold War as crypto's gym)
+02 — One-way functions and hashing (SHA-256, collision resistance, password storage)
+03 — Symmetric encryption (AES, block vs stream, modes — ECB's failure, CBC, GCM)
+04 — Public key cryptography (Diffie-Hellman 1976, RSA, modular arithmetic and the discrete log problem)
+05 — Elliptic curves (why ECC replaced RSA, the math without the trauma)
+06 — Putting it together (TLS revisited at full depth, certificate authorities, signatures, post-quantum)
+
+Chapter 15: Attack and Defense — How Systems Break
+The unified security chapter. The cyber conscript chapter. Everything in the book viewed through the attacker's lens.
+
+01 — The attacker's mindset (threat modeling, attack surface, the principle of least privilege)
+02 — Memory exploits revisited (buffer overflow → ROP → JOP → control-flow integrity defenses)
+03 — Network attacks (MITM, ARP spoofing, DNS poisoning, BGP hijacking; tying back to Ch 8–10)
+04 — Web attacks (SQLi from Ch 13, XSS/CSRF from Ch 12, deserialization, SSRF)
+05 — Defense systems (firewalls, IDS/IPS, SIEM, EDR, zero trust architecture)
+06 — Hands-on (CTF-style worked examples, OSINT, the cyber conscript curriculum mapped explicitly)
+
+
+PART V — THE MODERN MACHINE
+Where everything actually runs, today.
+Chapter 16: Parallelism — When One Core Isn't Enough
+Concurrency, threads, GPUs, and the hard math underneath all of it.
+
+01 — Threads vs processes (shared memory vs separate, the cost of context switching)
+02 — Race conditions and synchronization (mutexes, semaphores, deadlock, livelock)
+03 — Lock-free programming (atomics, memory ordering, why concurrency is genuinely hard)
+04 — GPU architecture (SIMD, CUDA cores, why graphics hardware looks the way it does)
+05 — Amdahl's law and Gustafson's law (the mathematical ceiling of parallel speedup)
+06 — Modern hardware reality (NUMA, cache coherence protocols, memory consistency models)
+
+Chapter 17: The Cloud — Distributed Systems at Scale
+Where most code in the world now actually executes.
+
+01 — Virtualization (hypervisors, KVM, how a VM tricks an OS into running anywhere)
+02 — Containers revisited (from Ch 4: how Docker became the deployment unit)
+03 — Orchestration (Kubernetes, declarative state, the control loop pattern)
+04 — Distributed consensus (Paxos, Raft, why agreement at scale is mathematically hard)
+05 — The CAP theorem (consistency, availability, partition tolerance — pick two)
+06 — Microservices, serverless, and the architectural pendulum
+
+Chapter 18: Epilogue — What You Now See
+The closing synthesis. The whole arc in one view.
+
+01 — The computer as a mathematical object (every layer is math made physical)
+02 — From sand to civilization (recapping the chain: transistor → gate → instruction → kernel → process → network → service)
+03 — What's permanent and what isn't (Moore's Law ending, quantum computing, neuromorphic chips, the next decade)
+04 — Where computer science intersects with everything else (biology, economics, governance, art)
+05 — Reading list (the books that go deeper on each chapter, organized by part)
+06 — Final note (the discipline of seeing the layers; what you now understand)
+
+
+Cross-cutting threads
+These run continuously throughout the book, never confined to one chapter:
+Mathematics — Boolean algebra (Ch 2) → set theory (Ch 13) → information theory (Ch 8) → control theory (Ch 10) → number theory (Ch 14) → graph theory (Ch 9) → queueing theory (Ch 4) → consensus theory (Ch 17). Math is the lens, not a side topic.
+Security — woven into every chapter. Buffer overflow (Ch 3), Dirty COW (Ch 4), undefined behavior exploits (Ch 5), SQL injection (Ch 13), TLS (Ch 11/14), CTF examples (Ch 15). No isolated security chapter that you could skip.
+Historical narrative — every chapter opens by anchoring its topic in time and people. Boole, Turing, Shannon, Ritchie, Stroustrup, Codd, Berners-Lee, van Rossum, Eich, Diffie, Hellman, Rivest. Computer science as a continuous human story, not a list of facts.
+The dramatic register — moments of consequence are foregrounded, not buried. Turing's death. The Bombe shortening WWII. The Ariane 5 explosion. Patriot missile failure. Tanenbaum vs Torvalds. The Dirty COW disclosure. Each chapter has at least one such moment, made vivid.
+Visual-first explanation — every concept introduced through a diagram before words. Then the words explain the diagram. Then more diagrams deepen it. The reader never has to imagine an unillustrated structure.
+
+That's the structure. Built as five HTML files (one per part), each part a continuous scroll, sharing a single visual language. Roughly 400–600 rendered pages of content total. Self-explaining throughout — a reader needs no AI, no Wikipedia, no companion lectures to follow it.

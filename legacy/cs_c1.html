@@ -1,0 +1,2972 @@
+html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under the Code — Part I: The Physical World</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --dark-card: #1a1a1a;
+    --warm-white: #f5f0eb;
+    --warm-light: #ede8e3;
+    --warm-mid: #c8c0b8;
+    --accent: #d4a853;
+    --accent-dim: #8a6a2a;
+    --accent-blue: #6496ff;
+    --accent-green: #96d896;
+    --accent-red: #e87878;
+    --text-dark: #1a1614;
+    --text-body: #2d2a27;
+    --text-muted: #7a7570;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--warm-white);
+    color: var(--text-body);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── Book master nav ── */
+  .book-nav {
+    background: var(--black);
+    color: white;
+    padding: 14px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .book-title {
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .book-title em { color: var(--accent); font-style: italic; }
+  .book-progress {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Part opening ── */
+  .part-opener {
+    background: var(--black);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+  .part-opener::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(212,168,83,0.08) 0%, transparent 60%);
+  }
+  .part-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .part-opener h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .part-opener h1 em { font-style: italic; color: var(--accent); }
+  .part-tagline {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.4rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 720px;
+    line-height: 1.6;
+    position: relative;
+    margin-bottom: 80px;
+  }
+  .part-toc {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 960px;
+    width: 100%;
+    position: relative;
+  }
+  .toc-card {
+    background: var(--dark-card);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 28px;
+    text-align: left;
+    transition: all 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+  }
+  .toc-card:hover {
+    border-color: rgba(212,168,83,0.4);
+    transform: translateY(-2px);
+  }
+  .toc-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+  }
+  .toc-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .toc-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+  }
+
+  /* ── Chapter hero ── */
+  .chapter-hero {
+    background: var(--black);
+    color: white;
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .chapter-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(212,168,83,0.08) 0%, transparent 60%);
+  }
+  .chapter-hero-text {
+    padding: 80px 60px 80px 80px;
+    position: relative;
+    z-index: 2;
+  }
+  .chapter-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chapter-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .chapter-hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 5vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .chapter-hero h1 em { font-style: italic; color: var(--accent); }
+  .chapter-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .chapter-meta {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+  .meta-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+  .chapter-hero-visual {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Chapter inner nav ── */
+  .chapter-nav {
+    background: var(--dark);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 0 80px;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    position: sticky;
+    top: 48px;
+    z-index: 100;
+  }
+  .nav-item {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+  .nav-item:hover, .nav-item.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Content ── */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 100px 40px;
+  }
+  .section { margin-bottom: 100px; }
+  .section-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+  }
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-dark);
+    margin: 56px 0 20px;
+  }
+  h4 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    margin: 32px 0 12px;
+    letter-spacing: 0.02em;
+  }
+  p {
+    font-size: 1.05rem;
+    color: var(--text-body);
+    margin-bottom: 20px;
+  }
+  p em { font-style: italic; }
+  p strong { font-weight: 500; color: var(--text-dark); }
+
+  /* Lead paragraph */
+  .lead {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 32px;
+    font-weight: 400;
+  }
+  .lead::first-letter {
+    font-family: var(--serif);
+    font-size: 4rem;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 12px 0 0;
+    color: var(--accent);
+  }
+
+  /* Pull quote */
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 24px 32px;
+    margin: 48px 0;
+    background: var(--warm-light);
+    border-radius: 0 8px 8px 0;
+  }
+  .pull-quote p {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--text-dark);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .pull-quote .attr {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-style: normal;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Diagram card */
+  .diagram-card {
+    background: var(--dark);
+    border-radius: 16px;
+    padding: 48px;
+    margin: 48px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .diagram-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%);
+  }
+  .diagram-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .diagram-caption {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+    line-height: 1.7;
+  }
+  .diagram-card svg { position: relative; z-index: 1; width: 100%; height: auto; }
+
+  /* Light diagram (for math/visual content on warm background) */
+  .light-diagram {
+    background: var(--warm-light);
+    border-radius: 16px;
+    padding: 48px;
+    margin: 48px 0;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .light-diagram .diagram-label {
+    color: var(--text-muted);
+  }
+  .light-diagram .diagram-caption {
+    color: var(--text-muted);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+    margin: 48px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+    padding-left: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -38px;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(212,168,83,0.4);
+  }
+  .timeline-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .timeline-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+  .timeline-text {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+    overflow-x: auto;
+    position: relative;
+  }
+  .code-lang {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .code-block pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.78);
+    white-space: pre;
+  }
+  .code-block .kw { color: #d4a853; }
+  .code-block .cm { color: rgba(255,255,255,0.35); font-style: italic; }
+  .code-block .st { color: #a8d8a0; }
+  .code-block .nm { color: #89b4e0; }
+  .code-block .op { color: #e0a0c8; }
+
+  /* Concept grid */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 48px 0;
+  }
+  .concept-grid.three { grid-template-columns: repeat(3, 1fr); }
+  .concept-grid.four { grid-template-columns: repeat(4, 1fr); }
+  .concept-card {
+    background: var(--warm-light);
+    border-radius: 12px;
+    padding: 28px;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+  }
+  .concept-card:hover { transform: translateY(-2px); }
+  .concept-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--accent-dim);
+  }
+  .concept-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+  .concept-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Key term */
+  .key-term {
+    background: var(--dark);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.85em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin: 0 2px;
+  }
+
+  /* Inline code */
+  code {
+    background: var(--warm-light);
+    color: var(--text-dark);
+    font-family: var(--mono);
+    font-size: 0.88em;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  /* Insight strip */
+  .insight-strip {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 24px 32px;
+    margin: 40px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .insight-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--accent);
+  }
+  .insight-text {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .insight-text strong { color: var(--accent); font-weight: 400; }
+
+  /* Math callout */
+  .math-callout {
+    background: linear-gradient(135deg, var(--warm-light), #f0ead8);
+    border-left: 3px solid #b8924a;
+    border-radius: 0 12px 12px 0;
+    padding: 24px 32px;
+    margin: 40px 0;
+  }
+  .math-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .math-callout p {
+    margin: 0 0 8px 0;
+    font-size: 0.98rem;
+  }
+  .math-callout p:last-child { margin-bottom: 0; }
+  .math-formula {
+    font-family: var(--serif);
+    font-style: italic;
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--text-dark);
+    margin: 16px 0;
+  }
+
+  /* Page divider */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--accent);
+    margin: 80px auto;
+    opacity: 0.4;
+  }
+
+  /* Chapter end */
+  .chapter-end {
+    background: var(--dark);
+    color: white;
+    padding: 80px 40px;
+    text-align: center;
+    margin-top: 80px;
+  }
+  .chapter-end h3 {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-style: normal;
+    color: white;
+    margin-bottom: 16px;
+  }
+  .chapter-end p {
+    color: rgba(255,255,255,0.5);
+    max-width: 580px;
+    margin: 0 auto 40px;
+  }
+  .next-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--accent);
+    color: var(--black);
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .next-btn:hover { opacity: 0.85; }
+
+  /* Summary table */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 0.95rem;
+  }
+  .summary-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  .summary-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    color: var(--text-body);
+    vertical-align: top;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table td:first-child {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-dim);
+    white-space: nowrap;
+  }
+  .summary-table.dark { background: var(--dark); border-radius: 12px; padding: 12px; }
+  .summary-table.dark th, .summary-table.dark td { color: rgba(255,255,255,0.7); }
+  .summary-table.dark th { color: rgba(255,255,255,0.4); border-bottom-color: rgba(255,255,255,0.1); }
+  .summary-table.dark td { border-bottom-color: rgba(255,255,255,0.05); }
+
+  /* Truth table */
+  .truth-table {
+    background: var(--warm-light);
+    border-radius: 12px;
+    padding: 28px;
+    margin: 32px 0;
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .truth-table h4 {
+    margin-top: 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-dim);
+  }
+  .truth-table table {
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 14px;
+  }
+  .truth-table th, .truth-table td {
+    padding: 8px 16px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .truth-table th {
+    background: rgba(0,0,0,0.04);
+    font-weight: 500;
+    color: var(--text-dark);
+  }
+  .truth-table .out { color: var(--accent-dim); font-weight: 500; }
+
+  .table-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+
+  /* Bit visualization */
+  .bit-row {
+    display: inline-flex;
+    gap: 4px;
+    margin: 16px 0;
+    font-family: var(--mono);
+  }
+  .bit {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .bit.on { background: var(--accent); color: var(--black); }
+  .bit.off { background: var(--dark-card); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.1); }
+
+  /* Process visualization */
+  .process-flow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0;
+    flex-wrap: wrap;
+  }
+  .process-step {
+    flex: 1;
+    min-width: 140px;
+    background: var(--dark);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid rgba(212,168,83,0.2);
+  }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-family: var(--serif);
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .step-desc {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.5;
+  }
+  .arrow {
+    color: var(--accent);
+    font-size: 20px;
+  }
+
+  /* Memory diagram */
+  .memory-diagram {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .memory-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    gap: 12px;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.7);
+  }
+  .memory-row:last-child { border-bottom: none; }
+  .memory-row .addr { color: var(--accent); }
+  .memory-row .val { color: white; }
+  .memory-row .desc { color: rgba(255,255,255,0.4); font-style: italic; text-align: right; }
+
+  /* Section intro */
+  .section-intro {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+    padding: 0 0 0 24px;
+    border-left: 2px solid var(--accent-dim);
+    max-width: 680px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .book-nav { padding: 14px 20px; }
+    .chapter-hero { grid-template-columns: 1fr; }
+    .chapter-hero-visual { display: none; }
+    .chapter-hero-text { padding: 60px 32px; }
+    .content { padding: 60px 24px; }
+    .concept-grid, .concept-grid.three, .concept-grid.four { grid-template-columns: 1fr; }
+    .chapter-nav { padding: 0 24px; top: 48px; }
+    .part-toc { grid-template-columns: 1fr; }
+    .process-flow { flex-direction: column; }
+    .arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ MASTER BOOK NAV ══════════ -->
+<nav class="book-nav">
+  <div class="book-title"><em>Under the Code</em> &nbsp;·&nbsp; A unified theory of how computers actually work</div>
+  <div class="book-progress">PART I OF V · CHAPTERS 1—3</div>
+</nav>
+
+<!-- ══════════ PART I OPENER ══════════ -->
+<section class="part-opener">
+  <div class="part-label">Part One</div>
+  <h1>The Physical<br>World</h1>
+  <p class="part-tagline">
+    Before software, there is sand. Before logic, there is voltage. 
+    Before any program runs, a billion tiny switches must already agree 
+    on what "true" and "false" mean. This is where the story has to begin — 
+    in the place most books skip.
+  </p>
+  <div class="part-toc">
+    <a href="#ch1" class="toc-card">
+      <div class="toc-num">CHAPTER 01</div>
+      <div class="toc-title">The Machine Beneath Everything</div>
+      <div class="toc-desc">Transistors, Von Neumann's insight, the CPU, and why the kernel had to be invented.</div>
+    </a>
+    <a href="#ch2" class="toc-card">
+      <div class="toc-num">CHAPTER 02</div>
+      <div class="toc-title">The Algebra of Switches</div>
+      <div class="toc-desc">Boolean logic, binary numbers, how arithmetic emerges from electricity, and IEEE 754.</div>
+    </a>
+    <a href="#ch3" class="toc-card">
+      <div class="toc-num">CHAPTER 03</div>
+      <div class="toc-title">The Language the CPU Speaks</div>
+      <div class="toc-desc">Assembly, registers, the stack, calling conventions, and how buffer overflows actually work.</div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════ CHAPTER 1 ═════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<section id="ch1">
+<div class="chapter-hero">
+  <div class="chapter-hero-text">
+    <div class="chapter-label">Chapter 01</div>
+    <h1>The Machine<br>Beneath<br><em>Everything</em></h1>
+    <p class="chapter-subtitle">
+      Before there was software, there was sand. Before there was the internet, 
+      there was a mathematician who died before seeing what he built. This is the 
+      story of computer architecture — told in the order civilization needed it.
+    </p>
+    <div class="chapter-meta">
+      <div class="meta-item">
+        <span class="meta-label">Topics</span>
+        <span class="meta-value">CPU · Memory · Kernel · OS</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Era covered</span>
+        <span class="meta-value">1936 → 1974</span>
+      </div>
+    </div>
+  </div>
+  <div class="chapter-hero-visual">
+    <svg width="480" height="480" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.9;">
+      <defs>
+        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4a853" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="240" cy="240" r="160" fill="url(#glow1)"/>
+      <rect x="160" y="160" width="160" height="160" rx="12" fill="#1a1a1a" stroke="#d4a853" stroke-width="1.5" stroke-opacity="0.8"/>
+      <rect x="175" y="175" width="60" height="55" rx="6" fill="#222" stroke="rgba(212,168,83,0.4)"/>
+      <text x="205" y="196" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">ALU</text>
+      <text x="205" y="212" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Arithmetic</text>
+      <text x="205" y="222" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Logic Unit</text>
+      <rect x="245" y="175" width="60" height="55" rx="6" fill="#222" stroke="rgba(212,168,83,0.4)"/>
+      <text x="275" y="196" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">CU</text>
+      <text x="275" y="212" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Control</text>
+      <text x="275" y="222" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Unit</text>
+      <rect x="175" y="245" width="130" height="30" rx="4" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+      <text x="240" y="264" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">REGISTERS</text>
+      <rect x="175" y="285" width="130" height="22" rx="4" fill="#1e1e1e" stroke="rgba(255,255,255,0.08)"/>
+      <text x="240" y="300" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.25)">L1 CACHE</text>
+      <text x="240" y="152" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.6)">CPU CORE</text>
+      <line x1="240" y1="100" x2="240" y2="160" stroke="rgba(212,168,83,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="250" y="130" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.4)">Data Bus</text>
+      <line x1="80" y1="240" x2="160" y2="240" stroke="rgba(100,150,255,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="82" y="233" font-family="DM Mono" font-size="8" fill="rgba(100,150,255,0.4)">Addr Bus</text>
+      <line x1="320" y1="240" x2="400" y2="240" stroke="rgba(150,255,150,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="325" y="233" font-family="DM Mono" font-size="8" fill="rgba(150,255,150,0.35)">Ctrl Bus</text>
+      <line x1="240" y1="320" x2="240" y2="380" stroke="rgba(212,168,83,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <rect x="190" y="60" width="100" height="40" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.2)"/>
+      <text x="240" y="76" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.5)">RAM</text>
+      <text x="240" y="90" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.2)">Main Memory</text>
+      <rect x="30" y="215" width="50" height="50" rx="6" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+      <text x="55" y="237" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(100,150,255,0.6)">I/O</text>
+      <text x="55" y="253" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.2)">Devices</text>
+      <rect x="400" y="215" width="50" height="50" rx="6" fill="#1a1a1a" stroke="rgba(150,255,150,0.35)"/>
+      <text x="425" y="237" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(150,255,150,0.5)">DISK</text>
+      <text x="425" y="253" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.2)">Storage</text>
+      <rect x="175" y="380" width="130" height="45" rx="8" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+      <text x="240" y="397" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.8)">KERNEL</text>
+      <text x="240" y="414" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">OS Core</text>
+      <circle cx="240" cy="160" r="3" fill="#d4a853" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="240" cy="320" r="3" fill="#d4a853" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;0.1;0.6" dur="1.5s" begin="0.75s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="160" cy="240" r="3" fill="#6496ff" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;0.1;0.6" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="320" cy="240" r="3" fill="#96ff96" opacity="0.5">
+        <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+  </div>
+</div>
+
+<nav class="chapter-nav">
+  <a href="#ch1-context" class="nav-item active">01 — Context</a>
+  <a href="#ch1-transistor" class="nav-item">02 — Transistor</a>
+  <a href="#ch1-vonneumann" class="nav-item">03 — Von Neumann</a>
+  <a href="#ch1-cpu" class="nav-item">04 — CPU</a>
+  <a href="#ch1-kernel" class="nav-item">05 — Kernel</a>
+  <a href="#ch1-memory" class="nav-item">06 — Memory</a>
+</nav>
+
+<main class="content">
+
+  <section class="section" id="ch1-context">
+    <div class="section-number">01 — Context</div>
+    <h2>Why does any of this exist?</h2>
+
+    <p class="lead">
+      To understand a modern computer, you have to understand that it was never inevitable. 
+      For most of human history, calculation was something humans did. The word 
+      <em>computer</em> itself originally referred to a person — usually a woman — 
+      employed to perform arithmetic by hand. The machine you are reading this on 
+      replaced an entire profession.
+    </p>
+
+    <p>
+      The transition from human computer to machine computer required a particular kind 
+      of insight: that <strong>thinking itself could be mechanized</strong>. Not all 
+      thinking — Alan Turing was careful about this — but a specific kind. The kind 
+      that follows rules. The kind that, given the same input, always produces the same 
+      output. Mathematics, in other words. And once you have a machine that can do 
+      mathematics, you have a machine that can do anything mathematics can describe. 
+      And mathematics, it turns out, can describe a remarkable amount of the world.
+    </p>
+
+    <h3>The 1936 paper that changed everything</h3>
+
+    <p>
+      In 1936, a 24-year-old Cambridge mathematician named Alan Turing published a paper 
+      titled <em>On Computable Numbers, with an Application to the Entscheidungsproblem</em>. 
+      It had nothing to do with machines, ostensibly. It was about a question David Hilbert 
+      had posed in 1928: is there a mechanical procedure that, given any mathematical 
+      statement, will decide whether the statement is true or false?
+    </p>
+
+    <p>
+      Turing's answer was no — but the way he proved it was extraordinary. To show that 
+      no such procedure could exist, he had to first define what "mechanical procedure" 
+      meant precisely. He invented an imaginary device: an infinite tape divided into 
+      cells, a read/write head that could move along the tape, and a finite set of rules 
+      that said what to do based on the current symbol and the machine's current state.
+    </p>
+
+    <p>
+      He called it an <em>a-machine</em> — automatic machine. We now call it a 
+      <span class="key-term">Turing machine</span>. And he proved something that took 
+      decades to fully appreciate: a single, sufficiently complex Turing machine could 
+      simulate any other Turing machine, given the right rules on its tape. He called 
+      this a <em>universal</em> machine. It is the first formal description of what 
+      we now call a <strong>computer</strong>.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 1.1 — A Turing machine</div>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tape -->
+        <g transform="translate(40,140)">
+          <rect x="0" y="0" width="640" height="60" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <line x1="80" y1="0" x2="80" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <line x1="160" y1="0" x2="160" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <line x1="240" y1="0" x2="240" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <line x1="320" y1="0" x2="320" y2="60" stroke="rgba(212,168,83,0.6)" stroke-width="2"/>
+          <line x1="400" y1="0" x2="400" y2="60" stroke="rgba(212,168,83,0.6)" stroke-width="2"/>
+          <line x1="480" y1="0" x2="480" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <line x1="560" y1="0" x2="560" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <line x1="640" y1="0" x2="640" y2="60" stroke="rgba(255,255,255,0.15)"/>
+          <text x="40" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">1</text>
+          <text x="120" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">0</text>
+          <text x="200" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">1</text>
+          <text x="280" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">1</text>
+          <text x="360" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#d4a853" font-weight="500">0</text>
+          <text x="440" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">1</text>
+          <text x="520" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">_</text>
+          <text x="600" y="38" text-anchor="middle" font-family="DM Mono" font-size="20" fill="rgba(255,255,255,0.7)">_</text>
+          <text x="-12" y="38" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.3)">…</text>
+          <text x="652" y="38" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.3)">…</text>
+        </g>
+
+        <!-- Head -->
+        <g transform="translate(360,60)">
+          <rect x="-40" y="0" width="80" height="60" rx="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+          <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.8)">HEAD</text>
+          <text x="0" y="38" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.5)">state: q3</text>
+          <text x="0" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.5)">read: 0</text>
+          <line x1="0" y1="60" x2="0" y2="80" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+        </g>
+
+        <!-- Rules box -->
+        <g transform="translate(40,220)">
+          <rect x="0" y="0" width="640" height="36" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.06)"/>
+          <text x="20" y="22" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">
+            Rule (q3, 0) → write 1, move right, enter state q4
+          </text>
+        </g>
+      </svg>
+      <p class="diagram-caption">A Turing machine has three parts: an infinite tape of symbols, a head that reads and writes one cell at a time, and a finite table of rules. Each rule says: given the current state and the symbol under the head, write a new symbol, move left or right, and change to a new state. Anything that can be computed, can be computed by a machine like this.</p>
+    </div>
+
+    <div class="pull-quote">
+      <p>"We can only see a short distance ahead, but we can see plenty there that needs to be done."</p>
+      <span class="attr">— Alan Turing, 1950</span>
+    </div>
+
+    <h3>The war that built the first computers</h3>
+
+    <p>
+      Theory met urgency in 1939. Britain needed to break German naval codes — the Enigma 
+      cipher — faster than humans could. At Bletchley Park, Turing built the 
+      <strong>Bombe</strong>, an electromechanical machine that searched the Enigma key 
+      space mechanically. Later, his colleague Tommy Flowers built <strong>Colossus</strong>, 
+      the first programmable electronic digital computer, used to break the higher-level 
+      Lorenz cipher used by Hitler's high command. These machines were not Turing machines 
+      in his theoretical sense — they were special-purpose. But they proved that 
+      mechanical computation worked at scale.
+    </p>
+
+    <p>
+      Historians estimate Bombe and Colossus shortened the war by two years and saved 
+      roughly fourteen million lives. The machines worked. The question, after the war, 
+      became: how do you build one that <em>isn't</em> purpose-built for a single problem? 
+      How do you build a universal machine — Turing's theoretical idea, in actual hardware?
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">⚡</span>
+      <p class="insight-text">
+        <strong>Historical note.</strong> Turing was prosecuted for homosexuality in 1952, sentenced to chemical castration by court order, and died in 1954 — officially by cyanide poisoning, likely suicide. He never saw the computer revolution he made possible. Britain issued a formal apology in 2009. He now appears on the £50 note.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch1-transistor">
+    <div class="section-number">02 — The Transistor</div>
+    <h2>Everything is sand</h2>
+
+    <p>
+      The first general-purpose electronic computer, ENIAC (1945), was built from 
+      <span class="key-term">vacuum tubes</span> — glass bulbs that controlled electrical 
+      current using a heated filament inside a vacuum. ENIAC had 17,468 of them. It 
+      filled a room thirty meters long, weighed thirty tons, consumed 150 kilowatts 
+      of power (enough to dim the lights of Philadelphia when it switched on), and 
+      broke down on average every two days because a tube would burn out. The mean 
+      time between failures was measured in hours, not years.
+    </p>
+
+    <p>
+      This was unsustainable. To make computers smaller, faster, more reliable, and 
+      affordable, the vacuum tube had to be replaced. The replacement was invented 
+      in 1947 at Bell Labs in New Jersey by three physicists — William Shockley, 
+      John Bardeen, and Walter Brattain. They called it the <span class="key-term">transistor</span>, 
+      a contraction of <em>transfer resistor</em>.
+    </p>
+
+    <h3>What a transistor actually is</h3>
+
+    <p>
+      A transistor is a switch. Specifically, it is a switch with no moving parts, 
+      controlled by electricity rather than by a finger or a relay arm. It has three 
+      terminals: a <strong>base</strong> (or <em>gate</em>, in the modern field-effect 
+      design), a <strong>collector</strong> (or <em>drain</em>), and an 
+      <strong>emitter</strong> (or <em>source</em>). When you apply a small voltage 
+      to the base, it lets a much larger current flow between collector and emitter. 
+      No voltage at the base, no flow.
+    </p>
+
+    <p>
+      That's it. That is the entire foundational mechanism of every computer ever built. 
+      Everything else — every program, every webpage, every video game, every neural 
+      network — is layers of abstraction built on top of switches turning on and off.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 1.2 — Transistor as a switch</div>
+      <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="270" height="180" rx="10" fill="#1e1e1e" stroke="rgba(255,255,255,0.06)"/>
+        <text x="155" y="48" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.3)" letter-spacing="0.1em">BASE = 0V (no signal)</text>
+        <line x1="155" y1="65" x2="155" y2="180" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <line x1="100" y1="100" x2="155" y2="120" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <line x1="100" y1="140" x2="155" y2="120" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <circle cx="155" cy="120" r="32" stroke="rgba(255,255,255,0.1)" fill="none"/>
+        <line x1="60" y1="120" x2="100" y2="120" stroke="rgba(100,150,255,0.5)" stroke-width="2"/>
+        <text x="30" y="124" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.5)">Base</text>
+        <text x="155" y="195" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,0.8)">OPEN — no current flows</text>
+
+        <rect x="310" y="20" width="270" height="180" rx="10" fill="#1e1e1e" stroke="rgba(212,168,83,0.2)"/>
+        <text x="445" y="48" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.6)" letter-spacing="0.1em">BASE = 0.7V (signal)</text>
+        <line x1="445" y1="65" x2="445" y2="180" stroke="rgba(212,168,83,0.7)" stroke-width="2"/>
+        <line x1="390" y1="100" x2="445" y2="120" stroke="rgba(212,168,83,0.7)" stroke-width="2"/>
+        <line x1="390" y1="140" x2="445" y2="120" stroke="rgba(212,168,83,0.7)" stroke-width="2"/>
+        <circle cx="445" cy="120" r="32" stroke="rgba(212,168,83,0.4)" fill="none"/>
+        <line x1="350" y1="120" x2="390" y2="120" stroke="rgba(100,150,255,0.8)" stroke-width="2"/>
+        <text x="320" y="124" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.6)">Base</text>
+        <text x="445" y="195" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.8)">CLOSED — current flows</text>
+      </svg>
+      <p class="diagram-caption">A transistor with no voltage at the base is open: no current flows from collector to emitter. With a small voltage at the base, the channel opens and current flows. A modern CPU contains roughly fifty billion of these switching at gigahertz speeds.</p>
+    </div>
+
+    <h3>Why semiconductors</h3>
+
+    <p>
+      The transistor works because it is built from a <em>semiconductor</em> — a material 
+      whose conductivity sits between a conductor (like copper) and an insulator (like 
+      glass), and which can be precisely tuned by adding tiny amounts of impurities. 
+      Almost all modern transistors are built from silicon, which is the second most 
+      abundant element in Earth's crust. Sand is mostly silicon dioxide. The entire 
+      digital economy is, in a literal sense, built on purified sand.
+    </p>
+
+    <p>
+      In 1958, Jack Kilby at Texas Instruments etched multiple transistors onto a single 
+      piece of germanium, creating the first <span class="key-term">integrated circuit</span>. 
+      Within months, Robert Noyce at Fairchild Semiconductor independently did the same 
+      on silicon, with a more manufacturable process. Both filed patents. Both were right. 
+      Noyce's process became the basis of the entire industry.
+    </p>
+
+    <p>
+      In 1965, Gordon Moore — co-founder of Intel and a former colleague of Noyce — 
+      published an observation: the number of transistors that could fit on a single 
+      integrated circuit was doubling roughly every twelve months, and would likely 
+      continue to do so. He later revised this to every two years. This pattern, 
+      <strong>Moore's Law</strong>, held with remarkable accuracy for fifty years and 
+      drove the entire semiconductor industry's roadmap. It is why your phone, with 
+      perhaps fifteen billion transistors, exists at all.
+    </p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">1947</div>
+        <div class="timeline-title">The transistor invented at Bell Labs</div>
+        <p class="timeline-text">Shockley, Bardeen, and Brattain demonstrate the first working transistor on December 23, 1947. Nobel Prize 1956. The replacement of vacuum tubes makes miniaturization possible.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1958</div>
+        <div class="timeline-title">First integrated circuit</div>
+        <p class="timeline-text">Kilby (TI) and Noyce (Fairchild) independently put multiple transistors on one chip. Kilby uses germanium, Noyce uses silicon. Silicon wins because it forms a superior native oxide insulator.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1965</div>
+        <div class="timeline-title">Moore's Law stated</div>
+        <p class="timeline-text">Gordon Moore predicts transistor density doubles every year (later revised to two years). The prediction becomes a self-fulfilling industrial roadmap.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1971</div>
+        <div class="timeline-title">Intel 4004 — first commercial microprocessor</div>
+        <p class="timeline-text">2,300 transistors on a 10μm process. 740 kHz clock. Originally designed for a Japanese calculator manufacturer. Marked the transition from "computers fill rooms" to "computers fit in pockets."</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2024</div>
+        <div class="timeline-title">Apple M4 chip</div>
+        <p class="timeline-text">28 billion transistors. 3-nanometer process. Each transistor smaller than the width of a flu virus. Moore's Law is slowing — physical limits are being reached — but it has lasted over half a century.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch1-vonneumann">
+    <div class="section-number">03 — The Architecture</div>
+    <h2>Von Neumann's insight: instructions are data</h2>
+
+    <p>
+      Early computers were hardwired. ENIAC, to be reprogrammed, had to be physically 
+      rewired — operators (almost all women, called "the ENIAC girls") would unplug 
+      and replug cables for days to set up a new calculation. The hardware encoded the 
+      program. To change what the machine did, you changed the machine.
+    </p>
+
+    <p>
+      In 1945, John von Neumann — a Hungarian-American polymath who had worked on the 
+      Manhattan Project and had a hand in nearly every important mathematical development 
+      of the mid-20th century — circulated a paper called the <em>First Draft of a Report 
+      on the EDVAC</em>. It described a different kind of architecture, one that would 
+      become the dominant design for every computer built afterward.
+    </p>
+
+    <p>
+      His insight, distilled: <strong>store the program itself in memory, alongside the 
+      data it operates on</strong>. Instructions are just patterns of bits. Data is just 
+      patterns of bits. They can live in the same memory. The CPU reads instructions from 
+      memory exactly the same way it reads data — which means a program can read another 
+      program, modify it, and then run it. A machine can write programs.
+    </p>
+
+    <p>
+      This is not a small idea. It is the difference between a machine that does one 
+      thing very well and a machine that, given the right instructions, can do anything. 
+      The compiler that turns C code into machine code is a program. The web browser 
+      running on your computer is a program. The kernel that runs the browser is a 
+      program. They all live as data in memory until the CPU reads them as instructions.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 1.3 — Von Neumann architecture</div>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Memory -->
+        <rect x="20" y="50" width="140" height="220" rx="8" fill="#1e1e1e" stroke="rgba(255,255,255,0.15)"/>
+        <text x="90" y="74" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">MEMORY</text>
+        <line x1="30" y1="86" x2="150" y2="86" stroke="rgba(255,255,255,0.06)"/>
+        <text x="90" y="108" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.5)">Instructions</text>
+        <rect x="35" y="116" width="110" height="8" rx="2" fill="rgba(212,168,83,0.18)"/>
+        <rect x="35" y="128" width="110" height="8" rx="2" fill="rgba(212,168,83,0.13)"/>
+        <rect x="35" y="140" width="110" height="8" rx="2" fill="rgba(212,168,83,0.09)"/>
+        <rect x="35" y="152" width="110" height="8" rx="2" fill="rgba(212,168,83,0.06)"/>
+        <line x1="30" y1="170" x2="150" y2="170" stroke="rgba(255,255,255,0.06)"/>
+        <text x="90" y="192" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(100,150,255,0.5)">Data</text>
+        <rect x="35" y="200" width="110" height="8" rx="2" fill="rgba(100,150,255,0.18)"/>
+        <rect x="35" y="212" width="110" height="8" rx="2" fill="rgba(100,150,255,0.13)"/>
+        <rect x="35" y="224" width="110" height="8" rx="2" fill="rgba(100,150,255,0.09)"/>
+        <rect x="35" y="236" width="110" height="8" rx="2" fill="rgba(100,150,255,0.06)"/>
+        <text x="90" y="290" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.2)">shared address space</text>
+
+        <!-- Bus -->
+        <line x1="160" y1="160" x2="240" y2="160" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+        <polygon points="238,156 246,160 238,164" fill="rgba(212,168,83,0.6)"/>
+        <text x="200" y="150" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">fetch</text>
+
+        <!-- CPU -->
+        <rect x="246" y="50" width="220" height="220" rx="8" fill="#1e1e1e" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
+        <text x="356" y="74" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.8)" letter-spacing="0.12em">CPU</text>
+        <rect x="262" y="92" width="92" height="64" rx="5" fill="#252525" stroke="rgba(212,168,83,0.25)"/>
+        <text x="308" y="115" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">ALU</text>
+        <text x="308" y="131" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">+ − × ÷</text>
+        <text x="308" y="145" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">AND OR XOR NOT</text>
+        <rect x="358" y="92" width="92" height="64" rx="5" fill="#252525" stroke="rgba(212,168,83,0.25)"/>
+        <text x="404" y="115" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">Control</text>
+        <text x="404" y="131" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Fetch</text>
+        <text x="404" y="145" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.3)">Decode / Execute</text>
+
+        <rect x="262" y="170" width="188" height="36" rx="4" fill="#252525" stroke="rgba(255,255,255,0.1)"/>
+        <text x="356" y="186" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">REGISTERS</text>
+        <text x="356" y="200" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.25)">PC, SP, AX, BX, CX, DX, ...</text>
+
+        <rect x="262" y="216" width="188" height="22" rx="3" fill="#1c1c1c" stroke="rgba(255,255,255,0.08)"/>
+        <text x="356" y="231" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)" letter-spacing="0.1em">L1 Cache</text>
+
+        <rect x="262" y="246" width="188" height="16" rx="3" fill="#1c1c1c" stroke="rgba(255,255,255,0.06)"/>
+        <text x="356" y="258" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.25)" letter-spacing="0.1em">Internal Bus</text>
+
+        <text x="356" y="290" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.2)">processor</text>
+
+        <!-- Output bus -->
+        <line x1="466" y1="160" x2="546" y2="160" stroke="rgba(150,216,150,0.5)" stroke-width="1.5"/>
+        <polygon points="544,156 552,160 544,164" fill="rgba(150,216,150,0.5)"/>
+        <text x="506" y="150" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">I/O</text>
+
+        <!-- I/O block -->
+        <rect x="552" y="80" width="148" height="160" rx="8" fill="#1e1e1e" stroke="rgba(150,216,150,0.3)"/>
+        <text x="626" y="104" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.7)" letter-spacing="0.1em">PERIPHERALS</text>
+        <text x="626" y="130" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">Keyboard</text>
+        <text x="626" y="150" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">Display</text>
+        <text x="626" y="170" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">Network</text>
+        <text x="626" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">Disk / SSD</text>
+        <text x="626" y="210" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">GPU</text>
+
+        <text x="626" y="290" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.2)">outside world</text>
+      </svg>
+      <p class="diagram-caption">Von Neumann architecture in its essence: one shared memory holds both program instructions and data. The CPU fetches an instruction, decodes it, executes it (often using the ALU), and stores the result. Then it fetches the next instruction. Nearly every computer built since 1945 follows this design.</p>
+    </div>
+
+    <h3>The Von Neumann bottleneck</h3>
+
+    <p>
+      The architecture has one famous weakness, and it is a consequence of its core 
+      design choice. Because instructions and data share the same memory, they share 
+      the same bus — the same physical wires between the CPU and main memory. The CPU 
+      can only do one transfer at a time. And while CPUs got dramatically faster over 
+      the decades (clock speeds rose from kilohertz to gigahertz), main memory became 
+      faster much more slowly. Today, a modern CPU can perform a basic operation in 
+      under a nanosecond. A round trip to main RAM takes about a hundred nanoseconds. 
+      The CPU spends most of its time waiting.
+    </p>
+
+    <p>
+      The solution is a hierarchy of <span class="key-term">caches</span> — small, fast 
+      memory built directly into the CPU that holds copies of recently used data. We'll 
+      cover this in detail later in this chapter. For now, it's enough to know that this 
+      bottleneck is one of the deepest design constraints of modern computing, and 
+      essentially every CPU optimization since the 1980s has been an attempt to work 
+      around it.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch1-cpu">
+    <div class="section-number">04 — The CPU</div>
+    <h2>Fetch. Decode. Execute. Repeat.</h2>
+
+    <p class="section-intro">
+      Every CPU ever built does the same four things in a loop, billions of times per 
+      second. This loop is the heartbeat of every program you have ever run.
+    </p>
+
+    <p>
+      The <span class="key-term">instruction cycle</span> is the fundamental unit of 
+      computation at the hardware level. A modern CPU executes billions of these per 
+      second on each of its cores. Everything else — your operating system, your browser, 
+      your music, this page — is just a particular sequence of instructions that the 
+      cycle runs through.
+    </p>
+
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="step-num">STEP 01</div>
+        <div class="step-title">Fetch</div>
+        <div class="step-desc">The Program Counter holds the address of the next instruction. The CPU loads it from memory.</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="process-step">
+        <div class="step-num">STEP 02</div>
+        <div class="step-title">Decode</div>
+        <div class="step-desc">The Control Unit interprets the binary pattern. The opcode says what; the operands say with what.</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="process-step">
+        <div class="step-num">STEP 03</div>
+        <div class="step-title">Execute</div>
+        <div class="step-desc">The ALU performs the operation. Add, compare, jump, read memory, write memory.</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="process-step">
+        <div class="step-num">STEP 04</div>
+        <div class="step-title">Writeback</div>
+        <div class="step-desc">The result goes to a register or memory. The Program Counter advances. The cycle restarts.</div>
+      </div>
+    </div>
+
+    <h3>What an instruction actually is</h3>
+
+    <p>
+      At the hardware level, every instruction is simply a binary number — a specific 
+      pattern of ones and zeros. The CPU's control unit is a circuit that, when given 
+      a particular pattern, activates a particular sequence of internal signals. 
+      Different patterns trigger different operations. The mapping from binary patterns 
+      to operations is called the <span class="key-term">instruction set architecture</span>, 
+      or ISA. Intel and AMD CPUs use the x86 ISA. Apple Silicon, your phone, the Raspberry 
+      Pi, and every modern Mac use ARM. They are mutually incompatible — code compiled 
+      for one will not run on the other unless translated.
+    </p>
+
+    <p>
+      Assembly language is just a human-readable label for these patterns. The mnemonic 
+      <code>mov eax, 5</code> is the assembler's name for the binary instruction 
+      <code>10111000 00000101 00000000 00000000 00000000</code> on x86. They mean exactly 
+      the same thing — assembly is a one-to-one translation. We will spend all of 
+      Chapter 3 on this.
+    </p>
+
+    <div class="code-block">
+      <span class="code-lang">x86 assembly</span>
+<pre><span class="cm">; A simple addition program</span>
+<span class="cm">; This is roughly what C's "int x = 5 + 3;" compiles to</span>
+
+<span class="kw">mov</span>  <span class="nm">eax</span>, <span class="st">5</span>        <span class="cm">; load the value 5 into register EAX</span>
+<span class="kw">mov</span>  <span class="nm">ebx</span>, <span class="st">3</span>        <span class="cm">; load the value 3 into register EBX</span>
+<span class="kw">add</span>  <span class="nm">eax</span>, <span class="nm">ebx</span>      <span class="cm">; EAX = EAX + EBX, result is now 8</span>
+
+<span class="cm">; In memory, "add eax, ebx" is just two bytes: 01 D8</span>
+<span class="cm">; The CPU's decoder maps this pattern to "ALU add" with</span>
+<span class="cm">; source EBX and destination EAX. Then the ALU performs it.</span></pre>
+    </div>
+
+    <h3>Pipelining and parallelism inside one core</h3>
+
+    <p>
+      A naive CPU would do each step of the instruction cycle one at a time, finishing 
+      one instruction completely before starting the next. Modern CPUs do not. They 
+      use <span class="key-term">pipelining</span> — overlapping the stages of different 
+      instructions, like an assembly line. While instruction 3 is being executed, 
+      instruction 4 is being decoded, and instruction 5 is being fetched. A modern 
+      pipeline may have 14 to 20 stages.
+    </p>
+
+    <p>
+      They also use <span class="key-term">out-of-order execution</span> — if 
+      instruction 5 doesn't depend on instruction 4's result, the CPU may execute 5 
+      first while 4 waits for memory. And <span class="key-term">speculative execution</span>: 
+      if there's a branch (an <code>if</code> statement), the CPU guesses which way 
+      it will go and starts executing that path before the condition has been computed. 
+      If it guesses right, it saves time. If it guesses wrong, it discards the work. 
+      Modern CPUs guess right about 95% of the time.
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">🔬</span>
+      <p class="insight-text">
+        <strong>Spectre and Meltdown (2018).</strong> Two catastrophic CPU vulnerabilities discovered in nearly every processor made since 1995. They exploited speculative execution: when the CPU guessed wrong and discarded the work, traces of that work remained in the cache — traces that an attacker could measure to read memory they should not have access to. Hardware has bugs too, and they are far harder to fix than software bugs. We will return to this in Chapter 15.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch1-kernel">
+    <div class="section-number">05 — The Kernel</div>
+    <h2>Why the kernel had to be invented</h2>
+
+    <p>
+      In the early 1950s, running a program meant booking the entire computer for 
+      yourself. You brought your stack of punched cards to the machine room, the operator 
+      loaded them, the machine ran your program, printed the output, and you came back 
+      an hour later to read it. One program at a time. No sharing.
+    </p>
+
+    <p>
+      As computers got faster and programs got longer, this became absurd. The CPU sat 
+      idle most of the time, waiting for slow input/output devices like punch card 
+      readers or magnetic tape drives. Universities started asking the obvious question: 
+      can multiple programs share a computer? Can one program run while another waits 
+      for I/O? Can different users be logged in simultaneously?
+    </p>
+
+    <p>
+      The answer was yes — but only if something managed the sharing. That something 
+      became the <span class="key-term">operating system kernel</span>. The kernel is 
+      the one program that always runs. It owns the hardware. Every other program must 
+      ask it for permission to do anything that touches the outside world.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 1.4 — Privilege rings: kernel and user space</div>
+      <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- Hardware base -->
+        <rect x="40" y="290" width="520" height="44" rx="6" fill="#0f0f0f" stroke="rgba(255,255,255,0.1)"/>
+        <text x="300" y="316" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)" letter-spacing="0.15em">HARDWARE — CPU · RAM · DISK · GPU · NETWORK INTERFACE</text>
+
+        <!-- Kernel -->
+        <rect x="40" y="220" width="520" height="60" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>
+        <text x="300" y="244" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.9)" letter-spacing="0.15em">KERNEL — Ring 0 — Privileged</text>
+        <text x="300" y="262" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.5)">memory management · process scheduling · device drivers · filesystems</text>
+        <text x="300" y="274" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.5)">interrupt handling · system calls · networking stack</text>
+
+        <!-- Syscall arrow -->
+        <line x1="300" y1="170" x2="300" y2="220" stroke="rgba(212,168,83,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="296,218 300,226 304,218" fill="rgba(212,168,83,0.5)"/>
+        <text x="320" y="195" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.5)">system calls</text>
+
+        <!-- User space -->
+        <rect x="40" y="100" width="520" height="60" rx="6" fill="#111" stroke="rgba(100,150,255,0.3)"/>
+        <text x="300" y="124" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.7)" letter-spacing="0.15em">USER SPACE — Ring 3 — Unprivileged</text>
+
+        <rect x="60" y="135" width="100" height="20" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)"/>
+        <text x="110" y="148" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">your program</text>
+        <rect x="180" y="135" width="100" height="20" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)"/>
+        <text x="230" y="148" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">browser</text>
+        <rect x="300" y="135" width="100" height="20" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)"/>
+        <text x="350" y="148" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">database</text>
+        <rect x="420" y="135" width="120" height="20" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)"/>
+        <text x="480" y="148" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">SSH daemon</text>
+
+        <text x="300" y="60" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">PROTECTION RINGS</text>
+        <text x="300" y="80" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.25)">hardware-enforced privilege levels — physically built into the CPU</text>
+      </svg>
+      <p class="diagram-caption">x86 CPUs have four privilege levels (rings 0–3), but in practice operating systems only use two: Ring 0 (kernel mode) and Ring 3 (user mode). Code in Ring 0 can execute any CPU instruction and access any memory. Code in Ring 3 cannot. The boundary is enforced by the CPU hardware itself, not by software.</p>
+    </div>
+
+    <h3>The system call: crossing the boundary</h3>
+
+    <p>
+      When your Python script opens a file, it doesn't access the disk directly. Your 
+      program — running in Ring 3 — has no permission to talk to the disk controller. 
+      Instead, it calls <code>open()</code> in Python, which calls <code>fopen()</code> 
+      in the C library, which calls a special CPU instruction (<code>syscall</code> on 
+      modern x86-64) that triggers a hardware exception. The CPU saves the program's 
+      state, switches to Ring 0, and jumps to a kernel entry point. The kernel then 
+      checks whether your process has permission to read that file, finds it on disk, 
+      and returns a numeric handle (a <em>file descriptor</em>) to your program.
+    </p>
+
+    <p>
+      Your program never touched the hardware. It asked the kernel, the kernel decided. 
+      This is the entire foundation of operating system security. Without this 
+      boundary, every program would have full access to every other program's memory, 
+      every file, every network packet. With it, programs are isolated from each other 
+      by hardware-enforced rules.
+    </p>
+
+    <div class="code-block">
+      <span class="code-lang">C → kernel</span>
+<pre><span class="cm">// What you write in C:</span>
+<span class="nm">FILE</span> *f = <span class="kw">fopen</span>(<span class="st">"data.csv"</span>, <span class="st">"r"</span>);
+
+<span class="cm">// What the C library does internally:</span>
+<span class="nm">int</span> fd = <span class="kw">syscall</span>(<span class="nm">SYS_open</span>, <span class="st">"data.csv"</span>, <span class="nm">O_RDONLY</span>, <span class="st">0</span>);
+
+<span class="cm">// What happens at the CPU level:</span>
+<span class="cm">//   1. The syscall instruction triggers a switch from Ring 3 to Ring 0</span>
+<span class="cm">//   2. The kernel reads the syscall number (SYS_open == 2 on Linux)</span>
+<span class="cm">//   3. It dispatches to sys_open() inside the kernel</span>
+<span class="cm">//   4. sys_open checks process permissions against file ownership</span>
+<span class="cm">//   5. It walks the filesystem (directory tree) to find the file</span>
+<span class="cm">//   6. It allocates a file descriptor in this process's table</span>
+<span class="cm">//   7. It switches back to Ring 3 and returns the descriptor (e.g. 3)</span>
+<span class="cm">//</span>
+<span class="cm">// Your program sees: fd == 3. It never touched the disk hardware.</span></pre>
+    </div>
+
+    <h3>UNIX and the kernels we still use</h3>
+
+    <p>
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system 
+      called UNIX. Its design was austere and elegant: <strong>everything is a file</strong>. 
+      A regular file is a file. A keyboard is a file. A network connection is a file. 
+      A running process exposes a directory of files describing it. All of them accessed 
+      through the same system call interface: open, read, write, close.
+    </p>
+
+    <p>
+      UNIX became, directly or indirectly, the ancestor of nearly every operating system 
+      in current use. Linux is a UNIX-like kernel written from scratch by Linus Torvalds 
+      in 1991. macOS uses a kernel called XNU, derived from a hybrid of Mach and BSD 
+      (a UNIX descendant). iOS and Android are both built on UNIX-derived kernels. Even 
+      Windows, originally not UNIX-based, now ships with a Linux subsystem. The architectural 
+      ideas in UNIX — processes, file descriptors, the system call interface — define 
+      what an operating system <em>is</em>.
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">🛡️</span>
+      <p class="insight-text">
+        <strong>Why this matters for security.</strong> A <strong>privilege escalation</strong> attack is one in which an unprivileged process — your malicious program running in Ring 3 — finds a way to gain Ring 0 access. If it succeeds, it has full control of the machine: it can read any file, watch any keypress, install any rootkit. Every major operating system has had privilege escalation vulnerabilities. The kernel is the most security-critical code on any computer. We will spend significant time on this in Chapter 15.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch1-memory">
+    <div class="section-number">06 — Memory</div>
+    <h2>The hierarchy of forgetting</h2>
+
+    <p>
+      Memory in a computer is not one thing. It is a hierarchy of increasingly larger, 
+      slower, cheaper storage, managed at different levels by the CPU and the kernel. 
+      Each level holds a copy of part of the level below it. Closer to the CPU means 
+      faster but smaller. Further away means larger but slower.
+    </p>
+
+    <p>
+      The numbers below tell the entire story of why optimizing software is hard. The 
+      CPU performs an arithmetic operation in roughly 0.3 nanoseconds. A round trip to 
+      main memory takes 60 nanoseconds — two hundred times longer. A read from a fast 
+      SSD takes 50,000 nanoseconds — 167,000 times longer than a register access. Most 
+      of computer architecture for the past forty years has been about hiding this gap.
+    </p>
+
+    <table class="summary-table dark">
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Location</th>
+          <th>Typical size</th>
+          <th>Access time</th>
+          <th>Managed by</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Registers</td>
+          <td>Inside the CPU core</td>
+          <td>~1 KB</td>
+          <td>1 cycle (~0.3 ns)</td>
+          <td>Compiler, CPU</td>
+        </tr>
+        <tr>
+          <td>L1 Cache</td>
+          <td>On the CPU die</td>
+          <td>32–64 KB</td>
+          <td>4 cycles (~1 ns)</td>
+          <td>CPU hardware</td>
+        </tr>
+        <tr>
+          <td>L2 Cache</td>
+          <td>On the CPU die</td>
+          <td>256 KB – 1 MB</td>
+          <td>12 cycles (~4 ns)</td>
+          <td>CPU hardware</td>
+        </tr>
+        <tr>
+          <td>L3 Cache</td>
+          <td>On the CPU package</td>
+          <td>8–64 MB</td>
+          <td>40 cycles (~13 ns)</td>
+          <td>CPU hardware</td>
+        </tr>
+        <tr>
+          <td>RAM (DRAM)</td>
+          <td>On the motherboard</td>
+          <td>8–128 GB</td>
+          <td>~100 cycles (~60 ns)</td>
+          <td>OS kernel</td>
+        </tr>
+        <tr>
+          <td>SSD (NVMe)</td>
+          <td>On the PCIe bus</td>
+          <td>256 GB – 4 TB</td>
+          <td>~50,000 ns</td>
+          <td>OS + filesystem</td>
+        </tr>
+        <tr>
+          <td>HDD (spinning disk)</td>
+          <td>SATA bus</td>
+          <td>1–20 TB</td>
+          <td>~5,000,000 ns</td>
+          <td>OS + filesystem</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Virtual memory: the lie the kernel tells</h3>
+
+    <p>
+      When your program asks for memory, the kernel does not give it a real physical 
+      address. It gives a <span class="key-term">virtual address</span> — a fiction. 
+      Your program believes it has its own private address space starting at zero, with 
+      gigabytes of memory available. So does every other program. They all think they 
+      own the machine.
+    </p>
+
+    <p>
+      The CPU's <strong>Memory Management Unit</strong> (MMU), guided by tables that 
+      the kernel maintains, translates these virtual addresses to physical RAM addresses 
+      every time a program reads or writes memory. The translation tables — called 
+      <em>page tables</em> — divide memory into 4-kilobyte chunks called <em>pages</em> 
+      and map each virtual page to either a physical page in RAM or to a location on 
+      disk (if RAM is full and the page has been swapped out).
+    </p>
+
+    <p>
+      This achieves three things at once: <strong>isolation</strong> (no program can 
+      read another's memory because the translation tables for different programs map 
+      to different physical pages), <strong>flexibility</strong> (the kernel can move 
+      pages around in RAM, swap them to disk, or load them on demand from a file), 
+      and <strong>protection</strong> (the page tables also encode permissions — read, 
+      write, execute — and the MMU enforces them).
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">💡</span>
+      <p class="insight-text">
+        <strong>Buffer overflow attacks</strong> exploit the memory model directly. If a program writes more data than a buffer can hold, the extra bytes spill into adjacent memory. If that memory contains a return address — an address the CPU will jump to when the current function ends — an attacker who controls the input controls where the CPU jumps next. Stack canaries, ASLR (Address Space Layout Randomization), and DEP (data execution prevention) are the layered hardware and OS defenses against this. We'll see exactly how this works at the assembly level in Chapter 3.
+      </p>
+    </div>
+  </section>
+
+  <h2 style="margin-top: 80px;">What you now understand</h2>
+
+  <p>
+    You have followed the chain from sand to software. Transistors — silicon switches 
+    controlled by voltage — combine into logic gates, then into integrated circuits, 
+    then into CPUs. The CPU runs an endless loop: fetch, decode, execute, writeback. 
+    It executes instructions encoded as binary patterns drawn from an instruction set 
+    architecture like x86 or ARM. Programs and data live together in the same memory, 
+    a design choice — Von Neumann's — that defines what a modern computer is. The 
+    kernel mediates between programs and hardware, enforcing isolation and security 
+    through privilege rings and virtual memory.
+  </p>
+
+  <p>
+    This is the substrate. Every chapter that follows builds on it. Chapter 2 goes 
+    deeper into a single layer of this stack — the layer where mathematics and 
+    electricity meet. We will look at why a computer must be binary, how George Boole 
+    invented the logic that runs on those binary signals, and how arithmetic — the 
+    thing computers fundamentally do — emerges from a few simple gates. By the end 
+    of Chapter 2, you will understand at a physical level why <code>0.1 + 0.2</code> 
+    does not equal <code>0.3</code> in any modern programming language.
+  </p>
+
+</main>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════ CHAPTER 2 ═════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<section id="ch2">
+<div class="chapter-hero">
+  <div class="chapter-hero-text">
+    <div class="chapter-label">Chapter 02</div>
+    <h1>The Algebra<br>of <em>Switches</em></h1>
+    <p class="chapter-subtitle">
+      In 1847, a self-taught English schoolteacher published a book reducing logic 
+      to algebra. He died before electricity was understood, never imagining a circuit. 
+      A century later, his algebra became the only mathematics that machines can do.
+    </p>
+    <div class="chapter-meta">
+      <div class="meta-item">
+        <span class="meta-label">Topics</span>
+        <span class="meta-value">Boolean logic · Binary · Gates · Floats</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Era covered</span>
+        <span class="meta-value">1847 → 1985</span>
+      </div>
+    </div>
+  </div>
+  <div class="chapter-hero-visual">
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;">
+      <defs>
+        <radialGradient id="glow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4a853" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="240" cy="240" r="180" fill="url(#glow2)"/>
+
+      <!-- Boolean expression -->
+      <text x="240" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="24" fill="rgba(212,168,83,0.85)">A · B + ¬A · B</text>
+
+      <!-- AND gate -->
+      <g transform="translate(80,160)">
+        <path d="M 0 0 L 40 0 A 40 40 0 0 1 40 80 L 0 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <line x1="-30" y1="20" x2="0" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="-30" y1="60" x2="0" y2="60" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="80" y1="40" x2="110" y2="40" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <text x="40" y="44" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.85)">AND</text>
+        <text x="-38" y="24" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.6)">A</text>
+        <text x="-38" y="64" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.6)">B</text>
+      </g>
+
+      <!-- OR gate -->
+      <g transform="translate(280,160)">
+        <path d="M 0 0 Q 25 40 0 80 Q 50 80 80 40 Q 50 0 0 0 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <line x1="-30" y1="20" x2="6" y2="20" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="-30" y1="60" x2="6" y2="60" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="80" y1="40" x2="110" y2="40" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <text x="35" y="44" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.85)">OR</text>
+        <text x="-38" y="24" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.6)">A</text>
+        <text x="-38" y="64" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.6)">B</text>
+      </g>
+
+      <!-- NOT gate -->
+      <g transform="translate(180,300)">
+        <path d="M 0 0 L 60 30 L 0 60 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <circle cx="66" cy="30" r="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <line x1="-30" y1="30" x2="0" y2="30" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
+        <line x1="72" y1="30" x2="100" y2="30" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+        <text x="20" y="34" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">NOT</text>
+        <text x="-38" y="34" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.6)">A</text>
+      </g>
+
+      <!-- Binary -->
+      <text x="240" y="430" text-anchor="middle" font-family="DM Mono" font-size="16" fill="rgba(255,255,255,0.4)" letter-spacing="0.2em">1 0 1 1 0 0 1 0</text>
+      <text x="240" y="450" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.25)" letter-spacing="0.1em">the only language electricity speaks</text>
+    </svg>
+  </div>
+</div>
+
+<nav class="chapter-nav">
+  <a href="#ch2-binary" class="nav-item">01 — Why binary</a>
+  <a href="#ch2-boole" class="nav-item">02 — Boole</a>
+  <a href="#ch2-gates" class="nav-item">03 — Gates</a>
+  <a href="#ch2-arithmetic" class="nav-item">04 — Arithmetic</a>
+  <a href="#ch2-twos" class="nav-item">05 — Negative numbers</a>
+  <a href="#ch2-float" class="nav-item">06 — Floating point</a>
+</nav>
+
+<main class="content">
+
+  <section class="section" id="ch2-binary">
+    <div class="section-number">01 — Why binary</div>
+    <h2>Why a computer can only count to two</h2>
+
+    <p class="lead">
+      You count to ten because you have ten fingers. The Babylonians counted to sixty 
+      because they used the joints of the four fingers on one hand (twelve) times the 
+      five fingers of the other (sixty). The Mayans used twenty, counting their toes. 
+      Every counting system in human history was shaped by the body using it. Computers 
+      count to two — because they are made of switches, and a switch only has two states.
+    </p>
+
+    <p>
+      A common but wrong intuition is that computers use binary because it is somehow 
+      simpler or more elegant. The real reason is purely physical: <strong>electricity 
+      reliably represents two states, but not many more</strong>. A wire either has a 
+      voltage above some threshold (let's call this 1) or it doesn't (let's call this 0). 
+      The CPU can detect "above the threshold" and "below the threshold" with very high 
+      reliability, even when there is electrical noise, voltage fluctuations, or 
+      manufacturing variation.
+    </p>
+
+    <p>
+      Could you build a computer that used three voltage levels — low, medium, high — 
+      to represent three digits? Yes. The Soviet Union built one. The <em>Setun</em>, 
+      designed in 1958 at Moscow State University by Nikolay Brusentsov, used 
+      <em>balanced ternary</em> (digits −1, 0, +1) and was, in many mathematical respects, 
+      more elegant than binary. But it required precisely tuned voltage thresholds that 
+      were difficult to maintain reliably as components aged. Binary won not because it 
+      was theoretically superior, but because it was <em>physically robust</em>. A small 
+      voltage drift will turn a 1 into a 0; it takes a much larger drift to make a 0 
+      look like a 2.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.1 — Why binary survives noise</div>
+      <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- Binary signal -->
+        <text x="80" y="40" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">BINARY — two well-separated levels</text>
+
+        <!-- Axes -->
+        <line x1="50" y1="120" x2="640" y2="120" stroke="rgba(255,255,255,0.15)"/>
+        <line x1="50" y1="60" x2="640" y2="60" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+
+        <!-- Threshold -->
+        <line x1="50" y1="90" x2="640" y2="90" stroke="rgba(212,168,83,0.5)" stroke-dasharray="4,3"/>
+        <text x="660" y="93" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)">threshold</text>
+
+        <!-- Square wave -->
+        <path d="M 50 110 L 130 110 L 130 70 L 210 70 L 210 110 L 290 110 L 290 70 L 370 70 L 370 110 L 450 110 L 450 70 L 530 70 L 530 110 L 600 110"
+              stroke="#d4a853" fill="none" stroke-width="2"/>
+
+        <!-- Labels -->
+        <text x="90" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
+        <text x="170" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
+        <text x="250" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
+        <text x="330" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
+        <text x="410" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
+        <text x="490" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
+        <text x="570" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
+
+        <text x="50" y="160" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)">noise margin: huge — small drift cannot flip the bit</text>
+
+        <!-- Ternary signal -->
+        <text x="80" y="200" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">TERNARY — three closely-spaced levels</text>
+        <line x1="50" y1="270" x2="640" y2="270" stroke="rgba(255,255,255,0.15)"/>
+        <line x1="50" y1="248" x2="640" y2="248" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+        <line x1="50" y1="226" x2="640" y2="226" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
+
+        <!-- Two thresholds -->
+        <line x1="50" y1="237" x2="640" y2="237" stroke="rgba(232,120,120,0.5)" stroke-dasharray="3,2"/>
+        <line x1="50" y1="259" x2="640" y2="259" stroke="rgba(232,120,120,0.5)" stroke-dasharray="3,2"/>
+
+        <!-- Ternary path -->
+        <path d="M 50 264 L 130 264 L 130 247 L 210 247 L 210 230 L 290 230 L 290 264 L 370 264 L 370 230 L 450 230 L 450 247 L 530 247 L 530 264 L 600 264"
+              stroke="#e87878" fill="none" stroke-width="2"/>
+
+        <text x="50" y="298" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.7)">noise margin: tiny — small drift can confuse adjacent levels</text>
+      </svg>
+      <p class="diagram-caption">A binary signal has two levels with a wide gap between them — small voltage variations cannot flip a 1 into a 0. A ternary signal squeezes three levels into the same voltage range, leaving narrow tolerance bands. As components age and temperature varies, ternary fails more often. Engineering, not mathematics, killed it.</p>
+    </div>
+
+    <p>
+      So we have a wire that can be on or off. With one wire we can express two values. 
+      With two wires, four. With three, eight. With <em>n</em> wires, we can express 
+      2<sup>n</sup> values. This is a <span class="key-term">bit</span> — short for 
+      <em>binary digit</em>. Eight bits make a <span class="key-term">byte</span>, 
+      enough to represent 256 distinct values. A modern CPU works internally with words 
+      that are 64 bits wide, capable of representing 2<sup>64</sup> ≈ 18 quintillion 
+      values per word.
+    </p>
+
+    <div class="math-callout">
+      <div class="math-label">A note on counting</div>
+      <p>
+        In any base <em>b</em>, an <em>n</em>-digit number can represent <em>b<sup>n</sup></em> 
+        distinct values. A 3-digit decimal number ranges from 000 to 999 — that's 10³ = 
+        1,000 values. A 3-digit binary number ranges from 000 to 111 — 2³ = 8 values. 
+        The exponential growth in either base is the same; only the base of the exponent 
+        differs.
+      </p>
+      <p>
+        This is why the size of computer memory grows so quickly with each added bit. 
+        Adding one wire <em>doubles</em> the addressable space.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch2-boole">
+    <div class="section-number">02 — Boole</div>
+    <h2>The Victorian schoolteacher who reduced logic to algebra</h2>
+
+    <p>
+      In 1815, in Lincoln, England, a shoemaker's son was born named George Boole. He 
+      had little formal education — he taught himself Latin at twelve, Greek at fourteen, 
+      and the major European languages by his late teens. By twenty-six, with no university 
+      degree, he was running his own school. By thirty-two, he was a self-taught 
+      mathematician publishing original papers in differential equations.
+    </p>
+
+    <p>
+      In 1847, he published a short book titled <em>The Mathematical Analysis of Logic</em>. 
+      Seven years later, he expanded it into <em>An Investigation of the Laws of Thought</em>. 
+      The thesis of these two works was, at the time, almost incomprehensible: 
+      <strong>logic — the discipline of valid reasoning — was a branch of algebra</strong>. 
+      The same kind of algebra you do in school, with symbols and equations, but with 
+      different rules.
+    </p>
+
+    <p>
+      In ordinary algebra, <em>x + y = y + x</em> and <em>xy = yx</em>. In Boole's algebra, 
+      the variables represent not numbers but <em>truth values</em> — propositions that 
+      are either true or false. The operations are not addition and multiplication but 
+      <em>OR</em> (logical disjunction), <em>AND</em> (logical conjunction), and 
+      <em>NOT</em> (negation). And there are only two values a variable can take: 
+      <strong>0</strong> (false) and <strong>1</strong> (true).
+    </p>
+
+    <div class="pull-quote">
+      <p>"The design of the following treatise is to investigate the fundamental laws of those operations of the mind by which reasoning is performed; to give expression to them in the symbolical language of a Calculus..."</p>
+      <span class="attr">— George Boole, An Investigation of the Laws of Thought, 1854</span>
+    </div>
+
+    <p>
+      Boole died in 1864 at age 49 from pneumonia. Walking three miles in heavy rain 
+      to give a lecture, then lecturing in soaking wet clothes — and then being put to 
+      bed by his wife who, on the principle that "like cures like," allegedly threw 
+      buckets of cold water on him. He never saw electricity used in computing. He died 
+      twenty years before the electron itself was discovered. His algebra was, for 
+      seventy years, considered a beautiful but useless curiosity in the history of logic.
+    </p>
+
+    <h3>Shannon's master's thesis: the most consequential paper of the 20th century</h3>
+
+    <p>
+      Then, in 1937, a 21-year-old MIT graduate student named Claude Shannon wrote his 
+      master's thesis. He was working with electrical relay circuits — telephone-switch-like 
+      devices that could be open (no current) or closed (current flowing) based on 
+      another control signal. He noticed something: the behavior of these circuits 
+      could be described <em>exactly</em> by Boole's algebra. An open relay was 0. 
+      A closed one was 1. Two relays in series implemented AND. Two in parallel 
+      implemented OR. A relay that opened when its control signal was on implemented NOT.
+    </p>
+
+    <p>
+      Shannon showed that you could take any logical proposition expressible in Boolean 
+      algebra and build a circuit of relays that physically computed it. And that you 
+      could simplify circuits by simplifying the corresponding Boolean expressions. 
+      Logic and electricity were the same thing.
+    </p>
+
+    <p>
+      The thesis is widely considered the most important master's thesis ever written. 
+      It is the bridge between Boole's pure mathematics and modern computing. Without it, 
+      the universal computer Turing imagined could not have been built. <em>With</em> it, 
+      every modern computer is a physical realization of a Boolean expression.
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">📐</span>
+      <p class="insight-text">
+        <strong>The deeper claim.</strong> Anything that can be computed — any function that takes some input and produces some output by following a finite procedure — can be expressed as a Boolean formula and built as a circuit of AND, OR, and NOT gates. This is the practical version of Turing's universality theorem. It is why the same hardware can run a calculator, a video game, and a neural network. They are all, at the bottom, Boolean expressions.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch2-gates">
+    <div class="section-number">03 — Logic gates</div>
+    <h2>The atoms of computation</h2>
+
+    <p>
+      A <span class="key-term">logic gate</span> is a small circuit — a few transistors 
+      arranged in a particular way — that takes one or two input bits and produces one 
+      output bit according to a Boolean rule. There are only a handful of fundamental 
+      gates, and every computation a computer performs reduces to combinations of them.
+    </p>
+
+    <h3>The three foundational gates</h3>
+
+    <div class="table-row">
+
+      <div class="truth-table">
+        <h4>AND — true only if both inputs are true</h4>
+        <table>
+          <tr><th>A</th><th>B</th><th class="out">A · B</th></tr>
+          <tr><td>0</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">0</td></tr>
+          <tr><td>1</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>1</td><td>1</td><td class="out">1</td></tr>
+        </table>
+      </div>
+
+      <div class="truth-table">
+        <h4>OR — true if at least one input is true</h4>
+        <table>
+          <tr><th>A</th><th>B</th><th class="out">A + B</th></tr>
+          <tr><td>0</td><td>0</td><td class="out">0</td></tr>
+          <tr><td>0</td><td>1</td><td class="out">1</td></tr>
+          <tr><td>1</td><td>0</td><td class="out">1</td></tr>
+          <tr><td>1</td><td>1</td><td class="out">1</td></tr>
+        </table>
+      </div>
+
+      <div class="truth-table">
+        <h4>NOT — flips the input</h4>
+        <table>
+          <tr><th>A</th><th class="out">¬A</th></tr>
+          <tr><td>0</td><td class="out">1</td></tr>
+          <tr><td>1</td><td class="out">0</td></tr>
+        </table>
+      </div>
+
+    </div>
+
+    <p>
+      The Boolean operators are written multiple ways depending on context: AND as 
+      <em>·</em> or <em>∧</em>, OR as <em>+</em> or <em>∨</em>, NOT as <em>¬</em> or an 
+      overbar. In code, programmers often write <code>&&</code>, <code>||</code>, and 
+      <code>!</code> in C/Java/JavaScript, or <code>and</code>, <code>or</code>, 
+      <code>not</code> in Python. They all mean the same thing.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.2 — The three fundamental gates</div>
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- AND -->
+        <g transform="translate(60,60)">
+          <text x="60" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">AND</text>
+          <path d="M 20 0 L 60 0 A 60 60 0 0 1 60 120 L 20 120 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+          <line x1="-10" y1="30" x2="20" y2="30" stroke="rgba(255,255,255,0.5)"/>
+          <line x1="-10" y1="90" x2="20" y2="90" stroke="rgba(255,255,255,0.5)"/>
+          <line x1="120" y1="60" x2="160" y2="60" stroke="rgba(212,168,83,0.7)"/>
+          <text x="-18" y="34" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="-18" y="94" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
+          <text x="170" y="64" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = A·B</text>
+        </g>
+
+        <!-- OR -->
+        <g transform="translate(280,60)">
+          <text x="60" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">OR</text>
+          <path d="M 20 0 Q 50 60 20 120 Q 80 120 120 60 Q 80 0 20 0 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+          <line x1="-10" y1="30" x2="32" y2="30" stroke="rgba(255,255,255,0.5)"/>
+          <line x1="-10" y1="90" x2="32" y2="90" stroke="rgba(255,255,255,0.5)"/>
+          <line x1="120" y1="60" x2="160" y2="60" stroke="rgba(212,168,83,0.7)"/>
+          <text x="-18" y="34" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="-18" y="94" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
+          <text x="170" y="64" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = A+B</text>
+        </g>
+
+        <!-- NOT -->
+        <g transform="translate(500,80)">
+          <text x="50" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">NOT</text>
+          <path d="M 20 0 L 90 40 L 20 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+          <circle cx="98" cy="40" r="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
+          <line x1="-10" y1="40" x2="20" y2="40" stroke="rgba(255,255,255,0.5)"/>
+          <line x1="106" y1="40" x2="140" y2="40" stroke="rgba(212,168,83,0.7)"/>
+          <text x="-18" y="44" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="150" y="44" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = ¬A</text>
+        </g>
+      </svg>
+      <p class="diagram-caption">The standard symbols for the three foundational logic gates. The shape encodes the operation: AND is a flat-backed shield, OR is a curved-back arrowhead, NOT is a triangle with a small inversion bubble. These shapes have been standard since the 1960s and are recognized by every electrical engineer in the world.</p>
+    </div>
+
+    <h3>Universal gates: NAND alone is enough</h3>
+
+    <p>
+      A remarkable result, due to Henry Sheffer in 1913: you don't actually need three 
+      different kinds of gates. A single gate type — <span class="key-term">NAND</span> 
+      (NOT-AND) — can be combined to implement any Boolean function. NOT, AND, OR, 
+      everything. This is called <em>functional completeness</em>, and NAND is a 
+      <em>universal gate</em>.
+    </p>
+
+    <p>
+      Why this matters in practice: chip manufacturers can build their fabrication 
+      process around a single gate type and combine NAND gates in different patterns 
+      to make any other gate. Modern CPUs aren't literally made of just NANDs — there 
+      are also NOR, XOR, and other compound gates for efficiency — but the principle 
+      stands. <strong>One gate, repeated billions of times in different arrangements, 
+      is enough to compute anything computable.</strong>
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.3 — NOT, AND, and OR all built from NAND</div>
+      <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- NOT from NAND -->
+        <g transform="translate(40,40)">
+          <text x="80" y="-15" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.5)">NOT(A) = NAND(A,A)</text>
+          <line x1="0" y1="50" x2="40" y2="35" stroke="rgba(255,255,255,0.4)"/>
+          <line x1="0" y1="50" x2="40" y2="65" stroke="rgba(255,255,255,0.4)"/>
+          <path d="M 40 20 L 60 20 A 30 30 0 0 1 60 80 L 40 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <circle cx="103" cy="50" r="4" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <line x1="107" y1="50" x2="140" y2="50" stroke="rgba(212,168,83,0.7)"/>
+          <text x="-10" y="54" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="148" y="54" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">¬A</text>
+        </g>
+
+        <!-- AND from NAND -->
+        <g transform="translate(280,30)">
+          <text x="100" y="-5" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.5)">AND = NOT(NAND)</text>
+          <line x1="0" y1="40" x2="40" y2="40" stroke="rgba(255,255,255,0.4)"/>
+          <line x1="0" y1="80" x2="40" y2="80" stroke="rgba(255,255,255,0.4)"/>
+          <path d="M 40 25 L 60 25 A 30 30 0 0 1 60 85 L 40 85 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <circle cx="103" cy="55" r="4" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <line x1="107" y1="55" x2="130" y2="55" stroke="rgba(255,255,255,0.4)"/>
+          <line x1="130" y1="55" x2="160" y2="48" stroke="rgba(255,255,255,0.4)"/>
+          <line x1="130" y1="55" x2="160" y2="62" stroke="rgba(255,255,255,0.4)"/>
+          <path d="M 160 35 L 180 35 A 25 25 0 0 1 180 80 L 160 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <circle cx="217" cy="57" r="4" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <line x1="221" y1="57" x2="244" y2="57" stroke="rgba(212,168,83,0.7)"/>
+          <text x="-10" y="44" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="-10" y="84" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
+          <text x="252" y="61" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">A·B</text>
+        </g>
+
+        <!-- OR from NAND -->
+        <g transform="translate(40,180)">
+          <text x="280" y="-15" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.5)">OR = NAND(NOT A, NOT B) — DeMorgan's Law</text>
+          <line x1="0" y1="20" x2="60" y2="20" stroke="rgba(255,255,255,0.4)"/>
+          <path d="M 60 5 L 80 5 A 18 18 0 0 1 80 35 L 60 35 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <circle cx="102" cy="20" r="3" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <line x1="105" y1="20" x2="200" y2="50" stroke="rgba(255,255,255,0.35)"/>
+
+          <line x1="0" y1="80" x2="60" y2="80" stroke="rgba(255,255,255,0.4)"/>
+          <path d="M 60 65 L 80 65 A 18 18 0 0 1 80 95 L 60 95 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <circle cx="102" cy="80" r="3" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <line x1="105" y1="80" x2="200" y2="65" stroke="rgba(255,255,255,0.35)"/>
+
+          <path d="M 200 35 L 220 35 A 25 25 0 0 1 220 80 L 200 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <circle cx="251" cy="57" r="4" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <line x1="255" y1="57" x2="290" y2="57" stroke="rgba(212,168,83,0.7)"/>
+
+          <text x="-10" y="24" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+          <text x="-10" y="84" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
+          <text x="298" y="61" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">A+B</text>
+        </g>
+      </svg>
+      <p class="diagram-caption">Three constructions showing universality. Connecting both inputs of a NAND to the same wire makes a NOT. Two NANDs in sequence make an AND. The OR construction relies on DeMorgan's Law: A + B = ¬(¬A · ¬B). Combining these primitives in different patterns can express any Boolean function.</p>
+    </div>
+
+    <div class="math-callout">
+      <div class="math-label">DeMorgan's Laws</div>
+      <p>Two fundamental identities of Boolean algebra, both due to Augustus De Morgan, a contemporary of Boole:</p>
+      <p class="math-formula">¬(A · B) = ¬A + ¬B</p>
+      <p class="math-formula">¬(A + B) = ¬A · ¬B</p>
+      <p>
+        These laws say that you can move a NOT through an AND or OR by flipping the operator. They are how you simplify Boolean expressions, and they are how chip designers convert one kind of gate-level circuit into another. They will reappear later when we discuss filtering in databases (Chapter 13) and access control in security (Chapter 15) — Boolean algebra is the underlying logic of nearly every formal system in computing.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch2-arithmetic">
+    <div class="section-number">04 — Arithmetic from logic</div>
+    <h2>How a circuit learns to add</h2>
+
+    <p>
+      A computer is fundamentally a machine for arithmetic — Charles Babbage called his 
+      19th-century mechanical proto-computer the <em>Analytical Engine</em> for a reason. 
+      But at the level of voltages and gates, the machine has no concept of "five" or 
+      "twelve." It only knows ones and zeros and Boolean operations on them. So how do 
+      we get from <em>NAND</em> to <em>5 + 3</em>?
+    </p>
+
+    <p>
+      The answer is constructive. We build it up, one bit at a time. Let's start with 
+      adding two single bits.
+    </p>
+
+    <h3>The half adder</h3>
+
+    <p>
+      In binary, single-bit addition has four cases:
+    </p>
+
+    <div class="truth-table" style="margin-top: 0;">
+      <h4>Adding two single bits</h4>
+      <table>
+        <tr><th>A</th><th>B</th><th class="out">Sum</th><th class="out">Carry</th></tr>
+        <tr><td>0</td><td>0</td><td class="out">0</td><td class="out">0</td></tr>
+        <tr><td>0</td><td>1</td><td class="out">1</td><td class="out">0</td></tr>
+        <tr><td>1</td><td>0</td><td class="out">1</td><td class="out">0</td></tr>
+        <tr><td>1</td><td>1</td><td class="out">0</td><td class="out">1</td></tr>
+      </table>
+    </div>
+
+    <p>
+      Look closely at those output columns. The Sum column matches an operation we don't 
+      yet have a name for: it's true when exactly one input is true. This is called 
+      <span class="key-term">XOR</span> (exclusive OR). The Carry column is exactly an 
+      AND. So a single-bit adder — called a <em>half adder</em> — is just an XOR 
+      combined with an AND, sharing inputs. Two gates produce two output bits: the sum 
+      and the carry.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.4 — Half adder</div>
+      <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Inputs -->
+        <line x1="40" y1="60" x2="160" y2="60" stroke="rgba(255,255,255,0.4)"/>
+        <line x1="40" y1="120" x2="160" y2="120" stroke="rgba(255,255,255,0.4)"/>
+        <line x1="100" y1="60" x2="100" y2="140" stroke="rgba(255,255,255,0.4)"/>
+        <line x1="80" y1="60" x2="80" y2="140" stroke="rgba(255,255,255,0.4)"/>
+
+        <text x="32" y="64" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
+        <text x="32" y="124" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
+
+        <!-- XOR (sum) -->
+        <g transform="translate(160,40)">
+          <path d="M 0 5 Q 25 35 0 65 Q 50 65 70 35 Q 50 5 0 5 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <path d="M -10 5 Q 15 35 -10 65" fill="none" stroke="rgba(212,168,83,0.6)"/>
+          <text x="35" y="40" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">XOR</text>
+        </g>
+        <line x1="230" y1="75" x2="320" y2="75" stroke="rgba(212,168,83,0.7)"/>
+        <text x="328" y="79" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">SUM (S)</text>
+
+        <!-- AND (carry) -->
+        <g transform="translate(160,120)">
+          <path d="M 0 0 L 25 0 A 30 30 0 0 1 25 60 L 0 60 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.6)"/>
+          <text x="20" y="34" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">AND</text>
+        </g>
+        <line x1="217" y1="150" x2="320" y2="150" stroke="rgba(212,168,83,0.7)"/>
+        <text x="328" y="154" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">CARRY (C)</text>
+      </svg>
+      <p class="diagram-caption">A half adder takes two input bits A and B and produces two output bits: a sum bit (XOR of inputs) and a carry bit (AND of inputs). It's "half" because it doesn't accept an incoming carry from a previous addition.</p>
+    </div>
+
+    <h3>The full adder, and adding wider numbers</h3>
+
+    <p>
+      To add multi-bit numbers, you need to handle the carry that propagates between 
+      bit positions. This requires a <em>full adder</em>: a circuit that takes three 
+      input bits — A, B, and a carry-in from the previous position — and produces a 
+      sum bit and a carry-out. A full adder is built from two half adders and an OR gate.
+    </p>
+
+    <p>
+      To add two 8-bit numbers, you chain together eight full adders. The carry-out of 
+      each becomes the carry-in of the next. To add 64-bit numbers, you chain 64 of them. 
+      This design is called a <span class="key-term">ripple-carry adder</span>, and 
+      while modern CPUs use faster variants (carry-lookahead adders), the principle is 
+      the same: arithmetic emerges from chaining simple gates.
+    </p>
+
+    <p>
+      The Arithmetic Logic Unit — the ALU you saw inside the CPU diagram in Chapter 1 — 
+      is, fundamentally, a circuit of adders, plus some additional logic for subtraction, 
+      multiplication, and bitwise operations. <strong>Every numerical operation a 
+      computer performs is a Boolean expression.</strong>
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.5 — Adding 5 + 3 = 8 in binary using four full adders</div>
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Binary inputs as bit displays -->
+        <text x="40" y="40" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A = 5</text>
+        <g transform="translate(120,28)">
+          <rect x="0" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="32" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/>
+          <text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
+          <rect x="64" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="96" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/>
+          <text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
+        </g>
+
+        <text x="40" y="80" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B = 3</text>
+        <g transform="translate(120,68)">
+          <rect x="0" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="32" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="64" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/>
+          <text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
+          <rect x="96" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/>
+          <text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
+        </g>
+
+        <line x1="280" y1="60" x2="340" y2="60" stroke="rgba(212,168,83,0.5)"/>
+
+        <!-- Adders -->
+        <g transform="translate(360,30)">
+          <rect x="0" y="0" width="60" height="60" rx="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <text x="30" y="36" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">FA</text>
+          <text x="30" y="76" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">bit 3</text>
+        </g>
+        <g transform="translate(360,100)" opacity="0.4">
+          <text x="-50" y="0" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">…three more chained full adders, one per bit position…</text>
+        </g>
+
+        <!-- Output -->
+        <text x="540" y="40" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">SUM = 8</text>
+        <g transform="translate(540,55)">
+          <rect x="0" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.6)"/>
+          <text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
+          <rect x="32" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="64" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+          <rect x="96" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/>
+          <text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
+        </g>
+
+        <!-- Math summary -->
+        <g transform="translate(40,150)">
+          <text x="0" y="20" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">  0101  </text>
+          <text x="120" y="20" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">(5)</text>
+          <text x="0" y="40" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">+ 0011  </text>
+          <text x="120" y="40" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">(3)</text>
+          <line x1="0" y1="48" x2="100" y2="48" stroke="rgba(255,255,255,0.3)"/>
+          <text x="0" y="65" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.8)">  1000  </text>
+          <text x="120" y="65" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.7)">(8)</text>
+        </g>
+      </svg>
+      <p class="diagram-caption">Adding 5 + 3 in binary. The four-bit numbers 0101 and 0011 are summed bit by bit, with each full adder handling one bit position and passing carries forward. The result is 1000 — eight in decimal. The same principle scales to 64-bit numbers; you just need 64 full adders.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch2-twos">
+    <div class="section-number">05 — Negative numbers</div>
+    <h2>Two's complement, or how to subtract by adding</h2>
+
+    <p>
+      Computers don't natively understand negative numbers. There is no transistor that 
+      represents "minus." So how does your laptop store the value <em>−5</em>?
+    </p>
+
+    <p>
+      The naive approach — sometimes called <em>signed magnitude</em> — is to reserve 
+      one bit (usually the leftmost) as a sign indicator. <code>0</code> means positive, 
+      <code>1</code> means negative; the remaining bits represent the magnitude. So in 
+      8 bits, <code>00000101</code> is +5 and <code>10000101</code> is −5. Simple, 
+      intuitive, and almost never used.
+    </p>
+
+    <p>
+      Why not? Two reasons. First, you end up with two zeros — <code>00000000</code> 
+      and <code>10000000</code>, "positive zero" and "negative zero" — which makes 
+      equality testing awkward. Second, and far worse, you cannot use the same adder 
+      circuit to subtract. Subtraction would require a separate, more complex circuit. 
+      Hardware engineers hate this: every extra circuit is more transistors, more area, 
+      more heat, more cost.
+    </p>
+
+    <h3>The trick: complement</h3>
+
+    <p>
+      The solution, used by every modern computer, is called 
+      <span class="key-term">two's complement</span>. To represent a negative number 
+      in <em>n</em> bits:
+    </p>
+
+    <div class="memory-diagram" style="margin-bottom: 32px;">
+      <div class="memory-row" style="grid-template-columns: 60px 1fr;">
+        <span class="addr">Step 1</span>
+        <span class="val">Take the binary representation of the positive number</span>
+      </div>
+      <div class="memory-row" style="grid-template-columns: 60px 1fr;">
+        <span class="addr">Step 2</span>
+        <span class="val">Flip every bit (0→1, 1→0). This is "one's complement."</span>
+      </div>
+      <div class="memory-row" style="grid-template-columns: 60px 1fr;">
+        <span class="addr">Step 3</span>
+        <span class="val">Add 1 to the result. This is "two's complement."</span>
+      </div>
+    </div>
+
+    <p>
+      So in 8 bits, +5 is <code>00000101</code>. To get −5: flip the bits to get 
+      <code>11111010</code>, then add 1 to get <code>11111011</code>. That's −5 in two's 
+      complement.
+    </p>
+
+    <p>
+      The magic is that with this representation, <strong>subtraction is just addition</strong>. 
+      To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> using the 
+      exact same adder circuit it uses for any other addition. The bits work out — 
+      the carries and overflows cancel in exactly the right way to produce the correct 
+      answer.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.6 — Computing 7 − 5 = 2 with two's complement</div>
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+        <text x="40" y="40" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.7)">  7  =  00000111</text>
+        <text x="40" y="68" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.7)">+(-5) =  11111011  </text>
+        <text x="320" y="68" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.5)">← two's complement of 5</text>
+        <line x1="40" y1="80" x2="240" y2="80" stroke="rgba(255,255,255,0.3)"/>
+        <text x="40" y="100" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.85)">     1 00000010   </text>
+        <text x="320" y="100" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.6)">← 9 bits! the leading 1 is overflow</text>
+        <text x="40" y="130" font-family="DM Mono" font-size="13" fill="rgba(150,216,150,0.85)">       00000010   </text>
+        <text x="320" y="130" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.6)">← discard overflow → result is 2 ✓</text>
+
+        <text x="40" y="180" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.4)">The 9th bit overflows the register and is silently dropped.</text>
+        <text x="40" y="200" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.4)">What's left is exactly the correct result: 2. No special subtraction circuit needed.</text>
+      </svg>
+      <p class="diagram-caption">Subtraction by addition. The CPU adds two numbers using the same adder circuit it always uses; the magic of two's complement is that the leading 1 (the overflow) ends up being precisely the bit that needs to be discarded for the math to work. There is no separate subtractor in any modern CPU.</p>
+    </div>
+
+    <p>
+      In an <em>n</em>-bit two's complement representation, the range of values is 
+      <em>−2<sup>n−1</sup></em> to <em>2<sup>n−1</sup> − 1</em>. For 32-bit signed 
+      integers, that's roughly −2.1 billion to +2.1 billion. The asymmetry — one more 
+      negative number than positive — is because <code>0</code> takes up one of the 
+      "positive" slots.
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">⚠️</span>
+      <p class="insight-text">
+        <strong>Integer overflow vulnerabilities.</strong> Because the range is finite, adding two large positive numbers can produce a negative result — the carry overflows the most significant bit and changes the sign. In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a 64-bit floating-point velocity value was converted to a 16-bit signed integer that overflowed. Cost: $370 million. In security, integer overflow bugs are a classic source of buffer overflows: a length check using a signed integer can be tricked into accepting an enormous "negative" length that bypasses bounds checking. We will see exact exploits of this in Chapter 15.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch2-float">
+    <div class="section-number">06 — Floating point</div>
+    <h2>Why 0.1 + 0.2 ≠ 0.3</h2>
+
+    <p>
+      Open any programming language. Type <code>0.1 + 0.2</code>. The answer you get 
+      will not be <code>0.3</code>. It will be <code>0.30000000000000004</code>. This 
+      is not a bug in any specific language. It is a fundamental consequence of how 
+      computers represent fractional numbers. The same answer comes out of Python, 
+      JavaScript, C, Java, Rust, your calculator app, and the Mars rover.
+    </p>
+
+    <p>
+      The cause is binary representation of fractions. In decimal, <code>0.1</code> is 
+      a clean, finite digit string. In binary, it is not. <code>0.1</code> in binary is 
+      <code>0.0001100110011001100...</code> — the pattern <code>0011</code> repeating 
+      forever. Just like <code>1/3</code> in decimal is <code>0.333...</code> repeating 
+      forever, certain decimal fractions become repeating binary fractions. And computer 
+      memory is finite, so the binary representation has to be cut off. The remainder 
+      becomes a tiny error.
+    </p>
+
+    <h3>IEEE 754: the universal floating-point standard</h3>
+
+    <p>
+      In 1985, the IEEE published standard 754, defining how all modern processors 
+      represent fractional numbers. Before 1985, every CPU did it differently, and 
+      numerical code was a portability nightmare. The standard solved that.
+    </p>
+
+    <p>
+      A 64-bit "double precision" float divides its 64 bits into three fields, in a 
+      structure that mimics scientific notation:
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 2.7 — IEEE 754 double-precision layout</div>
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sign bit -->
+        <rect x="40" y="40" width="40" height="50" rx="4" fill="#e87878" fill-opacity="0.3" stroke="rgba(232,120,120,0.7)"/>
+        <text x="60" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(232,120,120,0.9)">S</text>
+        <text x="60" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">1 bit</text>
+        <text x="60" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">sign</text>
+        <text x="60" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">0=pos, 1=neg</text>
+
+        <!-- Exponent -->
+        <rect x="90" y="40" width="200" height="50" rx="4" fill="#d4a853" fill-opacity="0.3" stroke="rgba(212,168,83,0.7)"/>
+        <text x="190" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.9)">E (exponent)</text>
+        <text x="190" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">11 bits</text>
+        <text x="190" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">scale factor</text>
+        <text x="190" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">range ≈ 10⁻³⁰⁸ to 10³⁰⁸</text>
+
+        <!-- Mantissa -->
+        <rect x="300" y="40" width="380" height="50" rx="4" fill="#96d896" fill-opacity="0.3" stroke="rgba(150,216,150,0.7)"/>
+        <text x="490" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(150,216,150,0.9)">M (mantissa / fraction)</text>
+        <text x="490" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">52 bits</text>
+        <text x="490" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">precision (significand)</text>
+        <text x="490" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">about 15–17 decimal digits</text>
+
+        <!-- Formula -->
+        <text x="360" y="180" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="16" fill="rgba(255,255,255,0.7)">value = (−1)<tspan baseline-shift="super" font-size="11">S</tspan>  ·  1.M  ·  2<tspan baseline-shift="super" font-size="11">E−1023</tspan></text>
+      </svg>
+      <p class="diagram-caption">An IEEE 754 double divides 64 bits into a sign bit, an 11-bit exponent (with a bias of 1023, so it can represent both positive and negative exponents), and a 52-bit mantissa. The actual value is computed using the formula at the bottom — essentially binary scientific notation. The same structure with smaller fields gives the 32-bit "single precision" float (1, 8, 23 bits).</p>
+    </div>
+
+    <p>
+      The 52 bits of mantissa give about 15 to 17 decimal digits of precision. The 
+      11-bit exponent gives a dynamic range of about 10<sup>−308</sup> to 10<sup>308</sup>. 
+      You can represent extremely small and extremely large numbers — but only with 
+      finite precision in their digits. Most decimal fractions cannot be represented 
+      exactly. They are stored as the nearest representable binary fraction, with a 
+      tiny rounding error.
+    </p>
+
+    <p>
+      When you compute <code>0.1 + 0.2</code>, the CPU adds two slightly-imprecise 
+      binary representations of 0.1 and 0.2, producing a slightly-imprecise binary 
+      representation of 0.3 — but not the same one you'd get if you stored 0.3 directly. 
+      The errors don't cancel. Hence the famous result.
+    </p>
+
+    <div class="code-block">
+      <span class="code-lang">Python (or any language)</span>
+<pre><span class="op">>>></span> <span class="st">0.1</span> <span class="op">+</span> <span class="st">0.2</span>
+<span class="st">0.30000000000000004</span>
+
+<span class="op">>>></span> <span class="st">0.1</span> <span class="op">+</span> <span class="st">0.2</span> <span class="op">==</span> <span class="st">0.3</span>
+<span class="kw">False</span>
+
+<span class="cm"># In binary, 0.1 is actually approximately:</span>
+<span class="op">>>></span> <span class="kw">format</span>(<span class="st">0.1</span>, <span class="st">'.20f'</span>)
+<span class="st">'0.10000000000000000555'</span>
+
+<span class="cm"># The "extra" 555... is the rounding error from cutting off</span>
+<span class="cm"># the infinite repeating binary fraction.</span></pre>
+    </div>
+
+    <h3>Special values: ±∞ and NaN</h3>
+
+    <p>
+      IEEE 754 reserves certain bit patterns for special values. When the exponent is 
+      all ones and the mantissa is zero, the value is <strong>infinity</strong> (positive 
+      or negative depending on the sign bit). When the exponent is all ones and the 
+      mantissa is non-zero, the value is <strong>NaN</strong> — Not a Number, the 
+      result of operations like <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>.
+    </p>
+
+    <p>
+      NaN has a remarkable property: it is not equal to anything, including itself. 
+      <code>NaN == NaN</code> evaluates to <code>false</code> in every IEEE 754-compliant 
+      language. This is the standard test to detect a NaN. It is mathematically odd 
+      and has caught countless programmers off guard.
+    </p>
+
+    <div class="insight-strip">
+      <span class="insight-icon">💸</span>
+      <p class="insight-text">
+        <strong>Real-world consequences.</strong> Financial software cannot use floating point for currency, because rounding errors compound across millions of transactions. Banks use either integer cents or special decimal types instead. The 1991 Patriot missile failure during the Gulf War — which killed 28 American soldiers — was traced to a floating-point timing error that accumulated over 100 hours of operation, causing the missile to miscalculate the position of an incoming Scud. Floating point is precise enough for almost everything, but its errors are real, and they compound. Knowing when to use floats and when not to is a basic competency in software engineering.
+      </p>
+    </div>
+  </section>
+
+  <h2 style="margin-top: 80px;">What you now understand</h2>
+
+  <p>
+    You have followed the layered chain from electricity to mathematics. A wire that 
+    can be on or off gives you a bit. Combinations of bits give you binary numbers. 
+    Boolean algebra — invented in 1847 by Boole, applied to circuits in 1937 by Shannon — 
+    describes operations on those bits. Logic gates are physical implementations of 
+    Boolean operations: AND, OR, NOT, XOR. Combinations of gates implement arithmetic — 
+    half adders, full adders, ALUs. Two's complement makes subtraction free. IEEE 754 
+    extends the system to fractional numbers, with the unavoidable cost of finite 
+    precision.
+  </p>
+
+  <p>
+    Every higher-level abstraction in computing — from a Python list to a TLS handshake 
+    to a neural network — is built on top of these primitives. Chapter 3 takes us up 
+    one level: from the gate-and-wire view to the instruction view. We will look at how 
+    the CPU actually executes a program, how function calls work at the metal, what a 
+    "stack" really is, and how attackers exploit the gap between what programmers 
+    intend and what their compiled code actually does.
+  </p>
+
+</main>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════ CHAPTER 3 ═════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<section id="ch3">
+<div class="chapter-hero">
+  <div class="chapter-hero-text">
+    <div class="chapter-label">Chapter 03</div>
+    <h1>The Language<br>the CPU<br><em>Speaks</em></h1>
+    <p class="chapter-subtitle">
+      Below every Python script, every JavaScript framework, every neural network, 
+      there is a sequence of instructions written in the only language a processor 
+      truly understands. This chapter is about what your code becomes when it 
+      finally meets the machine.
+    </p>
+    <div class="chapter-meta">
+      <div class="meta-item">
+        <span class="meta-label">Topics</span>
+        <span class="meta-value">Assembly · Stack · ABI · Exploits</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Era covered</span>
+        <span class="meta-value">1949 → present</span>
+      </div>
+    </div>
+  </div>
+  <div class="chapter-hero-visual">
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;">
+      <defs>
+        <radialGradient id="glow3" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4a853" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="240" cy="240" r="180" fill="url(#glow3)"/>
+
+      <!-- Stack visualization -->
+      <g transform="translate(160,80)">
+        <text x="80" y="-15" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">THE STACK</text>
+
+        <!-- Frames -->
+        <rect x="0" y="0" width="160" height="50" rx="4" fill="#1a1200" stroke="rgba(212,168,83,0.5)"/>
+        <text x="80" y="20" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.8)">main()</text>
+        <text x="80" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">return addr · saved RBP</text>
+
+        <rect x="0" y="60" width="160" height="50" rx="4" fill="#1a1200" stroke="rgba(212,168,83,0.5)"/>
+        <text x="80" y="80" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.8)">add(a, b)</text>
+        <text x="80" y="96" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">a=5 · b=3</text>
+
+        <rect x="0" y="120" width="160" height="50" rx="4" fill="#1a1200" stroke="rgba(212,168,83,0.6)" stroke-width="2"/>
+        <text x="80" y="140" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,1)">helper()</text>
+        <text x="80" y="156" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.6)">RSP →</text>
+
+        <text x="180" y="20" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">high addr</text>
+        <text x="180" y="155" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">low addr</text>
+      </g>
+
+      <!-- Registers -->
+      <g transform="translate(60,300)">
+        <text x="180" y="-15" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.7)" letter-spacing="0.15em">REGISTERS</text>
+
+        <g transform="translate(0,0)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.7)">RAX</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x08</text>
+        </g>
+        <g transform="translate(95,0)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.7)">RBX</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x00</text>
+        </g>
+        <g transform="translate(190,0)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.7)">RCX</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x10</text>
+        </g>
+        <g transform="translate(285,0)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.8)">RIP</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x4012</text>
+        </g>
+
+        <g transform="translate(48,40)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.8)">RSP</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x7FFE</text>
+        </g>
+        <g transform="translate(143,40)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.8)">RBP</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x7FF8</text>
+        </g>
+        <g transform="translate(238,40)">
+          <rect x="0" y="0" width="80" height="30" rx="3" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+          <text x="40" y="13" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.7)">RDX</text>
+          <text x="40" y="25" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">0x05</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<nav class="chapter-nav">
+  <a href="#ch3-isa" class="nav-item">01 — ISA</a>
+  <a href="#ch3-registers" class="nav-item">02 — Registers</a>
+  <a href="#ch3-stack" class="nav-item">03 — Stack</a>
+  <a href="#ch3-call" class="nav-item">04 — Function calls</a>
+  <a href="#ch3-overflow" class="nav-item">05 — Buffer overflow</a>
+  <a href="#ch3-defenses" class="nav-item">06 — Defenses</a>
+</nav>
+
+<main class="content">
+
+  <section class="section" id="ch3-isa">
+    <div class="section-number">01 — ISA</div>
+    <h2>An instruction is a contract</h2>
+
+    <p class="lead">
+      A processor doesn't run C, or Python, or JavaScript. It runs a sequence of binary 
+      patterns drawn from a specific menu — the <em>instruction set architecture</em>, 
+      or ISA. The ISA is the contract between hardware and software: hardware promises 
+      to execute every pattern in the menu correctly; software promises to use only 
+      patterns from the menu. Everything else — every compiler, every operating system, 
+      every program — sits on top of this contract.
+    </p>
+
+    <p>
+      Three ISAs dominate the world. <strong>x86-64</strong>, descended from Intel's 
+      8086 chip from 1978, runs essentially every PC and most servers. It is famously 
+      complex, with thousands of instructions accumulated over four decades of 
+      backward compatibility. <strong>ARM</strong>, designed by Acorn in the 1980s 
+      and now licensed by basically every phone manufacturer on Earth, is the modern 
+      alternative — cleaner, more efficient, and the architecture of every iPhone, 
+      every Apple Silicon Mac, and every Android device. <strong>RISC-V</strong>, 
+      from Berkeley in 2010, is an open standard ISA gaining ground in academia, 
+      embedded systems, and increasingly in industry — anyone can build a RISC-V chip 
+      without paying licensing fees.
+    </p>
+
+    <p>
+      They are not interchangeable. An x86 binary will not run on an ARM CPU and vice 
+      versa. The shift from Intel x86 to Apple's ARM-based M1 in 2020 required Apple 
+      to ship Rosetta 2, a translation layer that converts x86 instructions to ARM 
+      on the fly. That such a translator is even possible is itself remarkable.
+    </p>
+
+    <h3>RISC vs CISC, and why the war ended in a draw</h3>
+
+    <p>
+      In the 1980s there was a vigorous debate. <strong>CISC</strong> — Complex 
+      Instruction Set Computers, like x86 — had hundreds of specialized instructions, 
+      including multi-step operations like "load from memory, add, and store back" 
+      in a single instruction. <strong>RISC</strong> — Reduced Instruction Set Computers, 
+      like ARM, MIPS, SPARC — had a small set of simple, uniform instructions. RISC 
+      machines could clock faster because each instruction was simple to decode.
+    </p>
+
+    <p>
+      The debate was real. By the 2000s, it was over — and both sides had quietly 
+      converged. Modern x86 CPUs internally translate complex CISC instructions into 
+      simpler RISC-like <em>micro-operations</em> (μops) and execute those. Modern ARM 
+      chips have grown more complex over time, with specialized instructions for 
+      cryptography, vector math, and machine learning. The clean ideological lines 
+      have blurred. What remains is the binary incompatibility — the fact that the 
+      patterns of bits mean different things on different chips.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch3-registers">
+    <div class="section-number">02 — Registers</div>
+    <h2>The CPU's tiny notebook</h2>
+
+    <p>
+      Recall from Chapter 1 that registers are the smallest, fastest level of the memory 
+      hierarchy — a few dozen tiny storage cells inside the CPU core itself. Every 
+      instruction the CPU executes operates primarily on registers. To add two numbers 
+      from memory, the CPU must first <em>load</em> them from memory into registers, 
+      add the registers, and <em>store</em> the result back to memory. Memory is too 
+      slow to operate on directly.
+    </p>
+
+    <p>
+      x86-64 has 16 general-purpose registers, each 64 bits wide. Their names carry 
+      historical baggage: in 1978 the original 8086 had 16-bit registers named AX, BX, 
+      CX, DX. When Intel went to 32 bits in 1985, they prepended an "E" for 
+      <em>extended</em> — EAX, EBX, etc. When AMD pushed to 64 bits in 2003, they 
+      replaced "E" with "R" — RAX, RBX, RCX, RDX. The names persist; the chip remembers.
+    </p>
+
+    <table class="summary-table">
+      <thead>
+        <tr><th>Register</th><th>Conventional purpose</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>RAX</td><td>Accumulator — holds return values from function calls</td><td>Historical: x86's earliest predecessor used "A" for arithmetic accumulator</td></tr>
+        <tr><td>RBX</td><td>Base — historically pointed to data segments</td><td>Now mostly general-purpose; preserved across function calls</td></tr>
+        <tr><td>RCX</td><td>Counter — used for loop counts and shift amounts</td><td>The "rep" loop instruction implicitly uses RCX</td></tr>
+        <tr><td>RDX</td><td>Data — second half of multiplication results</td><td>"mul" stores 128-bit results split between RAX and RDX</td></tr>
+        <tr><td>RSP</td><td>Stack Pointer — points to the top of the call stack</td><td>Modified by push/pop; we'll see this next section</td></tr>
+        <tr><td>RBP</td><td>Base Pointer — points to current function's stack frame</td><td>Lets you find local variables at known offsets</td></tr>
+        <tr><td>RDI, RSI, RDX, RCX, R8, R9</td><td>First six function arguments (Linux/Mac)</td><td>System V ABI — the calling convention</td></tr>
+        <tr><td>RIP</td><td>Instruction Pointer — address of next instruction</td><td>Cannot be modified directly; only by jump/call/return instructions</td></tr>
+      </tbody>
+    </table>
+
+    <p>
+      Notice that <code>RIP</code> — the Program Counter, the address of the next 
+      instruction to execute — is itself a register. Changing what RIP points to means 
+      changing what the CPU does next. This is the entire mechanism behind a function 
+      call, a loop, an if/else branch, an interrupt, and (as we'll see) a memory 
+      corruption exploit. <strong>If you control RIP, you control the program.</strong>
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch3-stack">
+    <div class="section-number">03 — The stack</div>
+    <h2>Memory that grows down</h2>
+
+    <p>
+      When a program starts, the operating system gives it a chunk of memory laid out 
+      in a specific pattern — its <span class="key-term">virtual address space</span>. 
+      Among other regions, the OS reserves an area called the <em>stack</em>: a 
+      last-in-first-out buffer that grows automatically as functions are called and 
+      shrinks as they return. By convention on x86-64, the stack lives at a high 
+      address and grows <em>downward</em> — toward lower addresses — as items are pushed.
+    </p>
+
+    <div class="diagram-card">
+      <div class="diagram-label">Fig 3.1 — A process's virtual address space</div>
+      <svg viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- Address axis -->
+        <text x="80" y="30" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">0xFFFF...</text>
+        <text x="80" y="340" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">0x0000</text>
+        <line x1="90" y1="40" x2="90" y2="340" stroke="rgba(255,255,255,0.2)"/>
+
+        <!-- Kernel space -->
+        <rect x="100" y="40" width="500" height="40" fill="#1a1200" stroke="rgba(212,168,83,0.5)"/>
+        <text x="350" y="60" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)">KERNEL SPACE</text>
+        <text x="350" y="74" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">protected from user processes</text>
+
+        <!-- Stack -->
+        <rect x="100" y="90" width="500" height="50" fill="#1a1a1a" stroke="rgba(232,120,120,0.5)"/>
+        <text x="350" y="112" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,0.8)">STACK</text>
+        <text x="350" y="128" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">function call frames · grows downward ↓</text>
+
+        <!-- Free space -->
+        <rect x="100" y="150" width="500" height="60" fill="rgba(0,0,0,0)" stroke="rgba(255,255,255,0.05)" stroke-dasharray="3,3"/>
+        <text x="350" y="184" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.25)">— unused memory between stack and heap —</text>
+
+        <!-- Heap -->
+        <rect x="100" y="220" width="500" height="50" fill="#1a1a1a" stroke="rgba(150,216,150,0.5)"/>
+        <text x="350" y="242" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.8)">HEAP</text>
+        <text x="350" y="258" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">malloc/new allocations · grows upward ↑</text>
+
+        <!-- Data -->
+        <rect x="100" y="280" width="500" height="25" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
+        <text x="350" y="297" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.7)">DATA — global / static variables</text>
+
+        <!-- Code -->
+        <rect x="100" y="310" width="500" height="25" fill="#1a1a1a" stroke="rgba(212,168,83,0.4)"/>
+        <text x="350" y="327" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">TEXT — your program's machine code (read-only, executable)</text>
+      </svg>
+      <p class="diagram-caption">A typical x86-64 Linux process address space. The kernel reserves the top half. The user-space portion contains, from high addresses down: the stack (function calls), unused space, the heap (dynamic allocations), the data section (globals), and the text section (read-only executable code). The stack and heap grow toward each other.</p>
+    </div>
+
+    <p>
+      The stack is managed automatically by the CPU using two instructions: 
+      <code>push</code> writes a value to the address RSP points to, then decrements 
+      RSP by 8 (because we're storing 8-byte values on a 64-bit machine). 
+      <code>pop</code> reads the value at RSP and increments RSP back. The hardware 
+      treats the stack as a hardware-supported data structure.
+    </p>
+
+    <p>
+      Each function call creates a <span class="key-term">stack frame</span>: a 
+      contiguous region of the stack containing that function's local variables, 
+      saved registers, and bookkeeping data. When the function returns, its frame is 
+      discarded by simply moving RSP back up. There is no garbage to clean up — local 
+      variables vanish as soon as the function exits.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="ch3-call">
+    <div class="section-number">04 — Function calls</div>
+    <h2>What "calling a function" actually means</h2>
+
+    <p>
+      A function call is one of the most ordinary operations in programming, and one 
+      of the most consequential at the hardware level. Let's trace exactly what 
+      happens when you write <code>int result = add(5, 3);</code> in C.
+    </p>
+
+    <p>
+      First, the compiler has to follow a <span class="key-term">calling convention</span> — 
+      a contract between caller and callee about who puts arguments where, who saves 
+      which registers, and how return values are delivered. On Linux/macOS x86-64, the 
+      convention is called <strong>System V AMD64 ABI</strong>. On Windows, it's the 
+      <strong>Microsoft x64 calling convention</strong>. They are slightly different. 
+      Both work, but a function compiled for one ABI cannot be called from a program 
+      compiled for the other without a wrapper.
+    </p>
+
+    <p>
+      Under System V, the first six integer arguments go in registers RDI, RSI, RDX, 
+      RCX, R8, R9, in that order. Additional arguments spill onto the stack. Return 
+      values come back in RAX. The caller is responsible for saving any volatile 
+      registers it cares about; the callee preserves RBX, RBP, R12-R15.
+    </p>
+
+    <div class="code-block">
+      <span class="code-lang">C source</span>
+<pre><span class="kw">int</span> add(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">return</span> a + b;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> result = add(<span class="st">5</span>, <span class="st">3</span>);
+    <span class="kw">return</span> result;
+}</pre>
+    </div>
+
+    <div class="code-block">
+      <span class="code-lang">x86-64 assembly (System V)</span>
+<pre><span class="cm">; ---- function: add(int a, int b) ----</span>
+add:
+    <span class="kw">push</span>   <span class="nm">rbp</span>             <span class="cm">; save caller's frame pointer onto stack</span>
+    <span class="kw">mov</span>    <span class="nm">rbp</span>, <span class="nm">rsp</span>        <span class="cm">; new frame pointer = current stack top</span>
+    <span class="kw">mov</span>    <span class="nm">eax</span>, <span class="nm">edi</span>        <span class="cm">; eax ← first arg (a, was in edi)</span>
+    <span class="kw">add</span>    <span class="nm">eax</span>, <span class="nm">esi</span>        <span class="cm">; eax += second arg (b, was in esi)</span>
+    <span class="kw">pop</span>    <span class="nm">rbp</span>             <span class="cm">; restore caller's frame pointer</span>
+    <span class="kw">ret</span>                    <span class="cm">; pop return address from stack, jump there</span>
+
+<span class="cm">; ---- function: main() ----</span>
+main:
+    <span class="kw">push</span>   <span class="nm">rbp</span>
+    <span class="kw">mov</span>    <span class="nm">rbp</span>, <span class="nm">rsp</span>
+    <span class="kw">mov</span>    <span class="nm">esi</span>, <span class="st">3</span>          <span class="cm">; second arg goes in esi</span>
+    <span class="kw">mov</span>    <span class="nm">edi</span>, <span class="st">5</span>          <span class="cm">; first arg goes in edi</span>
+    <span class="kw">call</span>   add                <span class="cm">; push return addr, jump to "add"</span>
+    <span class="cm">; --- after add returns, result is in eax ---</span>
+    <span class="kw">pop</span>    <span class="nm">rbp</span>
+    <span class="kw">ret</span></pre>
+    </div>
+
+    <p>
+      Two instructions are doing magic here: <code>call</code> and <code>ret</code>. 
+      <strong><code>call add</code></strong> does two things atomically: it pushes 
+      the address of the next instruction (the address of <code>pop rbp</code> in main) 
+      onto the stack, and then sets RIP to the address of <code>add</code>. The CP

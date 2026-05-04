@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Under the Code — A visual theory of how computers actually work</title>
+
+<!--
+  Social / search metadata.
+  Tagline: "From transistor to civilization. Eighteen chapters."
+  OG image: og-image.svg (source) — for max compatibility, generate og-image.png
+  by opening og-image.svg in a browser and right-click → Save As, or run:
+    rsvg-convert -w 1200 -h 630 og-image.svg -o og-image.png
+  The og:image meta below references og-image.png so when you place it next to
+  og-image.svg the swap is automatic. Until then, og-image.svg is the truth.
+  Replace under.atheric.eu with the actual canonical domain when published.
+-->
+<meta name="description" content="From transistor to civilization. Eighteen chapters.">
+
+<meta property="og:type" content="book">
+<meta property="og:site_name" content="Under the Code">
+<meta property="og:title" content="Under the Code">
+<meta property="og:description" content="From transistor to civilization. Eighteen chapters.">
+<meta property="og:url" content="https://under.atheric.eu/">
+<meta property="og:image" content="https://under.atheric.eu/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Under the Code — a transistor on the left, a globe on the right, a thin gold arc between them.">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Under the Code">
+<meta name="twitter:description" content="From transistor to civilization. Eighteen chapters.">
+<meta name="twitter:image" content="https://under.atheric.eu/og-image.png">
+
+<link rel="canonical" href="https://under.atheric.eu/">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="book.css">
+<style>
+  /* Index-only adjustments */
+  body { background: var(--black); color: white; }
+
+  .cover {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 100px 40px 60px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 35%, rgba(212,168,83,0.10) 0%, transparent 65%);
+  }
+  .cover-eyebrow {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.35em;
+    color: var(--accent); text-transform: uppercase; margin-bottom: 40px; position: relative;
+  }
+  .cover-title {
+    font-family: var(--serif); font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 400;
+    line-height: 0.95; letter-spacing: -0.025em; margin-bottom: 36px; position: relative;
+  }
+  .cover-title em { font-style: italic; color: var(--accent); }
+  .cover-tagline {
+    font-family: var(--serif); font-style: italic; font-size: 1.5rem;
+    color: rgba(255,255,255,0.7); max-width: 760px; line-height: 1.55; position: relative;
+    margin-bottom: 56px;
+  }
+  .cover-meta {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.4); position: relative;
+    display: flex; gap: 32px; flex-wrap: wrap; justify-content: center;
+  }
+  .cover-meta .dot { color: var(--accent); }
+
+  .cover-cta {
+    margin-top: 56px; position: relative;
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.25em;
+    color: var(--accent); text-decoration: none; padding: 16px 28px;
+    border: 1px solid rgba(212,168,83,0.5); border-radius: 4px;
+    transition: all 0.25s;
+  }
+  .cover-cta:hover { background: rgba(212,168,83,0.1); border-color: var(--accent); transform: translateY(-1px); }
+  .cover-cta .arrow { font-size: 16px; transition: transform 0.25s; }
+  .cover-cta:hover .arrow { transform: translateX(4px); }
+
+  .cover-svg { position: relative; margin: 48px 0 16px; }
+
+  .shelves {
+    background: var(--dark); padding: 100px 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .shelves-inner { max-width: 980px; margin: 0 auto; }
+  .shelves-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+    color: var(--accent); text-transform: uppercase; text-align: center; margin-bottom: 16px;
+  }
+  .shelves-heading {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400;
+    color: white; text-align: center; margin-bottom: 64px; line-height: 1.2;
+  }
+  .shelves-heading em { font-style: italic; color: var(--accent); }
+
+  .part-shelf {
+    display: grid; grid-template-columns: 140px 1fr auto; gap: 32px;
+    padding: 32px; margin-bottom: 16px; border-radius: 12px;
+    background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06);
+    text-decoration: none; color: inherit; transition: all 0.25s; align-items: center;
+  }
+  .part-shelf:hover {
+    border-color: rgba(212,168,83,0.4); transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+  }
+  .shelf-num {
+    font-family: var(--serif); font-style: italic; font-size: 2.4rem;
+    color: var(--accent); line-height: 1; letter-spacing: -0.02em;
+  }
+  .shelf-num small {
+    display: block; font-family: var(--mono); font-style: normal;
+    font-size: 10px; letter-spacing: 0.25em; color: rgba(212,168,83,0.5);
+    margin-top: 8px;
+  }
+  .shelf-body { }
+  .shelf-title {
+    font-family: var(--serif); font-size: 1.45rem; color: white; line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .shelf-chapters {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: rgba(212,168,83,0.7); margin-bottom: 12px;
+  }
+  .shelf-desc {
+    font-size: 0.92rem; color: rgba(255,255,255,0.5); line-height: 1.65;
+    max-width: 540px;
+  }
+  .shelf-arrow {
+    font-family: var(--mono); font-size: 14px; color: rgba(212,168,83,0.6);
+    transition: transform 0.25s;
+  }
+  .part-shelf:hover .shelf-arrow { transform: translateX(6px); color: var(--accent); }
+
+  .chapters {
+    background: var(--black); padding: 80px 40px 100px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .chapters-inner { max-width: 1080px; margin: 0 auto; }
+  .chapters-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.3em;
+    color: var(--accent); text-transform: uppercase; text-align: center; margin-bottom: 16px;
+  }
+  .chapters-heading {
+    font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400;
+    color: white; text-align: center; margin-bottom: 64px; line-height: 1.2;
+  }
+  .chapters-heading em { font-style: italic; color: var(--accent); }
+
+  .ch-group {
+    display: grid; grid-template-columns: 180px 1fr; gap: 32px; align-items: start;
+    margin-bottom: 56px; padding-bottom: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .ch-group:last-child { border-bottom: none; padding-bottom: 0; }
+  .ch-group-label { padding-top: 4px; }
+  .ch-group-num {
+    font-family: var(--serif); font-style: italic; font-size: 1.6rem;
+    color: var(--accent); line-height: 1; margin-bottom: 8px;
+  }
+  .ch-group-title {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.5); text-transform: uppercase;
+  }
+  .ch-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;
+  }
+  .ch-card {
+    display: block; padding: 20px 22px; border-radius: 8px;
+    background: var(--dark-card); border: 1px solid rgba(255,255,255,0.05);
+    text-decoration: none; color: inherit; transition: all 0.2s;
+  }
+  .ch-card:hover {
+    border-color: rgba(212,168,83,0.4); transform: translateY(-1px);
+    background: var(--dark);
+  }
+  .ch-card-num {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .ch-card-title {
+    font-family: var(--serif); font-size: 1.05rem; line-height: 1.35;
+    color: rgba(255,255,255,0.92);
+  }
+
+  .footer {
+    padding: 80px 40px 100px; text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    background: var(--black);
+  }
+  .footer-quote {
+    font-family: var(--serif); font-style: italic; font-size: 1.2rem;
+    color: rgba(255,255,255,0.55); max-width: 640px; margin: 0 auto 24px; line-height: 1.6;
+  }
+  .footer-attr {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-divider {
+    width: 32px; height: 1px; background: rgba(212,168,83,0.4);
+    margin: 48px auto;
+  }
+  .footer-pages {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.25);
+  }
+
+  @media (max-width: 720px) {
+    .part-shelf { grid-template-columns: 1fr; gap: 12px; }
+    .shelf-arrow { display: none; }
+    .ch-group { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Subtle liquid layer -->
+<div class="liquid-bg" aria-hidden="true"></div>
+
+<section class="cover">
+  <div class="cover-eyebrow">A Visual Computer Science Book</div>
+  <h1 class="cover-title">Under the<br><em>Code</em></h1>
+  <p class="cover-tagline">
+    From transistor to civilization. Eighteen chapters.
+  </p>
+
+  <div class="cover-svg">
+    <!-- Same composition as og-image.svg, sized for the cover. -->
+    <svg width="640" height="200" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.95;" role="img" aria-labelledby="cover-trace-title">
+      <title id="cover-trace-title">From transistor to civilization · the book's arc in one image</title>
+
+      <!-- Transistor (left) -->
+      <g transform="translate(220, 200)">
+        <line x1="-58" y1="0" x2="58" y2="0" stroke="rgba(212,168,83,0.95)" stroke-width="3"/>
+        <line x1="0" y1="-58" x2="0" y2="-12" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+        <line x1="-26" y1="-58" x2="26" y2="-58" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+        <line x1="-58" y1="0" x2="-58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
+        <line x1="58" y1="0" x2="58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
+        <circle cx="-58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
+        <circle cx="58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
+        <circle cx="0" cy="-32" r="5" fill="rgba(150,216,150,0.95)">
+          <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="0" y="92" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.5)" letter-spacing="0.3em">SAND</text>
+      </g>
+
+      <!-- Arc -->
+      <path d="M 300 200 Q 600 90 900 200"
+            stroke="rgba(212,168,83,0.6)"
+            stroke-width="1.5"
+            fill="none"
+            stroke-dasharray="6,5">
+        <animate attributeName="stroke-dashoffset" values="0;-22" dur="3s" repeatCount="indefinite"/>
+      </path>
+
+      <!-- 5 dots along the arc (recomputed for new control point at y=90) -->
+      <!-- t=0.1: x=360, y=178; t=0.3: x=480, y=147; t=0.5: x=600, y=145; t=0.7: x=720, y=147; t=0.9: x=840, y=178 -->
+      <circle cx="360" cy="178" r="5" fill="rgba(212,168,83,0.9)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="480" cy="147" r="5" fill="rgba(212,168,83,0.9)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-0.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="600" cy="145" r="6" fill="rgba(212,168,83,1)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="720" cy="147" r="5" fill="rgba(212,168,83,0.9)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="840" cy="178" r="5" fill="rgba(212,168,83,0.9)">
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-2s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Traveling packet -->
+      <circle r="6" fill="rgba(212,168,83,1)">
+        <animateMotion dur="5s" repeatCount="indefinite" path="M 300 200 Q 600 90 900 200"/>
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Globe (right) -->
+      <g transform="translate(980, 200)">
+        <circle cx="0" cy="0" r="68" fill="none" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+        <ellipse cx="0" cy="0" rx="68" ry="22" fill="none" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
+        <ellipse cx="0" cy="0" rx="68" ry="46" fill="none" stroke="rgba(212,168,83,0.30)" stroke-width="1"/>
+        <line x1="0" y1="-68" x2="0" y2="68" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
+        <circle cx="-90" cy="-58" r="4" fill="rgba(212,168,83,0.9)">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="92" cy="-62" r="4" fill="rgba(212,168,83,0.9)">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" begin="-0.5s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="92" cy="62" r="4" fill="rgba(212,168,83,0.9)">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="-1s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="-90" cy="64" r="4" fill="rgba(212,168,83,0.9)">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="-1.5s" repeatCount="indefinite"/>
+        </circle>
+        <line x1="-66" y1="-32" x2="-90" y2="-58" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        <line x1="66" y1="-30" x2="92" y2="-62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        <line x1="66" y1="32" x2="92" y2="62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        <line x1="-66" y1="36" x2="-90" y2="64" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        <text x="0" y="92" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.5)" letter-spacing="0.3em">CIVILIZATION</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="cover-meta">
+    <span>5 PARTS</span><span class="dot">·</span>
+    <span>18 CHAPTERS</span><span class="dot">·</span>
+    <span>242 FIGURES</span><span class="dot">·</span>
+    <span>SELF-CONTAINED</span>
+  </div>
+
+  <a href="part-1.html" class="cover-cta">
+    <span>BEGIN READING</span>
+    <span class="arrow">→</span>
+  </a>
+</section>
+
+<section class="shelves">
+  <div class="shelves-inner">
+    <div class="shelves-label">The Five Parts</div>
+    <h2 class="shelves-heading">From <em>silicon</em> to <em>the cloud</em>, one layer at a time.</h2>
+
+    <a href="part-1.html" class="part-shelf">
+      <div class="shelf-num">I<small>PART ONE</small></div>
+      <div class="shelf-body">
+        <div class="shelf-title">The Physical World</div>
+        <div class="shelf-chapters">CHAPTERS 1—3 · BRIDGE</div>
+        <div class="shelf-desc">
+          Transistors, Boolean algebra, IEEE 754, the CPU, assembly, buffer overflows
+          — and the hardware face of the kernel. The place where the book has to begin.
+        </div>
+      </div>
+      <div class="shelf-arrow">→</div>
+    </a>
+
+    <a href="part-2.html" class="part-shelf">
+      <div class="shelf-num">II<small>PART TWO</small></div>
+      <div class="shelf-body">
+        <div class="shelf-title">The Software Layer</div>
+        <div class="shelf-chapters">CHAPTERS 4—7</div>
+        <div class="shelf-desc">
+          The Linux kernel, the C/C++ memory model, Python's runtime, and how a
+          program becomes a process. Compilers, linkers, system calls, and the
+          shape of an operating system.
+        </div>
+      </div>
+      <div class="shelf-arrow">→</div>
+    </a>
+
+    <a href="part-3.html" class="part-shelf">
+      <div class="shelf-num">III<small>PART THREE</small></div>
+      <div class="shelf-body">
+        <div class="shelf-title">The Network</div>
+        <div class="shelf-chapters">CHAPTERS 8—12</div>
+        <div class="shelf-desc">
+          Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript and the browser.
+          From a packet on a wire to a JSON response in a tab.
+        </div>
+      </div>
+      <div class="shelf-arrow">→</div>
+    </a>
+
+    <a href="part-4.html" class="part-shelf">
+      <div class="shelf-num">IV<small>PART FOUR</small></div>
+      <div class="shelf-body">
+        <div class="shelf-title">Data and Security</div>
+        <div class="shelf-chapters">CHAPTERS 13—15</div>
+        <div class="shelf-desc">
+          SQL and the relational model. Cryptography from Caesar to post-quantum.
+          The unified security chapter that turns every attack we have foreshadowed
+          into one working theory.
+        </div>
+      </div>
+      <div class="shelf-arrow">→</div>
+    </a>
+
+    <a href="part-5.html" class="part-shelf">
+      <div class="shelf-num">V<small>PART FIVE</small></div>
+      <div class="shelf-body">
+        <div class="shelf-title">The Modern Machine</div>
+        <div class="shelf-chapters">CHAPTERS 16—18</div>
+        <div class="shelf-desc">
+          Parallelism, the cloud, distributed consensus. The epilogue that
+          synthesises the entire arc and hands the reader the four disciplines
+          to take into the rest of computing.
+        </div>
+      </div>
+      <div class="shelf-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<section class="chapters">
+  <div class="chapters-inner">
+    <div class="chapters-label">Full Contents</div>
+    <h2 class="chapters-heading">Eighteen <em>chapters</em>, one Bridge.</h2>
+
+    <div class="ch-group">
+      <div class="ch-group-label">
+        <div class="ch-group-num">I</div>
+        <div class="ch-group-title">The Physical World</div>
+      </div>
+      <div class="ch-list">
+        <a href="part-1.html#ch1" class="ch-card">
+          <div class="ch-card-num">CHAPTER 01</div>
+          <div class="ch-card-title">The Machine Beneath Everything</div>
+        </a>
+        <a href="part-1.html#ch2" class="ch-card">
+          <div class="ch-card-num">CHAPTER 02</div>
+          <div class="ch-card-title">The Algebra of Switches</div>
+        </a>
+        <a href="part-1.html#ch3" class="ch-card">
+          <div class="ch-card-num">CHAPTER 03</div>
+          <div class="ch-card-title">The Language the CPU Speaks</div>
+        </a>
+        <a href="part-1.html#chBridge" class="ch-card">
+          <div class="ch-card-num">BRIDGE</div>
+          <div class="ch-card-title">The Boundary</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="ch-group">
+      <div class="ch-group-label">
+        <div class="ch-group-num">II</div>
+        <div class="ch-group-title">The Software Layer</div>
+      </div>
+      <div class="ch-list">
+        <a href="part-2.html#ch4" class="ch-card">
+          <div class="ch-card-num">CHAPTER 04</div>
+          <div class="ch-card-title">The Code That Owns the Machine</div>
+        </a>
+        <a href="part-2.html#ch5" class="ch-card">
+          <div class="ch-card-num">CHAPTER 05</div>
+          <div class="ch-card-title">C — The Language That Built Everything</div>
+        </a>
+        <a href="part-2.html#ch6" class="ch-card">
+          <div class="ch-card-num">CHAPTER 06</div>
+          <div class="ch-card-title">C++ — When C Needed to Think in Objects</div>
+        </a>
+        <a href="part-2.html#ch7" class="ch-card">
+          <div class="ch-card-num">CHAPTER 07</div>
+          <div class="ch-card-title">Python — The Language That Chose Humans Over Machines</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="ch-group">
+      <div class="ch-group-label">
+        <div class="ch-group-num">III</div>
+        <div class="ch-group-title">The Network</div>
+      </div>
+      <div class="ch-list">
+        <a href="part-3.html#ch8" class="ch-card">
+          <div class="ch-card-num">CHAPTER 08</div>
+          <div class="ch-card-title">The Wire</div>
+        </a>
+        <a href="part-3.html#ch9" class="ch-card">
+          <div class="ch-card-num">CHAPTER 09</div>
+          <div class="ch-card-title">Packets — How the Internet Decided to Work</div>
+        </a>
+        <a href="part-3.html#ch10" class="ch-card">
+          <div class="ch-card-num">CHAPTER 10</div>
+          <div class="ch-card-title">TCP — The Problem of Reliability</div>
+        </a>
+        <a href="part-3.html#ch11" class="ch-card">
+          <div class="ch-card-num">CHAPTER 11</div>
+          <div class="ch-card-title">HTTP, DNS, TLS — The Web</div>
+        </a>
+        <a href="part-3.html#ch12" class="ch-card">
+          <div class="ch-card-num">CHAPTER 12</div>
+          <div class="ch-card-title">JavaScript — The Language That Shouldn't Have Worked</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="ch-group">
+      <div class="ch-group-label">
+        <div class="ch-group-num">IV</div>
+        <div class="ch-group-title">Data and Security</div>
+      </div>
+      <div class="ch-list">
+        <a href="part-4.html#ch13" class="ch-card">
+          <div class="ch-card-num">CHAPTER 13</div>
+          <div class="ch-card-title">SQL and the Mathematics of Data</div>
+        </a>
+        <a href="part-4.html#ch14" class="ch-card">
+          <div class="ch-card-num">CHAPTER 14</div>
+          <div class="ch-card-title">Cryptography — The Math That Keeps Secrets</div>
+        </a>
+        <a href="part-4.html#ch15" class="ch-card">
+          <div class="ch-card-num">CHAPTER 15</div>
+          <div class="ch-card-title">Attack and Defense — How Systems Break</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="ch-group">
+      <div class="ch-group-label">
+        <div class="ch-group-num">V</div>
+        <div class="ch-group-title">The Modern Machine</div>
+      </div>
+      <div class="ch-list">
+        <a href="part-5.html#ch16" class="ch-card">
+          <div class="ch-card-num">CHAPTER 16</div>
+          <div class="ch-card-title">Parallelism — When One Core Isn't Enough</div>
+        </a>
+        <a href="part-5.html#ch17" class="ch-card">
+          <div class="ch-card-num">CHAPTER 17</div>
+          <div class="ch-card-title">The Cloud — Distributed Systems at Scale</div>
+        </a>
+        <a href="part-5.html#ch18" class="ch-card">
+          <div class="ch-card-num">CHAPTER 18</div>
+          <div class="ch-card-title">Epilogue — What You Now See</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="footer">
+  <p class="footer-quote">
+    "Future users of large data banks must be protected from having to know how the data is organized in the machine."
+  </p>
+  <p class="footer-attr">— E. F. Codd, 1970</p>
+
+  <div class="footer-divider"></div>
+
+  <p class="footer-pages">A self-contained book · open any part to begin</p>
+</section>
+
+<script src="book.js"></script>
+</body>
+</html>

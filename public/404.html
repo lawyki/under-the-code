@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Under the Code</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --accent: #d4a853;
+    --accent-dim: #b08c3f;
+    --text: rgba(245,240,235,0.95);
+    --muted: rgba(212,168,83,0.55);
+    --serif: 'Playfair Display', Georgia, serif;
+    --mono: 'DM Mono', 'IBM Plex Mono', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(60% 50% at 50% 38%, rgba(212,168,83,0.10), transparent 70%);
+    pointer-events: none;
+  }
+  .wrap {
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+  }
+  .code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+  h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  p {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: rgba(245,240,235,0.7);
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+  .links {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+  .links a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212,168,83,0.3);
+    padding-bottom: 1px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .links a:hover { color: var(--accent-dim); border-bottom-color: var(--accent); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="code">Error · 404</div>
+    <h1>This page is not <em>here</em>.</h1>
+    <p>The layer you asked for is not on this server. The book has five parts, an index, and a glossary — every other path is undefined.</p>
+    <div class="links">
+      <a href="/">cover</a>
+      <a href="/part-1.html">part i</a>
+      <a href="/part-2.html">part ii</a>
+      <a href="/part-3.html">part iii</a>
+      <a href="/part-4.html">part iv</a>
+      <a href="/part-5.html">part v</a>
+      <a href="/glossary.html">glossary</a>
+    </div>
+  </div>
+</body>
+</html>
