@@ -4,7 +4,7 @@ A unified theory of how computers actually work — five parts, eighteen chapter
 
 Published at **[under.atheric.eu](https://under.atheric.eu)**.
 
-By [Yki Lähteenmäki](https://github.com/lawyki). Published by [Atheric](https://atheric.eu) (YTD Holdings Oy).
+By [Yki Lähteenmäki](https://github.com/lawyki). Published by [Atheric](https://atheric.eu) (YTD Holdings Oy, Helsinki).
 
 ## Repo layout
 
