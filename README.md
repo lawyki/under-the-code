@@ -63,3 +63,7 @@ Or open `og-image.svg` in a browser at 1200×630 and screenshot.
 ## License
 
 All content © 2026 Yki Lähteenmäki / YTD Holdings Oy. All rights reserved.
+
+## Status
+
+Active — last updated 2026-05-19.
