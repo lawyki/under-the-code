@@ -9,22 +9,19 @@ By [Yki Lähteenmäki](https://github.com/lawyki). Published by [Atheric](https:
 ## Repo layout
 
 ```
-public/        ← deploy this directory · the only thing the domain serves
+public/          ← deploy this directory · the only thing the domain serves
   index.html
   part-1.html ... part-5.html
   book.css, book.js
   glossary.html, glossary.json
   og-image.svg, og-image.png
   robots.txt, sitemap.xml, 404.html
-
-scripts/       ← build tooling (not served)
+scripts/         ← build tooling (not served)
   build-glossary.js
-
-docs/          ← internal design docs (not served)
+docs/            ← internal design docs (not served)
   plan.txt
   figures.txt
-
-legacy/        ← prior drafts, kept for reference
+legacy/          ← prior drafts, kept for reference
 ```
 
 ## Develop
@@ -62,7 +59,7 @@ Or open `og-image.svg` in a browser at 1200×630 and screenshot.
 
 ## License
 
-All content © 2026 Yki Lähteenmäki / YTD Holdings Oy. All rights reserved.
+Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You are free to share and adapt the material non-commercially, with attribution. Commercial use requires permission. © 2026 Yki Lähteenmäki / YTD Holdings Oy.
 
 ## Status
 
