@@ -1,0 +1,15 @@
+# Cloudflare Pages custom response headers.
+# https://developers.cloudflare.com/pages/configuration/headers/
+
+# glossary.json is ~248 KB and is fetched by book.js on every page. Without an
+# explicit policy the browser revalidates it on each navigation. Serve it from
+# the HTTP cache for a day with no network at all, then keep serving the cached
+# copy for a further week while a background request refreshes it. book.js also
+# caches the parsed result in localStorage keyed by the file's "generated"
+# stamp, so when the file does change it is re-parsed on the next load.
+/glossary.json
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Self-hosted webfonts are byte-stable once shipped; cache them hard.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable

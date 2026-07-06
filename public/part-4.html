@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Under the Code — Part IV: Data and Security</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 
 <meta name="description" content="SQL, cryptography, the unified theory of attack and defense. Where information lives and how it stays trustworthy.">
 <meta property="og:type" content="book.section">
 <meta property="og:site_name" content="Under the Code">
 <meta property="og:title" content="Under the Code — Part IV: Data and Security">
 <meta property="og:description" content="SQL, cryptography, the unified theory of attack and defense. Where information lives and how it stays trustworthy.">
-<meta property="og:url" content="https://under.atheric.eu/part-4.html">
+<meta property="og:url" content="https://under.atheric.eu/part-4">
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,7 +20,7 @@
 <meta name="twitter:title" content="Under the Code — Part IV: Data and Security">
 <meta name="twitter:description" content="SQL, cryptography, the unified theory of attack and defense. Where information lives and how it stays trustworthy.">
 <meta name="twitter:image" content="https://under.atheric.eu/og-image.png">
-<link rel="canonical" href="https://under.atheric.eu/part-4.html">
+<link rel="canonical" href="https://under.atheric.eu/part-4">
 
 <!-- Self-hosted fonts — local mirror of the Google css2 payload (see fonts.css).
      No request leaves the origin. Preloads cover the latin faces every page uses. -->
@@ -38,7 +39,7 @@
 
 
 <nav class="book-nav">
-  <a class="book-title" href="index.html"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
+  <a class="book-title" href="/"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
   <div class="book-progress">PART IV OF V · CHAPTERS 13—15</div>
 </nav>
 
@@ -96,7 +97,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 13 hero · SQL and the Mathematics of Data</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part4-1"><title id="svgt-part4-1">Chapter 13 hero · SQL and the Mathematics of Data</title>
       <defs><radialGradient id="glow13" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow13)"/>
 
@@ -250,7 +251,7 @@
 
     <div class="diagram-card" id="fig-13-1">
       <div class="diagram-label">Fig 13.1 — Codd 1970 to PostgreSQL 16 · two lineages, fifty years</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.1 — Codd 1970 to PostgreSQL 16 · two lineages, fifty years</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-2"><title id="svgt-part4-2">Fig 13.1 — Codd 1970 to PostgreSQL 16 · two lineages, fifty years</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">one twelve-page paper, two prototypes, every modern relational database</text>
 
         <!-- Codd 1970 at top -->
@@ -347,7 +348,7 @@
 
     <div class="diagram-card" id="fig-13-2">
       <div class="diagram-label">Fig 13.2 — Three operators · selection, projection, join</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.2 — Three operators · selection, projection, join</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-3"><title id="svgt-part4-3">Fig 13.2 — Three operators · selection, projection, join</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">σ filters rows · π picks columns · ⨝ combines tables</text>
 
         <!-- σ Selection -->
@@ -519,7 +520,7 @@
 
     <div class="math-callout">
       <div class="math-label">Why this is the right math</div>
-      <p>Relational algebra has the same role in databases that Boolean algebra has in circuits (<a href="part-1.html#ch2">Chapter 2</a>): it is the smallest mathematical structure that captures the essential operations and is closed under composition. Closure means the algebra is <em>compositional</em>: the result of any expression is the same kind of object as its inputs, so expressions can be nested without bound. This is the property that lets a query optimiser take a complex SQL statement, parse it into a tree of relational operators, and then rewrite that tree algebraically into an equivalent but faster tree.</p>
+      <p>Relational algebra has the same role in databases that Boolean algebra has in circuits (<a href="part-1#ch2">Chapter 2</a>): it is the smallest mathematical structure that captures the essential operations and is closed under composition. Closure means the algebra is <em>compositional</em>: the result of any expression is the same kind of object as its inputs, so expressions can be nested without bound. This is the property that lets a query optimiser take a complex SQL statement, parse it into a tree of relational operators, and then rewrite that tree algebraically into an equivalent but faster tree.</p>
       <p>Two algebraic identities the optimiser leans on heavily: <strong>selection pushdown</strong> — σ<sub>p</sub>(R ⨝ S) = σ<sub>p</sub>(R) ⨝ S whenever the predicate p only mentions attributes from R — lets the engine filter R before joining, dramatically reducing the work. <strong>Projection pushdown</strong> — π<sub>cols</sub>(R ⨝ S) = π<sub>cols</sub>(π<sub>cols ∩ R</sub>(R) ⨝ π<sub>cols ∩ S</sub>(S)) — lets the engine throw away unneeded columns early. The transformations are correct because the algebra is mathematically rigorous; the speedups are real because they reduce the size of intermediate relations.</p>
     </div>
   </section>
@@ -557,7 +558,7 @@
 
     <div class="diagram-card" id="fig-13-3">
       <div class="diagram-label">Fig 13.3 — Same query, three forms · SQL → relational algebra → execution plan</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.3 — Same query, three forms · SQL → relational algebra → execution plan</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-4"><title id="svgt-part4-4">Fig 13.3 — Same query, three forms · SQL → relational algebra → execution plan</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">English in, math in the middle, an executable plan out the bottom</text>
 
         <!-- SQL -->
@@ -614,7 +615,7 @@
 
     <div class="diagram-card" id="fig-13-4">
       <div class="diagram-label">Fig 13.4 — Nested-loop · hash · merge — three ways to do the same join</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.4 — Nested-loop · hash · merge — three ways to do the same join</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-5"><title id="svgt-part4-5">Fig 13.4 — Nested-loop · hash · merge — three ways to do the same join</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">same JOIN keyword · three radically different executions</text>
 
         <!-- Nested loop -->
@@ -734,7 +735,7 @@
 
     <div class="diagram-card" id="fig-13-5">
       <div class="diagram-label">Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6"><title id="svgt-part4-6">Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">transfer €100 from Alice to Bob — power dies between the two updates</text>
 
         <!-- Naive -->
@@ -821,7 +822,7 @@
 
     <div class="diagram-card" id="fig-13-6">
       <div class="diagram-label">Fig 13.6 — Write-ahead log · log first, mutate later, replay on crash</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.6 — Write-ahead log · log first, mutate later, replay on crash</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-7"><title id="svgt-part4-7">Fig 13.6 — Write-ahead log · log first, mutate later, replay on crash</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a sequential log on disk is faster to fsync than scattered random writes</text>
 
         <!-- Normal flow -->
@@ -890,7 +891,7 @@
           <text x="14" y="120" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">canonical algorithm: ARIES (IBM 1992) — used by DB2, MS SQL, MySQL InnoDB, PostgreSQL, …</text>
         </g>
       </svg>
-      <p class="diagram-caption">The trick is that <em>sequential</em> writes to the log fsync orders of magnitude faster than scattered random writes to the data pages. The engine takes the cost of one cheap, sequential, durable log write per transaction and amortises the expensive data-page writes asynchronously, batching them and writing them back when convenient. On crash, the log tells recovery exactly what to replay forward (committed but not yet flushed to data pages) and what to undo (uncommitted changes that leaked to data pages). The same mechanism appears in filesystems (<a href="part-2.html#ch4">Chapter 4</a> §04, journaled ext4), in distributed databases (Raft and Paxos logs in <a href="part-5.html#ch17">Chapter 17</a>), and in event-sourcing application architectures. <em>Write the intent before doing the deed</em> turns out to be one of the deepest patterns in systems engineering.</p>
+      <p class="diagram-caption">The trick is that <em>sequential</em> writes to the log fsync orders of magnitude faster than scattered random writes to the data pages. The engine takes the cost of one cheap, sequential, durable log write per transaction and amortises the expensive data-page writes asynchronously, batching them and writing them back when convenient. On crash, the log tells recovery exactly what to replay forward (committed but not yet flushed to data pages) and what to undo (uncommitted changes that leaked to data pages). The same mechanism appears in filesystems (<a href="part-2#ch4">Chapter 4</a> §04, journaled ext4), in distributed databases (Raft and Paxos logs in <a href="part-5#ch17">Chapter 17</a>), and in event-sourcing application architectures. <em>Write the intent before doing the deed</em> turns out to be one of the deepest patterns in systems engineering.</p>
     </div>
 
     <h3>Isolation levels · the trade between safety and speed</h3>
@@ -909,7 +910,7 @@
 
     <div class="diagram-card" id="fig-13-7">
       <div class="diagram-label">Fig 13.7 — The four isolation levels · what each one permits</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.7 — The four isolation levels · what each one permits</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-8"><title id="svgt-part4-8">Fig 13.7 — The four isolation levels · what each one permits</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">stricter goes down · faster goes up · pick your trade</text>
 
         <!-- Header -->
@@ -989,7 +990,7 @@
       at Boeing in 1971, is the index of choice for relational databases —
       and for filesystems, key-value stores, and most other systems that
       keep ordered data on disk. It is a balanced tree designed for the
-      memory hierarchy of <a href="part-1.html#ch1">Chapter 1</a>: each node holds dozens or hundreds
+      memory hierarchy of <a href="part-1#ch1">Chapter 1</a>: each node holds dozens or hundreds
       of keys (one disk page worth, typically 4 to 16 KB), the tree is
       shallow (depth O(log<sub>B</sub> N) for branching factor B), and
       every lookup or insertion traverses a small constant number of
@@ -1004,7 +1005,7 @@
 
     <div class="diagram-card" id="fig-13-8">
       <div class="diagram-label">Fig 13.8 — A B+ tree · range scan walks the leaves left to right</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.8 — A B+ tree · range scan walks the leaves left to right</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-9"><title id="svgt-part4-9">Fig 13.8 — A B+ tree · range scan walks the leaves left to right</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">SELECT * FROM users WHERE age BETWEEN 25 AND 40 — index does the rest</text>
 
         <!-- Root -->
@@ -1100,7 +1101,7 @@
 
     <div class="diagram-card" id="fig-13-9">
       <div class="diagram-label">Fig 13.9 — B-tree vs hash index · which one wins which workload</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.9 — B-tree vs hash index · which one wins which workload</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-10"><title id="svgt-part4-10">Fig 13.9 — B-tree vs hash index · which one wins which workload</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">two index structures · choose by the shape of the query</text>
 
         <!-- B-tree column -->
@@ -1169,7 +1170,7 @@
 
     <div class="diagram-card" id="fig-13-10">
       <div class="diagram-label">Fig 13.10 — SQL injection · a single quote turns a SELECT into a tautology</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.10 — SQL injection · a single quote turns a SELECT into a tautology</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-11"><title id="svgt-part4-11">Fig 13.10 — SQL injection · a single quote turns a SELECT into a tautology</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">the developer's quotes meet the attacker's quote · the predicate becomes always-true</text>
 
         <!-- Vulnerable code -->
@@ -1227,7 +1228,7 @@
 
     <div class="diagram-card" id="fig-13-11">
       <div class="diagram-label">Fig 13.11 — Parameterised queries · code and data on separate wires</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 13.11 — Parameterised queries · code and data on separate wires</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-12"><title id="svgt-part4-12">Fig 13.11 — Parameterised queries · code and data on separate wires</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">data never touches the parser · attacker payloads stay data forever</text>
 
         <!-- Code with placeholders -->
@@ -1288,7 +1289,7 @@
       read the rows. To keep secrets — passwords, payment card numbers,
       private keys, medical records, any of the data the database is
       legally and ethically bound to protect — we need cryptography. We
-      have already met it briefly, in <a href="part-3.html#ch11">Chapter 11</a> §04, as the substrate
+      have already met it briefly, in <a href="part-3#ch11">Chapter 11</a> §04, as the substrate
       of TLS. <a href="#ch14">Chapter 14</a> takes it apart at full mathematical depth: hash
       functions worked through, AES round by round, public-key
       cryptography with actual numbers, elliptic curves drawn, and the
@@ -1307,7 +1308,7 @@
     <div class="chapter-label">Chapter 14</div>
     <h1>Cryptography<br>The Math That<br><em>Keeps Secrets</em></h1>
     <p class="chapter-subtitle">
-      <a href="part-3.html#ch11">Chapter 11</a> introduced cryptography as a black box that the TLS
+      <a href="part-3#ch11">Chapter 11</a> introduced cryptography as a black box that the TLS
       handshake feeds into. This chapter opens the box. We trace the
       arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper —
       arguably the most important paper in the history of cryptography —
@@ -1324,7 +1325,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 14 hero · Cryptography The Math That Keeps Secrets</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part4-13"><title id="svgt-part4-13">Chapter 14 hero · Cryptography The Math That Keeps Secrets</title>
       <defs><radialGradient id="glow14" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow14)"/>
 
@@ -1412,7 +1413,7 @@
       three hundred years — and then Charles Babbage broke it in 1854
       and Friedrich Kasiski published the method in 1863. Enigma, with
       rotors and a plugboard and a daily key, lasted six years before
-      Bletchley broke it (<a href="part-1.html#ch1">Chapter 1</a> §01).
+      Bletchley broke it (<a href="part-1#ch1">Chapter 1</a> §01).
     </p>
 
     <p>
@@ -1437,7 +1438,7 @@
 
     <div class="diagram-card" id="fig-14-1">
       <div class="diagram-label">Fig 14.1 — Two thousand years of cryptography in one strip</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.1 — Two thousand years of cryptography in one strip</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-14"><title id="svgt-part4-14">Fig 14.1 — Two thousand years of cryptography in one strip</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every era a clever scheme, every era an adversary who noticed</text>
 
         <!-- Timeline -->
@@ -1634,7 +1635,7 @@
 
     <div class="diagram-card" id="fig-14-2">
       <div class="diagram-label">Fig 14.2 — The four one-way functions cryptography is built on</div>
-      <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.2 — The four one-way functions cryptography is built on</title>
+      <svg viewBox="0 0 720 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-15"><title id="svgt-part4-15">Fig 14.2 — The four one-way functions cryptography is built on</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every primitive in this chapter is one of these four asymmetries · easy direction · hard direction</text>
 
         <!-- Top: the universal one-way-function picture -->
@@ -1767,7 +1768,7 @@
 
     <div class="diagram-card" id="fig-14-3">
       <div class="diagram-label">Fig 14.3 — Three hash properties · three different attacks</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.3 — Three hash properties · three different attacks</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-16"><title id="svgt-part4-16">Fig 14.3 — Three hash properties · three different attacks</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">hashing breaks three different ways · in increasing order of difficulty for the defender</text>
 
         <!-- Preimage -->
@@ -1871,13 +1872,13 @@
       <strong>Merkle trees</strong>: a tree where each non-leaf node is
       the hash of its children's hashes; allows compact proofs that a
       specific leaf belongs to the tree. <strong>Certificate Transparency</strong>
-      (<a href="part-3.html#ch11">Chapter 11</a> §05) uses Merkle trees so that a CA's issuance log can
+      (<a href="part-3#ch11">Chapter 11</a> §05) uses Merkle trees so that a CA's issuance log can
       be publicly audited without downloading every certificate.
     </p>
 
     <div class="diagram-card" id="fig-14-4">
       <div class="diagram-label">Fig 14.4 — Password storage · plaintext to hash to salted hash to slow KDF</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.4 — Password storage · plaintext to hash to salted hash to slow KDF</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-17"><title id="svgt-part4-17">Fig 14.4 — Password storage · plaintext to hash to salted hash to slow KDF</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">four eras · each one a defence against a specific 1990s–2010s attack</text>
 
         <!-- Era 1: plaintext -->
@@ -1925,7 +1926,7 @@
     <p class="lead">
       <span class="key-term">AES</span> — the Advanced Encryption Standard — is the
       symmetric cipher that does the actual bulk work in nearly every
-      modern encrypted system. Your TLS connection (<a href="part-3.html#ch11">Chapter 11</a>) uses RSA
+      modern encrypted system. Your TLS connection (<a href="part-3#ch11">Chapter 11</a>) uses RSA
       or ECDH only to agree on the key; the megabytes of HTTPS traffic
       that follow are encrypted by AES. Your full-disk encryption is AES.
       Your VPN tunnel is AES. Your iMessage and Signal messages are
@@ -1956,7 +1957,7 @@
 
     <div class="diagram-card" id="fig-14-5">
       <div class="diagram-label">Fig 14.5 — One AES round · four steps on a 4×4 byte grid</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.5 — One AES round · four steps on a 4×4 byte grid</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-18"><title id="svgt-part4-18">Fig 14.5 — One AES round · four steps on a 4×4 byte grid</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">SubBytes · ShiftRows · MixColumns · AddRoundKey  —  repeat 10–14 times</text>
 
         <!-- SubBytes -->
@@ -2087,7 +2088,7 @@
 
     <div class="diagram-card" id="fig-14-6">
       <div class="diagram-label">Fig 14.6 — ECB's famous failure · structure leaks through</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.6 — ECB's famous failure · structure leaks through</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-19"><title id="svgt-part4-19">Fig 14.6 — ECB's famous failure · structure leaks through</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">same key · same plaintext block · same ciphertext block · structure preserved</text>
 
         <!-- Plaintext "Tux" -->
@@ -2194,7 +2195,7 @@
       computes <em>(g<sup>a</sup>)<sup>b</sup></em>. But raising to a power
       and then to another power just multiplies the exponents, and
       multiplication does not care about order — so both expressions are
-      <em>g<sup>ab</sup></em>, the very same number. They arrive at it from
+      <em>g</em><sup>ab</sup>, the very same number. They arrive at it from
       opposite directions and meet in the middle. The eavesdropper, holding
       only <em>g<sup>a</sup></em> and <em>g<sup>b</sup></em>, would have to
       pull one secret exponent back out to finish the multiplication — and
@@ -2206,7 +2207,7 @@
 
     <div class="diagram-card" id="fig-14-7">
       <div class="diagram-label">Fig 14.7 — Diffie–Hellman with actual numbers · g=5, p=23</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.7 — Diffie–Hellman with actual numbers · g=5, p=23</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-20"><title id="svgt-part4-20">Fig 14.7 — Diffie–Hellman with actual numbers · g=5, p=23</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">small numbers for legibility · real DH uses 2048-bit primes</text>
 
         <!-- Public params -->
@@ -2340,7 +2341,7 @@
 
     <div class="diagram-card" id="fig-14-8">
       <div class="diagram-label">Fig 14.8 — RSA worked through · p=17, q=23</div>
-      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.8 — RSA worked through · p=17, q=23</title>
+      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-21"><title id="svgt-part4-21">Fig 14.8 — RSA worked through · p=17, q=23</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">key generation, encryption, decryption · the whole protocol on one card</text>
 
         <!-- Key generation -->
@@ -2391,7 +2392,7 @@
     <div class="insight-strip">
       <span class="insight-icon">⚙️</span>
       <p class="insight-text">
-        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. A 2048-bit RSA encryption takes microseconds; AES-128 encrypts megabytes in the same time. This is why TLS does not use RSA for the actual data: the handshake uses RSA (or ECDHE) once to agree on a 256-bit AES key, and AES handles the rest. <span class="key-term">Diffie-Hellman</span> is in the same performance class as RSA — a few milliseconds per handshake — but with the bonus property of <em>forward secrecy</em> (<a href="part-3.html#ch11">Chapter 11</a> §05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. Modern TLS 1.3 mandates ephemeral key exchange (ECDHE specifically) and uses the long-term RSA or ECDSA key only for signing the handshake, not for the key exchange itself.
+        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. A 2048-bit RSA encryption takes microseconds; AES-128 encrypts megabytes in the same time. This is why TLS does not use RSA for the actual data: the handshake uses RSA (or ECDHE) once to agree on a 256-bit AES key, and AES handles the rest. <span class="key-term">Diffie-Hellman</span> is in the same performance class as RSA — a few milliseconds per handshake — but with the bonus property of <em>forward secrecy</em> (<a href="part-3#ch11">Chapter 11</a> §05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. Modern TLS 1.3 mandates ephemeral key exchange (ECDHE specifically) and uses the long-term RSA or ECDSA key only for signing the handshake, not for the key exchange itself.
       </p>
     </div>
   </section>
@@ -2434,7 +2435,7 @@
 
     <div class="diagram-card" id="fig-14-9">
       <div class="diagram-label">Fig 14.9 — Point addition on an elliptic curve · geometric picture</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.9 — Point addition on an elliptic curve · geometric picture</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-22"><title id="svgt-part4-22">Fig 14.9 — Point addition on an elliptic curve · geometric picture</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">three points on a line · reflect the third · welcome to elliptic-curve "addition"</text>
 
         <!-- Axes -->
@@ -2522,7 +2523,7 @@
 
     <div class="diagram-card" id="fig-14-10">
       <div class="diagram-label">Fig 14.10 — Equivalent security · ECC keys are dramatically smaller</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.10 — Equivalent security · ECC keys are dramatically smaller</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-23"><title id="svgt-part4-23">Fig 14.10 — Equivalent security · ECC keys are dramatically smaller</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">same security level · much smaller key · the reason TLS 1.3 standardised on ECC</text>
 
         <!-- Header -->
@@ -2585,7 +2586,7 @@
       The previous sections introduced primitives in isolation: hashing,
       symmetric encryption, public-key key exchange, public-key
       signatures, elliptic curves. A real protocol composes them. TLS
-      1.3 — already sketched in <a href="part-3.html#ch11">Chapter 11</a> §05 — uses every primitive
+      1.3 — already sketched in <a href="part-3#ch11">Chapter 11</a> §05 — uses every primitive
       in this chapter at once, in a precise sequence, with the
       cryptographic justification for each step. Now we have enough math
       to read the handshake at full depth: which operations happen,
@@ -2595,7 +2596,7 @@
 
     <div class="diagram-card" id="fig-14-11">
       <div class="diagram-label">Fig 14.11 — TLS 1.3 handshake at cryptographic depth</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.11 — TLS 1.3 handshake at cryptographic depth</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-24"><title id="svgt-part4-24">Fig 14.11 — TLS 1.3 handshake at cryptographic depth</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every byte cryptographically accounted for · handshake takes one round trip</text>
 
         <!-- Two columns -->
@@ -2676,7 +2677,7 @@
           <text x="220" y="32" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.85)">HTTP/1.1, HTTP/2 frames, etc. — encrypted + authenticated, every byte</text>
         </g>
       </svg>
-      <p class="diagram-caption">The same TLS 1.3 handshake from <a href="part-3.html#ch11">Chapter 11</a> §05, now with the cryptographic primitives labelled. The key exchange is ECDH on Curve25519: each side picks an ephemeral scalar, multiplies the curve generator G by it to get a public point, sends that point. Both sides compute the shared secret as the product of their own scalar with the other's public point. The shared secret is run through HKDF (an HMAC-based key derivation function) to produce separate AES-GCM keys for each direction. The server's certificate is verified against the trust root chain (<a href="part-3.html#fig-11-12">Fig 11.12</a>); the server's signature over the transcript proves that the holder of the certificate's private key participated in this specific handshake. Every primitive in this chapter — ECC for key exchange, ECDSA or Ed25519 for signing, SHA-256 inside HKDF, AES-GCM for bulk encryption — appears exactly once in its right role.</p>
+      <p class="diagram-caption">The same TLS 1.3 handshake from <a href="part-3#ch11">Chapter 11</a> §05, now with the cryptographic primitives labelled. The key exchange is ECDH on Curve25519: each side picks an ephemeral scalar, multiplies the curve generator G by it to get a public point, sends that point. Both sides compute the shared secret as the product of their own scalar with the other's public point. The shared secret is run through HKDF (an HMAC-based key derivation function) to produce separate AES-GCM keys for each direction. The server's certificate is verified against the trust root chain (<a href="part-3#fig-11-12">Fig 11.12</a>); the server's signature over the transcript proves that the holder of the certificate's private key participated in this specific handshake. Every primitive in this chapter — ECC for key exchange, ECDSA or Ed25519 for signing, SHA-256 inside HKDF, AES-GCM for bulk encryption — appears exactly once in its right role.</p>
     </div>
 
     <h3>Digital signatures · and Certificate Transparency</h3>
@@ -2714,7 +2715,7 @@
 
     <div class="diagram-card" id="fig-14-12">
       <div class="diagram-label">Fig 14.12 — Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.12 — Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-25"><title id="svgt-part4-25">Fig 14.12 — Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every certificate any CA issues is publicly logged · misissuance becomes detectable</text>
 
         <!-- Signature mechanism -->
@@ -2835,7 +2836,7 @@
 
     <div class="diagram-card" id="fig-14-13">
       <div class="diagram-label">Fig 14.13 — Post-quantum migration · the algorithms that survive Shor</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.13 — Post-quantum migration · the algorithms that survive Shor</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-26"><title id="svgt-part4-26">Fig 14.13 — Post-quantum migration · the algorithms that survive Shor</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">NIST 2024 standards · the cryptography after Shor</text>
 
         <!-- Threat -->
@@ -2909,14 +2910,14 @@
 
     <p>
       <a href="#ch15">Chapter 15</a>, the final chapter of Part IV, takes everything in this
-      book — the silicon (Parts I and II), the network (<a href="part-3.html">Part III</a>), the
+      book — the silicon (Parts I and II), the network (<a href="part-3">Part III</a>), the
       data and cryptography (Chapters 13 and 14) — and looks at it from
       one direction: <em>how systems break</em>. Every attack we have
       foreshadowed in earlier chapters — buffer overflows, ROP chains,
       Dirty COW, DNS poisoning, BGP hijacking, XSS, CSRF, SQL injection,
       cache timing, side channels — gets pulled together into one working
       theory. The chapter closes Part IV by closing the security thread
-      that has run through the whole book. After it, only <a href="part-5.html">Part V</a> remains:
+      that has run through the whole book. After it, only <a href="part-5">Part V</a> remains:
       parallelism, the cloud, and the epilogue that synthesises the
       entire arc.
     </p>
@@ -2932,8 +2933,8 @@
     <h1>Attack and<br>Defense<br><em>How Systems Break</em></h1>
     <p class="chapter-subtitle">
       Every chapter in this book has had attacks woven into it. Buffer
-      overflows in <a href="part-1.html#ch3">Chapter 3</a>. Spectre and Meltdown in <a href="part-1.html#ch1">Chapter 1</a>. Dirty
-      COW in <a href="part-2.html#ch4">Chapter 4</a>. BGP hijacking in <a href="part-3.html#ch9">Chapter 9</a>. SYN floods in <a href="part-3.html#ch10">Chapter
+      overflows in <a href="part-1#ch3">Chapter 3</a>. Spectre and Meltdown in <a href="part-1#ch1">Chapter 1</a>. Dirty
+      COW in <a href="part-2#ch4">Chapter 4</a>. BGP hijacking in <a href="part-3#ch9">Chapter 9</a>. SYN floods in <a href="part-3#ch10">Chapter
       10</a>. DNS poisoning, TLS misissuance, XSS, CSRF, SQL injection. This
       chapter pulls all of them together. It is the security spine of
       the book — the moment where every specific exploit becomes an
@@ -2949,7 +2950,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 15 hero · Attack and Defense How Systems Break</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part4-27"><title id="svgt-part4-27">Chapter 15 hero · Attack and Defense How Systems Break</title>
       <defs><radialGradient id="glow15" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow15)"/>
 
@@ -3039,7 +3040,7 @@
       Tan, Stefan, Space Rogue, Weld Pond — and testified that any one
       of them could take the entire internet down inside thirty minutes.
       The senators looked uncertain. The hackers were not joking; the
-      <a href="part-3.html#ch9">BGP</a> and <a href="part-3.html#ch11">DNS</a>
+      <a href="part-3#ch9">BGP</a> and <a href="part-3#ch11">DNS</a>
       vulnerabilities they had in mind were real, and the testimony was
       carried verbatim into the Congressional Record. It was the first
       time the American government received the news, on the record,
@@ -3076,7 +3077,7 @@
 
     <div class="diagram-card" id="fig-15-1">
       <div class="diagram-label">Fig 15.1 — STRIDE · the six classes of threat to enumerate</div>
-      <svg viewBox="0 0 720 430" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.1 — STRIDE · the six classes of threat to enumerate</title>
+      <svg viewBox="0 0 720 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-28"><title id="svgt-part4-28">Fig 15.1 — STRIDE · the six classes of threat to enumerate</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">walk every component, ask: which of these six can happen here?</text>
 
         <!-- 6 cards -->
@@ -3188,11 +3189,11 @@
     <h2>Forty years of writing past the buffer · and the defenders who keep up.</h2>
 
     <p class="lead">
-      <a href="part-1.html#ch3">Chapter 3</a> introduced the buffer overflow — Aleph One's 1996 Phrack
+      <a href="part-1#ch3">Chapter 3</a> introduced the buffer overflow — Aleph One's 1996 Phrack
       essay, the saved return address overwritten, the CPU jumping to
-      attacker-supplied code. <a href="part-1.html#ch3">Chapter 3</a> §06 traced the arms race from
+      attacker-supplied code. <a href="part-1#ch3">Chapter 3</a> §06 traced the arms race from
       stack canaries through DEP and ASLR to ROP. This section continues
-      the story past <a href="part-1.html#ch3">Chapter 3</a>'s stopping point. The defences have
+      the story past <a href="part-1#ch3">Chapter 3</a>'s stopping point. The defences have
       gotten more sophisticated; the attacks have gotten more inventive;
       the underlying problem — that C and C++ allow memory access without
       proof of correctness — has not gone away. The cumulative effect of
@@ -3203,7 +3204,7 @@
 
     <div class="diagram-card" id="fig-15-2">
       <div class="diagram-label">Fig 15.2 — The arms race continued · Fig 3.11 extended through 2026</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.2 — The arms race continued · Fig 3.11 extended through 2026</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-29"><title id="svgt-part4-29">Fig 15.2 — The arms race continued · Fig 3.11 extended through 2026</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">red dot · attack technique that broke the previous defence  ·  green dot · defence that responded</text>
 
         <!-- Timeline -->
@@ -3331,9 +3332,9 @@
     <h2>Where the network can lie · and where TLS prevents it from mattering.</h2>
 
     <p class="lead">
-      <a href="part-3.html">Part III</a> made one structural claim about the network: <em>it can
-      never be trusted</em>. Routes can be hijacked (<a href="part-3.html#ch9">Chapter 9</a> §06).
-      Names can be poisoned (<a href="part-3.html#ch11">Chapter 11</a> §03). Packets can be intercepted,
+      <a href="part-3">Part III</a> made one structural claim about the network: <em>it can
+      never be trusted</em>. Routes can be hijacked (<a href="part-3#ch9">Chapter 9</a> §06).
+      Names can be poisoned (<a href="part-3#ch11">Chapter 11</a> §03). Packets can be intercepted,
       modified, or forged at any hop. The defence to all of this — the
       cryptographic layer of <a href="#ch14">Chapter 14</a> applied at the transport layer
       — is TLS, which authenticates endpoints and encrypts traffic so
@@ -3365,7 +3366,7 @@
 
     <div class="diagram-card" id="fig-15-3">
       <div class="diagram-label">Fig 15.3 — Man-in-the-middle · with and without TLS</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.3 — Man-in-the-middle · with and without TLS</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-30"><title id="svgt-part4-30">Fig 15.3 — Man-in-the-middle · with and without TLS</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">the same network position · two completely different outcomes</text>
 
         <!-- Without TLS -->
@@ -3447,7 +3448,7 @@
     <p>
       For an attacker on the same local network as you, the easiest way
       to become a man in the middle is <strong>ARP spoofing</strong>.
-      ARP — the Address Resolution Protocol from <a href="part-3.html#ch8">Chapter 8</a> §05 — maps
+      ARP — the Address Resolution Protocol from <a href="part-3#ch8">Chapter 8</a> §05 — maps
       IP addresses to MAC addresses on a LAN, and does so by broadcasted
       announcements that are not authenticated. A laptop on the network
       sends "who has 192.168.1.1?" and the gateway router answers
@@ -3462,7 +3463,7 @@
 
     <div class="diagram-card" id="fig-15-4">
       <div class="diagram-label">Fig 15.4 — ARP spoofing · poisoning the address-resolution cache</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.4 — ARP spoofing · poisoning the address-resolution cache</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-31"><title id="svgt-part4-31">Fig 15.4 — ARP spoofing · poisoning the address-resolution cache</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">whoever answers first wins · ARP has no authentication</text>
 
         <!-- Three nodes -->
@@ -3522,14 +3523,14 @@
 
     <p>
       Two further attacks are worth flagging because we already met them
-      in earlier chapters. <strong>DNS poisoning</strong> (<a href="part-3.html#ch11">Chapter 11</a> §03,
+      in earlier chapters. <strong>DNS poisoning</strong> (<a href="part-3#ch11">Chapter 11</a> §03,
       Kaminsky 2008) tricks a recursive resolver into caching a
       forged answer; combined with no certificate validation, it lets
       an attacker direct a victim to a server they control. The defence
       is the certificate verification step — even with a poisoned DNS
       answer, the attacker's server cannot present a valid TLS
       certificate for the legitimate hostname. <strong>BGP hijacking</strong>
-      (<a href="part-3.html#ch9">Chapter 9</a> §06, Pakistan/YouTube 2008) reroutes entire IP prefixes
+      (<a href="part-3#ch9">Chapter 9</a> §06, Pakistan/YouTube 2008) reroutes entire IP prefixes
       through a malicious autonomous system. Same defence: the certificate
       survives the rerouting; the attacker's machines, even if all your
       packets are now arriving at them, cannot complete a TLS handshake
@@ -3550,7 +3551,7 @@
       server fetching a URL its application supplied, or a backend
       deserialising data sent in a request — all of these run inside
       the trust boundary. The attacks here are about <em>confused
-      deputies</em> (<a href="part-3.html#ch11">Chapter 11</a> §06 introduced the term obliquely): code
+      deputies</em> (<a href="part-3#ch11">Chapter 11</a> §06 introduced the term obliquely): code
       that has authority to do something, tricked into using that
       authority on the attacker's behalf. The 2010s saw the OWASP Top
       10 — the curated list of the most consequential web vulnerabilities
@@ -3571,7 +3572,7 @@
 
     <div class="diagram-card" id="fig-15-5">
       <div class="diagram-label">Fig 15.5 — SQL injection defence in depth · five layers, each independent</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.5 — SQL injection defence in depth · five layers, each independent</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-32"><title id="svgt-part4-32">Fig 15.5 — SQL injection defence in depth · five layers, each independent</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">no single layer is sufficient · every layer reduces blast radius if upstream layers fail</text>
 
         <!-- Five layers stacked -->
@@ -3630,7 +3631,7 @@
 
     <div class="diagram-card" id="fig-15-6">
       <div class="diagram-label">Fig 15.6 — SSRF · the server makes the request the attacker can't</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.6 — SSRF · the server makes the request the attacker can't</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-33"><title id="svgt-part4-33">Fig 15.6 — SSRF · the server makes the request the attacker can't</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">the server has network access the attacker doesn't · attacker borrows it</text>
 
         <!-- Internet -->
@@ -3743,7 +3744,7 @@
 
     <div class="diagram-card" id="fig-15-7">
       <div class="diagram-label">Fig 15.7 — Five generations of defence · firewall → IDS → SIEM → EDR → zero trust</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.7 — Five generations of defence · firewall → IDS → SIEM → EDR → zero trust</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-34"><title id="svgt-part4-34">Fig 15.7 — Five generations of defence · firewall → IDS → SIEM → EDR → zero trust</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">five layers, five eras · each one assumes the others can fail</text>
 
         <g transform="translate(40,68)" font-family="DM Mono" font-size="9">
@@ -3815,7 +3816,7 @@
 
     <div class="diagram-card" id="fig-15-8">
       <div class="diagram-label">Fig 15.8 — Stuxnet · four zero-days, a USB jump, sabotage of physical machines</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.8 — Stuxnet · four zero-days, a USB jump, sabotage of physical machines</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-35"><title id="svgt-part4-35">Fig 15.8 — Stuxnet · four zero-days, a USB jump, sabotage of physical machines</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">~2009 · the most sophisticated piece of malware ever publicly disclosed</text>
 
         <!-- Stage 1: USB delivery -->
@@ -3916,13 +3917,13 @@
     <p class="lead">
       Every attack in this book is, at the structural level, an instance
       of a small handful of patterns. The whole chapter has been moving
-      toward this synthesis. Buffer overflow (<a href="part-1.html#ch3">Chapter 3</a>) is data-as-code in
+      toward this synthesis. Buffer overflow (<a href="part-1#ch3">Chapter 3</a>) is data-as-code in
       the call stack. SQL injection (<a href="#ch13">Chapter 13</a>) is data-as-code in the SQL
-      parser. XSS (<a href="part-3.html#ch12">Chapter 12</a>) is data-as-code in the HTML parser. Prompt
+      parser. XSS (<a href="part-3#ch12">Chapter 12</a>) is data-as-code in the HTML parser. Prompt
       injection (this chapter) is data-as-code in an LLM context window.
-      ROP (<a href="part-1.html#ch3">Chapter 3</a>) and Stuxnet (this section) chain primitives the
+      ROP (<a href="part-1#ch3">Chapter 3</a>) and Stuxnet (this section) chain primitives the
       attacker did not author into payloads the original author never
-      anticipated. CSRF (<a href="part-3.html#ch12">Chapter 12</a>), SSRF (this chapter), and the Capital
+      anticipated. CSRF (<a href="part-3#ch12">Chapter 12</a>), SSRF (this chapter), and the Capital
       One breach are all confused-deputy attacks: code with privilege,
       tricked into using its privilege at the attacker's behest.
       Naming the patterns is the deepest move available; once the names
@@ -3933,7 +3934,7 @@
 
     <div class="diagram-card" id="fig-15-9">
       <div class="diagram-label">Fig 15.9 — The attack-pattern map · every specific exploit reduces to a few patterns</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.9 — The attack-pattern map · every specific exploit reduces to a few patterns</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-36"><title id="svgt-part4-36">Fig 15.9 — The attack-pattern map · every specific exploit reduces to a few patterns</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">name the pattern · recognise its instances · know the defence applies to all of them</text>
 
         <!-- Six pattern boxes -->
@@ -4039,7 +4040,7 @@
       "flags" (short strings hidden inside successfully-pwned systems)
       as proof of solution. CTFs are organised in five canonical
       categories: <em>pwn</em> (binary exploitation, the buffer
-      overflows of <a href="part-1.html#ch3">Chapter 3</a>), <em>web</em> (the SQLi / XSS / SSRF of
+      overflows of <a href="part-1#ch3">Chapter 3</a>), <em>web</em> (the SQLi / XSS / SSRF of
       this chapter), <em>crypto</em> (the cryptographic primitives of
       <a href="#ch14">Chapter 14</a>, broken in some specific way), <em>reverse
       engineering</em> (read a binary and understand what it does), and
@@ -4082,7 +4083,7 @@
 
     <div class="diagram-card" id="fig-15-10">
       <div class="diagram-label">Fig 15.10 — The security ecosystem · learning, working, meeting</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 15.10 — The security ecosystem · learning, working, meeting</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-37"><title id="svgt-part4-37">Fig 15.10 — The security ecosystem · learning, working, meeting</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a working economy of breaking, fixing, paying, teaching, and meeting</text>
 
         <!-- Learning -->
@@ -4156,10 +4157,10 @@
     </p>
 
     <p>
-      <a href="part-5.html">Part V</a>, the last part of the book, is about where systems live
-      <em>now</em>. Multi-core hardware (<a href="part-5.html#ch16">Chapter 16</a>). The cloud and
-      its distributed-systems mathematics (<a href="part-5.html#ch17">Chapter 17</a>). And the
-      epilogue (<a href="part-5.html#ch18">Chapter 18</a>) — what you now see, after all this, when
+      <a href="part-5">Part V</a>, the last part of the book, is about where systems live
+      <em>now</em>. Multi-core hardware (<a href="part-5#ch16">Chapter 16</a>). The cloud and
+      its distributed-systems mathematics (<a href="part-5#ch17">Chapter 17</a>). And the
+      epilogue (<a href="part-5#ch18">Chapter 18</a>) — what you now see, after all this, when
       you press a key and the bytes flow.
     </p>
   </section>
@@ -4175,7 +4176,7 @@
     theory of how systems break. Part V — parallelism, the cloud, and
     the closing synthesis — is what remains.
   </p>
-  <a href="part-5.html" class="next-btn"><span>Continue to Part V — The Modern Machine</span><span aria-hidden="true">→</span></a>
+  <a href="part-5" class="next-btn"><span>Continue to Part V — The Modern Machine</span><span aria-hidden="true">→</span></a>
 
 </section>
 

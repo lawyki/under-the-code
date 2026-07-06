@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Under the Code — Part V: The Modern Machine</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 
 <meta name="description" content="Parallelism, the cloud, distributed consensus. Where computers actually run today, and where the book closes.">
 <meta property="og:type" content="book.section">
 <meta property="og:site_name" content="Under the Code">
 <meta property="og:title" content="Under the Code — Part V: The Modern Machine">
 <meta property="og:description" content="Parallelism, the cloud, distributed consensus. Where computers actually run today, and where the book closes.">
-<meta property="og:url" content="https://under.atheric.eu/part-5.html">
+<meta property="og:url" content="https://under.atheric.eu/part-5">
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,7 +20,7 @@
 <meta name="twitter:title" content="Under the Code — Part V: The Modern Machine">
 <meta name="twitter:description" content="Parallelism, the cloud, distributed consensus. Where computers actually run today, and where the book closes.">
 <meta name="twitter:image" content="https://under.atheric.eu/og-image.png">
-<link rel="canonical" href="https://under.atheric.eu/part-5.html">
+<link rel="canonical" href="https://under.atheric.eu/part-5">
 
 <!-- Self-hosted fonts — local mirror of the Google css2 payload (see fonts.css).
      No request leaves the origin. Preloads cover the latin faces every page uses. -->
@@ -38,7 +39,7 @@
 
 
 <nav class="book-nav">
-  <a class="book-title" href="index.html"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
+  <a class="book-title" href="/"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
   <div class="book-progress">PART V OF V · CHAPTERS 16—18</div>
 </nav>
 
@@ -100,7 +101,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 16 hero · Parallelism When One Core Isn't Enough</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part5-1"><title id="svgt-part5-1">Chapter 16 hero · Parallelism When One Core Isn't Enough</title>
       <defs><radialGradient id="glow16" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow16)"/>
 
@@ -183,7 +184,7 @@
       "how do I run two things at once": <code>fork</code>. The child
       process ran in parallel with the parent, isolated from it, with
       its own address space, its own file descriptors, its own
-      everything (<a href="part-2.html#ch4">Chapter 4</a>). The
+      everything (<a href="part-2#ch4">Chapter 4</a>). The
       isolation was exactly the problem when the two processes wanted
       to <em>cooperate</em>. A parent that wanted to share a
       million-element array with its child had to copy it across the
@@ -200,7 +201,7 @@
 
     <div class="diagram-card" id="fig-16-1">
       <div class="diagram-label">Fig 16.1 — Threads vs processes · the same parallelism, two isolation models</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.1 — Threads vs processes · the same parallelism, two isolation models</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-2"><title id="svgt-part5-2">Fig 16.1 — Threads vs processes · the same parallelism, two isolation models</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">shared memory and shared peril vs separate everything and copy costs</text>
 
         <!-- Threads -->
@@ -277,7 +278,7 @@
           <text x="320" y="72" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">→ when threads are enough, threads are dramatically cheaper · when isolation matters, processes are the only safe answer</text>
         </g>
       </svg>
-      <p class="diagram-caption">Threads share the heap, the globals, the file descriptor table, and most other process state — only the call stack and the registers are per-thread. Processes share none of this; each lives behind its own page table, with the kernel mediating any communication. The trade is real and consequential: threads make IPC free (just write to a variable; the other thread can read it) but make every concurrent access a potential bug. Processes make every interaction a system call but make memory corruption between them impossible. Modern programming languages reach for both: C, C++, Java, Rust default to threads; Python's <code>multiprocessing</code> reaches for processes (because the GIL — <a href="part-2.html#ch7">Chapter 7</a> §04 — makes threads less useful); Erlang and Go invented their own lightweight thread-like primitives (BEAM processes, goroutines) that get the best of both.</p>
+      <p class="diagram-caption">Threads share the heap, the globals, the file descriptor table, and most other process state — only the call stack and the registers are per-thread. Processes share none of this; each lives behind its own page table, with the kernel mediating any communication. The trade is real and consequential: threads make IPC free (just write to a variable; the other thread can read it) but make every concurrent access a potential bug. Processes make every interaction a system call but make memory corruption between them impossible. Modern programming languages reach for both: C, C++, Java, Rust default to threads; Python's <code>multiprocessing</code> reaches for processes (because the GIL — <a href="part-2#ch7">Chapter 7</a> §04 — makes threads less useful); Erlang and Go invented their own lightweight thread-like primitives (BEAM processes, goroutines) that get the best of both.</p>
     </div>
 
     <h3>Where parallelism actually helps</h3>
@@ -318,7 +319,7 @@
 
     <div class="diagram-card" id="fig-16-2">
       <div class="diagram-label">Fig 16.2 — The classic race · two threads, one counter, lost updates</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.2 — The classic race · two threads, one counter, lost updates</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-3"><title id="svgt-part5-3">Fig 16.2 — The classic race · two threads, one counter, lost updates</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">"counter++" is three machine instructions · interleaving them produces lost updates</text>
 
         <!-- Code -->
@@ -442,7 +443,7 @@
 
     <div class="diagram-card" id="fig-16-3">
       <div class="diagram-label">Fig 16.3 — Mutex protects · deadlock is the new failure mode</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.3 — Mutex protects · deadlock is the new failure mode</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-4"><title id="svgt-part5-4">Fig 16.3 — Mutex protects · deadlock is the new failure mode</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a cycle in the wait-for graph means everyone waits forever</text>
 
         <!-- Mutex -->
@@ -549,7 +550,7 @@
 
     <div class="diagram-card" id="fig-16-4">
       <div class="diagram-label">Fig 16.4 — Compare-and-swap · the atomic primitive everything else is built on</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.4 — Compare-and-swap · the atomic primitive everything else is built on</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-5"><title id="svgt-part5-5">Fig 16.4 — Compare-and-swap · the atomic primitive everything else is built on</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">"if the value is still what I expect, replace it; otherwise tell me what it is" — atomically</text>
 
         <!-- The CAS pseudocode -->
@@ -592,7 +593,7 @@
       The deeper subtlety is that on modern multi-core CPUs, the order
       in which one core's writes become visible to another core is
       <em>not</em> the order they were issued. Out-of-order execution
-      (<a href="part-1.html#ch1">Chapter 1</a> §04), store buffers, and cache coherence all conspire
+      (<a href="part-1#ch1">Chapter 1</a> §04), store buffers, and cache coherence all conspire
       to let writes appear reordered from another core's perspective.
       A thread that writes <code>x = 1; flag = true;</code> may have
       another thread on a different core observe <code>flag = true</code>
@@ -611,7 +612,7 @@
 
     <div class="diagram-card" id="fig-16-5">
       <div class="diagram-label">Fig 16.5 — Memory orderings · four levels, four guarantees, four costs</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.5 — Memory orderings · four levels, four guarantees, four costs</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-6"><title id="svgt-part5-6">Fig 16.5 — Memory orderings · four levels, four guarantees, four costs</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">stricter ordering = easier to reason about · weaker = faster on hardware</text>
 
         <g transform="translate(40,68)">
@@ -673,7 +674,7 @@
 
     <p class="lead">
       The CPU we have built — out-of-order execution, branch prediction,
-      caches, all the machinery of <a href="part-1.html#ch1">Chapter 1</a> — is optimised for fast
+      caches, all the machinery of <a href="part-1#ch1">Chapter 1</a> — is optimised for fast
       <em>sequential</em> execution: do one thing, do it as fast as
       possible, then move to the next. The GPU is the opposite. It has
       thousands of small cores running in lockstep, each executing the
@@ -694,7 +695,7 @@
 
     <div class="diagram-card" id="fig-16-6">
       <div class="diagram-label">Fig 16.6 — CPU vs GPU · few clever cores vs thousands of simple ones</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.6 — CPU vs GPU · few clever cores vs thousands of simple ones</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-7"><title id="svgt-part5-7">Fig 16.6 — CPU vs GPU · few clever cores vs thousands of simple ones</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">two completely different ways to spend a transistor budget</text>
 
         <!-- CPU -->
@@ -786,7 +787,7 @@
 
     <div class="diagram-card" id="fig-16-7">
       <div class="diagram-label">Fig 16.7 — The CUDA hierarchy · thread → warp → block → grid</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.7 — The CUDA hierarchy · thread → warp → block → grid</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-8"><title id="svgt-part5-8">Fig 16.7 — The CUDA hierarchy · thread → warp → block → grid</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">millions of threads in a single kernel launch · organised in a four-level hierarchy</text>
 
         <!-- Thread -->
@@ -886,7 +887,7 @@
 
     <div class="diagram-card" id="fig-16-8">
       <div class="diagram-label">Fig 16.8 — Amdahl's law · the ceiling that won't move</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.8 — Amdahl's law · the ceiling that won't move</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-9"><title id="svgt-part5-9">Fig 16.8 — Amdahl's law · the ceiling that won't move</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">speedup = 1 / ((1−p) + p/N)  ·  ceiling = 1 / (1−p)</text>
 
         <!-- Axes -->
@@ -957,7 +958,7 @@
 
     <div class="diagram-card" id="fig-16-9">
       <div class="diagram-label">Fig 16.9 — Amdahl vs Gustafson · same hardware, different question</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.9 — Amdahl vs Gustafson · same hardware, different question</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-10"><title id="svgt-part5-10">Fig 16.9 — Amdahl vs Gustafson · same hardware, different question</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">two laws · two questions · two completely different practical implications</text>
 
         <!-- Amdahl -->
@@ -1029,7 +1030,7 @@
 
     <div class="diagram-card" id="fig-16-10">
       <div class="diagram-label">Fig 16.10 — NUMA · two sockets, two memories, asymmetric latency</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.10 — NUMA · two sockets, two memories, asymmetric latency</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-11"><title id="svgt-part5-11">Fig 16.10 — NUMA · two sockets, two memories, asymmetric latency</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a thread on socket 0 reading socket-1 memory pays a real, measurable, surprising tax</text>
 
         <!-- Socket 0 -->
@@ -1095,7 +1096,7 @@
 
     <div class="diagram-card" id="fig-16-11">
       <div class="diagram-label">Fig 16.11 — MESI · how four cores keep one cache line consistent</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 16.11 — MESI · how four cores keep one cache line consistent</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-12"><title id="svgt-part5-12">Fig 16.11 — MESI · how four cores keep one cache line consistent</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every cache line on every core is in one of four states · transitions tracked in hardware</text>
 
         <!-- Four states -->
@@ -1153,7 +1154,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🔐</span>
       <p class="insight-text">
-        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that the speculative-execution machinery of every modern CPU since 1995 — the same machinery that gave us the speed described in <a href="part-1.html#ch1">Chapter 1</a> — could be coerced into reading memory across security boundaries. The trick: speculative loads pulled secret data into the cache; even though the speculation was rolled back at the architectural level, the cache state survived, and an attacker measuring access timings could read out the secret bit by bit. The fix required microcode patches, kernel page-table isolation (KPTI), and a permanent ~5–30% performance regression on syscall-heavy workloads. Cache coherence is not just a performance mechanism; it is also the most expensive security boundary in the machine.
+        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that the speculative-execution machinery of every modern CPU since 1995 — the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a> — could be coerced into reading memory across security boundaries. The trick: speculative loads pulled secret data into the cache; even though the speculation was rolled back at the architectural level, the cache state survived, and an attacker measuring access timings could read out the secret bit by bit. The fix required microcode patches, kernel page-table isolation (KPTI), and a permanent ~5–30% performance regression on syscall-heavy workloads. Cache coherence is not just a performance mechanism; it is also the most expensive security boundary in the machine.
       </p>
     </div>
 
@@ -1202,7 +1203,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 17 hero · The Cloud Distributed Systems at Scale</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part5-13"><title id="svgt-part5-13">Chapter 17 hero · The Cloud Distributed Systems at Scale</title>
       <defs><radialGradient id="glow17" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow17)"/>
 
@@ -1285,7 +1286,7 @@
 
     <div class="diagram-card" id="fig-17-1">
       <div class="diagram-label">Fig 17.1 — Type 1 vs Type 2 hypervisors · bare metal vs hosted</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.1 — Type 1 vs Type 2 hypervisors · bare metal vs hosted</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-14"><title id="svgt-part5-14">Fig 17.1 — Type 1 vs Type 2 hypervisors · bare metal vs hosted</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">two ways to slot a hypervisor into a stack</text>
 
         <!-- Type 1 -->
@@ -1367,7 +1368,7 @@
     <h2>Lighter than VMs · faster to start · the deployment unit of the modern web.</h2>
 
     <p class="lead">
-      <a href="part-2.html#ch4">Chapter 4</a> §06 introduced containers as kernel-level isolation
+      <a href="part-2#ch4">Chapter 4</a> §06 introduced containers as kernel-level isolation
       built on namespaces and cgroups. The economics that followed turned
       containers into the dominant deployment unit of the 2020s.
       Where a VM takes minutes to boot, megabytes to gigabytes of
@@ -1387,7 +1388,7 @@
 
     <div class="diagram-card" id="fig-17-2">
       <div class="diagram-label">Fig 17.2 — Docker image layers · copy-on-write filesystems for software distribution</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.2 — Docker image layers · copy-on-write filesystems for software distribution</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-15"><title id="svgt-part5-15">Fig 17.2 — Docker image layers · copy-on-write filesystems for software distribution</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">each instruction in a Dockerfile becomes one immutable layer · shared between images that don't change them</text>
 
         <!-- Dockerfile -->
@@ -1447,7 +1448,7 @@
           <text x="320" y="70" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">when you change app.py and rebuild · only Layer 4 changes · layers 0–3 reused · push to registry sends ~2 KB</text>
         </g>
       </svg>
-      <p class="diagram-caption">A Docker image is a stack of immutable, content-addressed layers — each layer is the filesystem diff produced by one instruction in the Dockerfile, identified by the SHA-256 hash of its contents. The runtime presents the layers as a unified read-only filesystem to the container, with a thin writable layer on top. The economics are powerful: a host running 100 microservices that all use the same Ubuntu base layer stores the base layer's 80 MB once, not 100 times. Pushing a new version of an app means uploading only the changed layer, not the entire image. Container registries (Docker Hub, GitHub Container Registry, Amazon ECR) deduplicate aggressively, and a typical CI/CD pipeline pushes only kilobytes per code change. The mechanism — layered immutable content-addressed storage — is borrowed from Git's object model and from the copy-on-write filesystems of <a href="part-2.html#ch4">Chapter 4</a> §04. The pattern is recurring in modern systems engineering: address things by their content hash; share by reference; never rewrite an immutable thing.</p>
+      <p class="diagram-caption">A Docker image is a stack of immutable, content-addressed layers — each layer is the filesystem diff produced by one instruction in the Dockerfile, identified by the SHA-256 hash of its contents. The runtime presents the layers as a unified read-only filesystem to the container, with a thin writable layer on top. The economics are powerful: a host running 100 microservices that all use the same Ubuntu base layer stores the base layer's 80 MB once, not 100 times. Pushing a new version of an app means uploading only the changed layer, not the entire image. Container registries (Docker Hub, GitHub Container Registry, Amazon ECR) deduplicate aggressively, and a typical CI/CD pipeline pushes only kilobytes per code change. The mechanism — layered immutable content-addressed storage — is borrowed from Git's object model and from the copy-on-write filesystems of <a href="part-2#ch4">Chapter 4</a> §04. The pattern is recurring in modern systems engineering: address things by their content hash; share by reference; never rewrite an immutable thing.</p>
     </div>
 
     <div class="insight-strip">
@@ -1481,7 +1482,7 @@
 
     <div class="diagram-card" id="fig-17-3">
       <div class="diagram-label">Fig 17.3 — Kubernetes architecture · control plane + workers</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.3 — Kubernetes architecture · control plane + workers</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-16"><title id="svgt-part5-16">Fig 17.3 — Kubernetes architecture · control plane + workers</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a coordinated cluster of components managing a cluster of pods on a cluster of nodes</text>
 
         <!-- Control plane -->
@@ -1594,7 +1595,7 @@
       not remember what it did last time; it only looks at what is
       versus what should be. This pattern — <em>declarative desired
       state, observed actual state, continuous reconciliation</em> — is
-      borrowed from control theory (<a href="part-3.html#ch10">Chapter 10</a>'s TCP congestion control
+      borrowed from control theory (<a href="part-3#ch10">Chapter 10</a>'s TCP congestion control
       is the same shape) and is the architectural genus of all
       modern infrastructure-as-code: Terraform, Pulumi, Argo CD,
       everything.
@@ -1602,7 +1603,7 @@
 
     <div class="diagram-card" id="fig-17-4">
       <div class="diagram-label">Fig 17.4 — The reconcile loop · observe, diff, act, repeat</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.4 — The reconcile loop · observe, diff, act, repeat</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-17"><title id="svgt-part5-17">Fig 17.4 — The reconcile loop · observe, diff, act, repeat</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">three boxes, two arrows, the architectural genus of infrastructure-as-code</text>
 
         <!-- Desired -->
@@ -1661,7 +1662,7 @@
           <text x="14" y="34" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">"declare what you want; let the system figure out how to get there and stay there"</text>
         </g>
       </svg>
-      <p class="diagram-caption">The reconcile loop is Kubernetes' deepest architectural idea, and it generalises far beyond container orchestration. Define what the system should look like (the <em>desired state</em>) as data. Observe what the system actually looks like (the <em>actual state</em>) as data. Run a tight loop that reads both and takes whatever action moves actual closer to desired. The loop is idempotent (running it twice does nothing if nothing has changed), stateless (it doesn't remember what it did before), and self-healing (failed actions just get retried). This is the same shape as Terraform plans, Argo CD GitOps, every modern infrastructure-as-code tool, and — in spirit — TCP's congestion control loop from <a href="part-3.html#ch10">Chapter 10</a>. <em>Declare the intent; let convergence happen</em> is one of the most powerful ideas in modern systems engineering.</p>
+      <p class="diagram-caption">The reconcile loop is Kubernetes' deepest architectural idea, and it generalises far beyond container orchestration. Define what the system should look like (the <em>desired state</em>) as data. Observe what the system actually looks like (the <em>actual state</em>) as data. Run a tight loop that reads both and takes whatever action moves actual closer to desired. The loop is idempotent (running it twice does nothing if nothing has changed), stateless (it doesn't remember what it did before), and self-healing (failed actions just get retried). This is the same shape as Terraform plans, Argo CD GitOps, every modern infrastructure-as-code tool, and — in spirit — TCP's congestion control loop from <a href="part-3#ch10">Chapter 10</a>. <em>Declare the intent; let convergence happen</em> is one of the most powerful ideas in modern systems engineering.</p>
     </div>
 
     <div class="code-block">
@@ -1753,7 +1754,7 @@
 
     <div class="diagram-card" id="fig-17-5">
       <div class="diagram-label">Fig 17.5 — Raft · leader election and log replication</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.5 — Raft · leader election and log replication</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-18"><title id="svgt-part5-18">Fig 17.5 — Raft · leader election and log replication</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">elect a leader · the leader replicates the log · majority confirms · committed</text>
 
         <!-- Phase 1: leader election -->
@@ -1831,7 +1832,7 @@
 
     <div class="diagram-card" id="fig-17-6">
       <div class="diagram-label">Fig 17.6 — FLP impossibility · safety vs liveness vs asynchronous failure</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.6 — FLP impossibility · safety vs liveness vs asynchronous failure</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-19"><title id="svgt-part5-19">Fig 17.6 — FLP impossibility · safety vs liveness vs asynchronous failure</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">FLP 1985 — pick at most two of safety, liveness, and pure asynchrony</text>
 
         <!-- Triangle of impossibility -->
@@ -1913,7 +1914,7 @@
 
     <div class="diagram-card" id="fig-17-7">
       <div class="diagram-label">Fig 17.7 — CAP triangle · pick two when the network splits</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.7 — CAP triangle · pick two when the network splits</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-20"><title id="svgt-part5-20">Fig 17.7 — CAP triangle · pick two when the network splits</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">network partitions are not optional · so the real choice is C vs A</text>
 
         <!-- Triangle -->
@@ -1958,7 +1959,7 @@
 
     <div class="diagram-card" id="fig-17-8">
       <div class="diagram-label">Fig 17.8 — CAP in production · which database picked which corner</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.8 — CAP in production · which database picked which corner</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-21"><title id="svgt-part5-21">Fig 17.8 — CAP in production · which database picked which corner</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">the theorem on the left · the procurement decision on the right</text>
 
         <!-- Triangle on the left -->
@@ -2085,7 +2086,7 @@
 
     <div class="diagram-card" id="fig-17-9">
       <div class="diagram-label">Fig 17.9 — Monolith vs microservices · same business logic, different deployment</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.9 — Monolith vs microservices · same business logic, different deployment</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-22"><title id="svgt-part5-22">Fig 17.9 — Monolith vs microservices · same business logic, different deployment</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">one process · or a hundred · the work is the same · the costs aren't</text>
 
         <!-- Monolith -->
@@ -2167,7 +2168,7 @@
 
     <div class="diagram-card" id="fig-17-10">
       <div class="diagram-label">Fig 17.10 — Service mesh and the sidecar · how microservices actually talk in 2026</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.10 — Service mesh and the sidecar · how microservices actually talk in 2026</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-23"><title id="svgt-part5-23">Fig 17.10 — Service mesh and the sidecar · how microservices actually talk in 2026</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">every service gets a proxy attached · the network becomes programmable</text>
 
         <!-- Two pods side by side, each pod = service + sidecar -->
@@ -2302,7 +2303,7 @@
 
     <div class="diagram-card" id="fig-17-11">
       <div class="diagram-label">Fig 17.11 — The architectural pendulum · same problems, different costumes</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 17.11 — The architectural pendulum · same problems, different costumes</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-24"><title id="svgt-part5-24">Fig 17.11 — The architectural pendulum · same problems, different costumes</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">monolith → SOA → microservices → serverless → ? · every 10–15 years a new costume</text>
 
         <!-- Timeline -->
@@ -2379,7 +2380,7 @@
 
     <p>
       <a href="#ch17">Chapter 17</a> closes the substrate-and-scale arc that began with the
-      single transistor in <a href="part-1.html#ch1">Chapter 1</a>. We have followed the layers all
+      single transistor in <a href="part-1#ch1">Chapter 1</a>. We have followed the layers all
       the way out: from one transistor to one CPU to one operating
       system to one network to one TLS connection to one database to
       one cryptographic primitive, then up again — many cores, many
@@ -2418,7 +2419,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 18 hero · What You Now See</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part5-25"><title id="svgt-part5-25">Chapter 18 hero · What You Now See</title>
       <defs><radialGradient id="glow18" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.20"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow18)"/>
 
@@ -2488,7 +2489,7 @@
 
     <div class="diagram-card" id="fig-18-1">
       <div class="diagram-label">Fig 18.1 — The full stack · sand to web service · math at every layer</div>
-      <svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.1 — The full stack · sand to web service · math at every layer</title>
+      <svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-26"><title id="svgt-part5-26">Fig 18.1 — The full stack · sand to web service · math at every layer</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">eighteen chapters · one stack · the whole arc in one diagram</text>
 
         <g transform="translate(40,60)" font-family="DM Mono">
@@ -2570,7 +2571,7 @@
     <p>
       The trace below follows a single keystroke from the moment your
       finger closes a contact on a key — voltage rising on a wire, in
-      the same way <a href="part-1.html#ch1">Chapter 1</a>
+      the same way <a href="part-1#ch1">Chapter 1</a>
       described — through every layer of your machine, out across the
       network, into Google's server stack, back through the network,
       and onto pixels on your screen. Eighteen waypoints, one for each
@@ -2581,7 +2582,7 @@
 
     <p>
       Two chapters are not numbered stations and warrant a note.
-      <strong><a href="part-4.html#ch15">Chapter 15</a> (security)</strong>
+      <strong><a href="part-4#ch15">Chapter 15</a> (security)</strong>
       is woven across the trace rather than located at one point — each
       time the journey crosses from less-trusted to more-trusted
       territory (user input → kernel; client → DNS resolver; client →
@@ -2595,7 +2596,7 @@
 
     <div class="diagram-card" id="fig-18-trace">
       <div class="diagram-label">Fig 18.1.5 — The trace · what happens when you press Enter on google.com</div>
-      <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.1.5 — The trace · 18 waypoints across every chapter the book has taught</title>
+      <svg viewBox="0 0 1200 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-27"><title id="svgt-part5-27">Fig 18.1.5 — The trace · 18 waypoints across every chapter the book has taught</title>
 
         <!-- Subtle book-cover corner ornaments -->
         <g stroke="rgba(212,168,83,0.35)" stroke-width="1" fill="none">
@@ -2914,7 +2915,7 @@
           <text x="540" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)" letter-spacing="0.18em">EIGHTEEN CHAPTERS · ONE KEYSTROKE · ROUGHLY 200 MILLISECONDS</text>
         </g>
       </svg>
-      <p class="diagram-caption">The trace, end to end. The pulse leaves your finger as voltage on a key, climbs through the abstraction layers of your machine — gates, CPU, kernel, libc, V8, JavaScript — descends into the network protocols (DNS, TCP, TLS, HTTP, IP, the wire itself) and out across continents, lands at Google's load balancer, threads through a Python microservice, queries a sharded inverted index, runs parallel ranking on many cores, and turns around. The return packet (lower arc, in green) carries an HTTP response back through TLS decryption, TCP reassembly, the wire, your kernel, your browser's HTML parser, and finally the GPU that rasterizes the pixels you read. Eighteen chapters of the book, all activated, in roughly two hundred milliseconds. Trust boundaries — places where data crosses from less-trusted to more-trusted territory and <a href="part-4.html#ch15">Chapter 15</a>'s defences apply — are marked with red dotted lines. The figure is the only one in the book that visits every chapter; that is its point. Watch the pulse for a minute. The thing you are looking at is the substrate of modern civilization — the same substrate the previous 235 figures were quietly preparing you to see at this final scale.</p>
+      <p class="diagram-caption">The trace, end to end. The pulse leaves your finger as voltage on a key, climbs through the abstraction layers of your machine — gates, CPU, kernel, libc, V8, JavaScript — descends into the network protocols (DNS, TCP, TLS, HTTP, IP, the wire itself) and out across continents, lands at Google's load balancer, threads through a Python microservice, queries a sharded inverted index, runs parallel ranking on many cores, and turns around. The return packet (lower arc, in green) carries an HTTP response back through TLS decryption, TCP reassembly, the wire, your kernel, your browser's HTML parser, and finally the GPU that rasterizes the pixels you read. Eighteen chapters of the book, all activated, in roughly two hundred milliseconds. Trust boundaries — places where data crosses from less-trusted to more-trusted territory and <a href="part-4#ch15">Chapter 15</a>'s defences apply — are marked with red dotted lines. The figure is the only one in the book that visits every chapter; that is its point. Watch the pulse for a minute. The thing you are looking at is the substrate of modern civilization — the same substrate the previous 235 figures were quietly preparing you to see at this final scale.</p>
     </div>
 
     <p>
@@ -2972,7 +2973,7 @@
 
     <div class="diagram-card" id="fig-18-2">
       <div class="diagram-label">Fig 18.2 — The civilization timeline · seven moments that made the rest possible</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.2 — The civilization timeline · seven moments that made the rest possible</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-28"><title id="svgt-part5-28">Fig 18.2 — The civilization timeline · seven moments that made the rest possible</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a few rooms · a few people · a few decades · the substrate of everything since</text>
 
         <!-- Timeline -->
@@ -3055,7 +3056,7 @@
     <p class="lead">
       Three forces are visibly reshaping the substrate as this book is
       written. <strong>Moore's Law is ending</strong> — the
-      transistor-density doubling we tracked from <a href="part-1.html#ch1">Chapter 1</a> has slowed
+      transistor-density doubling we tracked from <a href="part-1#ch1">Chapter 1</a> has slowed
       to a near-halt below 3 nanometres because we are running into
       single-atom-width physics. <strong>Quantum computing</strong> is
       going from laboratory demonstrations to early useful machines —
@@ -3075,7 +3076,7 @@
 
     <div class="diagram-card" id="fig-18-3">
       <div class="diagram-label">Fig 18.3 — Three things the next decade will change</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.3 — Three things the next decade will change</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-29"><title id="svgt-part5-29">Fig 18.3 — Three things the next decade will change</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">none of them replace classical · all of them sit alongside it as new substrates</text>
 
         <!-- Three columns -->
@@ -3162,12 +3163,12 @@
       The deeper claim under all three forces is about which intellectual
       content of this book will still be useful in fifty years. The
       mathematical primitives almost always survive — Boolean algebra
-      (<a href="part-1.html#ch2">Chapter 2</a>), set theory and relational
-      algebra (<a href="part-4.html#ch13">Chapter 13</a>), information
-      theory (<a href="part-3.html#ch8">Chapter 8</a>), graph theory
-      (<a href="part-3.html#ch9">Chapter 9</a>), control theory
-      (<a href="part-3.html#ch10">Chapter 10</a>), number theory
-      (<a href="part-4.html#ch14">Chapter 14</a>) — because they are
+      (<a href="part-1#ch2">Chapter 2</a>), set theory and relational
+      algebra (<a href="part-4#ch13">Chapter 13</a>), information
+      theory (<a href="part-3#ch8">Chapter 8</a>), graph theory
+      (<a href="part-3#ch9">Chapter 9</a>), control theory
+      (<a href="part-3#ch10">Chapter 10</a>), number theory
+      (<a href="part-4#ch14">Chapter 14</a>) — because they are
       independent of the substrate that computes them. The architectural
       patterns generally survive — the layered model, the
       kernel-as-mediator, the request-response cycle, the
@@ -3208,7 +3209,7 @@
 
     <div class="diagram-card" id="fig-18-4">
       <div class="diagram-label">Fig 18.4 — CS intersections · the disciplines that now run on the substrate</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.4 — CS intersections · the disciplines that now run on the substrate</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-30"><title id="svgt-part5-30">Fig 18.4 — CS intersections · the disciplines that now run on the substrate</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">computing as the lens · or computing as the substrate · either way, present everywhere</text>
 
         <!-- Center: CS -->
@@ -3318,7 +3319,7 @@
 
     <div class="diagram-card" id="fig-18-5">
       <div class="diagram-label">Fig 18.5 — The reading list · grouped by part of this book</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.5 — The reading list · grouped by part of this book</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-31"><title id="svgt-part5-31">Fig 18.5 — The reading list · grouped by part of this book</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">five shelves · one per part of this book · all of them durable</text>
 
         <g transform="translate(40,68)" font-family="DM Mono">
@@ -3369,7 +3370,7 @@
           </g>
         </g>
       </svg>
-      <p class="diagram-caption">Five shelves of further reading, one per part of this book. Each entry has been the reference text in its field for at least a decade and will likely remain so. <em>Code</em> by Petzold is the rare popular-science book that takes the reader from a flashlight signal all the way to a CPU; it overlaps <a href="part-1.html">Part I</a> in spirit. Stevens's <em>TCP/IP Illustrated</em> is the network bible and the source many of <a href="part-3.html#ch8">Chapter 8</a>–10's references descend from. Erickson's <em>Hacking: The Art of Exploitation</em> is unusual in that it teaches binary exploitation by actually walking through it on a Linux system the book provides; it is the deepest practical follow-up to <a href="part-1.html#ch3">Chapter 3</a> §05–§06. Kleppmann's <em>Designing Data-Intensive Applications</em> is, as of 2026, the single best book on modern distributed systems engineering. None of these are substitutes for <em>Under the Code</em>; all of them are deeper. The reading list is your map of where to go from here.</p>
+      <p class="diagram-caption">Five shelves of further reading, one per part of this book. Each entry has been the reference text in its field for at least a decade and will likely remain so. <em>Code</em> by Petzold is the rare popular-science book that takes the reader from a flashlight signal all the way to a CPU; it overlaps <a href="part-1">Part I</a> in spirit. Stevens's <em>TCP/IP Illustrated</em> is the network bible and the source many of <a href="part-3#ch8">Chapter 8</a>–10's references descend from. Erickson's <em>Hacking: The Art of Exploitation</em> is unusual in that it teaches binary exploitation by actually walking through it on a Linux system the book provides; it is the deepest practical follow-up to <a href="part-1#ch3">Chapter 3</a> §05–§06. Kleppmann's <em>Designing Data-Intensive Applications</em> is, as of 2026, the single best book on modern distributed systems engineering. None of these are substitutes for <em>Under the Code</em>; all of them are deeper. The reading list is your map of where to go from here.</p>
     </div>
   </section>
 
@@ -3435,8 +3436,8 @@
     </div>
 
     <div class="diagram-card" id="fig-18-6">
-      <div class="diagram-label">Fig 18.6 — The closing zoom-out · the inverse of where <a href="part-1.html#ch1">Chapter 1</a> began</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.6 — The closing zoom-out · the inverse of where Chapter 1 began</title>
+      <div class="diagram-label">Fig 18.6 — The closing zoom-out · the inverse of where <a href="part-1#ch1">Chapter 1</a> began</div>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-32"><title id="svgt-part5-32">Fig 18.6 — The closing zoom-out · the inverse of where Chapter 1 began</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">we started with one transistor · we end with the world running on top of them</text>
 
         <!-- Concentric layers from transistor out -->
@@ -3481,7 +3482,7 @@
 
         <text x="360" y="362" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">you can now see all the way through</text>
       </svg>
-      <p class="diagram-caption">The book's first diagram showed a single transistor. The book's last diagram shows what was built around it: a CPU, a kernel, a network, a cloud, a civilization. The same layered structure that <a href="part-1.html#ch1">Chapter 1</a> introduced as a single switch is now visible at every scale, in every direction. You have followed the chain from voltage on a wire to JSON on a screen and back. You have followed it from a thumb-sized transistor on a 1947 lab bench to a billion-transistor CPU running JavaScript inside a virtualised container inside a Kubernetes cluster inside an AWS region. You have followed it from Boole's algebra to elliptic-curve cryptography to the quantum computers that will retire it. The thing you can now see is not any one of these layers. It is the way they are all the same kind of object — a mathematical structure made physical, and re-realised in the layer above. <em>That</em> is what was inside the code.</p>
+      <p class="diagram-caption">The book's first diagram showed a single transistor. The book's last diagram shows what was built around it: a CPU, a kernel, a network, a cloud, a civilization. The same layered structure that <a href="part-1#ch1">Chapter 1</a> introduced as a single switch is now visible at every scale, in every direction. You have followed the chain from voltage on a wire to JSON on a screen and back. You have followed it from a thumb-sized transistor on a 1947 lab bench to a billion-transistor CPU running JavaScript inside a virtualised container inside a Kubernetes cluster inside an AWS region. You have followed it from Boole's algebra to elliptic-curve cryptography to the quantum computers that will retire it. The thing you can now see is not any one of these layers. It is the way they are all the same kind of object — a mathematical structure made physical, and re-realised in the layer above. <em>That</em> is what was inside the code.</p>
     </div>
 
     <p style="text-align: center; font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: var(--text-dark); margin: 80px 0 40px;">
@@ -3543,7 +3544,7 @@
     math · locate the security boundary · name the historical decision —
     is now yours.
   </p>
-  <a href="index.html" class="next-btn"><span>Back to the cover</span><span aria-hidden="true">→</span></a>
+  <a href="/" class="next-btn"><span>Back to the cover</span><span aria-hidden="true">→</span></a>
 
 </section>
 

@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Under the Code — Part II: The Software Layer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 
 <meta name="description" content="The Linux kernel, C, C++, Python. The languages humans write on top of the silicon.">
 <meta property="og:type" content="book.section">
 <meta property="og:site_name" content="Under the Code">
 <meta property="og:title" content="Under the Code — Part II: The Software Layer">
 <meta property="og:description" content="The Linux kernel, C, C++, Python. The languages humans write on top of the silicon.">
-<meta property="og:url" content="https://under.atheric.eu/part-2.html">
+<meta property="og:url" content="https://under.atheric.eu/part-2">
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,7 +20,7 @@
 <meta name="twitter:title" content="Under the Code — Part II: The Software Layer">
 <meta name="twitter:description" content="The Linux kernel, C, C++, Python. The languages humans write on top of the silicon.">
 <meta name="twitter:image" content="https://under.atheric.eu/og-image.png">
-<link rel="canonical" href="https://under.atheric.eu/part-2.html">
+<link rel="canonical" href="https://under.atheric.eu/part-2">
 
 <!-- Self-hosted fonts — local mirror of the Google css2 payload (see fonts.css).
      No request leaves the origin. Preloads cover the latin faces every page uses. -->
@@ -41,7 +42,7 @@
 
 
 <nav class="book-nav">
-  <a class="book-title" href="index.html"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
+  <a class="book-title" href="/"><em>Under the Code</em><span class="book-title-sub"> &nbsp;·&nbsp; A unified theory of how computers actually work</span></a>
   <div class="book-progress">PART II OF V · CHAPTERS 4—7</div>
 </nav>
 
@@ -98,7 +99,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 04 hero · The Code That Owns the Machine</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part2-1"><title id="svgt-part2-1">Chapter 04 hero · The Code That Owns the Machine</title>
       <defs><radialGradient id="glow4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow4)"/>
 
@@ -173,9 +174,9 @@
     <h2>The kernel is just a program</h2>
 
     <p class="lead">
-      It is easy, after <a href="part-1.html#ch1">Chapter 1</a>, to start thinking of the kernel as some abstract
-      authority — a kind of governing law of the machine. It is not. <a href="part-1.html#chBridge">The Bridge</a>
-      at the close of <a href="part-1.html">Part I</a> showed the hardware contract that makes a kernel possible at
+      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to start thinking of the kernel as some abstract
+      authority — a kind of governing law of the machine. It is not. <a href="part-1#chBridge">The Bridge</a>
+      at the close of <a href="part-1">Part I</a> showed the hardware contract that makes a kernel possible at
       all — the privilege bit, the trap, the MMU, the timer. This chapter examines what
       the program on the kernel side of that contract actually looks like. The kernel is
       a program: a set of instructions stored in memory, executed by the same CPU that
@@ -236,7 +237,7 @@
 
     <div class="diagram-card" id="fig-4-1">
       <div class="diagram-label">Fig 4.1 — The Tanenbaum–Torvalds debate, January 1992</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.1 — The Tanenbaum–Torvalds debate, January 1992</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-2"><title id="svgt-part2-2">Fig 4.1 — The Tanenbaum–Torvalds debate, January 1992</title>
         <!-- Background context strip -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">comp.os.minix · 29 January 1992 · the schism made public</text>
 
@@ -294,7 +295,7 @@
 
     <div class="diagram-card" id="fig-4-2">
       <div class="diagram-label">Fig 4.2 — Monolithic vs microkernel</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.2 — Monolithic vs microkernel</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-3"><title id="svgt-part2-3">Fig 4.2 — Monolithic vs microkernel</title>
         <g transform="translate(20,40)">
           <text x="160" y="0" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.85)" letter-spacing="0.15em">MONOLITHIC (Linux, Windows)</text>
           <rect x="0" y="20" width="320" height="50" rx="6" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
@@ -354,7 +355,7 @@
 
     <div class="diagram-card" id="fig-4-3">
       <div class="diagram-label">Fig 4.3 — A kernel module loading at runtime</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.3 — A kernel module loading at runtime</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-4"><title id="svgt-part2-4">Fig 4.3 — A kernel module loading at runtime</title>
         <!-- Kernel base -->
         <rect x="60" y="180" width="600" height="80" rx="8" fill="#1a1200" stroke="rgba(212,168,83,0.7)" stroke-width="2"/>
         <text x="360" y="206" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)" letter-spacing="0.15em">LINUX KERNEL · Ring 0</text>
@@ -480,7 +481,7 @@
 
     <div class="diagram-card" id="fig-4-4">
       <div class="diagram-label">Fig 4.4 — CFS chooses the leftmost node of a red-black tree</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.4 — CFS chooses the leftmost node of a red-black tree</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-5"><title id="svgt-part2-5">Fig 4.4 — CFS chooses the leftmost node of a red-black tree</title>
         <text x="360" y="30" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">RUNNABLE PROCESSES — keyed by virtual runtime</text>
 
         <line x1="360" y1="80" x2="220" y2="130" stroke="rgba(212,168,83,0.4)"/>
@@ -516,7 +517,7 @@
 
     <div class="diagram-card" id="fig-4-5">
       <div class="diagram-label">Fig 4.5 — Four schedulers, one workload</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.5 — Four schedulers, one workload</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-6"><title id="svgt-part2-6">Fig 4.5 — Four schedulers, one workload</title>
         <!-- Workload header -->
         <text x="60" y="32" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">workload (arrival time, burst length):</text>
         <text x="60" y="48" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">A: arrives t=0, runs 8 · B: arrives t=1, runs 4 · C: arrives t=2, runs 9 · D: arrives t=3, runs 5</text>
@@ -609,7 +610,7 @@
 
     <div class="diagram-card light-diagram" id="fig-4-6">
       <div class="diagram-label">Fig 4.6 — L = λ · W and the cliff at full utilization</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.6 — L = λ · W and the cliff at full utilization</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-7"><title id="svgt-part2-7">Fig 4.6 — L = λ · W and the cliff at full utilization</title>
         <!-- Top: tap + queue + meter -->
         <text x="80" y="38" font-family="DM Mono" font-size="10" fill="rgba(140,98,30,0.85)">arrival rate λ</text>
         <text x="80" y="52" font-family="DM Mono" font-size="9" fill="rgba(140,98,30,0.65)">requests / sec</text>
@@ -689,7 +690,7 @@
 
     <div class="diagram-card" id="fig-4-7">
       <div class="diagram-label">Fig 4.7 — A periodic task and the deadline it must meet</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.7 — A periodic task and the deadline it must meet</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-8"><title id="svgt-part2-8">Fig 4.7 — A periodic task and the deadline it must meet</title>
         <!-- Title -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a 100Hz brake-pulse controller — task period 10ms, deadline 10ms</text>
 
@@ -757,8 +758,8 @@
     <h2>The lie of unlimited memory</h2>
 
     <p class="lead">
-      <a href="part-1.html#ch1">Chapter 1</a> introduced virtual memory as the kernel's mechanism for isolating
-      processes; <a href="part-1.html#chBridge">the Bridge</a> showed the MMU and TLB as the silicon that
+      <a href="part-1#ch1">Chapter 1</a> introduced virtual memory as the kernel's mechanism for isolating
+      processes; <a href="part-1#chBridge">the Bridge</a> showed the MMU and TLB as the silicon that
       makes the mechanism enforceable. We saw the headline: every process believes it has
       its own private address space starting at zero. Now we look at the machinery that
       sustains the illusion — the page tables, the translation cache called the TLB, the
@@ -810,7 +811,7 @@
 
     <div class="diagram-card" id="fig-4-8">
       <div class="diagram-label">Fig 4.8 — x86-64 four-level page table walk</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.8 — x86-64 four-level page table walk</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-9"><title id="svgt-part2-9">Fig 4.8 — x86-64 four-level page table walk</title>
         <text x="360" y="30" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">VIRTUAL ADDRESS — 48 BITS</text>
 
         <g transform="translate(40,50)">
@@ -919,7 +920,7 @@
 
     <div class="diagram-card" id="fig-4-9">
       <div class="diagram-label">Fig 4.9 — A page fault, decision tree</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.9 — A page fault, decision tree</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-10"><title id="svgt-part2-10">Fig 4.9 — A page fault, decision tree</title>
         <!-- Trigger -->
         <rect x="280" y="20" width="160" height="40" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.85)" stroke-width="1.5"/>
         <text x="360" y="38" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">CPU access raises #PF</text>
@@ -1002,7 +1003,7 @@
 
     <div class="diagram-card" id="fig-4-10">
       <div class="diagram-label">Fig 4.10 — Fork, then write: when shared pages diverge</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.10 — Fork, then write: when shared pages diverge</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-11"><title id="svgt-part2-11">Fig 4.10 — Fork, then write: when shared pages diverge</title>
         <!-- Stage 1: just after fork -->
         <text x="180" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">① just after fork()</text>
 
@@ -1062,7 +1063,7 @@
 
     <div class="diagram-card" id="fig-4-11">
       <div class="diagram-label">Fig 4.11 — Dirty COW: the race that broke Linux</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.11 — Dirty COW: the race that broke Linux</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-12"><title id="svgt-part2-12">Fig 4.11 — Dirty COW: the race that broke Linux</title>
         <!-- Header -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">CVE-2016-5195 · 9 years in the kernel · disclosed Oct 2016</text>
 
@@ -1173,7 +1174,7 @@
 
     <div class="diagram-card" id="fig-4-12">
       <div class="diagram-label">Fig 4.12 — Filename → inode → data blocks</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.12 — Filename → inode → data blocks</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-13"><title id="svgt-part2-13">Fig 4.12 — Filename → inode → data blocks</title>
         <g transform="translate(40,40)">
           <rect x="0" y="0" width="180" height="180" rx="6" fill="#1a1a1a" stroke="rgba(100,150,255,0.5)"/>
           <text x="90" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.85)">DIRECTORY /home/yki</text>
@@ -1275,12 +1276,12 @@
       from where it left off, applying or discarding incomplete operations. Recovery
       takes seconds instead of hours. ext4 (Linux), NTFS (Windows), and HFS+ (older
       macOS) all journal. The technique is called <em>write-ahead logging</em>; we'll
-      meet it again in <a href="part-4.html#ch13">Chapter 13</a> when we get to databases.
+      meet it again in <a href="part-4#ch13">Chapter 13</a> when we get to databases.
     </p>
 
     <div class="diagram-card" id="fig-4-13">
       <div class="diagram-label">Fig 4.13 — Journaling: write your intent before doing it</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.13 — Journaling: write your intent before doing it</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-14"><title id="svgt-part2-14">Fig 4.13 — Journaling: write your intent before doing it</title>
         <!-- Title -->
         <text x="360" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">a write to a file, journaled</text>
 
@@ -1335,7 +1336,7 @@
 
     <div class="diagram-card light-diagram" id="fig-4-14">
       <div class="diagram-label">Fig 4.14 — Copy-on-write filesystem: never overwrite, just re-point</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.14 — Copy-on-write filesystem: never overwrite, just re-point</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-15"><title id="svgt-part2-15">Fig 4.14 — Copy-on-write filesystem: never overwrite, just re-point</title>
         <!-- Header -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(140,98,30,0.95)">file modification on a COW filesystem (btrfs / ZFS / APFS)</text>
 
@@ -1423,7 +1424,7 @@
         <tr><td>Message queue</td><td>A kernel-managed queue of typed messages between processes.</td><td>Structured communication; less common today.</td></tr>
         <tr><td>Semaphore</td><td>A kernel-managed counter used to coordinate access to a shared resource.</td><td>Synchronizing without sharing data — "is it my turn yet?"</td></tr>
         <tr><td>UNIX socket</td><td>Like a network socket, but local — kernel-mediated, with proper authentication.</td><td>Modern desktop IPC. Used by Docker, systemd, X11, Wayland.</td></tr>
-        <tr><td>Network socket</td><td>TCP or UDP connection, possibly to another machine.</td><td>Distributed systems. We'll cover these in depth in <a href="part-3.html">Part III</a>.</td></tr>
+        <tr><td>Network socket</td><td>TCP or UDP connection, possibly to another machine.</td><td>Distributed systems. We'll cover these in depth in <a href="part-3">Part III</a>.</td></tr>
       </tbody>
     </table>
 
@@ -1439,7 +1440,7 @@
 
     <div class="diagram-card" id="fig-4-15">
       <div class="diagram-label">Fig 4.15 — A pipe is a kernel ring buffer with two ends</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.15 — A pipe is a kernel ring buffer with two ends</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-16"><title id="svgt-part2-16">Fig 4.15 — A pipe is a kernel ring buffer with two ends</title>
         <!-- Writer process -->
         <rect x="40" y="60" width="140" height="80" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
         <text x="110" y="84" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)">writer</text>
@@ -1530,7 +1531,7 @@
 
     <div class="diagram-card" id="fig-4-16">
       <div class="diagram-label">Fig 4.16 — The UNIX philosophy, in five processes</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.16 — The UNIX philosophy, in five processes</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-17"><title id="svgt-part2-17">Fig 4.16 — The UNIX philosophy, in five processes</title>
         <!-- Five processes in a horizontal pipeline -->
         <g font-family="DM Mono" text-anchor="middle">
           <!-- cat -->
@@ -1632,7 +1633,7 @@
 
     <div class="diagram-card" id="fig-4-17">
       <div class="diagram-label">Fig 4.17 — A signal arrives mid-execution</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.17 — A signal arrives mid-execution</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-18"><title id="svgt-part2-18">Fig 4.17 — A signal arrives mid-execution</title>
         <!-- Process timeline -->
         <text x="50" y="74" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.85)" text-anchor="end">main</text>
         <line x1="60" y1="74" x2="660" y2="74" stroke="rgba(150,216,150,0.25)" stroke-dasharray="3,3"/>
@@ -1708,7 +1709,7 @@
 
     <div class="diagram-card" id="fig-4-18">
       <div class="diagram-label">Fig 4.18 — Two processes, one region, one gate</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.18 — Two processes, one region, one gate</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-19"><title id="svgt-part2-19">Fig 4.18 — Two processes, one region, one gate</title>
         <!-- Process A -->
         <rect x="40" y="60" width="140" height="80" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
         <text x="110" y="84" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)">process A</text>
@@ -1773,7 +1774,7 @@
       This abstraction is one of the most important pieces of glue in modern computing.
       It is why a web browser, a database client, a video conferencing app, and an
       SSH session all use roughly the same code shape: open a socket, write a request,
-      read a reply, close. We will spend <a href="part-3.html">Part III</a> opening up what happens between
+      read a reply, close. We will spend <a href="part-3">Part III</a> opening up what happens between
       <em>write</em> and <em>read</em> on a network socket — a journey through ARPANET,
       packet switching, TCP, DNS, TLS, HTTP, and the rest of the internet stack. For
       now: the kernel makes it look like a file. That, more than anything else, is the
@@ -1858,7 +1859,7 @@
 
     <div class="diagram-card" id="fig-4-19">
       <div class="diagram-label">Fig 4.19 — VMs vs containers</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.19 — VMs vs containers</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-20"><title id="svgt-part2-20">Fig 4.19 — VMs vs containers</title>
         <g transform="translate(20,20)">
           <text x="160" y="0" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.85)" letter-spacing="0.15em">VIRTUAL MACHINES</text>
           <rect x="0" y="20" width="320" height="40" rx="4" fill="#1a1a1a" stroke="rgba(100,150,255,0.4)"/>
@@ -1907,7 +1908,7 @@
 
     <div class="diagram-card" id="fig-4-20">
       <div class="diagram-label">Fig 4.20 — Namespaces: each container sees its own world</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.20 — Namespaces: each container sees its own world</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-21"><title id="svgt-part2-21">Fig 4.20 — Namespaces: each container sees its own world</title>
         <!-- The host -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">one shared kernel · three different "views"</text>
 
@@ -1965,7 +1966,7 @@
 
     <div class="diagram-card light-diagram" id="fig-4-21">
       <div class="diagram-label">Fig 4.21 — Cgroups: quotas as taps on the resource flow</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.21 — Cgroups: quotas as taps on the resource flow</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-22"><title id="svgt-part2-22">Fig 4.21 — Cgroups: quotas as taps on the resource flow</title>
         <!-- Header -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(140,98,30,0.95)">control groups (cgroups) — limit, account, isolate</text>
 
@@ -2054,7 +2055,7 @@
 
     <div class="diagram-card" id="fig-4-22">
       <div class="diagram-label">Fig 4.22 — eBPF: untrusted code in the kernel, made safe by proof</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 4.22 — eBPF: untrusted code in the kernel, made safe by proof</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-23"><title id="svgt-part2-23">Fig 4.22 — eBPF: untrusted code in the kernel, made safe by proof</title>
         <!-- User space -->
         <rect x="40" y="40" width="640" height="60" rx="6" fill="rgba(100,150,255,0.12)" stroke="rgba(60,100,180,0.5)"/>
         <text x="360" y="62" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.95)" letter-spacing="0.12em">USER SPACE — Ring 3</text>
@@ -2102,7 +2103,7 @@
         <rect x="40" y="320" width="640" height="32" rx="4" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
         <text x="360" y="340" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">KERNEL — Ring 0 — only verified BPF runs here</text>
       </svg>
-      <p class="diagram-caption">eBPF flips a forty-year-old assumption: that any code running in the kernel must be hand-vetted, audited, signed, and trusted. Instead, the kernel ships a <em>verifier</em> — a static analyser that mathematically proves an uploaded program is safe before letting it run. The proof obligations are concrete: every memory access must be in-bounds (so the program cannot read random kernel memory); every loop must be provably bounded (so the program cannot hang the kernel); the program must terminate within a fixed instruction budget. Programs that pass are JIT-compiled to native instructions and attached to hooks — system call entry, packet receive, function entry, scheduler tick — where they run in Ring 0 with no syscall overhead. Cilium uses eBPF for high-performance Kubernetes networking; bpftrace exposes a tracing language built on it; modern Linux observability is increasingly eBPF underneath. The pattern — sandboxed verified execution inside a privileged context — shows up again in <a href="part-3.html#ch12">Chapter 12</a> (browser JavaScript) and <a href="part-4.html#ch14">Chapter 14</a> (TLS), and is one of the most important architectural ideas of the last twenty years.</p>
+      <p class="diagram-caption">eBPF flips a forty-year-old assumption: that any code running in the kernel must be hand-vetted, audited, signed, and trusted. Instead, the kernel ships a <em>verifier</em> — a static analyser that mathematically proves an uploaded program is safe before letting it run. The proof obligations are concrete: every memory access must be in-bounds (so the program cannot read random kernel memory); every loop must be provably bounded (so the program cannot hang the kernel); the program must terminate within a fixed instruction budget. Programs that pass are JIT-compiled to native instructions and attached to hooks — system call entry, packet receive, function entry, scheduler tick — where they run in Ring 0 with no syscall overhead. Cilium uses eBPF for high-performance Kubernetes networking; bpftrace exposes a tracing language built on it; modern Linux observability is increasingly eBPF underneath. The pattern — sandboxed verified execution inside a privileged context — shows up again in <a href="part-3#ch12">Chapter 12</a> (browser JavaScript) and <a href="part-4#ch14">Chapter 14</a> (TLS), and is one of the most important architectural ideas of the last twenty years.</p>
     </div>
 
     <p>
@@ -2111,7 +2112,7 @@
       and Falco (runtime security monitoring) all build on it. The general pattern is
       important — providing a sandboxed, formally checked execution environment inside
       a privileged context — and we will see it again when we discuss browser security
-      models in <a href="part-3.html#ch12">Chapter 12</a> and TLS in <a href="part-4.html#ch14">Chapter 14</a>.
+      models in <a href="part-3#ch12">Chapter 12</a> and TLS in <a href="part-4#ch14">Chapter 14</a>.
     </p>
 
     <div class="insight-strip">
@@ -2144,8 +2145,8 @@
   </p>
 
   <p>
-    With this, the kernel is in view from both sides. <a href="part-1.html#chBridge">The Bridge</a> at the
-    close of <a href="part-1.html">Part I</a> showed it as silicon — privilege rings as a CPU bit, the trap as
+    With this, the kernel is in view from both sides. <a href="part-1#chBridge">The Bridge</a> at the
+    close of <a href="part-1">Part I</a> showed it as silicon — privilege rings as a CPU bit, the trap as
     a wire-level mechanism, the MMU as a hardware unit, the timer as the single piece
     of hardware that makes preemption possible. This chapter showed it as code. Same
     object, two genuinely different perspectives, and the kernel becomes legible only
@@ -2158,7 +2159,7 @@
     C — Ritchie at Bell Labs, 1972 — is the language every kernel in
     production today still uses. We'll see why pointers are the same idea as the
     addresses we just walked through, and why they are simultaneously the source of
-    C's power and the cause of every memory bug we discussed in <a href="part-1.html#ch3">Chapter 3</a>.
+    C's power and the cause of every memory bug we discussed in <a href="part-1#ch3">Chapter 3</a>.
     From C we'll move to C++, then to the radically different choice that is Python.
     Each language is a particular set of decisions about which kinds of mistakes to
     make easy and which to make hard.
@@ -2185,7 +2186,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 05 hero · The Language That Built Everything</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part2-24"><title id="svgt-part2-24">Chapter 05 hero · The Language That Built Everything</title>
       <defs><radialGradient id="glow5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow5)"/>
 
@@ -2274,7 +2275,7 @@
 
     <div class="diagram-card" id="fig-5-1">
       <div class="diagram-label">Fig 5.1 — One C source, many targets</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.1 — One C source, many targets</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-25"><title id="svgt-part2-25">Fig 5.1 — One C source, many targets</title>
         <!-- Source -->
         <rect x="290" y="30" width="140" height="64" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
         <text x="360" y="56" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,1)">main.c</text>
@@ -2398,7 +2399,7 @@
 
     <div class="diagram-card" id="fig-5-2">
       <div class="diagram-label">Fig 5.2 — UNIX's rewrite, in time</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.2 — UNIX's rewrite, in time</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-26"><title id="svgt-part2-26">Fig 5.2 — UNIX's rewrite, in time</title>
         <!-- Timeline axis -->
         <line x1="60" y1="180" x2="660" y2="180" stroke="rgba(212,168,83,0.5)" stroke-width="2"/>
 
@@ -2503,7 +2504,7 @@
 
     <div class="diagram-card" id="fig-5-3">
       <div class="diagram-label">Fig 5.3 — PDP-7 to PDP-11 · the machines that shaped C</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.3 — PDP-7 to PDP-11 · the machines that shaped C</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-27"><title id="svgt-part2-27">Fig 5.3 — PDP-7 to PDP-11 · the machines that shaped C</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">Bell Labs · Murray Hill · 1969–1973 · the four years that produced a portable kernel</text>
 
         <!-- Two machines, side-by-side -->
@@ -2645,7 +2646,7 @@
     </p>
 
     <p>
-      Recall from <a href="part-1.html#ch1">Chapter 1</a> that memory is a giant array of bytes, and each byte has an
+      Recall from <a href="part-1#ch1">Chapter 1</a> that memory is a giant array of bytes, and each byte has an
       integer address. On a 64-bit machine, those addresses run from <code>0x0000_0000_0000_0000</code>
       to <code>0xFFFF_FFFF_FFFF_FFFF</code>, which is more bytes than will ever exist.
       A <span class="key-term">pointer</span> in C is just one of those integer addresses,
@@ -2666,7 +2667,7 @@
 
     <div class="diagram-card" id="fig-5-4">
       <div class="diagram-label">Fig 5.4 — A pointer walks down memory</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.4 — A pointer walks down memory</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-28"><title id="svgt-part2-28">Fig 5.4 — A pointer walks down memory</title>
         <!-- Memory ribbon -->
         <text x="60" y="50" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">memory:</text>
         <g font-family="DM Mono" font-size="8" text-anchor="middle">
@@ -2740,7 +2741,7 @@
 
     <div class="diagram-card" id="fig-5-5">
       <div class="diagram-label">Fig 5.5 — a[i] ≡ *(a + i)</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.5 — a[i] ≡ *(a + i)</title>
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-29"><title id="svgt-part2-29">Fig 5.5 — a[i] ≡ *(a + i)</title>
         <!-- Left side: a[i] -->
         <g>
           <text x="180" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(212,168,83,0.9)">array notation</text>
@@ -2789,7 +2790,7 @@
       <code>i</code> too large does not raise an exception; it stores into whatever
       happens to be 4×<em>i</em> bytes past the start of <code>arr</code>. If that
       happens to be the saved return address on the stack — and you went back through
-      <a href="part-1.html#ch3">Chapter 3</a> — you have a buffer overflow vulnerability. The mechanism we drew on
+      <a href="part-1#ch3">Chapter 3</a> — you have a buffer overflow vulnerability. The mechanism we drew on
       paper there <em>is exactly this</em>, expressed as a few lines of C, compiled with
       bounds-check optimization off (which is to say: with a normal C compiler).
     </p>
@@ -2835,7 +2836,7 @@
 
     <div class="diagram-card" id="fig-5-6">
       <div class="diagram-label">Fig 5.6 — The heap, as a free list</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.6 — The heap, as a free list</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-30"><title id="svgt-part2-30">Fig 5.6 — The heap, as a free list</title>
         <!-- Heap region label -->
         <text x="60" y="40" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">heap region (handed by kernel via brk/mmap):</text>
 
@@ -2902,7 +2903,7 @@
 
     <div class="diagram-card" id="fig-5-7">
       <div class="diagram-label">Fig 5.7 — Leak vs use-after-free</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.7 — Leak vs use-after-free</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-31"><title id="svgt-part2-31">Fig 5.7 — Leak vs use-after-free</title>
         <!-- Left: leak -->
         <text x="180" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(232,120,120,0.95)">memory leak</text>
         <g transform="translate(40,60)">
@@ -2989,7 +2990,7 @@
 
     <div class="diagram-card" id="fig-5-8">
       <div class="diagram-label">Fig 5.8 — How "trust the programmer" deletes your bug check</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.8 — How &quot;trust the programmer&quot; deletes your bug check</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-32"><title id="svgt-part2-32">Fig 5.8 — How &quot;trust the programmer&quot; deletes your bug check</title>
         <!-- Source -->
         <rect x="40" y="30" width="640" height="74" rx="6" fill="#0f0f10" stroke="rgba(212,168,83,0.5)"/>
         <text x="60" y="54" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)">// the programmer's intent: refuse to operate if overflow has happened</text>
@@ -3033,7 +3034,7 @@
 
     <div class="diagram-card" id="fig-5-9">
       <div class="diagram-label">Fig 5.9 — A NULL dereference, traced</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.9 — A NULL dereference, traced</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-33"><title id="svgt-part2-33">Fig 5.9 — A NULL dereference, traced</title>
         <!-- Stages -->
         <g font-family="DM Mono" font-size="9">
           <!-- 1. user code -->
@@ -3095,7 +3096,7 @@
         <text x="360" y="248" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">"Segmentation fault (core dumped)"</text>
         <text x="360" y="262" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">— the message every C programmer has seen ten thousand times</text>
       </svg>
-      <p class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge — The Boundary, in <a href="part-1.html">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 — <code>SIGSEGV</code> — to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. All of this happens in roughly the time it takes to read this sentence.</p>
+      <p class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge — The Boundary, in <a href="part-1">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 — <code>SIGSEGV</code> — to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. All of this happens in roughly the time it takes to read this sentence.</p>
     </div>
 
     <h3>The optimizer's contract, the programmer's homework</h3>
@@ -3140,7 +3141,7 @@
 
     <div class="diagram-card" id="fig-5-10">
       <div class="diagram-label">Fig 5.10 — Where C still runs in 2026</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.10 — Where C still runs in 2026</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-34"><title id="svgt-part2-34">Fig 5.10 — Where C still runs in 2026</title>
         <!-- Stacked horizontal bar -->
         <text x="60" y="34" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">software domains by share-of-C in production code:</text>
 
@@ -3199,7 +3200,7 @@
 
     <div class="diagram-card" id="fig-5-11">
       <div class="diagram-label">Fig 5.11 — The C family tree · half a century of descendants</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 5.11 — The C family tree · half a century of descendants</title>
+      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-35"><title id="svgt-part2-35">Fig 5.11 — The C family tree · half a century of descendants</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">C didn't just survive — almost every working language since is a descendant or a reaction</text>
 
         <!-- Root: C 1973 -->
@@ -3354,7 +3355,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 06 hero · When C Needed To Think In Objects</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part2-36"><title id="svgt-part2-36">Chapter 06 hero · When C Needed To Think In Objects</title>
       <defs><radialGradient id="glow6" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow6)"/>
 
@@ -3455,7 +3456,7 @@
 
     <div class="diagram-card" id="fig-6-1">
       <div class="diagram-label">Fig 6.1 — The 1980s software crisis, in one chart</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.1 — The 1980s software crisis, in one chart</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-37"><title id="svgt-part2-37">Fig 6.1 — The 1980s software crisis, in one chart</title>
         <!-- Axes -->
         <line x1="80" y1="240" x2="660" y2="240" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
         <line x1="80" y1="60" x2="80" y2="240" stroke="rgba(150,216,150,0.5)" stroke-width="1.5"/>
@@ -3566,7 +3567,7 @@
 
     <div class="diagram-card" id="fig-6-2">
       <div class="diagram-label">Fig 6.2 — C++, in time</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.2 — C++, in time</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-38"><title id="svgt-part2-38">Fig 6.2 — C++, in time</title>
         <!-- Timeline -->
         <line x1="60" y1="160" x2="660" y2="160" stroke="rgba(212,168,83,0.5)" stroke-width="2"/>
 
@@ -3689,7 +3690,7 @@
 
     <div class="diagram-card" id="fig-6-3">
       <div class="diagram-label">Fig 6.3 — A class, an object, and a vtable</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.3 — A class, an object, and a vtable</title>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-39"><title id="svgt-part2-39">Fig 6.3 — A class, an object, and a vtable</title>
         <!-- Source -->
         <rect x="40" y="20" width="640" height="60" rx="4" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
         <text x="60" y="40" font-family="DM Mono" font-size="10" fill="rgba(180,200,220,0.85)">class Shape  { virtual double area() = 0; virtual void draw() = 0; };</text>
@@ -3763,7 +3764,7 @@
 
     <div class="diagram-card light-diagram" id="fig-6-4">
       <div class="diagram-label">Fig 6.4 — Inheritance: same vptr slot, different function</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.4 — Inheritance: same vptr slot, different function</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-40"><title id="svgt-part2-40">Fig 6.4 — Inheritance: same vptr slot, different function</title>
         <!-- Tree -->
         <rect x="280" y="20" width="160" height="50" rx="6" fill="#fdfcf9" stroke="rgba(140,98,30,0.7)"/>
         <text x="360" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(140,98,30,0.95)">Shape</text>
@@ -3847,7 +3848,7 @@
 
     <div class="diagram-card" id="fig-6-5">
       <div class="diagram-label">Fig 6.5 — RAII: scope acquires, scope releases</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.5 — RAII: scope acquires, scope releases</title>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-41"><title id="svgt-part2-41">Fig 6.5 — RAII: scope acquires, scope releases</title>
         <!-- C version -->
         <text x="180" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">C — manual cleanup, error-prone</text>
         <rect x="40" y="50" width="280" height="220" rx="4" fill="#0f0f10" stroke="rgba(232,120,120,0.4)"/>
@@ -3933,7 +3934,7 @@
 
     <div class="diagram-card" id="fig-6-6">
       <div class="diagram-label">Fig 6.6 — qsort vs std::sort, same algorithm, different cost</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.6 — qsort vs std::sort, same algorithm, different cost</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-42"><title id="svgt-part2-42">Fig 6.6 — qsort vs std::sort, same algorithm, different cost</title>
         <!-- Left: qsort -->
         <text x="180" y="34" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">C — qsort with function-pointer comparator</text>
         <rect x="40" y="48" width="280" height="100" rx="4" fill="#0f0f10" stroke="rgba(232,120,120,0.4)"/>
@@ -4018,7 +4019,7 @@
 
     <div class="diagram-card" id="fig-6-7">
       <div class="diagram-label">Fig 6.7 — Three pointer flavours, three ownership semantics</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.7 — Three pointer flavours, three ownership semantics</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-43"><title id="svgt-part2-43">Fig 6.7 — Three pointer flavours, three ownership semantics</title>
         <!-- Three columns -->
         <!-- unique_ptr -->
         <text x="120" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">unique_ptr</text>
@@ -4083,7 +4084,7 @@
 
     <div class="diagram-card light-diagram" id="fig-6-8">
       <div class="diagram-label">Fig 6.8 — A move is "I'm done with this, take it"</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.8 — A move is &quot;I'm done with this, take it&quot;</title>
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-44"><title id="svgt-part2-44">Fig 6.8 — A move is &quot;I'm done with this, take it&quot;</title>
         <!-- Before -->
         <text x="180" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(140,98,30,0.95)">before — auto v2 = std::move(v1);</text>
 
@@ -4121,7 +4122,7 @@
 
     <div class="diagram-card" id="fig-6-9">
       <div class="diagram-label">Fig 6.9 — C++ standards · the language eating its own complexity</div>
-      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg"><title>Fig 6.9 — C++ standards · the language eating its own complexity</title>
+      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-45"><title id="svgt-part2-45">Fig 6.9 — C++ standards · the language eating its own complexity</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">six standards in twenty-five years · each one rewrote what "modern C++" meant</text>
 
         <!-- Timeline axis -->
@@ -4274,7 +4275,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🔐</span>
       <p class="insight-text">
-        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid-but-unspecified state, and reading it is undefined behaviour the compiler will not warn about. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code — the modern descendant of the buffer overflow from <a href="part-1.html#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
+        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid-but-unspecified state, and reading it is undefined behaviour the compiler will not warn about. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code — the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
       </p>
     </div>
 
@@ -4300,7 +4301,7 @@
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;"><title>Chapter 07 hero · The Language That Chose Humans Over Machines</title>
+    <svg width="480" height="480" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part2-46"><title id="svgt-part2-46">Chapter 07 hero · The Language That Chose Humans Over Machines</title>
       <defs><radialGradient id="glow7" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.18"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <circle cx="240" cy="240" r="200" fill="url(#glow7)"/>
 
@@ -4411,7 +4412,7 @@
 
     <div class="diagram-card" id="fig-7-1">
       <div class="diagram-label">Fig 7.1 — The two pipelines, side by side</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.1 — The two pipelines, side by side</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-47"><title id="svgt-part2-47">Fig 7.1 — The two pipelines, side by side</title>
         <!-- Compiled (C) pipeline, top -->
         <text x="360" y="34" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(150,216,150,0.95)">compiled — done once, ahead of time</text>
 
@@ -4509,7 +4510,7 @@
 
     <div class="diagram-card" id="fig-7-2">
       <div class="diagram-label">Fig 7.2 — Python's slow conquest</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.2 — Python's slow conquest</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-48"><title id="svgt-part2-48">Fig 7.2 — Python's slow conquest</title>
         <line x1="60" y1="160" x2="660" y2="160" stroke="rgba(212,168,83,0.5)" stroke-width="2"/>
 
         <g font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" text-anchor="middle">
@@ -4618,7 +4619,7 @@
 
     <div class="diagram-card light-diagram" id="fig-7-3">
       <div class="diagram-label">Fig 7.3 — Duck typing: behaviour, not lineage</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.3 — Duck typing: behaviour, not lineage</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-49"><title id="svgt-part2-49">Fig 7.3 — Duck typing: behaviour, not lineage</title>
         <!-- Two unrelated classes -->
         <rect x="60"  y="50" width="180" height="100" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.6)"/>
         <text x="150" y="74" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(60,120,60,0.95)">class Duck</text>
@@ -4679,7 +4680,7 @@
 
     <div class="diagram-card" id="fig-7-4">
       <div class="diagram-label">Fig 7.4 — Two Python threads, one GIL</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.4 — Two Python threads, one GIL</title>
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-50"><title id="svgt-part2-50">Fig 7.4 — Two Python threads, one GIL</title>
         <!-- Time axis -->
         <line x1="80" y1="180" x2="660" y2="180" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
         <text x="660" y="200" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" text-anchor="end">time →</text>
@@ -4728,7 +4729,7 @@
 
     <div class="diagram-card" id="fig-7-5">
       <div class="diagram-label">Fig 7.5 — asyncio: cooperative scheduling on one thread</div>
-      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.5 — asyncio: cooperative scheduling on one thread</title>
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-51"><title id="svgt-part2-51">Fig 7.5 — asyncio: cooperative scheduling on one thread</title>
         <!-- Single thread lane -->
         <line x1="80" y1="120" x2="660" y2="120" stroke="rgba(212,168,83,0.5)" stroke-width="1.5"/>
 
@@ -4770,7 +4771,7 @@
         <text x="360" y="60" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.55)">cooperative scheduling — no GIL contention because there is only one thread</text>
         <text x="360" y="180" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">THE PYTHON ANSWER TO MASSIVE I/O CONCURRENCY: BYPASS THREADS ENTIRELY</text>
       </svg>
-      <p class="diagram-caption"><code>asyncio</code>, introduced in Python 3.4, sidesteps the GIL by sidestepping threads. A single thread runs an event loop. Functions marked <code>async def</code> are <em>coroutines</em>; when they hit <code>await</code> on an I/O operation, they suspend and the event loop runs a different ready coroutine. The thread is never blocked. A single Python process can handle tens of thousands of simultaneous network connections this way — far more than the GIL would allow with threads, with no concurrency bugs because there is no parallelism. The trade is that <code>async</code> is contagious — it propagates through every function that calls an async function — and integrating async with synchronous libraries is famously awkward. JavaScript made the same trade in <a href="part-3.html#ch12">Chapter 12</a>; the event loop is one of the great twentieth-century compromises in software design.</p>
+      <p class="diagram-caption"><code>asyncio</code>, introduced in Python 3.4, sidesteps the GIL by sidestepping threads. A single thread runs an event loop. Functions marked <code>async def</code> are <em>coroutines</em>; when they hit <code>await</code> on an I/O operation, they suspend and the event loop runs a different ready coroutine. The thread is never blocked. A single Python process can handle tens of thousands of simultaneous network connections this way — far more than the GIL would allow with threads, with no concurrency bugs because there is no parallelism. The trade is that <code>async</code> is contagious — it propagates through every function that calls an async function — and integrating async with synchronous libraries is famously awkward. JavaScript made the same trade in <a href="part-3#ch12">Chapter 12</a>; the event loop is one of the great twentieth-century compromises in software design.</p>
     </div>
 
   </section>
@@ -4802,7 +4803,7 @@
 
     <div class="diagram-card" id="fig-7-6">
       <div class="diagram-label">Fig 7.6 — CPython's pipeline, in detail</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.6 — CPython's pipeline, in detail</title>
+      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-52"><title id="svgt-part2-52">Fig 7.6 — CPython's pipeline, in detail</title>
         <!-- Source -->
         <rect x="40" y="60" width="120" height="60" rx="6" fill="#0f0f10" stroke="rgba(212,168,83,0.5)"/>
         <text x="100" y="84" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">a + b * c</text>
@@ -4847,7 +4848,7 @@
 
     <div class="diagram-card" id="fig-7-7">
       <div class="diagram-label">Fig 7.7 — Why Python is slow (and why nobody minds)</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.7 — Why Python is slow (and why nobody minds)</title>
+      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-53"><title id="svgt-part2-53">Fig 7.7 — Why Python is slow (and why nobody minds)</title>
         <!-- Title -->
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">cycles per arithmetic operation, log scale</text>
 
@@ -4909,7 +4910,7 @@
 
     <div class="diagram-card" id="fig-7-8">
       <div class="diagram-label">Fig 7.8 — How NumPy actually does work</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.8 — How NumPy actually does work</title>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-54"><title id="svgt-part2-54">Fig 7.8 — How NumPy actually does work</title>
         <!-- Layer 1: Python -->
         <rect x="120" y="40" width="480" height="56" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
         <text x="360" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">Python user code</text>
@@ -4943,7 +4944,7 @@
 
     <div class="diagram-card" id="fig-7-9">
       <div class="diagram-label">Fig 7.9 — The same matmul, two ways</div>
-      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.9 — The same matmul, two ways</title>
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-55"><title id="svgt-part2-55">Fig 7.9 — The same matmul, two ways</title>
         <!-- Pure Python bar -->
         <rect x="60" y="60" width="540" height="40" rx="4" fill="rgba(232,120,120,0.4)" stroke="rgba(232,120,120,0.8)"/>
         <text x="40"  y="78" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">pure</text>
@@ -4992,7 +4993,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🔐</span>
       <p class="insight-text">
-        <strong>Python's three sharp edges.</strong> Pickle deserialization is arbitrary code execution by design — <code>pickle.loads()</code> on attacker-controlled bytes lets the attacker run any Python they want. Every web framework that accepted pickled session cookies has been bitten by this; the fix is to never deserialize pickled data you didn't sign. PyPI typosquatting: <code>requests</code> and <code>requestz</code> are one keystroke apart, and the malicious package can <code>os.system()</code> on install. <code>eval()</code> and <code>exec()</code> on user input are the same data-as-code mistake that gives <a href="part-4.html#ch13">Chapter 13</a>'s SQL injection its name. Dynamism is convenience; dynamism is also attack surface.
+        <strong>Python's three sharp edges.</strong> Pickle deserialization is arbitrary code execution by design — <code>pickle.loads()</code> on attacker-controlled bytes lets the attacker run any Python they want. Every web framework that accepted pickled session cookies has been bitten by this; the fix is to never deserialize pickled data you didn't sign. PyPI typosquatting: <code>requests</code> and <code>requestz</code> are one keystroke apart, and the malicious package can <code>os.system()</code> on install. <code>eval()</code> and <code>exec()</code> on user input are the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name. Dynamism is convenience; dynamism is also attack surface.
       </p>
     </div>
 
@@ -5019,7 +5020,7 @@
     once again, a story about people: Shannon, Baran, Davies, Cerf, Berners-Lee, Eich.
     And it is, once again, a story about silicon and the abstractions we build over it.
   </p>
-  <a href="part-3.html" class="next-btn"><span>Continue to Part III — The Network</span><span aria-hidden="true">→</span></a>
+  <a href="part-3" class="next-btn"><span>Continue to Part III — The Network</span><span aria-hidden="true">→</span></a>
 
 </section>
 

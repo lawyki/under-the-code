@@ -379,6 +379,10 @@ function recordTerm(term, html, termStart, termEnd, part) {
   const key = normalizeKey(term);
   if (!key || key in glossary) return null;
 
+  // Store the page reference extensionless so links match the site's
+  // extensionless URL scheme (Cloudflare Pages serves /part-1, not /part-1.html).
+  part = part.replace(/\.html$/, '');
+
   const sectionId = findContainingSection(html, termEnd);
   if (!sectionId) return null;
 

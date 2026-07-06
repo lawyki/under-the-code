@@ -348,9 +348,9 @@
       }
       const h2 = section.querySelector('h2');
       const sLabel = section.querySelector('.section-number');
-      const part = (window.location.pathname.split('/').pop() || '').toLowerCase();
+      const part = (window.location.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '');
       return {
-        part: part || 'index.html',
+        part: part || 'index',
         section: id,
         chapterId,
         chapterNum: formatChapterNum(chapterId),
@@ -401,7 +401,7 @@
 
   const card = document.createElement('a');
   card.className = 'resume-card';
-  card.href = progress.part + '#' + progress.section;
+  card.href = String(progress.part || '').replace(/\.html$/, '') + '#' + progress.section;
   card.setAttribute('aria-label', 'Resume reading where you left off');
 
   const eyebrow = document.createElement('div');
@@ -531,9 +531,10 @@
   }
 
   function buildTipContent(entry) {
-    const currentPart = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
-    const here = (entry.part || '').toLowerCase() === currentPart;
-    const href = (here ? '' : entry.part) + '#' + entry.section;
+    const currentPart = ((window.location.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '')) || 'index';
+    const entryPart = (entry.part || '').toLowerCase().replace(/\.html$/, '');
+    const here = entryPart === currentPart;
+    const href = (here ? '' : entryPart) + '#' + entry.section;
     const sectionLabel = entry.section_label
       ? entry.section_label.split('—')[0].trim()
       : '';
@@ -598,7 +599,7 @@
   // -------- ATTACH TOOLTIPS ---------------------------------------------------
   function attachTooltips(glossary) {
     const entries = glossary.entries || {};
-    const currentPart = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    const currentPart = ((window.location.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '')) || 'index';
     const candidates = document.querySelectorAll('strong, em, span.key-term');
     const anchored = new Set();  // keys that already have a first-use id
 
@@ -615,7 +616,7 @@
       if (!entry) return;
 
       const section = el.closest('section.section');
-      const inFirstUseSection = (entry.part || '').toLowerCase() === currentPart
+      const inFirstUseSection = (entry.part || '').toLowerCase().replace(/\.html$/, '') === currentPart
         && section !== null
         && section.id === entry.section;
 
@@ -682,7 +683,7 @@
       groups.get(L).forEach(e => {
         const sLabel = e.section_label ? e.section_label.split('—')[0].trim() : '';
         const meta = [e.chapter_num, sLabel ? '§' + sLabel : ''].filter(Boolean).join(' · ');
-        const href = (e.part || '') + '#' + e.section;
+        const href = (e.part || '').replace(/\.html$/, '') + '#' + e.section;
         html += '<article class="glossary-entry">'
           + '<a class="glossary-entry-anchor" href="' + href + '">'
           +   '<div class="glossary-entry-term">' + escapeHtml(e.term) + '</div>'
@@ -712,7 +713,7 @@
 
     const link = document.createElement('a');
     link.className = 'glossary-footer-link';
-    link.href = 'glossary.html';
+    link.href = 'glossary';
     const count = (glossary.entries && Object.keys(glossary.entries).length) || 0;
     link.innerHTML = 'Glossary · ' + count + ' terms <span aria-hidden="true">→</span>';
     footer.appendChild(link);
