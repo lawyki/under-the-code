@@ -1,0 +1,316 @@
+/* ============================================================================
+   Part III — CHART ROOM. The cable chart and the engineer's blueprint.
+   Identity layer loaded after book.css; overrides reading furniture only.
+   Curriculum spine invariant: .book-nav (Playfair + DM Mono + gold), glossary
+   tooltips, fullscreen chrome, resume/sync chips — the gold thread.
+
+   Subject → form: Part III's subject is distance — voltage crossing continents,
+   datagrams re-routed at every hop. Its ancestors are the documents that
+   planned exactly that: submarine-cable charts, Prussian-blue blueprints,
+   coordinate grids, great-circle routes, surveyors' corner ticks.
+
+   Motif evolution (cyclic, hand-set — see UNDER.md §8): the part is a cable-
+   laying voyage. Each chapter hero carries a POSITION FIX meta line advancing
+   London → mid-Atlantic → New York across ch8–ch12 (0 → 3,459 nm, landfall at
+   the browser chapter); the opener chart shows the route ahead with one
+   waypoint lit, the closer shows the same route completed.
+   ========================================================================== */
+
+:root {
+  --dark: #0d2740;            /* prussian plates, chapter-nav, code ground */
+  --dark-card: #12314e;
+  --warm-white: #eef2f4;      /* chart paper */
+  --warm-light: #e2e9ee;
+  --warm-mid: #b6c4cf;
+  --accent: #2f9dc4;          /* signal cyan (mid) — part furniture accent */
+  --accent-dim: #10719d;
+  --text-dark: #122a3f;
+  --text-body: #24384a;
+  --text-muted: #64788a;
+  --sans: 'Karla', sans-serif;
+  --mono: 'Space Mono', monospace;
+  /* part-local */
+  --cr-cyan: #4fc4e6;
+  --cr-route: #e07a3f;
+  --cr-plate: #0d2740;
+  --cr-deep: #081b2e;
+  --cr-grid: rgba(79, 196, 230, 0.09);
+  --cr-disp: 'Space Grotesk', sans-serif;
+}
+
+/* --- spine re-pins ---------------------------------------------------------- */
+.book-title { font-family: 'Playfair Display', Georgia, serif; }
+.book-title em { color: #d4a853; }
+.glossary-tip-term, .glossary-tip-link { color: #d4a853; }
+.resume-title, .resume-arrow { color: #d4a853; }
+.sync-chip-link { color: #d4a853; }
+.glossary-footer-link, .account-footer-link { color: #d4a853; }
+.book-progress { font-family: 'DM Mono', monospace; }
+.glossary-tip-term, .resume-title, .sync-chip-link { font-family: 'Playfair Display', Georgia, serif; }
+.glossary-tip-def { font-family: 'DM Sans', sans-serif; }
+.glossary-tip-link, .resume-eyebrow, .resume-meta, .sync-chip-eyebrow,
+.glossary-footer-link, .account-footer-link { font-family: 'DM Mono', monospace; }
+.colophon-pane__name { font-family: 'Playfair Display', Georgia, serif; }
+.colophon summary, .colophon-pane__role, .colophon-pane__note,
+.colophon-pane__links { font-family: 'DM Mono', monospace; }
+
+/* --- openers: the chart plate ------------------------------------------------ */
+.part-opener {
+  background:
+    linear-gradient(var(--cr-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cr-grid) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 30%, rgba(79, 196, 230, 0.09) 0%, transparent 60%),
+    var(--cr-plate);
+  background-size: 48px 48px, 48px 48px, auto, auto;
+}
+/* plate frame with surveyor's corner ticks */
+.part-opener::before {
+  content: '';
+  position: absolute;
+  inset: 22px;
+  background: none;
+  border: 1px solid rgba(79, 196, 230, 0.22);
+  pointer-events: none;
+}
+.part-opener::after {
+  content: '';
+  position: absolute;
+  inset: 21px;
+  background-image:
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan));
+  background-size: 18px 2px, 2px 18px, 18px 2px, 2px 18px, 18px 2px, 2px 18px, 18px 2px, 2px 18px;
+  background-position: top left, top left, top right, top right,
+                       bottom left, bottom left, bottom right, bottom right;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .part-opener::before, .part-opener::after { display: none; }
+}
+/* the route chart behind the opener (markup: .cr-arc, aria-hidden) */
+.cr-arc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.cr-arc .cr-route-path {
+  stroke-dasharray: 7 9;
+  animation: crRoute 90s linear infinite;   /* ambient drift along the route */
+}
+@keyframes crRoute { to { stroke-dashoffset: -1600; } }
+
+.part-label { color: var(--cr-cyan); }
+.part-opener h1 {
+  font-family: var(--cr-disp);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+.part-opener h1 em { font-style: normal; color: var(--cr-cyan); }
+.part-tagline {
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 400;
+  color: rgba(223, 234, 242, 0.66);
+}
+
+.chapter-hero {
+  background:
+    linear-gradient(var(--cr-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cr-grid) 1px, transparent 1px),
+    radial-gradient(ellipse at 70% 50%, rgba(79, 196, 230, 0.08) 0%, transparent 60%),
+    var(--cr-plate);
+  background-size: 48px 48px, 48px 48px, auto, auto;
+}
+.chapter-hero::before { background: none; }
+.chapter-label { color: var(--cr-cyan); }
+.chapter-label::before { background: var(--cr-cyan); }
+.chapter-hero h1 {
+  font-family: var(--cr-disp);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.chapter-hero h1 em { font-style: normal; color: var(--cr-cyan); }
+.meta-value { color: rgba(223, 234, 242, 0.72); }
+
+.toc-card {
+  background: rgba(8, 27, 46, 0.85);
+  border: 1px solid rgba(79, 196, 230, 0.24);
+  border-radius: 2px;
+  position: relative;
+}
+.toc-card::before {
+  content: '';
+  position: absolute;
+  top: 6px; left: 6px;
+  width: 12px; height: 12px;
+  border-top: 1.5px solid var(--cr-cyan);
+  border-left: 1.5px solid var(--cr-cyan);
+  opacity: 0.8;
+}
+.toc-card:hover { border-color: rgba(79, 196, 230, 0.55); }
+.toc-num { color: var(--cr-cyan); }
+.toc-title { font-family: var(--cr-disp); font-weight: 500; }
+
+.chapter-nav { background: var(--cr-deep); border-bottom: 1px solid rgba(79, 196, 230, 0.16); }
+.nav-item:hover, .nav-item.active { color: var(--cr-cyan); border-bottom-color: var(--cr-cyan); }
+
+/* --- reading furniture ------------------------------------------------------- */
+h2 {
+  font-family: var(--cr-disp);
+  font-weight: 700;
+  font-size: 2.45rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+h3 {
+  font-family: var(--cr-disp);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.42rem;
+}
+h4 { font-family: var(--sans); font-weight: 600; }
+.lead { font-family: var(--sans); font-weight: 400; font-size: 1.3rem; line-height: 1.68; }
+.lead::first-letter {
+  font-family: var(--cr-disp);
+  font-weight: 700;
+  font-size: 4rem;
+  line-height: 0.85;
+  margin: 8px 12px 0 0;
+  color: var(--accent-dim);
+}
+.section-number::before { box-shadow: 0 0 8px rgba(47, 157, 196, 0.5); }
+
+.pull-quote {
+  border-left: 3px solid var(--accent-dim);
+  background: rgba(16, 113, 157, 0.07);
+}
+.pull-quote p {
+  font-family: var(--cr-disp);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.24rem;
+}
+
+.section-intro { border-left-color: var(--accent-dim); }
+
+/* --- figures: blueprint plates ----------------------------------------------- */
+.diagram-card {
+  background:
+    linear-gradient(var(--cr-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cr-grid) 1px, transparent 1px),
+    var(--cr-plate);
+  background-size: 36px 36px, 36px 36px, auto;
+  border: 1px solid rgba(79, 196, 230, 0.32);
+  border-radius: 2px;
+}
+.diagram-card::before { background: none; }
+.diagram-card::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  background-image:
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan)),
+    linear-gradient(var(--cr-cyan), var(--cr-cyan)), linear-gradient(var(--cr-cyan), var(--cr-cyan));
+  background-size: 14px 2px, 2px 14px, 14px 2px, 2px 14px, 14px 2px, 2px 14px, 14px 2px, 2px 14px;
+  background-position: top left, top left, top right, top right,
+                       bottom left, bottom left, bottom right, bottom right;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2;
+}
+.diagram-label { color: rgba(79, 196, 230, 0.7); }
+.diagram-caption {
+  color: rgba(223, 234, 242, 0.58);
+  border: 1px solid rgba(79, 196, 230, 0.22);
+  background: rgba(8, 27, 46, 0.6);
+  padding: 12px 16px;
+  border-radius: 1px;
+}
+.diagram-caption strong { color: var(--cr-cyan); }
+.diagram-caption a, .diagram-caption a:visited { color: rgba(79, 196, 230, 0.85); }
+
+.light-diagram {
+  background:
+    linear-gradient(rgba(16, 113, 157, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 113, 157, 0.05) 1px, transparent 1px),
+    var(--warm-light);
+  background-size: 36px 36px, 36px 36px, auto;
+  border: 1px solid rgba(16, 113, 157, 0.2);
+  border-radius: 2px;
+}
+.scale-shock {
+  background:
+    linear-gradient(var(--cr-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cr-grid) 1px, transparent 1px),
+    var(--cr-plate);
+  background-size: 36px 36px, 36px 36px, auto;
+  border: 1px solid rgba(79, 196, 230, 0.32);
+  border-radius: 2px;
+}
+.scale-shock::before { background: none; }
+
+.code-block { background: var(--cr-deep); border-radius: 2px; border: 1px solid rgba(79, 196, 230, 0.2); }
+.code-block .kw { color: var(--cr-cyan); }
+
+.insight-strip { border-radius: 2px; border-left: 3px solid rgba(79, 196, 230, 0.6); }
+.insight-icon { color: var(--cr-cyan); }
+.insight-text strong { color: var(--cr-cyan); }
+
+.math-callout {
+  background: linear-gradient(135deg, var(--warm-light), #dde7ee);
+  border-left-color: var(--accent-dim);
+  border-radius: 0 2px 2px 0;
+}
+
+.key-term { background: #0a1f33; color: var(--cr-cyan); border-radius: 2px; }
+
+.timeline-item::before { box-shadow: 0 0 12px rgba(47, 157, 196, 0.4); }
+.timeline-title { font-family: var(--cr-disp); font-weight: 500; }
+
+.step-title { font-family: var(--cr-disp); font-weight: 500; }
+.process-step { border: 1px solid rgba(79, 196, 230, 0.24); border-radius: 2px; }
+
+.bit { border-radius: 2px; }
+.bit.on { background: var(--cr-cyan); color: var(--cr-deep); }
+
+.truth-table { border-radius: 2px; }
+.concept-card { border-radius: 2px; }
+.concept-title { font-family: var(--cr-disp); font-weight: 500; }
+.memory-diagram { border-radius: 2px; }
+.summary-table.dark { border-radius: 2px; }
+
+h3 { background-image: linear-gradient(to right, rgba(47, 157, 196, 0.5), rgba(47, 157, 196, 0)); }
+
+.chapter-end { background: var(--cr-plate); }
+.next-btn {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-radius: 2px;
+  background: var(--accent-dim);
+  color: #fff;
+}
+
+.divider {
+  background: none;
+  border-top: 2px dashed rgba(16, 113, 157, 0.45);
+  height: 0;
+  width: 90px;
+}
+
+@media print {
+  .part-opener, .chapter-hero, .diagram-card, .light-diagram, .scale-shock { background-image: none !important; }
+  .part-opener::before, .part-opener::after, .diagram-card::after { display: none !important; }
+  .cr-arc { display: none !important; }
+}
