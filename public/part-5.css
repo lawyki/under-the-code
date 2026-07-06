@@ -1,0 +1,300 @@
+/* ============================================================================
+   Part V — QUORUM. Many machines acting as one.
+   Identity layer loaded after book.css; overrides reading furniture only.
+   Curriculum spine invariant: .book-nav (Playfair + DM Mono + gold), glossary
+   tooltips, fullscreen chrome, resume/sync chips — the gold thread.
+
+   Subject → form: Part V ends the arc — ten thousand computers that must
+   agree. Where Parts I–IV grow more physical and archival, V is the
+   datacenter seen from orbit: void indigo, a sparse constellation, two
+   accents in phase (violet + teal — the subject is coordination), glass
+   panels, luminous quorum rings. Deliberately the most modern identity, so
+   the shelf travels from sand to abstraction.
+
+   Motif evolution (cyclic, hand-set — see UNDER.md §8): the constellation
+   gains nodes as the curriculum completes. The opener shows five stars — the
+   five parts — with I–IV lit and V still hollow, breathing; the closer (End
+   of the Book) shows all five lit and fully meshed: quorum reached. Chapter
+   CLUSTER meta lines zoom out 8 cores → 10,000 machines → one curriculum,
+   and each hero's aurora phase-shifts violet → balanced → teal across
+   ch16–ch18. Gradient type is headline-scale only (owner mitigation): never
+   body, never figures.
+   ========================================================================== */
+
+:root {
+  --dark: #14111f;            /* glass plates, chapter-nav, code ground */
+  --dark-card: #1d1930;
+  --warm-white: #f3f2f8;      /* lilac white */
+  --warm-light: #e9e7f2;
+  --warm-mid: #b9b5cc;
+  --accent: #7a68e0;          /* violet — part furniture accent */
+  --accent-dim: #5a49c0;
+  --text-dark: #1c1930;
+  --text-body: #2c2940;
+  --text-muted: #737086;
+  --sans: 'Manrope', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  /* part-local */
+  --qm-disp: 'Syne', sans-serif;
+  --qm-violet: #a08cff;
+  --qm-teal: #4fd8c2;
+  --qm-void: #0e0c1a;
+  --qm-hairline: rgba(255, 255, 255, 0.09);
+}
+
+/* --- spine re-pins ---------------------------------------------------------- */
+.book-title { font-family: 'Playfair Display', Georgia, serif; }
+.book-title em { color: #d4a853; }
+.glossary-tip-term, .glossary-tip-link { color: #d4a853; }
+.resume-title, .resume-arrow { color: #d4a853; }
+.sync-chip-link { color: #d4a853; }
+.glossary-footer-link, .account-footer-link { color: #d4a853; }
+.book-progress { font-family: 'DM Mono', monospace; }
+.glossary-tip-term, .resume-title, .sync-chip-link { font-family: 'Playfair Display', Georgia, serif; }
+.glossary-tip-def { font-family: 'DM Sans', sans-serif; }
+.glossary-tip-link, .resume-eyebrow, .resume-meta, .sync-chip-eyebrow,
+.glossary-footer-link, .account-footer-link { font-family: 'DM Mono', monospace; }
+.colophon-pane__name { font-family: 'Playfair Display', Georgia, serif; }
+.colophon summary, .colophon-pane__role, .colophon-pane__note,
+.colophon-pane__links { font-family: 'DM Mono', monospace; }
+
+/* --- openers: the constellation ---------------------------------------------- */
+.part-opener {
+  background:
+    radial-gradient(ellipse 900px 420px at 24% 18%, rgba(122, 104, 224, 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 800px 380px at 78% 76%, rgba(79, 216, 194, 0.12) 0%, transparent 65%),
+    var(--qm-void);
+}
+.part-opener::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle 1.2px at 30px 40px, rgba(255, 255, 255, 0.45) 1px, transparent 1.4px),
+    radial-gradient(circle 1px at 80px 100px, rgba(160, 140, 255, 0.38) 0.8px, transparent 1.2px);
+  background-size: 190px 170px, 120px 140px;
+  pointer-events: none;
+}
+.part-label { color: var(--qm-teal); }
+.part-opener h1 {
+  font-family: var(--qm-disp);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  background: linear-gradient(100deg, #f2f0fb 30%, var(--qm-violet) 68%, var(--qm-teal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.part-opener h1 em { font-style: normal; }
+.part-tagline {
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 300;
+  color: rgba(232, 229, 244, 0.62);
+}
+.qm-const {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.qm-const .qm-breathe {
+  animation: qmBreathe 3.6s ease-in-out infinite;
+}
+@keyframes qmBreathe {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+
+.chapter-hero {
+  background:
+    radial-gradient(ellipse 900px 460px at 70% 30%, rgba(122, 104, 224, 0.2) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 380px at 20% 85%, rgba(79, 216, 194, 0.1) 0%, transparent 65%),
+    var(--qm-void);
+}
+.chapter-hero::before {
+  background-image:
+    radial-gradient(circle 1.2px at 30px 40px, rgba(255, 255, 255, 0.4) 1px, transparent 1.4px),
+    radial-gradient(circle 1px at 80px 100px, rgba(160, 140, 255, 0.34) 0.8px, transparent 1.2px);
+  background-size: 190px 170px, 120px 140px;
+}
+/* the aurora phase-shifts across the part: violet → balanced → teal */
+#ch16 .chapter-hero {
+  background:
+    radial-gradient(ellipse 900px 460px at 70% 30%, rgba(122, 104, 224, 0.26) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 380px at 20% 85%, rgba(79, 216, 194, 0.06) 0%, transparent 65%),
+    var(--qm-void);
+}
+#ch18 .chapter-hero {
+  background:
+    radial-gradient(ellipse 900px 460px at 70% 30%, rgba(122, 104, 224, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 380px at 20% 85%, rgba(79, 216, 194, 0.18) 0%, transparent 65%),
+    var(--qm-void);
+}
+.chapter-label { color: var(--qm-teal); }
+.chapter-label::before { background: var(--qm-teal); }
+.chapter-hero h1 {
+  font-family: var(--qm-disp);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.chapter-hero h1 em { font-style: normal; color: var(--qm-violet); }
+.meta-value { color: rgba(232, 229, 244, 0.72); }
+
+.toc-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--qm-hairline);
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.toc-card:hover { border-color: rgba(160, 140, 255, 0.45); }
+.toc-num { color: var(--qm-teal); }
+.toc-title { font-family: var(--qm-disp); font-weight: 700; font-size: 1.12rem; }
+
+.chapter-nav { background: #0b0916; border-bottom: 1px solid var(--qm-hairline); }
+.nav-item:hover, .nav-item.active { color: var(--qm-violet); border-bottom-color: var(--qm-violet); }
+
+/* --- reading furniture -------------------------------------------------------- */
+h2 {
+  font-family: var(--qm-disp);
+  font-weight: 700;
+  font-size: 2.35rem;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+h3 {
+  font-family: var(--qm-disp);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.35rem;
+}
+h4 { font-family: var(--sans); font-weight: 600; }
+.lead { font-family: var(--sans); font-weight: 400; font-size: 1.26rem; line-height: 1.7; }
+.lead::first-letter {
+  font-family: var(--qm-disp);
+  font-weight: 800;
+  font-size: 3.9rem;
+  line-height: 0.85;
+  margin: 8px 14px 0 0;
+  color: var(--accent);
+}
+.section-number::before { box-shadow: 0 0 10px rgba(122, 104, 224, 0.55); }
+
+.pull-quote {
+  border: 1px solid rgba(122, 104, 224, 0.25);
+  border-left-width: 1px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(122, 104, 224, 0.08), rgba(79, 216, 194, 0.07));
+}
+.pull-quote p {
+  font-family: var(--qm-disp);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.16rem;
+  line-height: 1.55;
+}
+
+.section-intro { border-left-color: var(--accent-dim); }
+
+/* --- figures: glass panels ----------------------------------------------------- */
+.diagram-card {
+  background:
+    radial-gradient(ellipse 600px 300px at 30% 0%, rgba(122, 104, 224, 0.16) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 260px at 85% 100%, rgba(79, 216, 194, 0.09) 0%, transparent 65%),
+    var(--dark);
+  border: 1px solid var(--qm-hairline);
+  border-radius: 20px;
+}
+.diagram-card::before { background: none; }
+.diagram-label {
+  color: rgba(232, 229, 244, 0.42);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.diagram-label::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--qm-teal);
+  box-shadow: 0 0 12px rgba(79, 216, 194, 0.8);
+  flex-shrink: 0;
+  animation: livePulse 2.4s ease-in-out -1.2s infinite;  /* out of phase with section dots */
+}
+.diagram-caption { color: rgba(232, 229, 244, 0.5); }
+.diagram-caption strong { color: var(--qm-violet); }
+.diagram-caption a, .diagram-caption a:visited { color: var(--qm-violet); }
+
+.light-diagram {
+  background: var(--warm-light);
+  border: 1px solid rgba(90, 73, 192, 0.16);
+  border-radius: 20px;
+}
+.scale-shock {
+  background:
+    radial-gradient(ellipse 600px 300px at 30% 0%, rgba(122, 104, 224, 0.16) 0%, transparent 65%),
+    var(--dark);
+  border: 1px solid var(--qm-hairline);
+  border-radius: 20px;
+}
+.scale-shock::before { background: none; }
+
+.code-block { background: #100d1e; border-radius: 12px; border: 1px solid var(--qm-hairline); }
+.code-block .kw { color: var(--qm-violet); }
+
+.insight-strip { border-radius: 12px; border-left: 3px solid var(--qm-teal); }
+.insight-icon { color: var(--qm-teal); }
+.insight-text strong { color: var(--qm-violet); }
+
+.math-callout {
+  background: linear-gradient(135deg, var(--warm-light), #e2dfef);
+  border-left-color: var(--accent-dim);
+  border-radius: 0 12px 12px 0;
+}
+
+.key-term { background: #191430; color: var(--qm-violet); border-radius: 6px; }
+
+.timeline-item::before { box-shadow: 0 0 12px rgba(122, 104, 224, 0.5); }
+.timeline-title { font-family: var(--qm-disp); font-weight: 600; font-size: 1.05rem; }
+
+.step-title { font-family: var(--qm-disp); font-weight: 600; }
+.process-step { border: 1px solid rgba(160, 140, 255, 0.22); border-radius: 12px; }
+
+.bit { border-radius: 6px; }
+.bit.on { background: var(--qm-violet); color: var(--qm-void); }
+
+.truth-table { border-radius: 12px; }
+.concept-card { border-radius: 12px; }
+.concept-title { font-family: var(--qm-disp); font-weight: 600; font-size: 0.98rem; }
+.memory-diagram { border-radius: 12px; }
+.summary-table.dark { border-radius: 12px; }
+
+h3 { background-image: linear-gradient(to right, rgba(122, 104, 224, 0.5), rgba(122, 104, 224, 0)); }
+
+.chapter-end { background: var(--qm-void); }
+.next-btn {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-radius: 100px;
+  background: linear-gradient(100deg, var(--accent), #4f41a8);
+  color: #fff;
+}
+
+.divider { background: var(--accent); }
+
+@media print {
+  .part-opener, .chapter-hero, .diagram-card, .scale-shock { background-image: none !important; }
+  .part-opener::before, .chapter-hero::before { display: none !important; }
+  .part-opener h1 {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    color: #f2f0fb !important;
+  }
+  .qm-const { display: none !important; }
+}
