@@ -168,6 +168,57 @@ Both extended in the book's own narrative register (mechanism first, then anchor
 | 3 | **Figure a11y** (§6 P1.1): 222 diagram SVGs had no `role`/`<title>` link | Every in-book figure already had a descriptive `<title>`; added `role="img"` + `aria-labelledby` (unique `<title>` id) to all 241 figure SVGs + the cover. Verified 0 unlabelled. |
 | 4 | **No favicon** — every load logged a `/favicon.ico` 404 (a real console error the §7 exit claim missed) | Inline SVG data-URI favicon (gold "U" on near-black) on all 8 pages. Data URI = no request, so zero-third-party holds. |
 
+### Pass-2 verification (2026-07-06, second model, same day)
+
+An independent audit of the pass-2 commits. Verdicts on the prior work: the
+mechanical track shipped correctly (extensionless hrefs/canonicals/sitemap,
+`_headers` caching, a11y labelling all verified independently — a corrected
+a11y scan that excludes the injected fullscreen-button icon SVGs reports 0
+problems on all 241 figure SVGs); the two prose insertions targeted the right
+gaps and were kept, with register corrections (both opened with the same
+"not luck" move — a tell, the phrase appears nowhere else in the book; math
+markup normalised to the book's `<em>` idiom; "meet in the middle" dropped
+from the DH paragraph — loaded phrase one chapter before MITM attacks).
+
+The figure track was sound but its **sweep had a blind spot**: it compared
+content bboxes against the `viewBox` only, so text crossing the border of its
+own *card inside the frame* passed. A text-vs-containing-rect scan plus
+screenshots of all 45 touched figures found 13 more defective figures, all
+fixed (commit `def7bc0`):
+
+- **Fig 13.5** — the ACID table was drawn *on top of* both scenario panels,
+  occluding their RECOVERY rows. Moved below; viewBox extended.
+- **Fig BR.3** — IDT handler names crossed the table edge; row 128's cause
+  and handler overlapped each other.
+- **Fig 3.10** — bottom caption sat on both cards' bottoms; gadget comments
+  overflowed. **Fig 4.13** — journal-entry lines ran ~40px past their boxes.
+  **Fig 6.5** — the C error-path line overran the card. **Fig 11.12** —
+  ROOT/INTERMEDIATE/LEAF sub-lines wider than their boxes. **Fig 12.11** —
+  CSP verdicts crossed the row edge. One-line overflows in **15.1, 15.6,
+  15.9, 15.10, 16.5, 16.11, 17.10**.
+- **Fig 15.7** — the prior pass had shrunk the vendor labels to satisfy its
+  viewBox sweep while they still crossed the row border by ~30px (a
+  metric-satisfying fix, not an actual one). Labels moved to the title line,
+  right-anchored at the card's inner edge.
+- **Flash-at-origin, `animateMotion` variant** — the prior cx/cy fix missed
+  delayed `animateMotion` dots (5 circles, figs 2.x gate/transistor + 9.11),
+  which sit at the SVG origin until their first `begin`. Base `opacity="0"`.
+- **Fig 4.11** — "madvise" lane label still clipped after the prior
+  shortening; both thread labels moved above their lanes.
+- **Fig 15.1** — "DDoS" as an *example of* denial-of-service is circular;
+  now "resource exhaustion".
+
+Prose hunts re-run independently: ten high-risk explanations sampled across
+all parts (B-tree, SHA-256 rounds, AES modes, TCP/AIMD incl. Chiu–Jain,
+Paxos/Raft quorum intersection, FLP, CAP, floats, GIL, DH) — mechanism
+present in every one; all four part closers → openers verified. No further
+incomplete-explanation or missing-seam defects; the pass-2 assessment of the
+connective tissue stands.
+
+**Lesson for future passes:** a bbox-vs-viewBox sweep is necessary but not
+sufficient; pair it with a text-vs-containing-rect scan *and* screenshots of
+every touched figure. Metrics can be satisfied while the defect remains.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -240,3 +291,13 @@ reports 0 of 242 SVGs overflowing; all 241 figures + cover carry `role="img"` +
 card all function with extensionless hrefs. Not yet redeployed — verify live-site
 parity after push, and confirm the `_headers` `Cache-Control` is served by
 Cloudflare (curl the response headers on `glossary.json`).
+
+Pass-2 verification exit state (2026-07-06, after commit `def7bc0`): all of the
+above re-verified locally against a server that mimics Cloudflare's extensionless
+routing (200 on `/part-N`, 308 on `.html`), plus: text-vs-rect scan clean,
+corrected a11y scan 0 findings, all 45 pass-2-touched figures screenshot-reviewed.
+**Still not deployed** — the verification agent's push to `main` was blocked by
+permissions. Live (checked 2026-07-06) still serves the pre-pass-2 state:
+canonical is `.html`, `glossary.json` has `max-age=0, must-revalidate`. After the
+owner pushes: re-check those two curls and spot-check figs 13.5 / BR.3 / 15.7 at
+1440 and 375.
