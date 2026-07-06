@@ -32,18 +32,29 @@
   .book-nav {
     background: var(--black);
     color: white;
-    padding: 14px 60px;
+    /* Exactly 48px tall — .chapter-nav { top: 48px } and .part-opener
+       { margin-top: 48px } are calibrated against this. Fixed height (not
+       padding-driven) so a wrapping title can never push the bar taller and
+       slide content underneath it. */
+    height: 48px;
+    padding: 0 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 24px;
+    overflow: hidden;
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 200;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .book-title { font-family: var(--serif); font-size: 14px; letter-spacing: 0.02em; }
+  .book-title { font-family: var(--serif); font-size: 14px; letter-spacing: 0.02em; color: inherit; text-decoration: none; white-space: nowrap; }
   .book-title em { color: var(--accent); font-style: italic; }
-  .book-progress { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; }
+  .book-progress { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; white-space: nowrap; }
+  /* Progressive trimming keeps the bar one line at every width: drop the
+     subtitle first, then the part/chapter readout on phones. */
+  @media (max-width: 960px) { .book-title-sub { display: none; } }
+  @media (max-width: 620px) { .book-progress { display: none; } }
 
   .part-opener {
     background: var(--black); color: white;
@@ -136,7 +147,9 @@
   .concept-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
 
   .key-term { background: var(--dark); color: var(--accent); font-family: var(--mono); font-size: 0.85em; padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 0 2px; }
-  code { background: var(--warm-light); color: var(--text-dark); font-family: var(--mono); font-size: 0.88em; padding: 2px 6px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.05); }
+  /* overflow-wrap: long unbreakable tokens (URLs, identifiers) must not widen
+     the page on narrow viewports; breaks only when a token would overflow. */
+  code { background: var(--warm-light); color: var(--text-dark); font-family: var(--mono); font-size: 0.88em; padding: 2px 6px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.05); overflow-wrap: anywhere; }
 
   .insight-strip { background: var(--dark); border-radius: 12px; padding: 24px 32px; margin: 40px 0; display: flex; align-items: flex-start; gap: 20px; }
   .insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; color: var(--accent); }
@@ -167,7 +180,7 @@
   .summary-table.dark th { color: rgba(255,255,255,0.4); border-bottom-color: rgba(255,255,255,0.1); }
   .summary-table.dark td { border-bottom-color: rgba(255,255,255,0.05); }
 
-  .truth-table { background: var(--warm-light); border-radius: 12px; padding: 28px; margin: 32px 0; display: inline-block; border: 1px solid rgba(0,0,0,0.05); }
+  .truth-table { background: var(--warm-light); border-radius: 12px; padding: 28px; margin: 32px 0; display: inline-block; border: 1px solid rgba(0,0,0,0.05); max-width: 100%; overflow-x: auto; }
   .truth-table h4 { margin-top: 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-dim); }
   .truth-table table { border-collapse: collapse; font-family: var(--mono); font-size: 14px; }
   .truth-table th, .truth-table td { padding: 8px 16px; text-align: center; border: 1px solid rgba(0,0,0,0.1); }
@@ -188,7 +201,7 @@
   .step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.5; }
   .arrow { color: var(--accent); font-size: 20px; }
 
-  .memory-diagram { background: var(--dark); border-radius: 12px; padding: 24px; margin: 32px 0; font-family: var(--mono); font-size: 12px; }
+  .memory-diagram { background: var(--dark); border-radius: 12px; padding: 24px; margin: 32px 0; font-family: var(--mono); font-size: 12px; overflow-x: auto; }
   .memory-row { display: grid; grid-template-columns: 80px 1fr 100px; gap: 12px; padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.7); }
   .memory-row:last-child { border-bottom: none; }
   .memory-row .addr { color: var(--accent); }
@@ -733,6 +746,10 @@
     .process-flow { flex-direction: column; }
     .arrow { transform: rotate(90deg); }
     .diagram-grid-2 { grid-template-columns: 1fr; }
+    /* Wide reference tables scroll in place instead of widening the page.
+       (display:block wraps the rows in an anonymous shrink-wrapped table, so
+       this is mobile-only — desktop keeps true full-width table layout.) */
+    .summary-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   }
 
   /* --- Glossary references and floating tooltip ------------------------------ */
@@ -927,6 +944,7 @@
     font-size: 1.25rem;
     color: var(--accent);
     margin-bottom: 8px;
+    overflow-wrap: anywhere;
   }
   .glossary-entry-def {
     font-family: var(--sans);
@@ -934,6 +952,7 @@
     color: rgba(245, 240, 230, 0.78);
     line-height: 1.6;
     margin-bottom: 10px;
+    overflow-wrap: anywhere;
   }
   .glossary-entry-loc {
     font-family: var(--mono);
