@@ -104,6 +104,70 @@ Objective breakage only; no restyling, no content changes.
 | 7 | **Metadata inconsistencies** — README claimed "~210 figures" (actual: 242 incl. cover, as the cover itself states); `package.json` said `UNLICENSED` while the repo is CC BY-NC 4.0 | README count corrected with breakdown; `license: "CC-BY-NC-4.0"`. |
 | 8 | **Index carried a `.liquid-bg` layer it can never use** (only fullscreen figures activate it; the index has none — glossary.html correctly ships without it) and its two infinite drift animations idled forever | Removed from `index.html`. |
 
+## 4b. Defects found & fixed in pass 2 (2026-07-06)
+
+Pass 2 was two-track: a pedagogical read of the whole book as a learner (defect
+classes: incomplete explanations, missing connective tissue, figure defects) and
+the register-neutral mechanical items from §6.
+
+### Pedagogy — figures (the largest track)
+
+A scripted sweep sampled every figure's SMIL timeline (0–12 s) and compared the
+union content bbox against the `viewBox` on all 242 SVGs. **27 figures overflowed**
+their frame; a per-element pass then named each offender. All fixed, and the sweep
+now reports **0 overflows**. Two root causes dominated:
+
+- **Broken SVG foreign content (3 figures: 15.7, 14.2, 18.5).** HTML `<span
+  class="key-term">` / `<em>` had been used inside SVG `<text>`. HTML tags inside
+  SVG text force the parser out of foreign-content mode, so roughly half of each of
+  these figures was rendering as ghost HTML *below* the SVG. Replaced with plain
+  text / SVG-native `<tspan font-style="italic">`. (A book-wide scan found only
+  these; `<em>` in figs 14.2/18.5 was the same bug and was swept up too.)
+- **Text/box overflow (23 figures).** Long caption/annotation lines and labels ran
+  past the right or bottom edge and were clipped by the card. Fixed per figure:
+  wrapped long lines, right-anchored or shortened labels, rescaled fig 5.10's bar
+  row, extended `viewBox` height where the layout genuinely needed the room (2.8,
+  2.12, 3.6, 15.1, 18.1), and flattened fig 14.11's message arrows off the text
+  they were crossing.
+- **Flash-at-origin (26 animated circles, book-wide).** Dots animated with
+  `<animate attributeName="cx/cy">` but no base `cx`/`cy` rendered at the SVG origin
+  (0,0) until their delayed `begin` fired. Added base coordinates (and `opacity="0"`
+  where a delayed fade-in applies).
+- **Invisible caption emphasis (CSS).** `p strong { color: var(--text-dark) }` and
+  the default link color made `<strong>`/links inside dark `.diagram-caption`
+  near-black on the dark card. Restated both for the dark ground, with
+  `.light-diagram` overrides.
+
+### Pedagogy — prose
+
+The book's connective tissue is genuinely strong: every chapter closes with a
+"What you now understand" / explicit "seam to Chapter N", and every part has an
+opener + closer that states why the next layer exists. No missing-seam defects were
+found. Two **incomplete-explanation** defects were — concepts whose *outcome* was
+stated but whose load-bearing *mechanism* lived only in a figure caption or nowhere.
+Both extended in the book's own narrative register (mechanism first, then anchor):
+
+- **Ch2, two's complement (part-1).** "Subtraction is just addition… the bits work
+  out — the carries cancel in exactly the right way" was the whole justification.
+  Added the modular-arithmetic reason: negation is 2ⁿ − x, so a + (−b) = 2ⁿ + (a −
+  b); the 2ⁿ is a 1 one place past the register's widest bit, it falls off the end,
+  and a − b remains. The wheel figure (2.8) that follows is now the intuition anchor
+  for a stated mechanism, not a substitute for one.
+- **Ch14, Diffie–Hellman (part-4).** Prose asserted both parties "end up knowing the
+  same secret" and Fig 14.7 shows both landing on 2, but the reason they *must*
+  coincide — exponentiation commutes, (gᵃ)ᵇ = (gᵇ)ᵃ = g^ab — appeared nowhere.
+  Added the one line of algebra plus why the eavesdropper's remaining step runs
+  backward against the discrete-log asymmetry.
+
+### Mechanical (§6 items)
+
+| # | Item | Fix |
+|---|---|---|
+| 1 | **308 redirect chain** (§6 P3.12): every internal href used the `.html` form while Cloudflare serves extensionless, costing a 308 per navigation; canonicals pointed at `.html` while readers land extensionless | All internal hrefs, canonicals, `og:url`, and `sitemap.xml` locs rewritten extensionless (`/part-1`). `book.js` now strips `.html` wherever it derives the current page or builds a glossary/resume href — which also fixes a latent bug the 308 already caused: same-page glossary links rebuilt as `part-N.html#x` (full nav + redirect) instead of a bare in-page anchor. `build-glossary.js` stores the page ref extensionless. |
+| 2 | **glossary.json re-fetched per page** (§6 P2.5) | `public/_headers` gives `glossary.json` `max-age=86400, stale-while-revalidate=604800`, so navigations within a day are served from cache with no network; the localStorage parse-cache (keyed by the `generated` stamp) still short-circuits parsing. Fonts get a 1-year immutable cache. glossary.json regenerated (stale since 2026-05-04): 516 terms, extensionless parts, definitions/sections refreshed to current HTML. |
+| 3 | **Figure a11y** (§6 P1.1): 222 diagram SVGs had no `role`/`<title>` link | Every in-book figure already had a descriptive `<title>`; added `role="img"` + `aria-labelledby` (unique `<title>` id) to all 241 figure SVGs + the cover. Verified 0 unlabelled. |
+| 4 | **No favicon** — every load logged a `/favicon.ico` 404 (a real console error the §7 exit claim missed) | Inline SVG data-URI favicon (gold "U" on near-black) on all 8 pages. Data URI = no request, so zero-third-party holds. |
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -117,9 +181,8 @@ Objective breakage only; no restyling, no content changes.
 ## 6. Prioritized improvement backlog (later passes — needs owner sign-off)
 
 **P1 — reader-facing polish**
-1. **Figure a11y**: the 222 diagram SVGs have no `role="img"`/`<title>`; screen
-   readers get only the label/caption text around them. A generated pass could add
-   `aria-labelledby` pointing at each card's `.diagram-label`.
+1. ~~**Figure a11y**~~ — DONE in pass 2. All 241 figure SVGs + the cover carry
+   `role="img"` + `aria-labelledby` → their descriptive `<title>`.
 2. **Emoji as icons** in `.insight-icon`/`.concept-icon` (⚡ etc.) — inconsistent
    cross-platform rendering; the book otherwise draws everything as SVG.
 3. **Chapter-nav active state**: `.nav-item.active` styling exists but no scroll
@@ -128,8 +191,12 @@ Objective breakage only; no restyling, no content changes.
    dismissal is awkward. Consider tap-toggle semantics.
 
 **P2 — performance**
-5. Version-stamp `glossary.json` (e.g. `glossary.json?v=N`) + long-cache headers,
-   or inline the generated version into a `<script>` per page at build time.
+5. ~~Version-stamp `glossary.json` + long-cache headers~~ — DONE in pass 2 via the
+   load-once route: `public/_headers` caches `glossary.json` for a day with
+   `stale-while-revalidate`, so navigations within the window skip the network
+   entirely; localStorage still short-circuits parsing. (A URL version stamp was not
+   added — book.js is static and cannot know it without a build step; the header
+   policy plus the `generated`-keyed localStorage cache achieve the same effect.)
 6. Part pages are 313–473 KB HTML (largely SVG). Fine gzipped (~60–90 KB), but a
    figure-lazy-mount pass (template + IntersectionObserver) would cut initial DOM
    size (~5,000–6,000 nodes/page) if mobile INP ever becomes a concern.
@@ -145,13 +212,11 @@ Objective breakage only; no restyling, no content changes.
 10. A "part N of V" progress indicator exists in the header but there is no
     per-chapter progress bar; the rail covers desktop only.
 11. `docs/plan.txt` / `docs/figures.txt` "last verified" dates are stale
-    (2026-05-01); re-verify after content edits.
-12. **Cloudflare Pages pretty-URLs**: the host 308-redirects `/part-1.html` →
-    `/part-1`, so every internal link (all hrefs use the `.html` form) costs one
-    redirect round-trip, and canonical/OG URLs point at the `.html` form while
-    readers land on the extensionless one. Either switch internal hrefs +
-    canonicals to extensionless, or disable the redirect. Pre-existing, harmless,
-    but worth aligning.
+    (2026-05-01); re-verify after content edits. (`glossary.json` itself was
+    regenerated in pass 2 and is now current.)
+12. ~~**Cloudflare Pages pretty-URLs**~~ — DONE in pass 2. Internal hrefs,
+    canonicals, `og:url`, and sitemap are all extensionless; `book.js` normalises
+    `.html` so both forms still work for returning visitors' stored progress.
 
 ## 7. Verification protocol used (repeat after any pass)
 
@@ -166,3 +231,12 @@ Pass 1 exit state: 0 console errors, 0 external requests, 0 broken anchors,
 0 pages with horizontal scroll at 320px+, header 48px at all widths, fonts
 self-hosted and loading (`document.fonts` confirms Playfair 400/500/i400, DM Sans
 300/400/500, DM Mono 300/400/500), live-site parity confirmed after deploy.
+
+Pass 2 exit state (2026-07-06, verified locally at 1440 + 375 on all 8 pages):
+0 console errors (favicon 404 closed), 0 external requests, 0 horizontal scroll;
+418 internal links + anchors resolve; reduced-motion still honored; figure sweep
+reports 0 of 242 SVGs overflowing; all 241 figures + cover carry `role="img"` +
+`aria-labelledby`; glossary tooltips, glossary index (516 terms), and the resume
+card all function with extensionless hrefs. Not yet redeployed — verify live-site
+parity after push, and confirm the `_headers` `Cache-Control` is served by
+Cloudflare (curl the response headers on `glossary.json`).
