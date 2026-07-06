@@ -1,0 +1,316 @@
+/* ============================================================================
+   Part II — GREENBAR. The printed program listing.
+   Identity layer loaded after book.css; overrides reading furniture only.
+   The curriculum spine stays invariant: .book-nav (Playfair + DM Mono + gold),
+   glossary tooltips, fullscreen chrome, resume/sync chips, section-rail hover
+   grammar — the gold thread that marks all five volumes as one book.
+
+   Subject → form: Part II is the only part whose subject is text itself (the
+   kernel read as code; C, C++, Python). So the medium becomes the identity:
+   continuous-form greenbar stock, sprocket rails beside the text column,
+   monospace as the structural voice, figures as phosphor terminal plates.
+
+   Motif evolution (cyclic, hand-set — see UNDER.md §8):
+   each chapter's hero carries a LISTING meta line whose line-range advances
+   across the part (0001–0790 → … → 2414–3199) and whose build command evolves
+   cc → cc → c++ → python3; the greenbar banding re-inks at every chapter head
+   and fades to near-subliminal past the lead; the part closer prints EOF.
+   ========================================================================== */
+
+:root {
+  --dark: #0d130f;            /* plates, code, chapter-nav ground (greened) */
+  --dark-card: #16211a;
+  --warm-white: #f6f7f1;      /* listing paper */
+  --warm-light: #e8eee6;      /* light cards */
+  --warm-mid: #bcc8bd;
+  --accent: #3fae7c;          /* listing green — part furniture accent */
+  --accent-dim: #2e6f52;
+  --text-dark: #1b241e;
+  --text-body: #28322b;
+  --text-muted: #6e7a70;
+  --sans: 'IBM Plex Sans', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+  /* part-local */
+  --gb-phosphor: #84ffb2;
+  --gb-band: rgba(46, 111, 82, 0.04);
+  --gb-band-faint: rgba(46, 111, 82, 0.022);
+  --gb-plate: #0c120e;
+}
+
+/* --- spine re-pins: the invariant thread stays in the book's own faces ----- */
+.book-title { font-family: 'Playfair Display', Georgia, serif; }
+.book-title em { color: #d4a853; }
+.glossary-tip-term, .glossary-tip-link { color: #d4a853; }
+.resume-title, .resume-arrow { color: #d4a853; }
+.sync-chip-link { color: #d4a853; }
+.glossary-footer-link, .account-footer-link { color: #d4a853; }
+.book-progress { font-family: 'DM Mono', monospace; }
+.glossary-tip-term, .resume-title, .sync-chip-link { font-family: 'Playfair Display', Georgia, serif; }
+.glossary-tip-def { font-family: 'DM Sans', sans-serif; }
+.glossary-tip-link, .resume-eyebrow, .resume-meta, .sync-chip-eyebrow,
+.glossary-footer-link, .account-footer-link { font-family: 'DM Mono', monospace; }
+.colophon-pane__name { font-family: 'Playfair Display', Georgia, serif; }
+.colophon summary, .colophon-pane__role, .colophon-pane__note,
+.colophon-pane__links { font-family: 'DM Mono', monospace; }
+
+/* --- paper: continuous-form banding, sprocket rails beside the column ------ */
+body {
+  background:
+    repeating-linear-gradient(to bottom, var(--gb-band-faint) 0 32px, transparent 32px 64px)
+    var(--warm-white);
+}
+.content { position: relative; }
+/* sprocket rails: the text column is the listing; holes run its full height.
+   Desktop-only ornament (≥1100px), never printed. */
+.content::before, .content::after {
+  content: '';
+  position: absolute;
+  top: 8px; bottom: 8px;
+  width: 20px;
+  background-image: radial-gradient(circle 3.5px at 50% 50%, rgba(46, 111, 82, 0.16) 3px, transparent 3.5px);
+  background-size: 20px 44px;
+  pointer-events: none;
+}
+.content::before { left: -60px; border-right: 1px dashed rgba(46, 111, 82, 0.14); }
+.content::after { right: -60px; border-left: 1px dashed rgba(46, 111, 82, 0.14); }
+@media (max-width: 1100px) {
+  .content::before, .content::after { display: none; }
+}
+/* banding re-inks at each chapter head, fades past the lead (owner mitigation:
+   near-subliminal through long reads; the rails carry the identity instead). */
+.content > .section:first-child { position: relative; }
+.content > .section:first-child::before {
+  content: '';
+  position: absolute;
+  inset: -48px -24px auto;
+  height: 880px;
+  background: repeating-linear-gradient(to bottom, var(--gb-band) 0 32px, transparent 32px 64px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent);
+  mask-image: linear-gradient(to bottom, #000 50%, transparent);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* --- openers and heroes: the dark listing ---------------------------------- */
+.part-opener {
+  background:
+    repeating-linear-gradient(to bottom, rgba(132, 255, 178, 0.032) 0 32px, transparent 32px 64px)
+    var(--gb-plate);
+}
+.part-opener::before, .part-opener::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 38px;
+  background-image: radial-gradient(circle 4.5px at 50% 50%, rgba(132, 255, 178, 0.20) 4px, transparent 4.5px);
+  background-size: 38px 44px;
+  background-position: center;
+  pointer-events: none;
+}
+.part-opener::before { left: 0; border-right: 1px dashed rgba(132, 255, 178, 0.16); }
+.part-opener::after { right: 0; border-left: 1px dashed rgba(132, 255, 178, 0.16); }
+@media (max-width: 900px) {
+  .part-opener::before, .part-opener::after { display: none; }
+}
+.part-label { color: var(--gb-phosphor); }
+.part-opener h1 {
+  font-family: var(--mono);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: clamp(2.4rem, 5.6vw, 4.6rem);
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+.part-opener h1 em { font-style: normal; color: var(--gb-phosphor); }
+/* the block cursor: one per page, discrete blink — the Greenbar tempo */
+.part-opener h1::after {
+  content: '';
+  display: inline-block;
+  width: 0.52em; height: 0.88em;
+  background: var(--gb-phosphor);
+  vertical-align: -0.08em;
+  margin-left: 0.14em;
+  animation: gbCaret 1.6s steps(1) infinite;
+}
+@keyframes gbCaret { 50% { opacity: 0; } }
+.part-tagline {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: rgba(220, 232, 222, 0.62);
+}
+.gb-eof {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: rgba(132, 255, 178, 0.55);
+  text-transform: uppercase;
+  margin: -12px 0 40px;
+  position: relative;
+}
+
+.chapter-hero {
+  background:
+    repeating-linear-gradient(to bottom, rgba(132, 255, 178, 0.026) 0 32px, transparent 32px 64px)
+    var(--gb-plate);
+}
+.chapter-hero::before {
+  background: radial-gradient(ellipse at 70% 50%, rgba(132, 255, 178, 0.055) 0%, transparent 60%);
+}
+.chapter-label { color: var(--gb-phosphor); }
+.chapter-label::before { background: var(--gb-phosphor); }
+.chapter-hero h1 {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+.chapter-hero h1 em { font-style: normal; color: var(--gb-phosphor); }
+.meta-value { color: rgba(220, 232, 222, 0.7); }
+
+.part-opener .part-toc { max-width: 760px; }
+.toc-card {
+  border-radius: 4px;
+  border: 1px solid rgba(132, 255, 178, 0.16);
+}
+.toc-card:hover { border-color: rgba(132, 255, 178, 0.45); }
+.toc-num { color: var(--gb-phosphor); }
+.toc-title { font-family: var(--mono); font-weight: 500; font-size: 1.05rem; }
+
+.chapter-nav { border-bottom: 1px solid rgba(132, 255, 178, 0.10); }
+.nav-item:hover, .nav-item.active { color: var(--gb-phosphor); border-bottom-color: var(--gb-phosphor); }
+
+/* --- reading furniture ------------------------------------------------------ */
+h2 {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 2.05rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+h3 {
+  font-family: var(--mono);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 1.22rem;
+  letter-spacing: -0.01em;
+}
+h4 { font-family: var(--sans); }
+.section-number::before {
+  border-radius: 1px;               /* a character cell, not a dot */
+  box-shadow: 0 0 8px rgba(63, 174, 124, 0.5);
+  animation-timing-function: steps(2, jump-none);
+}
+.lead { font-family: var(--sans); font-size: 1.24rem; line-height: 1.75; }
+.lead::first-letter {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 3.4rem;
+  line-height: 0.92;
+  margin: 7px 14px 0 0;
+  padding: 3px 9px;
+  color: var(--accent-dim);
+  border: 1px solid var(--accent-dim);
+  border-radius: 2px;
+}
+
+.pull-quote {
+  border-left: 3px solid var(--accent-dim);
+  background: rgba(46, 111, 82, 0.07);
+  border-radius: 0 4px 4px 0;
+}
+.pull-quote p {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+
+.section-intro { border-left-color: var(--accent-dim); }
+
+/* --- figures: phosphor terminal plates -------------------------------------- */
+.diagram-card {
+  background: var(--gb-plate);
+  border-radius: 4px;
+  border: 1px solid rgba(132, 255, 178, 0.22);
+}
+.diagram-card::before {
+  background:
+    repeating-linear-gradient(to bottom, rgba(132, 255, 178, 0.024) 0 2px, transparent 2px 5px);
+}
+.diagram-label { color: rgba(132, 255, 178, 0.48); }
+.diagram-label::before { content: '$ '; color: var(--gb-phosphor); letter-spacing: 0; }
+.diagram-caption { color: rgba(220, 232, 222, 0.52); }
+.diagram-caption strong { color: rgba(132, 255, 178, 0.85); }
+.diagram-caption a, .diagram-caption a:visited { color: rgba(132, 255, 178, 0.75); }
+
+.light-diagram {
+  background: var(--warm-light);
+  border: 1px solid rgba(46, 111, 82, 0.18);
+  border-radius: 4px;
+}
+.scale-shock { background: var(--gb-plate); border-radius: 4px; border: 1px solid rgba(132, 255, 178, 0.22); }
+.scale-shock::before {
+  background: repeating-linear-gradient(to bottom, rgba(132, 255, 178, 0.024) 0 2px, transparent 2px 5px);
+}
+
+.code-block { background: var(--gb-plate); border-radius: 4px; border: 1px solid rgba(132, 255, 178, 0.18); }
+.code-block .kw { color: var(--gb-phosphor); }
+.code-block .nm { color: #9cc4e8; }
+
+.insight-strip { border-radius: 4px; border-left: 3px solid rgba(132, 255, 178, 0.55); }
+.insight-icon { color: var(--gb-phosphor); }
+.insight-text strong { color: var(--gb-phosphor); }
+
+.math-callout {
+  background: linear-gradient(135deg, var(--warm-light), #e2eadf);
+  border-left-color: var(--accent-dim);
+  border-radius: 0 4px 4px 0;
+}
+
+.key-term { background: #0e1a13; color: var(--gb-phosphor); border-radius: 2px; }
+
+.timeline::before { background: linear-gradient(to bottom, var(--accent), transparent); }
+.timeline-item::before { border-radius: 1px; box-shadow: 0 0 12px rgba(63, 174, 124, 0.4); }
+.timeline-title { font-family: var(--mono); font-weight: 500; font-size: 1.02rem; }
+
+.step-title { font-family: var(--mono); font-weight: 500; font-size: 0.95rem; }
+.process-step { border: 1px solid rgba(132, 255, 178, 0.2); border-radius: 4px; }
+
+.bit { border-radius: 2px; }
+.bit.on { background: var(--gb-phosphor); color: var(--gb-plate); }
+
+.truth-table { border-radius: 4px; }
+.concept-card { border-radius: 4px; }
+.concept-title { font-family: var(--mono); font-weight: 500; font-size: 0.95rem; }
+
+.memory-diagram { border-radius: 4px; }
+
+.summary-table.dark { border-radius: 4px; }
+
+h3 { background-image: linear-gradient(to right, rgba(63, 174, 124, 0.5), rgba(63, 174, 124, 0)); }
+
+.chapter-end { background: var(--gb-plate); }
+.next-btn {
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px;
+  border-radius: 3px;
+  color: #0c120e;
+}
+
+.divider { background: var(--accent-dim); }
+
+/* fullscreen keeps the spine's gold glass chrome (invariant), but the plate
+   ground inside stays the part's — no extra rules needed. */
+
+@media print {
+  body, .content, .part-opener, .chapter-hero { background-image: none !important; }
+  .content::before, .content::after,
+  .part-opener::before, .part-opener::after { display: none !important; }
+  .part-opener h1::after { display: none !important; }
+  .content > .section:first-child::before { display: none !important; }
+}
