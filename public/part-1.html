@@ -2776,9 +2776,17 @@
     <p>
       The magic is that with this representation, <strong>subtraction is just addition</strong>.
       To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> using the
-      exact same adder circuit it uses for any other addition. The bits work out —
-      the carries and overflows cancel in exactly the right way to produce the correct
-      answer.
+      exact same adder circuit it uses for any other addition. And it is not luck that
+      the bits line up — it is arithmetic. Look again at what the two steps produced:
+      flip-and-add-one turns a number <em>x</em> into <code>2<sup>n</sup> − x</code>.
+      (In 8 bits, −5 came out as <code>11111011</code>, which is 251, and 251 is exactly
+      256 − 5.) So when the adder computes <em>a + (−b)</em>, what it really adds is
+      <em>a + (2<sup>n</sup> − b)</em>, which equals <em>2<sup>n</sup> + (a − b)</em>.
+      That extra <code>2<sup>n</sup></code> is a 1 sitting in bit position <em>n</em> —
+      one place to the left of the widest bit the register can hold. It falls off the
+      end and is discarded, and what remains in the register is precisely <em>a − b</em>.
+      The subtraction was never done by a subtractor; it was done by an ordinary
+      addition whose only trick is that the register is too narrow to keep the carry.
     </p>
 
     <div class="diagram-card" id="fig-2-7">

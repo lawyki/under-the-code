@@ -2185,6 +2185,25 @@
       cannot derive it.
     </p>
 
+    <p>
+      Why the two parties land on the <em>same</em> secret is not luck; it
+      is one line of algebra. Alice keeps a secret <em>a</em> and publishes
+      <em>g<sup>a</sup></em>; Bob keeps a secret <em>b</em> and publishes
+      <em>g<sup>b</sup></em>. Each then raises what the other sent to their
+      own secret. Alice computes <em>(g<sup>b</sup>)<sup>a</sup></em>; Bob
+      computes <em>(g<sup>a</sup>)<sup>b</sup></em>. But raising to a power
+      and then to another power just multiplies the exponents, and
+      multiplication does not care about order — so both expressions are
+      <em>g<sup>ab</sup></em>, the very same number. They arrive at it from
+      opposite directions and meet in the middle. The eavesdropper, holding
+      only <em>g<sup>a</sup></em> and <em>g<sup>b</sup></em>, would have to
+      pull one secret exponent back out to finish the multiplication — and
+      that is the discrete logarithm the whole scheme is built to make
+      impossibly slow. The secret is safe not because it was hidden, but
+      because the one step needed to reconstruct it runs backward against
+      the asymmetry.
+    </p>
+
     <div class="diagram-card" id="fig-14-7">
       <div class="diagram-label">Fig 14.7 — Diffie–Hellman with actual numbers · g=5, p=23</div>
       <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 14.7 — Diffie–Hellman with actual numbers · g=5, p=23</title>
