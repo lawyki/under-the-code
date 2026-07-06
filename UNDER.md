@@ -384,8 +384,38 @@ Pass-2 verification exit state (2026-07-06, after commit `def7bc0`): all of the
 above re-verified locally against a server that mimics Cloudflare's extensionless
 routing (200 on `/part-N`, 308 on `.html`), plus: text-vs-rect scan clean,
 corrected a11y scan 0 findings, all 45 pass-2-touched figures screenshot-reviewed.
-**Still not deployed** — the verification agent's push to `main` was blocked by
-permissions. Live (checked 2026-07-06) still serves the pre-pass-2 state:
-canonical is `.html`, `glossary.json` has `max-age=0, must-revalidate`. After the
-owner pushes: re-check those two curls and spot-check figs 13.5 / BR.3 / 15.7 at
-1440 and 375.
+~~Still not deployed~~ — **deployed in pass 3** (pushed with the accounts work;
+push permission was available this time). Live post-deploy checks all pass:
+canonical is extensionless (`https://under.atheric.eu/part-2`), `.html` 308s to
+extensionless, `glossary.json` serves `Cache-Control: public, max-age=86400,
+stale-while-revalidate=604800`, and figs 13.5 / br-3 / 15.7 were
+screenshot-checked live at 1440 and 375 (13.5's ACID table sits below the
+scenario panels; no frame overflows).
+
+### Pass-3 exit state (2026-07-06, live at under.atheric.eu)
+
+Deployed as commits `3835e74` + `165795d` (first deploy failed on a
+Pages-unsupported `send_email` binding; switched to the Email Sending REST
+API). Production D1 `under-book` (EEUR) carries the schema; test rows removed
+after verification (0 users at exit).
+
+Live verification, two isolated browsers (Playwright contexts), both signed in
+to the same account via minted magic links (email delivery awaits the P0 owner
+step), at 1440×900 **and** 375×812 — all 21 checks pass, **0 console errors**:
+
+- A reads to a mid-chapter paragraph (`ch5-bell-labs-p4` in part-2 at 1440;
+  `ch11-http-p3` in part-3 at 375); the debounced save lands on the server
+  with the anchor + fraction.
+- B opens the same part → quiet "On your other device — Chapter N · §NN" chip;
+  clicking it restores to the **exact stored fraction** (0.514→0.514,
+  0.852→0.852 — well within one paragraph; the settle correction snaps out
+  late font reflow).
+- B's index resume card targets `part#anchor` and the exact offset survives
+  the navigation (sessionStorage handoff).
+- Signed-out regression: a fresh browser on a part page makes **zero `/api`
+  requests**, saves anchored progress to localStorage as before, no layout or
+  console changes; no horizontal scroll at 375 with the chip up.
+- API sanity live: `/api/auth/me` 401 signed out; `/api/auth/request` 503
+  `delivery_unavailable` (secret not yet set); GET verify page does not
+  consume tokens; token reuse rejected; `/api/auth/delete` erases everything
+  (curl-verified locally against the same code).
