@@ -146,6 +146,12 @@ Objective breakage only; no restyling, no content changes.
     per-chapter progress bar; the rail covers desktop only.
 11. `docs/plan.txt` / `docs/figures.txt` "last verified" dates are stale
     (2026-05-01); re-verify after content edits.
+12. **Cloudflare Pages pretty-URLs**: the host 308-redirects `/part-1.html` →
+    `/part-1`, so every internal link (all hrefs use the `.html` form) costs one
+    redirect round-trip, and canonical/OG URLs point at the `.html` form while
+    readers land on the extensionless one. Either switch internal hrefs +
+    canonicals to extensionless, or disable the redirect. Pre-existing, harmless,
+    but worth aligning.
 
 ## 7. Verification protocol used (repeat after any pass)
 
