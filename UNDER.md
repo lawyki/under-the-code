@@ -30,7 +30,9 @@ Cloudflare Pages from `public/`, auto-deploy on push to `main`.
 | `glossary.html` | Auto-built alphabetical index (JS-rendered from `glossary.json`) | 1 KB shell |
 | `account.html` | Sign-in / account / privacy notice (pass 3; noindex, robots-disallowed) | 12 KB |
 | `404.html` | Self-contained error page (own inline CSS, no book.css) | 3 KB |
-| `book.css` / `book.js` | Single shared stylesheet + single shared script | 52 KB / 26 KB |
+| `book.css` / `book.js` | Shared core stylesheet + single shared script | 52 KB / 26 KB |
+| `part-2.css` … `part-5.css` | Per-part identity layers (pass 4): tokens + furniture over book.css | 8–10 KB each |
+| `fonts-part2.css` … `fonts-part5.css` + `fonts/` | Per-part self-hosted identity faces (css2 mirrors, OFL) | 130–470 KB/part |
 | `fonts.css` + `fonts/` | Self-hosted webfonts (added in pass 1) | 16 woff2, ~270 KB total |
 
 ## 2. Architecture
@@ -293,6 +295,97 @@ nothing else), where (D1 in the EU, Cloudflare Email Sending), retention
 studio privacy page (atheric.eu/privacy) scopes itself to the studio site and
 is not referenced by the book, so it needed no change. `/account` is noindex
 (meta + `X-Robots-Tag`) and robots-disallowed along with `/api/`.
+
+## 4d. Pass 4 (2026-07-06): the five-volume identity build
+
+Owner-approved identity pass: each part becomes a complete distinct brand while
+Part 1 keeps the original grammar unchanged. Four proposed identities (Greenbar,
+Chart Room, Strongroom, Quorum) were approved as proposed and built one part per
+sub-pass, each verified in Chromium **and** WebKit at 1440 + 375 (0 console
+errors, 0 external requests, no page h-scroll, `.book-nav` 48px) before the next.
+
+### Architecture
+
+- **Identity layer per part**: `part-N.css` loaded *after* `book.css` redefines
+  the design tokens (`--dark`, `--warm-*`, `--accent`, `--text-*`, `--sans`,
+  `--mono`) and restyles reading furniture (openers, heroes, headings, leads,
+  quotes, plates, code, tables, timelines, buttons). `book.css` is untouched —
+  part-1, index, glossary, account render byte-identically from it.
+- **Fonts**: `fonts-partN.css` + woff2 under `fonts/` — local css2 mirrors
+  (latin + latin-ext, same unicode-ranges), pass-1 convention. Per part:
+  II IBM Plex Mono/Sans · III Space Grotesk/Karla/Space Mono ·
+  IV Fraunces/Spectral/Courier Prime · V Syne/Manrope/JetBrains Mono.
+  All OFL, ~130–470 KB per part, each page loads only its own. Zero third-party
+  holds.
+- **Figure recolor**: scripted rewrite of the SVG color literals in each part
+  file — the *identity* families only (gold `rgba(212,168,83,α)` + dim golds +
+  neutral steel `rgba(180,200,220,α)` + dark panel hexes), **alphas preserved**;
+  the semantic red/green/blue families are pedagogical grammar and were left
+  untouched in all parts. SVG `font-family="DM Mono"` follows each part's mono;
+  Playfair inside figures (the author's voice) stays everywhere.
+- **Invariant spine** (explicitly re-pinned in every part css): the 48px black
+  `.book-nav` (Playfair + DM Mono + gold em), glossary tooltips, fullscreen
+  chrome, resume/sync chips, account/colophon — the gold thread that marks the
+  five volumes as one curriculum. The index shelves now carry five spine
+  stripes + numeral hues (I gold · II phosphor · III cyan · IV seal · V violet),
+  home grammar otherwise.
+
+### The four identities and their motif-evolution schemes (cyclic, hand-set)
+
+Every recurring motif returns across its part's chapters, never identically —
+the design advances with the content. All variation is hand-placed (no
+randomness). Auditable by grepping the literals below.
+
+- **II — Greenbar** (the printed program listing; IBM Plex, phosphor terminal
+  plates `$`-prompt labels + scanlines, listing paper with greenbar banding,
+  sprocket rails beside the text column, discrete/stepped motion, block-cursor
+  on opener/closer h1).
+  *Evolution*: each hero's `LISTING` meta line advances a cumulative line-range
+  and build command — ch4 `lines 0001–0790 · cc -c kernel.c` → ch5
+  `0791–1608 · cc unix.c` → ch6 `1609–2413 · c++ objects.cc` → ch7
+  `2414–3199 · python3 readable.py` (compiled → interpreted mirrors the
+  content); the banding re-inks at every chapter head and fades to
+  near-subliminal past the lead (owner mitigation); the closer prints
+  `EOF · 3199 lines · 4 modules`.
+- **III — Chart Room** (cable chart / blueprint; Space Grotesk/Karla/Space
+  Mono, Prussian plates with 36px grids + surveyor's corner ticks, legend-box
+  captions, continuous-flow motion — ambient dash drift on the route arc).
+  *Evolution*: the part is a cable-laying voyage. `POSITION FIX` meta lines
+  advance London → New York across ch8–ch12 (`51.51°N 0.09°W · 0 nm` →
+  `40.71°N 74.01°W · 3,459 nm · landfall` — landfall at the browser chapter);
+  the opener chart shows the route ahead with 1 of 5 waypoints lit, the closer
+  the same route completed (all 5 + `LANDFALL`).
+- **IV — Strongroom** (ledger + sealed dossier; Fraunces/Spectral serif body
+  (approved)/Courier Prime, ledger stock with double-rule section margins,
+  rubber-stamp part/chapter labels, double-framed dossier plates, lock-step
+  motion — stamps land once on scroll entry).
+  *Evolution*: the dossier declassifies as the reader learns. Stamp angles vary
+  per chapter (ch13 −2° · ch14 +1.2° · ch15 −1°; closer tilts opposite the
+  opener); each hero's redaction row loses bars — ch13 three bars
+  (`§3 redactions remain`) → ch14 one → ch15 none
+  (`nothing remains redacted` at Attack & Defense).
+- **V — Quorum** (many machines as one; Syne/Manrope/JetBrains Mono,
+  void-indigo constellation openers, violet + teal accents in phase, gradient
+  display type at **headline scale only** (owner mitigation), 20px glass
+  plates with a phase-offset status dot, phase-sync motion).
+  *Evolution*: the constellation gains nodes as the curriculum completes — the
+  opener draws the five *parts* as stars with I–IV lit and V hollow, breathing;
+  `End of the Book` shows all five lit and fully meshed
+  (`QUORUM REACHED · 5 OF 5`). `CLUSTER` meta lines zoom out
+  `1 machine · 8 cores` → `10,000 machines · 3 regions` → `one curriculum ·
+  five layers · one reader`; hero auroras phase-shift violet → teal across
+  ch16–18.
+
+### Pass-4 exit state (2026-07-06)
+
+Verified locally against the Cloudflare-mimicking server, Chromium + WebKit,
+1440 + 375, per part and again for index/part-1/glossary/account/404:
+0 console errors, 0 external requests, 0 page-level horizontal scroll,
+nav 48px, all five part font sets confirmed loaded via `document.fonts`.
+Reduced motion: all new animations are CSS (cursor blink, route drift, stamp
+landing, constellation breathing) and die under the global reduced-motion
+kill; SMIL handling unchanged. Print: banding/rails/arcs/constellations and
+gradient text are explicitly reset in each part css print block.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
