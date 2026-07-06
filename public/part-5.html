@@ -496,7 +496,7 @@
           <text x="14" y="190" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.95)">PREVENTION — lock ordering</text>
           <text x="14" y="208" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.85)">always acquire locks in the same global order</text>
           <text x="14" y="222" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.85)">→ wait-for graph cannot have a cycle</text>
-          <text x="14" y="240" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">"livelock" — same shape, threads spinning instead of blocking</text>
+          <text x="14" y="240" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">"livelock" — same shape, spinning instead of blocking</text>
         </g>
 
         <!-- Bottom -->
@@ -633,23 +633,26 @@
           <rect x="0" y="44" width="640" height="40" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.65)"/>
           <text x="20" y="62" font-size="11" fill="rgba(212,168,83,1)">ACQUIRE</text>
           <text x="200" y="62" fill="rgba(180,200,220,0.85)">subsequent loads see prior releases by other threads</text>
-          <text x="500" y="62" fill="rgba(180,200,220,0.85)">reading a flag · entering a critical section</text>
+          <text x="500" y="62" fill="rgba(180,200,220,0.85)">reading a flag</text>
           <text x="20" y="76" fill="rgba(180,200,220,0.6)" font-style="italic">cheap</text>
-          <text x="200" y="76" fill="rgba(180,200,220,0.7)" font-style="italic">"after I see this load, I see what they wrote before their release"</text>
+          <text x="200" y="76" fill="rgba(180,200,220,0.7)" font-style="italic">"I see what they wrote before their release"</text>
+          <text x="500" y="76" fill="rgba(180,200,220,0.85)">entering a critical section</text>
 
           <rect x="0" y="88" width="640" height="40" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.65)"/>
           <text x="20" y="106" font-size="11" fill="rgba(212,168,83,1)">RELEASE</text>
           <text x="200" y="106" fill="rgba(180,200,220,0.85)">prior writes on this thread are visible to acquirers</text>
-          <text x="500" y="106" fill="rgba(180,200,220,0.85)">setting a flag · leaving a critical section</text>
+          <text x="500" y="106" fill="rgba(180,200,220,0.85)">setting a flag</text>
           <text x="20" y="120" fill="rgba(180,200,220,0.6)" font-style="italic">cheap</text>
           <text x="200" y="120" fill="rgba(180,200,220,0.7)" font-style="italic">paired with acquire to form happens-before edges</text>
+          <text x="500" y="120" fill="rgba(180,200,220,0.85)">leaving a critical section</text>
 
           <rect x="0" y="132" width="640" height="40" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.65)"/>
           <text x="20" y="150" font-size="11" fill="rgba(232,120,120,1)">SEQ-CST</text>
           <text x="200" y="150" fill="rgba(180,200,220,0.85)">total global order over all SC operations</text>
-          <text x="500" y="150" fill="rgba(180,200,220,0.85)">when in doubt · default in Java/Go</text>
+          <text x="500" y="150" fill="rgba(180,200,220,0.85)">when in doubt</text>
           <text x="20" y="164" fill="rgba(180,200,220,0.6)" font-style="italic">expensive</text>
-          <text x="200" y="164" fill="rgba(180,200,220,0.7)" font-style="italic">all threads agree on the order — most intuitive, slowest on weak hardware</text>
+          <text x="200" y="164" fill="rgba(180,200,220,0.7)" font-style="italic">all threads agree on one order · most intuitive</text>
+          <text x="500" y="164" fill="rgba(180,200,220,0.85)">default in Java/Go</text>
         </g>
 
         <!-- Bottom -->
@@ -2485,7 +2488,7 @@
 
     <div class="diagram-card" id="fig-18-1">
       <div class="diagram-label">Fig 18.1 — The full stack · sand to web service · math at every layer</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.1 — The full stack · sand to web service · math at every layer</title>
+      <svg viewBox="0 0 720 490" xmlns="http://www.w3.org/2000/svg"><title>Fig 18.1 — The full stack · sand to web service · math at every layer</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">eighteen chapters · one stack · the whole arc in one diagram</text>
 
         <g transform="translate(40,60)" font-family="DM Mono">
@@ -3323,18 +3326,18 @@
           <g transform="translate(0,0)">
             <rect x="0" y="0" width="640" height="68" rx="4" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.65)"/>
             <text x="14" y="20" font-size="11" fill="rgba(150,216,150,1)" letter-spacing="0.1em">PART I — THE PHYSICAL WORLD</text>
-            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Charles Petzold · <em>Code: The Hidden Language of Computer Hardware and Software</em></text>
-            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Hennessy &amp; Patterson · <em>Computer Architecture: A Quantitative Approach</em></text>
-            <text x="14" y="64" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Tanenbaum · <em>Structured Computer Organization</em>; Patterson &amp; Hennessy · <em>Computer Organization and Design</em></text>
+            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Charles Petzold · <tspan font-style="italic">Code: The Hidden Language of Computer Hardware and Software</tspan></text>
+            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Hennessy &amp; Patterson · <tspan font-style="italic">Computer Architecture: A Quantitative Approach</tspan></text>
+            <text x="14" y="64" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Tanenbaum · <tspan font-style="italic">Structured Computer Organization</tspan>; Patterson &amp; Hennessy · <tspan font-style="italic">Computer Organization and Design</tspan></text>
           </g>
 
           <!-- Part II -->
           <g transform="translate(0,76)">
             <rect x="0" y="0" width="640" height="80" rx="4" fill="rgba(212,168,83,0.10)" stroke="rgba(140,98,30,0.65)"/>
             <text x="14" y="20" font-size="11" fill="rgba(212,168,83,1)" letter-spacing="0.1em">PART II — THE SOFTWARE LAYER</text>
-            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Kernighan &amp; Ritchie · <em>The C Programming Language</em>  (still the reference)</text>
-            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Stroustrup · <em>The C++ Programming Language</em></text>
-            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Tanenbaum &amp; Bos · <em>Modern Operating Systems</em></text>
+            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Kernighan &amp; Ritchie · <tspan font-style="italic">The C Programming Language</tspan>  (still the reference)</text>
+            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Stroustrup · <tspan font-style="italic">The C++ Programming Language</tspan></text>
+            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Tanenbaum &amp; Bos · <tspan font-style="italic">Modern Operating Systems</tspan></text>
             <text x="14" y="78" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Fluent Python (Ramalho); The Linux Programming Interface (Kerrisk)</text>
           </g>
 
@@ -3342,9 +3345,9 @@
           <g transform="translate(0,164)">
             <rect x="0" y="0" width="640" height="80" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.65)"/>
             <text x="14" y="20" font-size="11" fill="rgba(232,120,120,1)" letter-spacing="0.1em">PART III — THE NETWORK</text>
-            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">W. Richard Stevens · <em>TCP/IP Illustrated</em>  (the canonical reference)</text>
-            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Ilya Grigorik · <em>High Performance Browser Networking</em>  (online, free)</text>
-            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Tanenbaum &amp; Wetherall · <em>Computer Networks</em></text>
+            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">W. Richard Stevens · <tspan font-style="italic">TCP/IP Illustrated</tspan>  (the canonical reference)</text>
+            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Ilya Grigorik · <tspan font-style="italic">High Performance Browser Networking</tspan>  (online, free)</text>
+            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Tanenbaum &amp; Wetherall · <tspan font-style="italic">Computer Networks</tspan></text>
             <text x="14" y="78" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Beej's Guide to Network Programming (online, free)</text>
           </g>
 
@@ -3352,17 +3355,17 @@
           <g transform="translate(0,252)">
             <rect x="0" y="0" width="640" height="80" rx="4" fill="rgba(100,150,255,0.10)" stroke="rgba(60,100,180,0.65)"/>
             <text x="14" y="20" font-size="11" fill="rgba(100,150,255,1)" letter-spacing="0.1em">PART IV — DATA AND SECURITY</text>
-            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Silberschatz et al. · <em>Database System Concepts</em></text>
-            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Ferguson, Schneier &amp; Kohno · <em>Cryptography Engineering</em></text>
-            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Erickson · <em>Hacking: The Art of Exploitation</em>  (genuinely the best intro)</text>
-            <text x="14" y="78" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Boneh &amp; Shoup · <em>A Graduate Course in Applied Cryptography</em> (free, draft)</text>
+            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Silberschatz et al. · <tspan font-style="italic">Database System Concepts</tspan></text>
+            <text x="14" y="52" font-size="9" fill="rgba(180,200,220,0.85)">Ferguson, Schneier &amp; Kohno · <tspan font-style="italic">Cryptography Engineering</tspan></text>
+            <text x="14" y="66" font-size="9" fill="rgba(180,200,220,0.85)">Erickson · <tspan font-style="italic">Hacking: The Art of Exploitation</tspan>  (genuinely the best intro)</text>
+            <text x="14" y="78" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">also: Boneh &amp; Shoup · <tspan font-style="italic">A Graduate Course in Applied Cryptography</tspan> (free, draft)</text>
           </g>
 
           <!-- Part V -->
           <g transform="translate(0,340)">
             <rect x="0" y="0" width="640" height="50" rx="4" fill="rgba(212,168,83,0.20)" stroke="rgba(140,98,30,0.85)" stroke-width="1.5"/>
             <text x="14" y="20" font-size="11" fill="rgba(212,168,83,1)" letter-spacing="0.1em">PART V — THE MODERN MACHINE</text>
-            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Kleppmann · <em>Designing Data-Intensive Applications</em>  (the modern reference)</text>
+            <text x="14" y="38" font-size="9" fill="rgba(180,200,220,0.85)">Kleppmann · <tspan font-style="italic">Designing Data-Intensive Applications</tspan>  (the modern reference)</text>
           </g>
         </g>
       </svg>

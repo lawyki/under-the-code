@@ -1075,7 +1075,7 @@
         <line x1="40" y1="106" x2="680" y2="106" stroke="rgba(232,120,120,0.18)" stroke-dasharray="3,3"/>
 
         <!-- Madvise thread (the race partner) -->
-        <text x="35" y="160" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">madvise(DONTNEED)</text>
+        <text x="35" y="160" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.95)">madvise</text>
         <line x1="40" y1="160" x2="680" y2="160" stroke="rgba(100,150,255,0.18)" stroke-dasharray="3,3"/>
 
         <!-- Steps -->
@@ -1096,7 +1096,7 @@
           <text x="300" y="172" text-anchor="middle" fill="rgba(255,255,255,0.7)">discards copy mapping</text>
 
           <!-- Step 4: writer resumes, but now writes to ORIGINAL -->
-          <rect x="400" y="92" width="220" height="28" rx="3" fill="rgba(232,120,120,0.55)" stroke="rgba(232,120,120,1)" stroke-width="1.5"/>
+          <rect x="390" y="92" width="240" height="28" rx="3" fill="rgba(232,120,120,0.55)" stroke="rgba(232,120,120,1)" stroke-width="1.5"/>
           <text x="510" y="106" text-anchor="middle" fill="rgba(255,255,255,0.95)">writer resumes — fixup writes to ORIGINAL page!</text>
           <text x="510" y="118" text-anchor="middle" fill="rgba(255,255,255,0.85)">RO file modified by unprivileged user</text>
         </g>
@@ -1341,7 +1341,7 @@
 
         <!-- Before -->
         <text x="180" y="74" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(80,60,30,0.95)">before</text>
-        <g transform="translate(60,90)">
+        <g transform="translate(50,90)">
           <rect x="0"  y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.6)"/>
           <text x="40" y="20" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(60,120,60,0.95)">root ptr</text>
           <line x1="80" y1="16" x2="120" y2="16" stroke="rgba(140,98,30,0.7)"/>
@@ -1356,7 +1356,7 @@
 
         <!-- After -->
         <text x="540" y="74" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(80,60,30,0.95)">after modifying byte 12 of block 103</text>
-        <g transform="translate(420,90)">
+        <g transform="translate(380,90)">
           <rect x="0" y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.30)" stroke="rgba(60,120,60,0.95)" stroke-width="1.5"/>
           <text x="40" y="20" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(60,120,60,0.95)">NEW root</text>
           <line x1="80" y1="16" x2="120" y2="16" stroke="rgba(140,98,30,0.7)"/>
@@ -1373,7 +1373,7 @@
 
         <!-- Old root still alive -->
         <text x="540" y="170" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(80,60,30,0.7)">old root still points to old block 103 — that's a free snapshot</text>
-        <g transform="translate(420,180)">
+        <g transform="translate(380,180)">
           <rect x="0" y="0" width="80" height="28" rx="3" fill="rgba(180,180,180,0.15)" stroke="rgba(140,98,30,0.4)" stroke-dasharray="3,3"/>
           <text x="40" y="18" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(140,98,30,0.7)">old root</text>
           <line x1="80" y1="14" x2="240" y2="14" stroke="rgba(140,98,30,0.4)" stroke-dasharray="2,2"/>
@@ -3146,34 +3146,34 @@
 
         <g transform="translate(60,60)">
           <!-- Kernels -->
-          <rect x="0" y="0" width="160" height="44" fill="rgba(212,168,83,0.32)" stroke="rgba(212,168,83,0.7)"/>
-          <text x="80" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">KERNELS</text>
-          <text x="80" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">Linux · BSDs · XNU · NT</text>
+          <rect x="0" y="0" width="140" height="44" fill="rgba(212,168,83,0.32)" stroke="rgba(212,168,83,0.7)"/>
+          <text x="70" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">KERNELS</text>
+          <text x="70" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">Linux · BSDs · XNU · NT</text>
 
           <!-- Embedded -->
-          <rect x="160" y="0" width="140" height="44" fill="rgba(150,216,150,0.30)" stroke="rgba(150,216,150,0.7)"/>
-          <text x="230" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)">EMBEDDED</text>
-          <text x="230" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">MCUs · IoT · auto · MedTech</text>
+          <rect x="140" y="0" width="120" height="44" fill="rgba(150,216,150,0.30)" stroke="rgba(150,216,150,0.7)"/>
+          <text x="200" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)">EMBEDDED</text>
+          <text x="200" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">MCUs · IoT · auto · MedTech</text>
 
           <!-- Runtimes -->
-          <rect x="300" y="0" width="120" height="44" fill="rgba(100,150,255,0.30)" stroke="rgba(100,150,255,0.7)"/>
-          <text x="360" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">RUNTIMES</text>
-          <text x="360" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">CPython · Ruby · Lua</text>
+          <rect x="260" y="0" width="100" height="44" fill="rgba(100,150,255,0.30)" stroke="rgba(100,150,255,0.7)"/>
+          <text x="310" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">RUNTIMES</text>
+          <text x="310" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">CPython · Ruby · Lua</text>
 
           <!-- Databases -->
-          <rect x="420" y="0" width="100" height="44" fill="rgba(232,120,120,0.30)" stroke="rgba(232,120,120,0.7)"/>
-          <text x="470" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">DATABASES</text>
-          <text x="470" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">SQLite · Postgres · MySQL</text>
+          <rect x="360" y="0" width="110" height="44" fill="rgba(232,120,120,0.30)" stroke="rgba(232,120,120,0.7)"/>
+          <text x="415" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">DATABASES</text>
+          <text x="415" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">SQLite · Postgres · MySQL</text>
 
           <!-- TLS -->
-          <rect x="520" y="0" width="80" height="44" fill="rgba(212,168,83,0.20)" stroke="rgba(212,168,83,0.55)"/>
-          <text x="560" y="22" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">TLS · CRYPTO</text>
-          <text x="560" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">OpenSSL</text>
+          <rect x="470" y="0" width="60" height="44" fill="rgba(212,168,83,0.20)" stroke="rgba(212,168,83,0.55)"/>
+          <text x="500" y="22" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.95)">TLS · CRYPTO</text>
+          <text x="500" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">OpenSSL</text>
 
           <!-- Network infra -->
-          <rect x="600" y="0" width="100" height="44" fill="rgba(150,150,200,0.25)" stroke="rgba(150,150,200,0.6)"/>
-          <text x="650" y="22" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(170,170,220,0.95)">NET INFRA</text>
-          <text x="650" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">NGINX · HAProxy</text>
+          <rect x="530" y="0" width="70" height="44" fill="rgba(150,150,200,0.25)" stroke="rgba(150,150,200,0.6)"/>
+          <text x="565" y="22" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(170,170,220,0.95)">NET INFRA</text>
+          <text x="565" y="36" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">NGINX · HAProxy</text>
         </g>
 
         <!-- Quote underneath -->
@@ -3740,17 +3740,17 @@
           <text x="0" y="0" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(212,168,83,0.9)">at runtime, when s-&gt;area() executes:</text>
 
           <g transform="translate(0,16)" font-family="DM Mono" font-size="9">
-            <rect x="0"   y="0" width="160" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
-            <text x="80"  y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">load vptr</text>
-            <text x="170" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
-            <rect x="190" y="0" width="160" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
-            <text x="270" y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">read slot 0 of vtable</text>
-            <text x="360" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
-            <rect x="380" y="0" width="160" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
-            <text x="460" y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">jump to Circle::area</text>
-            <text x="550" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
-            <rect x="570" y="0" width="120" height="24" rx="3" fill="#15110a" stroke="rgba(212,168,83,0.55)"/>
-            <text x="630" y="16" text-anchor="middle" fill="rgba(212,168,83,0.95)">execute body</text>
+            <rect x="0"   y="0" width="145" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
+            <text x="72"  y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">load vptr</text>
+            <text x="155" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
+            <rect x="175" y="0" width="145" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
+            <text x="247" y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">read slot 0 of vtable</text>
+            <text x="330" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
+            <rect x="350" y="0" width="145" height="24" rx="3" fill="#0f0f10" stroke="rgba(212,168,83,0.45)"/>
+            <text x="422" y="16" text-anchor="middle" fill="rgba(212,168,83,0.9)">jump to Circle::area</text>
+            <text x="505" y="16" font-size="11" fill="rgba(212,168,83,0.6)">→</text>
+            <rect x="525" y="0" width="130" height="24" rx="3" fill="#15110a" stroke="rgba(212,168,83,0.55)"/>
+            <text x="590" y="16" text-anchor="middle" fill="rgba(212,168,83,0.95)">execute body</text>
           </g>
         </g>
 
@@ -4243,10 +4243,11 @@
 
         <!-- Bottom synthesis -->
         <g transform="translate(40,328)">
-          <rect x="0" y="0" width="640" height="76" rx="4" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
+          <rect x="0" y="0" width="640" height="88" rx="4" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
           <text x="14"  y="22" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)" letter-spacing="0.1em">THE PATTERN — every nine years, C++ adds enough that the previous "modern C++" is out of date</text>
           <text x="14"  y="42" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">C++11 retired most of "Effective C++" (2005). C++20 is retiring most of "Effective Modern C++" (2014).</text>
-          <text x="14"  y="58" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">A C++ programmer who learned the language in 2000 and never updated is, in 2026, writing a different language than C++ now is.</text>
+          <text x="14"  y="58" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">A C++ programmer who learned the language in 2000 and never updated is, in 2026,</text>
+          <text x="14"  y="74" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">writing a different language than C++ now is.</text>
         </g>
       </svg>
       <p class="diagram-caption">C++'s release cadence after the long C++98–C++03–wait. C++11 was the rewrite — auto, lambdas, smart pointers, move semantics, range-for, threads — and the language stopped feeling like "C plus quirks." C++14 and C++17 polished. C++20 was the second rewrite — concepts (constraints on templates that finally compile readably), modules (replacing 50 years of header-include cruft), ranges (composable algorithms), coroutines (suspendable functions). C++23 added quality-of-life. The pattern is consistent: roughly every nine years, the standard committee absorbs enough community experience that the previous "modern C++" books are out of date. A working C++ programmer from 2002 who never updated is, in 2026, writing a different language than C++ has become — same syntax, different idioms, different bug profiles, different performance shape. The language eats its own complexity by replacing the patterns the previous generation hated, without removing the original mechanisms that those patterns were workarounds for. The mechanisms accumulate; the recommended subset shifts.</p>
@@ -4945,7 +4946,8 @@
       <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg"><title>Fig 7.9 — The same matmul, two ways</title>
         <!-- Pure Python bar -->
         <rect x="60" y="60" width="540" height="40" rx="4" fill="rgba(232,120,120,0.4)" stroke="rgba(232,120,120,0.8)"/>
-        <text x="40"  y="84" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">pure Python</text>
+        <text x="40"  y="78" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">pure</text>
+        <text x="40"  y="90" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">Python</text>
         <text x="330" y="84" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.95)">12.4 seconds</text>
 
         <!-- NumPy bar -->

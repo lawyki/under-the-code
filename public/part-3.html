@@ -255,7 +255,7 @@
             <text x="140" y="20" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(150,216,150,0.7)">repeaters / amplifiers</text>
           </g>
           <!-- Animated pulse on cable -->
-          <circle r="4" fill="rgba(212,168,83,0.95)">
+          <circle cy="80" cx="20" r="4" fill="rgba(212,168,83,0.95)">
             <animate attributeName="cx" values="20;260" dur="3.4s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="80;80" dur="3.4s" repeatCount="indefinite"/>
           </circle>
@@ -362,7 +362,7 @@
             <path d="M 0,40 Q 20,60 40,40 T 80,40 T 120,40 T 160,40" fill="none" stroke="rgba(180,100,60,0.85)" stroke-width="2"/>
             <text x="80" y="78" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(232,140,80,0.7)">twisted pair</text>
             <!-- Animated electron -->
-            <circle r="3" fill="rgba(232,140,80,1)">
+            <circle cy="20" cx="0" r="3" fill="rgba(232,140,80,1)">
               <animate attributeName="cx" values="0;160" dur="2.6s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="20;20" dur="2.6s" repeatCount="indefinite"/>
             </circle>
@@ -608,8 +608,8 @@
         </g>
 
         <!-- Annotation: Shannon limit -->
-        <text x="540" y="60" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C = B · log₂(1 + SNR)</text>
-        <text x="540" y="78" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.7)">— above this curve, errors are inevitable</text>
+        <text x="600" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C = B · log₂(1 + SNR)</text>
+        <text x="600" y="78" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.7)">— above this curve, errors are inevitable</text>
       </svg>
       <p class="diagram-caption">Shannon's channel capacity curve: the maximum number of bits per second per Hertz of bandwidth as a function of signal-to-noise ratio. A 56k phone modem operated at roughly 30 dB SNR over a 4 kHz channel; the math gives 4000 × 10 ≈ 40 kbps, close to what was achieved in practice. Modern Wi-Fi 6 at ~20 dB SNR over 80 MHz channels achieves several hundred Mbps. Coherent fibre at ~15 dB effective SNR over tens of GHz of bandwidth pushes terabits per second on a single strand. The curve says nothing about <em>how</em> to achieve these rates — only that they cannot be exceeded. Every modulation, coding, and equalisation technique invented since 1948 is, in the end, a different way to climb closer to this single curve.</p>
     </div>
@@ -931,11 +931,11 @@
         <text x="660" y="260" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">time →</text>
 
         <!-- Station A lane -->
-        <text x="50" y="84" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)" text-anchor="end">station A</text>
+        <text x="54" y="84" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)" text-anchor="end">station A</text>
         <line x1="60" y1="84" x2="660" y2="84" stroke="rgba(150,216,150,0.18)" stroke-dasharray="3,3"/>
 
         <!-- Station B lane -->
-        <text x="50" y="156" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)" text-anchor="end">station B</text>
+        <text x="54" y="156" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)" text-anchor="end">station B</text>
         <line x1="60" y1="156" x2="660" y2="156" stroke="rgba(100,150,255,0.18)" stroke-dasharray="3,3"/>
 
         <!-- A starts sending -->
@@ -1476,7 +1476,7 @@
           <!-- Reserved circuit (thick line) -->
           <line x1="60"  y1="60" x2="580" y2="60" stroke="rgba(232,140,80,0.85)" stroke-width="3"/>
           <!-- Continuous voice signal -->
-          <circle r="3" fill="rgba(232,140,80,1)">
+          <circle cy="60" cx="60" r="3" fill="rgba(232,140,80,1)">
             <animate attributeName="cx" values="60;580;60" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="60;60;60" dur="3s" repeatCount="indefinite"/>
           </circle>
@@ -2481,7 +2481,7 @@
       <g>
         <line x1="120" y1="160" x2="360" y2="160" stroke="rgba(212,168,83,0.35)" stroke-dasharray="4,3"/>
         <text x="240" y="148" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">SYN</text>
-        <circle r="5" fill="rgba(212,168,83,0.95)">
+        <circle cy="160" cx="120" r="5" fill="rgba(212,168,83,0.95)">
           <animate attributeName="cx" values="120;360" dur="1.6s" begin="0s" repeatCount="indefinite"/>
           <animate attributeName="cy" values="160;160" dur="1.6s" begin="0s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="1.6s" begin="0s" repeatCount="indefinite"/>
@@ -2492,7 +2492,7 @@
       <g>
         <line x1="120" y1="240" x2="360" y2="240" stroke="rgba(212,168,83,0.35)" stroke-dasharray="4,3"/>
         <text x="240" y="232" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">SYN-ACK</text>
-        <circle r="5" fill="rgba(232,120,120,0.95)">
+        <circle opacity="0" cy="240" cx="360" r="5" fill="rgba(232,120,120,0.95)">
           <animate attributeName="cx" values="360;120" dur="1.6s" begin="1.6s" repeatCount="indefinite"/>
           <animate attributeName="cy" values="240;240" dur="1.6s" begin="1.6s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="1.6s" begin="1.6s" repeatCount="indefinite"/>
@@ -2503,7 +2503,7 @@
       <g>
         <line x1="120" y1="320" x2="360" y2="320" stroke="rgba(212,168,83,0.35)" stroke-dasharray="4,3"/>
         <text x="240" y="312" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">ACK</text>
-        <circle r="5" fill="rgba(150,216,150,0.95)">
+        <circle opacity="0" cy="320" cx="120" r="5" fill="rgba(150,216,150,0.95)">
           <animate attributeName="cx" values="120;360" dur="1.6s" begin="3.2s" repeatCount="indefinite"/>
           <animate attributeName="cy" values="320;320" dur="1.6s" begin="3.2s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="1.6s" begin="3.2s" repeatCount="indefinite"/>
@@ -3203,31 +3203,32 @@
 
         <!-- Height label -->
         <line x1="60" y1="80" x2="60" y2="140" stroke="rgba(212,168,83,0.6)"/>
-        <text x="50" y="116" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">bandwidth · 1 Gbps</text>
+        <text x="50" y="110" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">bandwidth</text>
+        <text x="50" y="122" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">1 Gbps</text>
 
         <!-- Animated bytes filling the pipe -->
         <g>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="100" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="100;100" dur="3s" repeatCount="indefinite"/>
           </circle>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="110" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" begin="0.3s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="110;110" dur="3s" begin="0.3s" repeatCount="indefinite"/>
           </circle>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="120" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" begin="0.6s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="120;120" dur="3s" begin="0.6s" repeatCount="indefinite"/>
           </circle>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="130" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" begin="0.9s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="130;130" dur="3s" begin="0.9s" repeatCount="indefinite"/>
           </circle>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="100" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" begin="1.2s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="100;100" dur="3s" begin="1.2s" repeatCount="indefinite"/>
           </circle>
-          <circle r="4" fill="rgba(150,216,150,0.9)">
+          <circle cx="80" cy="110" r="4" fill="rgba(150,216,150,0.9)">
             <animate attributeName="cx" values="80;640" dur="3s" begin="1.5s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="110;110" dur="3s" begin="1.5s" repeatCount="indefinite"/>
           </circle>
@@ -3346,19 +3347,19 @@
 
         <!-- Animated SYN packets -->
         <g>
-          <circle r="3" fill="rgba(232,120,120,0.95)">
+          <circle cy="120" cx="160" r="3" fill="rgba(232,120,120,0.95)">
             <animate attributeName="cx" values="160;480" dur="0.8s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="120;120" dur="0.8s" repeatCount="indefinite"/>
           </circle>
-          <circle r="3" fill="rgba(232,120,120,0.95)">
+          <circle cy="130" cx="160" r="3" fill="rgba(232,120,120,0.95)">
             <animate attributeName="cx" values="160;480" dur="0.8s" begin="0.2s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="130;130" dur="0.8s" begin="0.2s" repeatCount="indefinite"/>
           </circle>
-          <circle r="3" fill="rgba(232,120,120,0.95)">
+          <circle cy="140" cx="160" r="3" fill="rgba(232,120,120,0.95)">
             <animate attributeName="cx" values="160;480" dur="0.8s" begin="0.4s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="140;140" dur="0.8s" begin="0.4s" repeatCount="indefinite"/>
           </circle>
-          <circle r="3" fill="rgba(232,120,120,0.95)">
+          <circle cy="150" cx="160" r="3" fill="rgba(232,120,120,0.95)">
             <animate attributeName="cx" values="160;480" dur="0.8s" begin="0.6s" repeatCount="indefinite"/>
             <animate attributeName="cy" values="150;150" dur="0.8s" begin="0.6s" repeatCount="indefinite"/>
           </circle>
@@ -4413,8 +4414,9 @@
 
         <!-- Defense -->
         <g transform="translate(40,322)">
-          <rect x="0" y="0" width="640" height="32" rx="3" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
-          <text x="14" y="20" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">DEFENSE — randomise the source port too: 16-bit ID × 16-bit port = 32-bit guess space · ~65,000× harder to forge · Kaminsky 2008 patch</text>
+          <rect x="0" y="0" width="640" height="36" rx="3" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
+          <text x="14" y="15" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">DEFENSE — randomise the source port too: 16-bit ID × 16-bit port = 32-bit guess space</text>
+          <text x="14" y="29" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">~65,000× harder to forge · Kaminsky 2008 patch</text>
         </g>
       </svg>
       <p class="diagram-caption">DNS cache poisoning in one picture. The resolver sends a query out; the attacker, who has guessed (or been told) a transaction ID, fires forged replies at the resolver from a spoofed source IP. If a forged reply with a matching ID arrives before the real one, the resolver caches the lie and serves it to every user behind it for the TTL duration — typically hours. Kaminsky's 2008 disclosure showed how to make this practical against unpatched resolvers in minutes. The fix — randomising the source port as well as the transaction ID — multiplied the attacker's search space ~65,000-fold and pushed the practical attack from minutes to centuries. <strong>DNSSEC</strong> is the deeper fix: cryptographically sign every record so resolvers can verify authenticity, not just guess less. DNSSEC has been deployed for two decades and still covers under half the global namespace, because the deployment cost is real and the perceived risk has fallen.</p>

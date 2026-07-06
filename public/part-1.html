@@ -1438,7 +1438,8 @@
           <rect x="490" y="0" width="14" height="10" fill="rgba(212,168,83,0.9)" stroke="rgba(212,168,83,1)"/>
           <text x="510" y="9" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">WB · writeback</text>
         </g>
-        <text x="40" y="295" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">Without pipelining: 5 instructions × 5 cycles each = 25 cycles. With pipelining: 9 cycles. Throughput: ~1 instruction per cycle.</text>
+        <text x="40" y="295" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">Without pipelining: 5 instructions × 5 cycles each = 25 cycles.</text>
+        <text x="40" y="309" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">With pipelining: 9 cycles. Throughput: ~1 instruction per cycle.</text>
       </svg>
       <p class="diagram-caption">Each instruction still takes five cycles to fully complete — but the CPU works on five instructions <em>simultaneously</em>, each in a different stage. The diagonal pattern is the signature of a pipeline: a new instruction enters the IF stage every cycle, and a finished instruction leaves the WB stage every cycle. Modern CPUs may have 14 to 20 pipeline stages, multiple of each kind, and execute several instructions in parallel per cycle. The cursor above sweeps across one cycle at a time so you can see what's happening inside the chip at each tick.</p>
     </div>
@@ -1832,7 +1833,7 @@
         <g transform="translate(360,80)">
           <rect x="-50" y="0" width="100" height="34" rx="3" fill="rgba(212,168,83,0.9)" stroke="rgba(212,168,83,1)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#0a0a0a" font-weight="500">REGISTERS</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.95">
+          <circle cx="-44" cy="17" r="3.5" fill="#fff" opacity="0.95">
             <animate attributeName="cx" values="-44;44;-44" dur="0.4s" repeatCount="indefinite"/>
           </circle>
           <text x="60" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">~1 KB · 0.3 ns</text>
@@ -1842,7 +1843,7 @@
         <g transform="translate(360,124)">
           <rect x="-75" y="0" width="150" height="34" rx="3" fill="rgba(212,168,83,0.72)" stroke="rgba(212,168,83,0.95)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#0a0a0a" font-weight="500">L1 CACHE</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.9">
+          <circle cx="-69" cy="17" r="3.5" fill="#fff" opacity="0.9">
             <animate attributeName="cx" values="-69;69;-69" dur="0.8s" repeatCount="indefinite"/>
           </circle>
           <text x="85" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">~32 KB · 1 ns</text>
@@ -1852,7 +1853,7 @@
         <g transform="translate(360,168)">
           <rect x="-100" y="0" width="200" height="34" rx="3" fill="rgba(212,168,83,0.55)" stroke="rgba(212,168,83,0.8)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.95)" font-weight="500">L2 CACHE</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.85">
+          <circle cx="-94" cy="17" r="3.5" fill="#fff" opacity="0.85">
             <animate attributeName="cx" values="-94;94;-94" dur="1.6s" repeatCount="indefinite"/>
           </circle>
           <text x="110" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.55)">~512 KB · 4 ns</text>
@@ -1862,7 +1863,7 @@
         <g transform="translate(360,212)">
           <rect x="-135" y="0" width="270" height="34" rx="3" fill="rgba(212,168,83,0.4)" stroke="rgba(212,168,83,0.65)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.9)">L3 CACHE</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.8">
+          <circle cx="-129" cy="17" r="3.5" fill="#fff" opacity="0.8">
             <animate attributeName="cx" values="-129;129;-129" dur="3s" repeatCount="indefinite"/>
           </circle>
           <text x="146" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">~32 MB · 13 ns</text>
@@ -1872,7 +1873,7 @@
         <g transform="translate(360,256)">
           <rect x="-180" y="0" width="360" height="34" rx="3" fill="rgba(100,150,255,0.32)" stroke="rgba(100,150,255,0.6)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.9)">RAM (DRAM)</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.7">
+          <circle cx="-174" cy="17" r="3.5" fill="#fff" opacity="0.7">
             <animate attributeName="cx" values="-174;174;-174" dur="6s" repeatCount="indefinite"/>
           </circle>
           <text x="195" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">~16 GB · 60 ns</text>
@@ -1882,7 +1883,7 @@
         <g transform="translate(360,300)">
           <rect x="-230" y="0" width="460" height="34" rx="3" fill="rgba(150,216,150,0.28)" stroke="rgba(150,216,150,0.55)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.85)">SSD (NVMe)</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.55">
+          <circle cx="-224" cy="17" r="3.5" fill="#fff" opacity="0.55">
             <animate attributeName="cx" values="-224;224;-224" dur="20s" repeatCount="indefinite"/>
           </circle>
           <text x="245" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">~1 TB · 50,000 ns</text>
@@ -1892,7 +1893,7 @@
         <g transform="translate(360,344)">
           <rect x="-290" y="0" width="580" height="34" rx="3" fill="rgba(232,120,120,0.2)" stroke="rgba(232,120,120,0.45)"/>
           <text x="0" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.8)">HDD (spinning disk)</text>
-          <circle cy="17" r="3.5" fill="#fff" opacity="0.4">
+          <circle cx="-284" cy="17" r="3.5" fill="#fff" opacity="0.4">
             <animate attributeName="cx" values="-284;284;-284" dur="60s" repeatCount="indefinite"/>
           </circle>
         </g>
@@ -1905,7 +1906,8 @@
         <line x1="50" y1="120" x2="50" y2="350" stroke="rgba(255,255,255,0.15)" stroke-dasharray="2,3"/>
 
         <!-- Bottom note -->
-        <text x="40" y="402" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">A register is 17 million times faster than a hard drive. The whole job of modern memory architecture is to hide that gap from you.</text>
+        <text x="40" y="396" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">A register is 17 million times faster than a hard drive.</text>
+        <text x="40" y="410" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">The whole job of modern memory architecture is to hide that gap from you.</text>
       </svg>
       <p class="diagram-caption">The same data as the table above, drawn so the gaps are visible. Each row's width is roughly proportional to its capacity; each row's <em>dot speed</em> is roughly proportional to its access latency. The top three rows tick almost too fast to follow; the SSD dot crawls; the HDD dot is essentially still. Most of computer architecture for the past forty years — caching, prefetching, pipelining, branch prediction, parallelism — exists to hide this gap from the program.</p>
     </div>
@@ -2471,7 +2473,7 @@
           <path d="M 100 70 L 100 110 L 130 110 A 20 20 0 0 0 130 70 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
           <circle cx="155" cy="90" r="3" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
           <line x1="158" y1="90" x2="195" y2="90" stroke="rgba(212,168,83,0.85)" stroke-width="1.3"/>
-          <text x="203" y="94" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">A + B</text>
+          <text x="203" y="94" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">A+B</text>
           <!-- truth table -->
           <g font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">
             <rect x="40" y="148" width="160" height="92" fill="rgba(255,255,255,0.04)" stroke="rgba(212,168,83,0.25)" rx="4"/>
@@ -2484,7 +2486,7 @@
           </g>
         </g>
 
-        <text x="360" y="294" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Sheffer 1913 · functional completeness · one gate, anything computable</text>
+        <text x="360" y="314" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Sheffer 1913 · functional completeness · one gate, anything computable</text>
       </svg>
       <p class="diagram-caption">Three foundational gates — NOT, AND, OR — each rebuilt from the single NAND primitive. Tying both inputs of a NAND together gives a NOT. An AND is a NAND followed by a NOT (which is itself a NAND). And by DeMorgan's laws, OR is the negation of "neither A nor B," which is three NANDs arranged so the inputs are individually inverted before a final NAND combines them. Every truth table on every panel matches the conventional gate it replaces. From this single primitive — and silicon really is, in its bottom layers, fields of NAND-style transistor pairs — every computation any computer has ever performed can be assembled.</p>
     </div>
@@ -2806,7 +2808,7 @@
 
     <div class="diagram-card" id="fig-2-8">
       <div class="diagram-label">Fig 2.8 — The two's-complement wheel · where addition wraps</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 2.8 — The two's-complement wheel · where addition wraps</title>
+      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg"><title>Fig 2.8 — The two's-complement wheel · where addition wraps</title>
         <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">8-BIT SIGNED · 256 SLOTS · ADDITION ROTATES THE POINTER</text>
 
         <!-- Wheel center -->
@@ -2905,7 +2907,7 @@
           <text x="0" y="134" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">— see Fig 2.7</text>
         </g>
 
-        <text x="360" y="346" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">addition is rotation · subtraction is the same rotation, the other way</text>
+        <text x="360" y="392" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">addition is rotation · subtraction is the same rotation, the other way</text>
       </svg>
       <p class="diagram-caption">Two's complement is a wheel, not a line. The 256 possible 8-bit values arrange around the dial: 0 at the top, positive numbers to the right, negative numbers to the left, and a single discontinuity at the bottom where +127 meets −128. Adding 1 rotates the pointer one notch clockwise; subtracting 1 rotates it counter-clockwise. Most of the time this matches our ordinary intuition about numbers — a small positive plus a small positive gives a larger positive — but at the red edge, the wheel betrays it. <strong>+127 + 1 silently becomes −128.</strong> The same wrap that makes subtraction free in <a href="#fig-2-7">Fig 2.7</a> makes integer overflow inevitable. 32-bit and 64-bit signed integers have the same wheel; the slots are just exponentially more numerous.</p>
     </div>
@@ -3186,7 +3188,7 @@
 
     <div class="diagram-card" id="fig-2-12">
       <div class="diagram-label">Fig 2.12 — The Patriot missile · 0.0000000953 s × 100 hours = 28 lives</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg"><title>Fig 2.12 — The Patriot missile · 0.0000000953 s × 100 hours = 28 lives</title>
+      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg"><title>Fig 2.12 — The Patriot missile · 0.0000000953 s × 100 hours = 28 lives</title>
         <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)" letter-spacing="0.18em">DHAHRAN, 28 FEBRUARY 1991 · A ROUNDING ERROR THAT KILLED</text>
 
         <!-- Plot area -->
@@ -3233,8 +3235,8 @@
             <animate attributeName="stroke-opacity" values="0.7;0;0.7" dur="2.2s" repeatCount="indefinite"/>
           </circle>
           <line x1="540" y1="0" x2="490" y2="-30" stroke="rgba(232,120,120,0.7)" stroke-width="1"/>
-          <text x="486" y="-34" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">Dhahran intercept</text>
-          <text x="486" y="-22" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">missile failed to launch</text>
+          <text x="486" y="-18" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">Dhahran intercept</text>
+          <text x="486" y="-6" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">missile failed to launch</text>
 
           <!-- An earlier 'still safe' marker -->
           <circle cx="135" cy="165" r="3" fill="rgba(150,216,150,0.85)"/>
@@ -3243,7 +3245,7 @@
         </g>
 
         <!-- Side panel: the math -->
-        <g transform="translate(40, 296)">
+        <g transform="translate(80, 330)">
           <text x="0" y="0" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" letter-spacing="0.15em">THE ROUNDING THAT DID IT</text>
           <g font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.7)">
             <text x="0" y="20">0.1 s clock tick · binary fraction repeats forever · stored 24-bit</text>
@@ -3712,12 +3714,14 @@
           <text x="200" y="232" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.7)" letter-spacing="0.15em">SPECIAL — NOT GENERAL-PURPOSE</text>
           <g font-family="DM Mono" font-size="10">
             <rect x="0" y="240" width="180" height="44" rx="5" fill="rgba(232,120,120,0.1)" stroke="rgba(232,120,120,0.55)" stroke-width="1.4"/>
-            <text x="90" y="258" text-anchor="middle" fill="rgba(232,120,120,0.95)">RIP</text>
-            <text x="90" y="274" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">instruction pointer · "if you control RIP, you control the program"</text>
+            <text x="90" y="256" text-anchor="middle" fill="rgba(232,120,120,0.95)">RIP</text>
+            <text x="90" y="268" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">instruction pointer</text>
+            <text x="90" y="278" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">"control RIP, control the program"</text>
 
             <rect x="200" y="240" width="200" height="44" rx="5" fill="rgba(232,120,120,0.1)" stroke="rgba(232,120,120,0.55)" stroke-width="1.4"/>
-            <text x="300" y="258" text-anchor="middle" fill="rgba(232,120,120,0.95)">RFLAGS</text>
-            <text x="300" y="274" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">CF · ZF · SF · OF · IF · DF · …  status of last operation</text>
+            <text x="300" y="256" text-anchor="middle" fill="rgba(232,120,120,0.95)">RFLAGS</text>
+            <text x="300" y="268" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">CF · ZF · SF · OF · IF · DF · …</text>
+            <text x="300" y="278" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">status of last operation</text>
           </g>
         </g>
 
@@ -3733,7 +3737,8 @@
           <rect x="120" y="50" width="120" height="42" fill="rgba(100,150,255,0.3)" stroke="rgba(100,150,255,0.85)" stroke-width="1.4" rx="6"/>
           <text x="180" y="72" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">EAX (32)</text>
           <text x="180" y="84" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">Intel 1985 · "E" for extended</text>
-          <text x="60" y="76" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">upper 32 bits unused if EAX written</text>
+          <text x="60" y="68" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">upper 32 bits unused</text>
+          <text x="60" y="78" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">if EAX is written</text>
 
           <rect x="0" y="98" width="240" height="42" rx="6" fill="rgba(100,150,255,0.14)" stroke="rgba(100,150,255,0.55)"/>
           <rect x="180" y="98" width="60" height="42" fill="rgba(100,150,255,0.4)" stroke="rgba(100,150,255,0.95)" stroke-width="1.4" rx="6"/>
@@ -3753,7 +3758,7 @@
           <text x="120" y="236" text-anchor="middle" font-family="serif" font-size="9.5" font-style="italic" fill="rgba(212,168,83,0.7)">— forty-five years of names in one register</text>
 
           <!-- Pulse highlighting active alias -->
-          <circle r="3" fill="#d4a853" opacity="0.85">
+          <circle cy="22" cx="240" r="3" fill="#d4a853" opacity="0.85">
             <animate attributeName="cy" values="22;72;120;168;22" dur="6s" repeatCount="indefinite"/>
             <animate attributeName="cx" values="240;240;240;240;240" dur="6s" repeatCount="indefinite"/>
           </circle>
@@ -3856,37 +3861,37 @@
 
           <!-- Animated pulses -->
           <g>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle cy="0" cx="40" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="40;40" dur="3s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle opacity="0" cy="0" cx="130" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="130;130" dur="3s" begin="0.2s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="0.2s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.2s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle opacity="0" cy="0" cx="220" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="220;220" dur="3s" begin="0.4s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="0.4s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.4s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle opacity="0" cy="0" cx="310" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="310;310" dur="3s" begin="0.6s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="0.6s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.6s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle opacity="0" cy="0" cx="400" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="400;400" dur="3s" begin="0.8s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="0.8s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.8s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(100,150,255,0.95)">
+            <circle opacity="0" cy="0" cx="490" r="3" fill="rgba(100,150,255,0.95)">
               <animate attributeName="cx" values="490;490" dur="3s" begin="1s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="1s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1s" repeatCount="indefinite"/>
             </circle>
-            <circle r="3" fill="rgba(150,216,150,0.95)">
+            <circle opacity="0" cy="0" cx="600" r="3" fill="rgba(150,216,150,0.95)">
               <animate attributeName="cx" values="600;600" dur="3s" begin="1.2s" repeatCount="indefinite"/>
               <animate attributeName="cy" values="0;30" dur="3s" begin="1.2s" repeatCount="indefinite"/>
               <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1.2s" repeatCount="indefinite"/>
@@ -4050,7 +4055,7 @@ main:
 
     <div class="diagram-card" id="fig-3-6">
       <div class="diagram-label">Fig 3.6 — The stack during a function call</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg"><title>Fig 3.6 — The stack during a function call</title>
+      <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg"><title>Fig 3.6 — The stack during a function call</title>
         <text x="360" y="30" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.4)" letter-spacing="0.15em">STACK GROWS DOWNWARD ↓</text>
 
         <g transform="translate(80,60)">
@@ -4082,7 +4087,7 @@ main:
           <text x="250" y="80" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)">add's frame</text>
         </g>
 
-        <text x="360" y="370" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)">When add hits ret: RSP rises, return address pops back into RIP, control returns to main.</text>
+        <text x="360" y="410" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)">When add hits ret: RSP rises, return address pops back into RIP, control returns to main.</text>
       </svg>
       <p class="diagram-caption">Three snapshots of the stack during a call. Each <code>call</code> instruction pushes a return address onto the stack; <code>ret</code> pops it. The pattern of saved frame pointers forms a linked list back through the entire call hierarchy — which is why a debugger can show you a "stack trace" listing every nested function call leading to the current point.</p>
     </div>
@@ -4612,7 +4617,7 @@ main:
         </g>
 
         <!-- Animated travelling RIP pulse -->
-        <circle r="4" fill="rgba(232,120,120,0.95)">
+        <circle cy="106" cx="240" r="4" fill="rgba(232,120,120,0.95)">
           <animate attributeName="cx" values="240;240;530;530;240;240;530;530;240;240;530" dur="6s" repeatCount="indefinite"/>
           <animate attributeName="cy" values="106;106;104;104;186;186;184;184;266;266;284" dur="6s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95" dur="6s" repeatCount="indefinite"/>
