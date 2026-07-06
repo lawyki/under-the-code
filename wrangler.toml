@@ -11,9 +11,10 @@ binding = "DB"
 database_name = "under-book"
 database_id = "a3dc4bc2-5ff7-4715-ae3a-e937a88dacae"
 
-# Cloudflare Email Sending (native, first-party) — delivers the magic-link
-# sign-in mail from a Pages Function. No third-party mail provider.
-# Requires Email Sending to be enabled for atheric.eu on the account
-# (dashboard → Email → Email Sending, or `wrangler email sending enable`).
-[[send_email]]
-name = "EMAIL"
+# Magic-link mail is sent via the Cloudflare Email Sending REST API — the
+# [[send_email]] binding is Workers-only (Pages config validation rejects it).
+# Requires Email Sending enabled for atheric.eu plus a Pages secret:
+#   npx wrangler pages secret put EMAIL_API_TOKEN --project-name under-the-code
+# Until the secret exists, /api/auth/request answers 503 delivery_unavailable.
+[vars]
+CF_ACCOUNT_ID = "1ae05809e015cd076b0e28c3b2e1d08b"

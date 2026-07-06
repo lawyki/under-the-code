@@ -1,8 +1,10 @@
 // POST /api/auth/request — start a magic-link sign-in.
 // Body: { email, next? }. Creates the user on first sign-in (no separate
 // registration), stores a hashed one-time token (15 min), and emails the
-// link via the Cloudflare Email Sending binding. The response is the same
-// whether or not the address already had an account.
+// link via the Cloudflare Email Sending REST API (the [[send_email]] binding
+// is Workers-only — Pages configuration rejects it, so the Function calls
+// the API directly with an EMAIL_API_TOKEN secret). The response is the
+// same whether or not the address already had an account.
 'use strict';
 
 import {
@@ -69,17 +71,29 @@ export async function onRequestPost({ request, env }) {
 
   let sent = false;
   let sendError = null;
-  if (env.EMAIL && typeof env.EMAIL.send === 'function') {
+  if (env.EMAIL_API_TOKEN && env.CF_ACCOUNT_ID) {
     try {
       const { text, html } = emailBody(link);
-      await env.EMAIL.send({
-        to: email,
-        from: FROM,
-        subject: 'Your sign-in link — Under the Code',
-        text,
-        html,
-      });
-      sent = true;
+      const res = await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${env.CF_ACCOUNT_ID}/email/sending/send`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${env.EMAIL_API_TOKEN}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: email,
+            from: FROM,
+            subject: 'Your sign-in link — Under the Code',
+            text,
+            html,
+          }),
+        }
+      );
+      const out = await res.json().catch(() => null);
+      sent = !!(res.ok && out && out.success);
+      if (!sent) sendError = 'api ' + res.status + ' ' + JSON.stringify((out && out.errors) || []);
     } catch (e) {
       sendError = (e && e.message) || 'send_failed';
     }

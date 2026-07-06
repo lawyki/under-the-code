@@ -13,9 +13,10 @@ improvement work.
 An interactive HTML book: **5 parts, 18 chapters + one Bridge interlude, ~93,000
 words, 242 inline-SVG figures** (222 diagram cards + 19 chapter heroes + the cover
 art). Every figure is hand-drawn inline SVG, most with SMIL animation. No framework,
-no bundler, no build step for the pages themselves — the only tooling is
-`scripts/build-glossary.js`, which extracts defined terms from the part files into
-`glossary.json`.
+no bundler, no build step for the pages themselves — the tooling is
+`scripts/build-glossary.js` (extracts defined terms into `glossary.json`) and
+`scripts/add-anchor-ids.js` (bakes stable paragraph anchor ids into the part
+files, added in pass 3 for reading-position sync; idempotent, collision-safe).
 
 Published by Atheric (atheric.eu) as one of two proof-of-work products; deployed on
 Cloudflare Pages from `public/`, auto-deploy on push to `main`.
@@ -27,6 +28,7 @@ Cloudflare Pages from `public/`, auto-deploy on push to `main`.
 | `index.html` | Cover, part shelves, full 18-chapter TOC | 23 KB |
 | `part-1.html` … `part-5.html` | The book itself (3–4–5–3–3 chapters per part) | 313–473 KB each |
 | `glossary.html` | Auto-built alphabetical index (JS-rendered from `glossary.json`) | 1 KB shell |
+| `account.html` | Sign-in / account / privacy notice (pass 3; noindex, robots-disallowed) | 12 KB |
 | `404.html` | Self-contained error page (own inline CSS, no book.css) | 3 KB |
 | `book.css` / `book.js` | Single shared stylesheet + single shared script | 52 KB / 26 KB |
 | `fonts.css` + `fonts/` | Self-hosted webfonts (added in pass 1) | 16 woff2, ~270 KB total |
@@ -45,8 +47,14 @@ plain multi-anchor document; navigation is ordinary links + URL hashes
 3. **SMIL pause/resume** — every figure's SVG animations are paused offscreen
    (IntersectionObserver, 300px margin) and forced on in fullscreen;
    `prefers-reduced-motion` pauses everything permanently.
-4. **Reading progress + resume** — localStorage only; "Where you left off" card on
-   the index; 90-day expiry.
+4. **Reading progress + resume + cross-device sync** (rewritten in pass 3) —
+   position = deepest stable element id at the reading line + fractional offset,
+   never raw scrollY. localStorage always (90-day expiry, "Where you left off"
+   card on the index); when signed in, mirrored to `/api/position` (debounced 2 s
+   idle, sendBeacon on pagehide/visibilitychange). A server position newer than
+   local surfaces as a quiet dismissible "on your other device" chip. Signed-out
+   readers generate zero API traffic — the JS-readable `under_signedin` hint
+   cookie gates every call.
 5. **Glossary** — fetches `glossary.json`, attaches hover/focus tooltips to
    `<strong>/<em>/.key-term` occurrences everywhere except each term's first-use
    section, renders the glossary index page, adds the index-footer link.
@@ -219,6 +227,73 @@ connective tissue stands.
 sufficient; pair it with a text-vs-containing-rect scan *and* screenshots of
 every touched figure. Metrics can be satisfied while the defect remains.
 
+## 4c. Pass 3 (2026-07-06): accounts + exact reading-position sync
+
+Additive feature pass, not a defect pass. Goal: "continue reading" restores the
+reader's exact position, every time, across devices. Signed-out experience is
+byte-identical in behavior (verified: zero `/api` requests signed out).
+
+### Position unit — what "exact" means
+
+Anchor = **deepest stable element id at the reading line** (56 px, just under
+the 48 px header) **+ fractional offset within that element**. Never raw
+scrollY — it breaks across viewport widths and font settings. Granularity:
+chapter (`ch7`) → section (`ch7-locks`) → paragraph/figure (`ch7-locks-p4`,
+`fig-7-3`). Sections and figures already had ids; `scripts/add-anchor-ids.js`
+baked **816 paragraph ids** into the five part files (literal text in the HTML,
+so hand edits never renumber; re-runs only fill gaps, collision-checked).
+Restores self-correct once after layout settles (late font reflow, smooth-scroll
+tail), cancelled if the reader scrolls meanwhile — verified pixel-exact against
+the stored fraction at 1440 and 375.
+
+### Architecture (server)
+
+- **Auth: self-hosted magic links.** `POST /api/auth/request` → one-time token
+  (SHA-256 stored, 15 min TTL, ≤3 outstanding per address) → emailed link.
+  `GET /api/auth/verify` renders a confirm page and does *not* consume (mail
+  scanners prefetch GETs); the button `POST`s, consumes atomically
+  (`DELETE … RETURNING`), sets a `__Host-` HttpOnly session cookie (180 d,
+  hashed in D1) + the `under_signedin` hint. `/me`, `/logout`, `/delete`
+  (full erasure: position, sessions, tokens, user row). No passwords, no OAuth,
+  no third-party identity.
+- **Storage: Cloudflare D1** (`under-book`, EEUR) — `users`, `login_tokens`,
+  `sessions`, `positions` (one row per user). Schema in `schema.sql`.
+- **Email: Cloudflare Email Sending via its REST API** — Cloudflare's native
+  service; even the mail hop has no third-party provider. The `[[send_email]]`
+  binding is Workers-only (Pages config validation rejects it — learned from a
+  failed deploy), so the Function POSTs
+  `accounts/{id}/email/sending/send` with an `EMAIL_API_TOKEN` Pages secret.
+  **Owner action still required**: Workers Paid plan + enable Email Sending for
+  `atheric.eu` (+ its DNS records) + set the secret. Until then
+  `/api/auth/request` returns a clean 503 and the account page says delivery
+  is unavailable; on localhost the API echoes the link (`devLink`) so the flow
+  is fully testable without mail.
+- Pages Functions live in `functions/api/*`; `wrangler.toml` carries the
+  bindings (`pages_build_output_dir = "public"`). `_lib.js` is not routed
+  (verified 404).
+
+### Client
+
+Rewrote book.js IIFE #4 (see §2). Entry point is one quiet footer link on the
+index ("Keep your place across devices →" → `/account`; swaps to "Reading
+sync · on" when signed in). The offer is a dismissible bottom chip in the
+book's grammar (mono eyebrow + serif italic link), never a modal, hidden in
+print, inert under reduced-motion (global transition kill). Cross-page exact
+restore hands the fraction through `sessionStorage` (resume card and
+cross-part chip). Position writes are whitelisted server-side (part/anchor
+regex, fraction 0–3, labels ≤200 chars, body ≤2 KB).
+
+### Privacy
+
+The book had no notice; it now does — `/account#privacy`: what is stored
+(email, hashed session ids, one reading position), purpose (sign-in + resume,
+nothing else), where (D1 in the EU, Cloudflare Email Sending), retention
+(links 15 min, sessions 180 d, position until overwritten/deleted), deletion
+(self-serve button + `hello@atheric.eu`), operator (YDT Holdings Oy). The
+studio privacy page (atheric.eu/privacy) scopes itself to the studio site and
+is not referenced by the book, so it needed no change. `/account` is noindex
+(meta + `X-Robots-Tag`) and robots-disallowed along with `/api/`.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -230,6 +305,19 @@ every touched figure. Metrics can be satisfied while the defect remains.
   tracks the 241 in-book SVGs.
 
 ## 6. Prioritized improvement backlog (later passes — needs owner sign-off)
+
+**P0 — owner action (pass 3 leftover)**
+0. **Enable Cloudflare Email Sending for atheric.eu** so magic-link mail
+   actually delivers: Workers Paid plan → dashboard Email → Email Sending →
+   enable for the zone + add its DNS records (or `npx wrangler email sending
+   enable atheric.eu` once the account has access — the API currently returns
+   Unauthorized 2036, i.e. plan/beta gating). Then create an API token with
+   Email Sending permission and store it:
+   `npx wrangler pages secret put EMAIL_API_TOKEN --project-name under-the-code`.
+   Everything else (code, D1, CF_ACCOUNT_ID var) is already deployed;
+   `/api/auth/request` returns 503 `delivery_unavailable` until this is done.
+   Then: request a link on `/account` with a real address and complete one
+   live email round-trip.
 
 **P1 — reader-facing polish**
 1. ~~**Figure a11y**~~ — DONE in pass 2. All 241 figure SVGs + the cover carry
