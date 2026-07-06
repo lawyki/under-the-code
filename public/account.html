@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account — Under the Code</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<meta name="description" content="Keep your place in Under the Code across devices — one email, one signed link, no password.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://under.atheric.eu/account">
+<!-- Self-hosted fonts — local mirror of the Google css2 payload (see fonts.css).
+     No request leaves the origin. Preloads cover the latin faces every page uses. -->
+<link rel="preload" href="/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/playfair-display-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/dm-mono-300-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="book.css">
+<style>
+  body { background: var(--black); color: rgba(245, 240, 230, 0.9); }
+
+  .acct-block {
+    margin-top: 48px;
+    padding: 28px;
+    background: rgba(212, 168, 83, 0.04);
+    border: 1px solid rgba(212, 168, 83, 0.18);
+    border-radius: 4px;
+    max-width: 560px;
+  }
+  .acct-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.3em;
+    text-transform: uppercase; color: rgba(212, 168, 83, 0.7);
+    margin-bottom: 14px;
+  }
+  .acct-form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .acct-form input[type="email"] {
+    flex: 1; min-width: 220px;
+    font-family: var(--mono); font-size: 14px; font-weight: 300;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 3px;
+    color: rgba(245, 240, 230, 0.92);
+  }
+  .acct-form input[type="email"]:focus {
+    outline: none; border-color: rgba(212, 168, 83, 0.55);
+  }
+  .acct-btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 11px 20px;
+    background: rgba(212, 168, 83, 0.08);
+    color: var(--accent);
+    border: 1px solid rgba(212, 168, 83, 0.4);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .acct-btn:hover { background: rgba(212, 168, 83, 0.16); border-color: rgba(212, 168, 83, 0.6); }
+  .acct-btn[disabled] { opacity: 0.5; cursor: default; }
+  .acct-btn--quiet { background: none; border-color: rgba(255, 255, 255, 0.18); color: rgba(245, 240, 230, 0.6); }
+  .acct-btn--quiet:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3); }
+  .acct-btn--danger { border-color: rgba(232, 120, 120, 0.4); color: var(--accent-red); background: none; }
+  .acct-btn--danger:hover { background: rgba(232, 120, 120, 0.08); border-color: rgba(232, 120, 120, 0.6); }
+  .acct-status {
+    margin-top: 16px;
+    font-family: var(--sans); font-weight: 300; font-size: 0.92rem;
+    line-height: 1.7; color: rgba(245, 240, 230, 0.65);
+    min-height: 1.5em;
+  }
+  .acct-status a { color: var(--accent); }
+  .acct-email { font-family: var(--mono); font-size: 14px; color: var(--accent); overflow-wrap: anywhere; }
+  .acct-place {
+    margin: 14px 0 22px;
+    font-family: var(--sans); font-weight: 300; font-size: 0.95rem;
+    line-height: 1.7; color: rgba(245, 240, 230, 0.72);
+  }
+  .acct-place em { font-family: var(--serif); color: var(--accent); }
+  .acct-place a { color: var(--accent); }
+  .acct-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .acct-privacy { max-width: 640px; margin-top: 72px; }
+  .acct-privacy h2 {
+    font-family: var(--serif); font-weight: 500; font-size: 1.4rem;
+    color: rgba(245, 240, 230, 0.92); margin-bottom: 18px;
+  }
+  .acct-privacy h2 em { color: var(--accent); }
+  .acct-privacy p, .acct-privacy li {
+    font-family: var(--sans); font-weight: 300; font-size: 0.95rem;
+    line-height: 1.85; color: rgba(245, 240, 230, 0.68);
+  }
+  .acct-privacy p { margin-bottom: 14px; }
+  .acct-privacy ul { margin: 0 0 14px 20px; }
+  .acct-privacy strong { color: rgba(245, 240, 230, 0.88); font-weight: 400; }
+  .acct-privacy a { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<section class="glossary-page">
+  <div class="glossary-page-inner">
+    <a href="/" class="glossary-back">← Back to the book</a>
+
+    <div class="glossary-eyebrow">Account</div>
+    <h1 class="glossary-title">Keep your <em>place</em>.</h1>
+    <p class="glossary-intro">
+      One email, one signed link, no password. Signed in, the book remembers the exact
+      paragraph you stopped at and offers it back on any device. Signed out, nothing
+      changes — your place still lives in this browser alone, as it always has.
+    </p>
+
+    <div class="acct-block" id="acct-signed-out" hidden>
+      <div class="acct-label">Sign in · or create an account</div>
+      <form class="acct-form" id="acct-form">
+        <input type="email" name="email" id="acct-input" placeholder="you@example.com"
+               autocomplete="email" required aria-label="Email address">
+        <button type="submit" class="acct-btn" id="acct-send">Email me a link</button>
+      </form>
+      <p class="acct-status" id="acct-out-status" role="status"></p>
+    </div>
+
+    <div class="acct-block" id="acct-signed-in" hidden>
+      <div class="acct-label">Signed in</div>
+      <p class="acct-email" id="acct-who"></p>
+      <p class="acct-place" id="acct-place"></p>
+      <div class="acct-actions">
+        <button type="button" class="acct-btn acct-btn--quiet" id="acct-signout">Sign out</button>
+        <button type="button" class="acct-btn acct-btn--danger" id="acct-delete">Delete account</button>
+      </div>
+      <p class="acct-status" id="acct-in-status" role="status"></p>
+    </div>
+
+    <section class="acct-privacy" id="privacy">
+      <h2>What this stores — a <em>privacy</em> notice.</h2>
+      <p>
+        The book itself collects nothing: no analytics, no trackers, no third-party
+        requests. Reading progress for signed-out readers lives in your browser's
+        localStorage and never leaves your device. An account adds exactly one thing —
+        the same reading position, stored server-side so it can follow you between
+        devices. In detail:
+      </p>
+      <ul>
+        <li><strong>What is stored:</strong> your email address; a session identifier
+          (only its hash is kept); and one reading position — which part of the book,
+          a paragraph anchor, an offset within it, chapter and section titles, and when
+          it was last updated. That is the whole database.</li>
+        <li><strong>What it is for:</strong> signing you in and putting you back at your
+          paragraph. Nothing else. Your address receives only the sign-in links you
+          yourself request — no announcements, no marketing — and is never shared
+          or sold.</li>
+        <li><strong>Where it lives:</strong> a Cloudflare D1 database in the European
+          Union, the same infrastructure that already serves the book. Sign-in mail is
+          delivered by Cloudflare Email Sending — our host's own service, no
+          third-party mail provider.</li>
+        <li><strong>Retention:</strong> sign-in links expire after 15 minutes and work
+          once; sessions expire after 180 days; the reading position is overwritten in
+          place as you read and exists only while your account does.</li>
+        <li><strong>Deletion:</strong> the button above removes your email, sessions,
+          and position immediately and completely — or write to
+          <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
+      </ul>
+      <p>
+        Operated by YDT Holdings Oy (<a href="https://atheric.eu">Atheric</a>, Finland),
+        the publisher of this book.
+      </p>
+    </section>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+  const signedOutBlock = $('acct-signed-out');
+  const signedInBlock = $('acct-signed-in');
+  const hint = /(?:^|;\s*)under_signedin=1(?:;|$)/.test(document.cookie);
+
+  function showSignedOut() {
+    signedOutBlock.hidden = false;
+    signedInBlock.hidden = true;
+  }
+
+  function describePlace(data) {
+    if (!data || !data.position) return 'No position synced yet — open a part and start reading.';
+    const p = data.position;
+    const meta = [];
+    if (p.chapterNum) meta.push(p.chapterNum);
+    if (p.sectionLabel) {
+      const num = p.sectionLabel.split('—')[0].trim();
+      if (num) meta.push('§' + num);
+    }
+    const label = (meta.length ? meta.join(' · ') + ' — ' : '') + (p.sectionTitle || p.chapterTitle || 'your place');
+    const href = p.part + '#' + (p.anchor || p.section || '');
+    return 'Your place: <a href="' + href + '"><em>' + label.replace(/[<>&]/g, '') + '</em> →</a>';
+  }
+
+  function showSignedIn(email) {
+    signedOutBlock.hidden = true;
+    signedInBlock.hidden = false;
+    $('acct-who').textContent = email;
+    fetch('/api/position').then(r => (r.ok ? r.json() : null)).then(data => {
+      $('acct-place').innerHTML = describePlace(data);
+    }).catch(() => {});
+  }
+
+  if (hint) {
+    fetch('/api/auth/me').then(r => (r.ok ? r.json() : null)).then(data => {
+      if (data && data.email) showSignedIn(data.email);
+      else showSignedOut();
+    }).catch(showSignedOut);
+  } else {
+    showSignedOut();
+  }
+
+  $('acct-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = $('acct-input').value.trim();
+    if (!email) return;
+    const btn = $('acct-send');
+    const status = $('acct-out-status');
+    btn.disabled = true;
+    status.textContent = 'Sending…';
+    fetch('/api/auth/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, next: '/account' })
+    }).then(r => r.json().then(body => ({ ok: r.ok, body }))).then(({ ok, body }) => {
+      btn.disabled = false;
+      if (ok && body.devLink) {
+        // Local development only — the API echoes the link instead of mailing it.
+        status.innerHTML = 'Dev link: <a href="' + body.devLink + '">sign in →</a>';
+      } else if (ok) {
+        status.textContent = 'Sent. Check your email — the link works once and expires in 15 minutes.';
+      } else if (body && body.error === 'slow_down') {
+        status.textContent = 'A link was already sent — check your email, or try again in a few minutes.';
+      } else if (body && body.error === 'delivery_unavailable') {
+        status.textContent = 'Email delivery is temporarily unavailable. Nothing was sent — please try again later.';
+      } else {
+        status.textContent = 'That didn’t work — check the address and try again.';
+      }
+    }).catch(() => {
+      btn.disabled = false;
+      status.textContent = 'Network error — please try again.';
+    });
+  });
+
+  $('acct-signout').addEventListener('click', () => {
+    fetch('/api/auth/logout', { method: 'POST' }).finally(() => location.reload());
+  });
+
+  let armed = false;
+  $('acct-delete').addEventListener('click', () => {
+    const btn = $('acct-delete');
+    const status = $('acct-in-status');
+    if (!armed) {
+      armed = true;
+      btn.textContent = 'Press again to delete everything';
+      status.textContent = 'This removes your email, sessions, and reading position immediately.';
+      setTimeout(() => {
+        armed = false;
+        btn.textContent = 'Delete account';
+        status.textContent = '';
+      }, 6000);
+      return;
+    }
+    btn.disabled = true;
+    fetch('/api/auth/delete', { method: 'POST' }).then(r => {
+      if (r.ok) {
+        status.textContent = 'Deleted. Nothing about you remains on the server.';
+        setTimeout(() => location.reload(), 1600);
+      } else {
+        btn.disabled = false;
+        status.textContent = 'Deletion failed — please try again.';
+      }
+    }).catch(() => {
+      btn.disabled = false;
+      status.textContent = 'Network error — please try again.';
+    });
+  });
+})();
+</script>
+</body>
+</html>

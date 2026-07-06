@@ -969,9 +969,10 @@
   }
   .glossary-entry-anchor:hover .glossary-entry-loc { color: var(--accent); }
 
-  .glossary-footer-link {
+  .glossary-footer-link,
+  .account-footer-link {
     display: inline-block;
-    margin-top: 24px;
+    margin: 24px 6px 0;
     font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.25em;
@@ -983,7 +984,8 @@
     border-radius: 3px;
     transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
   }
-  .glossary-footer-link:hover {
+  .glossary-footer-link:hover,
+  .account-footer-link:hover {
     background: rgba(212, 168, 83, 0.08);
     border-color: rgba(212, 168, 83, 0.5);
     color: rgba(245, 220, 170, 1);
@@ -1094,6 +1096,81 @@
     .resume-card { position: relative; }
   }
 
+  /* --- Cross-device sync chip (part pages, signed-in only) -------------------- */
+  /* A quiet, dismissible "on your other device" offer. Fixed to the bottom
+     edge, never modal, never blocks the text column. */
+  .sync-chip {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%, 12px);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    max-width: min(92vw, 640px);
+    padding: 12px 18px;
+    background: rgba(10, 10, 10, 0.94);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 4px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    z-index: 190;
+    opacity: 0;
+    transition: opacity 480ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .sync-chip.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  .sync-chip-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(212, 168, 83, 0.65);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .sync-chip-link {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--accent);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .sync-chip-link:hover { color: rgba(245, 220, 170, 1); }
+  .sync-chip-dismiss {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: var(--mono);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 4px;
+    flex-shrink: 0;
+    align-self: center;
+    transition: color 0.2s ease;
+  }
+  .sync-chip-dismiss:hover { color: rgba(255, 255, 255, 0.75); }
+  @media (max-width: 640px) {
+    .sync-chip {
+      left: 16px;
+      right: 16px;
+      transform: translate(0, 12px);
+      max-width: none;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+    }
+    .sync-chip.visible { transform: translate(0, 0); }
+    .sync-chip-dismiss { position: absolute; top: 6px; right: 6px; }
+    .sync-chip { padding-right: 34px; position: fixed; }
+  }
+
   /* --- Scroll-reveal entrance animation --------------------------------------- */
   .reveal {
     opacity: 0;
@@ -1135,6 +1212,7 @@
     .book-nav, .chapter-nav, .section-rail, .fs-button, .fs-close, .cover-cta { display: none !important; }
     .colophon { display: none !important; }
     .resume-card { display: none !important; }
+    .sync-chip { display: none !important; }
     .glossary-tip { display: none !important; }
     .glossary-jump { display: none !important; }
     .glossary-ref { cursor: text !important; text-decoration: none !important; }

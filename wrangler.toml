@@ -1,0 +1,19 @@
+# Cloudflare Pages configuration — bindings for the account/position API.
+# The site itself is still plain static files in public/; functions/ holds
+# the Pages Functions behind /api/*. Git pushes to main deploy both.
+name = "under-the-code"
+compatibility_date = "2026-06-01"
+pages_build_output_dir = "public"
+
+# D1: users, sessions, one-time login tokens, one reading position per user.
+[[d1_databases]]
+binding = "DB"
+database_name = "under-book"
+database_id = "a3dc4bc2-5ff7-4715-ae3a-e937a88dacae"
+
+# Cloudflare Email Sending (native, first-party) — delivers the magic-link
+# sign-in mail from a Pages Function. No third-party mail provider.
+# Requires Email Sending to be enabled for atheric.eu on the account
+# (dashboard → Email → Email Sending, or `wrangler email sending enable`).
+[[send_email]]
+name = "EMAIL"

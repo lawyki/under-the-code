@@ -292,19 +292,31 @@
   targets.forEach(el => observer.observe(el));
 })();
 
-// --- Reading progress + resume -----------------------------------------------
-// Tracks the reader's position through the book. On the index page, surfaces
-// a quiet "where you left off" card between the cover and the part shelves.
-// All state lives in localStorage; it never leaves the device. Stale progress
-// (>90 days) is silently dropped so the card doesn't haunt forever.
+// --- Reading progress + resume + cross-device sync -----------------------------
+// Tracks the reader's exact position: the deepest stable element id at the
+// reading line (chapter → section → paragraph/figure — paragraph ids are baked
+// into the HTML by scripts/add-anchor-ids.js) plus a fractional offset within
+// that element. Never raw scrollY, so the position survives viewport and font
+// changes. localStorage is the always-on store; when the reader is signed in
+// (detected by the JS-readable `under_signedin` hint cookie — no API call is
+// ever made for signed-out readers), the same snapshot is mirrored to
+// /api/position: debounced 2s after scrolling stops, flushed with sendBeacon
+// on pagehide/visibilitychange. On load, a server position newer than local
+// surfaces as a quiet, dismissible "on your other device" chip — never a modal.
 (function () {
   'use strict';
-  if (!('IntersectionObserver' in window)) return;
   if (!('localStorage' in window)) return;
 
   const STORAGE_KEY = 'under-the-code:progress';
+  const PENDING_KEY = 'under-the-code:pending-offset';
   const MAX_AGE_DAYS = 90;
-  const SAVE_DEBOUNCE_MS = 1200;
+  const SAVE_IDLE_MS = 2000;
+  const READING_LINE = 56;   // px from viewport top: 48px fixed header + 8
+
+  const signedIn = /(?:^|;\s*)under_signedin=1(?:;|$)/.test(document.cookie);
+  const page = ((window.location.pathname.split('/').pop() || '')
+    .toLowerCase().replace(/\.html$/, '')) || 'index';
+  const isPart = /^part-[1-5]$/.test(page);
 
   function readProgress() {
     try {
@@ -324,136 +336,372 @@
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
   }
 
-  // -------- TRACKER (runs on every part-N.html page) ---------------------------
-  const sections = Array.from(document.querySelectorAll('section.section[id^="ch"]'));
-  if (sections.length) {
-    const visibleSet = new Set();
+  function formatChapterNum(chapterId) {
+    if (chapterId === 'chBridge') return 'Bridge';
+    const n = chapterId.replace(/^ch/, '');
+    return /^\d+$/.test(n) ? 'Chapter ' + n : chapterId;
+  }
+
+  // -------- ANCHOR MODEL --------------------------------------------------------
+  // Candidates are baked ids only: chapters (ch7), sections (ch7-locks),
+  // paragraphs (ch7-locks-p4), figures (fig-7-3). Runtime-assigned ids
+  // (glossary term anchors) and ids inside SVGs are excluded — an anchor must
+  // exist identically on every device that loads the same page.
+  let anchorEls = null;
+  function candidates() {
+    if (!anchorEls) {
+      anchorEls = Array.prototype.filter.call(
+        document.querySelectorAll('[id]'),
+        el => /^(ch[0-9B][^ ]*|fig-[0-9]+-[0-9]+[a-z]?)$/.test(el.id) && !el.closest('svg')
+      );
+    }
+    return anchorEls;
+  }
+
+  // The deepest candidate whose box contains the reading line; if the line
+  // falls in a margin, the nearest candidate above it (fraction may exceed 1).
+  function computeAnchor() {
+    let containing = null, containingRect = null;
+    let above = null, aboveRect = null;
+    candidates().forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.height === 0 && r.width === 0) return;      // hidden
+      if (r.top > READING_LINE) return;
+      if (r.bottom > READING_LINE) { containing = el; containingRect = r; }
+      else { above = el; aboveRect = r; }
+    });
+    // Prefer whichever is later in document order — a paragraph fully above
+    // the line pins the position tighter than the section that contains it.
+    let el = containing, rect = containingRect, cap = 1;
+    if (above && (!containing ||
+        (containing.compareDocumentPosition(above) & Node.DOCUMENT_POSITION_FOLLOWING))) {
+      el = above; rect = aboveRect; cap = 2;
+    }
+    if (!el) return null;
+    const fraction = (READING_LINE - rect.top) / Math.max(rect.height, 1);
+    return {
+      el,
+      anchor: el.id,
+      fraction: Math.round(Math.max(0, Math.min(cap, fraction)) * 1000) / 1000
+    };
+  }
+
+  function snapshot() {
+    const a = computeAnchor();
+    if (!a) return null;
+    const section = a.el.closest('section.section');
+    const scopeId = (section && section.id) || a.el.id;
+    const chapterId = scopeId.split('-')[0];
+    const chapter = document.getElementById(chapterId);
+    let chapterTitle = '';
+    if (chapter) {
+      const h1 = chapter.querySelector('.chapter-hero h1, h1');
+      if (h1) chapterTitle = h1.textContent.trim();
+    }
+    const h2 = section ? section.querySelector('h2') : null;
+    const sLabel = section ? section.querySelector('.section-number') : null;
+    return {
+      part: page,
+      anchor: a.anchor,
+      fraction: a.fraction,
+      section: section ? section.id : scopeId,
+      chapterId,
+      chapterNum: formatChapterNum(chapterId),
+      chapterTitle,
+      sectionLabel: sLabel ? sLabel.textContent.trim() : '',
+      sectionTitle: h2 ? h2.textContent.trim() : '',
+      timestamp: Date.now()
+    };
+  }
+
+  function scrollToAnchor(anchor, fraction, smooth) {
+    const el = document.getElementById(anchor);
+    if (!el) return false;
+    function apply(behavior) {
+      const r = el.getBoundingClientRect();
+      const top = window.scrollY + r.top + (fraction || 0) * r.height - READING_LINE;
+      window.scrollTo({ top: Math.max(0, top), behavior });
+    }
+    apply(smooth ? 'smooth' : 'instant');
+    // Late layout shifts (a straggling font reflow, the tail of a smooth
+    // scroll) can leave the anchor a few lines off. Re-apply the exact offset
+    // once things settle — unless the reader has taken over in the meantime.
+    let done = false;
+    const cancel = () => { done = true; };
+    ['wheel', 'touchstart', 'keydown'].forEach(t =>
+      window.addEventListener(t, cancel, { once: true, passive: true }));
+    const settle = () => {
+      if (done) return;
+      done = true;
+      apply('instant');
+    };
+    if (smooth && 'onscrollend' in window) {
+      window.addEventListener('scrollend', settle, { once: true });
+    }
+    setTimeout(settle, smooth ? 1800 : 1200);
+    return true;
+  }
+
+  // Layout is only trustworthy once the webfonts have applied.
+  function whenSettled(fn) {
+    const go = () => requestAnimationFrame(() => requestAnimationFrame(fn));
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(go, go);
+    } else { go(); }
+  }
+
+  // -------- TRACKER (part pages) --------------------------------------------
+  if (isPart) {
     let saveTimer = null;
-    let lastSavedId = null;
+    let lastLocalKey = '';
+    let lastSentKey = '';
 
-    function formatChapterNum(chapterId) {
-      if (chapterId === 'chBridge') return 'Bridge';
-      const n = chapterId.replace(/^ch/, '');
-      return /^\d+$/.test(n) ? 'Chapter ' + n : chapterId;
-    }
+    // Bucket the fraction so micro-scrolls don't churn writes.
+    function keyOf(s) { return s.part + '#' + s.anchor + '@' + Math.round(s.fraction * 20); }
 
-    function snapshot(section) {
-      const id = section.id;
-      const chapterId = id.split('-')[0];
-      const chapter = document.getElementById(chapterId);
-      let chapterTitle = '';
-      if (chapter) {
-        const h1 = chapter.querySelector('.chapter-hero h1, h1');
-        if (h1) chapterTitle = h1.textContent.trim();
+    function doSave(flush) {
+      const s = snapshot();
+      if (!s) return;
+      const key = keyOf(s);
+      if (key !== lastLocalKey) {
+        writeProgress(s);
+        lastLocalKey = key;
       }
-      const h2 = section.querySelector('h2');
-      const sLabel = section.querySelector('.section-number');
-      const part = (window.location.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '');
-      return {
-        part: part || 'index',
-        section: id,
-        chapterId,
-        chapterNum: formatChapterNum(chapterId),
-        chapterTitle,
-        sectionLabel: sLabel ? sLabel.textContent.trim() : '',
-        sectionTitle: h2 ? h2.textContent.trim() : '',
-        timestamp: Date.now()
-      };
+      if (!signedIn || key === lastSentKey) return;
+      const body = JSON.stringify({
+        part: s.part, anchor: s.anchor, fraction: s.fraction,
+        section: s.section, chapterId: s.chapterId, chapterNum: s.chapterNum,
+        chapterTitle: s.chapterTitle, sectionLabel: s.sectionLabel,
+        sectionTitle: s.sectionTitle
+      });
+      if (flush && navigator.sendBeacon) {
+        if (navigator.sendBeacon('/api/position', new Blob([body], { type: 'application/json' }))) {
+          lastSentKey = key;
+        }
+      } else {
+        fetch('/api/position', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+          keepalive: !!flush
+        }).then(r => { if (r.ok) lastSentKey = key; }).catch(() => {});
+      }
     }
 
-    function scheduleSave(section) {
-      if (section.id === lastSavedId) return;
+    window.addEventListener('scroll', () => {
       if (saveTimer) clearTimeout(saveTimer);
-      saveTimer = setTimeout(() => {
-        writeProgress(snapshot(section));
-        lastSavedId = section.id;
-      }, SAVE_DEBOUNCE_MS);
+      saveTimer = setTimeout(() => doSave(false), SAVE_IDLE_MS);
+    }, { passive: true });
+
+    function flush() {
+      if (saveTimer) clearTimeout(saveTimer);
+      doSave(true);
+    }
+    window.addEventListener('pagehide', flush);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') flush();
+    });
+
+    // ---- Restore the exact offset within the anchored element ----------------
+    const hash = (location.hash || '').slice(1);
+    let pending = null;
+    try {
+      pending = JSON.parse(sessionStorage.getItem(PENDING_KEY) || 'null');
+      sessionStorage.removeItem(PENDING_KEY);
+    } catch (e) { /* ignore */ }
+    const localAtLoad = readProgress();
+
+    whenSettled(() => {
+      if (pending && pending.anchor === hash) {
+        scrollToAnchor(hash, pending.fraction, false);
+      } else if (localAtLoad && localAtLoad.part === page && localAtLoad.anchor === hash) {
+        scrollToAnchor(hash, localAtLoad.fraction, false);
+      }
+      // Record that the reader is here, even if they never scroll.
+      setTimeout(() => doSave(false), 2500);
+    });
+
+    // ---- "On your other device" offer (signed in, server ahead of local) -----
+    if (signedIn && 'fetch' in window) {
+      fetch('/api/position').then(r => (r.ok ? r.json() : null)).then(data => {
+        if (!data || !data.position || !data.position.anchor) return;
+        const remote = data.position;
+        const remoteTs = data.updated_at || 0;
+        const localTs = (localAtLoad && localAtLoad.timestamp) || 0;
+        if (remoteTs > localTs) {
+          // Adopt the newer position so the index resume card stays current.
+          writeProgress(Object.assign({}, remote, { timestamp: remoteTs }));
+        }
+        if (remoteTs <= localTs + 1500) return;          // not ahead of this device
+        if (remote.part === page && remote.anchor === hash) return; // already going there
+        whenSettled(() => {
+          if (remote.part === page) {
+            const el = document.getElementById(remote.anchor);
+            if (el) {
+              const target = window.scrollY + el.getBoundingClientRect().top;
+              if (Math.abs(target - window.scrollY) < window.innerHeight * 0.75) return;
+            }
+          }
+          showSyncChip(remote);
+        });
+      }).catch(() => {});
     }
 
-    function recompute() {
-      if (visibleSet.size === 0) return;
-      let topmost = null;
-      let topmostY = Infinity;
-      visibleSet.forEach(s => {
-        const y = s.getBoundingClientRect().top;
-        if (y < topmostY) { topmostY = y; topmost = s; }
+    function showSyncChip(remote) {
+      const chip = document.createElement('div');
+      chip.className = 'sync-chip';
+      chip.setAttribute('role', 'status');
+
+      const eyebrow = document.createElement('span');
+      eyebrow.className = 'sync-chip-eyebrow';
+      eyebrow.textContent = 'On your other device';
+
+      const link = document.createElement('a');
+      link.className = 'sync-chip-link';
+      const metaParts = [];
+      if (remote.chapterNum) metaParts.push(remote.chapterNum);
+      if (remote.sectionLabel) {
+        const num = remote.sectionLabel.split('—')[0].trim();
+        if (num) metaParts.push('§' + num);
+      }
+      link.textContent = (metaParts.length ? metaParts.join(' · ') + ' — ' : '')
+        + (remote.sectionTitle || remote.chapterTitle || 'Continue reading') + ' →';
+      link.href = remote.part + '#' + remote.anchor;
+      link.addEventListener('click', e => {
+        if (remote.part === page) {
+          e.preventDefault();
+          scrollToAnchor(remote.anchor, remote.fraction, true);
+        } else {
+          try {
+            sessionStorage.setItem(PENDING_KEY,
+              JSON.stringify({ anchor: remote.anchor, fraction: remote.fraction }));
+          } catch (err) { /* ignore */ }
+        }
+        hide();
       });
-      if (topmost) scheduleSave(topmost);
+
+      const dismiss = document.createElement('button');
+      dismiss.type = 'button';
+      dismiss.className = 'sync-chip-dismiss';
+      dismiss.setAttribute('aria-label', 'Dismiss');
+      dismiss.textContent = '×';
+      dismiss.addEventListener('click', hide);
+
+      function hide() {
+        chip.classList.remove('visible');
+        setTimeout(() => chip.remove(), 500);
+      }
+
+      chip.appendChild(eyebrow);
+      chip.appendChild(link);
+      chip.appendChild(dismiss);
+      document.body.appendChild(chip);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => chip.classList.add('visible'));
+      });
     }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) visibleSet.add(entry.target);
-        else visibleSet.delete(entry.target);
-      });
-      recompute();
-    }, { rootMargin: '0px 0px -50% 0px' });
-
-    sections.forEach(s => observer.observe(s));
   }
 
   // -------- RESUME CARD (index page only) -------------------------------------
   const cover = document.querySelector('.cover');
   if (!cover) return;
 
-  const progress = readProgress();
-  if (!progress) return;
-
-  const card = document.createElement('a');
-  card.className = 'resume-card';
-  card.href = String(progress.part || '').replace(/\.html$/, '') + '#' + progress.section;
-  card.setAttribute('aria-label', 'Resume reading where you left off');
-
-  const eyebrow = document.createElement('div');
-  eyebrow.className = 'resume-eyebrow';
-  eyebrow.textContent = 'Where you left off';
-
-  const body = document.createElement('div');
-  body.className = 'resume-body';
-  const metaParts = [];
-  if (progress.chapterNum) metaParts.push(progress.chapterNum);
-  if (progress.sectionLabel) {
-    const num = progress.sectionLabel.split('—')[0].trim();
-    if (num) metaParts.push('§' + num);
+  // Quiet footer entry point: reflect sync state on the account link.
+  if (signedIn) {
+    const accountLink = document.querySelector('.account-footer-link');
+    if (accountLink) {
+      accountLink.innerHTML = 'Reading sync · on <span aria-hidden="true">→</span>';
+    }
   }
-  if (metaParts.length) {
-    const meta = document.createElement('span');
-    meta.className = 'resume-meta';
-    meta.textContent = metaParts.join(' · ');
-    body.appendChild(meta);
+
+  function buildResumeCard(progress) {
+    if (!progress) return;
+    const card = document.createElement('a');
+    card.className = 'resume-card';
+    card.href = String(progress.part || '').replace(/\.html$/, '') + '#'
+      + (progress.anchor || progress.section);
+    card.setAttribute('aria-label', 'Resume reading where you left off');
+    if (progress.anchor && typeof progress.fraction === 'number') {
+      card.addEventListener('click', () => {
+        try {
+          sessionStorage.setItem(PENDING_KEY,
+            JSON.stringify({ anchor: progress.anchor, fraction: progress.fraction }));
+        } catch (e) { /* ignore */ }
+      });
+    }
+
+    const eyebrow = document.createElement('div');
+    eyebrow.className = 'resume-eyebrow';
+    eyebrow.textContent = 'Where you left off';
+
+    const body = document.createElement('div');
+    body.className = 'resume-body';
+    const metaParts = [];
+    if (progress.chapterNum) metaParts.push(progress.chapterNum);
+    if (progress.sectionLabel) {
+      const num = progress.sectionLabel.split('—')[0].trim();
+      if (num) metaParts.push('§' + num);
+    }
+    if (metaParts.length) {
+      const meta = document.createElement('span');
+      meta.className = 'resume-meta';
+      meta.textContent = metaParts.join(' · ');
+      body.appendChild(meta);
+    }
+    const title = document.createElement('span');
+    title.className = 'resume-title';
+    title.textContent = progress.sectionTitle || progress.chapterTitle || 'Continue reading';
+    body.appendChild(title);
+
+    const arrow = document.createElement('span');
+    arrow.className = 'resume-arrow';
+    arrow.textContent = '→';
+    arrow.setAttribute('aria-hidden', 'true');
+
+    const dismiss = document.createElement('button');
+    dismiss.type = 'button';
+    dismiss.className = 'resume-dismiss';
+    dismiss.setAttribute('aria-label', 'Dismiss');
+    dismiss.textContent = '×';
+    dismiss.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      card.classList.remove('visible');
+      setTimeout(() => card.remove(), 720);
+    });
+
+    card.appendChild(eyebrow);
+    card.appendChild(body);
+    card.appendChild(arrow);
+    card.appendChild(dismiss);
+
+    cover.insertAdjacentElement('afterend', card);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => card.classList.add('visible'));
+    });
   }
-  const title = document.createElement('span');
-  title.className = 'resume-title';
-  title.textContent = progress.sectionTitle || progress.chapterTitle || 'Continue reading';
-  body.appendChild(title);
 
-  const arrow = document.createElement('span');
-  arrow.className = 'resume-arrow';
-  arrow.textContent = '→';
-  arrow.setAttribute('aria-hidden', 'true');
-
-  const dismiss = document.createElement('button');
-  dismiss.type = 'button';
-  dismiss.className = 'resume-dismiss';
-  dismiss.setAttribute('aria-label', 'Dismiss');
-  dismiss.textContent = '×';
-  dismiss.addEventListener('click', e => {
-    e.preventDefault();
-    e.stopPropagation();
-    card.classList.remove('visible');
-    setTimeout(() => card.remove(), 720);
-  });
-
-  card.appendChild(eyebrow);
-  card.appendChild(body);
-  card.appendChild(arrow);
-  card.appendChild(dismiss);
-
-  cover.insertAdjacentElement('afterend', card);
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => card.classList.add('visible'));
-  });
+  // Signed in: adopt a newer server position before building the card, so the
+  // card reflects wherever the reader last was on any device. Signed out:
+  // local only, exactly as before.
+  if (signedIn && 'fetch' in window) {
+    fetch('/api/position').then(r => (r.ok ? r.json() : null)).then(data => {
+      const local = readProgress();
+      if (data && data.position && data.position.anchor) {
+        const remoteTs = data.updated_at || 0;
+        if (remoteTs > ((local && local.timestamp) || 0)) {
+          const adopted = Object.assign({}, data.position, { timestamp: remoteTs });
+          writeProgress(adopted);
+          buildResumeCard(adopted);
+          return;
+        }
+      }
+      buildResumeCard(local);
+    }).catch(() => buildResumeCard(readProgress()));
+  } else {
+    buildResumeCard(readProgress());
+  }
 })();
 
 // --- Glossary tooltips + index page ------------------------------------------

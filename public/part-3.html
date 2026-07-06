@@ -178,7 +178,7 @@
     <div class="section-number">01 — Bridge from <a href="part-1">Part I</a></div>
     <h2>The voltage on a transistor extends to the voltage on a continent.</h2>
 
-    <p class="lead">
+    <p id="ch8-bridge-p1" class="lead">
       <a href="part-1">Part I</a> closed inside a CPU. Part III leaves the CPU. The same voltage
       transition that switched a transistor in <a href="part-1#ch1">Chapter 1</a> — a small step from one
       level to another, interpreted by everything downstream as "the bit changed" —
@@ -188,7 +188,7 @@
       signal intact over that distance.
     </p>
 
-    <p>
+    <p id="ch8-bridge-p2">
       A wire, electrically, is just a conductor with two ends. Push voltage in at
       one; some attenuated, slightly delayed version of that voltage shows up at
       the other. The delay is a function of length and cable type — about
@@ -200,7 +200,7 @@
       undersea cable cannot.
     </p>
 
-    <p>
+    <p id="ch8-bridge-p3">
       The story of the network is, at its core, the engineering of <em>scaling
       this single phenomenon</em>. How do you keep a voltage signal recognisable
       after a kilometre of copper? After a kilometre of fibre? After a hundred
@@ -272,7 +272,7 @@
         <!-- Bottom: takeaway -->
         <text x="360" y="296" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">SAME PHENOMENON · DIFFERENT SCALE · ENGINEERING IS WHAT KEEPS THE BITS RECOGNISABLE</text>
       </svg>
-      <p class="diagram-caption">A bit travelling between two transistors inside a CPU and a bit travelling between New York and London are the same physical phenomenon — a voltage transition propagating along a conductor — observed at scales twelve orders of magnitude apart. The CPU version completes in roughly a nanosecond and is barely degraded. The transatlantic version takes about 28 milliseconds, passes through dozens of optical amplifiers, and arrives noticeably degraded — but still recognisable as the original bit pattern. Everything in this chapter is the engineering that makes the second version possible.</p>
+      <p id="ch8-bridge-p4" class="diagram-caption">A bit travelling between two transistors inside a CPU and a bit travelling between New York and London are the same physical phenomenon — a voltage transition propagating along a conductor — observed at scales twelve orders of magnitude apart. The CPU version completes in roughly a nanosecond and is barely degraded. The transatlantic version takes about 28 milliseconds, passes through dozens of optical amplifiers, and arrives noticeably degraded — but still recognisable as the original bit pattern. Everything in this chapter is the engineering that makes the second version possible.</p>
     </div>
   </section>
 
@@ -280,7 +280,7 @@
     <div class="section-number">02 — Three substrates</div>
     <h2>Electrons in copper, photons in glass, waves through air.</h2>
 
-    <p class="lead">
+    <p id="ch8-substrates-p1" class="lead">
       All networking happens over one of three substrates. <strong>Copper</strong>
       carries electrons. <strong>Fibre</strong> carries photons. <strong>Wireless</strong>
       carries electromagnetic waves through space. They look very different. They
@@ -288,7 +288,7 @@
       quantity that someone at the other end can measure.
     </p>
 
-    <p>
+    <p id="ch8-substrates-p2">
       <strong>Copper</strong> is the original. A pair of conductors, twisted
       together to cancel out external electromagnetic interference (this is what
       "twisted pair" means in <em>Cat 6 twisted pair</em>). The signal is voltage
@@ -299,7 +299,7 @@
       or office is copper.
     </p>
 
-    <p>
+    <p id="ch8-substrates-p3">
       <strong>Fibre</strong> is glass. The signal is light, pulsed at frequencies
       around 200 THz. The light is launched into a thin glass core surrounded by
       a cladding with a slightly lower refractive index, so total internal
@@ -313,7 +313,7 @@
       history.
     </p>
 
-    <p>
+    <p id="ch8-substrates-p4">
       <strong>Wireless</strong> is the absence of any medium at all — bits as
       variations in an electromagnetic wave propagating through space. Wi-Fi runs
       around 2.4 GHz and 5 GHz; cellular at 700 MHz to several GHz; satellite up
@@ -326,7 +326,7 @@
 
     <div class="insight-strip">
       <span class="insight-icon">🛡️</span>
-      <p class="insight-text">
+      <p id="ch8-substrates-p5" class="insight-text">
         <strong>The substrate is the first attack surface.</strong> Each of
         these three media leaks differently. Copper wires emit small amounts of
         electromagnetic radiation that a receiver nearby can demodulate back
@@ -434,7 +434,7 @@
         <text x="360" y="320" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">EVERY BIT YOU SEND TRAVELS OVER ONE OF THESE THREE · OFTEN ALL THREE IN SUCCESSION</text>
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">Wi-Fi → home router → fibre to ISP → undersea fibre → another ISP → another Wi-Fi at the other end</text>
       </svg>
-      <p class="diagram-caption">A request from your laptop to a server in Tokyo crosses all three substrates — Wi-Fi from laptop to router, copper or fibre from router to ISP, fibre across the Pacific, more fibre into the destination data centre, finally copper or fibre to the server's NIC. Each hop is a different combination of physical medium and encoding. The application layer never sees any of it; it sees a TCP socket, which sees an IP route, which sees a series of link-layer frames, which sees, finally, a stream of voltage transitions or photon pulses or radio symbols. The whole stack exists to abstract away which substrate is in use at any moment.</p>
+      <p id="ch8-substrates-p6" class="diagram-caption">A request from your laptop to a server in Tokyo crosses all three substrates — Wi-Fi from laptop to router, copper or fibre from router to ISP, fibre across the Pacific, more fibre into the destination data centre, finally copper or fibre to the server's NIC. Each hop is a different combination of physical medium and encoding. The application layer never sees any of it; it sees a TCP socket, which sees an IP route, which sees a series of link-layer frames, which sees, finally, a stream of voltage transitions or photon pulses or radio symbols. The whole stack exists to abstract away which substrate is in use at any moment.</p>
     </div>
   </section>
 
@@ -442,7 +442,7 @@
     <div class="section-number">03 — Shannon's information theory</div>
     <h2>1948. Bell Labs again. The number behind every wire.</h2>
 
-    <p class="lead">
+    <p id="ch8-shannon-p1" class="lead">
       In July and October of 1948, Claude Shannon — a thirty-two-year-old
       mathematician at Bell Labs — published "A Mathematical Theory of
       Communication" in two parts of the <em>Bell System Technical Journal</em>.
@@ -453,7 +453,7 @@
       you can send reliably below it, and you cannot send reliably above it.
     </p>
 
-    <p>
+    <p id="ch8-shannon-p2">
       Shannon himself is one of the strangest figures in twentieth-century
       science, and worth knowing. He grew up in Gaylord, Michigan, the son of
       a probate judge and a high-school principal. He arrived at MIT in 1936
@@ -469,7 +469,7 @@
       and started being engineering.
     </p>
 
-    <p>
+    <p id="ch8-shannon-p3">
       He stayed strange. At Bell Labs through the 1940s, where he wrote the
       information theory paper essentially on his own (the whole field
       sprang from one head, in one paper, more or less complete), he was
@@ -488,7 +488,7 @@
       to. There is no later figure as singular.
     </p>
 
-    <p>
+    <p id="ch8-shannon-p4">
       The key definition in his 1948 paper, called <strong>entropy</strong>
       after the thermodynamics quantity it resembles, measures how much
       "surprise" — how much information — is contained in a probability
@@ -498,8 +498,8 @@
 
     <div class="math-callout">
       <div class="math-label">Shannon entropy</div>
-      <p class="math-formula">H = −Σ pᵢ log₂(pᵢ)</p>
-      <p>Measured in bits per symbol. A fair coin (½, ½) has H = 1 bit per flip — maximum surprise. A coin that always lands heads (1, 0) has H = 0 — no information. A biased coin (¾, ¼) has H ≈ 0.81 bits — between the two. The deeper insight is that <em>this number is also the average code length</em> any compression scheme can achieve, asymptotically. Shannon proved you can compress a source down to its entropy, and no further. ZIP, gzip, JPEG, MP3, H.264, every modern compressor — all sit somewhere on Shannon's curve, fighting for the last bit.</p>
+      <p id="ch8-shannon-p5" class="math-formula">H = −Σ pᵢ log₂(pᵢ)</p>
+      <p id="ch8-shannon-p6">Measured in bits per symbol. A fair coin (½, ½) has H = 1 bit per flip — maximum surprise. A coin that always lands heads (1, 0) has H = 0 — no information. A biased coin (¾, ¼) has H ≈ 0.81 bits — between the two. The deeper insight is that <em>this number is also the average code length</em> any compression scheme can achieve, asymptotically. Shannon proved you can compress a source down to its entropy, and no further. ZIP, gzip, JPEG, MP3, H.264, every modern compressor — all sit somewhere on Shannon's curve, fighting for the last bit.</p>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-8-3">
@@ -546,10 +546,10 @@
         <circle cx="660" cy="260" r="4" fill="rgba(80,60,30,0.85)"/>
         <text x="654" y="252" text-anchor="end" font-family="DM Mono" font-size="8" fill="rgba(80,60,30,0.85)">always 1 → 0</text>
       </svg>
-      <p class="diagram-caption">Entropy of a binary source as the probability of "1" varies from 0 to 1. At the extremes (always 0 or always 1) there is no surprise — every bit is predictable, so each symbol carries zero information. At p = ½ — a fair coin — every flip is maximally surprising and carries one full bit of information. The curve is symmetric: a 70% / 30% source carries the same entropy as a 30% / 70% source, since "uncertainty" doesn't care which side you bet on. This single curve is the lower bound on lossless compression for any binary source. Compress a fair coin and you cannot do better than one bit per flip. Compress a 90/10 source and the theoretical minimum is about 0.47 bits per flip — actually achievable by arithmetic coding to within a few percent.</p>
+      <p id="ch8-shannon-p7" class="diagram-caption">Entropy of a binary source as the probability of "1" varies from 0 to 1. At the extremes (always 0 or always 1) there is no surprise — every bit is predictable, so each symbol carries zero information. At p = ½ — a fair coin — every flip is maximally surprising and carries one full bit of information. The curve is symmetric: a 70% / 30% source carries the same entropy as a 30% / 70% source, since "uncertainty" doesn't care which side you bet on. This single curve is the lower bound on lossless compression for any binary source. Compress a fair coin and you cannot do better than one bit per flip. Compress a 90/10 source and the theoretical minimum is about 0.47 bits per flip — actually achievable by arithmetic coding to within a few percent.</p>
     </div>
 
-    <p>
+    <p id="ch8-shannon-p8">
       Shannon's second result, the <strong>noisy channel coding theorem</strong>,
       put a number on what a wire can carry. Given a channel of bandwidth
       <em>B</em> hertz and signal-to-noise ratio <em>SNR</em>, the maximum
@@ -558,8 +558,8 @@
 
     <div class="math-callout">
       <div class="math-label">Shannon–Hartley channel capacity</div>
-      <p class="math-formula">C = B · log₂(1 + SNR)</p>
-      <p>If you transmit at rate <em>R &lt; C</em>, there exists a coding scheme that achieves arbitrarily low error rate. If <em>R &gt; C</em>, there is no such scheme — errors are inevitable, no matter how clever the encoding. The proof is non-constructive: Shannon proved good codes <em>exist</em>, decades before anyone knew how to build them. Modern error-correcting codes (LDPC, Polar, Turbo) approach within a fraction of a dB of Shannon's limit. The race to close that gap is the story of half of late-twentieth-century communications engineering.</p>
+      <p id="ch8-shannon-p9" class="math-formula">C = B · log₂(1 + SNR)</p>
+      <p id="ch8-shannon-p10">If you transmit at rate <em>R &lt; C</em>, there exists a coding scheme that achieves arbitrarily low error rate. If <em>R &gt; C</em>, there is no such scheme — errors are inevitable, no matter how clever the encoding. The proof is non-constructive: Shannon proved good codes <em>exist</em>, decades before anyone knew how to build them. Modern error-correcting codes (LDPC, Polar, Turbo) approach within a fraction of a dB of Shannon's limit. The race to close that gap is the story of half of late-twentieth-century communications engineering.</p>
     </div>
 
     <div class="diagram-card" id="fig-8-4">
@@ -612,7 +612,7 @@
         <text x="600" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C = B · log₂(1 + SNR)</text>
         <text x="600" y="78" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.7)">— above this curve, errors are inevitable</text>
       </svg>
-      <p class="diagram-caption">Shannon's channel capacity curve: the maximum number of bits per second per Hertz of bandwidth as a function of signal-to-noise ratio. A 56k phone modem operated at roughly 30 dB SNR over a 4 kHz channel; the math gives 4000 × 10 ≈ 40 kbps, close to what was achieved in practice. Modern Wi-Fi 6 at ~20 dB SNR over 80 MHz channels achieves several hundred Mbps. Coherent fibre at ~15 dB effective SNR over tens of GHz of bandwidth pushes terabits per second on a single strand. The curve says nothing about <em>how</em> to achieve these rates — only that they cannot be exceeded. Every modulation, coding, and equalisation technique invented since 1948 is, in the end, a different way to climb closer to this single curve.</p>
+      <p id="ch8-shannon-p11" class="diagram-caption">Shannon's channel capacity curve: the maximum number of bits per second per Hertz of bandwidth as a function of signal-to-noise ratio. A 56k phone modem operated at roughly 30 dB SNR over a 4 kHz channel; the math gives 4000 × 10 ≈ 40 kbps, close to what was achieved in practice. Modern Wi-Fi 6 at ~20 dB SNR over 80 MHz channels achieves several hundred Mbps. Coherent fibre at ~15 dB effective SNR over tens of GHz of bandwidth pushes terabits per second on a single strand. The curve says nothing about <em>how</em> to achieve these rates — only that they cannot be exceeded. Every modulation, coding, and equalisation technique invented since 1948 is, in the end, a different way to climb closer to this single curve.</p>
     </div>
   </section>
 
@@ -620,7 +620,7 @@
     <div class="section-number">04 — Encoding</div>
     <h2>How a one-or-zero rides on a continuous wave.</h2>
 
-    <p class="lead">
+    <p id="ch8-encoding-p1" class="lead">
       Knowing the channel can carry ten million bits per second tells you nothing
       about how to actually represent those bits as voltage, light, or radio.
       <strong>Encoding</strong> is the layer that maps abstract ones and zeros
@@ -630,7 +630,7 @@
       everywhere; each is right somewhere.
     </p>
 
-    <p>
+    <p id="ch8-encoding-p2">
       The most naive encoding is <strong>NRZ</strong> — Non-Return to Zero. High
       voltage means 1; low voltage means 0. The signal sits at one of two levels
       and only changes when a new bit arrives. It is dead simple. It also has a
@@ -640,7 +640,7 @@
       stream is corrupted from there onward.
     </p>
 
-    <p>
+    <p id="ch8-encoding-p3">
       <span class="key-term">Manchester encoding</span> solves the synchronisation problem by
       embedding the clock in the data. Every bit is split into two halves; a
       transition in the middle carries the bit value (high-to-low for one
@@ -713,7 +713,7 @@
 
         <text x="360" y="252" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">CONVENTION: HIGH→LOW = 1, LOW→HIGH = 0 — THE MID-BIT EDGE CARRIES THE VALUE</text>
       </svg>
-      <p class="diagram-caption">Manchester encoding represents each bit as a transition in the middle of a fixed time slot. A high-to-low transition is one value (often "1"); a low-to-high is the other. Because there is always a transition mid-bit, the receiver can lock its clock onto the data stream regardless of how many identical bits arrive in a row. The cost is that the signal alternates twice as fast as the underlying bit rate, requiring double the bandwidth — a 10 Mbps Ethernet stream actually carries 20 million signal transitions per second. This is why Ethernet over Manchester encoding maxed out at 10 Mbps over typical Cat 3 twisted pair; the next jump to 100 Mbps required moving to a more efficient encoding (4B5B over Cat 5) plus clever line coding.</p>
+      <p id="ch8-encoding-p4" class="diagram-caption">Manchester encoding represents each bit as a transition in the middle of a fixed time slot. A high-to-low transition is one value (often "1"); a low-to-high is the other. Because there is always a transition mid-bit, the receiver can lock its clock onto the data stream regardless of how many identical bits arrive in a row. The cost is that the signal alternates twice as fast as the underlying bit rate, requiring double the bandwidth — a 10 Mbps Ethernet stream actually carries 20 million signal transitions per second. This is why Ethernet over Manchester encoding maxed out at 10 Mbps over typical Cat 3 twisted pair; the next jump to 100 Mbps required moving to a more efficient encoding (4B5B over Cat 5) plus clever line coding.</p>
     </div>
 
     <div class="diagram-card" id="fig-8-6">
@@ -775,10 +775,10 @@
 
         <text x="360" y="296" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">NRZ — HALF THE BANDWIDTH BUT NEEDS A SEPARATE CLOCK · MANCHESTER — DOUBLE THE BANDWIDTH BUT SELF-CLOCKING</text>
       </svg>
-      <p class="diagram-caption">The same bit stream — 1 0 0 0 0 1 1 — encoded two ways. In NRZ, four consecutive zeros produce four identical time slots of low voltage; nothing in the signal tells the receiver where one zero ends and the next begins. If the receiver's clock drifts even slightly, the count is lost. In Manchester, every bit is a transition, so the receiver re-syncs its clock on every bit period regardless of the data. The trade is bandwidth: Manchester doubles the rate of signal changes per second. Modern high-speed encodings (8B/10B, 64B/66B) combine the bandwidth efficiency of NRZ with periodic forced transitions to maintain synchronisation — the best of both worlds, at the cost of a small overhead in encoded bits.</p>
+      <p id="ch8-encoding-p5" class="diagram-caption">The same bit stream — 1 0 0 0 0 1 1 — encoded two ways. In NRZ, four consecutive zeros produce four identical time slots of low voltage; nothing in the signal tells the receiver where one zero ends and the next begins. If the receiver's clock drifts even slightly, the count is lost. In Manchester, every bit is a transition, so the receiver re-syncs its clock on every bit period regardless of the data. The trade is bandwidth: Manchester doubles the rate of signal changes per second. Modern high-speed encodings (8B/10B, 64B/66B) combine the bandwidth efficiency of NRZ with periodic forced transitions to maintain synchronisation — the best of both worlds, at the cost of a small overhead in encoded bits.</p>
     </div>
 
-    <p>
+    <p id="ch8-encoding-p6">
       When the channel cannot carry baseband signals — radio, DSL, cable
       modems, optical fibre with multiple wavelengths — the bits ride on a
       <strong>carrier wave</strong>, a high-frequency sinusoid that the medium
@@ -855,7 +855,7 @@
 
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">QAM (USED IN WI-FI, CABLE, LTE) COMBINES AMPLITUDE + PHASE — 6, 8, 10 BITS PER SYMBOL</text>
       </svg>
-      <p class="diagram-caption">Three ways to map digital bits onto a sinusoidal carrier. <strong>AM</strong> changes the amplitude — easy to see on an oscilloscope, vulnerable to noise (which mostly affects amplitude). <strong>FM</strong> changes the frequency — invented by Edwin Armstrong in 1933 specifically because it tolerates amplitude noise; this is why FM radio sounds clean during thunderstorms while AM does not. <strong>PSK</strong> changes the phase — robust, efficient, and the basis of every modern digital radio. Real-world systems compose these: <strong>QAM</strong> changes amplitude and phase together to pack 4, 6, 8, even 10 bits into a single symbol. Wi-Fi 6 uses 1024-QAM (10 bits per symbol) under good conditions, falling back to 64-QAM or QPSK as the channel degrades.</p>
+      <p id="ch8-encoding-p7" class="diagram-caption">Three ways to map digital bits onto a sinusoidal carrier. <strong>AM</strong> changes the amplitude — easy to see on an oscilloscope, vulnerable to noise (which mostly affects amplitude). <strong>FM</strong> changes the frequency — invented by Edwin Armstrong in 1933 specifically because it tolerates amplitude noise; this is why FM radio sounds clean during thunderstorms while AM does not. <strong>PSK</strong> changes the phase — robust, efficient, and the basis of every modern digital radio. Real-world systems compose these: <strong>QAM</strong> changes amplitude and phase together to pack 4, 6, 8, even 10 bits into a single symbol. Wi-Fi 6 uses 1024-QAM (10 bits per symbol) under good conditions, falling back to 64-QAM or QPSK as the channel degrades.</p>
     </div>
   </section>
 
@@ -863,7 +863,7 @@
     <div class="section-number">05 — Local networks</div>
     <h2>Metcalfe, 1973: many computers, one cable.</h2>
 
-    <p class="lead">
+    <p id="ch8-ethernet-p1" class="lead">
       In 1973, Bob Metcalfe at Xerox PARC invented <span class="key-term">Ethernet</span> as part of his
       doctoral work. The original idea was elegant in its plainness: any number
       of computers share one cable; they all listen; whenever no one else is
@@ -875,7 +875,7 @@
       on the planet.
     </p>
 
-    <p>
+    <p id="ch8-ethernet-p2">
       Metcalfe arrived at the idea by an unusual route. His Harvard PhD
       thesis on packet networking had been rejected — the committee felt it
       lacked theoretical depth — and the rejection sent him into a
@@ -894,7 +894,7 @@
       offices in the world.
     </p>
 
-    <p>
+    <p id="ch8-ethernet-p3">
       The Xerox PARC of 1973 was, in retrospect, the densest concentration
       of computing talent ever assembled in one place. Down the hall from
       Metcalfe, Alan Kay's group was inventing the personal computer (the
@@ -908,7 +908,7 @@
       corner, the basic architecture of every wired LAN since.
     </p>
 
-    <p>
+    <p id="ch8-ethernet-p4">
       The original 10BASE5 Ethernet ran at 10 megabits per second over a single
       thick coaxial cable up to 500 metres long — the "thicknet" of the late
       1970s. By the 1990s, switches replaced the shared cable; each device got
@@ -920,7 +920,7 @@
     </p>
 
     <div class="pull-quote">
-      <p>"Networking is inter-galactic."</p>
+      <p id="ch8-ethernet-p5">"Networking is inter-galactic."</p>
       <span class="attr">— Bob Metcalfe, on a whiteboard at Xerox PARC, 1973</span>
     </div>
 
@@ -981,10 +981,10 @@
         <rect x="60" y="280" width="600" height="22" rx="3" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
         <text x="360" y="296" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">truncated binary exponential backoff: wait = random(0, 2^k − 1) × slot — k doubles per collision, capped at 10</text>
       </svg>
-      <p class="diagram-caption">Two stations sense an idle wire and start sending almost simultaneously. The signals collide somewhere along the cable. Both stations detect the collision (the voltage on the wire goes higher than either alone could produce), both stop, both broadcast a brief JAM signal so any third party knows to discard the partial frame, and both pick a random delay before retrying. The randomness is critical — if both used the same delay, they would collide again immediately. Ethernet uses <em>truncated binary exponential backoff</em>: after the <em>k</em>-th consecutive collision, each station waits a random number of slot-times in the range [0, 2<sup>k</sup>−1]. The expected wait grows exponentially with congestion, so heavily-contended networks self-throttle. With switched Ethernet, this whole machinery is dormant — but it is still in every NIC's firmware, and it is what makes Wi-Fi (which still has shared-medium collisions) work.</p>
+      <p id="ch8-ethernet-p6" class="diagram-caption">Two stations sense an idle wire and start sending almost simultaneously. The signals collide somewhere along the cable. Both stations detect the collision (the voltage on the wire goes higher than either alone could produce), both stop, both broadcast a brief JAM signal so any third party knows to discard the partial frame, and both pick a random delay before retrying. The randomness is critical — if both used the same delay, they would collide again immediately. Ethernet uses <em>truncated binary exponential backoff</em>: after the <em>k</em>-th consecutive collision, each station waits a random number of slot-times in the range [0, 2<sup>k</sup>−1]. The expected wait grows exponentially with congestion, so heavily-contended networks self-throttle. With switched Ethernet, this whole machinery is dormant — but it is still in every NIC's firmware, and it is what makes Wi-Fi (which still has shared-medium collisions) work.</p>
     </div>
 
-    <p>
+    <p id="ch8-ethernet-p7">
       Every Ethernet device has a <span class="key-term">MAC address</span> — a 48-bit
       identifier burned into the network card at manufacture. The first 24 bits
       are the <strong>OUI</strong> (Organizationally Unique Identifier),
@@ -996,7 +996,7 @@
       databases mapping every OUI to its owner.
     </p>
 
-    <p>
+    <p id="ch8-ethernet-p8">
       MAC addresses identify devices on the local link. IP addresses, which
       we'll meet in <a href="#ch9">Chapter 9</a>, identify devices on the global network.
       <strong>ARP</strong> — Address Resolution Protocol — is the mechanism
@@ -1056,7 +1056,7 @@
 
         <text x="360" y="304" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(140,98,30,0.65)" letter-spacing="0.1em">"WHO HAS 192.168.1.5?" → BROADCAST · OWNER REPLIES · ANSWER CACHED FOR ~5 MIN</text>
       </svg>
-      <p class="diagram-caption">A MAC address splits cleanly into manufacturer (OUI) and device-specific halves. The OUI <code>B8:27:EB</code> is owned by the Raspberry Pi Foundation, so this address is on a Pi. ARP keeps a small cache mapping known IP addresses on the local subnet to their MAC addresses. When a host wants to send to an IP not in the cache, it broadcasts an ARP <em>request</em> ("who has 192.168.1.5?"); the owner replies with a unicast ARP <em>response</em>. Entries expire after a few minutes so that disconnected devices don't accumulate. ARP has no authentication — anyone on the link can claim any IP, which is the basis of <strong>ARP spoofing</strong> (<a href="part-4#ch15">Chapter 15</a>) — but on a properly switched modern LAN, the threat is contained because spoofing requires being on the local segment to begin with.</p>
+      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address splits cleanly into manufacturer (OUI) and device-specific halves. The OUI <code>B8:27:EB</code> is owned by the Raspberry Pi Foundation, so this address is on a Pi. ARP keeps a small cache mapping known IP addresses on the local subnet to their MAC addresses. When a host wants to send to an IP not in the cache, it broadcasts an ARP <em>request</em> ("who has 192.168.1.5?"); the owner replies with a unicast ARP <em>response</em>. Entries expire after a few minutes so that disconnected devices don't accumulate. ARP has no authentication — anyone on the link can claim any IP, which is the basis of <strong>ARP spoofing</strong> (<a href="part-4#ch15">Chapter 15</a>) — but on a properly switched modern LAN, the threat is contained because spoofing requires being on the local segment to begin with.</p>
     </div>
 
     <div class="diagram-card" id="fig-8-10">
@@ -1126,12 +1126,12 @@
 
         <text x="360" y="290" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">SWITCH "LEARNS" WHICH MAC IS ON WHICH PORT BY OBSERVING TRAFFIC — A SELF-CONFIGURING TABLE</text>
       </svg>
-      <p class="diagram-caption">A <strong>hub</strong> is a dumb electrical repeater: every signal that arrives on any port is rebroadcast on every other port. Four hosts on a hub means every frame is heard by all four; collisions are routine; bandwidth is shared. A <strong>switch</strong> is intelligent: it observes the source MAC of every frame that arrives, learns which MAC sits on which port, and forwards each subsequent frame only to the port leading to its destination. Other ports stay quiet. Modern Ethernet is universally switched, with each cable a private link between one device and one port. The collision-detection machinery still exists in every NIC for compatibility, but on switched links it never fires. This single change — hub to switch, late 1990s — is what made Ethernet scale from megabits to gigabits to terabits per second.</p>
+      <p id="ch8-ethernet-p10" class="diagram-caption">A <strong>hub</strong> is a dumb electrical repeater: every signal that arrives on any port is rebroadcast on every other port. Four hosts on a hub means every frame is heard by all four; collisions are routine; bandwidth is shared. A <strong>switch</strong> is intelligent: it observes the source MAC of every frame that arrives, learns which MAC sits on which port, and forwards each subsequent frame only to the port leading to its destination. Other ports stay quiet. Modern Ethernet is universally switched, with each cable a private link between one device and one port. The collision-detection machinery still exists in every NIC for compatibility, but on switched links it never fires. This single change — hub to switch, late 1990s — is what made Ethernet scale from megabits to gigabits to terabits per second.</p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">🛡️</span>
-      <p class="insight-text">
+      <p id="ch8-ethernet-p11" class="insight-text">
         <strong>MAC flooding — when a switch forgets it is a switch.</strong>
         A switch's MAC table has finite size — usually a few thousand entries
         on consumer hardware, tens of thousands on enterprise gear. An
@@ -1158,7 +1158,7 @@
     <div class="section-number">06 — OSI &amp; TCP/IP layer models</div>
     <h2>Why every textbook draws the same cake.</h2>
 
-    <p class="lead">
+    <p id="ch8-layers-p1" class="lead">
       The reason network engineers can talk about network problems precisely is
       the layer model. Each layer does one thing, and only one thing. Each
       layer is a customer of the layer below and a provider for the layer
@@ -1167,7 +1167,7 @@
       is this happening at?"
     </p>
 
-    <p>
+    <p id="ch8-layers-p2">
       The canonical reference is the <strong>OSI seven-layer model</strong>,
       standardised by the International Organization for Standardization in
       1984. Bottom to top: Physical, Data Link, Network, Transport, Session,
@@ -1179,7 +1179,7 @@
       mean.
     </p>
 
-    <p>
+    <p id="ch8-layers-p3">
       The <strong>TCP/IP four-layer model</strong> is the one that actually
       runs the internet. It collapses Physical and Data Link into a single
       "Link" layer (since the IP layer doesn't care which kind of link is
@@ -1234,7 +1234,7 @@
         <!-- Header -->
         <text x="360" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">OSI 7-layer reference model · ISO 1984</text>
       </svg>
-      <p class="diagram-caption">Each OSI layer is named after the abstraction it provides to the layer above. <strong>Physical</strong> turns bits into voltage / light / radio. <strong>Data Link</strong> bundles bits into frames addressed by MAC and shipped across a single hop. <strong>Network</strong> bundles frames into packets that find their way across the global graph by IP address. <strong>Transport</strong> turns packets into reliable byte streams (TCP) or messages (UDP). <strong>Session</strong> manages connection setup and teardown. <strong>Presentation</strong> handles data formatting, encryption, compression. <strong>Application</strong> is where the real protocol lives — HTTP, SSH, DNS. In practice the top three layers blur together — most application protocols handle their own session and presentation logic — which is why the simpler TCP/IP four-layer model is what's actually deployed.</p>
+      <p id="ch8-layers-p4" class="diagram-caption">Each OSI layer is named after the abstraction it provides to the layer above. <strong>Physical</strong> turns bits into voltage / light / radio. <strong>Data Link</strong> bundles bits into frames addressed by MAC and shipped across a single hop. <strong>Network</strong> bundles frames into packets that find their way across the global graph by IP address. <strong>Transport</strong> turns packets into reliable byte streams (TCP) or messages (UDP). <strong>Session</strong> manages connection setup and teardown. <strong>Presentation</strong> handles data formatting, encryption, compression. <strong>Application</strong> is where the real protocol lives — HTTP, SSH, DNS. In practice the top three layers blur together — most application protocols handle their own session and presentation logic — which is why the simpler TCP/IP four-layer model is what's actually deployed.</p>
     </div>
 
     <div class="diagram-card" id="fig-8-12">
@@ -1294,12 +1294,12 @@
 
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">OSI: PEDAGOGICALLY CLEAN — TCP/IP: HONEST ABOUT WHAT REAL PROTOCOLS ACTUALLY DO</text>
       </svg>
-      <p class="diagram-caption">The seven OSI layers map to the four TCP/IP layers in a clear way. The bottom two (Physical + Data Link) collapse into TCP/IP's <strong>Link</strong> layer because, from IP's perspective, anything that delivers a frame to the next hop is good enough. The top three (Session + Presentation + Application) collapse into TCP/IP's <strong>Application</strong> layer because in practice every real application protocol handles its own session and formatting — HTTP, for instance, does its own connection management, its own content negotiation, its own compression. Use OSI when you need to be precise about which layer a feature belongs to. Use TCP/IP when you're describing what's actually on the wire.</p>
+      <p id="ch8-layers-p5" class="diagram-caption">The seven OSI layers map to the four TCP/IP layers in a clear way. The bottom two (Physical + Data Link) collapse into TCP/IP's <strong>Link</strong> layer because, from IP's perspective, anything that delivers a frame to the next hop is good enough. The top three (Session + Presentation + Application) collapse into TCP/IP's <strong>Application</strong> layer because in practice every real application protocol handles its own session and formatting — HTTP, for instance, does its own connection management, its own content negotiation, its own compression. Use OSI when you need to be precise about which layer a feature belongs to. Use TCP/IP when you're describing what's actually on the wire.</p>
     </div>
 
     <h3>The seam to <a href="#ch9">Chapter 9</a></h3>
 
-    <p>
+    <p id="ch8-layers-p6">
       <a href="#ch8">Chapter 8</a> has been about the <em>physical</em> and <em>link</em> layers —
       how a single bit makes it across one hop. <a href="#ch9">Chapter 9</a> climbs to the
       <em>network</em> layer. Up to now, every diagram has assumed two devices
@@ -1414,7 +1414,7 @@
     <div class="section-number">01 — The phone company's view</div>
     <h2>A century of dedicated wires.</h2>
 
-    <p class="lead">
+    <p id="ch9-circuits-p1" class="lead">
       Before the internet, the dominant model for carrying messages between two
       points across a continent was the telephone network — and the telephone
       network was, architecturally, a vast machine for setting up
@@ -1427,7 +1427,7 @@
       the question of how to carry a voice for almost exactly a hundred years.
     </p>
 
-    <p>
+    <p id="ch9-circuits-p2">
       Circuit switching has elegant properties. The path is established once,
       so the latency through the call is constant. There is no congestion mid
       call: the bandwidth is yours alone for the duration. But it scales
@@ -1440,7 +1440,7 @@
       simultaneous connections to plan for.
     </p>
 
-    <p>
+    <p id="ch9-circuits-p3">
       The alternative was <span class="key-term">packet switching</span>: chop every
       message into small numbered chunks, write the destination on each
       chunk, and dump them into the network. The network's only job is to
@@ -1536,7 +1536,7 @@
 
         <text x="360" y="355" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">CIRCUITS WIN ON LATENCY GUARANTEES · PACKETS WIN ON UTILISATION AND SCALE</text>
       </svg>
-      <p class="diagram-caption">In <strong>circuit switching</strong>, the network reserves a fixed path from caller to callee for the entire call. The wires along that path carry only this conversation, even when nobody is speaking. In <strong>packet switching</strong>, the network is a shared graph; each chunk of message is labelled with its destination and routed independently. Different chunks may take different paths, may arrive out of order, may even get lost — and the receiver is responsible for putting things back together. The phone network ran on circuits for a hundred years and worked beautifully for voice. Computers are bursty and many — packets fit them better. The decision to build the early ARPANET on packets rather than circuits is the architectural choice that made the modern internet possible.</p>
+      <p id="ch9-circuits-p4" class="diagram-caption">In <strong>circuit switching</strong>, the network reserves a fixed path from caller to callee for the entire call. The wires along that path carry only this conversation, even when nobody is speaking. In <strong>packet switching</strong>, the network is a shared graph; each chunk of message is labelled with its destination and routed independently. Different chunks may take different paths, may arrive out of order, may even get lost — and the receiver is responsible for putting things back together. The phone network ran on circuits for a hundred years and worked beautifully for voice. Computers are bursty and many — packets fit them better. The decision to build the early ARPANET on packets rather than circuits is the architectural choice that made the modern internet possible.</p>
     </div>
   </section>
 
@@ -1544,7 +1544,7 @@
     <div class="section-number">02 — ARPANET 1969</div>
     <h2>Four nodes. A Cold War. The internet's first heartbeat.</h2>
 
-    <p class="lead">
+    <p id="ch9-arpanet-p1" class="lead">
       The first message on what became the internet was two letters long
       and broke the receiving computer. The date was 29 October 1969, the
       time 22:30 Pacific. Charley Kline, a graduate student in Leonard
@@ -1564,7 +1564,7 @@
       of Utah — and the network had a name: <span class="key-term">ARPANET</span>.
     </p>
 
-    <p>
+    <p id="ch9-arpanet-p2">
       The intellectual ground had been laid years earlier, by three people
       working independently. <strong>Paul Baran</strong> at the RAND
       Corporation, between 1960 and 1964, was working on the most pressing
@@ -1585,7 +1585,7 @@
       in RAND's library waiting to be picked up by the right reader.
     </p>
 
-    <p>
+    <p id="ch9-arpanet-p3">
       <strong>Donald Davies</strong> at the UK's National Physical Laboratory
       arrived at the same architecture independently in 1965, named the
       thing — "packet switching," his phrase — and built a small working
@@ -1672,7 +1672,7 @@
         <!-- Bottom -->
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">"LO" — THE FIRST PACKETS · UCLA → SRI · 29 OCT 1969 · 22:30 PT</text>
       </svg>
-      <p class="diagram-caption">The original ARPANET: four nodes connected by leased 50 kbps lines, switched by Interface Message Processors (IMPs) — refrigerator-sized minicomputers from BBN that handled the packet routing. The first message went from UCLA to SRI; the receiving system crashed after the second character, but the packets had been delivered correctly. Within four years the network spanned the continent and crossed the Atlantic. In 1974 Vint Cerf and Bob Kahn published the paper that defined TCP/IP. In 1983 ARPANET completed its switch from the original NCP protocol to TCP/IP — the day the protocols of the modern internet became the actual protocols on the wire. By 1990 ARPANET was decommissioned, having long since been absorbed into the larger network it had spawned.</p>
+      <p id="ch9-arpanet-p4" class="diagram-caption">The original ARPANET: four nodes connected by leased 50 kbps lines, switched by Interface Message Processors (IMPs) — refrigerator-sized minicomputers from BBN that handled the packet routing. The first message went from UCLA to SRI; the receiving system crashed after the second character, but the packets had been delivered correctly. Within four years the network spanned the continent and crossed the Atlantic. In 1974 Vint Cerf and Bob Kahn published the paper that defined TCP/IP. In 1983 ARPANET completed its switch from the original NCP protocol to TCP/IP — the day the protocols of the modern internet became the actual protocols on the wire. By 1990 ARPANET was decommissioned, having long since been absorbed into the larger network it had spawned.</p>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-9-3">
@@ -1780,7 +1780,7 @@
 
         <text x="360" y="266" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(140,98,30,0.65)" letter-spacing="0.1em">BARAN'S THIRD SHAPE — THE DISTRIBUTED MESH — WAS THE INTERNET'S TOPOLOGY ARGUMENT</text>
       </svg>
-      <p class="diagram-caption">Baran's 1964 RAND memoranda included these three sketches. A <strong>centralised</strong> network has one big switch through which all traffic flows; lose the centre and everything dies. A <strong>decentralised</strong> network has several regional hubs, each handling its area; lose any one hub and only that region is hurt. A <strong>distributed</strong> network has no hubs at all — every node connects to several neighbours, traffic finds its way through the mesh. Lose any subset of nodes and the rest reroute around the gaps. Baran's argument: only the third topology survives a nuclear strike. The argument generalised: it also survives router failures, fibre cuts, ISP bankruptcy, BGP misconfigurations, and every other quotidian way networks break. The internet is a Baran-shaped network.</p>
+      <p id="ch9-arpanet-p5" class="diagram-caption">Baran's 1964 RAND memoranda included these three sketches. A <strong>centralised</strong> network has one big switch through which all traffic flows; lose the centre and everything dies. A <strong>decentralised</strong> network has several regional hubs, each handling its area; lose any one hub and only that region is hurt. A <strong>distributed</strong> network has no hubs at all — every node connects to several neighbours, traffic finds its way through the mesh. Lose any subset of nodes and the rest reroute around the gaps. Baran's argument: only the third topology survives a nuclear strike. The argument generalised: it also survives router failures, fibre cuts, ISP bankruptcy, BGP misconfigurations, and every other quotidian way networks break. The internet is a Baran-shaped network.</p>
     </div>
   </section>
 
@@ -1788,7 +1788,7 @@
     <div class="section-number">03 — IP, the Internet Protocol</div>
     <h2>The packet, byte by byte.</h2>
 
-    <p class="lead">
+    <p id="ch9-ip-p1" class="lead">
       A packet on the wire is a precisely-shaped structure of bytes. The first
       twenty bytes are the <strong>IP header</strong> — a fixed-format
       arrangement of fields that every router on the path reads to figure out
@@ -1880,10 +1880,10 @@
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">all routers care about: TTL (decrement), Total Length (forward), Destination (which way?)</text>
         <text x="360" y="356" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">EVERYTHING ELSE IS METADATA · THE SOURCE FIELD IS SET BY THE SENDER, NOT CHECKED — HENCE IP SPOOFING</text>
       </svg>
-      <p class="diagram-caption">The IPv4 header is 20 bytes, packed tight, dating to 1981. Reading byte-by-byte: <strong>Version</strong> (4 = IPv4), <strong>IHL</strong> (header length in 4-byte units, almost always 5), <strong>ToS</strong> (Type of Service — historically priority hints, now used for DSCP and ECN), <strong>Total Length</strong> (header + payload, up to 65 535 bytes). Then <strong>Identification</strong> + <strong>Flags</strong> + <strong>Fragment Offset</strong> for fragmentation reassembly. Then <strong>TTL</strong> (decremented at every router; if it reaches 0, the packet is dropped — this is what bounds <code>traceroute</code>), <strong>Protocol</strong> (6 = TCP, 17 = UDP, 1 = ICMP — what's in the payload), and <strong>Header Checksum</strong>. The last eight bytes are the source and destination IP addresses. The destination is the only field most routers care about. The source is set by the sender and never verified — which is why IP spoofing exists.</p>
+      <p id="ch9-ip-p2" class="diagram-caption">The IPv4 header is 20 bytes, packed tight, dating to 1981. Reading byte-by-byte: <strong>Version</strong> (4 = IPv4), <strong>IHL</strong> (header length in 4-byte units, almost always 5), <strong>ToS</strong> (Type of Service — historically priority hints, now used for DSCP and ECN), <strong>Total Length</strong> (header + payload, up to 65 535 bytes). Then <strong>Identification</strong> + <strong>Flags</strong> + <strong>Fragment Offset</strong> for fragmentation reassembly. Then <strong>TTL</strong> (decremented at every router; if it reaches 0, the packet is dropped — this is what bounds <code>traceroute</code>), <strong>Protocol</strong> (6 = TCP, 17 = UDP, 1 = ICMP — what's in the payload), and <strong>Header Checksum</strong>. The last eight bytes are the source and destination IP addresses. The destination is the only field most routers care about. The source is set by the sender and never verified — which is why IP spoofing exists.</p>
     </div>
 
-    <p>
+    <p id="ch9-ip-p3">
       A packet larger than the maximum-transmission-unit (MTU) of a link
       cannot be sent in one piece. Ethernet's standard MTU is 1500 bytes; some
       tunnel configurations are smaller. When a 4 KB packet must traverse a
@@ -1933,7 +1933,7 @@
 
         <text x="360" y="266" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">IPV6 FORBIDS ROUTER FRAGMENTATION — SENDER MUST DISCOVER THE PATH MTU UPFRONT</text>
       </svg>
-      <p class="diagram-caption">Fragmentation. A 4000-byte packet enters a link whose MTU is 1500 bytes. The router (or sender) breaks it into three fragments; each is a complete IP packet with the same Identification field (42 here) and a Fragment Offset that says where in the original payload it sits. Offsets are in 8-byte units, so 1480 bytes of payload corresponds to offset 185. The "More Fragments" flag is set on every fragment except the last. The receiver buffers fragments by ID, sorts them by offset, and reassembles when it sees MF=0. If any fragment is lost in flight, the entire packet is lost — IP has no way to ask for just one fragment to be retransmitted. Modern systems avoid fragmentation by discovering the smallest MTU on the path (Path MTU Discovery) and sending packets that fit. IPv6 forbids router-side fragmentation entirely; only the original sender can fragment, and only after probing.</p>
+      <p id="ch9-ip-p4" class="diagram-caption">Fragmentation. A 4000-byte packet enters a link whose MTU is 1500 bytes. The router (or sender) breaks it into three fragments; each is a complete IP packet with the same Identification field (42 here) and a Fragment Offset that says where in the original payload it sits. Offsets are in 8-byte units, so 1480 bytes of payload corresponds to offset 185. The "More Fragments" flag is set on every fragment except the last. The receiver buffers fragments by ID, sorts them by offset, and reassembles when it sees MF=0. If any fragment is lost in flight, the entire packet is lost — IP has no way to ask for just one fragment to be retransmitted. Modern systems avoid fragmentation by discovering the smallest MTU on the path (Path MTU Discovery) and sending packets that fit. IPv6 forbids router-side fragmentation entirely; only the original sender can fragment, and only after probing.</p>
     </div>
   </section>
 
@@ -1941,7 +1941,7 @@
     <div class="section-number">04 — BGP &amp; routing</div>
     <h2>The graph that nobody owns.</h2>
 
-    <p class="lead">
+    <p id="ch9-routing-p1" class="lead">
       The internet is not one network. It is tens of thousands of independent
       networks, each operated by a different organisation, none of them under
       common ownership or control, all glued together by a single protocol
@@ -1952,7 +1952,7 @@
       fully recovered from.
     </p>
 
-    <p>
+    <p id="ch9-routing-p2">
       Each independent network is called an <span class="key-term">Autonomous System</span>
       (AS) and gets a number — Cogent is AS 174, Google is AS 15169, your ISP
       has its own. ASes connect to each other at peering points; the
@@ -2028,7 +2028,7 @@
 
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">EACH AS PREPENDS ITSELF TO THE PATH · SHORTER PATHS WIN BY DEFAULT · LOOPS ARE DETECTED IN THE LIST</text>
       </svg>
-      <p class="diagram-caption">AS 65001 announces the prefix <code>198.51.0.0/16</code> with path <code>[65001]</code> — "I am the origin." Two transit ASes hear the announcement and prepend themselves: AS 65010 announces <code>[65010, 65001]</code>, AS 65020 announces <code>[65020, 65001]</code>. Both reach AS 65030, which now sees two paths to the same destination and picks the shorter one (or applies local policy — most BGP routing decisions are policy, not pure shortest-path). AS 65030 prepends itself and announces <code>[65030, 65010, 65001]</code> onward to AS 65099, which now knows it can reach the prefix in three AS hops. Loop detection is automatic: an AS that sees its own number in the path drops the announcement. This is BGP at its simplest. The protocol has a few hundred more pages, but the path-vector core is this.</p>
+      <p id="ch9-routing-p3" class="diagram-caption">AS 65001 announces the prefix <code>198.51.0.0/16</code> with path <code>[65001]</code> — "I am the origin." Two transit ASes hear the announcement and prepend themselves: AS 65010 announces <code>[65010, 65001]</code>, AS 65020 announces <code>[65020, 65001]</code>. Both reach AS 65030, which now sees two paths to the same destination and picks the shorter one (or applies local policy — most BGP routing decisions are policy, not pure shortest-path). AS 65030 prepends itself and announces <code>[65030, 65010, 65001]</code> onward to AS 65099, which now knows it can reach the prefix in three AS hops. Loop detection is automatic: an AS that sees its own number in the path drops the announcement. This is BGP at its simplest. The protocol has a few hundred more pages, but the path-vector core is this.</p>
     </div>
 
     <div class="diagram-card" id="fig-9-7">
@@ -2122,7 +2122,7 @@
 
         <text x="360" y="338" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">~10–20 TIER-1 ASES · A FEW HUNDRED TIER-2 · TENS OF THOUSANDS OF TIER-3</text>
       </svg>
-      <p class="diagram-caption">The commercial structure of the internet, simplified. <strong>Tier 1</strong> is the small set of ASes that have settlement-free peering with each other and reach every other AS without paying anyone. There are roughly a dozen — Cogent, Lumen (formerly Level 3), NTT, Telia, Tata, Telecom Italia, GTT, and a few more. <strong>Tier 2</strong> are large regional or national operators who peer with each other but pay one or more Tier-1s for traffic to the rest of the internet. <strong>Tier 3</strong> is everyone else — the ISP your home is on, your university, your cloud provider's edge. The packet your laptop just sent climbs this hierarchy: from your home router up through your ISP (Tier 3 → Tier 2), maybe across one Tier 1 to another Tier 1, back down to a Tier 2 in the destination's region, into a Tier 3 ISP, and finally to the server. The graph is held together by BGP announcements and commercial contracts. There is no central authority.</p>
+      <p id="ch9-routing-p4" class="diagram-caption">The commercial structure of the internet, simplified. <strong>Tier 1</strong> is the small set of ASes that have settlement-free peering with each other and reach every other AS without paying anyone. There are roughly a dozen — Cogent, Lumen (formerly Level 3), NTT, Telia, Tata, Telecom Italia, GTT, and a few more. <strong>Tier 2</strong> are large regional or national operators who peer with each other but pay one or more Tier-1s for traffic to the rest of the internet. <strong>Tier 3</strong> is everyone else — the ISP your home is on, your university, your cloud provider's edge. The packet your laptop just sent climbs this hierarchy: from your home router up through your ISP (Tier 3 → Tier 2), maybe across one Tier 1 to another Tier 1, back down to a Tier 2 in the destination's region, into a Tier 3 ISP, and finally to the server. The graph is held together by BGP announcements and commercial contracts. There is no central authority.</p>
     </div>
   </section>
 
@@ -2130,7 +2130,7 @@
     <div class="section-number">05 — IPv4 vs IPv6</div>
     <h2>The thirty-year migration that still isn't done.</h2>
 
-    <p class="lead">
+    <p id="ch9-v6-p1" class="lead">
       IPv4 addresses are 32 bits long. That is 4 294 967 296 possible
       addresses, which sounded like a lot in 1981 and runs out, in practice,
       well below the count because of subnet-padding and reserved ranges. The
@@ -2182,7 +2182,7 @@
 
         <text x="360" y="306" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">IPV4 NEVER REALLY RAN OUT — IT GOT MULTIPLEXED VIA NAT, AT THE COST OF END-TO-END CONNECTIVITY</text>
       </svg>
-      <p class="diagram-caption">The IANA central pool of IPv4 allocations exhausted in February 2011. The regional registries followed over the next several years. The world did not break — instead, ISPs adopted Carrier-Grade NAT (CGNAT), which shares one public IPv4 address among hundreds or thousands of customers behind a translation layer. CGNAT works for outgoing connections (web browsing, video streaming) but breaks any protocol that needs incoming connections to specific addresses (peer-to-peer, hosting servers from home, SIP). IPv6 deployment has grown steadily since — about 40% of traffic in 2025 — but full migration is still distant. The internet runs on a hybrid where most users are IPv6-capable but most servers are still dual-stack, and the translation between them is happening every nanosecond at every CGNAT box on the planet.</p>
+      <p id="ch9-v6-p2" class="diagram-caption">The IANA central pool of IPv4 allocations exhausted in February 2011. The regional registries followed over the next several years. The world did not break — instead, ISPs adopted Carrier-Grade NAT (CGNAT), which shares one public IPv4 address among hundreds or thousands of customers behind a translation layer. CGNAT works for outgoing connections (web browsing, video streaming) but breaks any protocol that needs incoming connections to specific addresses (peer-to-peer, hosting servers from home, SIP). IPv6 deployment has grown steadily since — about 40% of traffic in 2025 — but full migration is still distant. The internet runs on a hybrid where most users are IPv6-capable but most servers are still dual-stack, and the translation between them is happening every nanosecond at every CGNAT box on the planet.</p>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-9-9">
@@ -2208,7 +2208,7 @@
 
         <text x="360" y="304" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(140,98,30,0.65)" letter-spacing="0.1em">2¹²⁸ ≈ 3.4 × 10³⁸ — ENOUGH FOR EVERY ATOM IN THE EARTH'S CRUST IF YOU WERE GENEROUS</text>
       </svg>
-      <p class="diagram-caption">An IPv4 address is 32 bits, conventionally written as four decimal octets like <code>192.0.2.42</code>. An IPv6 address is 128 bits, conventionally written as eight 16-bit groups in hexadecimal, separated by colons. IPv6's address space is so large — 2<sup>128</sup> ≈ 3.4 × 10<sup>38</sup> — that the engineering trade-off completely flips: addresses are no longer scarce, so the protocol can spend them lavishly. Every device gets a public address. Subnets are 64 bits wide on every link. Stateless autoconfiguration lets a device pick a globally unique address automatically. The price for the abundance is that every router, every operating system, every firewall, every networking library on Earth had to be modified — which is why thirty years in, the migration is still not done.</p>
+      <p id="ch9-v6-p3" class="diagram-caption">An IPv4 address is 32 bits, conventionally written as four decimal octets like <code>192.0.2.42</code>. An IPv6 address is 128 bits, conventionally written as eight 16-bit groups in hexadecimal, separated by colons. IPv6's address space is so large — 2<sup>128</sup> ≈ 3.4 × 10<sup>38</sup> — that the engineering trade-off completely flips: addresses are no longer scarce, so the protocol can spend them lavishly. Every device gets a public address. Subnets are 64 bits wide on every link. Stateless autoconfiguration lets a device pick a globally unique address automatically. The price for the abundance is that every router, every operating system, every firewall, every networking library on Earth had to be modified — which is why thirty years in, the migration is still not done.</p>
     </div>
   </section>
 
@@ -2216,7 +2216,7 @@
     <div class="section-number">06 — Spoofing, hijacks, route leaks</div>
     <h2>Trust the source field at your peril.</h2>
 
-    <p class="lead">
+    <p id="ch9-security-p1" class="lead">
       Recall from <a href="#fig-9-4">Fig 9.4</a> that the IP source address is set by the sender and
       not verified anywhere along the path. There is no equivalent of a return
       address being checked against the postmark; the receiver simply sees
@@ -2229,7 +2229,7 @@
 
     <div class="insight-strip">
       <span class="insight-icon">🛡️</span>
-      <p class="insight-text">
+      <p id="ch9-security-p2" class="insight-text">
         <strong>The Morris worm — 2 November 1988 — the moment computer
         security became a discipline.</strong> Robert Tappan Morris, a
         twenty-three-year-old graduate student at Cornell whose father was the
@@ -2299,10 +2299,10 @@
 
         <text x="360" y="266" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">BCP 38 (2000) ASKS ISPS TO FILTER · ENFORCEMENT IS UNEVEN · SPOOFED TRAFFIC IS STILL ROUTINE</text>
       </svg>
-      <p class="diagram-caption">An attacker writes any source IP they want into the IP header and sends. Routers in between forward the packet based on the destination only. The target receives the packet with the forged source. This is fine for one-way attacks: a TCP SYN flood (<a href="#ch10">Chapter 10</a>) needs only to cause the target to allocate state for a half-open connection, never to receive the reply. DNS and NTP amplification attacks send small spoofed queries that elicit large responses — all directed at the spoofed victim, not the attacker. BCP 38 (2000) recommends every ISP filter outgoing packets so that customers cannot spoof addresses that are not theirs to use; a quarter-century later, deployment of BCP 38 is incomplete and spoofed-source attacks remain routine. The fix exists. The internet has not finished installing it.</p>
+      <p id="ch9-security-p3" class="diagram-caption">An attacker writes any source IP they want into the IP header and sends. Routers in between forward the packet based on the destination only. The target receives the packet with the forged source. This is fine for one-way attacks: a TCP SYN flood (<a href="#ch10">Chapter 10</a>) needs only to cause the target to allocate state for a half-open connection, never to receive the reply. DNS and NTP amplification attacks send small spoofed queries that elicit large responses — all directed at the spoofed victim, not the attacker. BCP 38 (2000) recommends every ISP filter outgoing packets so that customers cannot spoof addresses that are not theirs to use; a quarter-century later, deployment of BCP 38 is incomplete and spoofed-source attacks remain routine. The fix exists. The internet has not finished installing it.</p>
     </div>
 
-    <p>
+    <p id="ch9-security-p4">
       A more dramatic class of attack exploits BGP itself. Recall: each AS
       announces which prefixes it can reach, and other ASes trust those
       announcements. There is, in the original protocol, no mechanism for the
@@ -2385,7 +2385,7 @@
           <text x="56" y="322" fill="rgba(232,120,120,0.95)">③ /24 is more specific than YouTube's /22 → wins everywhere → YouTube globally offline ~2 hours</text>
         </g>
       </svg>
-      <p class="diagram-caption">On 24 February 2008, Pakistan Telecom (AS 17557) decided to block YouTube domestically by announcing the prefix <code>208.65.153.0/24</code> to its own routers, redirecting traffic to a null route. By accident, the announcement was leaked upstream to PCCW (AS 3491), which propagated it to the rest of the internet. Because <code>/24</code> is more specific than YouTube's legitimate <code>/22</code>, every BGP router on Earth preferred the more-specific route — and now sent YouTube's traffic to Pakistan, where it was being null-routed. YouTube went off the air globally for about two hours, until the announcement was withdrawn and the legitimate routes propagated back. There was no malice and no exploit; one local engineering decision, one configuration mistake, and a protocol with no source authentication produced a planet-scale outage. RPKI (Resource Public Key Infrastructure) and BGPsec are partial answers, deployed slowly. As of 2025, the underlying issue — that BGP trusts whatever an AS says — remains.</p>
+      <p id="ch9-security-p5" class="diagram-caption">On 24 February 2008, Pakistan Telecom (AS 17557) decided to block YouTube domestically by announcing the prefix <code>208.65.153.0/24</code> to its own routers, redirecting traffic to a null route. By accident, the announcement was leaked upstream to PCCW (AS 3491), which propagated it to the rest of the internet. Because <code>/24</code> is more specific than YouTube's legitimate <code>/22</code>, every BGP router on Earth preferred the more-specific route — and now sent YouTube's traffic to Pakistan, where it was being null-routed. YouTube went off the air globally for about two hours, until the announcement was withdrawn and the legitimate routes propagated back. There was no malice and no exploit; one local engineering decision, one configuration mistake, and a protocol with no source authentication produced a planet-scale outage. RPKI (Resource Public Key Infrastructure) and BGPsec are partial answers, deployed slowly. As of 2025, the underlying issue — that BGP trusts whatever an AS says — remains.</p>
     </div>
 
     <div class="diagram-card" id="fig-9-12">
@@ -2426,12 +2426,12 @@
         <!-- Annotation -->
         <text x="360" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">↓ leaked path — packet takes the wrong door</text>
       </svg>
-      <p class="diagram-caption">A <strong>route leak</strong> is the gentler cousin of a hijack: an AS that has heard a route announcement re-announces it to a peer that should not have received it. Most commonly, an AS that buys transit from two providers accidentally re-announces routes from one provider to the other, becoming a free transit between them. Traffic that was supposed to take a direct, fast path now detours through the leaking AS — sometimes through entirely the wrong continent. There is no malice; just a misconfiguration in a router somewhere. Because BGP has no notion of "this announcement should not be propagated" baked into the protocol, leaks ripple. The IETF's RFC 7908 catalogues the standard leak types. The defences (route filters, the IRR database, RPKI ROAs, ASPA) all live in the same uncomfortable place: technically possible, partially deployed, defeated by the fact that the protocol fundamentally trusts what its peers say.</p>
+      <p id="ch9-security-p6" class="diagram-caption">A <strong>route leak</strong> is the gentler cousin of a hijack: an AS that has heard a route announcement re-announces it to a peer that should not have received it. Most commonly, an AS that buys transit from two providers accidentally re-announces routes from one provider to the other, becoming a free transit between them. Traffic that was supposed to take a direct, fast path now detours through the leaking AS — sometimes through entirely the wrong continent. There is no malice; just a misconfiguration in a router somewhere. Because BGP has no notion of "this announcement should not be propagated" baked into the protocol, leaks ripple. The IETF's RFC 7908 catalogues the standard leak types. The defences (route filters, the IRR database, RPKI ROAs, ASPA) all live in the same uncomfortable place: technically possible, partially deployed, defeated by the fact that the protocol fundamentally trusts what its peers say.</p>
     </div>
 
     <h3>The seam to <a href="#ch10">Chapter 10</a></h3>
 
-    <p>
+    <p id="ch9-security-p7">
       <a href="#ch9">Chapter 9</a> has built the layer that gets a packet from any source to any
       destination — best-effort, possibly out-of-order, possibly lost. <a href="#ch10">Chapter
       10</a> builds reliability on top of that unreliability. The protocol it
@@ -2539,7 +2539,7 @@
     <div class="section-number">01 — UDP first</div>
     <h2>The simplest thing that could possibly work.</h2>
 
-    <p class="lead">
+    <p id="ch10-udp-p1" class="lead">
       Before TCP, before the elaborate machinery of reliability, there is the
       simplest possible thing you can do with IP: just send packets. Don't
       number them. Don't track them. Don't ask whether they arrived. That is
@@ -2551,7 +2551,7 @@
       applications, the simplicity is the feature.
     </p>
 
-    <p>
+    <p id="ch10-udp-p2">
       The trade is explicit. UDP says: I will hand your bytes to the IP
       layer; whether they arrive, in what order, possibly duplicated, possibly
       lost, is your problem. Most applications find this terrifying. A few
@@ -2622,7 +2622,7 @@
           <text x="14" y="66" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">— games · QUIC · NTP · DHCP</text>
         </g>
       </svg>
-      <p class="diagram-caption">UDP is essentially "an envelope around your bytes." Eight bytes of header — source port (where it came from), destination port (which service to deliver to), length, optional checksum — and then your payload. There is no concept of a "connection" between two UDP endpoints; each packet stands alone. There is no notion that a previous packet was sent, or that a future packet will be. For applications that need exactly that — fire-and-forget, real-time, single-shot — UDP is the right protocol. For applications that need a reliable byte stream, TCP picks up where UDP refuses to.</p>
+      <p id="ch10-udp-p3" class="diagram-caption">UDP is essentially "an envelope around your bytes." Eight bytes of header — source port (where it came from), destination port (which service to deliver to), length, optional checksum — and then your payload. There is no concept of a "connection" between two UDP endpoints; each packet stands alone. There is no notion that a previous packet was sent, or that a future packet will be. For applications that need exactly that — fire-and-forget, real-time, single-shot — UDP is the right protocol. For applications that need a reliable byte stream, TCP picks up where UDP refuses to.</p>
     </div>
   </section>
 
@@ -2630,7 +2630,7 @@
     <div class="section-number">02 — Why TCP</div>
     <h2>Four engineering goals, written 1974, still in force.</h2>
 
-    <p class="lead">
+    <p id="ch10-why-p1" class="lead">
       In 1974, Vint Cerf and Bob Kahn published "A Protocol for Packet
       Network Intercommunication" in the <em>IEEE Transactions on
       Communications</em>. The paper described a protocol — they called it
@@ -2643,7 +2643,7 @@
       machinery TCP carries is in service of one of those four goals.
     </p>
 
-    <p>
+    <p id="ch10-why-p2">
       The architecture follows. Every byte of the application's stream is
       assigned a <strong>sequence number</strong> — a 32-bit counter,
       incremented for each byte, that lets either side say exactly which
@@ -2659,7 +2659,7 @@
       nothing.
     </p>
 
-    <p>
+    <p id="ch10-why-p3">
       The cost of all this is <em>state</em>. Every TCP connection — client
       and server — keeps a kernel-level data structure called the
       <strong>TCB</strong> (Transmission Control Block) tracking sequence
@@ -2676,7 +2676,7 @@
     <div class="section-number">03 — The three-way handshake</div>
     <h2>Three segments. Two synchronised counters. One conversation.</h2>
 
-    <p class="lead">
+    <p id="ch10-handshake-p1" class="lead">
       A TCP connection begins with a three-segment exchange. SYN, SYN-ACK,
       ACK. Three round-trip halves, ending with both sides knowing each
       other's starting sequence numbers, both sides having allocated a TCB,
@@ -2731,10 +2731,10 @@
 
         <text x="360" y="346" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">1.5 RTTS BEFORE THE FIRST APPLICATION BYTE — A PERMANENT TAX TCP CHARGES PER CONNECTION</text>
       </svg>
-      <p class="diagram-caption">Three segments cross the network. The <strong>SYN</strong> carries the client's chosen Initial Sequence Number (ISN), randomly selected for security. The <strong>SYN-ACK</strong> carries the server's ISN and acknowledges receipt of the client's ISN+1. The <strong>ACK</strong> closes the loop by acknowledging the server's ISN+1. After this, both sides know both sequence numbers and the connection is ESTABLISHED. The whole exchange takes 1.5 round trips before a single byte of application data can flow — a permanent tax that motivated TFO (TCP Fast Open) and, eventually, the design of QUIC, which folds connection setup into the encryption handshake to save round trips.</p>
+      <p id="ch10-handshake-p2" class="diagram-caption">Three segments cross the network. The <strong>SYN</strong> carries the client's chosen Initial Sequence Number (ISN), randomly selected for security. The <strong>SYN-ACK</strong> carries the server's ISN and acknowledges receipt of the client's ISN+1. The <strong>ACK</strong> closes the loop by acknowledging the server's ISN+1. After this, both sides know both sequence numbers and the connection is ESTABLISHED. The whole exchange takes 1.5 round trips before a single byte of application data can flow — a permanent tax that motivated TFO (TCP Fast Open) and, eventually, the design of QUIC, which folds connection setup into the encryption handshake to save round trips.</p>
     </div>
 
-    <p>
+    <p id="ch10-handshake-p3">
       The state both endpoints traverse during connection setup, data
       transfer, and teardown is captured in TCP's finite state machine — a
       diagram every networking student commits to memory at some point. There
@@ -2854,7 +2854,7 @@
 
         <text x="360" y="376" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.08em">SERVER PATH (RED) · CLIENT PATH (GREEN) · CLOSE PATH (GOLD) — 11 STATES, 1981 RFC 793</text>
       </svg>
-      <p class="diagram-caption">TCP's eleven-state finite state machine, the canonical version from RFC 793 (1981). The active opener (client) goes CLOSED → SYN_SENT → ESTABLISHED. The passive opener (server) goes CLOSED → LISTEN → SYN_RCVD → ESTABLISHED. Connection teardown is the four-state dance on the right and bottom: each side independently decides to close, sends a FIN, waits for the peer's ACK, then waits for the peer's FIN, then waits a final 2·MSL (Maximum Segment Lifetime, conventionally 60 seconds) in TIME_WAIT before fully closing — to ensure any straggler packets from the previous incarnation of this connection have died out before the four-tuple (src IP, src port, dst IP, dst port) can be reused.</p>
+      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven-state finite state machine, the canonical version from RFC 793 (1981). The active opener (client) goes CLOSED → SYN_SENT → ESTABLISHED. The passive opener (server) goes CLOSED → LISTEN → SYN_RCVD → ESTABLISHED. Connection teardown is the four-state dance on the right and bottom: each side independently decides to close, sends a FIN, waits for the peer's ACK, then waits for the peer's FIN, then waits a final 2·MSL (Maximum Segment Lifetime, conventionally 60 seconds) in TIME_WAIT before fully closing — to ensure any straggler packets from the previous incarnation of this connection have died out before the four-tuple (src IP, src port, dst IP, dst port) can be reused.</p>
     </div>
   </section>
 
@@ -2862,7 +2862,7 @@
     <div class="section-number">04 — Flow and congestion control</div>
     <h2>How fast is too fast? Ask the network.</h2>
 
-    <p class="lead">
+    <p id="ch10-aimd-p1" class="lead">
       After the handshake, the real engineering begins. The sender must
       decide how fast to send. Too fast: the receiver drops packets, queues
       in the network overflow, and the connection wastes work and degrades.
@@ -2875,7 +2875,7 @@
       ever deployed.
     </p>
 
-    <p>
+    <p id="ch10-aimd-p2">
       The first piece is the <strong>sliding window</strong>. The receiver
       advertises, in every ACK it sends, the size of its receive buffer that
       remains free — the <em>receive window</em>. The sender promises never
@@ -2958,10 +2958,10 @@
 
         <text x="360" y="266" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">RECEIVER ADVERTISES WINDOW IN EVERY ACK · SENDER NEVER EXCEEDS IT · NATURAL FLOW CONTROL</text>
       </svg>
-      <p class="diagram-caption">The sender's view of the byte stream is divided into four regions: bytes already <strong>acknowledged</strong> (safe to forget), bytes <strong>in flight</strong> (sent but unconfirmed — kept in retransmit buffer), bytes within the <strong>window</strong> (allowed to send but not yet sent), and the <strong>future</strong> (cannot send yet — outside the window). When ACK 104 arrives, the window's trailing edge advances, freeing the in-flight bytes and creating room at the leading edge for new bytes to enter the window. The window slides through the stream as ACKs arrive. The receiver controls the window size, so a slow consumer naturally throttles a fast producer — flow control with no extra messaging.</p>
+      <p id="ch10-aimd-p3" class="diagram-caption">The sender's view of the byte stream is divided into four regions: bytes already <strong>acknowledged</strong> (safe to forget), bytes <strong>in flight</strong> (sent but unconfirmed — kept in retransmit buffer), bytes within the <strong>window</strong> (allowed to send but not yet sent), and the <strong>future</strong> (cannot send yet — outside the window). When ACK 104 arrives, the window's trailing edge advances, freeing the in-flight bytes and creating room at the leading edge for new bytes to enter the window. The window slides through the stream as ACKs arrive. The receiver controls the window size, so a slow consumer naturally throttles a fast producer — flow control with no extra messaging.</p>
     </div>
 
-    <p>
+    <p id="ch10-aimd-p4">
       The sliding window prevents the sender from outrunning the
       <em>receiver</em>. It does nothing to prevent the sender from
       outrunning the <em>network</em>. That is what <span class="key-term">congestion
@@ -2969,7 +2969,7 @@
       The story of how it entered TCP is worth telling in detail.
     </p>
 
-    <p>
+    <p id="ch10-aimd-p5">
       In October 1986, the bandwidth between Lawrence Berkeley National
       Laboratory and UC Berkeley — a single physical link, four hundred
       metres of cable — collapsed from its design capacity of 32 kilobits
@@ -3000,7 +3000,7 @@
       it grew is the one this section describes.
     </p>
 
-    <p>
+    <p id="ch10-aimd-p6">
       The algorithm has two phases. <strong>Slow start</strong> begins
       cautiously — a tiny congestion window (cwnd) of one segment — and
       <em>doubles</em> on every successful round trip. Exponential growth
@@ -3073,12 +3073,12 @@
         <line x1="180" y1="100" x2="660" y2="100" stroke="rgba(140,98,30,0.5)" stroke-dasharray="6,3"/>
         <text x="660" y="92" text-anchor="end" font-family="DM Mono" font-size="8" fill="rgba(140,98,30,0.7)">true capacity (unknown to TCP)</text>
       </svg>
-      <p class="diagram-caption">Slow start (green): exponential — cwnd doubles every round trip until the first loss. Congestion avoidance (red): additive — cwnd grows by one segment per RTT, until loss. Each loss halves the window. Repeat. The window oscillates around the network's true capacity in this sawtooth shape, sometimes called the AIMD curve. TCP never <em>knows</em> the capacity; it discovers it by overshooting and being punished for the overshoot, then backing off and probing slowly upward. The whole machinery runs at every flow simultaneously, in distributed harmony. Loss is the only feedback signal, and loss is the universal language every router in between speaks (by dropping packets when its queues fill).</p>
+      <p id="ch10-aimd-p7" class="diagram-caption">Slow start (green): exponential — cwnd doubles every round trip until the first loss. Congestion avoidance (red): additive — cwnd grows by one segment per RTT, until loss. Each loss halves the window. Repeat. The window oscillates around the network's true capacity in this sawtooth shape, sometimes called the AIMD curve. TCP never <em>knows</em> the capacity; it discovers it by overshooting and being punished for the overshoot, then backing off and probing slowly upward. The whole machinery runs at every flow simultaneously, in distributed harmony. Loss is the only feedback signal, and loss is the universal language every router in between speaks (by dropping packets when its queues fill).</p>
     </div>
 
     <div class="math-callout">
       <div class="math-label">Why AIMD — Chiu &amp; Jain, 1989</div>
-      <p>The genius of AIMD — Additive Increase, Multiplicative Decrease — is not just that it works, but that <em>it is the only combination that works</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). MIMD oscillates without converging. AIAD reduces too slowly under congestion. MIAD diverges. AIMD is the unique stable point. It is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
+      <p id="ch10-aimd-p8">The genius of AIMD — Additive Increase, Multiplicative Decrease — is not just that it works, but that <em>it is the only combination that works</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). MIMD oscillates without converging. AIAD reduces too slowly under congestion. MIAD diverges. AIMD is the unique stable point. It is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-10-6">
@@ -3118,7 +3118,7 @@
 
         <text x="370" y="14" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(140,98,30,0.95)" text-anchor="middle">why AIMD converges — Chiu &amp; Jain 1989</text>
       </svg>
-      <p class="diagram-caption">A two-flow phase plane (also called the Chiu–Jain plot). The horizontal axis is flow A's bandwidth allocation; the vertical, flow B's. Points above the red line exceed total capacity (someone loses). Points on the green line are fair (A = B). The optimal target is the intersection: full capacity, equal share. AIMD's geometry forces convergence: <em>additive increase</em> moves both flows up the 45° diagonal (so the relative gap stays the same in absolute terms but shrinks as a proportion). <em>Multiplicative decrease</em> on loss moves both flows toward the origin along a ray (preserving the ratio A:B, which means the absolute gap shrinks). Each cycle moves the system closer to the fair-and-efficient point. No central coordination. Just two flows, both running AIMD locally, both converging to fairness automatically. Among the most elegant distributed-systems results in computing.</p>
+      <p id="ch10-aimd-p9" class="diagram-caption">A two-flow phase plane (also called the Chiu–Jain plot). The horizontal axis is flow A's bandwidth allocation; the vertical, flow B's. Points above the red line exceed total capacity (someone loses). Points on the green line are fair (A = B). The optimal target is the intersection: full capacity, equal share. AIMD's geometry forces convergence: <em>additive increase</em> moves both flows up the 45° diagonal (so the relative gap stays the same in absolute terms but shrinks as a proportion). <em>Multiplicative decrease</em> on loss moves both flows toward the origin along a ray (preserving the ratio A:B, which means the absolute gap shrinks). Each cycle moves the system closer to the fair-and-efficient point. No central coordination. Just two flows, both running AIMD locally, both converging to fairness automatically. Among the most elegant distributed-systems results in computing.</p>
     </div>
   </section>
 
@@ -3126,7 +3126,7 @@
     <div class="section-number">05 — CUBIC, BBR, QUIC</div>
     <h2>Three answers to TCP's mid-life crisis.</h2>
 
-    <p class="lead">
+    <p id="ch10-modern-p1" class="lead">
       Classic TCP — Tahoe, Reno, NewReno — was designed for the late-1980s
       internet, where round-trip times were tens of milliseconds and
       bandwidths a few megabits. The modern internet has flows that span
@@ -3139,7 +3139,7 @@
       produced three answers — each more radical than the last.
     </p>
 
-    <p>
+    <p id="ch10-modern-p2">
       <strong>CUBIC</strong> (2008, Linux's default) keeps loss-based
       detection but replaces the linear additive-increase phase with a
       cubic function. After a loss, the window grows slowly at first, then
@@ -3176,10 +3176,10 @@
         <line x1="60" y1="120" x2="660" y2="120" stroke="rgba(212,168,83,0.5)" stroke-dasharray="3,3"/>
         <text x="660" y="116" text-anchor="end" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.7)">previous peak (W_max)</text>
       </svg>
-      <p class="diagram-caption">After the same loss event, Reno's window grows linearly (one segment per RTT) — fine on the slow links of 1988, terrible on a 100 ms / 1 Gbps link where it takes thousands of RTTs to refill. CUBIC's window growth is a cubic polynomial centred on the previous loss-causing window: it grows slowly near that previous peak (cautiously revisiting where it failed), then accelerates above it (probing for new capacity). The shape is tuned by the cubic constant and the saved <em>W_max</em>. CUBIC fills modern long-fat-pipe links in a few seconds where Reno would take minutes. It has been Linux's default since kernel 2.6.19 (2006).</p>
+      <p id="ch10-modern-p3" class="diagram-caption">After the same loss event, Reno's window grows linearly (one segment per RTT) — fine on the slow links of 1988, terrible on a 100 ms / 1 Gbps link where it takes thousands of RTTs to refill. CUBIC's window growth is a cubic polynomial centred on the previous loss-causing window: it grows slowly near that previous peak (cautiously revisiting where it failed), then accelerates above it (probing for new capacity). The shape is tuned by the cubic constant and the saved <em>W_max</em>. CUBIC fills modern long-fat-pipe links in a few seconds where Reno would take minutes. It has been Linux's default since kernel 2.6.19 (2006).</p>
     </div>
 
-    <p>
+    <p id="ch10-modern-p4">
       <strong>BBR</strong> (2016, Google) is more radical: forget loss as a
       signal. Instead, measure the network directly — bandwidth and round
       trip time — and aim for the <em>bandwidth-delay product</em> (BDP), the
@@ -3243,10 +3243,10 @@
         <text x="360" y="238" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">= 1 Gbps × 100 ms = 12.5 MB of in-flight bytes — exactly the right amount</text>
         <text x="360" y="252" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">BBR measures both directly · keeps cwnd at this value · avoids buffer-bloat entirely</text>
       </svg>
-      <p class="diagram-caption">A network "pipe" between two endpoints has two dimensions: bandwidth (how many bytes per second can flow) and round-trip time (how long the bytes stay in transit). The product, BDP = bandwidth × RTT, is the amount of in-flight data that fills the pipe exactly. Less than BDP and the pipe is partly empty (under-utilisation). More than BDP and the excess piles up in some router's queue, increasing latency and eventually causing loss (this is "buffer bloat"). BBR — Bottleneck Bandwidth and Round-trip propagation time — measures both quantities continuously and tries to keep cwnd at exactly BDP. It is loss-agnostic: a packet lost to wireless interference is not interpreted as a congestion signal, only as a packet to retransmit. Google deploys BBR at the edges of its own infrastructure; YouTube playback in the developing world is meaningfully smoother because of it.</p>
+      <p id="ch10-modern-p5" class="diagram-caption">A network "pipe" between two endpoints has two dimensions: bandwidth (how many bytes per second can flow) and round-trip time (how long the bytes stay in transit). The product, BDP = bandwidth × RTT, is the amount of in-flight data that fills the pipe exactly. Less than BDP and the pipe is partly empty (under-utilisation). More than BDP and the excess piles up in some router's queue, increasing latency and eventually causing loss (this is "buffer bloat"). BBR — Bottleneck Bandwidth and Round-trip propagation time — measures both quantities continuously and tries to keep cwnd at exactly BDP. It is loss-agnostic: a packet lost to wireless interference is not interpreted as a congestion signal, only as a packet to retransmit. Google deploys BBR at the edges of its own infrastructure; YouTube playback in the developing world is meaningfully smoother because of it.</p>
     </div>
 
-    <p>
+    <p id="ch10-modern-p6">
       <span class="key-term">QUIC</span> (Google 2012, IETF standard 2021) is the most
       radical answer of all: abandon TCP entirely. QUIC runs over UDP and
       builds reliability, encryption, multiplexing, and congestion control
@@ -3310,7 +3310,7 @@
         <text x="360" y="318" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">QUIC moves transport into user space, where it can iterate as fast as the application</text>
         <text x="360" y="336" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">HTTP/3 = HTTP/2 SEMANTICS · QUIC TRANSPORT · UDP PACKETS · HARDWIRED TLS</text>
       </svg>
-      <p class="diagram-caption">QUIC collapses three classical layers (TCP, TLS, HTTP/2) into one user-space protocol over UDP. The benefits are concrete: <strong>0-RTT resumption</strong> (a returning client can ship its first request alongside the handshake), <strong>per-stream multiplexing</strong> (loss in one HTTP request doesn't block the others, fixing HTTP/2-over-TCP head-of-line blocking), <strong>connection migration</strong> (the connection ID is application-level, so a phone switching from Wi-Fi to cellular keeps its TCP connection alive — TCP could not), and <strong>iterability</strong> (because QUIC is in user space, both endpoints can deploy new versions without needing OS kernel updates). The trade is that QUIC reimplements all of TCP's reliability machinery in user space, including congestion control — Linux kernel TCP is still faster per packet because it's been hand-optimised for thirty-five years. As of 2025, all major browsers, all major CDNs, and Google's whole edge run HTTP/3 over QUIC.</p>
+      <p id="ch10-modern-p7" class="diagram-caption">QUIC collapses three classical layers (TCP, TLS, HTTP/2) into one user-space protocol over UDP. The benefits are concrete: <strong>0-RTT resumption</strong> (a returning client can ship its first request alongside the handshake), <strong>per-stream multiplexing</strong> (loss in one HTTP request doesn't block the others, fixing HTTP/2-over-TCP head-of-line blocking), <strong>connection migration</strong> (the connection ID is application-level, so a phone switching from Wi-Fi to cellular keeps its TCP connection alive — TCP could not), and <strong>iterability</strong> (because QUIC is in user space, both endpoints can deploy new versions without needing OS kernel updates). The trade is that QUIC reimplements all of TCP's reliability machinery in user space, including congestion control — Linux kernel TCP is still faster per packet because it's been hand-optimised for thirty-five years. As of 2025, all major browsers, all major CDNs, and Google's whole edge run HTTP/3 over QUIC.</p>
     </div>
   </section>
 
@@ -3318,7 +3318,7 @@
     <div class="section-number">06 — SYN floods, cookies, and the rest</div>
     <h2>The price of state.</h2>
 
-    <p class="lead">
+    <p id="ch10-attacks-p1" class="lead">
       TCP's strength is that the kernel remembers every connection. TCP's
       weakness is the same: an attacker who can make the kernel allocate
       state without ever completing a connection can, with very little
@@ -3327,7 +3327,7 @@
       than thirty years old and still works against unprotected servers.
     </p>
 
-    <p>
+    <p id="ch10-attacks-p2">
       The attack uses one feature of the <span class="key-term">three-way handshake</span>: the server
       allocates a TCB the moment it receives a SYN, well before the third
       ACK arrives. An attacker sends thousands of SYN packets per second,
@@ -3400,10 +3400,10 @@
         <!-- Note -->
         <text x="360" y="306" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.65)" letter-spacing="0.1em">EACH SLOT HELD ~30S WAITING FOR THIRD ACK · ATTACKER SUSTAINS THE FLOOD INDEFINITELY</text>
       </svg>
-      <p class="diagram-caption">A flood of SYN packets, each with a different (often spoofed) source IP, arrives at the target. The target's kernel allocates a TCB for each one and parks it in SYN_RCVD waiting for the third ACK. Because the source addresses are spoofed, the SYN-ACK responses go to addresses that didn't ask for anything; no third ACK ever comes. Each half-open entry sits in the table until the SYN_RCVD timeout fires (typically tens of seconds). At a few thousand SYN packets per second — easy for a single home connection to generate — the table fills. New legitimate connections are refused. The classical attack from the 1990s; still works against unprotected servers; the reason every modern OS ships with SYN cookie support and the reason cloud DDoS protection (Cloudflare, AWS Shield) exists.</p>
+      <p id="ch10-attacks-p3" class="diagram-caption">A flood of SYN packets, each with a different (often spoofed) source IP, arrives at the target. The target's kernel allocates a TCB for each one and parks it in SYN_RCVD waiting for the third ACK. Because the source addresses are spoofed, the SYN-ACK responses go to addresses that didn't ask for anything; no third ACK ever comes. Each half-open entry sits in the table until the SYN_RCVD timeout fires (typically tens of seconds). At a few thousand SYN packets per second — easy for a single home connection to generate — the table fills. New legitimate connections are refused. The classical attack from the 1990s; still works against unprotected servers; the reason every modern OS ships with SYN cookie support and the reason cloud DDoS protection (Cloudflare, AWS Shield) exists.</p>
     </div>
 
-    <p>
+    <p id="ch10-attacks-p4">
       The defence — invented by Daniel J. Bernstein in 1996 — is
       <strong>SYN cookies</strong>. The trick: when the connection table is
       under pressure, the server stops allocating state for incoming SYNs
@@ -3483,10 +3483,10 @@
         <text x="360" y="278" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">no per-connection memory was used during the flood — only verified ACKs cause state to be created</text>
         <text x="360" y="294" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.7)">Daniel J. Bernstein, 1996 · enabled by default in modern Linux when the SYN backlog overflows</text>
       </svg>
-      <p class="diagram-caption">Under SYN-flood pressure, the server skips the TCB allocation entirely. It computes a cryptographic <em>cookie</em> — a keyed hash of the connection's identifying tuple plus a time bucket plus a few bits encoding the MSS hint the server would normally have remembered. The cookie is returned as the server's Initial Sequence Number. Now the state is in the wire, not in the kernel. If a real client completes the handshake, its ACK number will be cookie+1; the server recomputes the hash from the ACK's tuple, verifies it matches, and only then allocates the TCB. An attacker cannot forge cookies (the secret is unknown) and cannot benefit from spoofed sources (the matching ACK never comes back). The server keeps zero per-connection state during the flood — and legitimate connections still work. Daniel J. Bernstein, 1996. One of the most beautiful pieces of security engineering ever shipped.</p>
+      <p id="ch10-attacks-p5" class="diagram-caption">Under SYN-flood pressure, the server skips the TCB allocation entirely. It computes a cryptographic <em>cookie</em> — a keyed hash of the connection's identifying tuple plus a time bucket plus a few bits encoding the MSS hint the server would normally have remembered. The cookie is returned as the server's Initial Sequence Number. Now the state is in the wire, not in the kernel. If a real client completes the handshake, its ACK number will be cookie+1; the server recomputes the hash from the ACK's tuple, verifies it matches, and only then allocates the TCB. An attacker cannot forge cookies (the secret is unknown) and cannot benefit from spoofed sources (the matching ACK never comes back). The server keeps zero per-connection state during the flood — and legitimate connections still work. Daniel J. Bernstein, 1996. One of the most beautiful pieces of security engineering ever shipped.</p>
     </div>
 
-    <p>
+    <p id="ch10-attacks-p6">
       Beyond the SYN flood, two other classical TCP attacks deserve note.
       <strong>RST injection</strong> — an attacker on the path injects a TCP
       RST segment with a sequence number in the receiver's window, causing
@@ -3503,7 +3503,7 @@
       internet for the highest-profile intrusion of the era.
     </p>
 
-    <p>
+    <p id="ch10-attacks-p7">
       Mitnick's target was <strong>Tsutomu Shimomura</strong>, a security
       researcher at the San Diego Supercomputer Center known for his work
       on cellular phone security. Shimomura's home network ran on trusted
@@ -3533,7 +3533,7 @@
       11</a>, would be built.
     </p>
 
-    <p>
+    <p id="ch10-attacks-p8">
       The <strong>random ISN</strong> requirement was retrofitted into
       every operating system within a year of Mitnick's arrest. Modern
       stacks generate ISNs cryptographically (RFC 6528, 2012) so that
@@ -3549,14 +3549,14 @@
 
     <div class="insight-strip">
       <span class="insight-icon">🛡️</span>
-      <p class="insight-text">
+      <p id="ch10-attacks-p9" class="insight-text">
         <strong>The recurring pattern.</strong> TCP gives you reliability, ordering, and back-pressure — but each strength is built from kernel-side state, and that state is the attack surface. The defences are nearly all about <em>making the protocol stateless under attack</em>: SYN cookies (state in the wire), random ISNs (state in the unguessable), TLS underneath (state cryptographically authenticated). Every layer of the network stack, from here onward, exhibits the same arc: protocol invented for a reason; protocol exploited; protocol patched in a way that pushes state into harder places. <a href="#ch11">Chapter 11</a>'s TLS handshake will follow the same shape, only with mathematics, not just hashes, doing the cryptographic heavy lifting.
       </p>
     </div>
 
     <h3>The seam to <a href="#ch11">Chapter 11</a></h3>
 
-    <p>
+    <p id="ch10-attacks-p10">
       <a href="#ch10">Chapter 10</a> has built a <em>reliable byte stream</em> on top of an
       unreliable packet network. <a href="#ch11">Chapter 11</a> puts the actual web on top:
       HTTP for fetching documents, DNS for finding servers by name, TLS
@@ -3645,7 +3645,7 @@
     <div class="section-number">01 — Berners-Lee 1989</div>
     <h2>A proposal that nobody asked for.</h2>
 
-    <p class="lead">
+    <p id="ch11-bernerslee-p1" class="lead">
       In March 1989, a 33-year-old British physicist working at CERN — the
       European nuclear research lab outside Geneva — submitted a 17-page
       document to his manager titled <em>Information Management: A Proposal</em>.
@@ -3658,7 +3658,7 @@
       workstation in Building 31 at CERN.
     </p>
 
-    <p>
+    <p id="ch11-bernerslee-p2">
       The setting matters. CERN in 1989 was the world's largest particle
       physics laboratory: thousands of scientists from dozens of countries
       collaborating on experiments that took years to plan and produced
@@ -3675,7 +3675,7 @@
       acting as the link.
     </p>
 
-    <p>
+    <p id="ch11-bernerslee-p3">
       Berners-Lee's proposal was, in essence, that the link itself should be
       part of the document. A reference in one document should point at another
       document on another computer — and a click on that reference should
@@ -3691,7 +3691,7 @@
       formatted — and then implementing them.
     </p>
 
-    <p>He defined three:</p>
+    <p id="ch11-bernerslee-p4">He defined three:</p>
 
     <ul style="margin: 16px 0 24px 28px; line-height: 1.9; font-size: 1.02rem;">
       <li><strong>URL</strong> — Uniform Resource Locator. A way to write down where any document lives, in any system. <code>http://info.cern.ch/hypertext/WWW/TheProject.html</code> — protocol, host, path. The address-on-an-envelope of the web.</li>
@@ -3699,7 +3699,7 @@
       <li><strong>HTML</strong> — HyperText Markup Language. A simple format for documents that includes <em>links to other documents</em> as inline elements rather than appendices.</li>
     </ul>
 
-    <p>
+    <p id="ch11-bernerslee-p5">
       Each by itself was uninteresting. Together they made the web. By
       December 1990 he had implemented all three on a NeXT workstation in his
       office at CERN. The server was a program called <code>httpd</code>; the
@@ -3775,15 +3775,15 @@
           <text x="640" y="318" text-anchor="middle" fill="rgba(180,200,220,0.6)">the web is public</text>
         </g>
       </svg>
-      <p class="diagram-caption">The whole web in 1991 was a NeXT cube in Berners-Lee's office, a server program he had written, a browser-editor he had also written, and a few HTML files describing the project. The machine had a sticky note on its case: <em>"This machine is a server. DO NOT POWER IT DOWN!!"</em> The first publicly announced URL was <code>info.cern.ch/hypertext/WWW/TheProject.html</code>. By the time Berners-Lee posted to <code>alt.hypertext</code> on 6 August 1991, the protocols and the content had existed for nine months and one user had been using them. Two years later there were five hundred web servers. Five years later it was unstoppable.</p>
+      <p id="ch11-bernerslee-p6" class="diagram-caption">The whole web in 1991 was a NeXT cube in Berners-Lee's office, a server program he had written, a browser-editor he had also written, and a few HTML files describing the project. The machine had a sticky note on its case: <em>"This machine is a server. DO NOT POWER IT DOWN!!"</em> The first publicly announced URL was <code>info.cern.ch/hypertext/WWW/TheProject.html</code>. By the time Berners-Lee posted to <code>alt.hypertext</code> on 6 August 1991, the protocols and the content had existed for nine months and one user had been using them. Two years later there were five hundred web servers. Five years later it was unstoppable.</p>
     </div>
 
     <div class="pull-quote">
-      <p>"The Web is more a social creation than a technical one. I designed it for a social effect — to help people work together — and not as a technical toy."</p>
+      <p id="ch11-bernerslee-p7">"The Web is more a social creation than a technical one. I designed it for a social effect — to help people work together — and not as a technical toy."</p>
       <span class="attr">— Tim Berners-Lee, Weaving the Web (1999)</span>
     </div>
 
-    <p>
+    <p id="ch11-bernerslee-p8">
       Crucially, none of the three protocols required anyone else's permission.
       HTTP runs on top of TCP, which runs on top of IP, which runs on the
       existing physical internet. URLs needed no central registry — any owner
@@ -3799,7 +3799,7 @@
 
     <h3>The architectural choice that mattered</h3>
 
-    <p>
+    <p id="ch11-bernerslee-p9">
       One decision separates the web from the dozen earlier hypertext systems
       that never caught on. <strong>Berners-Lee allowed dangling links.</strong>
       In Project Xanadu, every link required the target document to formally
@@ -3814,13 +3814,13 @@
       without asking.
     </p>
 
-    <p>
+    <p id="ch11-bernerslee-p10">
       The trade was correct. The web exists; Xanadu does not.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon">📜</span>
-      <p class="insight-text">
+      <p id="ch11-bernerslee-p11" class="insight-text">
         <strong>The 1993 release.</strong> On 30 April 1993 CERN released the entire web — code, protocols, specifications — into the public domain, with a one-page document declaring no royalties were owed and no patents would be filed. That document is now in the CERN archive. It is, by some measures, the most economically significant piece of paper of the late twentieth century. Releasing the technology rather than licensing it foreclosed the possibility that any single company could capture it — and is the reason every later attempt to build a "private web" (AOL, MSN, Compuserve in their walled-garden phases) eventually surrendered.
       </p>
     </div>
@@ -3830,7 +3830,7 @@
     <div class="section-number">02 — HTTP</div>
     <h2>Five lines of text. Forever.</h2>
 
-    <p class="lead">
+    <p id="ch11-http-p1" class="lead">
       HTTP is the simplest protocol in this book. It is so simple you can
       speak it by hand, with a keyboard, against a real web server, and watch
       the bytes come back. Open a TCP connection on port 80 to any web server,
@@ -3844,7 +3844,7 @@
       works against any plain socket.
     </p>
 
-    <p>
+    <p id="ch11-http-p2">
       A request has a structure. The first line is the <strong>request
       line</strong>: a verb (called a <em>method</em>), a path, and a protocol
       version. After it come <strong>headers</strong> — one per line, each
@@ -3929,12 +3929,12 @@
           <text x="14" y="124" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.55)" font-style="italic">first digit categorises; the rest just identifies. Three digits, ~70 codes assigned, hundreds reserved.</text>
         </g>
       </svg>
-      <p class="diagram-caption">The entire HTTP wire format. Three things make a request: a request line (method, path, version), zero-or-more name-value headers, and an optional body — separated from the headers by a single blank line. The response has the same shape with a status line replacing the request line. The 200 above means "the request succeeded and the body is the requested document"; a 404 would mean "the document does not exist"; a 500 would mean "the server crashed trying." Every web request you have ever made has this exact shape underneath, even if a browser is hiding it from you.</p>
+      <p id="ch11-http-p3" class="diagram-caption">The entire HTTP wire format. Three things make a request: a request line (method, path, version), zero-or-more name-value headers, and an optional body — separated from the headers by a single blank line. The response has the same shape with a status line replacing the request line. The 200 above means "the request succeeded and the body is the requested document"; a 404 would mean "the document does not exist"; a 500 would mean "the server crashed trying." Every web request you have ever made has this exact shape underneath, even if a browser is hiding it from you.</p>
     </div>
 
     <h3>The big idea: stateless</h3>
 
-    <p>
+    <p id="ch11-http-p4">
       One design decision in HTTP echoes through the rest of the web's
       architecture. <strong><span class="key-term">HTTP</span> is stateless</strong>: the server treats
       every request as independent. There is no concept of a "session" at
@@ -3944,7 +3944,7 @@
       everything the server needs to answer it.
     </p>
 
-    <p>
+    <p id="ch11-http-p5">
       This sounds inconvenient — and it is, for any application that needs
       to remember a logged-in user. Every workaround we use to fake state on
       top (cookies, session IDs, JWT tokens, OAuth flows) exists to paper
@@ -3960,7 +3960,7 @@
 
     <h3>What actually happens when you press Enter</h3>
 
-    <p>
+    <p id="ch11-http-p6">
       Type <code>https://example.com/</code> into a browser and press Enter.
       Watching with a packet sniffer, the sequence of events is precise and
       ordered. The browser does not "open the page." It performs about
@@ -4022,12 +4022,12 @@
           <text x="14" y="32" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.6)">FIN, ACK, FIN, ACK — or pool the connection for the next GET</text>
         </g>
       </svg>
-      <p class="diagram-caption">Eighty milliseconds of work between the moment you press Enter and the moment the page begins to paint. Most of it is round-trips: one for DNS, one for TCP, one for TLS 1.3, one for HTTP. The browser and server are exchanging little structured messages at every layer. From the wire, the HTTP request inside step ④ is indistinguishable from random bytes — TLS is doing its job. From the user's chair, all of this looks like "the page loaded." The whole rest of this chapter is the inside view of stages ①, ③, and ④ above.</p>
+      <p id="ch11-http-p7" class="diagram-caption">Eighty milliseconds of work between the moment you press Enter and the moment the page begins to paint. Most of it is round-trips: one for DNS, one for TCP, one for TLS 1.3, one for HTTP. The browser and server are exchanging little structured messages at every layer. From the wire, the HTTP request inside step ④ is indistinguishable from random bytes — TLS is doing its job. From the user's chair, all of this looks like "the page loaded." The whole rest of this chapter is the inside view of stages ①, ③, and ④ above.</p>
     </div>
 
     <h3>The methods, and why some of them matter</h3>
 
-    <p>
+    <p id="ch11-http-p8">
       A method is a verb. It tells the server what kind of operation the
       request represents. HTTP defines about a dozen, but four are dominant:
       <code>GET</code> (fetch a resource), <code>POST</code> (submit data,
@@ -4125,12 +4125,12 @@
           <text x="0" y="14" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.65)" font-style="italic">CONNECT, TRACE omitted — tunnel and debug methods, rarely visible to applications.</text>
         </g>
       </svg>
-      <p class="diagram-caption">REST APIs lean on this table heavily: each HTTP method maps to one CRUD operation (GET=read, POST=create, PUT=update, DELETE=delete) and the method's properties are the contract with the rest of the network. A reverse proxy like nginx or Cloudflare can cache GETs aggressively because they are safe and idempotent; it must never cache POSTs because the same POST body sent twice may create two records. A retry library should resend GETs on failure but should be cautious with POSTs — the server may have processed the first one but failed before sending its 200. Idempotency keys (a header applications add to make POSTs <em>effectively</em> idempotent) exist to paper over that gap.</p>
+      <p id="ch11-http-p9" class="diagram-caption">REST APIs lean on this table heavily: each HTTP method maps to one CRUD operation (GET=read, POST=create, PUT=update, DELETE=delete) and the method's properties are the contract with the rest of the network. A reverse proxy like nginx or Cloudflare can cache GETs aggressively because they are safe and idempotent; it must never cache POSTs because the same POST body sent twice may create two records. A retry library should resend GETs on failure but should be cautious with POSTs — the server may have processed the first one but failed before sending its 200. Idempotency keys (a header applications add to make POSTs <em>effectively</em> idempotent) exist to paper over that gap.</p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">⚠️</span>
-      <p class="insight-text">
+      <p id="ch11-http-p10" class="insight-text">
         <strong>The double-charge problem.</strong> Stripe's idempotency-key documentation (and every payment processor's equivalent) exists because of one specific failure mode: client sends POST <code>/charge</code>, server processes the charge, server crashes before sending the 200, client times out, client retries — and now the customer is charged twice. The fix is for the client to attach a unique <code>Idempotency-Key</code> header; the server records the key alongside the result of the first execution and, on a duplicate request with the same key, returns the stored result instead of re-executing. The mechanism turns a non-idempotent operation into an effectively idempotent one. Every serious payment, signup, or stateful POST in production runs through some version of this dance — because HTTP itself does not guarantee what its method properties promise; the network does that, and the network is not entirely reliable.
       </p>
     </div>
@@ -4140,7 +4140,7 @@
     <div class="section-number">03 — DNS</div>
     <h2>The phone book of the internet.</h2>
 
-    <p class="lead">
+    <p id="ch11-dns-p1" class="lead">
       HTTP needs a destination. The destination, on the wire, is an IP address
       — a 32-bit number on the IPv4 internet, 128 bits on IPv6. Humans do not
       remember 93.184.216.34. Humans remember <code>example.com</code>.
@@ -4155,7 +4155,7 @@
       piece of the modern internet — and the one most often abused.
     </p>
 
-    <p>
+    <p id="ch11-dns-p2">
       Before DNS, the ARPANET kept a single text file called
       <code>HOSTS.TXT</code> at the Stanford Research Institute. Every machine
       on the network downloaded it periodically; it listed every other
@@ -4172,7 +4172,7 @@
 
     <h3>The hierarchy</h3>
 
-    <p>
+    <p id="ch11-dns-p3">
       Names in DNS are read right to left. The rightmost label is closer to
       the root of the tree; the leftmost is the leaf. A trailing dot — almost
       always omitted in writing — represents the root itself. So
@@ -4265,12 +4265,12 @@
           <text x="14" y="68" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.55)" font-style="italic">read RIGHT TO LEFT to walk the tree</text>
         </g>
       </svg>
-      <p class="diagram-caption">The whole DNS namespace is one tree, ~360 million names deep at its widest. The root is run by twelve organisations cooperatively. Each top-level domain is run by an operator chosen by ICANN — VeriSign for <code>.com</code> and <code>.net</code>, Public Interest Registry for <code>.org</code>, a national authority for each country code. Each registered domain is run by whoever bought it. Each subdomain is run by them too, or by a CDN they delegated to. There is no single point of authority below the root. There is also no consensus mechanism — each operator is trusted to answer correctly for their own subtree. The system works only because each operator wants their own subtree to keep working.</p>
+      <p id="ch11-dns-p4" class="diagram-caption">The whole DNS namespace is one tree, ~360 million names deep at its widest. The root is run by twelve organisations cooperatively. Each top-level domain is run by an operator chosen by ICANN — VeriSign for <code>.com</code> and <code>.net</code>, Public Interest Registry for <code>.org</code>, a national authority for each country code. Each registered domain is run by whoever bought it. Each subdomain is run by them too, or by a CDN they delegated to. There is no single point of authority below the root. There is also no consensus mechanism — each operator is trusted to answer correctly for their own subtree. The system works only because each operator wants their own subtree to keep working.</p>
     </div>
 
     <h3>How a name becomes an address</h3>
 
-    <p>
+    <p id="ch11-dns-p5">
       The mechanics are straightforward, and almost always cached. When your
       laptop wants to know <code>example.com</code>'s IP, it asks its
       configured <em>resolver</em> — usually your home router, your ISP, or
@@ -4352,12 +4352,12 @@
         <text x="40" y="340" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.65)" font-style="italic">UDP packets, 53/udp · falls back to TCP for responses bigger than ~512 bytes</text>
         <text x="40" y="356" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.5)" font-style="italic">DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT) wrap the same questions in encryption — same protocol underneath</text>
       </svg>
-      <p class="diagram-caption">The resolver does the recursion; the laptop just asks once and gets the answer. The four-stage walk happens only on a cache miss; with reasonable TTLs and a busy resolver, hit rates are typically 80–99%. The whole protocol fits in tiny UDP datagrams — query and reply are usually under 100 bytes — which is why DNS is fast enough to feel free, and also why it has security problems: UDP makes it cheap to spoof.</p>
+      <p id="ch11-dns-p6" class="diagram-caption">The resolver does the recursion; the laptop just asks once and gets the answer. The four-stage walk happens only on a cache miss; with reasonable TTLs and a busy resolver, hit rates are typically 80–99%. The whole protocol fits in tiny UDP datagrams — query and reply are usually under 100 bytes — which is why DNS is fast enough to feel free, and also why it has security problems: UDP makes it cheap to spoof.</p>
     </div>
 
     <h3>Where the trust breaks</h3>
 
-    <p>
+    <p id="ch11-dns-p7">
       DNS was designed in 1983, before adversarial thinking became standard
       in network protocol design. The resolver believes whatever the
       authoritative server told it, signed by nothing. The query goes out as
@@ -4422,12 +4422,12 @@
           <text x="14" y="29" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">~65,000× harder to forge · Kaminsky 2008 patch</text>
         </g>
       </svg>
-      <p class="diagram-caption">DNS cache poisoning in one picture. The resolver sends a query out; the attacker, who has guessed (or been told) a transaction ID, fires forged replies at the resolver from a spoofed source IP. If a forged reply with a matching ID arrives before the real one, the resolver caches the lie and serves it to every user behind it for the TTL duration — typically hours. Kaminsky's 2008 disclosure showed how to make this practical against unpatched resolvers in minutes. The fix — randomising the source port as well as the transaction ID — multiplied the attacker's search space ~65,000-fold and pushed the practical attack from minutes to centuries. <strong>DNSSEC</strong> is the deeper fix: cryptographically sign every record so resolvers can verify authenticity, not just guess less. DNSSEC has been deployed for two decades and still covers under half the global namespace, because the deployment cost is real and the perceived risk has fallen.</p>
+      <p id="ch11-dns-p8" class="diagram-caption">DNS cache poisoning in one picture. The resolver sends a query out; the attacker, who has guessed (or been told) a transaction ID, fires forged replies at the resolver from a spoofed source IP. If a forged reply with a matching ID arrives before the real one, the resolver caches the lie and serves it to every user behind it for the TTL duration — typically hours. Kaminsky's 2008 disclosure showed how to make this practical against unpatched resolvers in minutes. The fix — randomising the source port as well as the transaction ID — multiplied the attacker's search space ~65,000-fold and pushed the practical attack from minutes to centuries. <strong>DNSSEC</strong> is the deeper fix: cryptographically sign every record so resolvers can verify authenticity, not just guess less. DNSSEC has been deployed for two decades and still covers under half the global namespace, because the deployment cost is real and the perceived risk has fallen.</p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">🛡️</span>
-      <p class="insight-text">
+      <p id="ch11-dns-p9" class="insight-text">
         <strong>The 2016 Dyn attack.</strong> On 21 October 2016, the Mirai botnet (~100,000 compromised IoT devices) directed sustained UDP floods at <strong>Dyn</strong>, a major DNS provider that hosted authoritative servers for Twitter, Netflix, Reddit, GitHub, Spotify, and dozens of others. For most of the morning on the US East Coast, those sites were unreachable — not because their own servers were down, but because nobody could resolve their names. DNS is a centralised dependency for half the internet's user-visible names. Take down a major DNS operator and a thousand sites go dark together. The attack ended when Dyn engineers manually reconfigured anycast routing to absorb the load; aftershocks ran for a week. The lesson — that even a "decentralised" tree has heavy concentration points — drove the modern push toward redundant DNS providers (multiple authoritative NS records pointing at independent operators) and the long, slow rollout of DNS-over-HTTPS, which puts the hop between your laptop and resolver out of an attacker's reach.
       </p>
     </div>
@@ -4437,7 +4437,7 @@
     <div class="section-number">04 — Cryptography intro</div>
     <h2>The mathematics that makes the rest of the chapter possible.</h2>
 
-    <p class="lead">
+    <p id="ch11-crypto-p1" class="lead">
       Up to here, every protocol we have built — IP, TCP, HTTP, DNS — operates
       in <em>cleartext</em>. Anyone with access to any wire between you and
       the server can read every byte you send and every byte you receive,
@@ -4453,7 +4453,7 @@
 
     <h3>One-way functions: the mathematical asymmetry that makes everything possible</h3>
 
-    <p>
+    <p id="ch11-crypto-p2">
       Modern cryptography rests on operations that are <em>easy to do in one
       direction and computationally infeasible to undo</em>. The canonical
       example: multiplication. Take two large prime numbers, say 200-digit
@@ -4489,12 +4489,12 @@
           <text x="20" y="100" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">expected runtime for a 2048-bit n: ≫ age of the universe on every computer ever built</text>
         </g>
       </svg>
-      <p class="diagram-caption">The whole of RSA encryption hangs from one observation: if you choose two large primes and multiply them, anyone can use the product (the <em>public key</em>) to encrypt a message — but only someone who knows the original primes (the <em>private key</em>) can decrypt it. The privacy is not protected by secrecy of the algorithm; the algorithm is published. It is protected by the computational gap between forward and reverse. Quantum computers, in principle, can close this specific gap (Shor's algorithm, 1994); this is why the post-quantum cryptography effort matters. <a href="part-4#ch14">Chapter 14</a> unpacks the actual modular arithmetic; here, the picture is enough.</p>
+      <p id="ch11-crypto-p3" class="diagram-caption">The whole of RSA encryption hangs from one observation: if you choose two large primes and multiply them, anyone can use the product (the <em>public key</em>) to encrypt a message — but only someone who knows the original primes (the <em>private key</em>) can decrypt it. The privacy is not protected by secrecy of the algorithm; the algorithm is published. It is protected by the computational gap between forward and reverse. Quantum computers, in principle, can close this specific gap (Shor's algorithm, 1994); this is why the post-quantum cryptography effort matters. <a href="part-4#ch14">Chapter 14</a> unpacks the actual modular arithmetic; here, the picture is enough.</p>
     </div>
 
     <h3>Hashing: the digital fingerprint</h3>
 
-    <p>
+    <p id="ch11-crypto-p4">
       A <strong>cryptographic hash function</strong> is the simplest one-way
       operation. Feed in any data — a paragraph, a movie, a database — and
       the function returns a fixed-length string of bits (256 bits for
@@ -4550,12 +4550,12 @@
           <text x="14" y="32" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">~128 of the 256 bits differ — every single one in a different position than you would predict</text>
         </g>
       </svg>
-      <p class="diagram-caption">The avalanche property is what makes SHA-256 useful for tamper detection. Two inputs that differ by a single bit produce hashes with no recognisable relationship — there is no algebraic shortcut, no "hash patch" you could add to one to get the other. If you publish the hash of a file alongside the file, anyone who downloads it can re-hash and compare; any modification, even a single bit corrupted in transit or substituted by an attacker, produces a completely different hash. The same property powers Bitcoin's mining (find an input whose hash starts with N zeros), Git's commit IDs (the hash of the tree plus the parent commit plus the commit message), and the Merkle trees TLS certificates use to bind one signed root to many leaves. Cryptographic hashes are the universal "this is exactly what I sent" check.</p>
+      <p id="ch11-crypto-p5" class="diagram-caption">The avalanche property is what makes SHA-256 useful for tamper detection. Two inputs that differ by a single bit produce hashes with no recognisable relationship — there is no algebraic shortcut, no "hash patch" you could add to one to get the other. If you publish the hash of a file alongside the file, anyone who downloads it can re-hash and compare; any modification, even a single bit corrupted in transit or substituted by an attacker, produces a completely different hash. The same property powers Bitcoin's mining (find an input whose hash starts with N zeros), Git's commit IDs (the hash of the tree plus the parent commit plus the commit message), and the Merkle trees TLS certificates use to bind one signed root to many leaves. Cryptographic hashes are the universal "this is exactly what I sent" check.</p>
     </div>
 
     <h3>Symmetric vs asymmetric: who has the key</h3>
 
-    <p>
+    <p id="ch11-crypto-p6">
       Encryption comes in two flavours, and TLS uses both. <strong>Symmetric
       encryption</strong> uses a single shared secret key: both parties have
       it, both can encrypt and decrypt with it, anyone who gets a copy can
@@ -4569,7 +4569,7 @@
       hands without anyone watching.
     </p>
 
-    <p>
+    <p id="ch11-crypto-p7">
       <strong>Asymmetric (public-key) encryption</strong> solves exactly that
       bootstrap problem. Each party has a key <em>pair</em>: a public key
       they share with the world, and a private key they keep secret. Data
@@ -4648,7 +4648,7 @@
           <text x="320" y="74" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">slow setup, fast bulk · the bootstrap problem solved exactly once per connection</text>
         </g>
       </svg>
-      <p class="diagram-caption">The two flavours have complementary strengths. Symmetric encryption is fast; everyone needs the same key. Asymmetric encryption solves the key-distribution problem; it is much too slow to encrypt a video call. The trick that powers TLS — and SSH, and Signal, and PGP, and essentially every encrypted protocol shipped since the 1990s — is to use the slow asymmetric primitive only to agree on a shared symmetric key, and then run the bulk of the conversation through fast symmetric encryption with that key. The next section traces this exact dance through a real TLS 1.3 handshake.</p>
+      <p id="ch11-crypto-p8" class="diagram-caption">The two flavours have complementary strengths. Symmetric encryption is fast; everyone needs the same key. Asymmetric encryption solves the key-distribution problem; it is much too slow to encrypt a video call. The trick that powers TLS — and SSH, and Signal, and PGP, and essentially every encrypted protocol shipped since the 1990s — is to use the slow asymmetric primitive only to agree on a shared symmetric key, and then run the bulk of the conversation through fast symmetric encryption with that key. The next section traces this exact dance through a real TLS 1.3 handshake.</p>
     </div>
   </section>
 
@@ -4656,7 +4656,7 @@
     <div class="section-number">05 — TLS</div>
     <h2>One round trip · two strangers · a perfect channel.</h2>
 
-    <p class="lead">
+    <p id="ch11-tls-p1" class="lead">
       <span class="key-term">TLS</span> — Transport Layer Security — is the protocol that
       turns the cleartext byte stream of TCP into an encrypted, authenticated
       one. It is what the lock icon in your browser refers to. It is the
@@ -4670,7 +4670,7 @@
       — the version your browser uses today, the one that is actually clean.
     </p>
 
-    <p>
+    <p id="ch11-tls-p2">
       The protocol's job is simple to state: two parties who have never met
       should end up sharing a secret key, mutually authenticated, with full
       confidence that no third party listening to or manipulating the
@@ -4747,12 +4747,12 @@
           <text x="180" y="32" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.85)">AES-GCM, ChaCha20-Poly1305, etc. · encrypted + authenticated</text>
         </g>
       </svg>
-      <p class="diagram-caption">The whole TLS 1.3 handshake: one round trip. The client sends a hello with half of an ephemeral Diffie-Hellman key exchange (an X25519 public key) plus the list of cipher suites it supports. The server replies with the other half plus its X.509 certificate plus a signature, with most of that already encrypted under the freshly derived shared key — possible because both sides can compute the shared key as soon as they see each other's public halves. The client verifies the certificate against its trusted root store (<a href="#fig-11-12">Fig 11.12</a>), checks the signature, and replies Finished. From this moment forward, every byte is encrypted with AES-GCM (or ChaCha20 on phones without AES hardware) and authenticated against the agreed key. TLS 1.2 needed two round trips to do the same job; TLS 1.3 saved one round trip by being smarter about message ordering.</p>
+      <p id="ch11-tls-p3" class="diagram-caption">The whole TLS 1.3 handshake: one round trip. The client sends a hello with half of an ephemeral Diffie-Hellman key exchange (an X25519 public key) plus the list of cipher suites it supports. The server replies with the other half plus its X.509 certificate plus a signature, with most of that already encrypted under the freshly derived shared key — possible because both sides can compute the shared key as soon as they see each other's public halves. The client verifies the certificate against its trusted root store (<a href="#fig-11-12">Fig 11.12</a>), checks the signature, and replies Finished. From this moment forward, every byte is encrypted with AES-GCM (or ChaCha20 on phones without AES hardware) and authenticated against the agreed key. TLS 1.2 needed two round trips to do the same job; TLS 1.3 saved one round trip by being smarter about message ordering.</p>
     </div>
 
     <h3>The certificate chain</h3>
 
-    <p>
+    <p id="ch11-tls-p4">
       The handshake includes a step the diagram glossed over: the client
       "verifies the certificate." What does that actually mean? The server's
       certificate is a small file containing the server's public key, the
@@ -4834,12 +4834,12 @@
           <text x="14" y="20" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">Certificate Transparency (RFC 6962) — every issued cert publicly logged · misissuance now detectable retroactively</text>
         </g>
       </svg>
-      <p class="diagram-caption">A web server presents not one certificate but a chain. The leaf certificate is for the actual hostname (<code>example.com</code>); it is signed by an intermediate CA's private key. The intermediate's certificate is signed by a root CA's private key. The root is self-signed and shipped in your browser's trust store. The client walks the chain from leaf to root, verifying every signature; if any link fails, the connection is aborted with a scary browser warning. The whole system rests on ~150 root operators behaving themselves — and on the <em>Certificate Transparency</em> infrastructure (mandatory since 2018) that publicly logs every certificate issued, so misbehaviour becomes detectable. The 2011 DigiNotar compromise — a Dutch CA whose private keys were stolen and used to issue fraudulent <code>*.google.com</code> certificates — destroyed the company within weeks and was the event that drove modern transparency requirements.</p>
+      <p id="ch11-tls-p5" class="diagram-caption">A web server presents not one certificate but a chain. The leaf certificate is for the actual hostname (<code>example.com</code>); it is signed by an intermediate CA's private key. The intermediate's certificate is signed by a root CA's private key. The root is self-signed and shipped in your browser's trust store. The client walks the chain from leaf to root, verifying every signature; if any link fails, the connection is aborted with a scary browser warning. The whole system rests on ~150 root operators behaving themselves — and on the <em>Certificate Transparency</em> infrastructure (mandatory since 2018) that publicly logs every certificate issued, so misbehaviour becomes detectable. The 2011 DigiNotar compromise — a Dutch CA whose private keys were stolen and used to issue fraudulent <code>*.google.com</code> certificates — destroyed the company within weeks and was the event that drove modern transparency requirements.</p>
     </div>
 
     <h3>Forward secrecy: protecting yesterday's data</h3>
 
-    <p>
+    <p id="ch11-tls-p6">
       One subtlety in the TLS 1.3 design deserves explicit attention. The
       key exchange uses <em>ephemeral</em> Diffie-Hellman keys — fresh
       random values generated at the start of each connection, never
@@ -4904,7 +4904,7 @@
           <text x="320" y="74" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">forward secrecy: yesterday's traffic is safe even from tomorrow's compromise</text>
         </g>
       </svg>
-      <p class="diagram-caption">Forward secrecy is the protection that recorded encrypted traffic remains encrypted even if the long-term server key is later compromised. The server's private key signs the handshake to authenticate; it does not decrypt the data. Decryption depends on the ephemeral keys, which are generated fresh per session and discarded after. An attacker recording all your bank's TLS traffic for ten years and then stealing the bank's private key gets nothing — every session's keys are gone. This property is now mandatory in TLS 1.3 (and was optional but common in TLS 1.2). It is the technical reason "store now, decrypt later" attacks (which are part of why post-quantum cryptography matters) only threaten current and future traffic, not historical recordings — and why the existence of governments archiving global TLS traffic for future quantum decryption is real but limited in what it can recover.</p>
+      <p id="ch11-tls-p7" class="diagram-caption">Forward secrecy is the protection that recorded encrypted traffic remains encrypted even if the long-term server key is later compromised. The server's private key signs the handshake to authenticate; it does not decrypt the data. Decryption depends on the ephemeral keys, which are generated fresh per session and discarded after. An attacker recording all your bank's TLS traffic for ten years and then stealing the bank's private key gets nothing — every session's keys are gone. This property is now mandatory in TLS 1.3 (and was optional but common in TLS 1.2). It is the technical reason "store now, decrypt later" attacks (which are part of why post-quantum cryptography matters) only threaten current and future traffic, not historical recordings — and why the existence of governments archiving global TLS traffic for future quantum decryption is real but limited in what it can recover.</p>
     </div>
   </section>
 
@@ -4912,7 +4912,7 @@
     <div class="section-number">06 — HTTP/2 &amp; HTTP/3</div>
     <h2>The two upgrades that broke compatibility on purpose.</h2>
 
-    <p class="lead">
+    <p id="ch11-modern-p1" class="lead">
       HTTP/1.1 from 1999 was good enough for nearly two decades. Then mobile
       networks happened, JavaScript-heavy sites happened, the average web
       page grew from 50 KB to 3 MB, and the protocol's serial-request model
@@ -4927,7 +4927,7 @@
 
     <h3>HTTP/2: binary, multiplexed, on the same TCP connection</h3>
 
-    <p>
+    <p id="ch11-modern-p2">
       The headline problem with HTTP/1.1 was <em>head-of-line blocking at
       the application layer</em>. A browser opening a typical page needed
       to fetch dozens of resources — HTML, then 10 stylesheets, then 30
@@ -5010,12 +5010,12 @@
           <text x="240" y="100" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(150,216,150,0.85)">page renders ~240 ms</text>
         </g>
       </svg>
-      <p class="diagram-caption">The same six resources, fetched two different ways. HTTP/1.1 sends one request, waits for the full response, then sends the next; a slow resource holds up everything queued behind it. HTTP/2 chops every request and response into binary frames tagged with a stream ID and interleaves them on a single TCP connection — small responses can fly past slow ones, and the browser reassembles each stream as its frames arrive. Same TCP, same TLS, same HTTP semantics — different wire format. Real-world page-load improvements range from 10% to 50% depending on resource shape. Server push (the protocol's other headline feature) was added then quietly removed from the spec — it never delivered the predicted benefits.</p>
+      <p id="ch11-modern-p3" class="diagram-caption">The same six resources, fetched two different ways. HTTP/1.1 sends one request, waits for the full response, then sends the next; a slow resource holds up everything queued behind it. HTTP/2 chops every request and response into binary frames tagged with a stream ID and interleaves them on a single TCP connection — small responses can fly past slow ones, and the browser reassembles each stream as its frames arrive. Same TCP, same TLS, same HTTP semantics — different wire format. Real-world page-load improvements range from 10% to 50% depending on resource shape. Server push (the protocol's other headline feature) was added then quietly removed from the spec — it never delivered the predicted benefits.</p>
     </div>
 
     <h3>HTTP/3: still TCP's fault</h3>
 
-    <p>
+    <p id="ch11-modern-p4">
       HTTP/2 solved head-of-line blocking at the HTTP layer. It did not solve
       it at the <em>TCP</em> layer. TCP delivers a single ordered byte
       stream; if one packet is dropped, every byte after it is held back
@@ -5027,7 +5027,7 @@
       time. The fix had to happen below HTTP, at the transport layer itself.
     </p>
 
-    <p>
+    <p id="ch11-modern-p5">
       <strong>QUIC</strong> (Quick UDP Internet Connections, RFC 9000, 2021)
       replaces TCP entirely for HTTP traffic. It runs on top of UDP — that
       "fire and forget" protocol from §01 of <a href="#ch10">Chapter 10</a> — and reimplements
@@ -5090,19 +5090,19 @@
           <text x="320" y="54" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">QUIC moves transport into user space, ships in the application, can iterate per-release. UDP is just the chassis.</text>
         </g>
       </svg>
-      <p class="diagram-caption">HTTP/3 is what you get when you take HTTP/2's good ideas and refuse to inherit TCP's bad ones. The three independent layers of HTTP/2 (HTTP, TLS, TCP) collapse into one (HTTP/3 over QUIC), which itself runs on UDP because UDP, in §01 of <a href="#ch10">Chapter 10</a>, was the protocol that didn't get in the way. The handshake is one round trip in the cold case, zero in the resumed case. Each stream has its own ordering, so packet loss on one image's bytes doesn't stall a different image's bytes. The catch — the reason this transition has taken a decade — is that QUIC is implemented in user space rather than the kernel, every server and CDN had to rewrite its transport layer, and corporate firewalls had to learn to allow UDP/443. The transition is happening, slowly, the way the IPv6 migration in <a href="#ch9">Chapter 9</a> happens: not with a flag day, but with a steady year-on-year shift of the largest operators dragging the rest of the network behind them.</p>
+      <p id="ch11-modern-p6" class="diagram-caption">HTTP/3 is what you get when you take HTTP/2's good ideas and refuse to inherit TCP's bad ones. The three independent layers of HTTP/2 (HTTP, TLS, TCP) collapse into one (HTTP/3 over QUIC), which itself runs on UDP because UDP, in §01 of <a href="#ch10">Chapter 10</a>, was the protocol that didn't get in the way. The handshake is one round trip in the cold case, zero in the resumed case. Each stream has its own ordering, so packet loss on one image's bytes doesn't stall a different image's bytes. The catch — the reason this transition has taken a decade — is that QUIC is implemented in user space rather than the kernel, every server and CDN had to rewrite its transport layer, and corporate firewalls had to learn to allow UDP/443. The transition is happening, slowly, the way the IPv6 migration in <a href="#ch9">Chapter 9</a> happens: not with a flag day, but with a steady year-on-year shift of the largest operators dragging the rest of the network behind them.</p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">🔁</span>
-      <p class="insight-text">
+      <p id="ch11-modern-p7" class="insight-text">
         <strong>The recurring pattern.</strong> Every protocol in this chapter follows the same arc. Berners-Lee's HTTP — minimal, text-based, perfect for 1991 — got progressively pushed past its limits and replaced with denser, harder, more cryptographic versions. DNS — designed in 1983 with no adversarial model — got progressively patched with port randomisation, DNSSEC, DoH, DoT. TLS — born as Netscape's SSL 1.0, never released because broken — went through six numbered versions before reaching the clean 1.3 most browsers now use. None of these protocols was correctly designed at first issue; all of them earned their current shape from twenty-plus years of attacks and patches. This is unusually true of network protocols specifically, because their designers cannot iterate quickly: every change has to be deployed across millions of independently operated machines without breaking the existing ones. The slow grace of protocol evolution is one of the more remarkable forms of engineering humans have ever managed at planetary scale.
       </p>
     </div>
 
     <h3>The seam to <a href="#ch12">Chapter 12</a></h3>
 
-    <p>
+    <p id="ch11-modern-p8">
       <a href="#ch11">Chapter 11</a> has built the web's transport. We can now send a typed
       URL through a verified, encrypted tunnel; we can negotiate a fresh
       shared key with a stranger every time; we can name and find any
@@ -5202,7 +5202,7 @@
     <div class="section-number">01 — The browser problem</div>
     <h2>HTML can describe; it cannot do.</h2>
 
-    <p class="lead">
+    <p id="ch12-browser-p1" class="lead">
       By 1994 the web that Berners-Lee had launched in <a href="#ch11">Chapter 11</a> was
       growing exponentially — but it was growing as a system of static
       documents. A web page in 1994 was an HTML file: text, images, links,
@@ -5215,7 +5215,7 @@
       The browser needed to be able to <em>run code</em>.
     </p>
 
-    <p>
+    <p id="ch12-browser-p2">
       The first attempt was Sun Microsystems' <strong>Java applet</strong>.
       In late 1994 Sun announced HotJava, a browser written in Java that
       could embed small Java programs (applets) inside web pages. Each
@@ -5232,7 +5232,7 @@
       2010 obsolete, by 2017 removed from browsers entirely.
     </p>
 
-    <p>
+    <p id="ch12-browser-p3">
       Netscape — the company whose browser had become the market-share
       leader through 1994 and 1995 — wanted something different. Marc
       Andreessen, Netscape's twenty-three-year-old co-founder, believed the
@@ -5294,7 +5294,7 @@
           <text x="320" y="56" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">designed for HTML authors, not Java engineers — no compiler, no classpath, no warm-up</text>
         </g>
       </svg>
-      <p class="diagram-caption">By 1994 the two paths to interactive web pages had failed. Pure HTML could describe a form but every interaction round-tripped to the server. Java applets could run real code but they took ten seconds to warm up, were hard to embed, and lived in a sealed island that couldn't easily talk to the surrounding page. Netscape's bet was that the right answer was something a designer could write in five lines, embedded directly between &lt;script&gt; tags, that ran the moment the page loaded. They needed the language designed and shipped in eleven weeks. They hired Brendan Eich.</p>
+      <p id="ch12-browser-p4" class="diagram-caption">By 1994 the two paths to interactive web pages had failed. Pure HTML could describe a form but every interaction round-tripped to the server. Java applets could run real code but they took ten seconds to warm up, were hard to embed, and lived in a sealed island that couldn't easily talk to the surrounding page. Netscape's bet was that the right answer was something a designer could write in five lines, embedded directly between &lt;script&gt; tags, that ran the moment the page loaded. They needed the language designed and shipped in eleven weeks. They hired Brendan Eich.</p>
     </div>
   </section>
 
@@ -5302,7 +5302,7 @@
     <div class="section-number">02 — Eich 1995</div>
     <h2>Ten days. Three names. One language.</h2>
 
-    <p class="lead">
+    <p id="ch12-eich-p1" class="lead">
       Brendan Eich joined Netscape in April 1995. He was 33, a programming
       language enthusiast, and had been promised — when the recruiters
       pitched him — that he would get to work on bringing
@@ -5317,7 +5317,7 @@
       produce a prototype.
     </p>
 
-    <p>
+    <p id="ch12-eich-p2">
       He delivered. The first version, internally called <strong>Mocha</strong>,
       was a working interpreter by mid-May 1995. The language Eich actually
       designed was — under the C-like syntax — a deeply Scheme-influenced
@@ -5331,7 +5331,7 @@
       shape of any language born in ten days under the wrong brief.
     </p>
 
-    <p>
+    <p id="ch12-eich-p3">
       Then came the naming. Mocha was the internal name. In September 1995,
       shortly before launch, Netscape renamed it <strong>LiveScript</strong>.
       Then, in December 1995, with great fanfare, Netscape announced a
@@ -5423,17 +5423,17 @@
           <text x="320" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">In practice the two names refer to the same language; "ECMAScript" appears in the spec, "JavaScript" everywhere else.</text>
         </g>
       </svg>
-      <p class="diagram-caption">JavaScript's first decade was a slow walk from "thrown together for a release deadline" to "actually standardised." ECMA International became the neutral standards body in 1997 because Netscape did not own the trademark "Java" (Sun did) and the language needed a non-Netscape home. Microsoft shipped a near-clone called <em>JScript</em> in Internet Explorer; the standardisation kept the two compatible enough that web pages worked in both. The really transformative version was ES6 in 2015 — twenty years after the original — which finally added classes, modules, native Promises, and arrow functions. Since 2015 the language has shipped a yearly small release; the days of waiting six years for the next ECMAScript are over.</p>
+      <p id="ch12-eich-p4" class="diagram-caption">JavaScript's first decade was a slow walk from "thrown together for a release deadline" to "actually standardised." ECMA International became the neutral standards body in 1997 because Netscape did not own the trademark "Java" (Sun did) and the language needed a non-Netscape home. Microsoft shipped a near-clone called <em>JScript</em> in Internet Explorer; the standardisation kept the two compatible enough that web pages worked in both. The really transformative version was ES6 in 2015 — twenty years after the original — which finally added classes, modules, native Promises, and arrow functions. Since 2015 the language has shipped a yearly small release; the days of waiting six years for the next ECMAScript are over.</p>
     </div>
 
     <div class="pull-quote">
-      <p>"I had to be done in ten days or something worse than JS would have happened."</p>
+      <p id="ch12-eich-p5">"I had to be done in ten days or something worse than JS would have happened."</p>
       <span class="attr">— Brendan Eich, on the early Netscape design</span>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">⏱️</span>
-      <p class="insight-text">
+      <p id="ch12-eich-p6" class="insight-text">
         <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked: Eich described it as a "leftover" he never got to fix. <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2">Chapter 2</a>.6), but the choice to have <em>no integer type at all</em> — every number is a 64-bit float — meant JavaScript could never expose the difference. Implicit coercion (<code>[] + {} === "[object Object]"</code>) is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. The shape JavaScript will have in fifty years is the shape it has today, plus careful additions; it cannot remove anything.
       </p>
     </div>
@@ -5443,7 +5443,7 @@
     <div class="section-number">03 — The event loop</div>
     <h2>One thread. Never blocking. Forever in motion.</h2>
 
-    <p class="lead">
+    <p id="ch12-loop-p1" class="lead">
       JavaScript runs on a single thread. There is one call stack, one
       execution context. There is no <code>fork()</code>, no
       <code>pthread_create()</code>, no parallel Java-style worker threads
@@ -5458,7 +5458,7 @@
       Node.js exported back to the server world.
     </p>
 
-    <p>
+    <p id="ch12-loop-p2">
       The model has four moving parts. The <strong>call stack</strong>
       holds the function frames currently executing — the same stack
       <a href="part-1#ch3">Chapter 3</a> dissected, in JavaScript form. The <strong>macrotask
@@ -5544,12 +5544,12 @@
           <text x="14" y="48" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">}</text>
         </g>
       </svg>
-      <p class="diagram-caption">The whole algorithm. Pull one macrotask off the queue (a click handler, a timer, a network response). Run it on the call stack. When it returns, drain the microtask queue completely — every <code>.then</code>, every awaited promise resolution. <em>Then</em> let the browser render if it's been ~16 ms since the last frame. Repeat. The single thread never blocks because nothing on the queues blocks; long-running computation (a heavy <code>JSON.parse</code>, a tight loop) does block the loop, which is why frozen UI in browsers and event-loop lag in Node.js are the same bug — the thread is stuck on the call stack instead of returning to the loop.</p>
+      <p id="ch12-loop-p3" class="diagram-caption">The whole algorithm. Pull one macrotask off the queue (a click handler, a timer, a network response). Run it on the call stack. When it returns, drain the microtask queue completely — every <code>.then</code>, every awaited promise resolution. <em>Then</em> let the browser render if it's been ~16 ms since the last frame. Repeat. The single thread never blocks because nothing on the queues blocks; long-running computation (a heavy <code>JSON.parse</code>, a tight loop) does block the loop, which is why frozen UI in browsers and event-loop lag in Node.js are the same bug — the thread is stuck on the call stack instead of returning to the loop.</p>
     </div>
 
     <h3>Three eras of asynchrony</h3>
 
-    <p>
+    <p id="ch12-loop-p4">
       The event loop has been the same since 1995. What has changed three
       times is the way JavaScript code <em>spells</em> "do this when the
       I/O is done." The first era was <strong>callbacks</strong>: pass a
@@ -5607,7 +5607,7 @@
           <text x="34" y="86" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.95)">} catch (err) { alert(err); }   // looks synchronous · isn't</text>
         </g>
       </svg>
-      <p class="diagram-caption">Three ways to spell the same thing. All three compile, eventually, to operations on the macrotask and microtask queues from <a href="#fig-12-3">Fig 12.3</a> — async/await is sugar over Promises, Promises are sugar over callbacks, and callbacks were the bare metal. The underlying mechanism never changed; the language did. Most JavaScript a working developer touches today uses async/await for control flow, Promises for combinators (<code>Promise.all</code>, <code>Promise.race</code>), and old-style callbacks only at the lowest layers (DOM events, Node.js APIs that predate Promises). Reading older code or an Express middleware function still requires fluency in all three.</p>
+      <p id="ch12-loop-p5" class="diagram-caption">Three ways to spell the same thing. All three compile, eventually, to operations on the macrotask and microtask queues from <a href="#fig-12-3">Fig 12.3</a> — async/await is sugar over Promises, Promises are sugar over callbacks, and callbacks were the bare metal. The underlying mechanism never changed; the language did. Most JavaScript a working developer touches today uses async/await for control flow, Promises for combinators (<code>Promise.all</code>, <code>Promise.race</code>), and old-style callbacks only at the lowest layers (DOM events, Node.js APIs that predate Promises). Reading older code or an Express middleware function still requires fluency in all three.</p>
     </div>
   </section>
 
@@ -5615,7 +5615,7 @@
     <div class="section-number">04 — V8 and Node.js</div>
     <h2>An interpreter that pretended to be a compiler · then a runtime that escaped the browser.</h2>
 
-    <p class="lead">
+    <p id="ch12-node-p1" class="lead">
       JavaScript was originally interpreted line by line by Netscape's
       <em>SpiderMonkey</em> engine — fast enough for the kind of small
       validation script and DOM manipulation people wrote in 1996, hopelessly
@@ -5692,12 +5692,12 @@
           <text x="320" y="68" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">runs ~10× faster — and falls back the moment that assumption breaks. SpiderMonkey, JavaScriptCore work the same way.</text>
         </g>
       </svg>
-      <p class="diagram-caption">V8's two-tier architecture mirrors Java's HotSpot, Lua's LuaJIT, and most modern dynamic-language engines. The bytecode interpreter (Ignition) is fast to start up — code begins running immediately, no compilation pause — but slow per operation. The JIT compiler (TurboFan) is slow to compile but produces machine code competitive with C. The whole pipeline runs <em>concurrently</em> with the program: hot functions get optimised in a background thread, and the running program is patched mid-execution to point at the new optimised version. Speculative type assumptions ("this counter has always been an integer; assume integer") deliver most of the speedup; broken assumptions trigger <em>deoptimisation</em>, which throws the optimised code away and falls back to the bytecode interpreter. The whole machinery is invisible to user code — until you write a function that intermittently violates V8's expectations and notice it suddenly running at 1/10 speed.</p>
+      <p id="ch12-node-p2" class="diagram-caption">V8's two-tier architecture mirrors Java's HotSpot, Lua's LuaJIT, and most modern dynamic-language engines. The bytecode interpreter (Ignition) is fast to start up — code begins running immediately, no compilation pause — but slow per operation. The JIT compiler (TurboFan) is slow to compile but produces machine code competitive with C. The whole pipeline runs <em>concurrently</em> with the program: hot functions get optimised in a background thread, and the running program is patched mid-execution to point at the new optimised version. Speculative type assumptions ("this counter has always been an integer; assume integer") deliver most of the speedup; broken assumptions trigger <em>deoptimisation</em>, which throws the optimised code away and falls back to the bytecode interpreter. The whole machinery is invisible to user code — until you write a function that intermittently violates V8's expectations and notice it suddenly running at 1/10 speed.</p>
     </div>
 
     <h3>Node.js: V8 outside the browser</h3>
 
-    <p>
+    <p id="ch12-node-p3">
       In 2009 a developer named <strong>Ryan Dahl</strong> watched the
       progress bar on a file upload in a browser and realised the standard
       server-side approaches — Apache forking a process per request,
@@ -5712,7 +5712,7 @@
       Berlin that November. The community reaction was immediate.
     </p>
 
-    <p>
+    <p id="ch12-node-p4">
       Within five years Node had become the default backend for
       Silicon Valley startups. Within ten years it had eaten enormous
       amounts of the server-side language landscape. The reasons are
@@ -5766,7 +5766,7 @@
           <text x="320" y="36" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">syscalls · sockets · filesystems · processes · the kernel of Chapter 4</text>
         </g>
       </svg>
-      <p class="diagram-caption">Node is small in concept and large in consequence. V8 (originally written for Chrome) executes the JavaScript. libuv (built for Node specifically, to add Windows support on top of the libev/libeio Unix codebase Dahl had been using) handles the OS-specific async I/O — <code>epoll</code> on Linux, <code>kqueue</code> on macOS/BSD, <code>IOCP</code> on Windows — wrapped in one common interface. Node's standard library glues the two together and exposes them to user code as JavaScript APIs. Everything else — Express, Next.js, npm's million packages — is just user code on top. The architecture is the reason JavaScript could become a server-side language in the first place: V8 was already fast and free, and libuv abstracted away the per-OS event-loop differences that would have otherwise made Node a per-platform port.</p>
+      <p id="ch12-node-p5" class="diagram-caption">Node is small in concept and large in consequence. V8 (originally written for Chrome) executes the JavaScript. libuv (built for Node specifically, to add Windows support on top of the libev/libeio Unix codebase Dahl had been using) handles the OS-specific async I/O — <code>epoll</code> on Linux, <code>kqueue</code> on macOS/BSD, <code>IOCP</code> on Windows — wrapped in one common interface. Node's standard library glues the two together and exposes them to user code as JavaScript APIs. Everything else — Express, Next.js, npm's million packages — is just user code on top. The architecture is the reason JavaScript could become a server-side language in the first place: V8 was already fast and free, and libuv abstracted away the per-OS event-loop differences that would have otherwise made Node a per-platform port.</p>
     </div>
   </section>
 
@@ -5774,7 +5774,7 @@
     <div class="section-number">05 — The DOM and rendering</div>
     <h2>From bytes to pixels in five steps.</h2>
 
-    <p class="lead">
+    <p id="ch12-dom-p1" class="lead">
       Loading a web page does not "show" the HTML. The browser, after fetching
       the bytes, runs them through a five-stage pipeline called the
       <strong>critical rendering path</strong>. The HTML is parsed into a
@@ -5882,10 +5882,10 @@
           <text x="320" y="52" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">transform, opacity — only COMPOSITE (GPU layer math) → cheap, animatable at 60 fps</text>
         </g>
       </svg>
-      <p class="diagram-caption">Every frame the browser renders, it walks some prefix of this pipeline. Adding a new DOM element forces all five stages — parse, style, layout, paint, composite. Changing a CSS color forces paint and composite but skips layout. Animating <code>transform: translateX()</code> only touches composite — the GPU shifts an existing layer without re-laying-out anything. The performance gospel of the modern web ("animate transform and opacity, never width or height") falls out directly: cheap properties skip the expensive stages. Tools like the Chrome DevTools Performance panel let you watch this pipeline run frame by frame and see exactly which property change forced layout when.</p>
+      <p id="ch12-dom-p2" class="diagram-caption">Every frame the browser renders, it walks some prefix of this pipeline. Adding a new DOM element forces all five stages — parse, style, layout, paint, composite. Changing a CSS color forces paint and composite but skips layout. Animating <code>transform: translateX()</code> only touches composite — the GPU shifts an existing layer without re-laying-out anything. The performance gospel of the modern web ("animate transform and opacity, never width or height") falls out directly: cheap properties skip the expensive stages. Tools like the Chrome DevTools Performance panel let you watch this pipeline run frame by frame and see exactly which property change forced layout when.</p>
     </div>
 
-    <p>
+    <p id="ch12-dom-p3">
       The DOM itself is, mechanically, just a tree of objects exposed to
       JavaScript through methods like <code>document.querySelector()</code>
       and <code>element.appendChild()</code>. Modifying a DOM node triggers
@@ -5905,7 +5905,7 @@
     <div class="section-number">06 — Web security</div>
     <h2>Four boundaries that keep the web from being one big shared computer.</h2>
 
-    <p class="lead">
+    <p id="ch12-security-p1" class="lead">
       The browser executes JavaScript from arbitrary websites with no
       pre-arranged trust. You visit <code>news.example.com</code> and it
       runs a hundred kilobytes of code on your machine. The same browser
@@ -5920,7 +5920,7 @@
 
     <h3>The same-origin policy: the foundational wall</h3>
 
-    <p>
+    <p id="ch12-security-p2">
       The oldest and most important browser security boundary is the
       <span class="key-term">same-origin policy</span>, introduced in Netscape 2.0
       (1996) — the same release that shipped JavaScript itself. The rule
@@ -5975,12 +5975,12 @@
           <text x="0" y="0" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.7)" font-style="italic">CORS — Cross-Origin Resource Sharing — is the explicit opt-in mechanism for cross-origin requests when both sides agree.</text>
         </g>
       </svg>
-      <p class="diagram-caption">The same-origin policy is the boundary every other browser security mechanism builds on top of. JavaScript on <code>https://news.com</code> cannot make an XHR/fetch to <code>https://bank.com</code> and read the response. It cannot read the DOM of an iframe pointing at <code>https://bank.com</code>. It cannot read cookies set by <code>https://bank.com</code>. There are explicit, opt-in escape hatches — <strong>CORS</strong> for cross-origin XHRs (the server can send <code>Access-Control-Allow-Origin</code> headers), <code>postMessage</code> for cross-origin iframe messaging, JSONP (deprecated) for cross-origin script loading. Everything else is firmly fenced off. This is the rule that makes it safe to have multiple tabs open on different sites at the same time.</p>
+      <p id="ch12-security-p3" class="diagram-caption">The same-origin policy is the boundary every other browser security mechanism builds on top of. JavaScript on <code>https://news.com</code> cannot make an XHR/fetch to <code>https://bank.com</code> and read the response. It cannot read the DOM of an iframe pointing at <code>https://bank.com</code>. It cannot read cookies set by <code>https://bank.com</code>. There are explicit, opt-in escape hatches — <strong>CORS</strong> for cross-origin XHRs (the server can send <code>Access-Control-Allow-Origin</code> headers), <code>postMessage</code> for cross-origin iframe messaging, JSONP (deprecated) for cross-origin script loading. Everything else is firmly fenced off. This is the rule that makes it safe to have multiple tabs open on different sites at the same time.</p>
     </div>
 
     <h3>Cross-site scripting (XSS): when the page itself is the attack</h3>
 
-    <p>
+    <p id="ch12-security-p4">
       Same-origin policy says: code from origin A cannot touch origin B.
       But what if the attacker can <em>inject their own code into origin
       B's page</em>? Then their code is, by definition, same-origin with
@@ -6033,12 +6033,12 @@
           <text x="14" y="84" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defense: never assign untrusted strings to innerHTML; use textContent or DOM APIs that don't parse HTML</text>
         </g>
       </svg>
-      <p class="diagram-caption">All three XSS variants share the same shape — attacker-controlled string ends up where the browser parses it as code — and all three are exploitable as long as user input flows into HTML, JavaScript, or attribute contexts without proper output encoding. The 2010s saw an industry-wide push toward template engines that escape by default (React's JSX, Vue's mustaches, Svelte's curly braces all encode by default), and toward <em>tainted-string</em> static analysis at build time. Even so, XSS still appears every year on the OWASP Top 10. The deeper fix — the one this section is heading toward — is <strong>Content Security Policy</strong>, which lets the server tell the browser "do not run inline scripts at all, and only run scripts from these specific origins." Even if an attacker injects a <code>&lt;script&gt;</code>, CSP prevents the browser from executing it.</p>
+      <p id="ch12-security-p5" class="diagram-caption">All three XSS variants share the same shape — attacker-controlled string ends up where the browser parses it as code — and all three are exploitable as long as user input flows into HTML, JavaScript, or attribute contexts without proper output encoding. The 2010s saw an industry-wide push toward template engines that escape by default (React's JSX, Vue's mustaches, Svelte's curly braces all encode by default), and toward <em>tainted-string</em> static analysis at build time. Even so, XSS still appears every year on the OWASP Top 10. The deeper fix — the one this section is heading toward — is <strong>Content Security Policy</strong>, which lets the server tell the browser "do not run inline scripts at all, and only run scripts from these specific origins." Even if an attacker injects a <code>&lt;script&gt;</code>, CSP prevents the browser from executing it.</p>
     </div>
 
     <h3>CSRF: making your browser the attacker</h3>
 
-    <p>
+    <p id="ch12-security-p6">
       Same-origin policy stops origin A's JavaScript from <em>reading</em>
       origin B's responses. It does not stop origin A from <em>making
       requests</em> to origin B. A page on <code>evil.com</code> can make a
@@ -6085,12 +6085,12 @@
           <text x="14" y="116" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">modern alternative: SameSite=Strict cookie attribute · cookie not sent on cross-site POST at all</text>
         </g>
       </svg>
-      <p class="diagram-caption">CSRF tokens are an old defence (~2002); the modern complement is the <code>SameSite</code> cookie attribute, introduced in 2016 and now defaulted to <code>Lax</code> by every major browser. <code>SameSite=Lax</code> means: do not attach this cookie to cross-site POST requests; only to top-level navigations. <code>SameSite=Strict</code> goes further: do not attach the cookie even on cross-site GET. Together with CSRF tokens, they make the classical CSRF attack mostly obsolete on a properly configured site. The deeper lesson is that browser security has, over twenty years, moved from "defend at the application layer" (CSRF tokens, anti-XSS escaping) toward "defend at the platform layer" (SameSite, CSP, Trusted Types). The web's own primitives are getting safer; the application code matters less than it used to.</p>
+      <p id="ch12-security-p7" class="diagram-caption">CSRF tokens are an old defence (~2002); the modern complement is the <code>SameSite</code> cookie attribute, introduced in 2016 and now defaulted to <code>Lax</code> by every major browser. <code>SameSite=Lax</code> means: do not attach this cookie to cross-site POST requests; only to top-level navigations. <code>SameSite=Strict</code> goes further: do not attach the cookie even on cross-site GET. Together with CSRF tokens, they make the classical CSRF attack mostly obsolete on a properly configured site. The deeper lesson is that browser security has, over twenty years, moved from "defend at the application layer" (CSRF tokens, anti-XSS escaping) toward "defend at the platform layer" (SameSite, CSP, Trusted Types). The web's own primitives are getting safer; the application code matters less than it used to.</p>
     </div>
 
     <h3>CSP: telling the browser which scripts you trust</h3>
 
-    <p>
+    <p id="ch12-security-p8">
       The strongest mitigation in the modern web security stack is
       <strong>Content Security Policy</strong> (CSP), introduced 2010,
       standardised 2014, deployed everywhere by the late 2010s. CSP is a
@@ -6152,12 +6152,12 @@
           <text x="0" y="0" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.65)" font-style="italic">CSP also reports violations to a configurable URL — XSS attempts become alerts in your monitoring system.</text>
         </g>
       </svg>
-      <p class="diagram-caption">CSP is unique among the defences in this section: it makes the browser an active enforcer of an application-level policy. Even if attacker code is injected into the page (a server bug let it through; a third-party script was compromised; a stored-XSS payload made it past sanitisation), the browser refuses to execute anything not on the allow-list. Strict CSP — <code>script-src 'self'</code> with <em>no</em> <code>'unsafe-inline'</code>, all scripts in external files — eliminates entire classes of XSS. The cost is real: legacy code that uses inline event handlers (<code>onclick="…"</code>) breaks; fast-loading inline scripts have to be moved out; third-party widgets need their origins enumerated. But the security gain has been enough to push every serious site toward strict CSP over the past decade. As of 2026, sites without CSP are the exception.</p>
+      <p id="ch12-security-p9" class="diagram-caption">CSP is unique among the defences in this section: it makes the browser an active enforcer of an application-level policy. Even if attacker code is injected into the page (a server bug let it through; a third-party script was compromised; a stored-XSS payload made it past sanitisation), the browser refuses to execute anything not on the allow-list. Strict CSP — <code>script-src 'self'</code> with <em>no</em> <code>'unsafe-inline'</code>, all scripts in external files — eliminates entire classes of XSS. The cost is real: legacy code that uses inline event handlers (<code>onclick="…"</code>) breaks; fast-loading inline scripts have to be moved out; third-party widgets need their origins enumerated. But the security gain has been enough to push every serious site toward strict CSP over the past decade. As of 2026, sites without CSP are the exception.</p>
     </div>
 
     <h3>Closing the chapter, closing the part</h3>
 
-    <p>
+    <p id="ch12-security-p10">
       JavaScript was designed in ten days by one person under the wrong
       brief, given an unrelated marketing name to ride a competitor's hype,
       shipped before specification, and exported from the browser to the
@@ -6172,7 +6172,7 @@
       shape of the modern web.
     </p>
 
-    <p>
+    <p id="ch12-security-p11">
       Part III is now complete. We started with voltage on a wire (<a href="#ch8">Chapter
       8</a>), promoted it into routed packets (<a href="#ch9">Chapter 9</a>), built reliability
       on top of unreliability (<a href="#ch10">Chapter 10</a>), turned the network into a
