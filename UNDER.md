@@ -376,9 +376,12 @@ randomness). Auditable by grepping the literals below.
   five layers · one reader`; hero auroras phase-shift violet → teal across
   ch16–18.
 
-### Pass-4 exit state (2026-07-06)
+### Pass-4 exit state (2026-07-06, LIVE at under.atheric.eu)
 
-Verified locally against the Cloudflare-mimicking server, Chromium + WebKit,
+Deployed (commits cd40d88…f1ef465) and re-verified against production —
+index + parts 2–5, Chromium + WebKit, 1440 + 375: 0 console errors, 0 external
+requests, no h-scroll, nav 48px; all identity CSS/font assets serve 200.
+Previously verified locally against the Cloudflare-mimicking server, Chromium + WebKit,
 1440 + 375, per part and again for index/part-1/glossary/account/404:
 0 console errors, 0 external requests, 0 page-level horizontal scroll,
 nav 48px, all five part font sets confirmed loaded via `document.fonts`.
