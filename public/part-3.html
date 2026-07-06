@@ -2368,11 +2368,13 @@
         <circle r="3" fill="rgba(232,120,120,1)">
           <animateMotion dur="2.4s" repeatCount="indefinite" path="M 500,200 L 380,120 L 240,100"/>
         </circle>
-        <circle r="3" fill="rgba(232,120,120,1)">
+        <circle r="3" fill="rgba(232,120,120,1)" opacity="0">
           <animateMotion dur="2.4s" begin="0.6s" repeatCount="indefinite" path="M 500,200 L 380,120 L 600,120"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
         </circle>
-        <circle r="3" fill="rgba(232,120,120,1)">
+        <circle r="3" fill="rgba(232,120,120,1)" opacity="0">
           <animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M 500,200 L 380,120 L 640,220"/>
+          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="2.4s" begin="1.2s" repeatCount="indefinite"/>
         </circle>
 
         <!-- Annotation -->
@@ -4776,7 +4778,7 @@
           <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(212,168,83,0.20)" stroke="rgba(140,98,30,0.95)" stroke-width="2"/>
           <text x="140" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,1)">ROOT CA · self-signed</text>
           <text x="140" y="38" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">e.g. "ISRG Root X1" (Let's Encrypt)</text>
-          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">shipped in browser/OS trust store · ~150 of these worldwide</text>
+          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">shipped in browser/OS trust store · ~150 worldwide</text>
         </g>
 
         <!-- Arrow down -->
@@ -4789,7 +4791,7 @@
           <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
           <text x="140" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.95)">INTERMEDIATE CA</text>
           <text x="140" y="38" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">e.g. "R3"</text>
-          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">private key kept online · root key kept offline in a vault</text>
+          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">private key online · root key offline in a vault</text>
         </g>
 
         <line x1="360" y1="206" x2="360" y2="234" stroke="rgba(150,216,150,0.7)"/>
@@ -4800,8 +4802,8 @@
         <g transform="translate(220,240)">
           <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)"/>
           <text x="140" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.95)">LEAF — example.com</text>
-          <text x="140" y="38" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">contains: hostnames, server's public key, validity dates</text>
-          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">renewed every ~90 days; private key never leaves the server</text>
+          <text x="140" y="38" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">contains: hostnames, public key, validity dates</text>
+          <text x="140" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.7)">renewed every ~90 days · key never leaves the server</text>
         </g>
 
         <!-- Verification arrow flowing up -->
@@ -6126,23 +6128,23 @@
 
           <rect x="0" y="14" width="640" height="22" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.4)"/>
           <text x="14" y="30" fill="rgba(180,200,220,0.95)">&lt;script src="/app.js"&gt;</text>
-          <text x="540" y="30" fill="rgba(150,216,150,1)">✓ self origin</text>
+          <text x="626" text-anchor="end" y="30" fill="rgba(150,216,150,1)">✓ self origin</text>
 
           <rect x="0" y="40" width="640" height="22" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.4)"/>
           <text x="14" y="56" fill="rgba(180,200,220,0.95)">&lt;script src="https://cdn.example.com/lib.js"&gt;</text>
-          <text x="540" y="56" fill="rgba(150,216,150,1)">✓ allow-listed</text>
+          <text x="626" text-anchor="end" y="56" fill="rgba(150,216,150,1)">✓ allow-listed</text>
 
           <rect x="0" y="66" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
           <text x="14" y="82" fill="rgba(180,200,220,0.95)">&lt;script src="https://evil.com/x.js"&gt;</text>
-          <text x="540" y="82" fill="rgba(232,120,120,1)">✗ not in policy</text>
+          <text x="626" text-anchor="end" y="82" fill="rgba(232,120,120,1)">✗ not in policy</text>
 
           <rect x="0" y="92" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
           <text x="14" y="108" fill="rgba(180,200,220,0.95)">&lt;script&gt;steal()&lt;/script&gt;  (inline)</text>
-          <text x="540" y="108" fill="rgba(232,120,120,1)">✗ no 'unsafe-inline'</text>
+          <text x="626" text-anchor="end" y="108" fill="rgba(232,120,120,1)">✗ no 'unsafe-inline'</text>
 
           <rect x="0" y="118" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
           <text x="14" y="134" fill="rgba(180,200,220,0.95)">eval("…")</text>
-          <text x="540" y="134" fill="rgba(232,120,120,1)">✗ no 'unsafe-eval'</text>
+          <text x="626" text-anchor="end" y="134" fill="rgba(232,120,120,1)">✗ no 'unsafe-eval'</text>
         </g>
 
         <!-- Bottom -->

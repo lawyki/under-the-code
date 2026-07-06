@@ -735,7 +735,7 @@
 
     <div class="diagram-card" id="fig-13-5">
       <div class="diagram-label">Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6"><title id="svgt-part4-6">Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</title>
+      <svg viewBox="0 0 720 448" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6"><title id="svgt-part4-6">Fig 13.5 — A bank transfer · what each ACID letter actually guarantees</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">transfer €100 from Alice to Bob — power dies between the two updates</text>
 
         <!-- Naive -->
@@ -774,7 +774,7 @@
         </g>
 
         <!-- ACID legend -->
-        <g transform="translate(40,212)">
+        <g transform="translate(40,280)">
           <rect x="0" y="0" width="640" height="148" rx="4" fill="#15110a" stroke="rgba(212,168,83,0.45)"/>
           <text x="14" y="22" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)" letter-spacing="0.1em">A · ATOMICITY</text>
           <text x="120" y="22" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">all operations commit, or none of them</text>
@@ -2187,16 +2187,16 @@
     </p>
 
     <p>
-      Why the two parties land on the <em>same</em> secret is not luck; it
-      is one line of algebra. Alice keeps a secret <em>a</em> and publishes
+      The reason the two parties land on the <em>same</em> secret is one
+      line of algebra. Alice keeps a secret <em>a</em> and publishes
       <em>g<sup>a</sup></em>; Bob keeps a secret <em>b</em> and publishes
       <em>g<sup>b</sup></em>. Each then raises what the other sent to their
-      own secret. Alice computes <em>(g<sup>b</sup>)<sup>a</sup></em>; Bob
+      own secret exponent. Alice computes <em>(g<sup>b</sup>)<sup>a</sup></em>; Bob
       computes <em>(g<sup>a</sup>)<sup>b</sup></em>. But raising to a power
       and then to another power just multiplies the exponents, and
       multiplication does not care about order — so both expressions are
-      <em>g</em><sup>ab</sup>, the very same number. They arrive at it from
-      opposite directions and meet in the middle. The eavesdropper, holding
+      <em>g<sup>ab</sup></em>, the very same number, reached from opposite
+      directions. The eavesdropper, holding
       only <em>g<sup>a</sup></em> and <em>g<sup>b</sup></em>, would have to
       pull one secret exponent back out to finish the multiplication — and
       that is the discrete logarithm the whole scheme is built to make
@@ -3121,7 +3121,7 @@
             <text x="40" y="20" font-size="11" fill="rgba(212,168,83,0.95)" letter-spacing="0.1em">INFO DISCLOSURE</text>
             <text x="14" y="40" fill="rgba(180,200,220,0.85)">read data the attacker shouldn't</text>
             <text x="14" y="56" fill="rgba(180,200,220,0.7)" font-style="italic">violates: confidentiality</text>
-            <text x="14" y="72" fill="rgba(180,200,220,0.65)">Heartbleed · Spectre · misconfig S3</text>
+            <text x="14" y="72" fill="rgba(180,200,220,0.65)">Heartbleed · Spectre · S3 leaks</text>
           </g>
           <g transform="translate(220,100)">
             <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.85)">
@@ -3131,7 +3131,7 @@
             <text x="40" y="20" font-size="11" fill="rgba(212,168,83,0.95)" letter-spacing="0.1em">DENIAL OF SERVICE</text>
             <text x="14" y="40" fill="rgba(180,200,220,0.85)">make legitimate use impossible</text>
             <text x="14" y="56" fill="rgba(180,200,220,0.7)" font-style="italic">violates: availability</text>
-            <text x="14" y="72" fill="rgba(180,200,220,0.65)">SYN flood · ransomware · DDoS</text>
+            <text x="14" y="72" fill="rgba(180,200,220,0.65)">SYN flood · resource exhaustion</text>
           </g>
           <g transform="translate(440,100)">
             <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)">
@@ -3688,7 +3688,7 @@
           <text x="14" y="20" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">DEFENCES</text>
           <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">— allow-list URLs to fetch (specific public hosts only) · never fetch arbitrary user-supplied URLs</text>
           <text x="14" y="52" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">— block requests to RFC 1918 ranges (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and link-local (169.254.0.0/16)</text>
-          <text x="14" y="68" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">— IMDSv2 — AWS metadata service v2 requires session token; mitigates classical SSRF, mandatory on new instances since 2024</text>
+          <text x="14" y="68" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">— IMDSv2 — AWS metadata v2 requires a session token; mitigates classical SSRF (mandatory on new instances)</text>
         </g>
       </svg>
       <p class="diagram-caption">SSRF in the cloud era. The web application's server has network access the attacker doesn't — to internal admin endpoints, to the cloud-metadata service, to internal databases — and the application turns user-supplied URLs into outbound requests without restriction. The attacker supplies <code>http://169.254.169.254/...</code> (the AWS metadata IP), the server fetches IAM credentials, the server hands the credentials back to the attacker as the "image bytes." Capital One 2019: 100 million records, $190M direct cost, settled with regulators for additional fines. The fix is two-layer: at the application, validate the URL against an allow-list of permitted destinations; at the cloud platform, AWS now mandates IMDSv2 — a session-token-based metadata service that requires a separate PUT request before GET, breaking the simplest SSRF pattern. Both have to be on; either alone is fragile.</p>
@@ -3752,31 +3752,31 @@
           <rect x="0" y="0" width="640" height="48" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)"/>
           <text x="14" y="18" font-size="11" fill="rgba(232,120,120,1)">① FIREWALL · 1990s</text>
           <text x="14" y="36" fill="rgba(180,200,220,0.85)">block traffic at the network perimeter by IP/port rules · stateful inspection of TCP connections</text>
-          <text x="540" y="36" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ pfSense, iptables, AWS SG</text>
+          <text x="626" y="18" text-anchor="end" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ pfSense, iptables, AWS SG</text>
 
           <!-- IDS/IPS -->
           <rect x="0" y="52" width="640" height="48" rx="4" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.85)"/>
           <text x="14" y="70" font-size="11" fill="rgba(212,168,83,1)">② IDS / IPS · early 2000s</text>
           <text x="14" y="88" fill="rgba(180,200,220,0.85)">detect known-bad traffic by signatures · IPS blocks; IDS only alerts · also anomaly detection</text>
-          <text x="540" y="88" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ Snort, Suricata, Zeek</text>
+          <text x="626" y="70" text-anchor="end" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ Snort, Suricata, Zeek</text>
 
           <!-- SIEM -->
           <rect x="0" y="104" width="640" height="48" rx="4" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.85)"/>
           <text x="14" y="122" font-size="11" fill="rgba(212,168,83,1)">③ SIEM · mid 2000s</text>
           <text x="14" y="140" fill="rgba(180,200,220,0.85)">aggregate logs from everywhere · cross-correlate · alert on patterns spanning multiple sources</text>
-          <text x="540" y="140" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ Splunk, Sentinel, Elastic</text>
+          <text x="626" y="122" text-anchor="end" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ Splunk, Sentinel, Elastic</text>
 
           <!-- EDR -->
           <rect x="0" y="156" width="640" height="48" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
           <text x="14" y="174" font-size="11" fill="rgba(150,216,150,1)">④ EDR · mid 2010s</text>
           <text x="14" y="192" fill="rgba(180,200,220,0.85)">agent on every endpoint · models normal process behaviour · flags anomalous syscall patterns</text>
-          <text x="540" y="192" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ CrowdStrike, SentinelOne</text>
+          <text x="626" y="174" text-anchor="end" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ CrowdStrike, SentinelOne</text>
 
           <!-- Zero trust -->
           <rect x="0" y="208" width="640" height="48" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)" stroke-width="1.5"/>
           <text x="14" y="226" font-size="11" fill="rgba(150,216,150,1)">⑤ ZERO TRUST · late 2010s</text>
           <text x="14" y="244" fill="rgba(180,200,220,0.85)">no implicit trust by network position · authenticate every request · device posture checks</text>
-          <text x="540" y="244" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ BeyondCorp, NIST 800-207</text>
+          <text x="626" y="226" text-anchor="end" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">→ BeyondCorp, NIST 800-207</text>
         </g>
 
         <!-- Bottom -->
@@ -3953,7 +3953,7 @@
           <g transform="translate(220,0)">
             <rect x="0" y="0" width="200" height="100" rx="4" fill="rgba(212,168,83,0.18)" stroke="rgba(140,98,30,0.85)"/>
             <text x="14" y="20" font-size="11" fill="rgba(212,168,83,1)" letter-spacing="0.05em">CONFUSED DEPUTY</text>
-            <text x="14" y="38" font-size="8" fill="rgba(180,200,220,0.85)">privileged code does what attacker wanted</text>
+            <text x="14" y="38" font-size="8" fill="rgba(180,200,220,0.85)">privileged code acts for the attacker</text>
             <text x="14" y="54" font-size="8" fill="rgba(180,200,220,0.7)">CSRF · SSRF · Capital One</text>
             <text x="14" y="68" font-size="8" fill="rgba(180,200,220,0.7)">cross-tenant cloud bugs</text>
             <text x="14" y="86" font-size="8" fill="rgba(150,216,150,0.85)" font-style="italic">FIX: explicit auth per request</text>
@@ -4094,7 +4094,7 @@
           <text x="14" y="60" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">OverTheWire Wargames</text>
           <text x="14" y="76" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">HackTheBox · TryHackMe</text>
           <text x="14" y="92" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">CryptoHack · pwn.college</text>
-          <text x="14" y="108" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">5 categories: pwn / web / crypto / RE / forensics</text>
+          <text x="14" y="108" font-family="DM Mono" font-size="8" fill="rgba(180,200,220,0.6)" font-style="italic">pwn / web / crypto / RE / forensics</text>
         </g>
 
         <!-- Working -->

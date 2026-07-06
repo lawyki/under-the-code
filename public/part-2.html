@@ -1072,11 +1072,11 @@
         <text x="680" y="218" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">time →</text>
 
         <!-- Attacker thread (writer) -->
-        <text x="35" y="106" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">writer</text>
+        <text x="40" y="86" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">writer thread</text>
         <line x1="40" y1="106" x2="680" y2="106" stroke="rgba(232,120,120,0.18)" stroke-dasharray="3,3"/>
 
         <!-- Madvise thread (the race partner) -->
-        <text x="35" y="160" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.95)">madvise</text>
+        <text x="40" y="140" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.95)">madvise thread</text>
         <line x1="40" y1="160" x2="680" y2="160" stroke="rgba(100,150,255,0.18)" stroke-dasharray="3,3"/>
 
         <!-- Steps -->
@@ -1293,7 +1293,7 @@
         <g transform="translate(40,90)">
           <rect x="0" y="0" width="280" height="42" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.7)"/>
           <text x="14" y="22" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">① write to journal</text>
-          <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">"will write block 502 with these bytes; mark inode dirty"</text>
+          <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">"will write block 502; mark inode dirty"</text>
         </g>
         <line x1="320" y1="111" x2="400" y2="111" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3"/>
         <text x="360" y="105" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.45)">main untouched</text>
@@ -1302,7 +1302,7 @@
         <g transform="translate(40,148)">
           <rect x="0" y="0" width="280" height="42" rx="4" fill="rgba(212,168,83,0.22)" stroke="rgba(212,168,83,0.85)"/>
           <text x="14" y="22" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">② commit record</text>
-          <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">single-block write — atomic. now the intent is durable.</text>
+          <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">atomic single-block write · intent now durable</text>
         </g>
         <line x1="320" y1="169" x2="400" y2="169" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3,3"/>
         <text x="360" y="163" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.45)">main untouched</text>
@@ -3851,7 +3851,7 @@
       <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-41"><title id="svgt-part2-41">Fig 6.5 — RAII: scope acquires, scope releases</title>
         <!-- C version -->
         <text x="180" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">C — manual cleanup, error-prone</text>
-        <rect x="40" y="50" width="280" height="220" rx="4" fill="#0f0f10" stroke="rgba(232,120,120,0.4)"/>
+        <rect x="40" y="50" width="280" height="232" rx="4" fill="#0f0f10" stroke="rgba(232,120,120,0.4)"/>
         <text x="50" y="74" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">int do_thing(void) {</text>
         <text x="50" y="92" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">  FILE *f = fopen("x", "r");</text>
         <text x="50" y="110" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">  char *buf = malloc(1024);</text>
@@ -3862,11 +3862,12 @@
         <text x="50" y="208" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">  free(buf);  fclose(f);</text>
         <text x="50" y="226" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">  return 0;</text>
         <text x="50" y="244" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">err:</text>
-        <text x="50" y="258" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">  pthread_mutex_unlock(&amp;m); free(buf); fclose(f); return 1;</text>
+        <text x="50" y="258" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">  pthread_mutex_unlock(&amp;m); free(buf);</text>
+        <text x="50" y="272" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">  fclose(f); return 1;</text>
 
         <!-- C++ version -->
         <text x="540" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C++ — RAII, automatic cleanup</text>
-        <rect x="400" y="50" width="280" height="220" rx="4" fill="#0f0f10" stroke="rgba(150,216,150,0.4)"/>
+        <rect x="400" y="50" width="280" height="232" rx="4" fill="#0f0f10" stroke="rgba(150,216,150,0.4)"/>
         <text x="410" y="74" font-family="DM Mono" font-size="9" fill="rgba(180,200,220,0.85)">int do_thing() {</text>
         <text x="410" y="92" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">  std::ifstream f{"x"};</text>
         <text x="410" y="110" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">  std::vector&lt;char&gt; buf(1024);</text>

@@ -2252,11 +2252,11 @@
             <animateMotion path="M 30 86 L 75 86" dur="1.7s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" dur="1.7s" repeatCount="indefinite"/>
           </circle>
-          <circle r="3" fill="rgba(150,216,150,0.95)">
+          <circle r="3" fill="rgba(150,216,150,0.95)" opacity="0">
             <animateMotion path="M 30 130 L 75 130" dur="1.7s" begin="0.4s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" dur="1.7s" begin="0.4s" repeatCount="indefinite"/>
           </circle>
-          <circle r="3" fill="rgba(212,168,83,0.95)">
+          <circle r="3" fill="rgba(212,168,83,0.95)" opacity="0">
             <animateMotion path="M 178 108 L 245 108" dur="1.5s" begin="1.1s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" begin="1.1s" repeatCount="indefinite"/>
           </circle>
@@ -2643,7 +2643,7 @@
             <animateMotion path="M 0 60 L 50 60" dur="2s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
           </circle>
-          <circle r="2.5" fill="rgba(150,216,150,0.95)">
+          <circle r="2.5" fill="rgba(150,216,150,0.95)" opacity="0">
             <animateMotion path="M 0 100 L 50 100" dur="2s" begin="0.2s" repeatCount="indefinite"/>
             <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="0.2s" repeatCount="indefinite"/>
           </circle>
@@ -2779,11 +2779,11 @@
       To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> using the
       exact same adder circuit it uses for any other addition. And it is not luck that
       the bits line up — it is arithmetic. Look again at what the two steps produced:
-      flip-and-add-one turns a number <em>x</em> into <code>2<sup>n</sup> − x</code>.
+      flip-and-add-one turns a number <em>x</em> into <em>2<sup>n</sup> − x</em>.
       (In 8 bits, −5 came out as <code>11111011</code>, which is 251, and 251 is exactly
       256 − 5.) So when the adder computes <em>a + (−b)</em>, what it really adds is
       <em>a + (2<sup>n</sup> − b)</em>, which equals <em>2<sup>n</sup> + (a − b)</em>.
-      That extra <code>2<sup>n</sup></code> is a 1 sitting in bit position <em>n</em> —
+      That extra <em>2<sup>n</sup></em> is a 1 sitting in bit position <em>n</em> —
       one place to the left of the widest bit the register can hold. It falls off the
       end and is discarded, and what remains in the register is precisely <em>a − b</em>.
       The subtraction was never done by a subtractor; it was done by an ordinary
@@ -4531,7 +4531,7 @@ main:
 
     <div class="diagram-card" id="fig-3-10">
       <div class="diagram-label">Fig 3.10 — Return-Oriented Programming · arbitrary computation from existing code</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40"><title id="svgt-part1-40">Fig 3.10 — Return-Oriented Programming · arbitrary computation from existing code</title>
+      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40"><title id="svgt-part1-40">Fig 3.10 — Return-Oriented Programming · arbitrary computation from existing code</title>
         <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)" letter-spacing="0.18em">NO NEW CODE INJECTED · ONLY TINY FRAGMENTS OF LIBC, WIRED TOGETHER</text>
 
         <!-- LEFT: smashed stack -->
@@ -4595,7 +4595,7 @@ main:
           <g font-family="DM Mono" font-size="10">
             <text x="14" y="56" fill="rgba(255,255,255,0.85)">pop rdi</text>
             <text x="80" y="56" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="200" y="56" fill="rgba(255,255,255,0.4)" font-style="italic">// load arg</text>
+            <text x="272" y="56" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// load arg</text>
           </g>
 
           <!-- Gadget 2 -->
@@ -4604,7 +4604,7 @@ main:
           <g font-family="DM Mono" font-size="10">
             <text x="14" y="136" fill="rgba(255,255,255,0.85)">pop rsi</text>
             <text x="80" y="136" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="200" y="136" fill="rgba(255,255,255,0.4)" font-style="italic">// load 2nd arg</text>
+            <text x="272" y="136" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// load 2nd arg</text>
           </g>
 
           <!-- Gadget 3 -->
@@ -4613,7 +4613,7 @@ main:
           <g font-family="DM Mono" font-size="10">
             <text x="14" y="216" fill="rgba(255,255,255,0.85)">xor rdx, rdx</text>
             <text x="115" y="216" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="200" y="216" fill="rgba(255,255,255,0.4)" font-style="italic">// zero env</text>
+            <text x="272" y="216" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// zero env</text>
           </g>
 
           <!-- Final destination -->
@@ -4632,7 +4632,7 @@ main:
           <animate attributeName="opacity" values="0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95" dur="6s" repeatCount="indefinite"/>
         </circle>
 
-        <text x="360" y="354" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Every gadget ends with ret · ret pops the next address from the stack · the stack is the program</text>
+        <text x="360" y="388" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Every gadget ends with ret · ret pops the next address from the stack · the stack is the program</text>
       </svg>
       <p class="diagram-caption">Return-Oriented Programming, demonstrated by Hovav Shacham in 2007. The attacker still smashes the stack, but instead of injecting new code (DEP would forbid it), the new "program" is a sequence of return addresses — each pointing to a tiny <em>gadget</em>: a one-or-two-instruction snippet ending in <code>ret</code>, somewhere in the existing libraries. The first <code>ret</code> after the overflow pops the first gadget address into RIP. That gadget executes its tiny op, then its own <code>ret</code> pops the next gadget address from the stack, and so on. With a sufficiently large library — every program links libc, which has hundreds of thousands of bytes of code — gadgets for any required operation can be found. ROP turned an entire field of defense (mark code non-executable) into a starting point. Modern hardware mitigations (CFI, shadow stacks, ARM PAC, Intel CET) are the response.</p>
     </div>
@@ -5093,49 +5093,49 @@ main:
         <!-- Header row -->
         <line x1="240" y1="92" x2="520" y2="92" stroke="rgba(212,168,83,0.25)"/>
         <text x="258" y="105" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">VECTOR</text>
-        <text x="320" y="105" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">CAUSE</text>
-        <text x="430" y="105" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">HANDLER</text>
+        <text x="300" y="105" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">CAUSE</text>
+        <text x="510" y="105" text-anchor="end" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">HANDLER</text>
 
         <!-- Rows -->
         <g font-family="DM Mono" font-size="9">
           <rect x="244" y="113" width="272" height="22" fill="rgba(212,168,83,0.06)"/>
           <text x="258" y="128" fill="rgba(212,168,83,0.85)">0</text>
-          <text x="320" y="128" fill="rgba(232,120,120,0.8)">divide-by-zero</text>
-          <text x="430" y="128" fill="rgba(255,255,255,0.55)">do_divide_error</text>
+          <text x="300" y="128" fill="rgba(232,120,120,0.8)">divide-by-zero</text>
+          <text x="510" y="128" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_divide_error</text>
 
           <rect x="244" y="138" width="272" height="22" fill="rgba(212,168,83,0.04)"/>
           <text x="258" y="153" fill="rgba(212,168,83,0.85)">6</text>
-          <text x="320" y="153" fill="rgba(232,120,120,0.8)">invalid opcode</text>
-          <text x="430" y="153" fill="rgba(255,255,255,0.55)">do_invalid_op</text>
+          <text x="300" y="153" fill="rgba(232,120,120,0.8)">invalid opcode</text>
+          <text x="510" y="153" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_invalid_op</text>
 
           <rect x="244" y="163" width="272" height="22" fill="rgba(212,168,83,0.06)"/>
           <text x="258" y="178" fill="rgba(212,168,83,0.85)">13</text>
-          <text x="320" y="178" fill="rgba(232,120,120,0.8)">general protection</text>
-          <text x="430" y="178" fill="rgba(255,255,255,0.55)">do_general_protection</text>
+          <text x="300" y="178" fill="rgba(232,120,120,0.8)">general protection</text>
+          <text x="510" y="178" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_general_protection</text>
 
           <rect x="244" y="188" width="272" height="22" fill="rgba(150,216,150,0.08)"/>
           <text x="258" y="203" fill="rgba(212,168,83,0.85)">14</text>
-          <text x="320" y="203" fill="rgba(150,216,150,0.85)">page fault</text>
-          <text x="430" y="203" fill="rgba(255,255,255,0.55)">do_page_fault</text>
+          <text x="300" y="203" fill="rgba(150,216,150,0.85)">page fault</text>
+          <text x="510" y="203" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_page_fault</text>
 
           <text x="380" y="228" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.3)">…</text>
 
           <rect x="244" y="238" width="272" height="22" fill="rgba(100,150,255,0.08)"/>
           <text x="258" y="253" fill="rgba(212,168,83,0.85)">32</text>
-          <text x="320" y="253" fill="rgba(100,150,255,0.85)">timer (LAPIC)</text>
-          <text x="430" y="253" fill="rgba(255,255,255,0.55)">apic_timer_interrupt</text>
+          <text x="300" y="253" fill="rgba(100,150,255,0.85)">timer (LAPIC)</text>
+          <text x="510" y="253" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">apic_timer_interrupt</text>
 
           <rect x="244" y="263" width="272" height="22" fill="rgba(100,150,255,0.05)"/>
           <text x="258" y="278" fill="rgba(212,168,83,0.85)">33</text>
-          <text x="320" y="278" fill="rgba(100,150,255,0.85)">keyboard (IRQ 1)</text>
-          <text x="430" y="278" fill="rgba(255,255,255,0.55)">do_IRQ → driver</text>
+          <text x="300" y="278" fill="rgba(100,150,255,0.85)">keyboard (IRQ 1)</text>
+          <text x="510" y="278" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_IRQ → driver</text>
 
           <text x="380" y="302" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.3)">…</text>
 
           <rect x="244" y="312" width="272" height="22" fill="rgba(212,168,83,0.08)"/>
           <text x="258" y="327" fill="rgba(212,168,83,0.85)">128</text>
-          <text x="320" y="327" fill="rgba(212,168,83,0.7)">int 0x80 (legacy syscall)</text>
-          <text x="430" y="327" fill="rgba(255,255,255,0.55)">entry_INT80</text>
+          <text x="300" y="327" fill="rgba(212,168,83,0.7)">int 0x80 (legacy)</text>
+          <text x="510" y="327" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">entry_INT80</text>
         </g>
 
         <!-- Right side: the dispatch -->
