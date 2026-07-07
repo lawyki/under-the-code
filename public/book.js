@@ -456,22 +456,56 @@
       window.scrollTo({ top: Math.max(0, top), behavior });
     }
     apply(smooth ? 'smooth' : 'instant');
-    // Late layout shifts (a straggling font reflow, the tail of a smooth
-    // scroll) can leave the anchor a few lines off. Re-apply the exact offset
-    // once things settle — unless the reader has taken over in the meantime.
+
     let done = false;
-    const cancel = () => { done = true; };
-    ['wheel', 'touchstart', 'keydown'].forEach(t =>
-      window.addEventListener(t, cancel, { once: true, passive: true }));
-    const settle = () => {
-      if (done) return;
+    let ro = null, raf = 0;
+    const detach = ['wheel', 'touchstart', 'keydown'];
+    function stop() {
       done = true;
-      apply('instant');
-    };
-    if (smooth && 'onscrollend' in window) {
-      window.addEventListener('scrollend', settle, { once: true });
+      if (ro) { ro.disconnect(); ro = null; }
+      if (raf) { cancelAnimationFrame(raf); raf = 0; }
+      detach.forEach(t => window.removeEventListener(t, cancel));
     }
-    setTimeout(settle, smooth ? 1800 : 1200);
+    const cancel = () => stop();               // the reader takes over → let go
+    detach.forEach(t => window.addEventListener(t, cancel, { once: true, passive: true }));
+
+    if (smooth) {
+      // A smooth scroll animates; don't fight it. Re-apply once, after it ends.
+      const settle = () => { if (done) return; apply('instant'); stop(); };
+      if ('onscrollend' in window) window.addEventListener('scrollend', settle, { once: true });
+      setTimeout(settle, 1800);
+      return true;
+    }
+
+    // Instant restore: content above the anchor can still shrink or grow after
+    // the first apply — a webfont whose off-screen headings reserve a taller
+    // line box and collapse to the CSS line-height once scrolled into view, a
+    // late image, a reflow. Keep the anchor pinned to its exact offset while
+    // that settles. A ResizeObserver fires after layout and before paint, so a
+    // shift above the anchor is absorbed in the same frame it happens and never
+    // paints out of place; a short rAF loop stops once the position holds.
+    function repin() {
+      if (done) return;
+      const r = el.getBoundingClientRect();
+      const drift = r.top - (READING_LINE - (fraction || 0) * r.height);
+      if (Math.abs(drift) > 0.5) window.scrollBy({ top: drift, behavior: 'instant' });
+    }
+    if ('ResizeObserver' in window) {
+      ro = new ResizeObserver(repin);
+      ro.observe(document.body);
+    }
+    const t0 = (window.performance && performance.now) ? performance.now() : Date.now();
+    let stableFrames = 0, lastY = window.scrollY;
+    (function tick() {
+      if (done) return;
+      repin();
+      const y = window.scrollY;
+      stableFrames = (Math.abs(y - lastY) < 0.5) ? stableFrames + 1 : 0;
+      lastY = y;
+      const elapsed = ((window.performance && performance.now) ? performance.now() : Date.now()) - t0;
+      if (stableFrames >= 8 || elapsed > 2500) { stop(); return; }
+      raf = requestAnimationFrame(tick);
+    })();
     return true;
   }
 

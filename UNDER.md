@@ -425,6 +425,44 @@ engines. Anchor-id sets verified byte-identical to HEAD in every edited HTML
 after push. The upcoming precision test (anchor-id / reading-position sync) can
 proceed: no ids moved.
 
+## 4f. Pass 6 (2026-07-07): reading-position restore polish
+
+Two diagnostic-mechanical fixes from the precision-test findings. Existing
+anchor ids and the /api/position contract are unchanged; both verified in
+Chromium **and** WebKit at 1440 + 375 (0 console errors, 0 external requests,
+0 page h-scroll, `.book-nav` 48px; restores exercised under
+`prefers-reduced-motion` too).
+
+1. **Post-restore layout nudge eliminated (`book.js` `scrollToAnchor`).** After
+   the first apply, content above the anchor could still shift and the restore
+   visibly settled ~1.2 s later. Root cause (measured, not the obvious one):
+   *not* fallback→webfont width reflow. It is a **vertical-metrics** effect —
+   display webfonts (worst: Space Grotesk, Part III) whose intrinsic line box is
+   ~2.4 em reserve a tall box for **off-screen** headings, which collapses to the
+   CSS `line-height` (1.15) ~120 ms *after* the heading is scrolled into view.
+   `document.fonts.ready` does not cover this (the font is loaded; the off-screen
+   box is stale), and a metric-matched fallback can't win the first paint (local
+   faces load async too), so `size-adjust` is the wrong lever. Fix is
+   font-agnostic: while an instant restore settles, a **ResizeObserver on
+   `document.body`** (fires after layout, before paint) plus a short rAF loop
+   re-pin the anchor to its exact offset, absorbing any shift above it in the
+   same frame. Stops on reader input, when the position holds for 8 frames, or
+   after 2.5 s. Result: Chromium lands pixel-exact with zero drift; WebKit lands
+   exact with at most a sub-frame transient on Part III during load. The smooth
+   path (sync chip) keeps its single post-`scrollend` re-apply.
+2. **Chapter-hero sub-anchoring (`scripts/add-hero-anchor-ids.js`, + 57 baked
+   ids across the 5 part files).** Parking inside a hero used to anchor to the
+   whole `<section id="chN">` (tall, heterogeneous), so the stored fraction
+   resolved to different content across viewports (~150 px). Each hero's three
+   text blocks now carry their own id — `chN-hero-label`, `chN-hero-title`,
+   `chN-hero-lead` — so a mid-hero position anchors to a short, text-homogeneous
+   element and the fraction maps to the same words on every device. Verified:
+   parking on the title restores the exact line 1440↔375 (h1 has hard `<br>`
+   breaks); parking on the lead restores to within a line (paragraph-level, like
+   any body paragraph). The script is idempotent, never collides with an existing
+   id, and touches only the hero label/h1/subtitle — the 277/274/291/177/144
+   existing paragraph/section/figure id sets are byte-identical to HEAD.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
