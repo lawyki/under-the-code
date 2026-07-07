@@ -93,12 +93,30 @@
   font-weight: 300;
   color: rgba(232, 229, 244, 0.62);
 }
+/* the identity mesh is a backdrop — the spine text always wins the z-order */
+.part-opener { isolation: isolate; }
 .qm-const {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 0;
+}
+.part-opener > .part-label,
+.part-opener > h1,
+.part-opener > .part-tagline,
+.part-opener > .qm-quorum,
+.part-opener > .next-btn { position: relative; z-index: 1; }
+
+/* End of the Book — the payoff readout, lifted out of the mesh to stay legible */
+.qm-quorum {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--qm-teal);
+  margin: 0 0 40px;
 }
 .qm-const .qm-breathe {
   animation: qmBreathe 3.6s ease-in-out infinite;
@@ -154,7 +172,7 @@
 .toc-num { color: var(--qm-teal); }
 .toc-title { font-family: var(--qm-disp); font-weight: 700; font-size: 1.12rem; }
 
-.chapter-nav { background: #0b0916; border-bottom: 1px solid var(--qm-hairline); }
+.chapter-nav { --nav-bg: #0b0916; background: #0b0916; border-bottom: 1px solid var(--qm-hairline); }
 .nav-item:hover, .nav-item.active { color: var(--qm-violet); border-bottom-color: var(--qm-violet); }
 
 /* --- reading furniture -------------------------------------------------------- */
@@ -247,7 +265,10 @@ h4 { font-family: var(--sans); font-weight: 600; }
 
 .insight-strip { border-radius: 12px; border-left: 3px solid var(--qm-teal); }
 .insight-icon { color: var(--qm-teal); }
-.insight-text strong { color: var(--qm-violet); }
+/* Takeaway emphasis is weight-400, so colour is the only signal: --qm-violet
+   (~6.8:1 on the glass plate) read dimmer than the body. Lift to a brighter
+   periwinkle (~9:1, matching the body). Strip-scoped; token unchanged. */
+.insight-text strong { color: #bca8ff; }
 
 .math-callout {
   background: linear-gradient(135deg, var(--warm-light), #e2dfef);

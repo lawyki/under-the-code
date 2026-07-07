@@ -167,6 +167,39 @@
   sections.forEach(s => observer.observe(s));
 })();
 
+// --- Chapter-nav overflow affordance ------------------------------------------
+// The horizontal .chapter-nav scrolls when a chapter has more section tabs than
+// fit the width (always on mobile). A hidden scrollbar (macOS/iOS) left the last
+// tab clipped with no hint that more exists. We flag which edges have off-screen
+// content via [data-navscroll~="more-left|more-right"]; book.css fades that edge.
+(function () {
+  'use strict';
+
+  const navs = document.querySelectorAll('.chapter-nav');
+  if (!navs.length) return;
+
+  function update(nav) {
+    const max = nav.scrollWidth - nav.clientWidth;
+    if (max <= 1) { nav.dataset.navscroll = 'none'; return; }
+    const x = nav.scrollLeft;
+    const state = (x > 1 ? 'more-left ' : '') + (x < max - 1 ? 'more-right' : '');
+    nav.dataset.navscroll = state.trim() || 'none';
+  }
+
+  navs.forEach(nav => {
+    update(nav);
+    nav.addEventListener('scroll', () => update(nav), { passive: true });
+  });
+
+  const updateAll = () => navs.forEach(update);
+  window.addEventListener('resize', updateAll, { passive: true });
+  window.addEventListener('load', updateAll);
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(updateAll);
+    navs.forEach(n => ro.observe(n));
+  }
+})();
+
 // --- Pause SMIL on off-screen figures + honor prefers-reduced-motion ----------
 // Every <animate> in every figure SVG ticks continuously by default. With ~50
 // figures in Part I alone, that's a real CPU/battery cost on mobile when

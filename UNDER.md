@@ -329,6 +329,15 @@ errors, 0 external requests, no page h-scroll, `.book-nav` 48px) before the next
   five volumes as one curriculum. The index shelves now carry five spine
   stripes + numeral hues (I gold · II phosphor · III cyan · IV seal · V violet),
   home grammar otherwise.
+- **What "invariant" means** (ratified pass 5): the invariant is *grammar and
+  structure* — the spine thread above, the component vocabulary (`.diagram-card`,
+  `.insight-strip`, `.pull-quote`, `.chapter-nav`, openers/heroes/leads),
+  the pedagogical red/green/blue figure grammar, anchor ids, and the 48px nav.
+  **Reading typography is per-identity, by design.** Each volume may set its own
+  body face, accent, plate colour, and even reading model — Part IV's
+  serif-on-cream ledger body (Fraunces/Spectral) is deliberate Strongroom
+  identity, *not* a regression to be "fixed" back to the sans reading default.
+  Restyle the surface freely per volume; never break the grammar underneath.
 
 ### The four identities and their motif-evolution schemes (cyclic, hand-set)
 
@@ -390,6 +399,32 @@ landing, constellation breathing) and die under the global reduced-motion
 kill; SMIL handling unchanged. Print: banding/rails/arcs/constellations and
 gradient text are explicitly reset in each part css print block.
 
+## 4e. Pass 5 (2026-07-06): identity-friction fixes
+
+Four confirmed friction findings from a read of the shipped identity build,
+where the per-part identity layer collided with the spine text or fell below a
+comfortable-read bar. Register-neutral repairs inside each volume's existing
+idiom — no new design, no anchor-id changes. Each verified in Chromium **and**
+WebKit at 1440 + 375, 0 console errors. The ratified typography principle is
+recorded in §4d ("What invariant means"): Part IV's serif-on-cream body is
+intentional and was **not** touched.
+
+| # | Finding | Fix |
+|---|---|---|
+| 1 | **Fig 8.4 (Part III) three-element overprint** — the salmon "fibre" data-point label overprinted the green Shannon annotation *and* formula at the top-right of the SNR curve | Relocated only the fibre label into the open area just below its data point, with a short salmon leader to keep the association. Formula + annotation left in place; all three now legible. `part-3.html`. |
+| 2 | **Part V end-of-book footer** — the full-bleed `.qm-const` mesh painted *over* the closer prose: the `QUORUM REACHED · 5 OF 5` chip overprinted "…security boundary", and the I–V node labels sat on the running text | **Z-order + clearance.** `.part-opener` is now `isolation: isolate`; the mesh is `z-index:0`, the spine text `z-index:1` — the identity layer can never sit above spine text again. The two SVG text layers (roman numerals + the QUORUM chip) were lifted out of the prose band: numerals dropped at the closer, and `QUORUM REACHED · 5 OF 5` re-set as a legible in-flow `.qm-quorum` caption above the button. The remaining 5-node mesh is dimmed to a true backdrop (lines .16→.10, dots .95→.5) so no bright node competes with prose. Top opener unchanged (verified). `part-5.html` + `part-5.css`. |
+| 3 | **Section nav (`.chapter-nav`, all parts) clipped its last tab** with no scroll affordance — a hidden scrollbar (macOS/iOS) gave no hint the 6–7 section tabs scroll (always on mobile, on narrow desktop for 7-tab chapters) | A CSS fade at whichever edge has off-screen tabs, appearing **only** when actually scrollable and hiding at the scroll end. Horizontal inset moved from nav padding → item margins (`--nav-inset`) so the sticky `::before`/`::after` fades pin to the true edges; per-part `--nav-bg` colours the fade; a small `book.js` IIFE toggles `[data-navscroll~="more-left|more-right"]` from scroll/resize state. `book.css` + `book.js` + part-3/4/5 css (`--nav-bg`). Last tab is never clipped at scroll end. |
+| 4 | **Takeaway strips (`.insight-strip`) accent under-contrast, Parts IV/V** — emphasis is weight-400, so colour is the only signal, and `--sr-seal` (~6.9:1) / `--qm-violet` (~6.8:1) read *dimmer* than the ~9.5:1 body, so the emphasised phrase de-emphasised itself | Lifted the strip accent to ~9:1 (matching the body): Part IV seal → `#e6a892`, Part V violet strong → `#bca8ff`. Strip-scoped (the `.insight-*` classes are strip-only); the global `--sr-seal` / `--qm-violet` tokens are unchanged. Parts II/III were already comfortable and left untouched. `part-4.css` + `part-5.css`. |
+
+**Verification:** local Cloudflare-style server, Chromium + WebKit, 1440 + 375.
+0 console errors on all pages; 0 page-level horizontal scroll; `.book-nav` 48px.
+Fig 8.4, the Part V closer (both openers), and the nav fade (start/middle/end
+scroll states, all five parts, per-part colour) were screenshot-reviewed in both
+engines. Anchor-id sets verified byte-identical to HEAD in every edited HTML
+(part-3 364, part-4 217, part-5 180). Not yet redeployed — confirm live parity
+after push. The upcoming precision test (anchor-id / reading-position sync) can
+proceed: no ids moved.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -399,6 +434,10 @@ gradient text are explicitly reset in each part css print block.
   HTTP caching mitigates. Candidate for a version-stamped URL later, not breakage.
 - The cover figure count (242) includes the cover art itself; `docs/figures.txt`
   tracks the 241 in-book SVGs.
+- **Part IV reads in a serif body on cream ledger stock** (Fraunces/Spectral).
+  This is deliberate Strongroom identity, ratified pass 5 — reading typography is
+  per-volume (see §4d "What invariant means"). Not a regression to the sans
+  reading default; do not "restore" it.
 
 ## 6. Prioritized improvement backlog (later passes — needs owner sign-off)
 

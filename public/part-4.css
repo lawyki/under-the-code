@@ -159,7 +159,7 @@ p { font-size: 1.08rem; }
 .toc-num { color: var(--sr-seal); font-weight: 700; }
 .toc-title { font-family: var(--sr-disp); font-weight: 600; }
 
-.chapter-nav { background: #100b06; border-bottom: 1px solid rgba(230, 217, 189, 0.14); }
+.chapter-nav { --nav-bg: #100b06; background: #100b06; border-bottom: 1px solid rgba(230, 217, 189, 0.14); }
 .nav-item:hover, .nav-item.active { color: var(--sr-seal); border-bottom-color: var(--sr-stamp); }
 
 /* --- reading furniture: the ledger page -------------------------------------- */
@@ -255,8 +255,11 @@ h4 { font-family: var(--sans); font-weight: 500; }
 .code-block .kw { color: var(--sr-seal); }
 
 .insight-strip { border-radius: 2px; border-left: 3px solid var(--sr-stamp); }
-.insight-icon { color: var(--sr-seal); }
-.insight-text strong { color: var(--sr-seal); }
+/* Takeaway emphasis is weight-400, so colour is the only signal: --sr-seal (~6.9:1
+   on the dossier plate) read dimmer than the body. Lift it to a brighter seal
+   (~9:1, matching the body) for comfortable reading. Strip-scoped; token unchanged. */
+.insight-icon { color: #e6a892; }
+.insight-text strong { color: #e6a892; }
 
 .math-callout {
   background: linear-gradient(135deg, var(--warm-light), #e2d5b5);

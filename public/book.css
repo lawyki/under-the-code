@@ -89,8 +89,18 @@
   .meta-value { font-family: var(--mono); font-size: 13px; color: rgba(255,255,255,0.7); }
   .chapter-hero-visual { position: relative; height: 90vh; display: flex; align-items: center; justify-content: center; }
 
-  .chapter-nav { background: var(--dark); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0 80px; display: flex; align-items: center; overflow-x: auto; position: sticky; top: 48px; z-index: 100; }
+  .chapter-nav { --nav-bg: var(--dark); --nav-inset: 80px; background: var(--nav-bg); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 0; display: flex; align-items: center; overflow-x: auto; position: sticky; top: 48px; z-index: 100; }
+  /* Overflow affordance: a fade at whichever edge has more items off-screen.
+     Inset lives on the items (not nav padding) so the sticky fades pin to the true edges;
+     book.js toggles [data-navscroll~="more-left|more-right"] from scroll state. */
+  .chapter-nav::before, .chapter-nav::after { content: ''; position: sticky; flex: 0 0 auto; align-self: stretch; width: 56px; pointer-events: none; opacity: 0; transition: opacity 0.2s ease; z-index: 2; }
+  .chapter-nav::before { left: 0; margin-right: -56px; background: linear-gradient(to right, var(--nav-bg), transparent); }
+  .chapter-nav::after { right: 0; margin-left: -56px; background: linear-gradient(to left, var(--nav-bg), transparent); }
+  .chapter-nav[data-navscroll~="more-left"]::before { opacity: 1; }
+  .chapter-nav[data-navscroll~="more-right"]::after { opacity: 1; }
   .nav-item { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); padding: 18px 20px; cursor: pointer; transition: color 0.2s; text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; }
+  .nav-item:first-child { margin-left: var(--nav-inset); }
+  .nav-item:last-child { margin-right: var(--nav-inset); }
   .nav-item:hover, .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); }
 
   .content { max-width: 800px; margin: 0 auto; padding: 100px 40px; }
@@ -746,7 +756,7 @@
     .chapter-hero-text { padding: 60px 32px; }
     .content { padding: 60px 24px; }
     .concept-grid, .concept-grid.three, .concept-grid.four { grid-template-columns: 1fr; }
-    .chapter-nav { padding: 0 24px; top: 48px; }
+    .chapter-nav { --nav-inset: 24px; padding: 0; top: 48px; }
     .part-toc { grid-template-columns: 1fr; }
     .process-flow { flex-direction: column; }
     .arrow { transform: rotate(90deg); }
