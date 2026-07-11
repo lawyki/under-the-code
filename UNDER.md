@@ -538,6 +538,53 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 - Explicitly untouched (out of scope per owner): Little's Law framing, GCM
   nonce caveat, ANSI-isolation critique, "3 nm", Bletchley estimate.
 
+## 4h. Pass 8 (2026-07-11): cover hero remake — the exhibit
+
+The cover hero predated the pass-4 identity build: it presented one brand
+(gold arc, single voice) while the book had become a five-identity collection.
+Remade so the cover is the shelf that exhibits the collection. Below-the-fold
+content (shelves, TOC, footer), navigation, resume/account chips and anchor
+ids untouched; title, tagline, eyebrow, meta line and BEGIN READING kept
+verbatim (vertical rhythm tightened so the whole hero fits a 1440×900 fold).
+
+- **The exhibit (≥880px)**: one hand-drawn SVG replaces the sand→civilization
+  arc — the same transistor and globe terminals, but the gold thread now runs
+  **through five volume panels**, each drawn verbatim from its part's shipped
+  identity: I home grammar (Playfair italic numeral, gold radial), II Greenbar
+  (`#0c120e`, 32px phosphor banding, IBM Plex Mono 600), III Chart Room
+  (`#0d2740`, 26px grid, surveyor corner ticks, Space Grotesk), IV Strongroom
+  (`#171008`, double-rule inner frame, −2° stamp box around a Fraunces
+  numeral), V Quorum (`#0e0c1a`, violet/teal auroras + star specks, Syne 800
+  numeral in the headline-scale gradient). Curation stays in the spine's
+  voice: the thread, terminals, SAND/CIVILIZATION and per-panel chapter
+  labels are gold + DM Mono. Each panel is an SVG `<a>` to its part
+  (aria-label carries the meaning; hover/focus-visible lifts the volume and
+  brightens its identity frame).
+- **Motion (one-shot, settling)**: the thread draws once (CSS dashoffset,
+  2s linear from 0.35s), a gold packet rides it once (SMIL `animateMotion`
+  paced, `fill="freeze"`, fades out into the globe), and each volume's
+  numeral+port ignites as the packet passes (CSS delays 0.59–2.07s computed
+  from the path's arc-length fractions 0.121/0.306/0.491/0.675/0.861); the
+  globe lights at arrival. Rest state fully calm. **Reduced motion**: book.js's
+  SMIL pauser exits early on the index (no figures) and book.css's kill zeroes
+  durations but *not delays*, so the hero carries its own block — packet
+  hidden, exhibit animations removed; every base value is the composed lit
+  state.
+- **Below 880px**: the same shelf stacked — five full-width identity bars
+  (simplified CSS textures of the same tokens) on a vertical gold thread rail,
+  SAND above, CIVILIZATION below, identity beads at each bar.
+- **Fonts**: index now links `fonts-part2–5.css` (the one page that exhibits
+  every identity). Only faces actually drawn download: Fraunces, IBM Plex
+  Mono 600, Space Grotesk, Syne (~134 KB, self-hosted, 1-year immutable
+  cache); Karla/Manrope/Spectral/etc. are declared but never fetched.
+  Museum labels reuse the already-loaded DM Mono.
+- **Verified** (local, Chromium + WebKit, 1440/900/820/375/320): 0 console
+  errors, 0 external requests, 0 h-scroll, **CLS 0.0000** at 1440/375/320;
+  mid-animation frame, settled state, hover, keyboard focus (aria-labels
+  announced, frame highlight), reduced-motion composure all
+  screenshot-reviewed in both engines; resume card still injects after
+  `.cover`; only the intended font files load.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).

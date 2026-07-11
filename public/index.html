@@ -42,6 +42,12 @@
 <link rel="preload" href="/fonts/dm-mono-300-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/dm-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts.css">
+<!-- The cover exhibits all five volume identities, so it is the one page that
+     loads every identity face (self-hosted; unused weights never download). -->
+<link rel="stylesheet" href="fonts-part2.css">
+<link rel="stylesheet" href="fonts-part3.css">
+<link rel="stylesheet" href="fonts-part4.css">
+<link rel="stylesheet" href="fonts-part5.css">
 <link rel="stylesheet" href="book.css">
 <style>
   /* Index-only adjustments */
@@ -50,7 +56,7 @@
   .cover {
     min-height: 100vh;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 100px 40px 60px; text-align: center; position: relative; overflow: hidden;
+    padding: 72px 40px 48px; text-align: center; position: relative; overflow: hidden;
   }
   .cover::before {
     content: ''; position: absolute; inset: 0;
@@ -62,13 +68,13 @@
   }
   .cover-title {
     font-family: var(--serif); font-size: clamp(3.5rem, 9vw, 7.5rem); font-weight: 400;
-    line-height: 0.95; letter-spacing: -0.025em; margin-bottom: 36px; position: relative;
+    line-height: 0.95; letter-spacing: -0.025em; margin-bottom: 28px; position: relative;
   }
   .cover-title em { font-style: italic; color: var(--accent); }
   .cover-tagline {
     font-family: var(--serif); font-style: italic; font-size: 1.5rem;
     color: rgba(255,255,255,0.7); max-width: 760px; line-height: 1.55; position: relative;
-    margin-bottom: 56px;
+    margin-bottom: 36px;
   }
   .cover-meta {
     font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em;
@@ -78,7 +84,7 @@
   .cover-meta .dot { color: var(--accent); }
 
   .cover-cta {
-    margin-top: 56px; position: relative;
+    margin-top: 40px; position: relative;
     display: inline-flex; align-items: center; gap: 14px;
     font-family: var(--mono); font-size: 12px; letter-spacing: 0.25em;
     color: var(--accent); text-decoration: none; padding: 16px 28px;
@@ -89,7 +95,139 @@
   .cover-cta .arrow { font-size: 16px; transition: transform 0.25s; }
   .cover-cta:hover .arrow { transform: translateX(4px); }
 
-  .cover-svg { position: relative; margin: 48px 0 16px; }
+  /* ---- The exhibit: five volumes, one gold thread -------------------------
+     Each panel draws its part's shipped identity verbatim (part-N.css tokens);
+     the thread, terminals and museum labels stay in the spine's voice
+     (gold + DM Mono). Motion is one-shot and settling: the thread draws once,
+     a packet rides it once, each world ignites as it passes, then the wall
+     rests. Reduced motion presents the composed state (base values are the
+     lit state; the packet is hidden). */
+  .cover-exhibit { position: relative; margin: 28px 0 6px; width: 100%; display: flex; justify-content: center; }
+  .cover-exhibit-svg { width: min(100%, 1020px); height: auto; display: block; }
+
+  .exh-vol {
+    cursor: pointer; outline: none;
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1);
+    animation: exRise 0.55s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+  .exh-vol:hover, .exh-vol:focus-visible { transform: translateY(-5px); }
+  .vol-1 { animation-delay: 0.05s; }
+  .vol-2 { animation-delay: 0.11s; }
+  .vol-3 { animation-delay: 0.17s; }
+  .vol-4 { animation-delay: 0.23s; }
+  .vol-5 { animation-delay: 0.29s; }
+
+  .vol-frame { transition: stroke 0.3s; stroke-width: 1; }
+  .vol-1 .vol-frame { stroke: rgba(212, 168, 83, 0.32); }
+  .vol-2 .vol-frame { stroke: rgba(132, 255, 178, 0.25); }
+  .vol-3 .vol-frame { stroke: rgba(79, 196, 230, 0.28); }
+  .vol-4 .vol-frame { stroke: rgba(230, 217, 189, 0.30); }
+  .vol-5 .vol-frame { stroke: rgba(255, 255, 255, 0.13); }
+  .vol-1:hover .vol-frame, .vol-1:focus-visible .vol-frame { stroke: rgba(212, 168, 83, 0.85); stroke-width: 1.5; }
+  .vol-2:hover .vol-frame, .vol-2:focus-visible .vol-frame { stroke: rgba(132, 255, 178, 0.75); stroke-width: 1.5; }
+  .vol-3:hover .vol-frame, .vol-3:focus-visible .vol-frame { stroke: rgba(79, 196, 230, 0.8); stroke-width: 1.5; }
+  .vol-4:hover .vol-frame, .vol-4:focus-visible .vol-frame { stroke: rgba(230, 217, 189, 0.7); stroke-width: 1.5; }
+  .vol-5:hover .vol-frame, .vol-5:focus-visible .vol-frame { stroke: rgba(160, 140, 255, 0.75); stroke-width: 1.5; }
+
+  /* ignition: each volume's identity core lights as the packet passes.
+     Delays are computed from the packet's paced motion (arc-length fractions
+     0.121 / 0.306 / 0.491 / 0.675 / 0.861 on a 2s ride starting at 0.35s). */
+  .vol-id { animation: exIgnite 0.5s ease-out both; }
+  .vd-1 { animation-delay: 0.59s; }
+  .vd-2 { animation-delay: 0.96s; }
+  .vd-3 { animation-delay: 1.33s; }
+  .vd-4 { animation-delay: 1.70s; }
+  .vd-5 { animation-delay: 2.07s; }
+  .ex-globe { animation: exIgnite 0.6s ease-out 2.3s both; }
+
+  .ex-thread { stroke-dasharray: 1; stroke-dashoffset: 0; animation: exDraw 2s linear 0.35s both; pointer-events: none; }
+  .ex-packet { pointer-events: none; }
+
+  @keyframes exRise { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes exIgnite { from { opacity: 0.15; } }
+  @keyframes exDraw { from { stroke-dashoffset: 1; } }
+
+  /* ---- the exhibit below 880px: the same five volumes as a stacked shelf --- */
+  .exh-stack { display: none; }
+  @media (max-width: 879px) {
+    .cover-exhibit { margin: 36px 0 6px; }
+    .cover-exhibit-svg { display: none; }
+    .cover { padding-left: 24px; padding-right: 24px; }
+    .exh-stack {
+      display: flex; flex-direction: column; gap: 10px;
+      width: min(100%, 560px); margin: 0 auto;
+      position: relative; text-align: left;
+    }
+    /* the thread, vertical: sand above, civilization below */
+    .exh-stack::before {
+      content: ''; position: absolute; left: 15px; top: 22px; bottom: 22px;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(212, 168, 83, 0.5) 6%, rgba(212, 168, 83, 0.5) 94%, transparent);
+      pointer-events: none;
+    }
+    .exh-cap {
+      display: flex; align-items: center; gap: 12px; padding-left: 12px;
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em;
+      color: rgba(212, 168, 83, 0.55);
+    }
+    .exh-cap-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(212, 168, 83, 0.85); flex: none; }
+    .stx {
+      display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px;
+      margin-left: 34px; padding: 10px 16px; min-height: 60px;
+      border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.08); border-left-width: 3px;
+      text-decoration: none; color: inherit; position: relative;
+      transition: transform 0.25s, border-color 0.25s;
+      animation: exRise 0.45s ease-out both;
+    }
+    .stx:hover { transform: translateX(4px); }
+    .stx::before {
+      content: ''; position: absolute; left: -22.5px; top: 50%;
+      width: 7px; height: 7px; margin-top: -3.5px; border-radius: 50%;
+      background: var(--stx-hue, var(--accent));
+    }
+    .stx-1 { animation-delay: 0.05s; --stx-hue: #d4a853; border-left-color: rgba(212, 168, 83, 0.55);
+             background: radial-gradient(ellipse at 20% 50%, rgba(212, 168, 83, 0.10), transparent 60%) #111; }
+    .stx-2 { animation-delay: 0.10s; --stx-hue: #84ffb2; border-left-color: #3fae7c;
+             background: repeating-linear-gradient(to bottom, rgba(132, 255, 178, 0.03) 0 8px, transparent 8px 16px) #0c120e; }
+    .stx-3 { animation-delay: 0.15s; --stx-hue: #4fc4e6; border-left-color: #2f9dc4;
+             background: linear-gradient(rgba(79, 196, 230, 0.07) 1px, transparent 1px),
+                         linear-gradient(90deg, rgba(79, 196, 230, 0.07) 1px, transparent 1px) #0d2740;
+             background-size: 22px 22px; }
+    .stx-4 { animation-delay: 0.20s; --stx-hue: #cf8d78; border-left-color: #c05a48;
+             background: #171008; box-shadow: inset 0 0 0 1px rgba(230, 217, 189, 0.10); }
+    .stx-5 { animation-delay: 0.25s; --stx-hue: #a08cff; border-left-color: #7a68e0;
+             background: radial-gradient(ellipse at 15% 0%, rgba(122, 104, 224, 0.25), transparent 55%),
+                         radial-gradient(ellipse at 90% 100%, rgba(79, 216, 194, 0.16), transparent 55%) #0e0c1a; }
+    .stx:hover { border-color: var(--stx-hue); border-left-color: var(--stx-hue); }
+    .stx-num { text-align: center; font-size: 1.5rem; line-height: 1; color: var(--stx-hue); }
+    .stx-1 .stx-num { font-family: 'Playfair Display', Georgia, serif; font-style: italic; }
+    .stx-2 .stx-num { font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+    .stx-3 .stx-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; }
+    .stx-4 .stx-num { font-family: 'Fraunces', Georgia, serif; font-weight: 600; }
+    .stx-5 .stx-num { font-family: 'Syne', sans-serif; font-weight: 800; }
+    .stx-name { display: block; font-size: 0.95rem; line-height: 1.3; }
+    .stx-1 .stx-name { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color: #f5f0eb; }
+    .stx-2 .stx-name { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; color: #dce8de; }
+    .stx-3 .stx-name { font-family: 'Space Grotesk', sans-serif; font-weight: 500; color: #e8f0f4; }
+    .stx-4 .stx-name { font-family: 'Fraunces', Georgia, serif; font-weight: 500; color: #f1e9d6; }
+    .stx-5 .stx-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem; color: #efedf8; }
+    .stx-ch {
+      display: block; margin-top: 4px;
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+      color: rgba(212, 168, 83, 0.65);
+    }
+    .stx-arrow { font-family: var(--mono); font-size: 13px; color: var(--stx-hue); opacity: 0.7; }
+  }
+
+  /* SMIL ignores both the CSS media query and book.js's figure-only pauser on
+     this page, so the packet hides itself. The book.css global kill zeroes
+     durations but not delays, so the staggered ignitions are removed outright —
+     every base value here is the composed, lit state. */
+  @media (prefers-reduced-motion: reduce) {
+    .ex-packet { display: none; }
+    .exh-vol, .vol-id, .ex-globe, .ex-thread, .stx { animation: none; }
+  }
+
 
   .shelves {
     background: var(--dark); padding: 100px 40px;
@@ -251,85 +389,195 @@
     From transistor to civilization. Eighteen chapters.
   </p>
 
-  <div class="cover-svg">
-    <!-- Same composition as og-image.svg, sized for the cover. -->
-    <svg width="640" height="200" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.95;" role="img" aria-labelledby="cover-trace-title">
-      <title id="cover-trace-title">From transistor to civilization · the book's arc in one image</title>
+  <!-- The exhibit: five volumes, five shipped identities, one gold thread from
+       sand to civilization. Panels draw their part-N.css tokens verbatim; the
+       thread, terminals and museum labels stay in the spine's gold + DM Mono. -->
+  <div class="cover-exhibit">
+    <svg class="cover-exhibit-svg" width="1160" height="292" viewBox="0 0 1160 292" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five volumes of Under the Code, joined by one gold thread from sand to civilization. Each volume opens its part.">
+      <defs>
+        <radialGradient id="exG1" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#d4a853" stop-opacity="0.14"/>
+          <stop offset="1" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+        <pattern id="exBand" width="4" height="32" patternUnits="userSpaceOnUse">
+          <rect width="4" height="16" fill="#84ffb2" opacity="0.045"/>
+        </pattern>
+        <pattern id="exGrid" width="26" height="26" patternUnits="userSpaceOnUse">
+          <path d="M 26 0 H 0 V 26" fill="none" stroke="#4fc4e6" stroke-opacity="0.12" stroke-width="1"/>
+        </pattern>
+        <radialGradient id="exAurV" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#7a68e0" stop-opacity="0.30"/>
+          <stop offset="1" stop-color="#7a68e0" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="exAurT" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#4fd8c2" stop-opacity="0.20"/>
+          <stop offset="1" stop-color="#4fd8c2" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="exSyneG" x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0.25" stop-color="#f2f0fb"/>
+          <stop offset="0.7" stop-color="#a08cff"/>
+          <stop offset="1" stop-color="#4fd8c2"/>
+        </linearGradient>
+        <radialGradient id="exPk" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0.35" stop-color="#d4a853"/>
+          <stop offset="1" stop-color="#d4a853" stop-opacity="0"/>
+        </radialGradient>
+        <clipPath id="exClip5"><rect x="840" y="64" width="160" height="212" rx="10"/></clipPath>
+      </defs>
 
-      <!-- Transistor (left) -->
-      <g transform="translate(220, 200)">
-        <line x1="-58" y1="0" x2="58" y2="0" stroke="rgba(212,168,83,0.95)" stroke-width="3"/>
-        <line x1="0" y1="-58" x2="0" y2="-12" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-        <line x1="-26" y1="-58" x2="26" y2="-58" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-        <line x1="-58" y1="0" x2="-58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
-        <line x1="58" y1="0" x2="58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
-        <circle cx="-58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
-        <circle cx="58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
-        <circle cx="0" cy="-32" r="5" fill="rgba(150,216,150,0.95)">
-          <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
-          <animate attributeName="r" values="4;6;4" dur="2s" repeatCount="indefinite"/>
-        </circle>
-        <text x="0" y="92" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.5)" letter-spacing="0.3em">SAND</text>
+      <!-- terminal: sand -->
+      <g aria-hidden="true" transform="translate(52,140)" opacity="0.92">
+        <g transform="scale(0.52)">
+          <line x1="-58" y1="0" x2="58" y2="0" stroke="rgba(212,168,83,0.95)" stroke-width="3"/>
+          <line x1="0" y1="-58" x2="0" y2="-12" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+          <line x1="-26" y1="-58" x2="26" y2="-58" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+          <line x1="-58" y1="0" x2="-58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
+          <line x1="58" y1="0" x2="58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
+          <circle cx="-58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
+          <circle cx="58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
+          <circle cx="0" cy="-32" r="5" fill="rgba(150,216,150,0.95)"/>
+        </g>
+        <text y="54" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)" letter-spacing="0.28em">SAND</text>
       </g>
 
-      <!-- Arc -->
-      <path d="M 300 200 Q 600 90 900 200"
-            stroke="rgba(212,168,83,0.6)"
-            stroke-width="1.5"
-            fill="none"
-            stroke-dasharray="6,5">
-        <animate attributeName="stroke-dashoffset" values="0;-22" dur="3s" repeatCount="indefinite"/>
-      </path>
+      <!-- I — home grammar -->
+      <a class="exh-vol vol-1" href="part-1" aria-label="Part I — The Physical World. Chapters 1 to 3, and the Bridge.">
+        <rect x="120" y="64" width="160" height="212" rx="8" fill="#111111"/>
+        <ellipse cx="200" cy="126" rx="74" ry="62" fill="url(#exG1)"/>
+        <rect class="vol-frame" x="120.5" y="64.5" width="159" height="211" rx="8" fill="none"/>
+        <g class="vol-id vd-1">
+          <circle cx="200" cy="122.2" r="5" fill="#d4a853"/>
+          <text x="200" y="188" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="46" fill="#d4a853">I</text>
+        </g>
+        <text x="200" y="226" text-anchor="middle" font-family="Playfair Display" font-weight="500" font-size="14.5" fill="#f5f0eb">The Physical World</text>
+        <text x="200" y="254" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.75)">CH 1–3 · BRIDGE</text>
+      </a>
 
-      <!-- 5 dots along the arc (recomputed for new control point at y=90) -->
-      <!-- t=0.1: x=360, y=178; t=0.3: x=480, y=147; t=0.5: x=600, y=145; t=0.7: x=720, y=147; t=0.9: x=840, y=178 -->
-      <circle cx="360" cy="178" r="5" fill="rgba(212,168,83,0.9)">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="480" cy="147" r="5" fill="rgba(212,168,83,0.9)">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-0.5s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="600" cy="145" r="6" fill="rgba(212,168,83,1)">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="720" cy="147" r="5" fill="rgba(212,168,83,0.9)">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1.5s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="840" cy="178" r="5" fill="rgba(212,168,83,0.9)">
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-2s" repeatCount="indefinite"/>
+      <!-- II — Greenbar -->
+      <a class="exh-vol vol-2" href="part-2" aria-label="Part II — The Software Layer. Chapters 4 to 7.">
+        <rect x="300" y="64" width="160" height="212" rx="3" fill="#0c120e"/>
+        <rect x="300" y="64" width="160" height="212" rx="3" fill="url(#exBand)"/>
+        <rect class="vol-frame" x="300.5" y="64.5" width="159" height="211" rx="3" fill="none"/>
+        <g class="vol-id vd-2">
+          <circle cx="380" cy="105.6" r="5" fill="#84ffb2"/>
+          <text x="380" y="188" text-anchor="middle" font-family="IBM Plex Mono" font-weight="600" font-size="44" fill="#84ffb2">II</text>
+        </g>
+        <text x="380" y="225" text-anchor="middle" font-family="IBM Plex Mono" font-weight="600" font-size="12" letter-spacing="0.02em" fill="#dce8de">THE SOFTWARE LAYER</text>
+        <text x="380" y="254" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.75)">CH 4–7</text>
+      </a>
+
+      <!-- III — Chart Room -->
+      <a class="exh-vol vol-3" href="part-3" aria-label="Part III — The Network. Chapters 8 to 12.">
+        <rect x="480" y="64" width="160" height="212" rx="2" fill="#0d2740"/>
+        <rect x="480" y="64" width="160" height="212" rx="2" fill="url(#exGrid)"/>
+        <path d="M495 72 H488 V79 M625 72 H632 V79 M488 261 V268 H495 M632 261 V268 H625" fill="none" stroke="#4fc4e6" stroke-opacity="0.55" stroke-width="1"/>
+        <rect class="vol-frame" x="480.5" y="64.5" width="159" height="211" rx="2" fill="none"/>
+        <g class="vol-id vd-3">
+          <circle cx="560" cy="100" r="5" fill="#4fc4e6"/>
+          <text x="560" y="188" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="46" fill="#4fc4e6">III</text>
+        </g>
+        <text x="560" y="226" text-anchor="middle" font-family="Space Grotesk" font-weight="500" font-size="14.5" fill="#e8f0f4">The Network</text>
+        <text x="560" y="254" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.75)">CH 8–12</text>
+      </a>
+
+      <!-- IV — Strongroom -->
+      <a class="exh-vol vol-4" href="part-4" aria-label="Part IV — Data and Security. Chapters 13 to 15.">
+        <rect x="660" y="64" width="160" height="212" rx="2" fill="#171008"/>
+        <rect x="666.5" y="70.5" width="147" height="199" rx="1" fill="none" stroke="rgba(230,217,189,0.12)"/>
+        <rect class="vol-frame" x="660.5" y="64.5" width="159" height="211" rx="2" fill="none"/>
+        <g class="vol-id vd-4">
+          <circle cx="740" cy="103.9" r="5" fill="#cf8d78"/>
+          <g transform="rotate(-2 740 171)">
+            <rect x="707" y="146" width="66" height="52" rx="2" fill="none" stroke="rgba(184,55,47,0.6)" stroke-width="1.5"/>
+            <text x="740" y="187" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="42" fill="#cf8d78">IV</text>
+          </g>
+        </g>
+        <text x="740" y="226" text-anchor="middle" font-family="Fraunces" font-weight="500" font-size="14.5" fill="#f1e9d6">Data and Security</text>
+        <text x="740" y="254" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.75)">CH 13–15</text>
+      </a>
+
+      <!-- V — Quorum -->
+      <a class="exh-vol vol-5" href="part-5" aria-label="Part V — The Modern Machine. Chapters 16 to 18.">
+        <rect x="840" y="64" width="160" height="212" rx="10" fill="#0e0c1a"/>
+        <g clip-path="url(#exClip5)">
+          <ellipse cx="872" cy="92" rx="95" ry="62" fill="url(#exAurV)"/>
+          <ellipse cx="978" cy="248" rx="95" ry="62" fill="url(#exAurT)"/>
+          <circle cx="860" cy="85" r="1.2" fill="#ffffff" opacity="0.5"/>
+          <circle cx="915" cy="76" r="1" fill="#a08cff" opacity="0.42"/>
+          <circle cx="962" cy="95" r="1.3" fill="#ffffff" opacity="0.45"/>
+          <circle cx="986" cy="130" r="1" fill="#a08cff" opacity="0.3"/>
+          <circle cx="856" cy="236" r="1" fill="#4fd8c2" opacity="0.32"/>
+          <circle cx="941" cy="251" r="1.1" fill="#ffffff" opacity="0.35"/>
+          <circle cx="990" cy="80" r="0.9" fill="#ffffff" opacity="0.4"/>
+        </g>
+        <rect class="vol-frame" x="840.5" y="64.5" width="159" height="211" rx="10" fill="none"/>
+        <g class="vol-id vd-5">
+          <circle cx="920" cy="118.9" r="5" fill="#a08cff"/>
+          <text x="920" y="188" text-anchor="middle" font-family="Syne" font-weight="800" font-size="46" fill="url(#exSyneG)">V</text>
+        </g>
+        <text x="920" y="225" text-anchor="middle" font-family="Syne" font-weight="700" font-size="11.5" fill="#efedf8">The Modern Machine</text>
+        <text x="920" y="254" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.75)">CH 16–18</text>
+      </a>
+
+      <!-- the thread: drawn once over all five worlds -->
+      <path class="ex-thread" d="M 84 142 C 340 86, 820 86, 1054 142" pathLength="1" fill="none" stroke="#d4a853" stroke-opacity="0.5" stroke-width="1.5"/>
+
+      <!-- the packet: rides the thread once, then settles into the globe -->
+      <circle class="ex-packet" r="9" fill="url(#exPk)" opacity="0">
+        <animateMotion begin="0.35s" dur="2s" fill="freeze" path="M 84 142 C 340 86, 820 86, 1054 142"/>
+        <animate attributeName="opacity" begin="0.35s" dur="2s" values="0;1;1;0" keyTimes="0;0.04;0.9;1" fill="freeze"/>
       </circle>
 
-      <!-- Traveling packet -->
-      <circle r="6" fill="rgba(212,168,83,1)">
-        <animateMotion dur="5s" repeatCount="indefinite" path="M 300 200 Q 600 90 900 200"/>
-        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="5s" repeatCount="indefinite"/>
-      </circle>
-
-      <!-- Globe (right) -->
-      <g transform="translate(980, 200)">
-        <circle cx="0" cy="0" r="68" fill="none" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-        <ellipse cx="0" cy="0" rx="68" ry="22" fill="none" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
-        <ellipse cx="0" cy="0" rx="68" ry="46" fill="none" stroke="rgba(212,168,83,0.30)" stroke-width="1"/>
-        <line x1="0" y1="-68" x2="0" y2="68" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
-        <circle cx="-90" cy="-58" r="4" fill="rgba(212,168,83,0.9)">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="92" cy="-62" r="4" fill="rgba(212,168,83,0.9)">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="2.2s" begin="-0.5s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="92" cy="62" r="4" fill="rgba(212,168,83,0.9)">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="1.8s" begin="-1s" repeatCount="indefinite"/>
-        </circle>
-        <circle cx="-90" cy="64" r="4" fill="rgba(212,168,83,0.9)">
-          <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" begin="-1.5s" repeatCount="indefinite"/>
-        </circle>
-        <line x1="-66" y1="-32" x2="-90" y2="-58" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-        <line x1="66" y1="-30" x2="92" y2="-62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-        <line x1="66" y1="32" x2="92" y2="62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-        <line x1="-66" y1="36" x2="-90" y2="64" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-        <text x="0" y="92" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.5)" letter-spacing="0.3em">CIVILIZATION</text>
+      <!-- terminal: civilization -->
+      <g class="ex-globe" aria-hidden="true" transform="translate(1092,140)">
+        <g transform="scale(0.5)">
+          <circle cx="0" cy="0" r="68" fill="none" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
+          <ellipse cx="0" cy="0" rx="68" ry="22" fill="none" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
+          <ellipse cx="0" cy="0" rx="68" ry="46" fill="none" stroke="rgba(212,168,83,0.30)" stroke-width="1"/>
+          <line x1="0" y1="-68" x2="0" y2="68" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
+          <circle cx="-90" cy="-58" r="4" fill="rgba(212,168,83,0.9)"/>
+          <circle cx="92" cy="-62" r="4" fill="rgba(212,168,83,0.9)"/>
+          <circle cx="92" cy="62" r="4" fill="rgba(212,168,83,0.9)"/>
+          <circle cx="-90" cy="64" r="4" fill="rgba(212,168,83,0.9)"/>
+          <line x1="-66" y1="-32" x2="-90" y2="-58" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+          <line x1="66" y1="-30" x2="92" y2="-62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+          <line x1="66" y1="32" x2="92" y2="62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+          <line x1="-66" y1="36" x2="-90" y2="64" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
+        </g>
+        <text y="56" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)" letter-spacing="0.22em">CIVILIZATION</text>
       </g>
     </svg>
+
+    <!-- the same shelf, stacked, below 880px -->
+    <div class="exh-stack">
+      <div class="exh-cap"><span class="exh-cap-dot"></span>SAND</div>
+      <a class="stx stx-1" href="part-1" aria-label="Part I — The Physical World. Chapters 1 to 3, and the Bridge.">
+        <span class="stx-num">I</span>
+        <span class="stx-body"><span class="stx-name">The Physical World</span><span class="stx-ch">CH 1–3 · BRIDGE</span></span>
+        <span class="stx-arrow">→</span>
+      </a>
+      <a class="stx stx-2" href="part-2" aria-label="Part II — The Software Layer. Chapters 4 to 7.">
+        <span class="stx-num">II</span>
+        <span class="stx-body"><span class="stx-name">The Software Layer</span><span class="stx-ch">CH 4–7</span></span>
+        <span class="stx-arrow">→</span>
+      </a>
+      <a class="stx stx-3" href="part-3" aria-label="Part III — The Network. Chapters 8 to 12.">
+        <span class="stx-num">III</span>
+        <span class="stx-body"><span class="stx-name">The Network</span><span class="stx-ch">CH 8–12</span></span>
+        <span class="stx-arrow">→</span>
+      </a>
+      <a class="stx stx-4" href="part-4" aria-label="Part IV — Data and Security. Chapters 13 to 15.">
+        <span class="stx-num">IV</span>
+        <span class="stx-body"><span class="stx-name">Data and Security</span><span class="stx-ch">CH 13–15</span></span>
+        <span class="stx-arrow">→</span>
+      </a>
+      <a class="stx stx-5" href="part-5" aria-label="Part V — The Modern Machine. Chapters 16 to 18.">
+        <span class="stx-num">V</span>
+        <span class="stx-body"><span class="stx-name">The Modern Machine</span><span class="stx-ch">CH 16–18</span></span>
+        <span class="stx-arrow">→</span>
+      </a>
+      <div class="exh-cap"><span class="exh-cap-dot"></span>CIVILIZATION</div>
+    </div>
   </div>
 
   <div class="cover-meta">
