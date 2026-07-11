@@ -4,19 +4,24 @@ A unified theory of how computers actually work — five parts, eighteen chapter
 
 Published at **[under.atheric.eu](https://under.atheric.eu)**.
 
-By [Yki Lähteenmäki](https://github.com/lawyki). Published by [Atheric](https://atheric.eu) (YTD Holdings Oy, Helsinki).
+By [Yki Lähteenmäki](https://github.com/lawyki). Published by [Atheric](https://atheric.eu) (YDT Holdings Oy, operating from Helsinki).
 
 ## Repo layout
 
 ```
-public/          ← deploy this directory · the only thing the domain serves
+public/          ← the static site · what the domain serves
   index.html
   part-1.html ... part-5.html
   book.css, book.js
-  fonts.css, fonts/ ← self-hosted webfonts (no third-party requests)
+  part-2.css ... part-5.css ← per-volume identity layers
+  fonts.css, fonts-part2..5.css, fonts/ ← self-hosted webfonts (no third-party requests)
   glossary.html, glossary.json
+  account.html   ← sign-in + privacy notice (/account)
   og-image.svg, og-image.png
-  robots.txt, sitemap.xml, 404.html
+  robots.txt, sitemap.xml, 404.html, _headers
+functions/       ← Cloudflare Pages Functions · the account/position API (/api/*)
+schema.sql       ← D1 schema: users, sessions, login tokens, reading positions
+wrangler.toml    ← Pages + D1 bindings
 scripts/         ← build tooling (not served)
   build-glossary.js
 docs/            ← internal design docs (not served)
@@ -35,17 +40,17 @@ npm run serve
 npm run build:glossary
 ```
 
-The book is a static site — no framework, no bundler, no Node runtime in production. Everything is plain HTML + CSS + JS that a browser parses directly.
+The book itself is a static site — no framework, no bundler. Everything in `public/` is plain HTML + CSS + JS that a browser parses directly. Alongside it runs one small optional service: the account/position API in `functions/`, deployed as Cloudflare Pages Functions against a D1 database.
+
+## Reading positions & accounts
+
+Signed out, your reading position is kept in the browser's `localStorage` only — it never leaves the device. Signing in (one email, one magic link, no password) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
 
 ## Deploy
 
-The `public/` directory is the publishable artifact. Any of:
+Production is **Cloudflare Pages**: pushes to `main` deploy `public/` as the site and `functions/` as the `/api/*` account service (bindings in `wrangler.toml`; apply `schema.sql` to the D1 database once).
 
-**Cloudflare Pages / Netlify / Vercel** — connect the repo, set publish directory to `public/`, deploy on push. Zero config.
-
-**GitHub Pages** — set the publish source to `public/` (or move contents to `docs/` if your fork prefers that convention).
-
-**rsync / scp to a VPS** — `rsync -av --delete public/ user@host:/var/www/under.atheric.eu/`. Point nginx at the deployed directory.
+The book alone — everything except accounts — is still a plain static artifact. `public/` can be served from any static host (Netlify, Vercel, GitHub Pages, nginx via `rsync -av --delete public/ user@host:/var/www/under.atheric.eu/`); without the functions the book works fully (positions stay in `localStorage`); only the optional sign-in stops working.
 
 ## Regenerate og-image.png
 
@@ -53,8 +58,8 @@ The committed `og-image.png` is rendered from `og-image.svg` in headless Chromiu
 
 ## License
 
-Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You are free to share and adapt the material non-commercially, with attribution. Commercial use requires permission. © 2026 Yki Lähteenmäki / YTD Holdings Oy.
+Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You are free to share and adapt the material non-commercially, with attribution. Commercial use requires permission. © MMXXVI · Yki Lähteenmäki / YDT Holdings Oy.
 
 ## Status
 
-Active — last updated 2026-05-19.
+Active — last updated 2026-07-11.
