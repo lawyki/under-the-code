@@ -468,7 +468,7 @@
         <tr><td>Round Robin</td><td>Each process gets a fixed time slice ("quantum"). When it expires, move to the next.</td><td>Fair. Responsive. Doesn't optimize for total throughput.</td></tr>
         <tr><td>Priority</td><td>Each process has a priority number. Higher priority runs first.</td><td>Lets the system favor critical work. Risk: low-priority processes can be <em>starved</em> indefinitely.</td></tr>
         <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length. Used by Windows, classic UNIX.</td></tr>
-        <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default since 2007. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." O(log N) per scheduling decision via a red-black tree.</td></tr>
+        <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default 2007–2023. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." O(log N) per scheduling decision via a red-black tree.</td></tr>
       </tbody>
     </table>
 
@@ -481,7 +481,11 @@
       of the tree (smallest virtual runtime). When a process runs, its virtual runtime
       increases; when it blocks, it's removed; when it wakes, it's reinserted with its
       saved value. This naturally implements approximate fairness: every process tends
-      toward equal CPU usage, and any process behind catches up first.
+      toward equal CPU usage, and any process behind catches up first. Since kernel
+      6.6 (2023), Linux's default is CFS's successor <strong>EEVDF</strong> — Earliest
+      Eligible Virtual Deadline First — which keeps the same virtual-runtime
+      bookkeeping but gives every task an explicit deadline, so latency-sensitive
+      work is scheduled on time rather than merely fairly.
     </p>
 
     <div class="diagram-card" id="fig-4-4">
@@ -1966,7 +1970,7 @@
         <rect x="40" y="280" width="640" height="32" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.7)" stroke-width="1.5"/>
         <text x="360" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">SHARED KERNEL — same code, different views per process group</text>
       </svg>
-      <p id="ch4-security-p12" class="diagram-caption">Namespaces are how the kernel lies to a process about the world. There are seven kinds — PID, network, mount, IPC, UTS (hostname), user, cgroup — and each can be independently configured per process. Container A's <code>ps</code> shows only the processes inside its PID namespace; its <code>ifconfig</code> shows only its virtual interfaces; its <code>/</code> is the rootfs of its container image. Container B sees a completely different version of all of those, even though both processes are running under the same kernel, on the same machine, accessing the same physical RAM. From the host's perspective, both containers' PIDs are just numbers in the global PID table; namespaces are translation layers between the global state and what each container sees.</p>
+      <p id="ch4-security-p12" class="diagram-caption">Namespaces are how the kernel lies to a process about the world. There are eight kinds — PID, network, mount, IPC, UTS (hostname), user, cgroup, and (since Linux 5.6) time — and each can be independently configured per process. Container A's <code>ps</code> shows only the processes inside its PID namespace; its <code>ifconfig</code> shows only its virtual interfaces; its <code>/</code> is the rootfs of its container image. Container B sees a completely different version of all of those, even though both processes are running under the same kernel, on the same machine, accessing the same physical RAM. From the host's perspective, both containers' PIDs are just numbers in the global PID table; namespaces are translation layers between the global state and what each container sees.</p>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-4-21">
@@ -3191,7 +3195,7 @@
           <rect x="0"   y="0" width="140" height="32" rx="4" fill="#1a0e0e" stroke="rgba(232,120,120,0.5)"/>
           <text x="70"  y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.9)">Heartbleed 2014</text>
           <rect x="160" y="0" width="140" height="32" rx="4" fill="#1a0e0e" stroke="rgba(232,120,120,0.5)"/>
-          <text x="230" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.9)">Shellshock 2014</text>
+          <text x="230" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.9)">Stagefright 2015</text>
           <rect x="320" y="0" width="140" height="32" rx="4" fill="#1a0e0e" stroke="rgba(232,120,120,0.5)"/>
           <text x="390" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.9)">~70% of CVEs</text>
           <rect x="480" y="0" width="180" height="32" rx="4" fill="#1a0e0e" stroke="rgba(232,120,120,0.5)"/>
@@ -3238,7 +3242,7 @@
           <!-- Perl 1987 -->
           <rect x="300" y="148" width="120" height="36" rx="4" fill="rgba(132,255,178,0.10)" stroke="rgba(62,138,94,0.55)"/>
           <text x="360" y="166" font-size="10" fill="rgba(132,255,178,0.85)">Perl · 1987</text>
-          <text x="360" y="178" font-size="7" fill="rgba(198,222,206,0.6)">Wall · NASA · syntax</text>
+          <text x="360" y="178" font-size="7" fill="rgba(198,222,206,0.6)">Wall · Unisys · syntax</text>
 
           <!-- Java 1995 -->
           <rect x="440" y="148" width="120" height="36" rx="4" fill="rgba(132,255,178,0.18)" stroke="rgba(62,138,94,0.85)"/>
@@ -3546,7 +3550,7 @@
     </p>
 
     <p id="ch6-stroustrup-p2">
-      Simula 67 — designed in 1965 by Ole-Johan Dahl and Kristen Nygaard at the
+      Simula 67 — designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the
       Norwegian Computing Center, expressly for simulating physical systems — is the
       language that introduced the modern object-oriented vocabulary. The words
       <strong>class</strong>, <strong>object</strong>, <strong>inheritance</strong>,
@@ -3562,10 +3566,12 @@
     <p id="ch6-stroustrup-p3">
       The first version, in 1979, was called <strong>"C with Classes."</strong> It was
       implemented as a preprocessor that translated the new constructs back to plain C.
-      In 1985 Stroustrup wrote the language's first book and renamed it
+      In 1983 the language was renamed
       <strong>C++</strong> — a literal pun on C's increment operator, <code>++</code>,
-      meaning "C, but more." The 1985 release shipped as a true compiler. By 1989,
-      C++ was an ANSI standard. By 2000 it was the dominant language for systems where
+      meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and
+      the 1985 release shipped as a true compiler. In 1989 ANSI convened a standards
+      committee; the standard itself — C++98 — took nine more years. By 2000 it was
+      the dominant language for systems where
       C alone could not scale: trading platforms, telecommunications switches, browser
       engines, game runtimes.
     </p>
@@ -3579,7 +3585,7 @@
         <!-- Year ticks -->
         <g font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)" text-anchor="middle">
           <line x1="80"  y1="154" x2="80"  y2="166" stroke="rgba(132,255,178,0.6)"/>
-          <text x="80"  y="186">1965</text>
+          <text x="80"  y="186">1967</text>
           <line x1="180" y1="154" x2="180" y2="166" stroke="rgba(132,255,178,0.6)"/>
           <text x="180" y="186">1979</text>
           <line x1="270" y1="154" x2="270" y2="166" stroke="rgba(132,255,178,0.6)"/>

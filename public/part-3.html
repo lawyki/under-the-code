@@ -305,9 +305,9 @@
       together to cancel out external electromagnetic interference (this is what
       "twisted pair" means in <em>Cat 6 twisted pair</em>). The signal is voltage
       between the two wires. Cheap to manufacture, easy to terminate, but
-      attenuates fast — by about 30 dB per kilometre at the frequencies modern
-      Ethernet uses, which limits a single copper run to roughly 100 metres
-      before a switch or repeater is required. Almost every cable inside a house
+      attenuates fast — by about 22 dB per hundred metres at the ~100 MHz
+      frequencies modern Ethernet uses, which limits a single copper run to
+      roughly 100 metres before a switch or repeater is required. Almost every cable inside a house
       or office is copper.
     </p>
 
@@ -1003,7 +1003,7 @@
       are the <strong>OUI</strong> (Organizationally Unique Identifier),
       assigned to the manufacturer by the IEEE; the next 24 are the
       device-specific portion. The MAC address tells you who built the network
-      card. Apple devices begin <code>00:1A:11</code> and a few hundred other
+      card. Apple devices begin <code>00:03:93</code> and a few hundred other
       prefixes; Cisco's most common OUIs are <code>00:0A:41</code> and dozens
       more; Raspberry Pi devices begin <code>B8:27:EB</code>. There are public
       databases mapping every OUI to its owner.
@@ -1345,7 +1345,7 @@
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Packet switching · IP · BGP · IPv4/v6 · spoofing &amp; hijacks</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1964 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">47.60°N 30.10°W · 870 nm run</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1964 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">47.60°N 30.10°W · 1,183 nm run</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -1959,8 +1959,8 @@
       networks, each operated by a different organisation, none of them under
       common ownership or control, all glued together by a single protocol
       that lets them announce routes to one another. That protocol is
-      <span class="key-term">BGP</span>, the Border Gateway Protocol. It is twenty-five
-      years old, runs on every backbone router on the planet, and was designed
+      <span class="key-term">BGP</span>, the Border Gateway Protocol. It was born
+      in 1989, runs on every backbone router on the planet, and was designed
       with essentially no security at all — a fact the internet still has not
       fully recovered from.
     </p>
@@ -2476,7 +2476,7 @@
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">UDP · 3-way handshake · AIMD · CUBIC · BBR · QUIC · SYN flood</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1974 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">44.85°N 44.90°W · 1,730 nm run</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1974 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">44.85°N 44.90°W · 1,819 nm run</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -2995,7 +2995,8 @@
       again. Each retransmit produced more retransmits. The connection's
       effective throughput fell by three orders of magnitude while neither
       side was, locally, doing anything wrong. <strong>Van Jacobson</strong>
-      and <strong>Sally Floyd</strong>, both at LBL, spent the better
+      at LBL and <strong>Michael Karels</strong> at Berkeley's CSRG — one
+      at each end of the collapsed link — spent the better
       part of the next two years investigating what was happening. Their
       observation — published in 1988 as <em>"Congestion Avoidance and
       Control"</em> — was one of the great results of computer
@@ -3153,7 +3154,7 @@
     </p>
 
     <p id="ch10-modern-p2">
-      <strong>CUBIC</strong> (2008, Linux's default) keeps loss-based
+      <strong>CUBIC</strong> (Linux's default since 2006) keeps loss-based
       detection but replaces the linear additive-increase phase with a
       cubic function. After a loss, the window grows slowly at first, then
       faster, then slows again as it approaches the previous maximum. The
@@ -3538,8 +3539,8 @@
       Shimomura himself had earlier helped secure), and led the FBI to
       Mitnick's apartment in Raleigh, North Carolina, on 15 February
       1995. The case made the front page of <em>The New York Times</em>;
-      a book (<em>Takedown</em>) and a film (Markoff and Hafner's
-      <em>Cyberpunk</em>) followed. The technical lessons that came out
+      a book (Shimomura and Markoff's <em>Takedown</em>) and, later, a
+      film based on it followed. The technical lessons that came out
       of it — randomise ISNs, do not trust source IPs for authentication,
       authenticate connections cryptographically rather than by network
       identity — are the foundation on which TLS, the subject of <a href="#ch11">Chapter
@@ -3601,7 +3602,7 @@
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">HTTP · DNS · TLS · CA chain · HTTP/2 · QUIC</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1989 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">42.30°N 59.70°W · 2,590 nm run</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1989 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">42.30°N 59.70°W · 2,480 nm run</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -5152,7 +5153,7 @@
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Event loop · Promises · V8 · Node · DOM · same-origin · XSS · CSP</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1995 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">40.71°N 74.01°W · 3,459 nm · landfall</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1995 → present</span><div class="meta-item"><span class="meta-label">Position fix</span><span class="meta-value">40.71°N 74.01°W · 3,129 nm · landfall</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">

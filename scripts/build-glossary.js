@@ -43,6 +43,7 @@ const SKIP_WORDS = new Set([
   'yes','no','true','false','none',
   'most','more','less','few','many','much',
   'why this matters','famous','note','important','crucial','key',
+  'gab', // <em>g<sup>ab</sup></em> math markup in ch14, not a term
 ]);
 
 // Curated canonical terms that should always appear in the glossary even if

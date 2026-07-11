@@ -361,7 +361,9 @@ randomness). Auditable by grepping the literals below.
   captions, continuous-flow motion — ambient dash drift on the route arc).
   *Evolution*: the part is a cable-laying voyage. `POSITION FIX` meta lines
   advance London → New York across ch8–ch12 (`51.51°N 0.09°W · 0 nm` →
-  `40.71°N 74.01°W · 3,459 nm · landfall` — landfall at the browser chapter);
+  `40.71°N 74.01°W · 3,129 nm · landfall` — landfall at the browser chapter;
+  runs recomputed in pass 7 so each leg is the true great-circle distance
+  between successive fixes);
   the opener chart shows the route ahead with 1 of 5 waypoints lit, the closer
   the same route completed (all 5 + `LANDFALL`).
 - **IV — Strongroom** (ledger + sealed dossier; Fraunces/Spectral serif body
@@ -462,6 +464,79 @@ Chromium **and** WebKit at 1440 + 375 (0 console errors, 0 external requests,
    any body paragraph). The script is idempotent, never collides with an existing
    id, and touches only the hero label/h1/subtitle — the 277/274/291/177/144
    existing paragraph/section/figure id sets are byte-identical to HEAD.
+
+## 4g. Pass 7 (2026-07-11): fact-verification pass
+
+A holistic audit had found the book's rigor two-tier: mechanism/math sound,
+anecdote/attribution stratum carrying ~30 blemishes. Every audit item was
+**independently re-verified** (recomputed for math, primary/registry sources
+for facts) before any fix — the audit itself was treated as fallible.
+Register-neutral corrections only; anchor-id sets verified byte-identical to
+HEAD in all five parts. Ledger (item → verified-how → outcome):
+
+### Tier 1 — broken figures
+
+| Item | Verified how | Outcome |
+|---|---|---|
+| Fig 14.8 RSA worked example | Recomputed end-to-end (Python): 65³=274625; 274625 mod 391 = **143** (not 191); e=3 coprime to φ=352 ✓; d=235 ✓ (3·235≡1 mod 352); 143²³⁵ mod 391 = 65 ✓ | Fixed: c=143 in all three places; every number on the card now verifies by hand. Also fixed a pre-existing ENCRYPT/DECRYPT header overprint found in the render spot-check |
+| Fig 17.8 + fig 17.5 caption "ZooKeeper runs Raft" | ZooKeeper's protocol is ZAB (predates Raft, 2014); etcd/Consul/CockroachDB/TiDB/Vault do run Raft | Fixed: caption now credits ZAB with the same leader-majority shape; fig 17.8 label "Raft / ZAB · config-store role" |
+
+### Tier 2 — attributions & anecdotes (16)
+
+| Item | Verified how | Outcome |
+|---|---|---|
+| 1988 congestion paper: Karels, not Floyd | SIGCOMM '88 byline: Van Jacobson (LBL) + Michael J. Karels (UC Berkeley CSRG); Floyd = RED 1993 | Fixed, with correct affiliations ("one at each end of the collapsed link") |
+| Takedown/Cyberpunk swap | *Takedown* = Shimomura & Markoff book (1996); *Cyberpunk* = Hafner & Markoff **book** (1991); the film (*Track Down*, 2000) was based on *Takedown* | Fixed: "a book (Shimomura and Markoff's *Takedown*) and, later, a film based on it" |
+| TJX 2007 vector | DOJ/Gonzalez record: WEP war-driving interception; Heartland 2008 is the SQLi case | Fixed: TJX moved to a parenthetical with its true WEP vector; MOVEit 2023 (CVE-2023-34362, SQLi) added to the injection list. **Removed** the "2023 major US municipal water utility" SQLi claim — no supporting evidence exists (2023 water incidents were default-credential PLC hacks). **Flag:** Sony PSN 2011 = SQLi is common lore, never officially confirmed by Sony; left in place — owner call |
+| Paxos lore inversion | 1998 TOCS paper IS the parable (submitted 1990); *Paxos Made Simple* (2001) is the plain one | Fixed in both prose spots |
+| "Apple OUI 00:1A:11" | IEEE registry (maclookup.app): 00:1A:11 = **Google**; 00:03:93 = Apple, Inc.; 00:0A:41 = Cisco ✓; B8:27:EB = Raspberry Pi Foundation ✓ | Fixed: Apple example now 00:03:93 |
+| Dhahran date | GAO IMTEC-92-26: **25** February 1991 | Fixed (was 28 — the death toll, not the date) |
+| Boole→electron gap | Boole d. 1864; Thomson's electron 1897 → 33 years | Fixed ("twenty" → "thirty-three") |
+| C++ ANSI timeline | ANSI committee convened 1989; first standard C++98 (1998) | Fixed: "In 1989 ANSI convened a standards committee; the standard itself — C++98 — took nine more years" |
+| C++ renamed 1983 | Name coined 1983 (Mascitti); book + Cfront release 1985 | Fixed: rename 1983, book/compiler 1985 |
+| Simula 67 date | Simula 67 = 1967 (Dahl & Nygaard) | Fixed in prose + fig 6.2 tick (1965 → 1967) |
+| Perl origin | Wall wrote Perl at Unisys (1987), not NASA (JPL came later) | Fixed fig 5.11: "Wall · Unisys · syntax" |
+| Copper attenuation | Cat5e/6 insertion loss ≈ 22 dB per **100 m** at 100 MHz — book's "30 dB per kilometre" was ~10× low | Fixed: "about 22 dB per hundred metres at the ~100 MHz frequencies modern Ethernet uses" |
+| BGP age "twenty-five years" | BGP born 1989 (RFC 1105) → ~37 by book frame | Fixed to age-proof "born in 1989" |
+| Shellshock class | CVE-2014-6271 is bash parser injection, not memory-unsafety | Fixed fig 5.10 "price of C" chip → Stagefright 2015 (libstagefright memory corruption) |
+| ECB-Tux attribution | First appeared as a Wikipedia illustration (2004, User:Lunkwill); Valsorda's essay (2013) re-popularised it | Fixed caption: "first made for a Wikipedia illustration in 2004, famously revisited by Filippo Valsorda in 2013" |
+| LinkedIn/Adobe "plaintext" | LinkedIn 2012 = unsalted SHA-1; Adobe 2013 = reversible 3DES — neither plaintext | Fixed fig 14.4: Era 1 example now RockYou 2009 (32 M genuinely plaintext); LinkedIn 2012 moved to the unsalted-hash era; Adobe dropped |
+
+### Tier 3 — stale against 2026 (5)
+
+| Item | Verified how | Outcome |
+|---|---|---|
+| CFS → EEVDF | EEVDF is Linux's default since kernel 6.6 (2023) | Table row now "default 2007–2023"; prose sentence added explaining EEVDF (same vruntime ledger + explicit deadlines) |
+| Namespaces count | 8 kinds since Linux 5.6 (time namespace, 2020) | Fixed: "eight kinds — … and (since Linux 5.6) time" |
+| Lambda billing | 1 ms granularity since Dec 2020 (GCF still 100 ms) | Fixed to platform-safe "meters the bill in milliseconds of execution" |
+| "logical qubits" in 2026 | 2026 machines: hundreds+ physical, at most a few dozen error-corrected logical | Fixed: "at most a few dozen error-corrected *logical* qubits, each built from many noisy physical ones" |
+| gVisor ≠ microVM | gVisor = user-space kernel (syscall interception); Firecracker/Kata are the microVMs | Fixed insight strip: gVisor "attacks the same trade from the other side" |
+
+### Tier 4 — internal inconsistencies (6)
+
+| Item | Verified how | Outcome |
+|---|---|---|
+| "235 figures" vs "two hundred and forty" | Counted figure SVGs preceding fig-18-trace: 51+55+66+37+26 = **235** | Prose fixed to "two hundred and thirty-five"; caption's 235 was correct |
+| RAM latency 100 ns vs 60 ns | Part-I table + math callout use 60 ns (and compute with it) | Ch1 prose unified to "about sixty nanoseconds" |
+| CUBIC 2008 vs 2006 | Linux default since 2.6.19 (Nov 2006); the CUBIC paper is 2008 | Prose fixed to "(Linux's default since 2006)" — now matches the caption |
+| Cover "A visual theory" vs mastheads "A unified theory" | All five mastheads + README + package.json say "unified"; only the index `<title>` said "visual" | Unified to **"A unified theory"** (majority). **Flag:** owner may prefer "visual" — one-line change in index.html if so |
+| "Less than 150 years" (1854→2026) | 2026 − 1854 = 172 | Fixed fig 18.2 line: "172 years from beginning to here" |
+| Part III position-fix arithmetic | Haversine great-circle legs between the five stated fixes: cumulative 1,183 / 1,819 / 2,480 / 3,129 nm | All four runs replaced (were 870/1,730/2,590/3,459); each leg now computes from the printed coordinates. part-3.css comment + §4d updated |
+
+### Side effects & verification
+
+- `glossary.json` regenerated (516 → 518 terms): stale extracts ("Sally
+  Floyd", "hundred-millisecond", old C++/CUBIC definitions) refreshed; new
+  EEVDF and *Paxos Made Simple* entries; a bogus `gab` term (the
+  `<em>g<sup>ab</sup></em>` math markup in ch14) excluded via a SKIP_WORDS
+  addition in `build-glossary.js`.
+- Verification: Cloudflare-mimicking server (200 extensionless, 308 on
+  `.html`), Chromium + WebKit at 1440 + 375, all 8 pages: **0 console
+  errors, 0 external requests, 0 page h-scroll, nav 48 px**. All 11 touched
+  figures screenshot-reviewed in both engines. Anchor-id sets byte-identical
+  to HEAD in all five part files (355/346/379/226/189 ids).
+- Explicitly untouched (out of scope per owner): Little's Law framing, GCM
+  nonce caveat, ANSI-isolation critique, "3 nm", Bletchley estimate.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

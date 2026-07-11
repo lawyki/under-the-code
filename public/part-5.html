@@ -1460,7 +1460,7 @@
     <div class="insight-strip">
       <span class="insight-icon">⚙️</span>
       <p id="ch17-containers-p3" class="insight-text">
-        <strong>The MicroVM convergence.</strong> The trade between VM isolation and container speed has been narrowing. AWS Firecracker (2018), Google gVisor (2018), and Kata Containers (2018) all build "microVMs" — extremely lightweight VMs that boot in 100 ms, weigh a few megabytes, and provide near-VM isolation while preserving most of containers' speed and density. AWS Lambda runs every function invocation in a dedicated Firecracker microVM. Modern serverless platforms have effectively pushed past the container/VM dichotomy by making both fast enough that the practical difference dissolves. The deeper trajectory: as hardware virtualization extensions get cheaper and faster, the security argument for VMs over containers gets stronger, and the speed argument against VMs gets weaker. Expect the boundary between the two to keep eroding.
+        <strong>The MicroVM convergence.</strong> The trade between VM isolation and container speed has been narrowing. AWS Firecracker (2018) and Kata Containers (2018) build "microVMs" — extremely lightweight VMs that boot in 100 ms, weigh a few megabytes, and provide near-VM isolation while preserving most of containers' speed and density; Google's gVisor (2018) attacks the same trade from the other side, wrapping the container in a user-space kernel that intercepts every syscall rather than booting a VM at all. AWS Lambda runs every function invocation in a dedicated Firecracker microVM. Modern serverless platforms have effectively pushed past the container/VM dichotomy by making both fast enough that the practical difference dissolves. The deeper trajectory: as hardware virtualization extensions get cheaper and faster, the security argument for VMs over containers gets stronger, and the speed argument against VMs gets weaker. Expect the boundary between the two to keep eroding.
       </p>
     </div>
   </section>
@@ -1715,7 +1715,7 @@
       formal problem of getting <em>n</em> machines to agree on a value
       despite up to <em>f</em> of them failing. The math underneath it
       is some of the most consequential in computer science: Lamport's
-      <strong>Paxos</strong> (1989, finally clearly explained 1998),
+      <strong>Paxos</strong> (1989, finally clearly explained 2001),
       and Diego Ongaro and John Ousterhout's <span class="key-term">Raft</span>
       (2014), which was explicitly designed to be more
       understandable than Paxos and has since become the dominant
@@ -1739,8 +1739,10 @@
       holding several rounds and proposal numbers in your head
       simultaneously, and Lamport's original presentation used a parable
       about a fictional Greek parliament that, instead of clarifying
-      things, famously made the field wait nine years for the 1998
-      paper that explained the same protocol in plain language.
+      things, famously kept the paper unpublished for most of a decade
+      (submitted 1990, printed 1998, still in costume) — and the field
+      then waited until 2001 for <em>Paxos Made Simple</em>, the paper
+      that explained the same protocol in plain language.
       Raft's contribution was the same correctness with a single
       leader, sequential terms, and an explicit log — half the
       cognitive load. That is why etcd uses Raft.
@@ -1813,7 +1815,7 @@
           <text x="320" y="106" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(160,140,255,0.95)">3 of 5 acked = majority = entry "c" committed · cluster makes progress</text>
         </g>
       </svg>
-      <p id="ch17-consensus-p7" class="diagram-caption">Raft in two phases. <strong>Leader election</strong>: nodes run with randomised timeouts; the first one to time out increments the term and requests votes; with a majority it becomes leader. <strong>Log replication</strong>: the leader appends client commands to its log, sends them to followers, and once a <em>majority</em> of nodes acknowledge, the entry is committed and applied to the state machine. The protocol works correctly as long as a majority of nodes are alive and reachable — for a 5-node cluster, that means up to 2 can fail. The math is general: an N-node cluster tolerates ⌊(N-1)/2⌋ failures, which is why production Raft clusters run with 3, 5, or 7 nodes (odd numbers maximise fault tolerance for the resource cost). etcd, ZooKeeper, Consul, CockroachDB, TiDB, HashiCorp Vault — all run Raft underneath, with the leader-and-replication shape of this diagram.</p>
+      <p id="ch17-consensus-p7" class="diagram-caption">Raft in two phases. <strong>Leader election</strong>: nodes run with randomised timeouts; the first one to time out increments the term and requests votes; with a majority it becomes leader. <strong>Log replication</strong>: the leader appends client commands to its log, sends them to followers, and once a <em>majority</em> of nodes acknowledge, the entry is committed and applied to the state machine. The protocol works correctly as long as a majority of nodes are alive and reachable — for a 5-node cluster, that means up to 2 can fail. The math is general: an N-node cluster tolerates ⌊(N-1)/2⌋ failures, which is why production Raft clusters run with 3, 5, or 7 nodes (odd numbers maximise fault tolerance for the resource cost). etcd, Consul, CockroachDB, TiDB, HashiCorp Vault — all run Raft underneath, with the leader-and-replication shape of this diagram. ZooKeeper, which predates Raft, runs its own protocol — ZAB — but the shape is the same: one leader, majority acknowledgement, committed log.</p>
     </div>
 
     <h3>FLP impossibility · why this is harder than it looks</h3>
@@ -2011,7 +2013,7 @@
           <line x1="14" y1="46" x2="166" y2="46" stroke="rgba(180,80,80,0.4)"/>
 
           <text x="14" y="64" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.95)">etcd · ZooKeeper</text>
-          <text x="14" y="78" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">Raft · config-store role</text>
+          <text x="14" y="78" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">Raft / ZAB · config-store role</text>
 
           <text x="14" y="98" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.95)">Google Spanner</text>
           <text x="14" y="112" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">TrueTime · atomic clocks · GPS</text>
@@ -2291,8 +2293,8 @@
       The newer wave is <strong>serverless</strong>: write a function,
       upload it to AWS Lambda or Google Cloud Functions or Azure
       Functions, and the platform runs it on demand, scales to whatever
-      number of invocations you receive, charges you per
-      hundred-millisecond of execution, and otherwise abstracts away
+      number of invocations you receive, meters the bill in
+      milliseconds of execution, and otherwise abstracts away
       every notion of a server. The trade is sharp: serverless is
       cheap and elastic for sporadic workloads (a function called a
       thousand times per day costs cents); it is expensive and slow for
@@ -2943,7 +2945,7 @@
 
     <p id="ch18-trace-p7">
       That sentence has been the through-line of <em>Under the Code</em>
-      from the first transistor to this trace. The two hundred and forty
+      from the first transistor to this trace. The two hundred and thirty-five
       figures that came before have, in retrospect, been preparation for
       the figure above. A reader who has finished the book has, in some
       precise sense, watched a keystroke travel through their entire
@@ -3048,7 +3050,7 @@
           <rect x="0" y="0" width="640" height="60" rx="4" fill="#16132a" stroke="rgba(160,140,255,0.45)"/>
           <text x="320" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(160,140,255,0.95)" letter-spacing="0.1em">SEVEN MOMENTS · ONE CIVILIZATION</text>
           <text x="320" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">a Lincolnshire schoolteacher · a Cambridge mathematician · three physicists · two networks ·</text>
-          <text x="320" y="56" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">two cryptographers · a CERN researcher · a Helsinki student. Less than 150 years from beginning to here.</text>
+          <text x="320" y="56" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">two cryptographers · a CERN researcher · a Helsinki student. 172 years from beginning to here.</text>
         </g>
       </svg>
       <p id="ch18-civilization-p2" class="diagram-caption">Seven moments. Everything we have used in this book traces back, eventually, to a small set of decisions made by named people in named places. Boole's <em>Laws of Thought</em> in 1854 made the algebra. Turing's 1936 paper made the universal machine. Shockley, Bardeen, and Brattain's 1947 transistor made the substrate. ARPANET and UNIX both arrived in 1969 — two networks of computers, one kernel of an operating system, neither aware of the other for years. Diffie and Hellman's 1976 paper made public-key cryptography. Berners-Lee's 1989 proposal at CERN made the web. Torvalds's 1991 announcement on a Helsinki Usenet group made the kernel that runs every cloud. None of these were predictable; in retrospect, all of them were necessary. The civilization we now live inside is the cumulative consequence of these specific human acts.</p>
