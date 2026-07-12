@@ -650,6 +650,29 @@ all three edited passages confirmed rendering. Live parity verified after
 push (see below). Next pass per approved order: Part III (Ch8 Shannon–Hartley
 intuition + T1 Ch10/Ch11) — awaiting owner review of this pass first.
 
+## 4j. Pass 10 (2026-07-12): pedagogical items, Part III (Phase 2, pass 2 of 5)
+
+Approved scope: §2A Shannon–Hartley intuition (Ch8) + T1 stamp variation
+(Ch10, Ch11). Three edits in `part-3.html`.
+
+| # | Item | Edit |
+|---|---|---|
+| 1 | §2A — Shannon–Hartley mechanism (new `ch8-shannon-p12`, inside the math callout between formula and theorem statement) | The formula's shape is now read off the physics: distinguishable levels ≈ √(1+SNR) (received range √(S+N) vs noise blur √N), log₂ of that = ½ · log₂(1+SNR) bits per pulse, × 2B pulses/sec (Nyquist 1928, no affiliation claimed) — halves cancel to C = B · log₂(1+SNR). Includes why the +1 (the measuring range contains the noise). Faithful to the sphere-packing proof shape; existing theorem/coding-history text untouched. |
+| 2 | T1 — Ch10 closer box (`ch10-attacks-p9`) | Stamp "The recurring pattern." → "**State is the attack surface.**" (chapter thesis); first sentence deduplicated ("pays for each in kernel-side state that an attacker can force it to spend"); rest verbatim. |
+| 3 | T1 — Ch11 closer box (`ch11-modern-p7`) | Stamp → "**Protocols earn their shape.**" (aphorism; the body's "earned their current shape" line now reads as payoff, not echo). Body verbatim. |
+
+Stamp variety so far: Ch4 question · Ch10 thesis · Ch11 aphorism; Ch14/Ch17
+remain for their parts' passes. Anchor ids: sets are strict supersets of HEAD
+— 0 removed anywhere, exactly one added (`ch8-shannon-p12`, baked by
+`add-anchor-ids.js`); no migration needed, all stored positions resolve.
+`glossary.json` regenerated: 518 terms, 0 added/removed; `shannon` / `snr` /
+`channel capacity` definitions refreshed around the new sentence. Ledger §4g
+untouched. Verification: local Chromium + WebKit at 1440 + 375 on
+part-3/index/glossary — 0 console errors, 0 external requests, 0 h-scroll,
+nav 48 px; all three passages render. Live parity verified after push.
+Next pass per approved order: Part IV (§2B RSA correctness, §2C isolation
+enforcement, T1 Ch14) — awaiting owner review.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
