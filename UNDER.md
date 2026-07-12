@@ -673,6 +673,29 @@ nav 48 px; all three passages render. Live parity verified after push.
 Next pass per approved order: Part IV (§2B RSA correctness, §2C isolation
 enforcement, T1 Ch14) — awaiting owner review.
 
+## 4k. Pass 11 (2026-07-12): pedagogical items, Part IV (Phase 2, pass 3 of 5)
+
+Approved scope: §2B RSA correctness (Ch14), §2C isolation enforcement (Ch13),
+T1 stamp variation (Ch14). Three edits in `part-4.html`.
+
+| # | Item | Edit |
+|---|---|---|
+| 1 | §2B — RSA correctness (new `ch14-publickey-p7`, after the RSA prose ¶, before the Fig 14.8 card) | The caption's "follows from Euler's theorem… homework problem" gesture is now carried in prose, parallel to the pass-2 DH treatment: e·d ≡ 1 (mod φ(n)) ⇒ ed = 1+kφ(n); Euler gives m^φ(n) ≡ 1; so (m^e)^d = m·(m^φ(n))^k ≡ m. Closes with why the attacker's path back to d is factoring. "Eighteenth-century theorem" — no precise year claimed (Euler 1763 not verified to source). Nested-superscript rendering screenshot-checked at 1440 + 375, legible. |
+| 2 | §2C — isolation enforcement (new `ch13-acid-p8`, closing the ch13-acid section after Fig 13.7) | The levels section said what each level *permits*, never how an engine *provides* it. Added the two families: pessimistic two-phase locking (shared/exclusive, hold to commit, conflicters wait) vs MVCC (version chains + snapshots; readers never block writers). Engine placement: PostgreSQL MVCC throughout (snapshot per statement / per transaction / SSI abort layer at Serializable), InnoDB = MVCC + next-key locks closing the phantom window. `MVCC` marked as a key-term → deliberate new glossary entry; "two-phase locking"/"snapshot" left unmarked to avoid glossary noise. |
+| 3 | T1 — Ch14 closer box (`ch14-tls-pqc-p9`) | Stamp "The recurring pattern." → "**Every asymmetry has a half-life.**" Body verbatim (Caesar → RSA → ECC → lattices, migrate-before-it-fails). Stamp variety now: Ch4 question · Ch10 thesis · Ch11 aphorism · Ch14 metaphor; Ch17 remains. |
+
+Anchor ids: strict supersets of HEAD — 0 removed anywhere, 2 added
+(`ch14-publickey-p7`, `ch13-acid-p8`, baked by `add-anchor-ids.js`); no
+migration, all stored positions resolve. `glossary.json`: 518 → **519**
+(new `MVCC` entry, correctly attributed to ch13-acid first use; 0 removed).
+Ledger §4g untouched — RSA edit is consistent with the pass-7 recomputed
+Fig 14.8 numbers and touches none of them. Verification: local Chromium +
+WebKit at 1440 + 375 on part-4/index/glossary — 0 console errors, 0 external
+requests, 0 h-scroll, nav 48 px; all three passages render; both new
+paragraphs screenshot-reviewed at both widths. Live parity verified after
+push. Next pass per approved order: Part I (§2E Ch1 thinning — the only item
+with an anchor-ID migration) — awaiting owner review.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).

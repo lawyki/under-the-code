@@ -970,6 +970,29 @@
       </svg>
       <p id="ch13-acid-p7" class="diagram-caption">The isolation levels are defined by which <em>anomalies</em> they permit. Read Uncommitted (almost never used) lets you see another transaction's uncommitted changes — your transaction reads "dirty" data that may be rolled back. Read Committed (the PostgreSQL default) only shows committed data, but a row you read might be modified by another transaction before you read it again. Repeatable Read holds the rows you have already read stable, but new rows matching your filter can appear ("phantoms"). Serializable, the strictest, behaves as if every transaction ran by itself. Most production code uses Read Committed (Postgres) or Repeatable Read (MySQL InnoDB); Serializable is reserved for code where the cost of an anomaly outweighs the cost of throughput. Picking the right level is the working SQL programmer's most important concurrency decision — and one most programmers never explicitly think about, because the database default is usually adequate.</p>
     </div>
+
+    <p id="ch13-acid-p8">
+      What the standard does not say is how an engine <em>provides</em>
+      these levels, and there are two great families. The pessimistic
+      family is locking: a transaction takes shared locks on what it
+      reads and exclusive locks on what it writes, holds them until
+      commit — the discipline is called two-phase locking — and anyone
+      who would conflict simply waits. The optimistic family is
+      <span class="key-term">MVCC</span> — multi-version concurrency
+      control: a writer never overwrites a row in place but appends a new
+      version stamped with its transaction id, and every reader is handed
+      a snapshot — the set of versions visible as of one instant — so
+      readers never block writers and writers never block readers.
+      PostgreSQL is MVCC throughout: Read Committed takes a fresh
+      snapshot per statement, Repeatable Read one per transaction, and
+      Serializable adds a conflict-detection layer (serializable snapshot
+      isolation) that aborts one of any pair of transactions whose
+      overlap could not have happened in some serial order. MySQL's
+      InnoDB mixes the families — MVCC snapshots for reads, plus next-key
+      locks that close the phantom window. The row you just read while
+      another transaction was updating it made nobody wait: you were
+      reading the old version while they wrote the new one.
+    </p>
   </section>
 
   <section class="section" id="ch13-indexes">
@@ -2348,6 +2371,27 @@
       <em>n</em> back into <em>p</em> and <em>q</em>.
     </p>
 
+    <p id="ch14-publickey-p7">
+      The reason <em>d</em> undoes <em>e</em> is one line of algebra
+      resting on one eighteenth-century theorem. The exponents are chosen
+      so that <em>e</em> · <em>d</em> ≡ 1 (mod φ(<em>n</em>)), where
+      φ(<em>n</em>) = (<em>p</em>−1)(<em>q</em>−1) — which is to say,
+      <em>ed</em> = 1 + <em>k</em> · φ(<em>n</em>) for some integer
+      <em>k</em>. Euler's theorem says that
+      <em>m</em><sup>φ(<em>n</em>)</sup> ≡ 1 (mod <em>n</em>) for any
+      <em>m</em> that shares no factor with <em>n</em>. So decryption
+      computes (<em>m<sup>e</sup></em>)<sup><em>d</em></sup> =
+      <em>m</em><sup><em>ed</em></sup> =
+      <em>m</em><sup>1 + <em>k</em>φ(<em>n</em>)</sup> =
+      <em>m</em> · (<em>m</em><sup>φ(<em>n</em>)</sup>)<sup><em>k</em></sup>
+      ≡ <em>m</em> · 1<sup><em>k</em></sup> = <em>m</em>. The message
+      returns because the exponents were built to close the algebra — and
+      an attacker who wants to build <em>d</em> the same way needs
+      φ(<em>n</em>), which requires knowing <em>p</em> and <em>q</em>,
+      which is factoring. The card below runs the whole protocol in
+      honest small numbers.
+    </p>
+
     <div class="diagram-card" id="fig-14-8">
       <div class="diagram-label">Fig 14.8 — RSA worked through · p=17, q=23</div>
       <svg viewBox="0 0 720 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-21"><title id="svgt-part4-21">Fig 14.8 — RSA worked through · p=17, q=23</title>
@@ -2900,7 +2944,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🔁</span>
       <p id="ch14-tls-pqc-p9" class="insight-text">
-        <strong>The recurring pattern.</strong> Every cryptographic primitive in this chapter rests on a computational asymmetry that was, at the time of design, believed hard to reverse. Caesar's cipher rested on the belief that letter-pattern analysis was beyond an adversary's resources. RSA rests on factoring being hard. ECC rests on elliptic-curve discrete log being hard. Post-quantum schemes rest on lattice problems being hard. Each generation's "hard" eventually becomes the next generation's "easy" — through algorithmic insight (Shor for factoring), through hardware (rainbow tables, then GPUs, then quantum computers), or through deeper mathematical understanding. The resilience of the system as a whole comes not from any single primitive being unbreakable but from the discipline of always migrating to the next primitive before the current one fails. Cryptography is, in this view, a permanent moving target — and the discipline of cryptographic engineering is the discipline of keeping ahead of whoever is computing more cleverly than you.
+        <strong>Every asymmetry has a half-life.</strong> Every cryptographic primitive in this chapter rests on a computational asymmetry that was, at the time of design, believed hard to reverse. Caesar's cipher rested on the belief that letter-pattern analysis was beyond an adversary's resources. RSA rests on factoring being hard. ECC rests on elliptic-curve discrete log being hard. Post-quantum schemes rest on lattice problems being hard. Each generation's "hard" eventually becomes the next generation's "easy" — through algorithmic insight (Shor for factoring), through hardware (rainbow tables, then GPUs, then quantum computers), or through deeper mathematical understanding. The resilience of the system as a whole comes not from any single primitive being unbreakable but from the discipline of always migrating to the next primitive before the current one fails. Cryptography is, in this view, a permanent moving target — and the discipline of cryptographic engineering is the discipline of keeping ahead of whoever is computing more cleverly than you.
       </p>
     </div>
 
