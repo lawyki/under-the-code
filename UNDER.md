@@ -585,6 +585,28 @@ verbatim (vertical rhythm tightened so the whole hero fits a 1440×900 fold).
   screenshot-reviewed in both engines; resume card still injects after
   `.cover`; only the intended font files load.
 
+**Iteration 2 (owner-approved direction, same day):** the exhibit became an
+**ascending shelf** — the five volumes stand on one gold shelf line, each
+taller than the last (I 214 → V 286 units, common baseline), and the thread
+now *climbs* from a low transistor to a globe in orbit: "from silicon to the
+cloud, one layer at a time" drawn literally. Chapter labels moved out of the
+panels onto **museum placards under the shelf** (DM Mono gold, curator's
+voice), so a hovered volume lifts off the shelf while its placard stays on
+the wall. Each panel gained its part's signature motif, quoted from the
+shipped identity furniture: II a **sprocket rail** (dots + dashed separator,
+the greenbar continuous-form edge); III a dashed salmon **route arc**
+(`--cr-route #e07a3f`) with one lit waypoint of three (the voyage ahead);
+IV a **declassifying redaction row** (one solid bar, one hollow) above the
+stamped numeral; V the **five-part constellation fully meshed** (violet/teal
+nodes, the End-of-Book "quorum reached" state); I stays bare — restraint is
+the home grammar. Port beads now **bloom once** (scale pop, `transform-box:
+fill-box`) on the same arc-length clock as the ignitions (fractions
+0.136/0.325/0.513/0.701/0.889, delays 0.72–2.23s on a 2s ride from 0.45s).
+Mobile stack: bar heights ascend 58→78px (layers accumulate) and bar II
+carries the sprocket rail as a CSS dot column. Full verification matrix
+re-run, identical results (0/0/0, CLS 0 at 1440/375/320, reduced-motion
+composed, hover/focus in both engines).
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
