@@ -607,6 +607,21 @@ carries the sprocket rail as a CSS dot column. Full verification matrix
 re-run, identical results (0/0/0, CLS 0 at 1440/375/320, reduced-motion
 composed, hover/focus in both engines).
 
+**Iteration 3 (owner direction: keep the panels, drop the terminals):** the
+SAND transistor and CIVILIZATION globe are gone; the exhibit is now the five
+volumes alone. The thread runs **bead to bead** — it starts at volume I's
+port and ends at volume V's port (ports carry small convex offsets, +26/+32/
++34/+32/+26 from panel tops, so the climb gently accelerates instead of
+being a rigid straight line). The packet spawns on bead I and settles into
+bead V (1.5s paced ride from 0.45s; ignition delays 0.45/0.82/1.20/1.57/
+1.95s at arc fractions 0/0.249/0.499/0.749/1). ViewBox cropped to the shelf
+(962×346), render width 900px — the panels gain ~10% presence. Mobile: the
+SAND/CIVILIZATION caps removed; the gold rail now spans exactly from bar I's
+bead to bar V's bead. Full verification matrix re-run (Chromium + WebKit,
+1440/900/820/375/320): 0 console errors, 0 external requests, 0 h-scroll,
+CLS 0 at 1440/375/320, reduced-motion composed, hover/focus verified,
+early-frame choreography intact.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).

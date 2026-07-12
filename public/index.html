@@ -103,7 +103,7 @@
      rests. Reduced motion presents the composed state (base values are the
      lit state; the packet is hidden). */
   .cover-exhibit { position: relative; margin: 18px 0 8px; width: 100%; display: flex; justify-content: center; }
-  .cover-exhibit-svg { width: min(100%, 1000px); height: auto; display: block; }
+  .cover-exhibit-svg { width: min(100%, 900px); height: auto; display: block; }
 
   .exh-vol {
     cursor: pointer; outline: none;
@@ -131,18 +131,17 @@
 
   /* ignition: each volume's identity core lights as the packet passes.
      Delays are computed from the packet's paced motion (arc-length fractions
-     0.136 / 0.325 / 0.513 / 0.701 / 0.889 on a 2s ride starting at 0.45s);
-     the port bead blooms once on the same clock. */
+     0 / 0.249 / 0.499 / 0.749 / 1 on a 1.5s bead-to-bead ride starting at
+     0.45s); the port bead blooms once on the same clock. */
   .vol-id { animation: exIgnite 0.5s ease-out both; }
   .vol-bead { transform-box: fill-box; transform-origin: center; animation: exBloom 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
-  .vd-1, .vd-1 .vol-bead { animation-delay: 0.72s; }
-  .vd-2, .vd-2 .vol-bead { animation-delay: 1.10s; }
-  .vd-3, .vd-3 .vol-bead { animation-delay: 1.48s; }
-  .vd-4, .vd-4 .vol-bead { animation-delay: 1.85s; }
-  .vd-5, .vd-5 .vol-bead { animation-delay: 2.23s; }
-  .ex-globe { animation: exIgnite 0.6s ease-out 2.4s both; }
+  .vd-1, .vd-1 .vol-bead { animation-delay: 0.45s; }
+  .vd-2, .vd-2 .vol-bead { animation-delay: 0.82s; }
+  .vd-3, .vd-3 .vol-bead { animation-delay: 1.20s; }
+  .vd-4, .vd-4 .vol-bead { animation-delay: 1.57s; }
+  .vd-5, .vd-5 .vol-bead { animation-delay: 1.95s; }
 
-  .ex-thread { stroke-dasharray: 1; stroke-dashoffset: 0; animation: exDraw 2s linear 0.45s both; pointer-events: none; }
+  .ex-thread { stroke-dasharray: 1; stroke-dashoffset: 0; animation: exDraw 1.5s linear 0.45s both; pointer-events: none; }
   .ex-packet { pointer-events: none; }
 
   @keyframes exRise { from { opacity: 0; transform: translateY(16px); } }
@@ -163,17 +162,11 @@
     }
     /* the thread, vertical: sand above, civilization below */
     .exh-stack::before {
-      content: ''; position: absolute; left: 15px; top: 22px; bottom: 22px;
+      content: ''; position: absolute; left: 15px; top: 29px; bottom: 39px;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(212, 168, 83, 0.5) 6%, rgba(212, 168, 83, 0.5) 94%, transparent);
+      background: linear-gradient(to bottom, transparent, rgba(212, 168, 83, 0.5) 4%, rgba(212, 168, 83, 0.5) 96%, transparent);
       pointer-events: none;
     }
-    .exh-cap {
-      display: flex; align-items: center; gap: 12px; padding-left: 12px;
-      font-family: var(--mono); font-size: 9px; letter-spacing: 0.3em;
-      color: rgba(212, 168, 83, 0.55);
-    }
-    .exh-cap-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(212, 168, 83, 0.85); flex: none; }
     .stx {
       display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px;
       margin-left: 34px; padding: 10px 16px; min-height: var(--stx-h, 60px);
@@ -229,7 +222,7 @@
      every base value here is the composed, lit state. */
   @media (prefers-reduced-motion: reduce) {
     .ex-packet { display: none; }
-    .exh-vol, .vol-id, .vol-bead, .ex-globe, .ex-thread, .stx { animation: none; }
+    .exh-vol, .vol-id, .vol-bead, .ex-thread, .stx { animation: none; }
   }
 
 
@@ -397,7 +390,7 @@
        sand to civilization. Panels draw their part-N.css tokens verbatim; the
        thread, terminals and museum labels stay in the spine's gold + DM Mono. -->
   <div class="cover-exhibit">
-    <svg class="cover-exhibit-svg" width="1180" height="376" viewBox="0 0 1180 376" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five volumes of Under the Code on one shelf, each taller than the last, joined by one gold thread climbing from sand to civilization. Each volume opens its part.">
+    <svg class="cover-exhibit-svg" width="962" height="346" viewBox="100 30 962 346" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="The five volumes of Under the Code on one shelf, each taller than the last, joined by one gold thread. Each volume opens its part.">
       <defs>
         <radialGradient id="exG1" cx="0.5" cy="0.5" r="0.5">
           <stop offset="0" stop-color="#d4a853" stop-opacity="0.14"/>
@@ -440,21 +433,6 @@
         <text x="957" y="357" text-anchor="middle" font-family="DM Mono" font-size="10" letter-spacing="0.2em" fill="rgba(212,168,83,0.72)">CH 16–18</text>
       </g>
 
-      <!-- terminal: sand, at the floor -->
-      <g aria-hidden="true" transform="translate(52,206)" opacity="0.92">
-        <g transform="scale(0.52)">
-          <line x1="-58" y1="0" x2="58" y2="0" stroke="rgba(212,168,83,0.95)" stroke-width="3"/>
-          <line x1="0" y1="-58" x2="0" y2="-12" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-          <line x1="-26" y1="-58" x2="26" y2="-58" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-          <line x1="-58" y1="0" x2="-58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
-          <line x1="58" y1="0" x2="58" y2="58" stroke="rgba(212,168,83,0.75)" stroke-width="2"/>
-          <circle cx="-58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
-          <circle cx="58" cy="58" r="3.5" fill="rgba(212,168,83,0.85)"/>
-          <circle cx="0" cy="-32" r="5" fill="rgba(150,216,150,0.95)"/>
-        </g>
-        <text y="54" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)" letter-spacing="0.28em">SAND</text>
-      </g>
-
       <!-- I — home grammar (the shortest volume: the origin) -->
       <a class="exh-vol vol-1" href="part-1" aria-label="Part I — The Physical World. Chapters 1 to 3, and the Bridge.">
         <rect x="120" y="118" width="170" height="214" rx="8" fill="#111111"/>
@@ -479,7 +457,7 @@
         <line x1="331" y1="104" x2="331" y2="328" stroke="rgba(132,255,178,0.14)" stroke-width="1" stroke-dasharray="3 4"/>
         <rect class="vol-frame" x="308.5" y="100.5" width="169" height="231" rx="3" fill="none"/>
         <g class="vol-id vd-2">
-          <circle class="vol-bead" cx="393" cy="126" r="5" fill="#84ffb2"/>
+          <circle class="vol-bead" cx="393" cy="132" r="5" fill="#84ffb2"/>
           <text x="393" y="252" text-anchor="middle" font-family="IBM Plex Mono" font-weight="600" font-size="44" fill="#84ffb2">II</text>
         </g>
         <text x="393" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-weight="600" font-size="12" letter-spacing="0.02em" fill="#dce8de">THE SOFTWARE LAYER</text>
@@ -496,7 +474,7 @@
         <circle cx="648" cy="150" r="2.5" fill="none" stroke="#4fc4e6" stroke-opacity="0.7"/>
         <rect class="vol-frame" x="496.5" y="82.5" width="169" height="249" rx="2" fill="none"/>
         <g class="vol-id vd-3">
-          <circle class="vol-bead" cx="581" cy="108" r="5" fill="#4fc4e6"/>
+          <circle class="vol-bead" cx="581" cy="116" r="5" fill="#4fc4e6"/>
           <text x="581" y="252" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="46" fill="#4fc4e6">III</text>
         </g>
         <text x="581" y="300" text-anchor="middle" font-family="Space Grotesk" font-weight="500" font-size="14.5" fill="#e8f0f4">The Network</text>
@@ -510,7 +488,7 @@
         <rect x="774.5" y="114.5" width="29" height="7" rx="1" fill="none" stroke="rgba(230,217,189,0.38)"/>
         <rect class="vol-frame" x="684.5" y="64.5" width="169" height="267" rx="2" fill="none"/>
         <g class="vol-id vd-4">
-          <circle class="vol-bead" cx="769" cy="90" r="5" fill="#cf8d78"/>
+          <circle class="vol-bead" cx="769" cy="96" r="5" fill="#cf8d78"/>
           <g transform="rotate(-2 769 237)">
             <rect x="735" y="210" width="68" height="54" rx="2" fill="none" stroke="rgba(184,55,47,0.6)" stroke-width="1.5"/>
             <text x="769" y="252" text-anchor="middle" font-family="Fraunces" font-weight="600" font-size="42" fill="#cf8d78">IV</text>
@@ -553,37 +531,18 @@
       </a>
 
       <!-- the thread: climbs once through all five worlds -->
-      <path class="ex-thread" d="M 84 206 C 104.2 195.7, 153.5 157.3, 205 144 C 256.5 130.7, 330.3 132, 393 126 C 455.7 120, 518.3 114, 581 108 C 643.7 102, 706.3 96, 769 90 C 831.7 84, 907.2 76, 957 72 C 1006.8 68, 1049.5 67, 1068 66" pathLength="1" fill="none" stroke="#d4a853" stroke-opacity="0.5" stroke-width="1.5"/>
+      <path class="ex-thread" d="M 205 144 C 236.3 142, 330.3 136.7, 393 132 C 455.7 127.3, 518.3 122, 581 116 C 643.7 110, 706.3 103.3, 769 96 C 831.7 88.7, 925.7 76, 957 72" pathLength="1" fill="none" stroke="#d4a853" stroke-opacity="0.5" stroke-width="1.5"/>
 
       <!-- the packet: rides the climb once, then settles into the globe -->
       <circle class="ex-packet" r="9" fill="url(#exPk)" opacity="0">
-        <animateMotion begin="0.45s" dur="2s" fill="freeze" path="M 84 206 C 104.2 195.7, 153.5 157.3, 205 144 C 256.5 130.7, 330.3 132, 393 126 C 455.7 120, 518.3 114, 581 108 C 643.7 102, 706.3 96, 769 90 C 831.7 84, 907.2 76, 957 72 C 1006.8 68, 1049.5 67, 1068 66"/>
-        <animate attributeName="opacity" begin="0.45s" dur="2s" values="0;1;1;0" keyTimes="0;0.04;0.9;1" fill="freeze"/>
+        <animateMotion begin="0.45s" dur="1.5s" fill="freeze" path="M 205 144 C 236.3 142, 330.3 136.7, 393 132 C 455.7 127.3, 518.3 122, 581 116 C 643.7 110, 706.3 103.3, 769 96 C 831.7 88.7, 925.7 76, 957 72"/>
+        <animate attributeName="opacity" begin="0.45s" dur="1.5s" values="0;1;1;0" keyTimes="0;0.05;0.88;1" fill="freeze"/>
       </circle>
 
-      <!-- terminal: civilization, in orbit -->
-      <g class="ex-globe" aria-hidden="true" transform="translate(1108,64)">
-        <g transform="scale(0.5)">
-          <circle cx="0" cy="0" r="68" fill="none" stroke="rgba(212,168,83,0.95)" stroke-width="2.5"/>
-          <ellipse cx="0" cy="0" rx="68" ry="22" fill="none" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
-          <ellipse cx="0" cy="0" rx="68" ry="46" fill="none" stroke="rgba(212,168,83,0.30)" stroke-width="1"/>
-          <line x1="0" y1="-68" x2="0" y2="68" stroke="rgba(212,168,83,0.45)" stroke-width="1"/>
-          <circle cx="-90" cy="-58" r="4" fill="rgba(212,168,83,0.9)"/>
-          <circle cx="92" cy="-62" r="4" fill="rgba(212,168,83,0.9)"/>
-          <circle cx="92" cy="62" r="4" fill="rgba(212,168,83,0.9)"/>
-          <circle cx="-90" cy="64" r="4" fill="rgba(212,168,83,0.9)"/>
-          <line x1="-66" y1="-32" x2="-90" y2="-58" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-          <line x1="66" y1="-30" x2="92" y2="-62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-          <line x1="66" y1="32" x2="92" y2="62" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-          <line x1="-66" y1="36" x2="-90" y2="64" stroke="rgba(212,168,83,0.4)" stroke-width="1"/>
-        </g>
-        <text y="56" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)" letter-spacing="0.22em">CIVILIZATION</text>
-      </g>
     </svg>
 
     <!-- the same shelf, stacked, below 880px -->
     <div class="exh-stack">
-      <div class="exh-cap"><span class="exh-cap-dot"></span>SAND</div>
       <a class="stx stx-1" href="part-1" aria-label="Part I — The Physical World. Chapters 1 to 3, and the Bridge.">
         <span class="stx-num">I</span>
         <span class="stx-body"><span class="stx-name">The Physical World</span><span class="stx-ch">CH 1–3 · BRIDGE</span></span>
@@ -609,7 +568,6 @@
         <span class="stx-body"><span class="stx-name">The Modern Machine</span><span class="stx-ch">CH 16–18</span></span>
         <span class="stx-arrow">→</span>
       </a>
-      <div class="exh-cap"><span class="exh-cap-dot"></span>CIVILIZATION</div>
     </div>
   </div>
 
