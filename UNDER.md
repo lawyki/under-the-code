@@ -622,6 +622,34 @@ bead to bar V's bead. Full verification matrix re-run (Chromium + WebKit,
 CLS 0 at 1440/375/320, reduced-motion composed, hover/focus verified,
 early-frame choreography intact.
 
+## 4i. Pass 9 (2026-07-12): pedagogical items, Part II (Phase 2, pass 1 of 5)
+
+First execution pass of the owner-approved pedagogical plan (survey delivered
+2026-07-12; approved scope = surgical items, no chapter reordering). The pass
+brief raised a chapter 6⇄7 sequence swap; queried against the written proposal
+(which concluded the 18-chapter spine is sound) and the owner confirmed
+**items only, no swap**. Three register-neutral prose edits in `part-2.html`,
+all inside existing elements: anchor-id sets verified **byte-identical to
+HEAD** in all five parts (355/346/379/226/189 ids) — no ID migration needed,
+every stored `/api/position` anchor resolves unchanged.
+
+| # | Item | Edit |
+|---|---|---|
+| 1 | §2D — Little's Law mechanism (`ch4-scheduling-p10`) | The wait-time explosion is now carried, not asserted: the only slack absorbing arrival bursts is the spare capacity μ − λ; as λ climbs toward μ, backlog compounds between bursts and W grows like 1/(μ − λ) — the hyperbola Fig 4.6 plots. All existing claims (95%→99% ≈ 10× latency) untouched; the pass-7 "Little's Law framing out of scope" decision is respected in substance — no prior claim altered, mechanism added. |
+| 2 | T1 — Ch4 closer box (`ch4-security-p18`) | The "**The recurring pattern.**" stamp (5 near-identical instances book-wide: Ch4/10/11/14/17) varied at its first instance — recast as the question every layer answers ("What is less-trusted code allowed to do here — and what stops it?"). Body substance kept verbatim in spirit; remaining four instances get their own shapes in their parts' passes. |
+| 3 | T2 — Ch7 sharp-edges coda (`ch7-datasci-p7`) | "Python's three sharp edges" (same enumerated-wounds template as Ch6's "Where C++ still bleeds") reframed around the single worked footgun: pickle as a stack-machine interpreter whose objects can execute on construction — mechanism now carried — with `eval`/`exec` and the `requestz` typosquat folded in as the same **data-as-code** property (pattern name preserved for the Ch15 tie). All three facts survive. Ch6's box deliberately keeps the enumerated shape; Ch5 verified to have no such coda (the proposal over-attributed) — no-op. |
+
+Side effects: `glossary.json` regenerated — 518 terms, 0 added / 0 removed;
+one definition (`exec`) refreshed to the new Ch7 sentence. Ledger §4g
+untouched — no edit intersects any of the 29 corrections.
+
+Verification (local, Cloudflare-mimicking server: extensionless 200, `.html`
+308): Chromium + WebKit at 1440 + 375 on part-2 / index / glossary —
+0 console errors, 0 external requests, 0 page h-scroll, `.book-nav` 48 px;
+all three edited passages confirmed rendering. Live parity verified after
+push (see below). Next pass per approved order: Part III (Ch8 Shannon–Hartley
+intuition + T1 Ch10/Ch11) — awaiting owner review of this pass first.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
