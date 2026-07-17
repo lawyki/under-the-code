@@ -743,6 +743,40 @@ flow screenshot-reviewed at 1440. Live parity + live migration restore
 verified after push. Remaining pass: Part V (T1 Ch17) — awaiting owner
 review.
 
+## 4m. Pass 13 (2026-07-12): pedagogical items, Part V — Phase 2 complete
+
+Final approved item: T1 stamp variation, Ch17. One edit in `part-5.html`
+(`ch17-microservices-p6`): "The recurring pattern." → "**Ask what the
+abstraction still charges.**" — an imperative, matching the box's cost
+ledger; body verbatim. Zero "The recurring pattern." stamps now remain
+book-wide; the five closers each carry their own rhetorical shape:
+
+| Ch | Stamp | Shape |
+|---|---|---|
+| 4 | The question every layer answers. | question |
+| 10 | State is the attack surface. | thesis |
+| 11 | Protocols earn their shape. | aphorism |
+| 14 | Every asymmetry has a half-life. | metaphor |
+| 17 | Ask what the abstraction still charges. | imperative |
+
+Anchor-id sets byte-identical to HEAD in all five parts; `glossary.json`
+regenerated — byte-stable (519 terms, no entry changes). Ledger §4g
+untouched. Verified local + live, Chromium + WebKit at 1440 + 375: 0 console
+errors, 0 external requests, 0 h-scroll, nav 48 px.
+
+**Phase 2 exit state.** All approved items from the 2026-07-12 pedagogical
+survey are executed and live (passes 9–13, commits 6a4485c → this):
+§2A Shannon–Hartley mechanism (Ch8) · §2B RSA correctness (Ch14) ·
+§2C isolation enforcement (Ch13) · §2D Little's Law mechanism (Ch4) ·
+§2E Ch1 thinned to preview altitude (with the `ch1-kernel-p9` →
+`ch1-kernel-p8` ANCHOR_ALIASES migration in book.js, functionally verified
+live in both engines) · T1 all five instances varied · T2 Ch7 reframed
+(Ch6 deliberately kept enumerated; Ch5 had no such coda). Chapter order
+unchanged throughout (a 6⇄7 swap raised in a pass brief was queried and
+declined by the owner). The 29 §4g corrections survive in substance;
+glossary net 518 → 519 (+`everything is a file`, +`MVCC`, −plural
+`page tables`); no figure added or removed — all count claims hold.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
