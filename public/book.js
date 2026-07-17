@@ -447,8 +447,16 @@
     };
   }
 
+  // Anchors that later prose edits merged away. Stored positions (server +
+  // localStorage) may still carry them; resolve to the surviving paragraph
+  // so no reader loses their place.
+  const ANCHOR_ALIASES = {
+    'ch1-kernel-p9': 'ch1-kernel-p8'
+  };
+
   function scrollToAnchor(anchor, fraction, smooth) {
-    const el = document.getElementById(anchor);
+    const el = document.getElementById(anchor) ||
+               document.getElementById(ANCHOR_ALIASES[anchor] || '');
     if (!el) return false;
     function apply(behavior) {
       const r = el.getBoundingClientRect();

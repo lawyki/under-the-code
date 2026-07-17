@@ -696,6 +696,53 @@ paragraphs screenshot-reviewed at both widths. Live parity verified after
 push. Next pass per approved order: Part I (§2E Ch1 thinning — the only item
 with an anchor-ID migration) — awaiting owner review.
 
+## 4l. Pass 12 (2026-07-12): pedagogical items, Part I (Phase 2, pass 4 of 5)
+
+Approved scope: §2E — Chapter 1 thinned to preview altitude. Ch1 previewed the
+kernel/syscall/virtual-memory material at near-full depth, which the Bridge
+(silicon view) and Ch4 (code view) then teach again — triple-telling. The
+front/middle of Ch1 (Turing → transistor → Von Neumann → instruction cycle →
+memory hierarchy/caching) is untouched; both figures (1.13, 1.14), both
+insight strips, and all captions are untouched — **no figure removed, all
+figure-count claims (242/235) remain true**. Net prose: −443 / +332 words.
+
+| # | Edit | Detail |
+|---|---|---|
+| 1 | `ch1-kernel-p6` thinned in place (id kept) | The full syscall path walk (Python→fopen→syscall→state save→Ring 0 entry→permission check) compressed to name-the-mechanism + two-sided seam: silicon half → the Bridge, kernel half → Ch4. `<em>file descriptor</em>` kept. p7 ("It asked the kernel, the kernel decided") kept verbatim. |
+| 2 | Syscall `code-block` removed (id-less — no anchor impact) | Its 7-step CPU-level walk is verbatim the Bridge's Fig BR.2 dispatch story. |
+| 3 | UNIX ¶s merged: `ch1-kernel-p8` rewritten, `ch1-kernel-p9` **removed** | Everything-is-a-file creed + lineage compressed into one paragraph under p8's id, closing with seams to Ch4 (kernel as program) and Ch5 (the language). |
+| 4 | `ch1-memory-p9` thinned in place (id kept) | Page-table/4KB/swap mechanics compressed to MMU-names-the-hardware + two-sided seam (Bridge walker/TLB/fault; Ch4 page-faults-as-features/mmap/COW). `ch1-memory-p8` (virtual-address fiction) and p10 (isolation/flexibility/protection) kept verbatim. |
+
+**Anchor-ID migration (the first real one).** Exactly one id removed:
+`ch1-kernel-p9`. `book.js` gains an `ANCHOR_ALIASES` map consulted in
+`scrollToAnchor` — the single resolve point through which all three restore
+paths flow (sessionStorage handoff, local restore, sync chip). A stored
+position at the dead anchor resolves to `ch1-kernel-p8` with its fraction
+preserved (drift bounded by one merged paragraph — same guarantee class as
+pass-6 hero anchoring). Functionally tested in Chromium **and** WebKit:
+seeded pending-offset at `ch1-kernel-p9` fraction 0.5 → restore lands with
+p8 midpoint at the reading line, **0 px delta** in both engines. The line-606
+proximity lookup is null-guarded (worst case: sync chip shows instead of
+being suppressed — benign). Thinned-in-place paragraphs keep their ids, so
+positions there survive without migration.
+
+Cross-reference audit: every "Chapter 1 …" back-reference in all five parts
+checked against the surviving prose — all still true (VM-as-fiction for the
+Bridge/Ch4, registers/memory-hierarchy for Ch3/Ch13, privilege rings for
+Ch15's Dirty COW context, speculation §04 for Ch16). No link targets the
+removed id anywhere. `glossary.json`: 519 → 519 — gained `everything is a
+file` (the reworded creed now extracts; section ch1-kernel), lost the plural
+`page tables` (its defining sentence was the removed mechanics; the singular
+`page table` entry, home ch4-vm, survives, and the plural's only marked
+occurrence in the book is the new ch1 sentence itself). Ledger §4g untouched.
+
+Verification: local Chromium + WebKit at 1440 + 375 on part-1/index/glossary
+— 0 console errors, 0 external requests, 0 h-scroll, nav 48 px; all kept/new
+passages render; removed id + code block confirmed absent; thinned section
+flow screenshot-reviewed at 1440. Live parity + live migration restore
+verified after push. Remaining pass: Part V (T1 Ch17) — awaiting owner
+review.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).

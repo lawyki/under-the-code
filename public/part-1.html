@@ -1726,12 +1726,15 @@
     <p id="ch1-kernel-p6">
       When your Python script opens a file, it doesn't access the disk directly. Your
       program — running in Ring 3 — has no permission to talk to the disk controller.
-      Instead, it calls <code>open()</code> in Python, which calls <code>fopen()</code>
-      in the C library, which calls a special CPU instruction (<code>syscall</code> on
-      modern x86-64) that triggers a hardware exception. The CPU saves the program's
-      state, switches to Ring 0, and jumps to a kernel entry point. The kernel then
-      checks whether your process has permission to read that file, finds it on disk,
-      and returns a numeric handle (a <em>file descriptor</em>) to your program.
+      Instead it asks: <code>open()</code> in Python calls <code>fopen()</code> in the
+      C library, which executes the one instruction whose whole job is to cross the
+      boundary — the system call. The CPU switches to Ring 0 at an entry point the
+      kernel registered in advance, the kernel checks permission and does the work,
+      and your program gets back a numeric handle (a <em>file descriptor</em>). What
+      the silicon must provide for that crossing to be safe — the trap, the saved
+      state, the one door user code cannot re-aim — is the story of the Bridge that
+      closes this Part. What the kernel does with the request once it arrives is
+      Chapter 4's.
     </p>
 
     <p id="ch1-kernel-p7">
@@ -1742,44 +1745,20 @@
       by hardware-enforced rules.
     </p>
 
-    <div class="code-block">
-      <span class="code-lang">C → kernel</span>
-<pre><span class="cm">// What you write in C:</span>
-<span class="nm">FILE</span> *f = <span class="kw">fopen</span>(<span class="st">"data.csv"</span>, <span class="st">"r"</span>);
-
-<span class="cm">// What the C library does internally:</span>
-<span class="nm">int</span> fd = <span class="kw">syscall</span>(<span class="nm">SYS_open</span>, <span class="st">"data.csv"</span>, <span class="nm">O_RDONLY</span>, <span class="st">0</span>);
-
-<span class="cm">// What happens at the CPU level:</span>
-<span class="cm">//   1. The syscall instruction triggers a switch from Ring 3 to Ring 0</span>
-<span class="cm">//   2. The kernel reads the syscall number (SYS_open == 2 on Linux)</span>
-<span class="cm">//   3. It dispatches to sys_open() inside the kernel</span>
-<span class="cm">//   4. sys_open checks process permissions against file ownership</span>
-<span class="cm">//   5. It walks the filesystem (directory tree) to find the file</span>
-<span class="cm">//   6. It allocates a file descriptor in this process's table</span>
-<span class="cm">//   7. It switches back to Ring 3 and returns the descriptor (e.g. 3)</span>
-<span class="cm">//</span>
-<span class="cm">// Your program sees: fd == 3. It never touched the disk hardware.</span></pre>
-    </div>
-
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system
-      called UNIX. Its design was austere and elegant: <strong>everything is a file</strong>.
-      A regular file is a file. A keyboard is a file. A network connection is a file.
-      A running process exposes a directory of files describing it. All of them accessed
-      through the same system call interface: open, read, write, close.
-    </p>
-
-    <p id="ch1-kernel-p9">
-      UNIX became, directly or indirectly, the ancestor of nearly every operating system
-      in current use. Linux is a UNIX-like kernel written from scratch by Linus Torvalds
-      in 1991. macOS uses a kernel called XNU, derived from a hybrid of Mach and BSD
-      (a UNIX descendant). iOS and Android are both built on UNIX-derived kernels. Even
-      Windows, originally not UNIX-based, now ships with a Linux subsystem. The architectural
-      ideas in UNIX — processes, file descriptors, the system call interface — define
-      what an operating system <em>is</em>.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating
+      system called UNIX, on a creed austere enough to fit four words:
+      <strong>everything is a file</strong> — the keyboard, the network connection,
+      the running process, all reached through the same few calls. UNIX became,
+      directly or indirectly, the ancestor of nearly every operating system in
+      current use: Linux, written from scratch by Linus Torvalds in 1991; macOS's
+      XNU; iOS and Android; even Windows now ships a Linux subsystem. The
+      architectural ideas it introduced — processes, file descriptors, the system
+      call interface — define what an operating system <em>is</em>. <a href="part-2#ch4">Chapter 4</a>
+      opens the kernel as a program; <a href="part-2#ch5">Chapter 5</a> tells the
+      story of the language it is written in.
     </p>
 
     <div class="insight-strip">
@@ -1932,12 +1911,14 @@
     </p>
 
     <p id="ch1-memory-p9">
-      The CPU's <strong>Memory Management Unit</strong> (MMU), guided by tables that
-      the kernel maintains, translates these virtual addresses to physical RAM addresses
-      every time a program reads or writes memory. The translation tables — called
-      <em>page tables</em> — divide memory into 4-kilobyte chunks called <em>pages</em>
-      and map each virtual page to either a physical page in RAM or to a location on
-      disk (if RAM is full and the page has been swapped out).
+      Between the CPU and the RAM sits a dedicated piece of hardware — the
+      <strong>Memory Management Unit</strong> (MMU) — that translates every virtual
+      address to a physical one at the moment of access, guided by <em>page tables</em>
+      the kernel maintains. That one sentence hides an entire machine. The silicon
+      half — the walker, the translation cache, the fault that fires when a page
+      isn't there — is shown by the Bridge that closes this Part. The software
+      half — page faults used as features, files mapped into memory, a fork that
+      copies nothing — belongs to Chapter 4.
     </p>
 
     <p id="ch1-memory-p10">
