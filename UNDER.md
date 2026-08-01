@@ -867,6 +867,93 @@ count 520 with `doping` (the count-519 first read was the documented 1-day
 `stale-while-revalidate` edge cache, since revalidated). **STOP for owner review**
 before Part II — the Phase-2 gate rhythm.
 
+### Pass-14 verification (2026-08-01, second model, commit `081d2f8`)
+
+Full audit of Pass 14 (which had been executed by a weaker model): all 18
+rewrites re-judged against the Ch7 pickle-coda bar, the cleared two-thirds
+re-read, both accuracy claims re-verified. Method mirrored the pass itself:
+deep read plus an independent 13-agent workflow (6 author-voice judges over
+the rewrites, 4 fresh readers over the cleared spans, 3 fact/figure
+verifiers); every flag adjudicated by the verifying model, several declined.
+
+**Rewrites: 12 of 18 kept verbatim** (2, 4, 5, 7, 9–13, 15, 17, 18 — the NaN
+pair, the doping and field-effect passages, and the kernel-sharing close are
+genuinely at the bar). **Six re-carried:**
+
+| # | Item | Why |
+|---|---|---|
+| 1 | `ch1-cpu-p3` caption | "The diagonal hand-off" — Fig 1.9 contains no diagonal (four stages in one row, rectangular loop); "diagonal" is Fig 1.11's pipeline signature. → "The cycle never stops…" (p2 kept verbatim) |
+| 3 | `ch1-context-p8` | **Fact:** "the day's rotor wiring" — rotor wiring was fixed at manufacture and known to Bletchley; the daily secrets were settings (the Bombe's chains were plugboard hypotheses per rotor position). → "the day's secret settings" |
+| 6 | `ch1-kernel-p4` | "The trick that made sharing pay off is this:" — zero-content announcement scaffold. → "…is timing:" |
+| 8 | `ch2-binary-p3` | "Here is the mechanism." — literal announcement, double wind-up on "that is where it lost." Cut; fused with a colon |
+| 14 | `ch2-float-p9` | "and it does so for a reason:" scaffold + thesis stated twice ("Both keep the computation moving" repeated the opening). Cut both; sign-bit clause repositioned ("and the sign bit says which direction"). p10 kept verbatim |
+| 16 | `ch3-isa-p6` | "recall from Fig 3.1 that an x86 add can run anywhere from two bytes to a dozen" — the figure shows one 7-byte add, no range. → figure cited for what it shows; range kept as prose fact (2 bytes `01 C8` — the book's own Fig 1.10 aside — to ~12 with REX+SIB+disp32+imm32) |
+
+**Accuracy claims: both stand.** Rosetta/TSO — x86 TSO vs ARMv8 weak default
+confirmed; M-series per-thread TSO mode (ACTLR_EL1, Asahi-documented) engaged
+for translated code; caption scoped correctly. ∞→NaN rescope — verified
+empirically at bit level: `1.0/∞ = 0.0` (infinity does not always propagate),
+NaN propagates through all basic arithmetic, `x != x` is the standard test;
+the rescope was the right call.
+
+**Wrongly cleared, found & fixed (15 surgical edits).** Three fact-class:
+`chBridge-mmu-p3` fault list had the U/S protection **inverted** ("U-tagged
+page touched from kernel mode" is SMAP, never introduced; the promised case
+in `chBridge-mode-p7` is an S-tagged page touched from *user* mode — fixed);
+`chBridge-mode-p2` credited rings to "IBM and Intel" — rings are **Multics**
+terminology (IBM used supervisor/problem state) — fixed; `ch1-context-p9`
+caption's "daily reflector settings" (Wehrmacht reflector was fixed; keyspace
+factors are rotor order × start positions × plugboard) — fixed, and its
+now-stale Bombe clause re-aimed at the body's elimination mechanism. The
+rest: caption/body duplication *created by pass 14 itself* (`ch2-binary-p4`,
+`ch2-gates-p6` de-duplicated to figure-specific guidance; `ch1-cpu-p10`
+verbatim 95%-sentence cut; `ch1-kernel-p2` caption no longer pre-asks and
+pre-answers the section); mechanism gaps of the brief's exact class
+(`ch2-arithmetic-p5` now runs two-half-adders+OR — the two carry-outs can
+never both fire; `ch2-arithmetic-p9` caption trimmed of its p5/p6 echoes;
+`ch3-isa-p7` now says how x86 escaped the decode penalty p6 proves — parse
+once, serve hot code from the μop cache; `ch3-defenses-p9` CFI got its
+mechanism clause; `ch3-stack-p3` tautology closer replaced — the stack is
+the one data structure the ISA itself understands); and two consistency
+stitches (`ch3-isa-p4` "on the fly" → "before they run", matching the AOT
+caption beside it; `ch3-call-p2` back-references Fig 3.4 instead of
+re-introducing the ABI as new; `ch3-isa-p1` "any consumer CPU" → "no
+descendant has ever removed"; `ch2-twos-p7` caption's "magic" de-mystified
+to match p6's own "not luck — arithmetic").
+
+**Considered and declined** (deliberate layering or owner-call; do not
+"fix" blindly): pre-existing caption self-containment (`ch1-transistor-p6`,
+`ch1-memory-p3`, `ch1-cpu-p8`, `ch2-boole-p9`, `ch2-float-p11`/`-p12`
+Patriot pairing, `ch3-defenses-p4`/`-p10`, `ch3-registers-p5` ABI caption);
+Bridge reinforcement repetition (`chBridge-mmu-p6`, `-mode-p5`, `-timer-p3`,
+`-io-p3` caption-carried MMIO, `-mode-p1` one-bit framing — the Bridge is
+the calibration standard; its layering reads as intentional); `ch1-context-p5`
+universality cash-out (the rules-as-data reveal is deliberately held for
+Von Neumann two sections later); `ch2-boole-p10` circuit-vs-machine
+overbreadth (inspirational register, owner-call); ch3-closer/Bridge-lead
+12-word echo (reads as a deliberate bead-to-bead thread); "naval codes" vs
+the 158 × 10¹⁸ Army-figure tension (pre-existing, "about" hedge in place).
+
+**Invariants.** Anchor-id set byte-identical to HEAD (354). Glossary
+regenerated twice: first regen dropped `full-adder`/`infinity` and minted a
+junk `system v amd64 abi` entry (the edits had broken the builder's
+term-cue patterns); prose adjusted, second regen restored **count 520 — no
+entry added or removed**, 6 definitions refreshed and all improved (CFI now
+carries its mechanism; both kernel entries carry "timing"; `full-adder`
+constructive). §4g corrections untouched; this pass **adds four** §4g-class
+corrections (U/S inversion, Multics rings, Enigma reflector, Bombe
+settings). No figure added/removed; figure references now all match what
+their figures draw.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308) and **live after push**, Chromium + WebKit at 1440 + 375 on
+part-1/index/glossary — 0 console errors, 0 external requests, 0 h-scroll,
+nav 48 px, fonts loaded, internal anchors resolve. 10 edited passages
+screenshot-reviewed in both engines, dark + light (sup markup `2ⁿ`/`10³⁰⁸`,
+code chips, captions all render). Live parity confirmed ~30 s after push;
+live `glossary.json` serves count 520. **STOP for owner review** stands —
+Parts II–V of the language pass remain.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
