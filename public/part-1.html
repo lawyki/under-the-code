@@ -311,7 +311,7 @@
       Cryptanalysts could often guess a fragment of the plaintext hidden in a message — a
       stock phrase, a weather report — and Enigma had a fatal quirk: no letter is ever
       encrypted as itself. Slide the guessed fragment along the intercepted text and each
-      letter it pairs with forces a chain of assumptions about the day's rotor wiring. The
+      letter it pairs with forces a chain of assumptions about the day's secret settings. The
       Bombe raced through candidate rotor positions, followed each position's assumptions
       to their electrical consequences, and discarded any that led to a contradiction —
       searching by elimination, not exhaustion. That is what made an impossible key space
@@ -470,7 +470,7 @@
           <text x="14" y="36" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">~210 Bombes ran 24/7 by 1945, ruling out millions of rotor settings per day using guessed plaintext "cribs."</text>
         </g>
       </svg>
-      <p id="ch1-context-p9" class="diagram-caption">Why Enigma was so hard: the same key pressed three times in a row gives three different letters because the rotors step between presses, changing the internal wiring path. Multiplied across the rotor stack, plugboard pairings, and daily reflector settings, the keyspace was about 158 × 10¹⁸ possibilities. No pencil-and-paper attack could keep up. Turing's Bombe — the gold-tinted strip below the rotors — automated the search by exploiting structural weaknesses in the encryption: it tested rotor positions in parallel, stopping when the math became consistent. It was the first time a machine was built specifically to <em>think</em> through a problem human minds could not.</p>
+      <p id="ch1-context-p9" class="diagram-caption">Why Enigma was so hard: the same key pressed three times in a row gives three different letters because the rotors step between presses, changing the internal wiring path. Multiplied across the rotor stack, its start positions, and the plugboard pairings, the keyspace was about 158 × 10¹⁸ possibilities. No pencil-and-paper attack could keep up. Turing's Bombe — the gold-tinted strip below the rotors — ran that elimination in hardware, testing rotor positions in parallel and halting when one survived every consequence without contradiction. It was the first time a machine was built specifically to <em>think</em> through a problem human minds could not.</p>
     </div>
 
     <p id="ch1-context-p10">
@@ -1235,7 +1235,7 @@
             path="M 110 130 L 270 130 L 430 130 L 590 130 L 590 220 L 110 220 L 110 130"/>
         </g>
       </svg>
-      <p id="ch1-cpu-p3" class="diagram-caption">Each core runs this loop continuously. Watch the gold packet circulate above: it is one instruction making its way through the four stages — fetch, decode, execute, writeback — after which the program counter advances and the next instruction begins. The diagonal hand-off never stops while the machine is on.</p>
+      <p id="ch1-cpu-p3" class="diagram-caption">Each core runs this loop continuously. Watch the gold packet circulate above: it is one instruction making its way through the four stages — fetch, decode, execute, writeback — after which the program counter advances and the next instruction begins. The cycle never stops while the machine is on.</p>
     </div>
 
     <h3>What an instruction actually is</h3>
@@ -1536,7 +1536,7 @@
         <line x1="40" y1="332" x2="680" y2="332" stroke="rgba(232,120,120,0.25)" stroke-dasharray="3,3"/>
         <text x="360" y="350" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.75)" font-style="italic">but: even discarded speculative work leaves traces in the cache — Spectre &amp; Meltdown exploit this</text>
       </svg>
-      <p id="ch1-cpu-p10" class="diagram-caption">When the CPU reaches a conditional branch, it can't afford to wait for the condition to be computed — that would idle the pipeline for many cycles. So it <em>guesses</em>, based on the branch's history, and starts executing one path immediately. If the guess turns out right, the speculative work is committed and time was saved. If wrong, the work is discarded and the alternate path begins. Modern CPUs guess right about 95% of the time. The catch — exposed in 2018 — is that "discarded" only means the architectural state is rolled back. Microarchitectural side effects, especially in caches, persist. Read code that "shouldn't have run" leaves a fingerprint, and a careful attacker can read the fingerprint.</p>
+      <p id="ch1-cpu-p10" class="diagram-caption">When the CPU reaches a conditional branch, it can't afford to wait for the condition to be computed — that would idle the pipeline for many cycles. So it <em>guesses</em>, based on the branch's history, and starts executing one path immediately. If the guess turns out right, the speculative work is committed and time was saved. If wrong, the work is discarded and the alternate path begins. The catch — exposed in 2018 — is that "discarded" only means the architectural state is rolled back. Microarchitectural side effects, especially in caches, persist. Read code that "shouldn't have run" leaves a fingerprint, and a careful attacker can read the fingerprint.</p>
     </div>
 
     <div class="insight-strip">
@@ -1647,7 +1647,7 @@
 
         <text x="40" y="220" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)" font-style="italic">If your program had a bug, you wouldn't know for an hour. Then you'd punch new cards and queue again.</text>
       </svg>
-      <p id="ch1-kernel-p2" class="diagram-caption">For nearly two decades, this was the entire user experience of computing. The machine was a precious shared resource; the user — a programmer, scientist, or engineer — was a supplicant who handed over a stack of cards and waited. The CPU often sat idle while the operator loaded the next deck. Universities started asking: can the machine run someone else's program <em>while</em> mine waits for I/O? Can two people use it at once? The kernel was the answer.</p>
+      <p id="ch1-kernel-p2" class="diagram-caption">For nearly two decades, this was the entire user experience of computing. The machine was a precious shared resource; the user — a programmer, scientist, or engineer — was a supplicant who handed over a stack of cards and waited. The CPU often sat idle while the operator loaded the next deck — and on a machine this expensive, idle silicon was the costliest thing in the room.</p>
     </div>
 
     <p id="ch1-kernel-p3">
@@ -1662,7 +1662,7 @@
       The answer was yes — but only if something stood between the programs and the
       hardware to manage the sharing. That something became the
       <span class="key-term">operating system kernel</span>. The trick that made sharing
-      pay off is this: the instant one program stops to wait on something slow — a disk,
+      pay off is timing: the instant one program stops to wait on something slow — a disk,
       a keypress, a network reply — is precisely the instant the kernel can hand the idle
       CPU to a different program that has work ready. The processor that used to sit dark
       while a punch-card reader clattered now runs someone else's job in the gap. And once
@@ -2093,7 +2093,7 @@
       designed in 1958 at Moscow State University by Nikolay Brusentsov, used
       <em>balanced ternary</em> (digits −1, 0, +1) and was, in many mathematical respects,
       more elegant than binary. But it required three voltage levels to be told apart
-      reliably, and that is where it lost. Here is the mechanism. A wire carries some fixed
+      reliably, and that is where it lost: a wire carries some fixed
       span of voltage. Binary cuts that span with a single threshold, leaving one wide
       gap between "low" and "high" — a value has to drift almost halfway across the whole
       range before it crosses the line and flips. Ternary has to fit three levels into the
@@ -2131,7 +2131,7 @@
         <path d="M 50 264 L 130 264 L 130 247 L 210 247 L 210 230 L 290 230 L 290 264 L 370 264 L 370 230 L 450 230 L 450 247 L 530 247 L 530 264 L 600 264" stroke="#e87878" fill="none" stroke-width="2"/>
         <text x="50" y="298" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.7)">noise margin: tiny — small drift can confuse adjacent levels</text>
       </svg>
-      <p id="ch2-binary-p4" class="diagram-caption">A binary signal has two levels with a wide gap between them — small voltage variations cannot flip a 1 into a 0. A ternary signal squeezes three levels into the same voltage range, leaving narrow tolerance bands. As components age and temperature varies, ternary fails more often. Engineering, not mathematics, killed it.</p>
+      <p id="ch2-binary-p4" class="diagram-caption">Both panels ride the same voltage span. Binary's single threshold leaves each level a wide noise margin; ternary's two thresholds pinch the middle level from both sides, and a drift binary would absorb becomes a different digit. Engineering, not mathematics, killed it.</p>
     </div>
 
     <p id="ch2-binary-p5">
@@ -2529,7 +2529,7 @@
 
         <text x="360" y="314" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Sheffer 1913 · functional completeness · one gate, anything computable</text>
       </svg>
-      <p id="ch2-gates-p6" class="diagram-caption">Three foundational gates — NOT, AND, OR — each rebuilt from the single NAND primitive. Tying both inputs of a NAND together gives a NOT. An AND is a NAND followed by a NOT (which is itself a NAND). And by DeMorgan's laws, OR is the negation of "neither A nor B," which is three NANDs arranged so the inputs are individually inverted before a final NAND combines them. Every truth table on every panel matches the conventional gate it replaces. From this single primitive — and silicon really is, in its bottom layers, fields of NAND-style transistor pairs — every computation any computer has ever performed can be assembled.</p>
+      <p id="ch2-gates-p6" class="diagram-caption">Three foundational gates — NOT, AND, OR — each rebuilt from the single NAND primitive, one panel per construction the text just walked. Read the truth tables: every panel's output matches the conventional gate it replaces. From this single primitive — and silicon really is, in its bottom layers, fields of NAND-style transistor pairs — every computation any computer has ever performed can be assembled.</p>
     </div>
 
     <div class="math-callout">
@@ -2587,7 +2587,10 @@
       To add multi-bit numbers, you need to handle the carry that propagates between
       bit positions. This requires a <em>full adder</em>: a circuit that takes three
       input bits — A, B, and a carry-in from the previous position — and produces a
-      sum bit and a carry-out. A full adder is built from two half adders and an OR gate.
+      sum bit and a carry-out. A full adder is built from two half adders and an OR
+      gate: the first half adder adds A and B, the second adds that sum to the incoming
+      carry, and the OR merges their two carry-outs into one — safely, because the two
+      can never fire together.
     </p>
 
     <p id="ch2-arithmetic-p6">
@@ -2766,7 +2769,7 @@
           <text x="0" y="26" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">0</text>
         </g>
       </svg>
-      <p id="ch2-arithmetic-p9" class="diagram-caption">A full-adder isn't a new primitive — it is two half-adders and an OR gate, in a specific arrangement. The first half-adder combines A and B; the second combines that result with the incoming carry from the previous bit position; the OR gate produces the outgoing carry from either of the two intermediate carries. Stacking them in series builds an n-bit ripple-carry adder, where each stage's carry-out feeds the next stage's carry-in. The four-stage chain at the bottom is exactly what produced the 5 + 3 = 8 result above. Modern CPUs use carry-lookahead and carry-select adders that compute carries in parallel rather than rippling them, but the gate-level primitives are unchanged.</p>
+      <p id="ch2-arithmetic-p9" class="diagram-caption">A full-adder isn't a new primitive — trace the wiring: A and B meet in the first half-adder, its sum meets the incoming carry in the second, and either intermediate carry lights the OR gate to become the carry-out. The four-stage chain at the bottom is exactly what produced the 5 + 3 = 8 result above. Modern CPUs use carry-lookahead and carry-select adders that compute carries in parallel rather than rippling them, but the gate-level primitives are unchanged.</p>
     </div>
   </section>
 
@@ -2848,7 +2851,7 @@
         <text x="40" y="180" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.4)">The 9th bit overflows the register and is silently dropped.</text>
         <text x="40" y="200" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.4)">What's left is exactly the correct result: 2. No special subtraction circuit needed.</text>
       </svg>
-      <p id="ch2-twos-p7" class="diagram-caption">Subtraction by addition. The CPU adds two numbers using the same adder circuit it always uses; the magic of two's complement is that the leading 1 (the overflow) ends up being precisely the bit that needs to be discarded for the math to work. There is no separate subtractor in any modern CPU.</p>
+      <p id="ch2-twos-p7" class="diagram-caption">Subtraction by addition. The CPU adds two numbers using the same adder circuit it always uses; the leading 1 the complement produces is exactly the 2<sup>n</sup> the register is too narrow to keep — discard it and what remains is a − b. There is no separate subtractor in any modern CPU.</p>
     </div>
 
     <p id="ch2-twos-p8">
@@ -3222,16 +3225,16 @@
     <h3>Special values: ±∞ and NaN</h3>
 
     <p id="ch2-float-p9">
-      IEEE 754 reserves certain bit patterns for special values, and it does so for a
-      reason: a calculation that runs off the rails should be able to keep flowing rather
-      than halt the machine. When the exponent is all ones and the mantissa is zero, the
-      value is <strong>infinity</strong> — what you get by dividing by zero
-      (<code>1.0 / 0.0</code>) or by letting a number grow past the largest representable
-      value, roughly 10<sup>308</sup> — with its sign taken from the sign bit. When the
+      IEEE 754 reserves certain bit patterns for special values, because a calculation
+      that runs off the rails should be able to keep flowing rather than halt the
+      machine. When the exponent is all ones and the mantissa is zero, the value is
+      <strong>infinity</strong> — what you get by dividing by zero
+      (<code>1.0 / 0.0</code>) or by letting a number grow past the largest
+      representable value, roughly 10<sup>308</sup> — and the sign bit says which
+      direction. When the
       exponent is all ones and the mantissa is non-zero, the value is <strong>NaN</strong>
       — Not a Number — the result of an operation with no meaningful answer at all, like
-      <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>. Both keep the computation moving
-      instead of halting it, and a NaN in particular is built to spread: once one appears,
+      <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>. And a NaN is built to spread: once one appears,
       any later arithmetic that touches it yields another NaN, so the bad result carries
       all the way through to the end of the computation — where it can be spotted — rather
       than crashing the program the instant it first arises.
@@ -3417,8 +3420,8 @@
     <h2>An instruction is a contract</h2>
 
     <p id="ch3-isa-p1" class="lead">
-      In 1978, Intel released the 8086 — a 16-bit chip whose instruction set has not
-      been removed from any consumer CPU since. Every x86-64 processor sold today, from
+      In 1978, Intel released the 8086 — a 16-bit chip whose instruction set no
+      descendant has ever removed. Every x86-64 processor sold today, from
       a laptop to a data-centre rack, still recognises the same core binary patterns
       Intel encoded that year. A processor doesn't run C, or Python, or JavaScript.
       It runs a sequence of binary patterns drawn from a specific menu — the
@@ -3558,8 +3561,8 @@
     <p id="ch3-isa-p4">
       They are not interchangeable. An x86 binary will not run on an ARM CPU and vice
       versa. The shift from Intel x86 to Apple's ARM-based M1 in 2020 required Apple
-      to ship Rosetta 2, a translation layer that converts x86 instructions to ARM
-      on the fly. That such a translator is even possible is itself remarkable.
+      to ship Rosetta 2, a translation layer that rewrites x86 binaries as ARM ones
+      before they run. That such a translator is even possible is itself remarkable.
     </p>
 
     <div class="diagram-card" id="fig-3-2">
@@ -3658,8 +3661,9 @@
       in a single instruction. <strong>RISC</strong> — Reduced Instruction Set Computers,
       like ARM, MIPS, SPARC — had a small set of simple, uniform instructions. RISC
       machines could clock faster, and the reason is decoding. A variable-length
-      instruction hides its own length — recall from Fig 3.1 that an x86 <code>add</code>
-      can run anywhere from two bytes to a dozen — so the decoder cannot even find where
+      instruction hides its own length — Fig 3.1's x86 <code>add</code> spent seven bytes,
+      and other encodings of the same operation run anywhere from two bytes to a
+      dozen — so the decoder cannot even find where
       the next instruction begins until it has finished parsing this one. Fixed-width
       instructions, always four bytes on ARM, sit at known boundaries, so the CPU can
       locate and decode a whole run of them at once, and each decode step stays simple
@@ -3670,7 +3674,9 @@
     <p id="ch3-isa-p7">
       The debate was real. By the 2000s, it was over — and both sides had quietly
       converged. Modern x86 CPUs internally translate complex CISC instructions into
-      simpler RISC-like <em>micro-operations</em> (μops) and execute those. Modern ARM
+      simpler RISC-like <em>micro-operations</em> (μops) and execute those — paying the
+      hard variable-length parse once, then serving hot code from a small cache of
+      already-decoded μops. Modern ARM
       chips have grown more complex over time, with specialized instructions for
       cryptography, vector math, and machine learning. The clean ideological lines
       have blurred. What remains is the binary incompatibility — the fact that the
@@ -4040,8 +4046,9 @@
       The stack is managed automatically by the CPU using two instructions:
       <code>push</code> writes a value to the address RSP points to, then decrements
       RSP by 8 (because we're storing 8-byte values on a 64-bit machine).
-      <code>pop</code> reads the value at RSP and increments RSP back. The hardware
-      treats the stack as a hardware-supported data structure.
+      <code>pop</code> reads the value at RSP and increments RSP back. The stack is the
+      one data structure the ISA itself understands — its discipline baked into the
+      silicon, not offered by a library.
     </p>
 
     <p id="ch3-stack-p4">
@@ -4069,7 +4076,8 @@
       First, the compiler has to follow a <span class="key-term">calling convention</span> —
       a contract between caller and callee about who puts arguments where, who saves
       which registers, and how return values are delivered. On Linux/macOS x86-64, the
-      convention is called <strong>System V AMD64 ABI</strong>. On Windows, it's the
+      convention is called the <strong>System V AMD64 ABI</strong> you saw drawn in
+      Fig 3.4. On Windows, it's the
       <strong>Microsoft x64 calling convention</strong>. They are slightly different.
       Both work, but a function compiled for one ABI cannot be called from a program
       compiled for the other without a wrapper.
@@ -4596,7 +4604,9 @@ main:
     </p>
 
     <p id="ch3-defenses-p9">
-      ROP forced another layer: <strong>Control Flow Integrity</strong> (CFI), shadow
+      ROP forced another layer: <strong>Control Flow Integrity</strong> (CFI — the
+      compiler records where indirect jumps may legally land, and the runtime refuses
+      any transfer to an address off that list), shadow
       stacks (a separate, protected stack that mirrors the call stack and is checked on
       return), and ARM Pointer Authentication (which cryptographically signs return
       addresses, making forgery infeasible). Apple Silicon and recent Intel CPUs
@@ -4898,7 +4908,7 @@ main:
       varies from architecture to architecture, but in practice every operating system
       we use today reduces them to two: a privileged mode for the kernel, and an
       unprivileged mode for everything else. Books and conversations call these
-      <strong>Ring 0</strong> and <strong>Ring 3</strong>, after the original IBM and
+      <strong>Ring 0</strong> and <strong>Ring 3</strong>, after the original Multics and
       Intel terminology, even on architectures whose hardware has no rings at all.
     </p>
 
@@ -5356,7 +5366,7 @@ main:
         <text x="360" y="320" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">EVERY · LOAD · STORE · INSTRUCTION-FETCH · GOES · THROUGH · HERE</text>
         <text x="360" y="340" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.4)">The kernel writes the page tables. The MMU reads them. The CPU asks the MMU on every access.</text>
       </svg>
-      <p id="chBridge-mmu-p3" class="diagram-caption">The MMU is a piece of silicon between the CPU and the rest of the machine. On every memory access — load, store, or instruction fetch — the CPU hands the MMU a 64-bit virtual address and waits for a physical address back. The MMU first checks the TLB (a small associative cache of recent translations); on a hit, it returns immediately. On a miss, the page-table walker — a hardware finite-state-machine, not the kernel — descends four levels of page tables in main memory, starting from the address in <code>CR3</code>, and produces both a physical address and a set of permission bits. The permission bits are checked. If anything is wrong — page not present, U-tagged page touched from kernel mode, write to a read-only page, NX-tagged page executed — the MMU raises a #PF (page fault, vector 14) and the kernel takes over.</p>
+      <p id="chBridge-mmu-p3" class="diagram-caption">The MMU is a piece of silicon between the CPU and the rest of the machine. On every memory access — load, store, or instruction fetch — the CPU hands the MMU a 64-bit virtual address and waits for a physical address back. The MMU first checks the TLB (a small associative cache of recent translations); on a hit, it returns immediately. On a miss, the page-table walker — a hardware finite-state-machine, not the kernel — descends four levels of page tables in main memory, starting from the address in <code>CR3</code>, and produces both a physical address and a set of permission bits. The permission bits are checked. If anything is wrong — page not present, an S-tagged page touched from user mode, write to a read-only page, NX-tagged page executed — the MMU raises a #PF (page fault, vector 14) and the kernel takes over.</p>
     </div>
 
     <p id="chBridge-mmu-p4">
