@@ -778,6 +778,95 @@ declined by the owner). The 29 §4g corrections survive in substance;
 glossary net 518 → 519 (+`everything is a file`, +`MVCC`, −plural
 `page tables`); no figure added or removed — all count claims hold.
 
+## 4n. Pass 14 (2026-08-01): the language pass, Part I — mechanism carried in prose
+
+First part of the book-wide **language pass** — the owner's final planned
+transformation. The brief: across the book, prose too often *names* a mechanism
+(or defers it to a figure caption) instead of running it cause-to-effect. This
+pass shifts that at the sentence level, part by part, to the register of the
+Ch7 pickle coda (pass 9): the mechanism carried in the prose, alive, facts
+intact. Content is fixed — every fact, figure reference, and §4g correction
+survives in substance; anchor ids preserved.
+
+**Method.** Deep read of all of Part I (Ch1–3 + the Bridge) as a student who
+must understand it, plus an independent judge workflow: 28 per-section
+student-readers, then a 19-section adversarial *defense* pass whose only job was
+to overturn weak flags (the target list is what survived defense, not what was
+first flagged). Then rewrites, then a final fact/voice confirmation gate on
+every rewritten passage — which caught and fixed one overstatement introduced in
+flight (see item 15). Anchor-id set **byte-identical to HEAD** (354 ids); no
+position-sync migration needed.
+
+**Left alone (said so, per the brief).** The **Bridge interlude** is the
+calibration standard end-to-end — the SYSCALL five-atomic-steps, the four-level
+MMU walk from CR3, the TLB hit-rate argument, the three-step DMA story all run in
+prose already; it was not touched. Also left verbatim: the chapter heroes; the
+Turing-machine definition and universality (ch1-context p3/p5); Von Neumann
+stored-program (ch1-vonneumann); the pipelining, out-of-order, and speculative
+paragraphs (ch1-cpu p7–p9 already run their mechanisms); the memory-hierarchy
+math-callout (locality + T_avg, exemplary); the pass-12 preview-altitude ch1
+kernel/memory thinning (compression respected — only a *dropped* causal link was
+restored, item 6); ch2-arithmetic (half/full adder already constructive); the
+pass-2 two's-complement modular insertion; ch2-float layout/Patriot; all of
+ch3-registers/stack/call/defenses (call/ret, canaries, DEP, ASLR, ROP each run
+their mechanism). Roughly two-thirds of Part I's sections passed the bar
+untouched — Part I is one of the book's strongest parts.
+
+**Rewritten (18 passages, why):**
+
+| # | Item | Change |
+|---|---|---|
+| 1 | Ch1 `ch1-cpu-p2` + caption `-p3` (**severe**) | The chapter titled "Fetch. Decode. Execute. Repeat." never ran the four stages in prose — they lived only in 8px SVG labels, and the caption duplicated the preview. p2 now defines the program counter and runs fetch→decode→execute→writeback cause-to-effect; the caption is de-duplicated to figure-specific guidance. |
+| 2 | `ch1-context-p4` | The "extraordinary proof" was promised and never delivered (undecidability is taught nowhere in the book). Added the self-reference cash-out: a decider fed a program built to contradict its own verdict — the machine *was* the proof. |
+| 3 | `ch1-context-p8` | "searched the key space mechanically" was a tautology. Now runs the Bombe's actual method: a crib, Enigma's no-letter-encrypts-to-itself flaw, and elimination by electrical contradiction — search by elimination, not exhaustion. Facts (158 quintillion keys, Colossus/Flowers/Lorenz) preserved. |
+| 4 | `ch1-transistor-p7` | "Why semiconductors" answered with a definition + sand trivia. Now carries doping: donor/acceptor atoms seed electrons/holes, and why a *tunable in-between* conductivity is exactly what a switch needs. |
+| 5 | `ch1-transistor-p8` (caption) | The field-effect "inverts" happened by fiat. Added the causal middle: the gate's charge reaches *across* the oxide as a field (not a current), pulling an inversion layer into being. |
+| 6 | `ch1-kernel-p4` | The section's own question (idle CPU during I/O — can another program run?) was answered by name only, then pivoted to protection. Restored the dropped half: a program blocking on I/O is exactly when the kernel hands the CPU to a ready one. (Not the pass-12 compression — a dropped causal link.) |
+| 7 | `ch1-memory-p11` (insight strip) | Canary/ASLR/DEP were a bare catalogue. Each now carries a one-clause cause (trip-wire before the return address; randomized target; non-executable data). Ch3 still delivers the full treatment — this makes the *preview* teach. |
+| 8 | `ch2-binary-p3` | The climactic sentence was garbled ("a small drift will turn a 1 into a 0" read as a contradiction; "a 0 look like a 2" referenced a digit the balanced-ternary framing lacks) and contradicted its own caption. Rewritten to run the noise-margin mechanism: three levels in one voltage span → narrower bands → a drift binary shrugs off crosses a ternary boundary. |
+| 9 | `ch2-boole-p3` | Boolean algebra was named but its operations never defined (deferred to the gates section three paragraphs on). Added the meanings of AND/OR/NOT and a Boolean law (A + A = A, A · A = A) — "same symbols, different rules." |
+| 10 | `ch2-boole-p6` | "series = AND, parallel = OR" was asserted. Added the one-clause cause (series: current must pass through both; parallel: either path suffices) — the section's central Shannon click. |
+| 11 | `ch2-gates-p4` | NAND universality was named ("functional completeness") with the construction wholly in the figure. Now runs it in prose: tie a NAND's inputs to get NOT (because A·A = A), double it for AND, De Morgan for OR. |
+| 12 | `ch2-twos-p3` | "cannot use the same adder to subtract" was asserted. Now shows the signed-magnitude adder failing concretely: +5 (00000101) + −5 (10000101) → 10001010 = −10, not 0. |
+| 13 | `ch2-float-p2` | The section's title question ("why 0.1 + 0.2 ≠ 0.3") bottomed out in an assertion. Added the cause: a binary fraction is a sum of powers of two, so it terminates only when the denominator is a power of two; 1/10 carries a factor of 5 that no stack of halves divides — and the reader can now predict which fractions are exact. |
+| 14 | `ch2-float-p9` / `-p10` | Special values were a bit-pattern catalogue. p9 adds infinity's producers and the poison-value rationale (a bad result flows to the end to be spotted, not crashing at once); p10 resolves the "mathematically odd" NaN ≠ NaN by explaining *why* (a non-value can't equal anything) and turning it into the x != x detector. |
+| 15 | `ch3-isa-p5` (Rosetta caption) — **accuracy** | The caption claimed x86 and ARM share a memory model; they do not (x86 = TSO, ARM = weakly ordered), which is precisely why Apple added a per-process hardware TSO mode to M-series. Corrected the stated cause; kept the real intuition (every x86 instruction has an equivalent ARM sequence, findable ahead of time). New §4g-class correction. |
+| 16 | `ch3-isa-p6` | "RISC could clock faster because decode was simple" named the cause without running it. Now cashes Fig 3.1's variable-vs-fixed-width setup: variable length hides where the next instruction begins (serial decode); fixed 4-byte ARM sits at known boundaries (parallel decode, shorter tick). |
+| 17 | `ch3-overflow-p9` | "memory-safe languages check bounds" named the check without its consequence, and overclaimed ("the central reason newer languages exist"). Now runs the consequence — an out-of-range access becomes a controlled panic *before* the write, so corruption becomes a crash and a crash is not code execution — and scopes the claim honestly (Rust's raison d'être; Java/Python/Go had other drivers). |
+| 18 | `ch3-overflow-p10` | The Heartbleed clause introduced a new mechanism (over-*read*) and asserted its effect. Added the cause: the server trusted an attacker-supplied length and echoed that many bytes from its own memory, spilling whatever sat next to the buffer — including private keys. |
+
+**Confirmation-gate fix.** The final fact pass flagged one overstatement I had
+introduced in item 14: "any arithmetic that touches an infinity or a NaN
+produces another infinity or NaN" is false for infinity (`1.0 / ∞ = 0.0`).
+Rescoped the propagation claim to NaN (which is also the load-bearing half for
+the p10 detector); infinity now merely "keeps the computation moving." No other
+factual error survived the gate; 18/19 checked items were clean on first pass.
+
+**Glossary.** Regenerated: net **+1** (`doping`, home ch1-transistor). Five
+emphasis-markup artifacts from the rewrites were skip-listed in
+`build-glossary.js` (matching the pass-7 `gab` precedent): the four
+instruction-cycle stage verbs `fetch`/`decode`/`execute`/`writeback` (common
+words that would fire CPU-cycle tooltips on every unrelated use book-wide — the
+term `instruction cycle` itself remains) and `a a a` (the `A · A = A` Boolean-law
+markup). No entry removed.
+
+**Invariants held.** §4g corrections untouched (item 15 *adds* one, consistent
+with the book's fact-rigor standard); figure grammar/counts/identities, chapter
+order, zero-third-party, reduced-motion/print, and the five Phase-2 closer
+stamps all unchanged. Anchor-id set byte-identical (354). No figure added or
+removed.
+
+**Verification.** Local (Cloudflare-mimicking server: extensionless 200, `.html`
+308) Chromium **and** WebKit at 1440 + 375 on part-1/index/glossary — 0 console
+errors, 0 external requests, 0 page h-scroll, `.book-nav` 48px. All 11 dark/
+light edited passages screenshot-reviewed (math markup A·A=A, code fractions,
+dark diagram-captions, insight strips all render). Internal anchors all resolve.
+**Live parity confirmed** after push (commit `4abf0d0`): live part-1 passes the
+full harness in both engines at both widths; canonical `glossary.json` serves
+count 520 with `doping` (the count-519 first read was the documented 1-day
+`stale-while-revalidate` edge cache, since revalidated). **STOP for owner review**
+before Part II — the Phase-2 gate rhythm.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
