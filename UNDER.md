@@ -1016,6 +1016,64 @@ engines, dark + light. Live glossary serves 520 with `timer interrupt`
 restored. **STOP for owner review before Part III** — the gate rhythm.
 Remaining language-pass parts: III, IV, V.
 
+## 4p. Pass 16 (2026-08-02): the language pass, Part III — Ch8–12 (commit `c4c41ea`)
+
+Same brief, same bar (the Ch7 pickle coda — Part II — untouched). **Method:**
+deep read of all of Part III, then a 9-reader / per-batch adversarial-defense
+Workflow plus 3 fact agents (target = what survived defense). Three agents
+died mid-run on API 500s (ch8-b, ch9-b readers; ch8-ch9 facts) and were
+recovered by `resumeFromRunId` (which re-ran them on Opus 4.8 — a second
+independent set of eyes on those batches). Then rewrites, then a 3-lens
+confirmation gate (facts / internal-consistency / voice) over the full diff —
+which caught **2 must-fix figure/caption contradictions I introduced**
+(handshake SVG still said "1.5 RTTS" after the caption was corrected to one
+RTT; Shannon SVG marker still said "56k" after the caption moved to V.34) plus
+6 nits. All fixed before commit.
+
+**As with Part II, the prose already holds the bar** — the defense overturned
+most style flags. The one genuine mechanism re-carry: **twisted-pair**
+(ch8-substrates-p2) named "twisted to cancel interference" without running it;
+now runs common-mode rejection cause-to-effect (receiver reads only the
+difference; outside noise lands equally on both wires and subtracts to zero;
+the twist keeps them balanced). Everything else was a **~40-item fact pass**
+(Part III had never had Part I's §4g scrutiny):
+
+| Ch | Corrections |
+|---|---|
+| 8 | Shannon's "Rubik's-cube proof" was a **joke song**, not a proof → replaced with his real juggling theorem; "lived to see the networked world" — he had **Alzheimer's** from the early 1990s → "gave the mathematics to a world he could no longer quite see"; the 56k-modem capacity example exceeded its own printed limit → **V.34 33.6k hugging the Shannon ceiling** (SVG marker + caption + the V.90 digital-downstream note); "slightly faster on fibre" → "about the same" (fibre ≈ copper propagation); **TEMPEST** direction fixed (Van Eck 1985, from across the street); **WEP** 1999 → shipped 1997, broken by 2001; Ethernet was **not Metcalfe's doctoral work** (his rejected thesis was the ALOHAnet analysis; Ethernet carried it to a wire); **Butler Lampson → Gary Starkweather** for the laser printer; PARC Ethernet **2.94 Mbps** vs the standardised **10BASE5 (DIX 1980)** — "original… late 1970s" split, and the Manchester-section "Original Ethernet (10 Mbps)" relabelled 10BASE5; the **"Networking is inter-galactic" pull-quote** was a fabricated Metcalfe/1973-whiteboard attribution → J.C.R. **Licklider's** real 1963 "Intergalactic Computer Network" memo; MAC-flooding "Mike Beekey 2000" → the documented **macof/dsniff** lineage |
+| 9 | **ARPA** glossed as "Defense Advanced…" in a 1966 context → not yet DARPA (renamed 1972); "**six years** after the Cuban Missile Crisis" (1962→1969) → seven; **traceroute** "this is what bounds traceroute" (backwards) → the mechanism traceroute *exploits* (TTL 1, 2, 3… each hop announces itself); CGNAT wrongly credited with **IPv6↔IPv4 translation** (it is v4-to-v4) → native v6 where both ends speak it, CGNAT only where they don't |
+| 10 | 1986 congestion collapse "a single 400-**metre** cable, lightly loaded" → Jacobson–Karels' **400 yards, three IMP hops** (dropped "lightly loaded" — it was congestion); handshake "**1.5 round trips** before a byte" → one full RTT (third ACK may carry data), SVG label matched; **CUBIC curve inverted** ("slowly then faster") → fast-after-loss, plateau near W_max, then accelerate above; QUIC migration "keeps its **TCP** connection alive — TCP could not" → **QUIC** connection (TCP tied to the four-tuple); random-ISN "retrofitted into every OS **within a year**" → RFC 1948 followed about a year after, stacks took the decade; **2·MSL** parenthetical fixed (2·MSL ≈ 60 s on Linux, not MSL); "**Two chapters** from now the stack is complete" → one (Ch11) |
+| 11 | HTTP "**Forty years**" → three and a half decades; web server "**eighteen months**" after March 1989 → Christmas 1990; "existed for **nine months**" → seven; DNS "~360M names **deep** at its widest" → a handful of levels deep, ~360M **wide**; Kaminsky fix "minutes to **thousands of years**/**centuries**" (two magnitudes, neither right) → both to "years"; **ENQUIRE** framed as a lab-wide CERN database → Berners-Lee's own earlier program; SHA-256 "what **every Git commit** uses" → Git is SHA-1 (body + p5 caption); Merkle trees "**TLS certificates** use" → a blockchain/CT structure; AES "**roughly fifteen rounds**" → ten to fourteen; "~150 **organisations**" → ~150 root *certificates* held by a few dozen operators (p4 + p5); **forward secrecy backwards** — "store-now-decrypt-later only threatens current/future, not historical recordings" is exactly wrong (quantum recovers the ephemeral DH from a *recorded* handshake) → historical recordings ARE the threat; HTTP/2 push "**removed from the spec**" → deprecated in practice, still in RFC 9113; Dyn "manually reconfigured anycast; aftershocks a week" → three waves, redundant-NS lesson; QUIC share hedged "by volume" both places |
+| 12 | Sun HotJava "**late 1994**" → publicly May 1995; "**eleven weeks**" (unsourced, contradicts April→September) → cut in body + caption; V8 "**four-stage pipeline**" vs its own "two-tier" caption → "tiered"; "originally interpreted by **SpiderMonkey**" → Mocha, soon rewritten as SpiderMonkey; **libuv** "added in 2009" → libev/libeio, unified as libuv in 2011 (matches p5); rendering "**five-stage pipeline**" (body listed six) → count dropped; DOM frameworks "pipeline runs once instead of fifty" → fewer mutations + no forced reflows; typeof-null "**leftover**" quote (unverifiable) → the real Mocha value-tagging cause; SameSite "**every major browser**" → Chrome/Edge only; CSP "sites without CSP are the exception" → softened |
+
+**Declined** (defense overturned; deliberate): most caption/body overlap
+(figure self-containment); the lossy-codecs-on-Shannon's-curve line (final
+entropy-coding stage genuinely rides the bound); the Chiu–Jain AIMD glosses
+(at altitude); "physics, mathematics, practitioner cleverness" (content-bearing);
+Netscape-2.0-SOP dating; the ch9-security "twenty-three-year-old Morris" (22 at
+release but universally reported as 23, and Part I's Ch3 already says 23 —
+left consistent rather than split).
+
+**Invariants.** Anchor-id set byte-identical (**380** — pass-10 added one to
+the fact-verified 379). Chapter order, heroes, part taglines, and the three
+prior-pass Phase-2 items (Shannon–Hartley mechanism ch8-shannon-p12, "State
+is the attack surface" ch10-attacks-p9, "Protocols earn their shape"
+ch11-modern-p7) untouched. Two SVG **text-label** edits only (handshake RTT,
+modem name), each §4g-precedented and matched to its corrected caption.
+Glossary regenerated: **count 520, no entry added or removed** — after
+catching that an em-dash in the SpiderMonkey edit had minted a junk
+`spidermonkey` entry (reworded to break the cue); 12 definitions refreshed,
+all coherent. American "artifact" caught by the gate and returned to British
+"artefact."
+
+**Verification.** Local (CF-mimicking server) + **live after push** (commit
+`c4c41ea`, live ~30 s later): Chromium + WebKit at 1440 + 375 on
+part-3/index/glossary — 0 console errors, 0 external requests, 0 h-scroll,
+nav 48 px, fonts loaded. Both touched figures + key rewrites screenshot-
+reviewed in both engines, dark + light; live SVG labels confirmed
+("ONE FULL RTT", "V.34 33.6k"). **STOP for owner review before Part IV** —
+the gate rhythm. Remaining language-pass parts: IV, V.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
