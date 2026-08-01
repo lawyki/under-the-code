@@ -44,6 +44,12 @@ const SKIP_WORDS = new Set([
   'most','more','less','few','many','much',
   'why this matters','famous','note','important','crucial','key',
   'gab', // <em>g<sup>ab</sup></em> math markup in ch14, not a term
+  'a a a', // <em>A · A = A</em> / <em>A + A = A</em> Boolean-law markup in ch2, not a term
+  // ch1 instruction-cycle stage names are set in <em> for reading emphasis, but they are
+  // common verbs used all over the book (fetch a page, execute a query, decode a header);
+  // marking them as terms would fire CPU-cycle tooltips on every unrelated use. Skip them —
+  // "instruction cycle" itself remains the glossary term.
+  'fetch','decode','execute','writeback',
 ]);
 
 // Curated canonical terms that should always appear in the glossary even if

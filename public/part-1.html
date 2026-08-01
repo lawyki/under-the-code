@@ -188,6 +188,13 @@
       meant precisely. He invented an imaginary device: an infinite tape divided into
       cells, a read/write head that could move along the tape, and a finite set of rules
       that said what to do based on the current symbol and the machine's current state.
+      Then he turned that device against itself. Suppose a machine existed that could
+      inspect any program and decide, in finite time, whether it would ever halt. Feed it
+      a program built to do the opposite of whatever the decider predicts — loop forever
+      if told it will halt, halt if told it will loop — and the decider is trapped in a
+      contradiction it cannot escape. The machine that decides everything cannot exist,
+      because it would have to out-predict a program written to spite it. Defining the
+      machine was not a detour from the proof; the machine was the proof.
     </p>
 
     <p id="ch1-context-p5">
@@ -299,8 +306,16 @@
     <p id="ch1-context-p8">
       Theory met urgency in 1939. Britain needed to break German naval codes — the Enigma
       cipher — faster than humans could. At Bletchley Park, Turing built the
-      <strong>Bombe</strong>, an electromechanical machine that searched the Enigma key
-      space mechanically. Later, his colleague Tommy Flowers built <strong>Colossus</strong>,
+      <strong>Bombe</strong>, an electromechanical machine — but it did not try all 158
+      quintillion keys, because no machine could. It exploited a guess and a flaw.
+      Cryptanalysts could often guess a fragment of the plaintext hidden in a message — a
+      stock phrase, a weather report — and Enigma had a fatal quirk: no letter is ever
+      encrypted as itself. Slide the guessed fragment along the intercepted text and each
+      letter it pairs with forces a chain of assumptions about the day's rotor wiring. The
+      Bombe raced through candidate rotor positions, followed each position's assumptions
+      to their electrical consequences, and discarded any that led to a contradiction —
+      searching by elimination, not exhaustion. That is what made an impossible key space
+      tractable. Later, his colleague Tommy Flowers built <strong>Colossus</strong>,
       the first programmable electronic digital computer, used to break the higher-level
       Lorenz cipher used by Hitler's high command. These machines were not Turing machines
       in his theoretical sense — they were special-purpose. But they proved that
@@ -658,10 +673,18 @@
     <p id="ch1-transistor-p7">
       The transistor works because it is built from a <em>semiconductor</em> — a material
       whose conductivity sits between a conductor (like copper) and an insulator (like
-      glass), and which can be precisely tuned by adding tiny amounts of impurities.
-      Almost all modern transistors are built from silicon, which is the second most
-      abundant element in Earth's crust. Sand is mostly silicon dioxide. The entire
-      digital economy is, in a literal sense, built on purified sand.
+      glass). That in-between quality is the whole point. A conductor is always on and an
+      insulator always off; a switch is precisely a thing you can flip, so you need a
+      material that can be pushed either way. What lets you push it is <em>doping</em> —
+      salting the pure silicon with a trace of another element. A dopant atom carrying one
+      more outer electron than silicon leaves a spare electron free to wander; one
+      carrying one fewer leaves a vacancy — a "hole" — that a neighbouring electron can
+      drop into, so the hole itself drifts like a positive charge. Either way the crystal
+      gains mobile carriers, and once charge can be summoned or held back on command, a
+      small voltage is enough to open or close a conducting path through the material.
+      Almost all modern transistors are built from silicon, the second most abundant
+      element in Earth's crust. Sand is mostly silicon dioxide. The entire digital economy
+      is, in a literal sense, built on purified sand.
     </p>
 
     <div class="diagram-card" id="fig-1-5">
@@ -743,7 +766,7 @@
         <!-- Scale label -->
         <text x="40" y="318" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)" letter-spacing="0.05em">SCALE — modern gate length: ~3 nanometres · roughly 15 silicon atoms wide</text>
       </svg>
-      <p id="ch1-transistor-p8" class="diagram-caption">Underneath the schematic symbol is a stack of materials. The substrate is silicon doped with electron-acceptor atoms (P-type). Two regions on either side are doped with electron donors (N⁺) — these are the source and drain. Between them, an insulating layer of silicon dioxide separates the substrate from a conducting gate. With no voltage on the gate, no path exists between source and drain. Apply a small positive voltage and the substrate just under the oxide <em>inverts</em> — a thin layer of free electrons forms a conducting channel, and current flows. This effect — the field-effect — is why these are called field-effect transistors, or MOSFETs (Metal-Oxide-Semiconductor Field-Effect Transistors). Every modern CPU is a stack of these about 3 nanometres wide.</p>
+      <p id="ch1-transistor-p8" class="diagram-caption">Underneath the schematic symbol is a stack of materials. The substrate is silicon doped with electron-acceptor atoms (P-type). Two regions on either side are doped with electron donors (N⁺) — these are the source and drain. Between them, an insulating layer of silicon dioxide separates the substrate from a conducting gate. With no voltage on the gate, no path exists between source and drain. Apply a small positive voltage to the gate and its charge pulls electrons toward the surface — reaching across the oxide as an electric field, not a current, because no charge ever crosses the insulator. Enough electrons gather just beneath the oxide that the substrate there <em>inverts</em>: a thin layer of free electrons appears where there was none, bridging source and drain, and current flows. The field does its work at a distance, straight through the insulating layer — which is exactly why these are called field-effect transistors, or MOSFETs (Metal-Oxide-Semiconductor Field-Effect Transistors). Every modern CPU is a stack of these about 3 nanometres wide.</p>
     </div>
 
     <p id="ch1-transistor-p9">
@@ -1107,10 +1130,18 @@
 
     <p id="ch1-cpu-p2">
       The <span class="key-term">instruction cycle</span> is the fundamental unit of
-      computation at the hardware level. A modern CPU executes billions of these per
-      second on each of its cores. Everything else — your operating system, your browser,
-      your music, this page — is just a particular sequence of instructions that the
-      cycle runs through.
+      computation at the hardware level, and it runs the same four steps without pause.
+      A special register called the <strong>program counter</strong> holds the address
+      of the next instruction to run. <em>Fetch</em>: the CPU reads the bytes sitting at
+      that address out of memory. <em>Decode</em>: it interprets that pattern of bits,
+      working out which operation is being asked for and which registers or values it
+      acts on. <em>Execute</em>: the unit that does the work — usually the ALU — carries
+      it out, adding, comparing, or computing an address. <em>Writeback</em>: the result
+      is stored back into a register or memory, and the program counter is advanced so it
+      points at the instruction that comes next. Then the cycle starts over, billions of
+      times a second on each core. Everything else — your operating system, your browser,
+      your music, this page — is just a particular sequence of instructions fed through
+      this one loop.
     </p>
 
     <div class="diagram-card" id="fig-1-9">
@@ -1204,7 +1235,7 @@
             path="M 110 130 L 270 130 L 430 130 L 590 130 L 590 220 L 110 220 L 110 130"/>
         </g>
       </svg>
-      <p id="ch1-cpu-p3" class="diagram-caption">A modern CPU executes billions of these cycles per second on each of its cores. Watch the gold packet circulate above: it represents one instruction making its way through the four stages, then the program counter advances and the next instruction begins. Everything else — your operating system, your browser, this page — is a particular sequence of instructions threaded through this loop.</p>
+      <p id="ch1-cpu-p3" class="diagram-caption">Each core runs this loop continuously. Watch the gold packet circulate above: it is one instruction making its way through the four stages — fetch, decode, execute, writeback — after which the program counter advances and the next instruction begins. The diagonal hand-off never stops while the machine is on.</p>
     </div>
 
     <h3>What an instruction actually is</h3>
@@ -1628,10 +1659,18 @@
     </p>
 
     <p id="ch1-kernel-p4">
-      The answer was yes — but only if something managed the sharing. That something
-      became the <span class="key-term">operating system kernel</span>. The kernel is
-      the one program that always runs. It owns the hardware. Every other program must
-      ask it for permission to do anything that touches the outside world.
+      The answer was yes — but only if something stood between the programs and the
+      hardware to manage the sharing. That something became the
+      <span class="key-term">operating system kernel</span>. The trick that made sharing
+      pay off is this: the instant one program stops to wait on something slow — a disk,
+      a keypress, a network reply — is precisely the instant the kernel can hand the idle
+      CPU to a different program that has work ready. The processor that used to sit dark
+      while a punch-card reader clattered now runs someone else's job in the gap. And once
+      several programs are interleaved on one machine like that, something has to keep
+      them from trampling each other — so the kernel is also the one program that always
+      runs, owns the hardware, and forces every other program to ask its permission to
+      touch anything in the outside world. Sharing and protection are the same job seen
+      from two sides, and the kernel is the answer to both.
     </p>
 
     <div class="diagram-card" id="fig-1-14">
@@ -1933,7 +1972,7 @@
     <div class="insight-strip">
       <span class="insight-icon">💡</span>
       <p id="ch1-memory-p11" class="insight-text">
-        <strong>Buffer overflow attacks</strong> exploit the memory model directly. If a program writes more data than a buffer can hold, the extra bytes spill into adjacent memory. If that memory contains a return address — an address the CPU will jump to when the current function ends — an attacker who controls the input controls where the CPU jumps next. Stack canaries, ASLR (Address Space Layout Randomization), and DEP (data execution prevention) are the layered hardware and OS defenses against this. We'll see exactly how this works at the assembly level in <a href="#ch3">Chapter 3</a>.
+        <strong>Buffer overflow attacks</strong> exploit the memory model directly. If a program writes more data than a buffer can hold, the extra bytes spill into adjacent memory. If that memory contains a return address — an address the CPU will jump to when the current function ends — an attacker who controls the input controls where the CPU jumps next. Three layered defenses each cut a different link in that chain: a <strong>stack canary</strong> is a known value planted between the buffer and the return address, so an overflow must trample it on the way and the change is caught before the function returns; <strong>ASLR</strong> (Address Space Layout Randomization) reshuffles where code and data load on every run, so the attacker no longer knows which address to aim at; and <strong>DEP</strong> (Data Execution Prevention) marks writable memory as non-executable, so bytes smuggled into a buffer cannot run as instructions even if the CPU is redirected into them. We'll see exactly how each of these works at the assembly level in <a href="#ch3">Chapter 3</a>.
       </p>
     </div>
   </section>
@@ -2053,11 +2092,16 @@
       to represent three digits? Yes. The Soviet Union built one. The <em>Setun</em>,
       designed in 1958 at Moscow State University by Nikolay Brusentsov, used
       <em>balanced ternary</em> (digits −1, 0, +1) and was, in many mathematical respects,
-      more elegant than binary. But it required precisely tuned voltage thresholds that
-      were difficult to maintain reliably as components aged. Binary won not because it
-      was theoretically superior, but because it was <em>physically robust</em>. A small
-      voltage drift will turn a 1 into a 0; it takes a much larger drift to make a 0
-      look like a 2.
+      more elegant than binary. But it required three voltage levels to be told apart
+      reliably, and that is where it lost. Here is the mechanism. A wire carries some fixed
+      span of voltage. Binary cuts that span with a single threshold, leaving one wide
+      gap between "low" and "high" — a value has to drift almost halfway across the whole
+      range before it crosses the line and flips. Ternary has to fit three levels into the
+      same span, which means two thresholds and much narrower bands between them; now a
+      drift that binary would simply shrug off is large enough to push a level across a
+      boundary into its neighbour. As components age and temperature swings, those small
+      drifts are constant. Binary won not because it was theoretically superior, but
+      because it left the most room for error before a bit changed its mind.
     </p>
 
     <div class="diagram-card" id="fig-2-1">
@@ -2134,9 +2178,14 @@
       In ordinary algebra, <em>x + y = y + x</em> and <em>xy = yx</em>. In Boole's algebra,
       the variables represent not numbers but <em>truth values</em> — propositions that
       are either true or false. The operations are not addition and multiplication but
-      <em>OR</em> (logical disjunction), <em>AND</em> (logical conjunction), and
-      <em>NOT</em> (negation). And there are only two values a variable can take:
-      <strong>0</strong> (false) and <strong>1</strong> (true).
+      three of their own. <em>AND</em>, written like multiplication (<em>A · B</em>), is
+      true only when both of its inputs are true. <em>OR</em>, written like addition
+      (<em>A + B</em>), is true when at least one input is true. <em>NOT</em> simply flips
+      its input, turning true into false and false into true. And there are only two
+      values a variable can take: <strong>0</strong> (false) and <strong>1</strong> (true).
+      That last constraint is what gives the algebra its strange-looking laws — <em>A + A
+      = A</em> and <em>A · A = A</em> — because "true or true" and "true and true" are each
+      still just true. Same symbols as school algebra; different rules underneath.
     </p>
 
     <div class="pull-quote">
@@ -2161,8 +2210,12 @@
       devices that could be open (no current) or closed (current flowing) based on
       another control signal. He noticed something: the behavior of these circuits
       could be described <em>exactly</em> by Boole's algebra. An open relay was 0.
-      A closed one was 1. Two relays in series implemented AND. Two in parallel
-      implemented OR. A relay that opened when its control signal was on implemented NOT.
+      A closed one was 1. Wire two relays in <em>series</em>, one behind the other, and
+      current can reach the far end only if <em>both</em> are closed — that is AND. Wire
+      them in <em>parallel</em>, side by side, and current gets through if <em>either</em>
+      one is closed — that is OR. And a relay built to spring open when its control signal
+      arrives passes current only when the signal is absent — that is NOT. The three
+      operations Boole had defined on paper were sitting there in the wiring.
     </p>
 
     <p id="ch2-boole-p7">
@@ -2354,9 +2407,15 @@
     <p id="ch2-gates-p4">
       A remarkable result, due to Henry Sheffer in 1913: you don't actually need three
       different kinds of gates. A single gate type — <span class="key-term">NAND</span>
-      (NOT-AND) — can be combined to implement any Boolean function. NOT, AND, OR,
-      everything. This is called <em>functional completeness</em>, and NAND is a
-      <em>universal gate</em>.
+      (NOT-AND) — can be wired up to imitate all of them. A NAND is just an AND with its
+      output inverted; it emits 0 only when both inputs are 1. Now tie its two inputs
+      together and feed the same signal <em>A</em> into both: it computes NOT(<em>A</em> ·
+      <em>A</em>), and since <em>A</em> · <em>A</em> is just <em>A</em>, the result is NOT
+      <em>A</em> — you have built an inverter from one NAND. Run a NAND's output into a
+      second NAND wired as that inverter and the two inversions cancel, leaving a plain
+      AND. OR takes three NANDs arranged by De Morgan's laws so each input is inverted
+      before a final NAND recombines them. Every gate, from one primitive. This is called
+      <em>functional completeness</em>, and NAND is a <em>universal gate</em>.
     </p>
 
     <p id="ch2-gates-p5">
@@ -2733,10 +2792,14 @@
     <p id="ch2-twos-p3">
       Why not? Two reasons. First, you end up with two zeros — <code>00000000</code>
       and <code>10000000</code>, "positive zero" and "negative zero" — which makes
-      equality testing awkward. Second, and far worse, you cannot use the same adder
-      circuit to subtract. Subtraction would require a separate, more complex circuit.
-      Hardware engineers hate this: every extra circuit is more transistors, more area,
-      more heat, more cost.
+      equality testing awkward. Second, and far worse, the ordinary adder gives the wrong
+      answer on it. Feed +5 (<code>00000101</code>) and −5 (<code>10000101</code>) into the
+      adder and let it add bit by bit the way it adds anything, and out comes
+      <code>10001010</code> — which reads back as −10, not 0. The adder has no idea that
+      leftmost bit is a sign; it just adds it in. To make signed magnitude subtract
+      correctly you would have to bolt on a separate, more complex circuit that inspects
+      the sign bits first and decides what to do. Hardware engineers hate this: every
+      extra circuit is more transistors, more area, more heat, more cost.
     </p>
 
     <h3>The trick: complement</h3>
@@ -2992,13 +3055,17 @@
     </p>
 
     <p id="ch2-float-p2">
-      The cause is binary representation of fractions. In decimal, <code>0.1</code> is
-      a clean, finite digit string. In binary, it is not. <code>0.1</code> in binary is
-      <code>0.0001100110011001100...</code> — the pattern <code>0011</code> repeating
-      forever. Just like <code>1/3</code> in decimal is <code>0.333...</code> repeating
-      forever, certain decimal fractions become repeating binary fractions. And computer
-      memory is finite, so the binary representation has to be cut off. The remainder
-      becomes a tiny error.
+      The cause is the binary representation of fractions. A binary fraction is a sum of
+      halves, quarters, eighths — negative powers of two — and nothing else. So a fraction
+      can be written out exactly in binary only when its denominator is itself a power of
+      two. <code>0.5</code> is <code>1/2</code> and <code>0.25</code> is <code>1/4</code>,
+      so both are clean and finite. But <code>0.1</code> is <code>1/10</code>, and
+      10 = 2 × 5 carries a factor of 5 that no stack of halves can ever divide evenly — so
+      its binary expansion never terminates. It runs <code>0.0001100110011001100...</code>,
+      the pattern <code>0011</code> repeating forever, for exactly the reason <code>1/3</code>
+      repeats as <code>0.333...</code> in decimal: 3 divides no power of ten, just as 5
+      divides no power of two. Computer memory is finite, so the endless expansion has to
+      be cut off, and the remainder becomes a tiny error.
     </p>
 
     <h3>IEEE 754: the universal floating-point standard</h3>
@@ -3155,18 +3222,31 @@
     <h3>Special values: ±∞ and NaN</h3>
 
     <p id="ch2-float-p9">
-      IEEE 754 reserves certain bit patterns for special values. When the exponent is
-      all ones and the mantissa is zero, the value is <strong>infinity</strong> (positive
-      or negative depending on the sign bit). When the exponent is all ones and the
-      mantissa is non-zero, the value is <strong>NaN</strong> — Not a Number, the
-      result of operations like <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>.
+      IEEE 754 reserves certain bit patterns for special values, and it does so for a
+      reason: a calculation that runs off the rails should be able to keep flowing rather
+      than halt the machine. When the exponent is all ones and the mantissa is zero, the
+      value is <strong>infinity</strong> — what you get by dividing by zero
+      (<code>1.0 / 0.0</code>) or by letting a number grow past the largest representable
+      value, roughly 10<sup>308</sup> — with its sign taken from the sign bit. When the
+      exponent is all ones and the mantissa is non-zero, the value is <strong>NaN</strong>
+      — Not a Number — the result of an operation with no meaningful answer at all, like
+      <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>. Both keep the computation moving
+      instead of halting it, and a NaN in particular is built to spread: once one appears,
+      any later arithmetic that touches it yields another NaN, so the bad result carries
+      all the way through to the end of the computation — where it can be spotted — rather
+      than crashing the program the instant it first arises.
     </p>
 
     <p id="ch2-float-p10">
       NaN has a remarkable property: it is not equal to anything, including itself.
       <code>NaN == NaN</code> evaluates to <code>false</code> in every IEEE 754-compliant
-      language. This is the standard test to detect a NaN. It is mathematically odd
-      and has caught countless programmers off guard.
+      language. That looks perverse until you remember what NaN means — <em>no value at
+      all</em>. Two failed computations are not "the same number," because neither is a
+      number; asking whether they are equal is as meaningless as asking whether two
+      silences are the same note. And that apparent defect is exactly what makes NaN
+      detectable: since a NaN is the one value not equal to itself, the test
+      <code>x != x</code> is the standard, reliable way to catch one. The property that
+      looks broken is the property that does the work.
     </p>
 
     <div class="insight-strip">
@@ -3566,7 +3646,7 @@
 
         <text x="360" y="296" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">x86 binary in · ARM binary out · same program · ~80% native performance</text>
       </svg>
-      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 is what made the 2020 Intel-to-Apple-Silicon transition feel painless. When a Mac launches an x86 binary on an ARM-based M-series chip, Rosetta 2 — once, on first launch — reads the entire executable, translates each x86-64 instruction into a sequence of ARM64 instructions that produces the same observable result, and saves the translated binary to a cache. Subsequent launches skip the translation step. The translated code runs at roughly 80% the speed of native ARM, sometimes faster than the original on the original Intel hardware. Rosetta 2 is possible only because both ISAs are Turing-complete with the same memory model — every x86 instruction has an equivalent sequence of ARM ones, and a careful translator can find that sequence statically.</p>
+      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 is what made the 2020 Intel-to-Apple-Silicon transition feel painless. When a Mac launches an x86 binary on an ARM-based M-series chip, Rosetta 2 — once, on first launch — reads the entire executable, translates each x86-64 instruction into a sequence of ARM64 instructions that produces the same observable result, and saves the translated binary to a cache. Subsequent launches skip the translation step. The translated code runs at roughly 80% the speed of native ARM, sometimes faster than the original on the original Intel hardware. Rosetta 2 works because any sequence of x86 instructions can be reproduced by some sequence of ARM ones, and a careful translator can find that sequence ahead of time. The one genuine hazard is memory ordering — x86 guarantees a stricter order for memory operations than ARM does by default — and Apple solved it in silicon: the M-series chips carry a mode that makes the ARM core enforce x86's stronger ordering while translated code runs, so even a multithreaded x86 program keeps behaving exactly as it did on Intel.</p>
     </div>
 
     <h3>RISC vs CISC, and why the war ended in a draw</h3>
@@ -3577,7 +3657,14 @@
       including multi-step operations like "load from memory, add, and store back"
       in a single instruction. <strong>RISC</strong> — Reduced Instruction Set Computers,
       like ARM, MIPS, SPARC — had a small set of simple, uniform instructions. RISC
-      machines could clock faster because each instruction was simple to decode.
+      machines could clock faster, and the reason is decoding. A variable-length
+      instruction hides its own length — recall from Fig 3.1 that an x86 <code>add</code>
+      can run anywhere from two bytes to a dozen — so the decoder cannot even find where
+      the next instruction begins until it has finished parsing this one. Fixed-width
+      instructions, always four bytes on ARM, sit at known boundaries, so the CPU can
+      locate and decode a whole run of them at once, and each decode step stays simple
+      enough to fit inside a shorter clock tick. Uniform, predictable encoding is what
+      buys the faster clock.
     </p>
 
     <p id="ch3-isa-p7">
@@ -4218,14 +4305,20 @@ main:
       This is the price of <em>memory unsafety</em>. C and C++ are memory-unsafe by
       design — they trade safety for performance and control. Modern languages like
       Rust, Java, Python, and Go are <em>memory-safe</em>: their runtimes or compilers
-      check bounds at every access. They cannot have classical buffer overflows. That
-      protection is the central reason newer languages exist.
+      check every array access against the array's real length. And the decisive part is
+      <em>when</em> they check — before the write lands. An out-of-bounds access becomes a
+      controlled failure (an exception, a Rust panic) instead of the silent corruption of
+      the section above; the program stops loudly at the bad access rather than sailing on
+      with a trampled return address, and a crash is not code execution. For Rust this
+      guarantee was the whole reason the language exists; for Java, Python, and Go it came
+      bundled with managed runtimes adopted for other reasons — but the effect is the
+      same, and the classical buffer overflow simply cannot occur.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon">📅</span>
       <p id="ch3-overflow-p10" class="insight-text">
-        <strong>Famous buffer overflow incidents.</strong> The Morris Worm (1988, fingerd). The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL — technically a buffer over-<em>read</em> rather than overflow, exposed private keys of millions of HTTPS servers). For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels — including, as of 2022, Linux itself.
+        <strong>Famous buffer overflow incidents.</strong> The Morris Worm (1988, fingerd). The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL — technically a buffer over-<em>read</em> rather than overflow: the server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer — including the private keys of millions of HTTPS servers). For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels — including, as of 2022, Linux itself.
       </p>
     </div>
   </section>

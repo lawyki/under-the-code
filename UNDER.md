@@ -269,7 +269,8 @@ the stored fraction at 1440 and 375.
   `atheric.eu` (+ its DNS records) + set the secret. Until then
   `/api/auth/request` returns a clean 503 and the account page says delivery
   is unavailable; on localhost the API echoes the link (`devLink`) so the flow
-  is fully testable without mail.
+  is fully testable without mail. *(Resolved: owner completed this and
+  verified live delivery — see §6 P0, 2026-08-01.)*
 - Pages Functions live in `functions/api/*`; `wrangler.toml` carries the
   bindings (`pages_build_output_dir = "public"`). `_lib.js` is not routed
   (verified 404).
@@ -794,17 +795,10 @@ glossary net 518 → 519 (+`everything is a file`, +`MVCC`, −plural
 ## 6. Prioritized improvement backlog (later passes — needs owner sign-off)
 
 **P0 — owner action (pass 3 leftover)**
-0. **Enable Cloudflare Email Sending for atheric.eu** so magic-link mail
-   actually delivers: Workers Paid plan → dashboard Email → Email Sending →
-   enable for the zone + add its DNS records (or `npx wrangler email sending
-   enable atheric.eu` once the account has access — the API currently returns
-   Unauthorized 2036, i.e. plan/beta gating). Then create an API token with
-   Email Sending permission and store it:
-   `npx wrangler pages secret put EMAIL_API_TOKEN --project-name under-the-code`.
-   Everything else (code, D1, CF_ACCOUNT_ID var) is already deployed;
-   `/api/auth/request` returns 503 `delivery_unavailable` until this is done.
-   Then: request a link on `/account` with a real address and complete one
-   live email round-trip.
+0. ~~**Enable Cloudflare Email Sending for atheric.eu**~~ — **DONE**
+   (owner-confirmed 2026-08-01): Email Sending enabled, `EMAIL_API_TOKEN`
+   set, and a live magic-link email round-trip verified in production.
+   No P0 items remain.
 
 **P1 — reader-facing polish**
 1. ~~**Figure a11y**~~ — DONE in pass 2. All 241 figure SVGs + the cover carry
