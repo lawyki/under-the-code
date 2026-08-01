@@ -448,9 +448,9 @@
     <p id="ch4-scheduling-p3">
       Modern systems are <em>preemptive</em>: the kernel forcibly takes the CPU back
       from a running process at regular intervals, regardless of whether the process is
-      ready to give it up. The mechanism is a hardware <strong>timer interrupt</strong> —
-      a chip on the motherboard that sends an electrical signal to the CPU at a fixed
-      frequency (typically 100–1000 times per second on Linux). Each interrupt forces
+      ready to give it up. The mechanism is the hardware <strong>timer interrupt</strong> — a timer on the CPU
+      core itself, introduced in the Bridge, programmed by the kernel to fire at a set
+      rate (typically 100–1000 times per second on Linux). Each interrupt forces
       the CPU into Ring 0, where the scheduler runs, decides whether to switch processes,
       and either resumes the current one or chooses a different one. The user perceives
       perfectly smooth multitasking because the timer fires faster than human reaction.
@@ -607,7 +607,7 @@
           <text x="660" y="366">time →</text>
         </g>
       </svg>
-      <p id="ch4-scheduling-p7" class="diagram-caption">The same four jobs scheduled four different ways. <strong>FCFS</strong> serves them in arrival order — the eight-unit job A blocks everyone behind it (the convoy effect). <strong>SJF</strong> reorders by length — A still runs first because it arrived alone, but D (5 units) jumps ahead of C (9 units), giving the lowest possible average wait time. <strong>Round Robin</strong> with quantum 2 interleaves all four constantly — responsive but never letting any job make a long uninterrupted run. <strong>MLFQ</strong> demotes processes that use a lot of CPU into lower-priority queues; long-running C ends up at Q3 and waits, while interactive bursts of A get repeated Q1/Q2 attention. Each algorithm is correct, for a different definition of "correct" — average wait, total throughput, responsiveness, fairness. The choice depends on workload.</p>
+      <p id="ch4-scheduling-p7" class="diagram-caption">The same four jobs scheduled four different ways. <strong>FCFS</strong> serves them in arrival order — the eight-unit job A blocks everyone behind it (the convoy effect). <strong>SJF</strong> reorders by length — A still runs first because it arrived alone, but D (5 units) jumps ahead of C (9 units), giving the lowest possible average wait time. <strong>Round Robin</strong> with quantum 2 interleaves all four constantly — responsive but never letting any job make a long uninterrupted run. <strong>MLFQ</strong> demotes processes that burn through their time slices into lower-priority queues: the long jobs A and C drift down level by level and finish last, while the short jobs B and D clear out quickly from the high-priority queues. Each algorithm is correct, for a different definition of "correct" — average wait, total throughput, responsiveness, fairness. The choice depends on workload.</p>
     </div>
 
     <div class="math-callout">
@@ -916,7 +916,7 @@
       be fetched from disk — typically because it was swapped out, or because the
       program is reading a memory-mapped file for the first time. The kernel issues a
       disk read, suspends the process, and resumes it when the data arrives. Cost:
-      milliseconds. Tens of thousands of times slower than minor faults.
+      milliseconds. Roughly a thousand times slower than minor faults.
     </p>
 
     <p id="ch4-vm-p12">
@@ -1256,8 +1256,10 @@
     </ul>
 
     <p id="ch4-fs-p7">
-      The same five system calls — <code>open</code>, <code>read</code>, <code>write</code>,
-      <code>close</code>, <code>lseek</code> — work on all of them. This radical
+      The same four system calls — <code>open</code>, <code>read</code>, <code>write</code>,
+      <code>close</code> — work on all of them (a socket arrives through a
+      different door, but once you hold its descriptor it is <code>read</code> and
+      <code>write</code> like everything else). This radical
       uniformity is one of the reasons UNIX-derived systems became so dominant: tools
       written for files just work on devices, network connections, and process state
       without modification. The shell pipeline you can use to count lines in a text file
@@ -1330,7 +1332,7 @@
         <text x="56" y="324" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">→ any uncommitted entries (no commit record) are discarded — write was never durable</text>
         <text x="56" y="338" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">→ filesystem state is always consistent; the old O(disk) fsck pass is gone</text>
       </svg>
-      <p id="ch4-fs-p10" class="diagram-caption">A journaling filesystem does every write twice. First, the kernel writes a description of the intended change to a small journal region, followed by a single-block commit record (whose write is atomic by hardware guarantee). Then it applies the change to the actual filesystem at its leisure — possibly reordered, batched, or coalesced with other writes. If the machine crashes between commit and apply, recovery is straightforward: replay every journal entry whose commit record is intact, drop the rest. The technique comes from database write-ahead logging (Gray, IBM, 1981), and is now in ext4, NTFS, HFS+, JFS, XFS, and every other serious modern filesystem. It is also why a sudden power loss on a modern machine takes seconds to recover from, not hours.</p>
+      <p id="ch4-fs-p10" class="diagram-caption">A journaling filesystem does every write twice. First, the kernel writes a description of the intended change to a small journal region, followed by a single-block commit record (a write small enough to be atomic in practice — the one assumption everything else leans on). Then it applies the change to the actual filesystem at its leisure — possibly reordered, batched, or coalesced with other writes. If the machine crashes between commit and apply, recovery is straightforward: replay every journal entry whose commit record is intact, drop the rest. The technique comes from database write-ahead logging — Jim Gray's work on IBM's System R in the late 1970s — and is now in ext4, NTFS, HFS+, JFS, XFS, and every other serious modern filesystem. It is also why a sudden power loss on a modern machine takes seconds to recover from, not hours.</p>
     </div>
 
     <p id="ch4-fs-p11">
@@ -1396,7 +1398,7 @@
         <text x="360" y="262" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(46,96,70,0.95)">consequences: snapshots are free · no in-place writes can corrupt · checksums fit naturally</text>
         <text x="360" y="282" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">cost: every write triggers a chain of new-block writes up to the root — write amplification</text>
       </svg>
-      <p id="ch4-fs-p12" class="diagram-caption">A copy-on-write filesystem never modifies a block in place. Updating one byte of block 103 means: allocate a new block (103′), copy 103's contents, apply the change, then re-write the parent that pointed at 103 to point at 103′ instead — and so on, all the way up to the root. The old version of every block remains valid until explicitly freed. A snapshot is just a saved copy of the old root pointer; it costs zero bytes until something diverges. Every block can include a checksum that the filesystem verifies on read, so silent disk corruption (which happens, even on enterprise hardware) gets caught instead of propagating. The trade is <strong>write amplification</strong>: a one-byte change touches a full block at every level of the tree. ZFS, btrfs, and APFS all make this trade and consider it a bargain. WAFL (NetApp) made the trade first, in 1992, and built a multi-billion-dollar storage business on it.</p>
+      <p id="ch4-fs-p12" class="diagram-caption">A copy-on-write filesystem never modifies a block in place. Updating one byte of block 103 means: allocate a new block (103′), copy 103's contents, apply the change, then re-write the parent that pointed at 103 to point at 103′ instead — and so on, all the way up to the root. The old version of every block remains valid until explicitly freed. A snapshot is just a saved copy of the old root pointer; it costs zero bytes until something diverges. Every block can include a checksum that the filesystem verifies on read, so silent disk corruption (which happens, even on enterprise hardware) gets caught instead of propagating. The trade is <strong>write amplification</strong>: a one-byte change touches a full block at every level of the tree. ZFS, btrfs, and APFS all make this trade and consider it a bargain. WAFL (NetApp) made the trade in the early 1990s and built a multi-billion-dollar storage business on it.</p>
     </div>
   </section>
 
@@ -1419,8 +1421,7 @@
 
     <p id="ch4-ipc-p2">
       Each IPC mechanism is a different point on the trade-off between
-      <em>convenience</em>, <em>performance</em>, and <em>flexibility</em>. The set
-      below is roughly chronological — older mechanisms at the top, newer at the bottom.
+      <em>convenience</em>, <em>performance</em>, and <em>flexibility</em>.
     </p>
 
     <table class="summary-table">
@@ -1440,7 +1441,8 @@
     <h3>The pipe: UNIX's most beautiful idea</h3>
 
     <p id="ch4-ipc-p3">
-      The pipe was added to UNIX in 1973 by Doug McIlroy. Mechanically, a pipe is a
+      The pipe reached UNIX in 1973 — Doug McIlroy had been urging the idea for years;
+      Ken Thompson finally built it in an evening. Mechanically, a pipe is a
       kernel-allocated ring buffer with two file descriptors attached: one process
       writes to one end, another reads from the other. The kernel handles flow control
       automatically — if the buffer is full, the writer blocks; if it is empty, the
@@ -1636,8 +1638,9 @@
       stop." A process can register a handler function for most signals; when the signal
       arrives, the kernel hijacks the running process, runs the handler, then resumes.
       Three things can happen on a signal: <strong>handle</strong>, <strong>ignore</strong>,
-      or — for some signals like <code>SIGKILL</code> and <code>SIGSTOP</code> —
-      <strong>die</strong>, with no recourse.
+      or take the default action. Two signals, <code>SIGKILL</code> and
+      <code>SIGSTOP</code>, can be neither handled nor ignored: the first always kills,
+      the second always suspends, with no recourse.
     </p>
 
     <div class="diagram-card" id="fig-4-17">
@@ -1686,7 +1689,7 @@
 
         <!-- Outcomes -->
         <rect x="60" y="246" width="600" height="22" rx="3" fill="#101a14" stroke="rgba(132,255,178,0.45)"/>
-        <text x="360" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">three possible reactions: <tspan fill="rgba(150,216,150,0.95)">handle</tspan> (custom code) · <tspan fill="rgba(198,222,206,0.85)">ignore</tspan> (signal discarded) · <tspan fill="rgba(232,120,120,0.95)">die</tspan> (default for fatal signals)</text>
+        <text x="360" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">three possible reactions: <tspan fill="rgba(150,216,150,0.95)">handle</tspan> (custom code) · <tspan fill="rgba(198,222,206,0.85)">ignore</tspan> (signal discarded) · <tspan fill="rgba(232,120,120,0.95)">default</tspan> (die, stop, or nothing)</text>
       </svg>
       <p id="ch4-ipc-p10" class="diagram-caption">A signal arrives at an arbitrary moment in the target process's execution. The kernel queues it, then — at the next kernel-to-userspace transition (a syscall return, a page-fault return, etc.) — diverts the process to its registered handler. The handler runs as if it were a function call inserted at that exact instruction; when it returns, the kernel restores the original CPU state and the process resumes. Some signals are uncatchable: <code>SIGKILL</code> (number 9) terminates the process unconditionally; the kernel does not even consult the process. <code>SIGSTOP</code> suspends it. Both exist because a privileged user must always be able to stop a misbehaving process — even one that has registered handlers for everything else. Signals are crude: a single integer per notification, no data, no queueing of duplicates of the same signal. They predate every other Unix IPC mechanism and remain the standard way to control the lifecycle of a process.</p>
     </div>
@@ -1911,7 +1914,8 @@
       affect others. Containers share a kernel, so a kernel privilege-escalation bug
       can let a malicious container take over the host and every sibling container.
       Cloud providers running multi-tenant workloads typically use VMs (or
-      VM-strengthened containers like AWS Firecracker) for this reason; single-tenant
+      containers wrapped in micro-VMs — AWS's Firecracker exists for
+      exactly this); single-tenant
       deployments use plain containers because they're far cheaper.
     </p>
 
@@ -2039,7 +2043,7 @@
         <text x="360" y="272" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(46,96,70,0.95)">total: 16 cores · 64 GB · 2 GB/s · 10 Gbps — fully accounted, no overcommit</text>
         <text x="360" y="290" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">a runaway "batch" job cannot drain the "db" cgroup's CPU — kernel enforces the cap</text>
       </svg>
-      <p id="ch4-security-p13" class="diagram-caption">If namespaces decide what a process can <em>see</em>, cgroups decide what it can <em>use</em>. Each cgroup is a node in a hierarchy, with explicit limits on every resource the kernel can meter — CPU shares, memory bytes, block-device IOPS, network bandwidth, even the number of file descriptors. The kernel enforces these on every syscall and every scheduling decision: a process in the "batch" cgroup that tries to exceed its memory limit gets killed by the OOM killer; a process exceeding its CPU share gets descheduled until its budget refills. Cgroups are how Kubernetes packs ten workloads onto one machine without any of them noticing the others, how Docker's <code>--cpus=2</code> flag works, and how systemd ensures a misbehaving service does not bring down the rest of the host.</p>
+      <p id="ch4-security-p13" class="diagram-caption">If namespaces decide what a process can <em>see</em>, cgroups decide what it can <em>use</em>. Each cgroup is a node in a hierarchy, with explicit limits on every resource the kernel can meter — CPU shares, memory bytes, block-device IOPS, network bandwidth, even the number of processes a group may spawn. The kernel enforces these on every syscall and every scheduling decision: a process in the "batch" cgroup that tries to exceed its memory limit gets killed by the OOM killer; a process that exhausts its CPU quota is descheduled until the next period refills it. Cgroups are how Kubernetes packs ten workloads onto one machine without any of them noticing the others, how Docker's <code>--cpus=2</code> flag works, and how systemd ensures a misbehaving service does not bring down the rest of the host.</p>
     </div>
 
     <h3>eBPF: safe code inside the kernel</h3>
@@ -2053,13 +2057,14 @@
     </p>
 
     <p id="ch4-security-p15">
-      The obvious worry is that this lets unprivileged users execute code in the kernel —
-      historically the worst possible security outcome. eBPF makes it safe through a
+      The obvious worry is that this lets user code into the kernel —
+      historically the worst possible security outcome. eBPF answers with a
       <strong>verifier</strong>: a static analyzer in the kernel that examines every
       uploaded program and refuses to load it unless it can prove the program will
       always terminate, never read out-of-bounds memory, and never crash. Programs that
       pass the verifier are then JIT-compiled to native machine code and run essentially
-      as fast as compiled kernel code.
+      as fast as compiled kernel code. (Belt and braces: modern kernels also restrict
+      <em>who</em> may load programs at all.)
     </p>
 
     <div class="diagram-card" id="fig-4-22">
@@ -2112,16 +2117,17 @@
         <rect x="40" y="320" width="640" height="32" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.7)"/>
         <text x="360" y="340" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">KERNEL — Ring 0 — only verified BPF runs here</text>
       </svg>
-      <p id="ch4-security-p16" class="diagram-caption">eBPF flips a forty-year-old assumption: that any code running in the kernel must be hand-vetted, audited, signed, and trusted. Instead, the kernel ships a <em>verifier</em> — a static analyser that mathematically proves an uploaded program is safe before letting it run. The proof obligations are concrete: every memory access must be in-bounds (so the program cannot read random kernel memory); every loop must be provably bounded (so the program cannot hang the kernel); the program must terminate within a fixed instruction budget. Programs that pass are JIT-compiled to native instructions and attached to hooks — system call entry, packet receive, function entry, scheduler tick — where they run in Ring 0 with no syscall overhead. Cilium uses eBPF for high-performance Kubernetes networking; bpftrace exposes a tracing language built on it; modern Linux observability is increasingly eBPF underneath. The pattern — sandboxed verified execution inside a privileged context — shows up again in <a href="part-3#ch12">Chapter 12</a> (browser JavaScript) and <a href="part-4#ch14">Chapter 14</a> (TLS), and is one of the most important architectural ideas of the last twenty years.</p>
+      <p id="ch4-security-p16" class="diagram-caption">eBPF flips a forty-year-old assumption: that any code running in the kernel must be hand-vetted, audited, signed, and trusted. Instead, the kernel ships a <em>verifier</em> — a static analyser that mathematically proves an uploaded program is safe before letting it run. The proof obligations are concrete: every memory access must be in-bounds (so the program cannot read random kernel memory); every loop must be provably bounded (so the program cannot hang the kernel); the program must terminate within a fixed instruction budget. Programs that pass are JIT-compiled to native instructions and attached to hooks — system call entry, packet receive, function entry, scheduler tick — where they run in Ring 0 with no syscall overhead. The pattern — sandboxed verified execution inside a privileged context — is one of the most important architectural ideas of the last twenty years.</p>
     </div>
 
     <p id="ch4-security-p17">
       eBPF has become the foundation of modern Linux observability and networking:
       tools like Cilium (high-performance network policy), bpftrace (kernel tracing),
       and Falco (runtime security monitoring) all build on it. The general pattern is
-      important — providing a sandboxed, formally checked execution environment inside
-      a privileged context — and we will see it again when we discuss browser security
-      models in <a href="part-3#ch12">Chapter 12</a> and TLS in <a href="part-4#ch14">Chapter 14</a>.
+      important — untrusted code running inside a privileged context under
+      machine-enforced constraints: proved harmless up front in eBPF's case, fenced in
+      at runtime when the browser runs untrusted JavaScript in
+      <a href="part-3#ch12">Chapter 12</a>.
     </p>
 
     <div class="insight-strip">
@@ -2141,7 +2147,8 @@
     microkernel (minimal Ring 0, message-passing, safer and slower), with most real
     systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically
     in queueing theory, decides which process gets the CPU at each microsecond — Linux's
-    CFS does this in O(log N) using a red-black tree of virtual runtimes. Its virtual
+    CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual
+    runtimes. Its virtual
     memory subsystem maintains a four-level page table per process, accelerated by a
     translation cache (TLB), and uses page faults productively to implement
     memory-mapped files and copy-on-write fork. Its filesystem turns a flat array of
@@ -2349,22 +2356,22 @@
       types map directly onto machine words. Its control flow maps directly onto
       conditional jumps. Its data structures are layouts you could draw on graph paper.
       The cost: you, the programmer, see the metal whether you want to or not. The
-      benefit: a competent compiler-writer can target a new ISA in a few months, and a
-      C program written for the PDP-11 in 1975 will recompile and run, unmodified, on a
-      2026 ARM Mac.
+      benefit: a competent compiler-writer can target a new ISA in a few months, and C
+      written for the PDP-11 half a century ago still compiles on a 2026 ARM Mac — the
+      dialect has aged, but the language has never broken its old programs lightly.
     </p>
 
     <h3>BCPL → B → C</h3>
 
     <p id="ch5-portability-p7">
       The lineage matters because it explains why C looks the way it does. <strong>BCPL</strong>
-      (Martin Richards, Cambridge, 1967) was a typeless, stack-based language designed for
+      (Martin Richards, Cambridge, 1967) was a typeless language designed for
       writing compilers. Words. No types. Just memory. <strong>B</strong> (Ken Thompson at
       Bell Labs, 1969) was a smaller, cleaner BCPL — also typeless, also word-oriented. B
       ran on early UNIX. But the PDP-11 that arrived at Bell Labs in 1970 was
       <em>byte-addressable</em>, and B's wordless model fit it badly. In 1972 Ritchie added
       types — <code>int</code>, <code>char</code>, pointers, structs — and called the result
-      <strong>C</strong>. The language was named, simply, after its predecessor's first letter.
+      <strong>C</strong>. The name was exactly the joke it looks like: the language that comes after B.
     </p>
 
     <div class="insight-strip">
@@ -2396,7 +2403,7 @@
     </p>
 
     <p id="ch5-bell-labs-p3">
-      Thompson found an unused PDP-7 in a hallway. The PDP-7 was already old by 1969 — an
+      Thompson salvaged an unused PDP-7. The PDP-7 was already old by 1969 — an
       18-bit minicomputer DEC had stopped selling. He started writing a small operating
       system for it, partly to play a space-travel game he had ported from Multics, partly
       to have an environment to work in. By the end of 1969 there was a kernel, a shell,
@@ -2477,7 +2484,7 @@
 
         <text x="360" y="304" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">THE 1973 REWRITE WAS THE PIVOT — UNIX BECAME THE FIRST OS YOU COULD MOVE BETWEEN MACHINES</text>
       </svg>
-      <p id="ch5-bell-labs-p4" class="diagram-caption">UNIX's first version was assembly, like every operating system before it. By 1973, Ritchie had built C and rewritten UNIX in it — and that rewrite is the moment systems software becomes portable. Within five years, UNIX was running on machines Thompson had never seen, ported by people he had never met. The 1978 Kernighan and Ritchie book — universally called <em>K&amp;R</em> — codified the language and is still in print, mostly unrevised, half a century later.</p>
+      <p id="ch5-bell-labs-p4" class="diagram-caption">UNIX's first version was assembly, like every operating system before it. By 1973, Ritchie had built C, and he and Thompson had rewritten UNIX in it — and that rewrite is the moment systems software becomes portable. Within five years, UNIX was running on machines Thompson had never seen, ported by people he had never met. The 1978 Kernighan and Ritchie book — universally called <em>K&amp;R</em> — codified the language and is still in print half a century later.</p>
     </div>
 
     <h3>The PDP-11</h3>
@@ -2638,7 +2645,7 @@
           <text x="320" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">pointer arithmetic · byte-addressable structs · arrays as decayed pointers — all PDP-11 idioms made into a language</text>
         </g>
       </svg>
-      <p id="ch5-bell-labs-p8" class="diagram-caption">The two machines that shaped C, side by side. The PDP-7 was the discarded mainframe in a corner of Bell Labs where Thompson wrote the first version of UNIX in 1969 — entirely in PDP-7 assembly, tied to that one specific machine forever. The PDP-11, which DEC released in 1970, gave Ritchie a clean 16-bit byte-addressable architecture with eight general-purpose registers and orthogonal addressing modes — and it is, almost literally, what C was designed for. Pointer arithmetic that adds <code>sizeof(*p)</code> bytes; structures laid out in memory in declaration order; arrays "decaying" into pointers in expressions — all of these are PDP-11 idioms abstracted just enough to be a language. The 1973 rewrite of UNIX in C took advantage of this fit: C compiled to good PDP-11 code by mapping almost directly to the hardware, while staying portable enough that the same source ran on a different machine the next year. For half a century afterward, every CPU vendor has been quietly designing for "what C expects" — flat byte-addressable memory, integer pointers, two's complement arithmetic, a stack. The shadow of the PDP-11 is still on the silicon you are reading this on.</p>
+      <p id="ch5-bell-labs-p8" class="diagram-caption">The two machines that shaped C, side by side. The PDP-7 was the discarded minicomputer in a corner of Bell Labs where Thompson wrote the first version of UNIX in 1969 — entirely in PDP-7 assembly, tied to that one specific machine forever. The PDP-11, which DEC released in 1970, gave Ritchie a clean 16-bit byte-addressable architecture with eight general-purpose registers and orthogonal addressing modes — and it is, almost literally, what C was designed for. Pointer arithmetic that adds <code>sizeof(*p)</code> bytes; structures laid out in memory in declaration order; arrays "decaying" into pointers in expressions — all of these are PDP-11 idioms abstracted just enough to be a language. The 1973 rewrite of UNIX in C took advantage of this fit: C compiled to good PDP-11 code by mapping almost directly to the hardware, while staying portable enough that within five years the same source was running on machines DEC never built. For half a century afterward, every CPU vendor has been quietly designing for "what C expects" — flat byte-addressable memory, integer pointers, two's complement arithmetic, a stack. The shadow of the PDP-11 is still on the silicon you are reading this on.</p>
     </div>
 
   </section>
@@ -2657,7 +2664,8 @@
     <p id="ch5-pointers-p2">
       Recall from <a href="part-1#ch1">Chapter 1</a> that memory is a giant array of bytes, and each byte has an
       integer address. On a 64-bit machine, those addresses run from <code>0x0000_0000_0000_0000</code>
-      to <code>0xFFFF_FFFF_FFFF_FFFF</code>, which is more bytes than will ever exist.
+      to <code>0xFFFF_FFFF_FFFF_FFFF</code> — more addresses than any single machine
+      will ever fill.
       A <span class="key-term">pointer</span> in C is just one of those integer addresses,
       stored in a variable that the compiler has labelled with the type of thing the
       address is supposed to point at.
@@ -2732,7 +2740,7 @@
 
         <text x="360" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.6)" letter-spacing="0.1em">A POINTER IS AN INTEGER + A TYPE — THE TYPE TELLS C HOW BIG A "STEP" IS</text>
       </svg>
-      <p id="ch5-pointers-p4" class="diagram-caption">A pointer to an int starts at address <code>0x100</code>. <code>p++</code> doesn't move forward by one byte; it moves forward by <code>sizeof(int)</code>, which is four bytes on most modern systems. The compiler does the multiplication. The same expression <code>p++</code> on a <code>double *</code> would advance eight bytes; on a <code>char *</code>, one byte. The arithmetic always means "next thing," never "next byte." This single design choice unlocks the equivalence of arrays and pointers, the entire C string library, and approximately every memory-corruption vulnerability in computing history.</p>
+      <p id="ch5-pointers-p4" class="diagram-caption">A pointer to an int starts at address <code>0x100</code>. <code>p++</code> doesn't move forward by one byte; it moves forward by <code>sizeof(int)</code>, which is four bytes on most modern systems. The compiler does the multiplication. The same expression <code>p++</code> on a <code>double *</code> would advance eight bytes; on a <code>char *</code>, one byte. The arithmetic always means "next thing," never "next byte." This single design choice unlocks the equivalence of arrays and pointers, the entire C string library, and every buffer overflow you met in Chapter 3.</p>
     </div>
 
     <h3>Arrays are pointers in disguise</h3>
@@ -2801,7 +2809,7 @@
       happens to be the saved return address on the stack — and you went back through
       <a href="part-1#ch3">Chapter 3</a> — you have a buffer overflow vulnerability. The mechanism we drew on
       paper there <em>is exactly this</em>, expressed as a few lines of C, compiled with
-      bounds-check optimization off (which is to say: with a normal C compiler).
+      bounds checking off (which is to say: compiled as C).
     </p>
 
     <div class="insight-strip">
@@ -2839,7 +2847,8 @@
       <code>brk</code> or <code>mmap</code> system calls). The allocator subdivides that
       chunk into smaller pieces in response to <code>malloc</code> calls, and stitches
       pieces back together when <code>free</code> calls return them. Over time, allocations
-      and frees create a free list — chunks of various sizes interleaved with allocated
+      and frees leave the heap a patchwork — free chunks of various sizes, threaded
+      onto the allocator's free list, interleaved with allocated
       chunks, each tagged with whether it is in use.
     </p>
 
@@ -2963,8 +2972,8 @@
       well-understood. C kept refusing it for one reason: <em>predictability</em>. A
       garbage collector decides on its own schedule when to pause your program and walk
       the heap. For a kernel running 10,000 syscalls per second, or an audio stack
-      filling a buffer 48,000 times per second, a 100-millisecond GC pause is
-      catastrophic. C's manual model gives you a contract: memory is freed exactly when
+      draining 48,000 samples per second through a buffer a few milliseconds deep, a
+      100-millisecond GC pause is catastrophic. C's manual model gives you a contract: memory is freed exactly when
       you free it, never sooner, never later. The price is that you must be right.
     </p>
 
@@ -3105,7 +3114,7 @@
         <text x="360" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">"Segmentation fault (core dumped)"</text>
         <text x="360" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">— the message every C programmer has seen ten thousand times</text>
       </svg>
-      <p id="ch5-ub-p6" class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge — The Boundary, in <a href="part-1">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 — <code>SIGSEGV</code> — to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. All of this happens in roughly the time it takes to read this sentence.</p>
+      <p id="ch5-ub-p6" class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge — The Boundary, in <a href="part-1">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 — <code>SIGSEGV</code> — to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. The whole chain — MMU, kernel, signal, corpse — takes a few microseconds.</p>
     </div>
 
     <h3>The optimizer's contract, the programmer's homework</h3>
@@ -3114,10 +3123,12 @@
       "Trust the programmer" was C's original philosophy and is still its operating
       stance. Modern optimizers take it to its logical limit: the compiler trusts you so
       completely that it removes code based on assumptions you never knowingly made. The
-      Linux kernel has accumulated dozens of <code>-f</code> flags telling GCC to <em>not</em>
+      Linux kernel has accumulated a handful of <code>-f</code> flags telling GCC to <em>not</em>
       exploit specific UB optimizations. Modern security-aware C codebases compile with
-      UndefinedBehaviorSanitizer in development to catch the cases where the programmer's
-      and the compiler's models of "what is allowed" have drifted apart.
+      UndefinedBehaviorSanitizer in development — the compiler inserting checks for
+      exactly the assumptions its optimizing self exploits — to catch the cases
+      where the programmer's and the compiler's models of "what is allowed" have
+      drifted apart.
     </p>
 
     <div class="insight-strip">
@@ -3134,7 +3145,7 @@
       Every five years, someone writes a clickbait piece announcing that C is dying.
       Every five years, more C runs in production than ever before. Linux is C. macOS
       XNU is mostly C. Windows NT is mostly C. The Python interpreter is C. The browser
-      rendering this page is mostly C. The TLS library that secured your connection is C.
+      rendering this page is C++, C's first child. The TLS library that secured your connection is C.
       C is not dying. C is so deep in the foundations that it has become invisible.
     </p>
 
@@ -3204,7 +3215,7 @@
 
         <text x="360" y="296" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">RUST IS BEGINNING TO TAKE ITS PLACE — SLOWLY, IN THE SPECIFIC LAYERS WHERE SAFETY MATTERS MORE THAN HERITAGE</text>
       </svg>
-      <p id="ch5-survives-p3" class="diagram-caption">Every domain where C remains dominant has the same property: when the cost of a bug is measured in machine cycles or microseconds, garbage collection is unaffordable; when the cost is measured in dollars or lives, predictability beats convenience. The price is paid in vulnerabilities. Roughly two-thirds of all serious security bugs reported in the past decade are memory-safety bugs in C or C++ code. Rust — designed in the 2010s explicitly to give C's performance and control without C's footguns — is beginning to displace C in specific layers (the Linux kernel started accepting Rust modules in 2022, Microsoft is rewriting parts of Windows in Rust, the Android Bluetooth stack moved). It is a slow displacement. C will outlive the people reading this.</p>
+      <p id="ch5-survives-p3" class="diagram-caption">Every domain where C remains dominant has the same property: when the budget is machine cycles and microseconds, garbage collection is unaffordable; when the cost of failure is dollars or lives, predictability beats convenience. The price is paid in vulnerabilities. Roughly two-thirds of the serious security bugs in the big C and C++ codebases — the numbers Microsoft and Google publish — are memory-safety bugs. Rust — designed in the 2010s explicitly to give C's performance and control without C's footguns — is beginning to displace C in specific layers (the Linux kernel started accepting Rust modules in 2022, Microsoft is rewriting parts of Windows in Rust, the Android Bluetooth stack moved). It is a slow displacement. C will outlive the people reading this.</p>
     </div>
 
     <div class="diagram-card" id="fig-5-11">
@@ -3319,7 +3330,7 @@
           <text x="320" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">curly braces · semicolons · int / float / pointer-or-reference · for/while/if · function-call syntax — all C, all the way down</text>
         </g>
       </svg>
-      <p id="ch5-survives-p4" class="diagram-caption">A partial family tree. C at the root, three rough generations of descendants. The <em>first wave</em> (Stroustrup's C++, Cox's Objective-C) kept C's speed and added object orientation directly on top of C compilation; both languages are technically supersets that compile to roughly the same instructions. The <em>second wave</em> (Java, C#, Kotlin, JavaScript, PHP, Perl) kept C's syntactic surface — curly braces, semicolons, the <code>for</code> loop, the cast operator — but ran on a virtual machine with garbage collection, trading raw performance for safety. The <em>third wave</em> (Go, Rust, Zig, Swift) returned to C's performance contract but added memory safety either through ownership analysis (Rust), runtime checks (Go), or explicit control (Zig). Almost every language a working programmer encounters in 2026 is a descendant of C or a reaction against C's specific costs. Languages that look fundamentally different — Python, Lisp, Haskell, OCaml — are themselves often <em>implemented</em> in C. The shadow is everywhere.</p>
+      <p id="ch5-survives-p4" class="diagram-caption">A partial family tree. C at the root, three rough generations of descendants. The <em>first wave</em> (Stroustrup's C++, Cox's Objective-C) kept C's speed and added object orientation directly on top of C compilation; Objective-C a strict superset, C++ a near-superset, both compiling to roughly the same instructions. The <em>second wave</em> (Java, C#, Kotlin, JavaScript, PHP, Perl) kept C's syntactic surface — curly braces, semicolons, the <code>for</code> loop, the cast operator — but ran on a virtual machine with garbage collection, trading raw performance for safety. The <em>third wave</em> (Go, Rust, Zig, Swift) returned to C's performance contract while attacking its footguns — Rust with compile-time ownership, Go with a garbage collector and bounds checks, Zig with explicit allocators and checked builds. Almost every language a working programmer encounters in 2026 is a descendant of C or a reaction against C's specific costs. Languages that look fundamentally different — Python, Lisp, Haskell, OCaml — are themselves often <em>implemented</em> in C. The shadow is everywhere.</p>
     </div>
 
     <div class="pull-quote">
@@ -3447,9 +3458,9 @@
       complexity does not reduce by parallelism, because the cost of communication grows
       faster than the cost of work. By the late 1970s, Bell Labs and IBM were running
       projects with hundreds of programmers and millions of lines of code, and watching
-      them fail. The MIT-led <strong>Multics</strong> system — which Bell Labs had pulled
-      out of a decade earlier — was the canonical case study, but every large vendor had
-      its own.
+      them fail. IBM's own OS/360 — the very project Brooks was writing
+      about — was the canonical case study; Multics, which Bell Labs had walked out of a
+      decade earlier, was the one Bell Labs remembered. Every large vendor had its own.
     </p>
 
     <p id="ch6-complexity-p3">
@@ -3519,7 +3530,7 @@
 
         <text x="370" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">CODEBASES GREW BY 100×; THE LANGUAGE THAT BUILT THEM HAD NOT EVOLVED SINCE 1973</text>
       </svg>
-      <p id="ch6-complexity-p4" class="diagram-caption">Through the 1980s, codebases grew about a hundred-fold. Bug density grew with them, faster than linearly — every doubling of code roughly doubled the rate of defects per thousand lines, because the surface area for unintended interactions grew quadratically. C, frozen in its 1973 design, had no language tools to slow this. Modules, namespaces, encapsulation, type-checked interfaces — none existed. The "crisis" was not a single dramatic failure; it was the slow recognition across the industry that a language built for systems written by two people in a hallway did not extend cleanly to systems written by two hundred people across continents.</p>
+      <p id="ch6-complexity-p4" class="diagram-caption">Through the 1980s, codebases grew about a hundred-fold — and every new subsystem could now touch every existing one, so the surface area for unintended interactions grew roughly as the square of the parts. C, frozen in its 1973 design, had no language tools to slow this. Modules, namespaces, encapsulation, type-checked interfaces — none existed. The crisis was the industry admitting, slowly and expensively, that a language built for systems written by two people in a hallway did not extend cleanly to systems written by two hundred people across continents.</p>
     </div>
 
     <p id="ch6-complexity-p5">
@@ -3541,8 +3552,8 @@
 
     <p id="ch6-stroustrup-p1" class="lead">
       Bjarne Stroustrup arrived at Bell Labs in 1979, not far down the corridor from
-      Ritchie and Thompson. He had just finished a doctoral thesis on simulation systems,
-      written in a language called Simula 67. Simula had introduced a strange new idea
+      Ritchie and Thompson. He had just finished a doctoral thesis on distributed systems
+      whose simulator he had written in a language called Simula 67. Simula had introduced a strange new idea
       called the <em>class</em>. Stroustrup loved Simula's expressiveness and hated its
       speed. C, in the same building, was the inverse: fast and ugly. The thought that
       organised the next forty years of his life was the simplest one available — could
@@ -3553,9 +3564,10 @@
       Simula 67 — designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the
       Norwegian Computing Center, expressly for simulating physical systems — is the
       language that introduced the modern object-oriented vocabulary. The words
-      <strong>class</strong>, <strong>object</strong>, <strong>inheritance</strong>,
-      <strong>virtual method</strong>, and even <strong>this</strong> (referring to "the
-      current object") all originate there. By 1979 Simula was a niche academic language,
+      <strong>class</strong>, <strong>object</strong>, <strong>virtual</strong>, and
+      even <strong>this</strong> (referring to "the
+      current object") all originate there — and so do the ideas of inheritance and
+      virtual methods, though Simula spoke of subclasses and virtual procedures. By 1979 Simula was a niche academic language,
       but its ideas had spread: Smalltalk had taken them in one direction, building an
       entire dynamic system around them. Stroustrup decided to take them in the opposite
       direction. He would graft them onto C, but in a way that imposed no runtime
@@ -3628,7 +3640,7 @@
 
           <rect x="600" y="100" width="80" height="40" rx="4" fill="#0e1510" stroke="rgba(132,255,178,0.6)"/>
           <text x="640" y="118" fill="rgba(132,255,178,0.95)" font-size="9">C++23</text>
-          <text x="640" y="132" fill="rgba(255,255,255,0.55)">modules</text>
+          <text x="640" y="132" fill="rgba(255,255,255,0.55)">std::print</text>
         </g>
 
         <!-- Connections -->
@@ -3649,7 +3661,7 @@
         <text x="360" y="248" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.85)">on a real machine, for real systems."</text>
         <text x="360" y="266" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.5)">— Bjarne Stroustrup</text>
       </svg>
-      <p id="ch6-stroustrup-p4" class="diagram-caption">From Simula 67's introduction of the class to C++23's standardised modules. The crucial pivot is 2011 — C++11 — when the language gained smart pointers, lambdas, move semantics, type inference, and threading primitives. Before C++11, "modern C++" was a discipline some practitioners maintained against the language; after C++11, it was the language's official voice. Every release since (14, 17, 20, 23) has added more, all backwards compatible. C++ has the strange honour of being a language you can spend a career using without ever writing in the same dialect twice.</p>
+      <p id="ch6-stroustrup-p4" class="diagram-caption">From Simula 67's introduction of the class to C++23, the newest standard. The crucial pivot is 2011 — C++11 — when the language gained smart pointers, lambdas, move semantics, type inference, and threading primitives. Before C++11, "modern C++" was a discipline some practitioners maintained against the language; after C++11, it was the language's official voice. Every release since (14, 17, 20, 23) has added more, all backwards compatible. C++ has the strange honour of being a language you can spend a career using without ever writing in the same dialect twice.</p>
     </div>
 
     <p id="ch6-stroustrup-p5">
@@ -3680,8 +3692,8 @@
 
     <p id="ch6-classes-p2">
       Start with a non-virtual class. The class <code>Point</code> with two integer
-      fields and an <code>operator==</code> compiles to exactly the same memory layout
-      as <code>struct { int x; int y; }</code> in C. The function <code>operator==</code>
+      fields and an <code>equals</code> method compiles to exactly the same memory layout
+      as <code>struct { int x; int y; }</code> in C. The method
       compiles to a free function with an extra hidden argument named <code>this</code>,
       a pointer to the object. Calling <code>p.equals(q)</code> compiles to
       <code>Point_equals(&amp;p, &amp;q)</code>. There is nothing else. No vtable, no
@@ -3851,7 +3863,7 @@
       The C++ answer is an object whose constructor acquires the resource and whose
       destructor releases it. Place that object on the stack. The compiler emits
       destructor calls automatically when the object goes out of scope — for any reason.
-      Function returned normally? Destructor runs. Function exited via <code>break</code>?
+      Function returned normally? Destructor runs. Loop abandoned via <code>break</code>?
       Destructor runs. Function exited because an exception was thrown three frames
       down? Destructor runs as the stack unwinds. The bookkeeping cannot be skipped,
       because there is no human writing it any more.
@@ -3897,7 +3909,7 @@
         <text x="360" y="328" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">The compiler emits destructor calls in reverse order of construction,</text>
         <text x="360" y="344" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">on every exit path — including exception unwind.</text>
       </svg>
-      <p id="ch6-raii-p4" class="diagram-caption">In the C version, every error path must remember to unlock the mutex, free the buffer, and close the file. Add a fourth resource and you have eight cleanup paths. Miss one and you leak. In the C++ version, the resources <em>are</em> stack objects. Their destructors run automatically when the function exits, in reverse construction order, on every exit path — return, break, exception, anything. The "cleanup" code does not exist because it does not need to be written. RAII is the single feature that lets C++ scale to large codebases without leaking; it is the reason exception safety is even possible; it is what every "modern" feature added since C++11 is built on top of.</p>
+      <p id="ch6-raii-p4" class="diagram-caption">In the C version, every error path must remember to unlock the mutex, free the buffer, and close the file. Add a fourth resource and the ledger of who-frees-what on which path grows again; miss one pairing on one path and you leak. In the C++ version, the resources <em>are</em> stack objects. Their destructors run automatically when the function exits, in reverse construction order, on every exit path — return, break, exception, anything. The "cleanup" code does not exist because it does not need to be written. RAII is the single feature that lets C++ scale to large codebases without leaking; it is the reason exception safety is even possible; it is what the smart pointers and containers of modern C++ are built on top of.</p>
     </div>
 
     <p id="ch6-raii-p5">
@@ -3911,8 +3923,8 @@
     </p>
 
     <div class="pull-quote">
-      <p id="ch6-raii-p6">"Resource management is the C++ idiom that I am most proud of."</p>
-      <span class="attr">— Bjarne Stroustrup, <em>The Design and Evolution of C++</em>, 1994</span>
+      <p id="ch6-raii-p6">"C makes it easy to shoot yourself in the foot; C++ makes it harder, but when you do it blows your whole leg off."</p>
+      <span class="attr">— Bjarne Stroustrup</span>
     </div>
 
   </section>
@@ -3939,9 +3951,8 @@
       comparator type and inlines the comparator directly into the loop. The result is
       a tight, branch-predictable loop with no indirect calls. On a modern CPU sorting
       a million integers, <code>std::sort</code> typically runs about three times faster
-      than <code>qsort</code> — for the <em>same algorithm</em>, written by the same
-      author, for ostensibly the same task. The difference is entirely the dispatch
-      mechanism.
+      than <code>qsort</code> — same task, same machine, and most of the difference
+      is the dispatch mechanism.
     </p>
 
     <div class="diagram-card" id="fig-6-6">
@@ -4012,7 +4023,7 @@
       semantics replaced expensive copies. <code>auto</code> replaced verbose type
       declarations. Lambdas replaced function pointers. None of the old features were
       removed; the new ones were just so much better that competent C++ stopped using
-      them.
+      the old.
     </p>
 
     <h3>Smart pointers</h3>
@@ -4129,7 +4140,7 @@
 
         <text x="360" y="200" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">No copying. The buffer's address is reassigned. v1 is now empty but valid.</text>
       </svg>
-      <p id="ch6-modern-p5" class="diagram-caption">A move transfers ownership of a heap buffer by reassigning pointers. No copying. No allocation. A vector of one million elements moves in roughly three machine instructions, regardless of size. The source is left in a valid-but-empty state — destructible, assignable, but no longer holding the data. Move semantics are why "return by value" is the right default in modern C++ for large containers: the compiler proves the local is going out of scope, marks the return as an rvalue, and the receiver moves rather than copies. The performance trick that used to require careful manual code is now automatic.</p>
+      <p id="ch6-modern-p5" class="diagram-caption">A move transfers ownership of a heap buffer by reassigning pointers. No copying. No allocation. A vector of one million elements moves in three pointer assignments, regardless of size. The source is left in a valid-but-empty state — destructible, assignable, but no longer holding the data. Move semantics are why "return by value" is the right default in modern C++ for large containers: the compiler proves the local is going out of scope, marks the return as an rvalue, and the receiver moves rather than copies. The performance trick that used to require careful manual code is now automatic.</p>
     </div>
 
     <div class="diagram-card" id="fig-6-9">
@@ -4263,7 +4274,7 @@
           <text x="14"  y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">writing a different language than C++ now is.</text>
         </g>
       </svg>
-      <p id="ch6-modern-p6" class="diagram-caption">C++'s release cadence after the long C++98–C++03–wait. C++11 was the rewrite — auto, lambdas, smart pointers, move semantics, range-for, threads — and the language stopped feeling like "C plus quirks." C++14 and C++17 polished. C++20 was the second rewrite — concepts (constraints on templates that finally compile readably), modules (replacing 50 years of header-include cruft), ranges (composable algorithms), coroutines (suspendable functions). C++23 added quality-of-life. The pattern is consistent: roughly every nine years, the standard committee absorbs enough community experience that the previous "modern C++" books are out of date. A working C++ programmer from 2002 who never updated is, in 2026, writing a different language than C++ has become — same syntax, different idioms, different bug profiles, different performance shape. The language eats its own complexity by replacing the patterns the previous generation hated, without removing the original mechanisms that those patterns were workarounds for. The mechanisms accumulate; the recommended subset shifts.</p>
+      <p id="ch6-modern-p6" class="diagram-caption">C++'s release cadence after the long C++98–C++03–wait. C++11 was the rewrite — auto, lambdas, smart pointers, move semantics, range-for, threads — and the language stopped feeling like "C plus quirks." C++14 and C++17 polished. C++20 was the second rewrite — concepts (constraints on templates that finally compile readably), modules (replacing 50 years of header-include cruft), ranges (composable algorithms), coroutines (suspendable functions). C++23 added quality-of-life. The pattern repeats at the scale of a decade: the standard committee absorbs enough community experience that the previous "modern C++" books fall out of date. A working C++ programmer from 2002 who never updated is, in 2026, writing a different language than C++ has become — same syntax, different idioms, different bug profiles, different performance shape. The language eats its own complexity by replacing the patterns the previous generation hated, without removing the original mechanisms that those patterns were workarounds for. The mechanisms accumulate; the recommended subset shifts.</p>
     </div>
 
     <h3>The seam to <a href="#ch7">Chapter 7</a></h3>
@@ -4274,20 +4285,20 @@
       abstraction — at the cost of demanding the programmer pay careful attention to
       what the machine actually does. By 1990 these languages were running every system
       that mattered, and there were many programmers who thought this was the trade
-      every language must make. In 1990, in a hallway in Amsterdam, a man named Guido
+      every language must make. In 1989, over a Christmas holiday in Amsterdam, a man named Guido
       van Rossum was thinking the opposite question. <em>What if a language did not
       face the machine at all?</em>
     </p>
 
     <div class="pull-quote">
-      <p id="ch6-modern-p8">"C++ leaves few opportunities for cleverness."</p>
-      <span class="attr">— Bjarne Stroustrup, defending the language he made</span>
+      <p id="ch6-modern-p8">"Within C++, there is a much smaller and cleaner language struggling to get out."</p>
+      <span class="attr">— Bjarne Stroustrup, <em>The Design and Evolution of C++</em>, 1994</span>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">🔐</span>
       <p id="ch6-modern-p9" class="insight-text">
-        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid-but-unspecified state, and reading it is undefined behaviour the compiler will not warn about. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code — the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
+        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid but unspecified state, and reading it yields an answer that means nothing — legal, silent, and wrong, with no compiler warning. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code — the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
       </p>
     </div>
 
@@ -4381,7 +4392,7 @@
 
     <p id="ch7-interpret-p1" class="lead">
       The first Lisp interpreter ran on an IBM 704 at MIT in 1959. John
-      McCarthy had published a paper proposing a new language defined
+      McCarthy had written a paper proposing a new language defined
       recursively in terms of itself — its core function, <code>eval</code>,
       evaluated Lisp expressions in Lisp — but had not implemented it.
       A research assistant named Steve Russell, who had been transcribing
@@ -4390,8 +4401,9 @@
       turning it into machine code by hand. The result was the first
       interpreter that mattered: a program that read each Lisp
       expression at runtime and executed it directly, without ever
-      producing a separate binary. BASIC, designed at Dartmouth in
-      1964, was interpreted from day one. The argument over <em>when</em>
+      producing a separate binary. The BASIC of the first microcomputers,
+      a decade and a half later, arrived the same way — an interpreter
+      squeezed into ROM, translating each line as it ran. The argument over <em>when</em>
       a program should be translated to machine instructions — once,
       on the developer's machine, into a self-sufficient binary; or
       every time it runs, in flight, on the user's — is older than C,
@@ -4414,7 +4426,8 @@
 
     <p id="ch7-interpret-p3">
       An interpreted language does most of the same pipeline, but at runtime, on the
-      end-user's machine, every time. Python source becomes tokens, becomes an AST,
+      end-user's machine — the translation cached between runs, the interpretation
+      itself paid every time. Python source becomes tokens, becomes an AST,
       becomes <em>bytecode</em> — a sequence of small, simple opcodes for a virtual
       machine. The CPython interpreter is a giant <code>switch</code> statement in C that
       reads each opcode and performs its action. The CPU executes the interpreter; the
@@ -4487,7 +4500,7 @@
 
         <text x="360" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)" letter-spacing="0.1em">SAME WORK · DIFFERENT PLACE TO PAY THE TRANSLATION COST</text>
       </svg>
-      <p id="ch7-interpret-p4" class="diagram-caption">A compiled language pays its translation cost on the developer's machine, once, and ships native instructions. An interpreted language pays its translation cost on the user's machine, every run, but ships source code that needs no per-platform build. The same Python script runs on Windows, macOS, Linux, an Android phone, and a Raspberry Pi without modification — provided each has a Python interpreter installed. The user pays for that portability in cycles every time the script runs.</p>
+      <p id="ch7-interpret-p4" class="diagram-caption">A compiled language pays its translation cost on the developer's machine, once, and ships native instructions. An interpreted language pays for interpretation on the user's machine, every run — the translation may be cached; the interpreting never is — but ships source code that needs no per-platform build. The same Python script runs on Windows, macOS, Linux, an Android phone, and a Raspberry Pi without modification — provided each has a Python interpreter installed. The user pays for that portability in cycles every time the script runs.</p>
     </div>
 
   </section>
@@ -4509,8 +4522,9 @@
     </p>
 
     <p id="ch7-vanrossum-p2">
-      Python's design choices, all of them, can be read off van Rossum's design notes
-      from those years. <strong>Readability counts:</strong> indentation is part of the
+      Python's design choices all trace to the same instincts — later canonised as the
+      language's own catechism, the <em>Zen of Python</em>, written down by Tim Peters
+      in 1999. <strong>Readability counts:</strong> indentation is part of the
       grammar, so badly-indented Python is also syntactically wrong; this enforces
       consistent layout across every codebase. <strong>Explicit is better than implicit:</strong>
       no hidden conversions, no surprise side effects in operator overloading,
@@ -4589,7 +4603,7 @@
         <text x="360" y="252" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.85)">I was reading the published scripts of Monty Python's Flying Circus."</text>
         <text x="360" y="268" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">— Guido van Rossum, on the name</text>
       </svg>
-      <p id="ch7-vanrossum-p3" class="diagram-caption">Python 1.0 was a small interpreted language with a small but devoted following — scientific computing, sysadmins, education. Python 2 added the features that made it usable for serious work. Python 3 fixed long-standing design mistakes (Unicode strings, integer division, print as a function) at the cost of breaking compatibility — and the migration took twelve years and divided the community. Python 2 was finally retired in 2020. By that point Python had become, almost by accident, the dominant language of data science, machine learning, and the world's introductory CS courses. The slow ascent ate every benchmark.</p>
+      <p id="ch7-vanrossum-p3" class="diagram-caption">Python 1.0 was a small interpreted language with a small but devoted following — scientific computing, sysadmins, education. Python 2 added the features that made it usable for serious work. Python 3 fixed long-standing design mistakes (Unicode strings, integer division, print as a function) at the cost of breaking compatibility — and the migration took twelve years and divided the community. Python 2 was finally retired in 2020. By that point Python had become, almost by accident, the default language of a working scientist's day. The slow ascent ended with the fast languages growing Python wrappers.</p>
     </div>
 
   </section>
@@ -4603,13 +4617,14 @@
       variable is just a name that can refer to any value, and a value carries its own
       type. Write <code>x = 5</code>, then <code>x = "hello"</code>, then <code>x = [1, 2, 3]</code> —
       all legal. The interpreter checks types at every operation, paying for that check
-      in cycles. The programmer pays for it in fewer types and fewer mistakes about them.
+      in cycles. The programmer is paid back in fewer declarations and fewer mistakes
+      about them.
     </p>
 
     <p id="ch7-types-p2">
       This is the central trade. Statically typed languages — C, C++, Rust, Go, Java —
-      check types once, at compile time. If you try to add a string to an integer, the
-      compiler refuses; the program never runs at all. Dynamically typed languages —
+      check types once, at compile time. Hand a string to a function that wants an
+      integer and the compiler refuses; the program never runs at all. Dynamically typed languages —
       Python, JavaScript, Ruby — check types at runtime. The same mistake compiles fine,
       runs fine until it doesn't, and dies with a <code>TypeError</code> at the
       offending statement. The static side is safer; the dynamic side is more fluid.
@@ -4674,15 +4689,19 @@
       that ensures only one thread holds the right to execute Python bytecode at any
       moment. On an eight-core CPU running a multithreaded Python program, seven cores
       sit idle. This sounds like a bug. It is, in fact, the consequence of a deliberate
-      design decision in 1992 that has only become controversial in the last decade.
+      design decision in 1992 whose bill only came due when the cores multiplied.
     </p>
 
     <p id="ch7-gil-p2">
       The reason is reference counting. Every Python object carries a count of how many
       names point to it; when the count drops to zero, the object is freed. Updating
-      the count must be atomic — two threads incrementing or decrementing simultaneously
-      would corrupt it. The GIL is the simplest possible solution: serialise everything
-      Python-level, so refcounts cannot race. Removing the GIL has been attempted many
+      the count must be atomic, and here is what happens if it is not: two threads
+      decrement at once, both read 2 and both write 1, and one decrement is simply
+      lost — an object that should be dead now lives forever. Lose an increment
+      instead and the count hits zero early: the object is freed while a thread still
+      holds it, and Chapter 5's use-after-free arrives in a language that promised
+      you would never see one. The GIL is the simplest possible solution: serialise
+      everything Python-level, so refcounts cannot race. Removing the GIL has been attempted many
       times; the difficulty is not theoretical but practical — fine-grained locking
       slows down single-threaded code, which is most code, by 30–50%. PEP 703,
       accepted in 2023, finally lays out a way to remove the GIL while keeping single-
@@ -4736,7 +4755,7 @@
         <text x="360" y="38" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(132,255,178,0.95)">Two threads. One GIL. They take turns.</text>
         <text x="360" y="218" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">on an 8-core CPU, threading still occupies one core's worth of time</text>
       </svg>
-      <p id="ch7-gil-p3" class="diagram-caption">Two Python threads alternate. Only one holds the GIL at any instant; the other waits. The interpreter releases and re-acquires the GIL at intervals (every 100 bytecodes by default), and around any blocking I/O call. So Python threads do help with I/O-bound work — while one thread is waiting on disk or network, another can run. They do not help with CPU-bound work, which has been the source of complaints since the late 1990s. PEP 703 (accepted 2023) removes the GIL through fine-grained per-object locking and biased reference counting; it is shipping as opt-in in Python 3.13. The single-lock era is ending, slowly, after thirty years.</p>
+      <p id="ch7-gil-p3" class="diagram-caption">Two Python threads alternate. Only one holds the GIL at any instant; the other waits. The interpreter releases and re-acquires the GIL at intervals (every 5 milliseconds by default), and around any blocking I/O call. So Python threads do help with I/O-bound work — while one thread is waiting on disk or network, another can run. They do not help with CPU-bound work, which has been the source of complaints since the late 1990s. PEP 703's cure — fine-grained per-object locking and biased reference counting — is shipping as opt-in in Python 3.13. The single-lock era is ending, slowly, after thirty years.</p>
     </div>
 
     <div class="diagram-card" id="fig-7-5">
@@ -4783,7 +4802,7 @@
         <text x="360" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">cooperative scheduling — no GIL contention because there is only one thread</text>
         <text x="360" y="180" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">THE PYTHON ANSWER TO MASSIVE I/O CONCURRENCY: BYPASS THREADS ENTIRELY</text>
       </svg>
-      <p id="ch7-gil-p4" class="diagram-caption"><code>asyncio</code>, introduced in Python 3.4, sidesteps the GIL by sidestepping threads. A single thread runs an event loop. Functions marked <code>async def</code> are <em>coroutines</em>; when they hit <code>await</code> on an I/O operation, they suspend and the event loop runs a different ready coroutine. The thread is never blocked. A single Python process can handle tens of thousands of simultaneous network connections this way — far more than the GIL would allow with threads, with no concurrency bugs because there is no parallelism. The trade is that <code>async</code> is contagious — it propagates through every function that calls an async function — and integrating async with synchronous libraries is famously awkward. JavaScript made the same trade in <a href="part-3#ch12">Chapter 12</a>; the event loop is one of the great twentieth-century compromises in software design.</p>
+      <p id="ch7-gil-p4" class="diagram-caption"><code>asyncio</code>, introduced in Python 3.4, sidesteps the GIL by sidestepping threads. A single thread runs an event loop. Functions marked <code>async def</code> are <em>coroutines</em>; when they hit <code>await</code> on an I/O operation, they suspend and the event loop runs a different ready coroutine. The thread is never blocked. A single Python process can handle tens of thousands of simultaneous network connections this way — far more than a thread per connection could carry, and nothing tears mid-operation, because nothing runs in parallel. The trade is that <code>async</code> is contagious — it propagates through every function that calls an async function — and integrating async with synchronous libraries is famously awkward. JavaScript made the same trade in <a href="part-3#ch12">Chapter 12</a>; the event loop is one of the great twentieth-century compromises in software design.</p>
     </div>
 
   </section>
@@ -4809,8 +4828,9 @@
       <strong>evaluator</strong> — the famous <code>ceval.c</code>, ten thousand lines
       long — is a giant <code>switch</code> statement that reads each bytecode and
       dispatches to a C handler that performs its action. Bytecode is cached on disk in
-      <code>__pycache__/</code> as <code>.pyc</code> files, so subsequent runs skip the
-      first three steps unless the source has changed.
+      <code>__pycache__/</code> as <code>.pyc</code> files, so later imports skip the
+      first three steps unless the source has changed; the script you invoke directly
+      is recompiled each run.
     </p>
 
     <div class="diagram-card" id="fig-7-6">
@@ -4855,7 +4875,7 @@
 
         <text x="360" y="258" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">EVERY PYTHON STATEMENT IS A STREAM OF BYTECODES DISPATCHED THROUGH A SWITCH IN C</text>
       </svg>
-      <p id="ch7-cpython-p3" class="diagram-caption">CPython compiles your source into a stream of stack-based bytecodes — the same idea Java's JVM uses, predating it by a year, simpler in design. The eval loop reads bytecodes one at a time and dispatches to a C handler. Each handler manipulates a stack of Python objects, performs the operation, and returns to the dispatch. This is the "switch on opcode" pattern at scale: a giant <code>switch</code> with about 120 cases, hand-tuned for branch prediction, with the most common opcodes (load/store local, binary add, function call) inlined for speed.</p>
+      <p id="ch7-cpython-p3" class="diagram-caption">CPython compiles your source into a stream of stack-based bytecodes — the same idea Java's JVM later made famous, and one both inherited from older stack machines. The eval loop reads bytecodes one at a time and dispatches to a C handler. Each handler manipulates a stack of Python objects, performs the operation, and returns to the dispatch. This is the "switch on opcode" pattern at scale: a giant <code>switch</code> with about 120 cases, hand-tuned for branch prediction, with the most common opcodes (load/store local, binary add, function call) inlined for speed.</p>
     </div>
 
     <div class="diagram-card" id="fig-7-7">
@@ -4911,7 +4931,7 @@
     <h2>The two-language strategy.</h2>
 
     <p id="ch7-datasci-p1" class="lead">
-      Python is slow. Numerical work is the slowest thing computers do well. By every
+      Python is slow. Numerical work is the most cycle-hungry thing computers do. By every
       naive analysis, Python should not be the language of numerical computing,
       scientific simulation, or machine learning. It is, anyway. The reason is a single
       design pattern, used so consistently that it has become the unspoken contract of
@@ -4961,17 +4981,17 @@
         <rect x="60" y="60" width="540" height="40" rx="4" fill="rgba(232,120,120,0.4)" stroke="rgba(232,120,120,0.8)"/>
         <text x="40"  y="78" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">pure</text>
         <text x="40"  y="90" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">Python</text>
-        <text x="330" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">12.4 seconds</text>
+        <text x="330" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">~2 minutes</text>
 
         <!-- NumPy bar -->
         <rect x="60" y="120" width="6"   height="40" rx="2" fill="rgba(150,216,150,0.6)" stroke="rgba(150,216,150,0.9)"/>
         <text x="40"  y="144" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">np.dot</text>
-        <text x="80"  y="144" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">0.012 s · ~1000× faster</text>
+        <text x="80"  y="144" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">0.012 s · ~10,000× faster</text>
 
         <text x="360" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">1000 × 1000 matrix multiplication</text>
         <text x="360" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">PURE-PYTHON NUMERICS IS NOT REALLY A THING ANYONE DOES</text>
       </svg>
-      <p id="ch7-datasci-p3" class="diagram-caption">A million-element matrix multiplication in pure Python takes about twelve seconds — three nested loops, each iteration paying the interpreter tax. The same multiplication in NumPy takes a hundredth of a second. Three orders of magnitude. The difference is not Python improving; the difference is that <code>np.dot</code> never executes Python in its inner loop. Once the BLAS call returns, you are back in Python, plotting or printing or storing — work where the human's time matters more than the CPU's. This is the deal: humans use Python. The machine uses C and Fortran. They meet at the wrapper.</p>
+      <p id="ch7-datasci-p3" class="diagram-caption">A 1000 × 1000 matrix multiplication in pure Python takes about two minutes — three nested loops, a billion multiply-adds, each paying the interpreter tax. The same multiplication in NumPy takes a hundredth of a second. Four orders of magnitude. The difference is not Python improving; the difference is that <code>np.dot</code> never executes Python in its inner loop. Once the BLAS call returns, you are back in Python, plotting or printing or storing — work where the human's time matters more than the CPU's. This is the deal: humans use Python. The machine uses C and Fortran. They meet at the wrapper.</p>
     </div>
 
     <h3>The verdict</h3>
