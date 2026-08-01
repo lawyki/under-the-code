@@ -954,6 +954,68 @@ code chips, captions all render). Live parity confirmed ~30 s after push;
 live `glossary.json` serves count 520. **STOP for owner review** stands —
 Parts II–V of the language pass remain.
 
+## 4o. Pass 15 (2026-08-01): the language pass, Part II — Ch4–7 (commit `6a94554`)
+
+Same brief, same bar (the Ch7 pickle coda — which lives in this part and was
+untouched). **Method:** deep read of all of Part II, then a 12-reader /
+per-batch adversarial-defense workflow (target = what survived defense) plus
+3 fact agents; 6 defense agents died on a session limit mid-run and those
+batches were defended by the executing model directly. Then rewrites, then a
+3-lens confirmation gate (facts / internal-consistency / voice) over the full
+diff — which caught **4 must-fix errors introduced in flight** (an
+eBPF-vs-browser false equivalence; figure arithmetic that failed
+self-division; a C++23 figure label contradicting its corrected caption; a
+splice artifact) and 7 accepted nits. All fixed before commit.
+
+**The finding of the pass: Part II's prose already holds the bar.** The
+defense overturned most style flags (CFS "elegant idea" topic sentence,
+caption self-containment across all four chapters, the Tanenbaum/Torvalds
+caption resolution). Genuine language re-carries were few: the GIL's
+lost-update race now runs cause-to-effect (both threads read 2, write 1 — an
+object that should be dead lives forever; lose the increment instead and
+Chapter 5's use-after-free arrives in a language that promised you'd never
+see one); UBSan cast as the optimizer's mirror; the MLFQ caption made to
+describe its own figure (A is demoted, not "interactive"); the signals triad
+corrected to handle/ignore/default with SIGKILL/SIGSTOP as the uncatchable
+pair (figure label matched).
+
+**What Part II actually needed was a fact pass (~30 corrections, §4g-class):**
+
+| Area | Corrections |
+|---|---|
+| Ch4 | Scheduler tick = on-core timer (was "chip on the motherboard", contradicting the Bridge); major faults ~1000× minor (was "tens of thousands", contradicting its own µs/ms figures); WAL = Gray, IBM System R, late 1970s (was "IBM, 1981" — Gray was at Tandem by 1981); commit-record atomicity "in practice" not "hardware guarantee"; WAFL "early 1990s", "first" dropped (Sprite LFS 1991); pipes conceived by McIlroy, **built by Thompson in an evening** (was "added by McIlroy"); IPC table chronology claim cut (contradicted signals caption); "same five syscalls incl. lseek work on all" → four, with the socket door noted; cgroups meter processes not file descriptors; CPU **quota** descheduling (was share/budget conflation); Firecracker = micro-VM wrapper not "VM-strengthened container"; eBPF unprivileged-load claim scoped (verifier + who-may-load); eBPF/browser forward-ref corrected to proof-up-front vs fenced-at-runtime (TLS dropped — not an instance); closer now says CFS *and EEVDF* (was contradicting the §4g EEVDF fix) |
+| Ch5 | PDP-7 "mainframe" → minicomputer (contradicted its own section 3×); C named "after its predecessor's first letter" (B's first letter is B) → "the language that comes after B"; 1975-code-runs-unmodified softened (K&R dialect aged); Ritchie *and Thompson* rewrote UNIX; K&R "mostly unrevised" dropped (2nd ed. 1988 was an ANSI rewrite); "same source ran next year" → within five years (matched its own p4); BCPL "stack-based" dropped; 2⁶⁴ "more bytes than will ever exist" → than any machine will fill; heap "free list" wording made precise (and the term's definition kept — see glossary note); audio 48,000 samples/s not callbacks/s; browser is **C++** not "mostly C"; C++ near-superset (only Objective-C strict); 70% memory-safety stat scoped to Microsoft/Google codebases (matching Part I's phrasing); "dozens" of UB -f flags → handful; NULL-deref chain "takes a few microseconds" (was "time to read this sentence"); Zig is not memory-safe — third-wave taxonomy rewritten |
+| Ch6 | **Both Stroustrup pull-quotes were unverifiable and are replaced with documented ones**: RAII section now carries "C makes it easy to shoot yourself in the foot…" ; modern-C++ section carries "Within C++, there is a much smaller and cleaner language struggling to get out" (D&E 1994 — which is that section's thesis). OS/360, not Multics, as Brooks's canonical case; defect-density "law" softened to the quadratic-interactions argument; Stroustrup's thesis = distributed systems, simulator in Simula; Simula words = class/object/virtual/this, ideas = inheritance/virtual methods (subclasses/virtual procedures); C++23 caption + timeline box fixed (modules are C++20; box now std::print); `operator==` vs `p.equals(q)` naming unified; RAII "break exits function" → loop; "eight cleanup paths" arithmetic dropped; "every modern feature built on RAII" scoped to the library; moved-from reads = unspecified value, not UB; move = three pointer assignments (caption matched to body); "nine-year pattern" → decade-scale; dangling "them" pronoun; Ch6→Ch7 seam now says Christmas 1989 (was "1990 in a hallway", contradicting Ch7) |
+| Ch7 | **Dartmouth BASIC was a compile-and-go compiler** — the interpreted BASIC is the microcomputer ROM lineage, sentence rewritten; McCarthy "had written" not "had published" (CACM was 1960); **Zen of Python credited to Tim Peters, 1999** (was "van Rossum's design notes"; the p6 pull-quote was already correctly attributed); static-typing example fixed ("hand a string to a function that wants an integer" — string+int compiles fine in C/C++/Java); types-p1 payment ledger un-inverted; "ate every benchmark" → "the fast languages growing Python wrappers"; interpret-p3/p4 respect .pyc caching (translation cached, interpretation paid every run; only imports cached, `__main__` recompiled); **GIL switch interval = 5 ms** (was Python 2's "100 bytecodes"); GIL controversy "since the cores multiplied" (was "last decade", contradicting its own caption); asyncio scoped (nothing tears mid-operation; thread-per-connection cost, not the GIL, is the ceiling); PEP-703 caption de-duplicated; CPython bytecode "JVM later made famous, both inherited from older stack machines" (was "predating it by a year" — it's four, and p-code/Smalltalk predate both); **matmul figure renumbered to measured reality** (benchmarked locally: ~50 s pure Python on fast 3.14, 3.8 ms NumPy → figure now ~2 min / 0.012 s / ~10,000×, caption "four orders", all self-consistent); "numerical work is the slowest thing computers do well" → most cycle-hungry |
+
+**Declined** (deliberate; do not "fix" blindly): caption self-containment
+throughout (pipe, canary-class, smart-pointer, zero-cost captions);
+"Windows is monolithic" (assert-then-refine, p8 carries the nuance);
+"deserves its own paragraph" and "Here is one of the deeper revelations"
+(content-bearing flourishes); "exactly two ways to mishandle malloc" (two
+classes; the lead's three are instances); Ch5 "This is what kernel security
+is about"-class lead closers. Pre-existing `thompson` glossary entry points
+at a Stroustrup sentence (extractor quirk, predates this pass) — noted, not
+chased.
+
+**Invariants.** Anchor-id set byte-identical (346). Chapter order, heroes,
+Phase-2 stamps (ch4-security-p18), pass-9 items (Little's Law mechanism,
+pickle coda) untouched. Figure edits confined to four text labels, each
+§4g-precedented (matmul numbers, C++23 box, signal-reactions strip — plus
+the MLFQ caption describing the drawn schedule). Glossary regenerated:
+**count 520, no entry added or removed** after reflowing three cues the
+edits had broken (junk `default`/`os 360` averted, `timer interrupt`
+restored); 6 definitions improved, including two that had been broken
+fragments (`van rossum`, `inheritance`).
+
+**Verification.** Local (CF-mimicking server) + **live after push**
+(commit `6a94554`, live ~30 s later): Chromium + WebKit at 1440 + 375 on
+part-2/index/glossary — 0 console errors, 0 external requests, 0 h-scroll,
+nav 48 px, fonts loaded. 12 edited passages screenshot-reviewed in both
+engines, dark + light. Live glossary serves 520 with `timer interrupt`
+restored. **STOP for owner review before Part III** — the gate rhythm.
+Remaining language-pass parts: III, IV, V.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
