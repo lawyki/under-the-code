@@ -50,6 +50,12 @@ const SKIP_WORDS = new Set([
   // marking them as terms would fire CPU-cycle tooltips on every unrelated use. Skip them —
   // "instruction cycle" itself remains the glossary term.
   'fetch','decode','execute','writeback',
+  // Part IV language-pass (pass-17 verification) re-carries bolded these mid-sentence
+  // for prose emphasis, which mints entries whose auto-extracted definitions are not
+  // self-contained (they open with a parenthetical date or back-reference). The book
+  // deliberately left them un-glossaried in their original flat-list form; keep it that way.
+  'intrusion detection system','endpoint detection and response',
+  'zero-trust architecture','relationally complete',
 ]);
 
 // Curated canonical terms that should always appear in the glossary even if
