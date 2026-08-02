@@ -1172,6 +1172,69 @@ both corrected labels confirmed on the live page. **STOP for owner review
 before Part IV** stands — Parts IV–V remain, to run on the verifying-model
 session; if a session drops off Fable mid-part, stop at the next ledger.
 
+## 4q. Pass 17 (2026-08-03): the language pass, Part IV — Ch13–15 (commit `e639b98`)
+
+Same brief, **recalibrated by the owner: pedagogy is the first goal** (the
+book enjoyable, mechanisms *felt*, never a list wearing prose); facts are the
+second job, not the first. Every section judged as a reader who wants to be
+gripped, and each clearance re-read once against "would I enjoy reading this?"
+before a flag was declined. **Method:** deep read of all of Part IV plus 3
+independent per-chapter reader agents (pedagogy-lens, web-enabled), every flag
+adjudicated against an adversarial defense; load-bearing facts recomputed or
+checked against primary sources.
+
+**Part IV holds the bar.** Ch13's bank-transfer/WAL/MVCC run, Ch14's
+DH-commutativity and RSA-Euler spine (pass-11 §2B/§2C work) run, Ch15's
+data-as-code unification is *performed* not asserted (ch15-culture-p1). The
+pass is **four light pedagogical re-carries + a cluster of fact fixes** (Ch14,
+the "math in depth" chapter, carried the most).
+
+**Re-carries (the primary job):**
+| # | Item | Change |
+|---|---|---|
+| 1 | `ch13-algebra-p3` | Six-operator roll-call (∪, −, ×, ρ) was four definition-strings. Now each buys a felt question — *difference* IS "the customers who never ordered"; *cross product* a firehose you bolt a selection onto to rebuild the join from parts. |
+| 2 | `ch13-sql-p4` | Dead frame paragraph (added nothing its captions didn't) now runs the N×M cost that makes the three join strategies matter — a trillion row-comparisons on two million-row tables, minutes of work — so the reader feels *why* the optimiser's choice is load-bearing. |
+| 3 | `ch14-ecc-p4` | "The pragmatic difference is mostly cultural" — a shrug where the story should land. Now runs the real split: secp256k1 (cheap, rigid, nothing-up-my-sleeve) vs Curve25519 (shaped so the fast path and the constant-time path are the same path). Same trapdoor, different thing each was hardened against. |
+| 4 | `ch15-defense-p1` | Five-generation roll-call with parenthetical dates *asserted* "each was a response to the failure of the one before" and never showed one. Now runs the whole cascade cause-to-effect: firewall waves port 80 through → IDS has no signature for the new attack → SIEM sees only its slice of network logs → the evidence lives on the endpoint (EDR) → a decade of breaches says *inside* should confer no trust → zero trust. |
+
+**Fact fixes (real errors still matter, Parts II–III proved it):**
+| Ch | Corrections |
+|---|---|
+| 13 | **IMS "neither survived two decades"** — IBM still ships IMS in 2026; corrected to "neither would define the era that followed," IMS noted as niche survivor. **Selinger "most-cited paper in database history"** → "on query optimisation" (Codd out-cites it and is praised two sentences later — self-undercutting). **Projection-pushdown identity was false** — inner projections must retain the join key or the join degenerates to a cross product; corrected, sitting as it did directly above "the transformations are correct because the algebra is rigorous." B-tree **1970** not 1971 (SIGFIDET); Codd paper **eleven** pages not twelve (×2, pp. 377–387); "complete query language" → **relationally complete** (aggregation/recursion sit outside); great-grandparent; "in practice" ×2 dedupe. |
+| 14 | **fig-14-2 "factoring 2048-bit takes weeks of supercomputer time"** — flatly false, contradicted the chapter's own "infeasible / age of the universe"; record is RSA-250 (829 bits, 2020, ~2,700 core-years). **PQC "all three based on lattices"** — SLH-DSA is *hash*-based (contradicted the same paragraph + fig-14-13); primer caption's "lattice-based replacements" matched. **fig-14-10 Cloudflare "saved petabytes of bandwidth"** — conflation of two posts; the real 2014 result is the private-key op ~9× cheaper. **RSA-vs-ECC key growth un-inverted** — RSA key grows ~cubically with the security level, not "cube root of attack work." **fig-14-3 "increasing order of attacker difficulty for a defender"** — garbled + backwards; reordered hardest→easiest with the 2¹²⁸/2²⁵⁶ bound. **DH "referees almost rejected as too speculative"** cut (unsourced; it was an *invited* paper). **OTP "eventually broken"** → provably unbreakable, foundered on key distribution. Ed25519 **2011** not 2005; SHA-3 **standardised 2015** (Keccak 2012); exponential-growth sentence fixed ("add a bit, work doubles; double the bits, it squares"); signature "decrypt with private key" scoped to RSA (ECDSA/Ed25519 noted); PGP source-as-speech precedent attributed to **Bernstein/Junger**, not the dropped case. |
+| 15 | **Pwn2Own** funded by Trend Micro's **Zero Day Initiative** (not "vendors put bounties on their own products"). **Prompt injection dated 2022** (named/demonstrated Sept 2022). **Capital One** split into the $80M OCC fine (2020) + $190M class-action (2021), not "$190M direct cost." |
+
+**Declined** (owner-settled or deliberate; upheld after the "would I enjoy
+this?" re-read): **Sony PSN as SQLi** — pass-7 kept it as known-unconfirmed
+lore, owner-aware through every gate since; not re-litigated (the caption's
+scrupulous TJX carve-out sets a bar PSN doesn't meet, noted but left).
+**Enigma "six years"** — consistent with Ch1's framing, a Ch1 question.
+The **ch15-culture** CTF-category / red-blue-bounty / conference directory —
+the most list-heavy stretch, but the hero explicitly promises an ecosystem
+field-guide and the chapter's emotional close is the unification (performed)
+plus the responsible-disclosure norm (run); intentional resource content, kept.
+The **hashing three-property** list (fig-14-3 caption runs it with SHAttered).
+
+**Invariants.** Anchor-id set byte-identical (**228**). Glossary **count 520,
+no entry added or removed** — the re-carries bolded four real security-
+generation terms (IDS, EDR, zero-trust, "relationally complete") whose auto-
+extracted definitions were non-self-contained (they open with a parenthetical
+date or back-reference); suppressed via `build-glossary.js` SKIP_WORDS (same
+pattern as pass-14's `system v amd64 abi`) plus one math-annotation de-
+emphasised. Also caught: the IMS insertion had polluted the `brittle` entry
+(a `.)` before the term is not a clean sentence boundary for the extractor) —
+de-parenthesised to restore it; `firewall`/`siem` definitions came out
+*improved* (real definitions now, where before they were catalogue fragments).
+Strongroom serif-on-cream reading stock untouched (deliberate identity, §4d/§5).
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html` 308):
+Chromium + WebKit at 1440 + 375 on part-4/index/glossary — 0 console errors,
+0 external requests, 0 h-scroll, nav 48 px, fonts loaded. 6 re-carries
+screenshot-reviewed in both engines, dark + light — register holds, cream
+stock intact, math (`y²=x³+7`) and σ/π/⨝ symbols render. **Live after push**
+(commit `e639b98`): corrected passages confirmed on the live page. **STOP for
+owner review before Part V** — the gate rhythm. Remaining language-pass part: V.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
