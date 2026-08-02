@@ -1074,6 +1074,104 @@ reviewed in both engines, dark + light; live SVG labels confirmed
 ("ONE FULL RTT", "V.34 33.6k"). **STOP for owner review before Part IV** —
 the gate rhythm. Remaining language-pass parts: IV, V.
 
+### Pass-16 verification (2026-08-02, commit `17e904e`)
+
+Full audit of Pass 16 (parts of which had been executed by a weaker model
+after a session safeguard drop). Method mirrored the Pass-14 verification:
+deep read of all of Part III by the verifying model, plus 5 independent
+per-chapter fresh readers with web access; every flag adjudicated by the
+verifying model against an adversarial defense; the listed load-bearing
+corrections re-verified against primary sources or recomputed.
+
+**The ~40 fact corrections: all stand.** Independently confirmed:
+forward-secrecy direction (Shor on a *recorded* ECDHE handshake recovers the
+ephemeral secret — historical recordings ARE the store-now-decrypt-later
+threat; the mechanism, not just the claim, checks); Licklider's April 23,
+1963 ARPA memo ("Members and Affiliates of the Intergalactic Computer
+Network" — addressee line, "salutation" fair); Starkweather (SLOT 1971 at
+PARC; Lampson/Rider built EARS's *character generator* — the old Lampson
+attribution was indeed wrong); Metcalfe (Harvard rejection first, ALOHA
+math added at PARC to the revision — confirmed); 1-RTT setup (recomputed:
+client's first data byte leaves at exactly 1 RTT; SVG label verified live);
+Shannon (Rubik's-cube piece was the song "A Rubric on Rubik Cubics" — the
+old "proof of solving distance" was flatly wrong; juggling theorem real;
+Alzheimer's signs from ~1985, diagnosed 1993 — "through the 1990s" holds);
+V.34 33.6k (V.34+ 1996; caption math self-checks: 30 dB / 4 kHz → ≈40 kbps
+ceiling vs 33.6k); CUBIC (concave-to-W_max-then-convex — the un-inversion is
+correct). WEP 1997, macof/dsniff lineage, Dyn three waves, HotJava May 1995,
+2·MSL ≈ 60 s Linux, RFC 1948 timing, Kaminsky "years" recompute — all check.
+**The twisted-pair re-carry holds the register** (runs common-mode rejection
+cause-to-effect, no announcement scaffolds) — kept verbatim.
+
+**Wrongly cleared, found & fixed (~30 surgical edits + 2 re-carries):**
+Five fact-class: `ch8-ethernet-p1` credited the radio analysis to the
+*rejected* thesis (it was added after the rejection and rescued it —
+contradicted p2's own timeline); `ch10-handshake-p1` "why three?" gave a
+false reason ("two would not let the server pick its own starting sequence"
+— it can pick in two; it can't get it *acknowledged*); `ch10-attacks-p7`
+"weeks fingerprinting" — Shimomura's own tcpdump shows ~minutes of probing
+on Christmas afternoon revealing the fixed +128,000 ISN stride; `ch11-tls-p2`
+"mutually authenticated" (web TLS proves the server only); `ch12-hero-lead`
+"runs in every database that speaks JSON" (JSON is data, not executable JS
+— reworked to the object-literal-syntax-became-JSON truth). Two re-carries
+of the brief's exact class: the **TLS 1.3 handshake now runs in prose**
+(DH halves → shared secret → encrypted first reply → signature → transcript
+hash; it had lived only in the fig 11.11 caption — Ch11's centerpiece), and
+the **forced-reflow mechanism** in `ch12-dom-p3` (Pass 16's own rewrite
+derived the slowdown from mutations; the real cause is interleaved layout
+*reads* — offsetHeight between writes — forcing synchronous re-layout; the
+dated innerHTML folk-claim dropped). Consistency/caption fixes: fig 12.1
+"by 1994 … failed" contradicted Pass 16's own May-1995 HotJava correction
+(→ mid-1995, label + a11y title matched); fig 12.7 label "~16 ms each" →
+"one ~16 ms frame" (5×16 ms would be 12 fps — contradicted ch12-loop-p3);
+DOM section now counts five stages consistently in h2, body, and caption;
+fig 12.7 caption no longer re-runs *parse* on appendChild; fig 9.6 caption
+"picks the shorter one" of two equal-length paths → policy picks (matches
+its own figure); ARP caption's "switching contains spoofing" → switching
+alone does not (port security / dynamic ARP inspection do); `ch9-ip-p3`
+garbled "(since IPv4)"; SYN-cookie prose now runs verification correctly;
+timeout vs triple-dup-ACK responses split correctly (halve vs reset-to-1);
+"queues collapsed" → overflowed; 20 ms voice-gap premise carried;
+longest-prefix-wins now runs in `ch9-security-p4` (the marquee YouTube
+story's crux was fiat); one-clause v6 deadlock mechanism + RIR "years that
+followed"; Ch8/Ch9 count stitch (billions of devices, *tens of* thousands
+of networks — matched ch9-routing-p1); plus small date/wording precision
+(Simonyi "soon to write", motorised pogo sticks, CERT "within weeks",
+"young internet", QUIC in Chrome 2013→2017, "HTTP/2's share", BIND
+maintainers, "a handful of people at CERN" for Aug 1991, Netscape brief
+grammar ×2, V8 caption "two-tier core").
+
+**Considered and declined** (do not "fix" blindly): Morris "23" (kept —
+cross-part consistency, ledger-documented); Manchester caption convention
+(matches its own figure's drawn "HIGH→LOW = 1" CONVENTION strip; body stays
+agnostic); example.com's literal IP (rhetorical stand-in; any real IP goes
+stale); chapter-meta div nesting ×5 (uniform across all chapters, renders
+verified — identity structure); V8 four-tier reality beyond the "core"
+soften (figure draws two tiers; body says "tiered"); ch10's HTTP/2-HOL
+name-only mention (Ch11 runs it); `TCP`-only key-term span on "TCP
+hijacking" (extractor quirk, pass-15 precedent); Kleinrock-1962 priority
+framing (mainstream account); Pass 16's declines all re-checked and upheld.
+
+**Invariants.** Anchor-id set byte-identical (380). Glossary regenerated:
+**count 520, no entry added or removed** — first regen garbled `dom` and
+front-truncated `rtt` (em-dash-heavy rewrites broke the extractor's
+clipping, the documented pass-15/16 failure mode); prose reflowed, final
+regen has 7 definitions refreshed, all coherent (`ethernet`/`xerox parc`
+now carry the corrected thesis line, `congestion avoidance`/`rtt` the
+corrected loss-signal sentence). §4g and all Pass-16 corrections survive in
+substance. Two figure-label edits only (fig 12.1 date, fig 12.7 frame
+budget), both §4g-precedented text labels with a11y titles matched; no SVG
+geometry touched.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308): Chromium + WebKit at 1440 + 375 on part-3/index/glossary — 0 console
+errors, 0 external requests, 0 h-scroll, nav 48 px, fonts loaded, part-3
+anchors resolve. 14 edited passages screenshot-reviewed in both engines,
+dark + light. **Live after push** (commit `17e904e`): marker strings and
+both corrected labels confirmed on the live page. **STOP for owner review
+before Part IV** stands — Parts IV–V remain, to run on the verifying-model
+session; if a session drops off Fable mid-part, stop at the next ledger.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
