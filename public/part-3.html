@@ -493,7 +493,7 @@
       known for riding a unicycle through the corridors while juggling. He
       built an electromechanical mouse named Theseus that could solve a
       maze and remember the solution — arguably the first artificial
-      learning machine, 1950. He later built rocket-powered pogo sticks,
+      learning machine, 1950. He later built motorised pogo sticks,
       flame-throwing trumpets, and a chess-playing automaton. The papers
       he wrote in his "spare time" included the first paper on computer
       chess, the first paper on cryptography as information theory
@@ -885,8 +885,8 @@
 
     <p id="ch8-ethernet-p1" class="lead">
       In 1973, Bob Metcalfe at Xerox PARC invented <span class="key-term">Ethernet</span>, carrying
-      into a wire the idea his rejected doctoral thesis had worked out for radio.
-      The idea itself was elegant in its plainness: any number
+      into a wire the radio idea whose mathematics had just rescued his rejected
+      doctoral thesis. The idea itself was elegant in its plainness: any number
       of computers share one cable; they all listen; whenever no one else is
       talking, anyone can send; if two start at the same time and the signals
       collide, both detect it, both back off for a random interval, and both
@@ -921,7 +921,7 @@
       Metcalfe, Alan Kay's group was inventing the personal computer (the
       Alto, 1973 — the machine that taught Steve Jobs what a graphical
       interface was), Adele Goldberg and Dan Ingalls were building Smalltalk,
-      Charles Simonyi was writing what would become Microsoft Word, and
+      Charles Simonyi was soon to write what would become Microsoft Word, and
       Gary Starkweather had brought the laser printer to life down the corridor.
       Metcalfe's job was
       to network these machines together. His original Ethernet sketch is
@@ -1079,7 +1079,7 @@
 
         <text x="360" y="304" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(32,116,150,0.65)" letter-spacing="0.1em">"WHO HAS 192.168.1.5?" → BROADCAST · OWNER REPLIES · ANSWER CACHED FOR ~5 MIN</text>
       </svg>
-      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address splits cleanly into manufacturer (OUI) and device-specific halves. The OUI <code>B8:27:EB</code> is owned by the Raspberry Pi Foundation, so this address is on a Pi. ARP keeps a small cache mapping known IP addresses on the local subnet to their MAC addresses. When a host wants to send to an IP not in the cache, it broadcasts an ARP <em>request</em> ("who has 192.168.1.5?"); the owner replies with a unicast ARP <em>response</em>. Entries expire after a few minutes so that disconnected devices don't accumulate. ARP has no authentication — anyone on the link can claim any IP, which is the basis of <strong>ARP spoofing</strong> (<a href="part-4#ch15">Chapter 15</a>) — but on a properly switched modern LAN, the threat is contained because spoofing requires being on the local segment to begin with.</p>
+      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address splits cleanly into manufacturer (OUI) and device-specific halves. The OUI <code>B8:27:EB</code> is owned by the Raspberry Pi Foundation, so this address is on a Pi. ARP keeps a small cache mapping known IP addresses on the local subnet to their MAC addresses. When a host wants to send to an IP not in the cache, it broadcasts an ARP <em>request</em> ("who has 192.168.1.5?"); the owner replies with a unicast ARP <em>response</em>. Entries expire after a few minutes so that disconnected devices don't accumulate. ARP has no authentication — anyone on the link can claim any IP, which is the basis of <strong>ARP spoofing</strong> (<a href="part-4#ch15">Chapter 15</a>) — and switching alone does not stop it: a forged reply is a perfectly ordinary frame. What contains the threat is that the attacker must already be on the local segment, and that hardened switches add guards (port security, dynamic ARP inspection) which check claims against what the network has learned.</p>
     </div>
 
     <div class="diagram-card" id="fig-8-10">
@@ -1149,7 +1149,7 @@
 
         <text x="360" y="290" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">SWITCH "LEARNS" WHICH MAC IS ON WHICH PORT BY OBSERVING TRAFFIC — A SELF-CONFIGURING TABLE</text>
       </svg>
-      <p id="ch8-ethernet-p10" class="diagram-caption">A <strong>hub</strong> is a dumb electrical repeater: every signal that arrives on any port is rebroadcast on every other port. Four hosts on a hub means every frame is heard by all four; collisions are routine; bandwidth is shared. A <strong>switch</strong> is intelligent: it observes the source MAC of every frame that arrives, learns which MAC sits on which port, and forwards each subsequent frame only to the port leading to its destination. Other ports stay quiet. Modern Ethernet is universally switched, with each cable a private link between one device and one port. The collision-detection machinery still exists in every NIC for compatibility, but on switched links it never fires. This single change — hub to switch, late 1990s — is what made Ethernet scale from megabits to gigabits to terabits per second.</p>
+      <p id="ch8-ethernet-p10" class="diagram-caption">A <strong>hub</strong> is a dumb electrical repeater: every signal that arrives on any port is rebroadcast on every other port. Four hosts on a hub means every frame is heard by all four; collisions are routine; bandwidth is shared. A <strong>switch</strong> is intelligent: it observes the source MAC of every frame that arrives, learns which MAC sits on which port, and forwards each subsequent frame only to the port leading to its destination. Other ports stay quiet. Modern Ethernet is universally switched, with each cable a private link between one device and one port. The collision-detection machinery still exists in every NIC for compatibility, but on switched links it never fires. This single change — hub to switch, late 1990s — is what made Ethernet scale from megabits to gigabits to hundreds of gigabits per second.</p>
     </div>
 
     <div class="insight-strip">
@@ -1328,8 +1328,8 @@
       how a single bit makes it across one hop. <a href="#ch9">Chapter 9</a> climbs to the
       <em>network</em> layer. Up to now, every diagram has assumed two devices
       on the same wire, or at most a few devices on the same Ethernet segment.
-      The internet is something else: hundreds of millions of devices, on
-      thousands of independently-administered networks, none of them aware of
+      The internet is something else: billions of devices, on
+      tens of thousands of independently-administered networks, none of them aware of
       most of the others, and packets that need to find their way across that
       graph from any source to any destination. The idea that made this work
       was small, strange, and explicitly Cold War. It is the subject of the
@@ -1911,7 +1911,7 @@
       A packet larger than the maximum-transmission-unit (MTU) of a link
       cannot be sent in one piece. Ethernet's standard MTU is 1500 bytes; some
       tunnel configurations are smaller. When a 4 KB packet must traverse a
-      1500-byte link, the router (or, since IPv4, sometimes the original
+      1500-byte link, the router (or sometimes the original
       sender) splits it into <strong>fragments</strong> — each a complete IP
       packet with the same Identification field, but with the Fragment Offset
       indicating where in the original payload it sits, and a "More Fragments"
@@ -2052,7 +2052,7 @@
 
         <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">EACH AS PREPENDS ITSELF TO THE PATH · SHORTER PATHS WIN BY DEFAULT · LOOPS ARE DETECTED IN THE LIST</text>
       </svg>
-      <p id="ch9-routing-p3" class="diagram-caption">AS 65001 announces the prefix <code>198.51.0.0/16</code> with path <code>[65001]</code> — "I am the origin." Two transit ASes hear the announcement and prepend themselves: AS 65010 announces <code>[65010, 65001]</code>, AS 65020 announces <code>[65020, 65001]</code>. Both reach AS 65030, which now sees two paths to the same destination and picks the shorter one (or applies local policy — most BGP routing decisions are policy, not pure shortest-path). AS 65030 prepends itself and announces <code>[65030, 65010, 65001]</code> onward to AS 65099, which now knows it can reach the prefix in three AS hops. Loop detection is automatic: an AS that sees its own number in the path drops the announcement. This is BGP at its simplest. The protocol has a few hundred more pages, but the path-vector core is this.</p>
+      <p id="ch9-routing-p3" class="diagram-caption">AS 65001 announces the prefix <code>198.51.0.0/16</code> with path <code>[65001]</code> — "I am the origin." Two transit ASes hear the announcement and prepend themselves: AS 65010 announces <code>[65010, 65001]</code>, AS 65020 announces <code>[65020, 65001]</code>. Both reach AS 65030, which now sees two paths to the same destination — both the same length here — and picks one by local policy (most BGP routing decisions are policy; path length is only the default tie-breaker). AS 65030 prepends itself and announces <code>[65030, 65010, 65001]</code> onward to AS 65099, which now knows it can reach the prefix in three AS hops. Loop detection is automatic: an AS that sees its own number in the path drops the announcement. This is BGP at its simplest. The protocol has a few hundred more pages, but the path-vector core is this.</p>
     </div>
 
     <div class="diagram-card" id="fig-9-7">
@@ -2159,12 +2159,15 @@
       addresses, which sounded like a lot in 1981 and runs out, in practice,
       well below the count because of subnet-padding and reserved ranges. The
       world ran out of fresh IPv4 allocations at IANA's central pool on
-      <strong>3 February 2011</strong>, and at the regional registries shortly
-      after. The successor — <strong>IPv6</strong>, defined in 1995 — uses
+      <strong>3 February 2011</strong>, and at the regional registries over the
+      years that followed. The successor — <strong>IPv6</strong>, defined in 1995 — uses
       128-bit addresses, 2<sup>96</sup> times as many. The migration to IPv6
-      has been underway for thirty years and is still incomplete; depending on
-      how you count, somewhere between 35% and 45% of internet traffic is
-      IPv6 in 2025.
+      has been underway for thirty years and is still incomplete — structurally
+      so: a v6-only machine and a v4-only machine cannot talk to each other
+      directly, so nobody can drop the old protocol until nearly everyone else
+      has adopted the new one, and the migration is hostage to its own
+      stragglers. Depending on how you count, somewhere between 35% and 45%
+      of internet traffic is IPv6 in 2025.
     </p>
 
     <div class="diagram-card" id="fig-9-8">
@@ -2258,7 +2261,7 @@
         security became a discipline.</strong> Robert Tappan Morris, a
         twenty-three-year-old graduate student at Cornell whose father was the
         chief scientist at the NSA's National Computer Security Center,
-        released a self-replicating program onto the ARPANET that exploited
+        released a self-replicating program onto the young internet that exploited
         three different vulnerabilities at once: a buffer overflow in the
         UNIX <code>fingerd</code> service, a debug feature accidentally left
         on in <code>sendmail</code>, and weak passwords in <code>rsh</code>.
@@ -2273,7 +2276,7 @@
         within days and became the first person ever convicted under the
         US Computer Fraud and Abuse Act of 1986. He received three years'
         probation, four hundred hours of community service, and a $10 050
-        fine. He is now a tenured professor at MIT. Within the same week of
+        fine. He is now a tenured professor at MIT. Within weeks of
         the worm's release, DARPA funded the creation of the
         <strong>Computer Emergency Response Team</strong> (CERT) at
         Carnegie Mellon — the first organisation specifically tasked with
@@ -2333,7 +2336,9 @@
       hearer to verify that the announcer actually owns the prefix it claims.
       An AS can announce <em>anything</em> and its neighbours will believe it.
       If the announcement is more specific than the legitimate one, the
-      hijacker wins the global routing table. This is <strong>BGP
+      hijacker wins the global routing table, because forwarding always prefers
+      the most specific route it knows — a claim to a smaller, more exact block
+      of addresses beats the broader legitimate announcement that contains it. This is <strong>BGP
       hijacking</strong>, and the canonical example happened on
       <strong>24 February 2008</strong>.
     </p>
@@ -2581,8 +2586,9 @@
       lost, is your problem. Most applications find this terrifying. A few
       find it liberating. A live phone call cannot wait for retransmission —
       a packet that arrives 200 milliseconds late is worse than a packet that
-      didn't arrive at all (the human ear notices a hiccup; it does not
-      notice a 20-millisecond gap). A DNS lookup is a single small request
+      didn't arrive at all (a lost packet costs only the ~20 milliseconds of audio it carried,
+      a gap the ear glides over; a late one stalls the stream, and the stall
+      is the hiccup you hear). A DNS lookup is a single small request
       and a single small response — TCP's three-segment setup overhead would
       double the lookup's latency to no benefit. For these workloads, UDP is
       not a downgrade from TCP; it is the right tool.
@@ -2704,8 +2710,9 @@
       A TCP connection begins with a three-segment exchange. SYN, SYN-ACK,
       ACK. Three round-trip halves, ending with both sides knowing each
       other's starting sequence numbers, both sides having allocated a TCB,
-      both sides ready to stream. Why three? Two would not let the server
-      pick its own starting sequence. Four would be redundant. Three is
+      both sides ready to stream. Why three? Two would leave the server's own starting counter
+      unacknowledged — it would be streaming against a number it could never
+      confirm the client had received. Four would be redundant. Three is
       exactly what you need so that each side has both proven the other is
       reachable and acknowledged the other's starting counter.
     </p>
@@ -2755,7 +2762,7 @@
 
         <text x="360" y="346" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">ONE FULL RTT BEFORE THE CLIENT'S FIRST APPLICATION BYTE — A PERMANENT TAX TCP CHARGES PER CONNECTION</text>
       </svg>
-      <p id="ch10-handshake-p2" class="diagram-caption">Three segments cross the network. The <strong>SYN</strong> carries the client's chosen Initial Sequence Number (ISN), randomly selected for security. The <strong>SYN-ACK</strong> carries the server's ISN and acknowledges receipt of the client's ISN+1. The <strong>ACK</strong> closes the loop by acknowledging the server's ISN+1. After this, both sides know both sequence numbers and the connection is ESTABLISHED. The setup costs one full round trip before the client's first byte of application data can leave — the third ACK may carry data with it, but nothing can be sent before it — a permanent tax that motivated TFO (TCP Fast Open) and, eventually, the design of QUIC, which folds connection setup into the encryption handshake to save round trips.</p>
+      <p id="ch10-handshake-p2" class="diagram-caption">Three segments cross the network. The <strong>SYN</strong> carries the client's chosen Initial Sequence Number (ISN), randomly selected for security. The <strong>SYN-ACK</strong> carries the server's ISN and acknowledges the client's SYN by answering with ISN+1. The <strong>ACK</strong> closes the loop by answering with the server's ISN+1. After this, both sides know both sequence numbers and the connection is ESTABLISHED. The setup costs one full round trip before the client's first byte of application data can leave — the third ACK may carry data with it, but nothing can be sent before it — a permanent tax that motivated TFO (TCP Fast Open) and, eventually, the design of QUIC, which folds connection setup into the encryption handshake to save round trips.</p>
     </div>
 
     <p id="ch10-handshake-p3">
@@ -3002,7 +3009,7 @@
       one knew why. The two endpoints
       assumed they could simply send at their advertised window size; the
       network's queues filled; packets were dropped; TCP retransmitted;
-      the retransmits piled into the same queues; the queues collapsed
+      the retransmits piled into the same queues; the queues overflowed
       again. Each retransmit produced more retransmits. The connection's
       effective throughput fell by three orders of magnitude while neither
       side was, locally, doing anything wrong. <strong>Van Jacobson</strong>
@@ -3029,11 +3036,14 @@
       The algorithm has two phases. <strong>Slow start</strong> begins
       cautiously — a tiny congestion window (cwnd) of one segment — and
       <em>doubles</em> on every successful round trip. Exponential growth
-      probes the network's capacity quickly. When packet loss is detected (a
-      timeout, or three duplicate ACKs), the connection assumes it has hit
-      the network's capacity and switches to <strong>congestion avoidance</strong>:
-      cwnd is halved, then increases by one segment per RTT —
-      <em>linearly</em>. Slow probing replaces fast probing. Another loss
+      probes the network's capacity quickly. When packet loss is detected — three duplicate ACKs — the connection
+      assumes it has hit the network's capacity and switches
+      to <strong>congestion avoidance</strong>: cwnd is halved, then increases
+      by one segment per RTT — <em>linearly</em>. Duplicate ACKs are the
+      receiver's way of saying one segment vanished while later ones kept
+      arriving. (A full timeout is grimmer news: the window resets to one
+      segment and slow start begins again.)
+      Slow probing replaces fast probing. Another loss
       triggers another halving. The window oscillates around the true
       capacity in a sawtooth pattern.
     </p>
@@ -3436,11 +3446,12 @@
       Initial Sequence Number it returns in the SYN-ACK. The encoding is a
       keyed hash of the (source IP, source port, destination IP, destination
       port, time bucket) — small enough to fit in 32 bits, hard to forge
-      without knowing the server's secret key. If the attacker's third ACK
-      ever arrives (it won't, because the source was spoofed), the server can
-      verify the cookie, reconstruct the connection state from scratch, and
-      proceed. If the legitimate client's third ACK arrives, same thing.
-      The server kept no per-connection state during the flood.
+      without knowing the server's secret key. When a third ACK arrives, it necessarily carries the cookie back (as
+      its acknowledgement number); the server recomputes the hash, and only a
+      match — which requires having actually received the SYN-ACK — earns a
+      reconstructed connection and a TCB. Legitimate clients pass; the flood's
+      spoofed connections never send an ACK at all. The server kept no
+      per-connection state during the flood.
     </p>
 
     <div class="diagram-card" id="fig-10-11">
@@ -3535,10 +3546,11 @@
       <code>rsh</code> — a UNIX command that, on the assumption that the
       source IP could not be forged, granted login access without a
       password to authorised hosts. The trick: <em>the source IP
-      could</em> be forged, if you also knew TCP's sequence numbers, and
-      Mitnick had spent weeks fingerprinting Shimomura's machines'
-      not-quite-random ISN generator. On Christmas, Mitnick mounted a
-      multi-step attack: SYN-flooded a trusted host on Shimomura's network
+      could</em> be forged, if you also knew TCP's sequence numbers — and
+      Shimomura's machines' ISN generator was barely random at all. Minutes
+      of probing on Christmas afternoon showed each new connection's ISN
+      stepping up by a fixed 128,000, making the next one predictable.
+      Mitnick then mounted a multi-step attack: SYN-flooded a trusted host on Shimomura's network
       to take it out of the conversation, then opened a TCP connection to
       Shimomura's main workstation while spoofing the source IP of the
       now-incapacitated trusted host. Predicting the ISN, Mitnick blind-sent
@@ -3802,7 +3814,7 @@
           <text x="640" y="318" text-anchor="middle" fill="rgba(180,200,220,0.6)">the web is public</text>
         </g>
       </svg>
-      <p id="ch11-bernerslee-p6" class="diagram-caption">The whole web in 1991 was a NeXT cube in Berners-Lee's office, a server program he had written, a browser-editor he had also written, and a few HTML files describing the project. The machine had a sticky note on its case: <em>"This machine is a server. DO NOT POWER IT DOWN!!"</em> The first publicly announced URL was <code>info.cern.ch/hypertext/WWW/TheProject.html</code>. By the time Berners-Lee posted to <code>alt.hypertext</code> on 6 August 1991, the protocols and the content had existed for seven months and one user had been using them. Two years later there were five hundred web servers. Five years later it was unstoppable.</p>
+      <p id="ch11-bernerslee-p6" class="diagram-caption">The whole web in 1991 was a NeXT cube in Berners-Lee's office, a server program he had written, a browser-editor he had also written, and a few HTML files describing the project. The machine had a sticky note on its case: <em>"This machine is a server. DO NOT POWER IT DOWN!!"</em> The first publicly announced URL was <code>info.cern.ch/hypertext/WWW/TheProject.html</code>. By the time Berners-Lee posted to <code>alt.hypertext</code> on 6 August 1991, the protocols and the content had existed for seven months and a handful of people at CERN had been using them. Two years later there were five hundred web servers. Five years later it was unstoppable.</p>
     </div>
 
     <div class="pull-quote">
@@ -3833,7 +3845,7 @@
       register itself with the link system; if the target moved or
       disappeared, the link broke and the publisher was supposed to update it.
       In the web, a link is just a URL; if the URL no longer resolves, the
-      browser returns a 404 and the publisher is none the wiser. This sounds
+      click just gets a 404 back and the publisher of the link is none the wiser. This sounds
       like a flaw — and famously it produces "link rot" as the web ages —
       but it was the price of decentralisation. A system that demands a
       working link to every published target is a system with a central
@@ -4397,7 +4409,7 @@
       In 2008, security researcher <strong>Dan Kaminsky</strong> discovered a
       practical, fast variant that worked against essentially every DNS
       resolver in deployment. He disclosed it privately to vendors first;
-      Microsoft, Cisco, Bind, and dozens of others released coordinated
+      Microsoft, Cisco, the BIND maintainers, and dozens of others released coordinated
       patches on a single day in July 2008. The patch did not fix the
       underlying weakness — UDP queries are still spoofable in principle —
       but added <em>source port randomisation</em>, multiplying the
@@ -4604,7 +4616,9 @@
       encrypted with the public key can only be decrypted with the matching
       private key. Two strangers who have never met can establish a shared
       secret over a public channel: send each other their public keys, do
-      a small mathematical dance (Diffie-Hellman, 1976), and both end up
+      a small mathematical dance (Diffie-Hellman, 1976 — key agreement
+      rather than encryption: each side combines its own private half with
+      the other's public half and arrives at the same number), and both end up
       knowing a shared value that no eavesdropper can derive even with full
       transcripts. Public-key operations are slow — RSA is a thousand times
       slower than AES for the same data volume, ECDH is faster but still
@@ -4700,14 +4714,19 @@
 
     <p id="ch11-tls-p2">
       The protocol's job is simple to state: two parties who have never met
-      should end up sharing a secret key, mutually authenticated, with full
-      confidence that no third party listening to or manipulating the
-      conversation can read or alter the result. The mechanism is
-      breathtakingly compact in TLS 1.3 — <em>one round trip</em>, not the
-      two of TLS 1.2 — and combines every primitive from §04: a key
-      exchange to bootstrap a shared secret, a digital signature over a
-      certificate chain to authenticate the server, and symmetric encryption
-      to actually carry the data once the handshake is done. The whole thing
+      should end up sharing a secret key, with the server's identity proven,
+      and with full confidence that no third party listening to or
+      manipulating the conversation can read or alter the result. The
+      mechanism is breathtakingly compact in TLS 1.3 — <em>one round trip</em>,
+      not the two of TLS 1.2 — and composes the primitives of §04. The
+      client's hello already carries its half of a fresh Diffie-Hellman
+      exchange; the server answers with the other half, and from that moment
+      both sides hold the same secret, so the server can encrypt the rest of
+      its very first reply — certificate, signature and all. The signature,
+      made with the certificate's private key, proves the server is who the
+      certificate says; the closing Finished messages each carry a hash of
+      the entire transcript, so any tampering along the way surfaces as a
+      mismatch. Symmetric encryption then carries the data. The whole thing
       finishes in about 20 milliseconds on a continental link.
     </p>
 
@@ -5065,12 +5084,13 @@
       authentication) plus the multiplexing of HTTP/2 — but with one crucial
       change: each HTTP/2-style stream is independently ordered, so a lost
       packet on stream A no longer holds back stream B. QUIC was developed
-      by Google starting around 2012, deployed inside Chrome and to Google's
-      servers around 2016, and standardised by the IETF in 2021. HTTP/3
+      by Google starting around 2012, rolled out experimentally in Chrome and
+      on Google's servers from 2013 — reaching essentially all Chrome users by
+      2017 — and standardised by the IETF in 2021. HTTP/3
       (RFC 9114, 2022) is just HTTP semantics over QUIC. As of 2026 it
       carries roughly a third of web traffic by volume — nearly all of
       Google's own, a large and growing share of Cloudflare's and Meta's —
-      and is climbing toward HTTP/2 everywhere else.
+      and is climbing toward HTTP/2's share everywhere else.
     </p>
 
     <div class="diagram-card" id="fig-11-15">
@@ -5160,7 +5180,8 @@
       to a release branch before it had a stable name and shipped before
       it had a specification — is now the most widely deployed programming
       language in history. It runs in every browser. It runs on servers
-      via Node.js. It runs in every database that speaks JSON. The fact
+      via Node.js. Its object-literal syntax became JSON, the data language
+      every modern database speaks. The fact
       that this happened is a triumph of practical engineering over good
       taste, and the fact that it works is a series of architectural
       decisions made under deadline that turned out to be unexpectedly
@@ -5272,14 +5293,14 @@
       should look enough like Java that the buzzword "Java" could be used
       in marketing, but should be far simpler. It should run instantly. It
       should fail loudly but not crash the browser. It should be easy enough
-      that a designer who had learned HTML over a weekend could pick up.
+      for a designer who had learned HTML over a weekend to pick up.
       Netscape needed it shipped in the upcoming Netscape 2.0 release, whose
       first beta was due that September — months, not years, away.
     </p>
 
     <div class="diagram-card" id="fig-12-1">
-      <div class="diagram-label">Fig 12.1 — The web in 1994 · static documents and a tab-out to Java</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-56"><title id="svgt-part3-56">Fig 12.1 — The web in 1994 · static documents and a tab-out to Java</title>
+      <div class="diagram-label">Fig 12.1 — The web of 1994–95 · static documents and a tab-out to Java</div>
+      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-56"><title id="svgt-part3-56">Fig 12.1 — The web of 1994–95 · static documents and a tab-out to Java</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">two ways to make a page do something — neither was working</text>
 
         <!-- Static HTML side -->
@@ -5323,7 +5344,7 @@
           <text x="320" y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">designed for HTML authors, not Java engineers — no compiler, no classpath, no warm-up</text>
         </g>
       </svg>
-      <p id="ch12-browser-p4" class="diagram-caption">By 1994 the two paths to interactive web pages had failed. Pure HTML could describe a form but every interaction round-tripped to the server. Java applets could run real code but they took ten seconds to warm up, were hard to embed, and lived in a sealed island that couldn't easily talk to the surrounding page. Netscape's bet was that the right answer was something a designer could write in five lines, embedded directly between &lt;script&gt; tags, that ran the moment the page loaded. They needed it in the browser by that autumn. They hired Brendan Eich.</p>
+      <p id="ch12-browser-p4" class="diagram-caption">By mid-1995 both paths to interactive web pages had fallen short. Pure HTML could describe a form but every interaction round-tripped to the server. Java applets could run real code but they took ten seconds to warm up, were hard to embed, and lived in a sealed island that couldn't easily talk to the surrounding page. Netscape's bet was that the right answer was something a designer could write in five lines, embedded directly between &lt;script&gt; tags, that ran the moment the page loaded. They needed it in the browser by that autumn. They hired Brendan Eich.</p>
     </div>
   </section>
 
@@ -5355,7 +5376,7 @@
       <em>Self</em>. It had no classes (those came twenty years later, as
       sugar). It had no integers (only floating-point numbers, IEEE 754
       doubles all the way). It had implicit type coercion that anyone who
-      has used JavaScript has cursed. It was a pragmatic compromise of
+      has used JavaScript has cursed. It was a pragmatic compromise:
       genuine elegance underneath surprising syntactic awkwardness — the
       shape of any language born in ten days under the wrong brief.
     </p>
@@ -5655,8 +5676,10 @@
       JavaScript engines had become aggressive optimising compilers
       masquerading as interpreters. V8's design — and the design of every
       major engine since — is a tiered pipeline that takes source code
-      to fast native machine code, with a feedback loop that re-optimises
-      whichever functions turn out to be hot.
+      to fast native machine code: start interpreting at once so nothing
+      waits, watch which functions run hot, and spend the expensive
+      compilation only where the running program proves it will pay — with a
+      feedback loop that re-optimises as the evidence changes.
     </p>
 
     <div class="diagram-card" id="fig-12-5">
@@ -5723,7 +5746,7 @@
           <text x="320" y="68" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">runs ~10× faster — and falls back the moment that assumption breaks. SpiderMonkey, JavaScriptCore work the same way.</text>
         </g>
       </svg>
-      <p id="ch12-node-p2" class="diagram-caption">V8's two-tier architecture mirrors Java's HotSpot, Lua's LuaJIT, and most modern dynamic-language engines. The bytecode interpreter (Ignition) is fast to start up — code begins running immediately, no compilation pause — but slow per operation. The JIT compiler (TurboFan) is slow to compile but produces machine code competitive with C. The whole pipeline runs <em>concurrently</em> with the program: hot functions get optimised in a background thread, and the running program is patched mid-execution to point at the new optimised version. Speculative type assumptions ("this counter has always been an integer; assume integer") deliver most of the speedup; broken assumptions trigger <em>deoptimisation</em>, which throws the optimised code away and falls back to the bytecode interpreter. The whole machinery is invisible to user code — until you write a function that intermittently violates V8's expectations and notice it suddenly running at 1/10 speed.</p>
+      <p id="ch12-node-p2" class="diagram-caption">V8's two-tier core mirrors Java's HotSpot, Lua's LuaJIT, and most modern dynamic-language engines. The bytecode interpreter (Ignition) is fast to start up — code begins running immediately, no compilation pause — but slow per operation. The JIT compiler (TurboFan) is slow to compile but produces machine code competitive with C. The whole pipeline runs <em>concurrently</em> with the program: hot functions get optimised in a background thread, and the running program is patched mid-execution to point at the new optimised version. Speculative type assumptions ("this counter has always been an integer; assume integer") deliver most of the speedup; broken assumptions trigger <em>deoptimisation</em>, which throws the optimised code away and falls back to the bytecode interpreter. The whole machinery is invisible to user code — until you write a function that intermittently violates V8's expectations and notice it suddenly running at 1/10 speed.</p>
     </div>
 
     <h3>Node.js: V8 outside the browser</h3>
@@ -5808,22 +5831,24 @@
 
     <p id="ch12-dom-p1" class="lead">
       Loading a web page does not "show" the HTML. The browser, after fetching
-      the bytes, runs them through the pipeline called the
+      the bytes, runs them through a five-stage pipeline called the
       <strong>critical rendering path</strong>. The HTML is parsed into a
       tree (the <span class="key-term">DOM</span>). The CSS is parsed into another tree (the
-      <em>CSSOM</em>). The two are combined into a <em>render tree</em>
+      <em>CSSOM</em>). Together those two parses are the parse stage; the
+      style stage then combines the trees into a <em>render tree</em>
       describing what actually gets drawn. Layout computes where each box
-      goes. Paint draws the pixels. Composite assembles layers. JavaScript
+      goes. Paint draws the pixels. Composite assembles the painted layers
+      into the frame you see. JavaScript
       can intervene at any stage — modifying the DOM, modifying the CSSOM,
       forcing a re-layout, triggering a repaint. Understanding this pipeline
-      is the difference between a page that renders in 60 milliseconds and
+      is the difference between a page that holds 60 frames per second and
       a page that stutters; understanding it is also necessary to read any
       modern frontend performance literature.
     </p>
 
     <div class="diagram-card" id="fig-12-7">
-      <div class="diagram-label">Fig 12.7 — Critical rendering path · five stages, ~16 ms each</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-62"><title id="svgt-part3-62">Fig 12.7 — Critical rendering path · five stages, ~16 ms each</title>
+      <div class="diagram-label">Fig 12.7 — Critical rendering path · five stages, one ~16 ms frame</div>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-62"><title id="svgt-part3-62">Fig 12.7 — Critical rendering path · five stages, one ~16 ms frame</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">parse · style · layout · paint · composite — every frame</text>
 
         <!-- Inputs -->
@@ -5914,22 +5939,26 @@
           <text x="320" y="52" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.85)">transform, opacity — only COMPOSITE (GPU layer math) → cheap, animatable at 60 fps</text>
         </g>
       </svg>
-      <p id="ch12-dom-p2" class="diagram-caption">Every frame the browser renders, it walks some prefix of this pipeline. Adding a new DOM element forces all five stages — parse, style, layout, paint, composite. Changing a CSS color forces paint and composite but skips layout. Animating <code>transform: translateX()</code> only touches composite — the GPU shifts an existing layer without re-laying-out anything. The performance gospel of the modern web ("animate transform and opacity, never width or height") falls out directly: cheap properties skip the expensive stages. Tools like the Chrome DevTools Performance panel let you watch this pipeline run frame by frame and see exactly which property change forced layout when.</p>
+      <p id="ch12-dom-p2" class="diagram-caption">Every frame the browser renders, it walks some prefix of this pipeline. Adding a new DOM element forces everything after parse — style, layout, paint, composite. Changing a CSS color forces paint and composite but skips layout. Animating <code>transform: translateX()</code> only touches composite — the GPU shifts an existing layer without re-laying-out anything. The performance gospel of the modern web ("animate transform and opacity, never width or height") falls out directly: cheap properties skip the expensive stages. Tools like the Chrome DevTools Performance panel let you watch this pipeline run frame by frame and see exactly which property change forced layout when.</p>
     </div>
 
     <p id="ch12-dom-p3">
       The DOM itself is, mechanically, just a tree of objects exposed to
       JavaScript through methods like <code>document.querySelector()</code>
-      and <code>element.appendChild()</code>. Modifying a DOM node triggers
-      the relevant prefix of the pipeline; that is why naive
-      "loop-and-append" code in JavaScript can be hundreds of times slower
-      than building up a string and assigning to <code>innerHTML</code>
-      once. React, Vue, Svelte, and the rest of the modern frontend
+      and <code>element.appendChild()</code>. Modifying a DOM node invalidates
+      the relevant prefix of the pipeline. The browser batches that work —
+      layout and paint normally run once per frame, however many mutations
+      landed — but code that <em>reads</em> a layout measurement between
+      writes (an <code>offsetHeight</code> here, a
+      <code>getBoundingClientRect</code> there) forces the browser to stop
+      and re-lay-out synchronously, mid-frame, once per read. That
+      interleaving is how naive loop-and-mutate code gets orders of magnitude
+      slower than doing all the writes together. React, Vue, Svelte, and the
+      rest of the modern frontend
       framework family exist primarily to <em>batch</em> DOM changes — the
       programmer writes declarative rules ("the page should look like X"),
-      the framework computes the minimum set of DOM mutations needed, so the
-      browser touches the tree a handful of times instead of fifty, and forces
-      none of the synchronous re-layouts that naive code triggers. The DOM is
+      the framework computes the minimum set of DOM mutations and applies
+      them together, so no read ever lands between the writes. The DOM is
       slow only when you ask it to be.
     </p>
   </section>
