@@ -1,32 +1,39 @@
 # under-the-code — agent entry point
 
-*Under the Code* — a unified theory of how computers actually work. Five parts,
-eighteen chapters plus the Bridge, ~93,000 words, 242 inline-SVG figures.
-Published at **under.atheric.eu** under CC BY-NC 4.0.
-
-## Read in this order
-
-1. `README.md` — what the book is, the repo layout, how it develops and deploys.
-2. `UNDER.md` — the survey and quality log. It is the working baseline: what the
-   site is, what was defective, what each pass fixed, and what remains. The pass
-   ledger is §4a–§4q; read §4q for where the language pass stands.
-3. `STATE.md` — where we are · what's next · blocked on Tiger.
+*Under the Code* — a five-volume interactive computer-science book at
+under.atheric.eu. Public, CC BY-NC 4.0. This file is the signpost; it decides
+what you read next, nothing more.
 
 > Operating model: `atheric-studios/estate/OPERATING-MODEL.md` — read before
 > starting a session.
 
-## Invariants — do not violate these before you have read further
+## Read in this order
 
-- **No framework, no bundler, no build step** for the pages. The tooling is
-  `scripts/build-glossary.js` and `scripts/add-anchor-ids.js`, nothing more.
-- **Zero third-party requests.** Fonts are self-hosted; the privacy notice
-  depends on that staying true.
-- **`UNDER.md` §4g's fact corrections are law.** Do not re-open a corrected fact
-  without a primary source.
-- **`UNDER.md` §5 lists deliberate choices that look like defects.** Read it
-  before "fixing" anything.
-- **The pass sequence stops for owner review between parts** — the gate rhythm.
-  Part V does not open until Tiger has read Pass 17.
-- Verification protocol is `UNDER.md` §7: both engines, 1440 + 375, zero console
-  errors, zero external requests, no horizontal scroll.
-- Owner decisions live in `STATE.md` § BLOCKED ON TIGER and nowhere else.
+1. `BRIDGE.md` — the architect charter. If you are the project's bridge chat,
+   this is your founding document.
+2. `README.md` — what the repo is and how it deploys.
+3. `UNDER.md` — the spine. §4 is the pass ledger; read the most recent entries
+   before doing anything.
+4. `STATE.md` — where we are · what's next · blocked on Tiger.
+
+## Before you touch anything
+
+- **The gate rhythm is law** (as amended 2026-08-06, `BRIDGE.md` §1): proposal
+  → owner veto → per-part execution → ledger → next part, with the owner read
+  moved to the end — the book is finalized, verified, declared READY, and Tiger
+  reads it once in full. Nothing is declared READY on an unverified clearance.
+- **`UNDER.md` §4g (the fact ledger) is law.** Re-introducing a corrected error
+  is a failed pass regardless of how well it reads.
+- **Anchor-ID law**: anchor sets stay byte-identical across a pass, or migrate
+  through `ANCHOR_ALIASES` in `book.js scrollToAnchor`, verified live at zero
+  pixel delta. Reading positions are user data.
+- **Regenerate the glossary after any prose edit** (`npm run build:glossary`)
+  and check the extractor's known gotchas: em-dash clipping, junk entries from
+  term cues.
+- **Pedagogy first, facts second.** The register bar is the Ch7 pickle coda.
+  "Already at bar, left as-is" is a valid and frequent verdict — never
+  manufacture change.
+- Part IV's serif-on-cream body is deliberate Strongroom identity (§4d/§5).
+  Do not "fix" it. Check `UNDER.md` §5 for the other known non-defects.
+- The thesis set and the authorship line are owner-authored. Agents typeset
+  them, never author them.

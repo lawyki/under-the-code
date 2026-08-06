@@ -1,57 +1,46 @@
-# Under the Code — STATE
+# under-the-code — STATE
 
-The resume header for this repo. `README.md` says what the book is and how it is
-built; `UNDER.md` is the survey and quality log, and the pass ledger lives there.
+The resume header for this repo. `BRIDGE.md` is the architect charter;
+`UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
 ## WHERE WE ARE
 
-The book is written and live at **under.atheric.eu** — five parts, eighteen
-chapters plus the Bridge interlude, ~93,000 words, 242 inline-SVG figures, a
-520-term auto-glossary. Static `public/` on Cloudflare Pages; the only service
-alongside it is the account/reading-position API in `functions/` on D1
-(magic-link auth, position by anchor + fraction, never raw scrollY).
+**The pedagogical language pass has completed Parts I–IV.** Part IV landed
+2026-08-03 as Pass 17 (commit `e639b98`), live at under.atheric.eu, ledger at
+`UNDER.md` §4q. Four re-carries, a Ch14-heavy cluster of fact fixes, anchor-id
+set byte-identical (228), glossary stable at 520.
 
-**The pedagogical language pass has completed Parts I–IV.** The chain, all
-ledgered in `UNDER.md`:
+**The gate rhythm was amended 2026-08-06 (Tiger):** per-part owner reads are
+waived; the book is finalized end-to-end and Tiger reads it once, completely,
+after it is declared READY. Recorded in `BRIDGE.md` §1. READY is prose-ready —
+the `UNDER.md` §6 P1 polish backlog stays parked and rides with the post-read
+punch-list pass.
 
-- Pass 14 — Part I (§4n, 2026-08-01)
-- Pass 15 — Part II, Ch4–7 (§4o, `6a94554`)
-- Pass 16 — Part III, Ch8–12 (§4p, `c4c41ea`) + its verification audit
-- **Pass 17 — Part IV, Ch13–15 (§4q, `e639b98`, 2026-08-03)**, ledger at
-  `0b8081f`. Recalibrated to *pedagogy first, facts second*.
-
-HEAD is `0b8081f`. The tree is clean; nothing is half-written.
-
-**Part V is the one part remaining** — the last language pass in the sequence.
+The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
+242 figures, glossary at 520 terms. Five volume identities live; magic-link
+accounts and exact reading-position sync live; the §4g fact ledger survives in
+substance throughout.
 
 ## WHAT'S NEXT
 
-**Part V of the language pass.** The method is established and needs no new
-design: per-section student-readers → adversarial defence pass → fact/voice
-confirmation gate. Carry the Pass 17 recalibration (pedagogy first, facts
-second) and Tiger's own reading notes into the brief.
+The finalize sequence, in order, one pass per session:
 
-It is **not** waiting on a Fable usage reset — an older note said so and was
-wrong. It is waiting on the gate below, which is the design working as intended.
+1. **Pass 18 — the language pass, Part V (Ch16–18), the last part.** Fable,
+   Part-IV recalibration (pedagogy first, facts second; Ch7 pickle coda is the
+   register bar). Brief: `docs/pass-18-brief.md` (authored 2026-08-06). Ledger
+   lands as `UNDER.md` §4r.
+2. **Pass 19 — independent Fable verification of Parts IV and V** (the two
+   language passes without a second read — the 14/16 verification pattern),
+   plus a book-wide closing sweep: cross-part consistency, full harness on all
+   pages, glossary, live parity. Brief authored after §4r is read.
+3. **READY declaration** — README status updated, Tiger handed the book for
+   the complete read.
+4. **Punch-list pass** from the read's findings; P1 polish decided there.
 
 ## BLOCKED ON TIGER
 
-Owner decisions live here and nowhere else. If it is not on this list, it is not
-blocking.
+Owner decisions live here and nowhere else. If it is not on this list, it is
+not blocking.
 
-- **Owner review of Pass 17 (Part IV) before Part V opens.** `UNDER.md` §4q
-  states the gate in its own words: *"STOP for owner review before Part V — the
-  gate rhythm."* Every pass in this sequence stops for Tiger's read; this is the
-  rhythm, not a stall. Nothing else is required to unblock Part V, and reading
-  costs no model budget.
-- **`UNDER.md` §6** — the prioritized improvement backlog for later passes,
-  explicitly marked as needing owner sign-off. Not started, by design.
-
-## Standing rules
-
-- `UNDER.md` §4g's fact corrections are **law**. Do not re-open a corrected fact
-  without a primary source.
-- `UNDER.md` §5 lists deliberate choices that look like defects. Read it before
-  "fixing" anything.
-- `UNDER.md` §7 is the verification protocol — repeat it after any pass (both
-  engines, 1440 + 375, zero external requests, zero console errors).
+- Nothing. Part V was unblocked by the 2026-08-06 amendment. The next owner
+  action arrives at READY: the complete read.
