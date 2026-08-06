@@ -5,10 +5,16 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 ## WHERE WE ARE
 
-**The pedagogical language pass has completed Parts I–IV.** Part IV landed
-2026-08-03 as Pass 17 (commit `e639b98`), live at under.atheric.eu, ledger at
-`UNDER.md` §4q. Four re-carries, a Ch14-heavy cluster of fact fixes, anchor-id
-set byte-identical (228), glossary stable at 520.
+**The pedagogical language pass is complete, Parts I–V.** Part V landed
+2026-08-07 as Pass 18 (commit `eb80d7a`), live at under.atheric.eu, ledger at
+`UNDER.md` §4r. Three re-carries (memory orderings run through the flag
+example; the Paxos quorum-overlap witness; the pre-VT-x trap-and-emulate
+mechanism), a Ch17-heavy fact cluster (Knight Capital's mechanism un-inverted
+against the SEC order; CP/CMS, EC2 billing, Dynamo/DynamoDB, fig 18.2's
+"2 networks"), anchor-id set byte-identical (189), glossary stable at 520.
+Two genuine figure-geometry defects (fig 16.8 Amdahl curves crossing their
+own ceilings; the CAP figures' spatial encoding) were declined under the
+brief's text-labels-only constraint and flagged to Pass 19.
 
 **The gate rhythm was amended 2026-08-06 (Tiger):** per-part owner reads are
 waived; the book is finalized end-to-end and Tiger reads it once, completely,
@@ -25,14 +31,15 @@ substance throughout.
 
 The finalize sequence, in order, one pass per session:
 
-1. **Pass 18 — the language pass, Part V (Ch16–18), the last part.** Fable,
-   Part-IV recalibration (pedagogy first, facts second; Ch7 pickle coda is the
-   register bar). Brief: `docs/pass-18-brief.md` (authored 2026-08-06). Ledger
-   lands as `UNDER.md` §4r.
+1. ~~**Pass 18 — the language pass, Part V (Ch16–18), the last part.**~~ —
+   **DONE** 2026-08-07 (commit `eb80d7a`, ledger `UNDER.md` §4r, live parity
+   confirmed).
 2. **Pass 19 — independent Fable verification of Parts IV and V** (the two
    language passes without a second read — the 14/16 verification pattern),
    plus a book-wide closing sweep: cross-part consistency, full harness on all
-   pages, glossary, live parity. Brief authored after §4r is read.
+   pages, glossary, live parity. Brief authored after §4r is read. §4r's
+   "For Pass 19" list carries the declined geometry defects and the items to
+   re-read.
 3. **READY declaration** — README status updated, Tiger handed the book for
    the complete read.
 4. **Punch-list pass** from the read's findings; P1 polish decided there.

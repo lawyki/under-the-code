@@ -1235,6 +1235,125 @@ stock intact, math (`y²=x³+7`) and σ/π/⨝ symbols render. **Live after push
 (commit `e639b98`): corrected passages confirmed on the live page. **STOP for
 owner review before Part V** — the gate rhythm. Remaining language-pass part: V.
 
+## 4r. Pass 18 (2026-08-07): the language pass, Part V — Ch16–18 (commit `eb80d7a`)
+
+Same brief, same bar (pedagogy first, facts second; the Ch7 pickle coda —
+untouched). The last part of the language pass, run under the amended gate
+rhythm (per-part owner reads waived; Pass 19 verification before READY).
+**Method:** deep read of all of Part V, then a 13-agent Workflow — 7
+per-section student-readers (pedagogy lens, web-enabled) plus 3 fact agents,
+then a per-chapter adversarial defense (target = what survived: 27 of ~40 raw
+flags; caption self-containment, insight-strip narrative form, and the ch18
+"None of X; all of them Y" chapter cadence all overturned). Then rewrites,
+then a 3-lens confirmation gate (facts / internal-consistency / voice) over
+the full diff — which caught **2 must-fix errors I introduced** (the CUDA
+caption's "blocks cannot coordinate at all" — cooperative groups and
+global-memory atomics both falsify it; rescoped to *synchronise* — and Knight
+Capital's Power Peg described as a "test routine" where SEC Release 34-70694
+says real, discontinued order-routing functionality) plus a half-applied
+quantum hedge and 4 accepted nits. Screenshot review then caught a third:
+the widened fig-17.11 label collided with its neighbours (shortened; the
+HEAD label already overlapped the 2026 label — net improvement). All fixed
+before commit.
+
+**Part V holds the bar** — Ch16's race/CAS/Therac spine, Ch17's control-loop,
+FLP, and CAP treatments, Ch18's trace and synthesis all run and grip. The
+pass is **three pedagogical re-carries + a fact cluster** (Ch17, the
+systems-lore chapter, carried the most).
+
+**Re-carries (the primary job):**
+| # | Item | Change |
+|---|---|---|
+| 1 | `ch16-lockfree-p3` | The four-ordering roll-call near-duplicated fig 16.5's table and dangled "the releaser" before release was defined. Now runs release/acquire through the paragraph's own `x = 1; flag = true` broken example — the store carries the promise, the load demands it, `x` crosses with the flag; seq-cst above the pair, relaxed below. |
+| 2 | `ch17-consensus-p2` | Paxos's value-adoption rule was bare procedure with correctness outsourced to a proof date. Added the quorum-overlap witness argument (any two majorities intersect, so a preparing proposer must meet — and carry forward — any chosen value), which also sets up the adjacent N/2+1 callout. |
+| 3 | `ch17-virt-p2` (caption) | "Heroic software tricks… ran an order of magnitude slower" was doubly wrong: no cause for why trap-and-emulate failed, and the 10× belonged to naive emulation, not BT/PV (Xen SOSP 2003 within a few %; Adams–Agesen 2006). Now runs the sensitive-but-unprivileged-instructions mechanism, credits BT/PV as near-native, and lands VT-x. |
+
+**Fact fixes (item → verified-how → outcome):**
+| Item | Verified how | Outcome |
+|---|---|---|
+| Knight Capital mechanism inverted (`ch17-microservices-p8`) | SEC Release 34-70694: new RLP build repurposed a flag; the un-updated eighth server read it as "run Power Peg" (real router, discontinued 2003; fill-counting moved out 2005); rescue financing 6 Aug 2012 (~70% dilution); Getco deal agreed 19 Dec 2012 | Strip rewritten: the lethal path is the *stale* server's retired code — which is the one story that actually proves the strip's heterogeneous-deployment moral. "Acquired weeks later" → rescue within the week, acquisition agreed before year-end |
+| CP/CMS 1968 "VM/370 sessions" (`ch17-virt-p1`) | VM/370 is the 1972 System/370 reimplementation; CP ran CMS in per-user virtual System/360s | "many isolated CMS sessions — each inside its own virtual System/360" (glossary `hypervisor` def de-anachronised too) |
+| EC2 "pay by the hour … billed to the second" (`ch17-virt-p1`, `-p3`) | AWS: hourly at 2006 launch; per-second Oct 2017 | "by the hour at launch, by the second today"; p3 → "billed only for what you used" |
+| Amdahl pull-quote (`ch16-amdahl-p5`) | AFIPS 1967 text: "parallel/sequential *processing rates*", not "performance" | Quote restored verbatim |
+| "Both terms come from Herlihy 1991" (`ch16-lockfree-p1`) | pdftotext over the TOPLAS paper: "wait-free" ×75, "lock-free" ×0 (Herlihy's weaker term is "nonblocking") | "The stricter term comes from…" |
+| fig 18.2 "2 networks · 1 kernel" (1969, ×3 sites) | ARPANET was one network (UCLA→SRI Oct 1969, four nodes by Dec — the book's own Ch9); UNIX is a kernel | "1 network · 1 kernel"; caption "one network of computers, one kernel"; roll-call "a network and a kernel". "172 years" untouched |
+| Dynamo/DynamoDB conflation (fig 17.8 + both CAP captions) | The 2007 SOSP paper is Dynamo (internal, vector clocks); DynamoDB is the 2012 service, no exposed vector clocks; fig 17.7 already said Dynamo | Label → "Amazon Dynamo"; captions → Dynamo with descendants named; `ch17-consensus-p9`'s DynamoDB left (true of the service) |
+| CUDA blocks "synchronise with each other" (`ch16-gpu-p4`) | Blocks share nothing and cannot barrier in the base model; threads within a block do | Caption rebound to threads-within-a-block; "separate blocks cannot, and may only communicate through slow global memory" |
+| Docker "built on a Linux capability called LXC" (`ch17-containers-p1`) | LXC is a userspace runtime over the namespaces/cgroups the same paragraph back-references; replaced by libcontainer (0.9, 2014) | "initially driving the kernel's namespaces and cgroups through LXC, a userspace container runtime it soon replaced with its own"; in-sentence "image format" dup removed |
+| "datacenters run billions [of containers] globally" | Unverifiable; the sourced figure is Google's 2B containers/week (Beda, GlueCon 2014) | "By 2014 Google alone was starting over two billion containers every week" |
+| Lambda "every invocation in a dedicated microVM" (`ch17-containers-p3`) | Firecracker NSDI'20: microVM per execution environment, reused across invocations, never shared across functions/customers | "dedicated Firecracker microVMs — each reused across invocations, never shared between functions or customers" |
+| Spectre/Meltdown "every modern CPU since 1995" (`ch16-numa-p4`) | 1995 is the Meltdown/Intel claim; Spectre pair-wide needs speculation | "essentially every fast CPU since the mid-1990s"; punchline "cache coherence is… a security boundary" → "the cache is… the most expensive side channel" (its own body's mechanism) |
+| fig 17.3 "all of them watch etcd" | Contradicted its own caption and API-server box; only the API server talks to etcd | Bottom line → "all of them watch the API server" |
+| Brewer quote "'two of three'" (`ch17-cap-p2`) | IEEE Computer 2012: "The '2 of 3' formulation" (rest verbatim) | Restored |
+| Goroutines "get the best of both" (`ch16-threads-p2`) | Caption's own trade-frame defines "both" as free IPC + corruption-impossible; goroutines race | BEAM genuinely gets both (share-nothing); goroutines "get the cheapness but keep the shared memory — and the races" |
+| Boole node "Lincolnshire" (fig 18.2) | Laws of Thought written from Queen's College Cork (professor since 1849); the figure's place column is place-of-work | Node → "Cork, Ireland"; the "Lincolnshire schoolteacher" epithet (person, not place-of-the-moment) deliberately kept in lead + roll-call |
+| Torvalds "a Helsinki Usenet group" (`ch18-civilization-p2`) | comp.os.minix is worldwide; posted from Helsinki | "posted from Helsinki to a worldwide Usenet group" |
+| Quantum optimisation "fundamentally can't" (`ch18-future-p1` + fig 18.3 caption) | Grover is quadratic (BBBV-optimal); QAOA advantage unestablished | Lead restructured (optimisation "a more speculative third"); caption hedged to match |
+| Neuromorphic "~1000× efficient on NN" (fig 18.3 label) | NorthPole ~22–25×, Loihi 2 up to ~100×; ~1000× only for sparse event-driven cases — and the caption says "order-of-magnitude" | Label → "10–100× efficient on NN" |
+| Reading list "every entry… at least a decade" | DDIA is 2017 — nine years | "nearly every entry… a decade or more" (lead + caption) |
+| Copy-cost absolute (`ch16-threads-p1`) | SysV shm/mmap existed pre-threads | "with every message — or hand-manage an explicitly shared segment" |
+| Therac "first… in history" (`ch16-races-p6`) | Standard account but unprovable as an absolute | "first known software-caused medical fatalities" |
+| House spelling / consistency | — | "artefacts" (SolarWinds strip), "rasterises" ×2, "recognise" ×2; "without compression" (final-p2) → "without hand-waving" (contradicted reading-p1's own compression framing); four-move litany in `ch18-intersect-p3` aligned to final-p3 + the closer ("follow the math… name the historical decision"); `ch18-math-p1` "graph-theoretic protocol" → "quorum arithmetic" (matches fig 18.1 and Ch17's actual argument); fig 17.11 serverless sublabel → "Lambda (2014) · FaaS" |
+
+**Declined** (deliberate; do not "fix" blindly): **fig 16.8's Amdahl curves
+end above their own ceiling lines** (p=0.95 terminates ~y164 vs its 20×
+asymptote at y184; p=0.90 and p=0.50 similar) and **the CAP figures' spatial
+encoding** (fig 17.7 parks "CA (impossible)" nearest the P vertex; fig 17.8's
+AP dot-cluster hugs the C–A side and the "CA edge" note sits at the centroid)
+— both genuine, both declined under this brief's text-labels-only /
+no-SVG-geometry constraint; **flagged to Pass 19** for an owner-sanctioned
+geometry fix. Also declined: "3 nm" (§4g owner-ruled, twice re-flagged, twice
+upheld); `ch17-consensus-p9` DynamoDB (true of the service; no paper/vector-
+clock claim attached); fig 18.2's 1969/1976 sublabel tightness (pre-existing,
+one char looser now); the trace's station accounting and the "235 figures"
+caption/prose layering (defense overturned — documented self-containment);
+Gustafson pre-spoiler resolved by trimming the math callout to its own label
+("The ceiling, in one equation") and moving the key-term to p7 — fig 16.9
+keeps the formula.
+
+**Invariants.** Anchor-id set **byte-identical (189)**. Glossary **count 520,
+no entry added or removed** — the ch17-cap-p4 Dynamo appositive would have
+minted a fragment entry; suppressed via `build-glossary.js` SKIP_WORDS
+(pass-17 precedent), and the em-dash appositive kept for the prose. Nine
+definitions refreshed, all improved: `acquire`/`release`/`sequentially
+consistent`/`memory ordering` are now real definitions (were fragments),
+`cache coherence` now defines coherence via MESI (was a KPTI fragment —
+`ch16-numa-p1` hosts the term), `hypervisor` de-anachronised, `gustafson s
+law`/`ap systems`/`docker` coherent. §4g Part-V terrain survives in
+substance: ZAB (fig 17.8 label + 17.5 caption), Paxos-lore direction
+("submitted 1990, printed 1998, still in costume"), Lambda "meters the bill
+in milliseconds", fig 18.2 "172 years", "two hundred and thirty-five"
+figure-count prose. Heroes, Quorum identity (constellation openers,
+`.qm-quorum` closer, violet/teal), the `ch17-microservices-p6` stamp, thesis
+set and authorship line untouched. Figure edits: **text labels only** (fig
+17.3 bottom line, fig 17.8 Dynamo, fig 17.11 sublabel, fig 18.2 ×4 text
+sites, fig 18.3 efficiency label); no geometry.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308): Chromium **and** WebKit at 1440 + 375 on part-5/index/glossary, dark +
+light — 0 console errors, 0 external requests, 0 page h-scroll, nav 48 px,
+fonts loaded, all internal anchors resolve. All 29 touched passages
+screenshot-captured in both engines, dark + light; key figures and re-carries
+visually reviewed (Quorum violet/teal intact, code chips and math render).
+**Live after push** (commit `eb80d7a`): 13 corrected strings confirmed on
+live part-5 ("processing rates is wasted", "Amazon Dynamo", "run Power Peg",
+"isolated CMS sessions", "watch the API server", "quorum arithmetic",
+"2 of 3", "attested artefacts", "Cork, Ireland", "Lambda (2014) · FaaS",
+"rasterises", "a network and a kernel", "the property called"); origin
+`glossary.json` serves count 520 with the refreshed definitions (the plain
+URL briefly serves the documented 1-day `stale-while-revalidate` edge cache,
+the pass-14 precedent). **The language pass is complete, Parts I–V.** Next:
+Pass 19 — independent Fable verification of Parts IV–V plus the book-wide
+closing sweep, then READY.
+
+**For Pass 19:** the two declined geometry defects above (fig 16.8 curve
+endpoints; fig 17.7/17.8 spatial encoding); re-verify the Pass-18 rewrites
+against the pickle-coda bar (especially the three re-carries and the Knight
+strip); the "a handful of its instructions" clause in `ch17-virt-p2` (the
+precise count is 17, Robin–Irvine 2000 — deliberately left unnumbered);
+cross-part: part-1's stray "recognized" and part-2's "recognizably" (outside
+this pass's scope); the pre-existing `thompson` glossary quirk stands.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
