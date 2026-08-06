@@ -1,7 +1,7 @@
 {
-  "generated": "2026-08-02T21:34:04.006Z",
+  "generated": "2026-08-06T23:23:17.712Z",
   "count": 520,
-  "scanned": 1275,
+  "scanned": 1274,
   "curated_added": 163,
   "curated_missing": [
     "memory leak",
@@ -64,7 +64,7 @@
     },
     "acquire": {
       "term": "acquire",
-      "definition": "(subsequent loads see prior writes by the releaser), release (this write becomes visible after preceding writes on this thread), or sequentially consistent (the strongest, most expensive, easiest to reason about).",
+      "definition": "(the matching demand: everything the releaser promised is visible before any later load runs).",
       "part": "part-5",
       "section": "ch16-lockfree",
       "chapter": "ch16",
@@ -124,7 +124,7 @@
     },
     "ap systems": {
       "term": "AP systems",
-      "definition": "Amazon DynamoDB, Cassandra, CouchDB, Riak — serve writes always, accept that nodes on different sides of a partition may temporarily disagree, and reconcile (last-writer-wins, vector clocks, CRDTs) when the partition heals.",
+      "definition": "Amazon's Dynamo, Cassandra, CouchDB, Riak — serve writes always, accept that nodes on different sides of a partition may temporarily disagree, and reconcile (last-writer-wins, vector clocks, CRDTs) when the partition heals.",
       "part": "part-5",
       "section": "ch17-cap",
       "chapter": "ch17",
@@ -584,7 +584,7 @@
     },
     "cache coherence": {
       "term": "cache coherence",
-      "definition": "The fix required microcode patches, kernel page-table isolation (KPTI), and a permanent ~5–30% performance regression on syscall-heavy workloads. Cache coherence is not just a performance mechanism; it is also the most expensive security boundary in the machine.",
+      "definition": "The mechanism is a hardware protocol called MESI — Modified, Exclusive, Shared, Invalid — that tracks the state of every cache line on every core and ensures that no two cores have conflicting writes to the same line.",
       "part": "part-5",
       "section": "ch16-numa",
       "chapter": "ch16",
@@ -1464,7 +1464,7 @@
     },
     "docker": {
       "term": "Docker",
-      "definition": "Where a VM takes minutes to boot, megabytes to gigabytes of memory, and contains an entire operating system, a container starts in milliseconds, weighs a few megabytes, and shares the host's kernel. Docker released 2013, built on a Linux…",
+      "definition": "Where a VM takes minutes to boot, megabytes to gigabytes of memory, and contains an entire operating system, a container starts in milliseconds, weighs a few megabytes, and shares the host's kernel. Docker released 2013, initially driving…",
       "part": "part-5",
       "section": "ch17-containers",
       "chapter": "ch17",
@@ -1964,7 +1964,7 @@
     },
     "gustafson s law": {
       "term": "Gustafson's law",
-      "definition": "(1988) inverts the question: if you grow the problem with the cores, the parallel portion grows while the sequential portion stays constant, and effective speedup becomes S(N) = N − (1 − p)·(N − 1) — nearly linear in N .",
+      "definition": "(1988) appears to contradict Amdahl's; it is actually the answer to a different question — what happens when the problem grows with the machine?",
       "part": "part-5",
       "section": "ch16-amdahl",
       "chapter": "ch16",
@@ -2144,7 +2144,7 @@
     },
     "hypervisor": {
       "term": "hypervisor",
-      "definition": "The technology dates to IBM's CP/CMS in 1968: a hypervisor on the System/360 that let many isolated VM/370 sessions share one expensive mainframe.",
+      "definition": "The technology dates to IBM's CP/CMS in 1968: a hypervisor on the System/360 that let many isolated CMS sessions — each inside its own virtual System/360 — share one expensive mainframe.",
       "part": "part-5",
       "section": "ch17-virt",
       "chapter": "ch17",
@@ -2794,7 +2794,7 @@
     },
     "memory ordering": {
       "term": "memory ordering",
-      "definition": "Programs that depend on cross-thread ordering must explicitly request guarantees by annotating atomic operations with a memory ordering relaxed (no ordering), acquire (subsequent loads see prior writes by the releaser), release (this write…",
+      "definition": "(a contract about what other cores are guaranteed to see).",
       "part": "part-5",
       "section": "ch16-lockfree",
       "chapter": "ch16",
@@ -3854,7 +3854,7 @@
     },
     "release": {
       "term": "release",
-      "definition": "(this write becomes visible after preceding writes on this thread), or sequentially consistent (the strongest, most expensive, easiest to reason about).",
+      "definition": "(a promise: every write before it on this thread, the x = 1 included, is visible by the time the flag is); the reader tags its flag load acquire (the matching demand: everything the releaser promised is visible before any later load runs).",
       "part": "part-5",
       "section": "ch16-lockfree",
       "chapter": "ch16",
@@ -4184,7 +4184,7 @@
     },
     "sequentially consistent": {
       "term": "sequentially consistent",
-      "definition": "(the strongest, most expensive, easiest to reason about).",
+      "definition": "(the strongest ordering: one global order every thread agrees on, priced accordingly); below it sits relaxed , which promises atomicity and nothing else.",
       "part": "part-5",
       "section": "ch16-lockfree",
       "chapter": "ch16",

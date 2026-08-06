@@ -56,6 +56,10 @@ const SKIP_WORDS = new Set([
   // deliberately left them un-glossaried in their original flat-list form; keep it that way.
   'intrusion detection system','endpoint detection and response',
   'zero-trust architecture','relationally complete',
+  // Pass-18: ch17-cap-p4 bolds Dynamo ahead of an em-dash appositive, which would mint
+  // an entry whose definition is the appositive fragment ("the 2007 Amazon design ... —
+  // is AP because ..."). The AP-systems entry already covers the Dynamo lineage.
+  'dynamo',
 ]);
 
 // Curated canonical terms that should always appear in the glossary even if
