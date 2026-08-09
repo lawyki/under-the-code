@@ -5,20 +5,21 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 ## WHERE WE ARE
 
-**The pedagogical language pass is complete, Parts I–V, and Part IV is now
-verified.** The Pass-17 verification (full Fable audit, 2026-08-09, commit
-`186cd32`) confirmed every §4q load-bearing correction against primary
-sources, upheld the four re-carries, and fixed ~30 wrongly cleared items —
-ledger under `UNDER.md` §4q. Part V landed
-2026-08-07 as Pass 18 (commit `eb80d7a`), live at under.atheric.eu, ledger at
-`UNDER.md` §4r. Three re-carries (memory orderings run through the flag
-example; the Paxos quorum-overlap witness; the pre-VT-x trap-and-emulate
-mechanism), a Ch17-heavy fact cluster (Knight Capital's mechanism un-inverted
-against the SEC order; CP/CMS, EC2 billing, Dynamo/DynamoDB, fig 18.2's
-"2 networks"), anchor-id set byte-identical (189), glossary stable at 520.
-Two genuine figure-geometry defects (fig 16.8 Amdahl curves crossing their
-own ceilings; the CAP figures' spatial encoding) were declined under the
-brief's text-labels-only constraint and flagged to Pass 19.
+**The pedagogical language pass is complete, Parts I–V, and both Parts IV
+and V are now verified.** The Pass-18 verification (full Fable audit,
+2026-08-09) confirmed every §4r load-bearing correction against primary
+sources — the Knight strip re-read clause by clause against SEC Release
+34-70694 — upheld all three re-carries and the rewritten Knight strip
+(blind readers independently named all four best-of-chapter), fixed 22
+wrongly cleared items (Linkerd/xDS, the Go-NUMA claim, the $440M→$460M
+Knight loss, the opener's 64-core laptop, Dropbox→Instagram among them),
+and executed both bridge-sanctioned geometry fixes: fig 16.8's Amdahl
+curves now computed from S(N)=1/((1−p)+p/N) on the figure's own ticks and
+ending on their asymptotes, and fig 17.7/17.8's CAP encodings reworked so
+distance encodes meaning (CA parked outside the C–A edge it names). Ledger:
+"### Pass-18 verification" under `UNDER.md` §4r. Anchors byte-identical
+(189), glossary 520 ±0 with 6 definitions improved, 24 §7 page-checks
+clean in both engines, 96 screenshots, live parity confirmed.
 
 **The gate rhythm was amended 2026-08-06 (Tiger):** per-part owner reads are
 waived; the book is finalized end-to-end and Tiger reads it once, completely,
@@ -45,14 +46,27 @@ The finalize sequence, in order, one pass per session:
    byte-identical, glossary 520. Pass-19 carries recorded in the ledger
    (fig 15.2 PAC/Spectre dot geometry; Ch15 "Defense" title spelling;
    book-wide Diffie–Hellman dash sweep).
-3. **Pass-18 verification — Part V**, carrying §4r's "For Pass 19" list,
-   including the two bridge-sanctioned figure-geometry fixes (fig 16.8 curve
-   endpoints; fig 17.7/17.8 CAP spatial encoding). Brief:
-   `docs/pass-18-verification-brief.md`. Ledger under §4r.
+3. ~~**Pass-18 verification — Part V**~~ — **DONE** 2026-08-09 (ledger
+   "### Pass-18 verification" under `UNDER.md` §4r, live parity confirmed).
+   All §4r load-bearing corrections stand; the three re-carries and the
+   Knight strip hold (blind-reader best-of-chapter); 22 wrongly cleared
+   items found & fixed; both sanctioned geometry fixes landed under the
+   pass-2 screenshot discipline; anchors 189 byte-identical, glossary 520.
+   New Pass-19 carries recorded at the end of the §4r ledger (SVG comment
+   spellings; -ization convention ratification; text-vs-rect marginals
+   logged as non-defects).
 4. **Pass 19 — book-wide closing sweep** (cross-part consistency incl. §4r's
    flagged "recognized"/"recognizably" strays, full §7 harness on all 8 pages,
    glossary diff, live parity). Ledger §4s. Brief authored after both
-   verification ledgers are read. Ends with the **READY declaration** —
+   verification ledgers are read. Bridge rulings for its worklist
+   (2026-08-09): **fig 15.2 geometry fix sanctioned** (PAC·CET group moved
+   left of Spectre, or Spectre given its own response dot — same licence
+   class and same pass-2 screenshot discipline as the Part V geometry
+   fixes); **Ch15 title → "Attack and Defence"** (uniformly British house
+   spelling; the chapter's own hero says DEFENCE — every occurrence: h1,
+   TOC, nav readouts, any meta; owner may veto at the read); **book-wide
+   Diffie–Hellman dash harmonisation** including the glossary-key migration
+   it implies, verified against live tooltips. Ends with the **READY declaration** —
    README status updated, Tiger handed the book for the complete read.
 5. **Punch-list pass** from the read's findings; P1 polish decided there.
 

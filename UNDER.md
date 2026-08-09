@@ -1495,6 +1495,172 @@ precise count is 17, Robin–Irvine 2000 — deliberately left unnumbered);
 cross-part: part-1's stray "recognized" and part-2's "recognizably" (outside
 this pass's scope); the pre-existing `thompson` glossary quirk stands.
 
+### Pass-18 verification (2026-08-09)
+
+Full Fable audit of Pass 18, whose clearances had never had a second read
+(brief: `docs/pass-18-verification-brief.md`), plus the two bridge-sanctioned
+figure-geometry fixes. Method mirrored the 14/16/17 pattern: deep read of all
+of Part V by the verifying model, then a 15-agent workflow — 3 independent
+per-chapter fresh readers (pedagogy lens, web-enabled, blind to §4r), 5
+primary-source verifiers over the load-bearing corrections (44 claims), and
+an adversarial defense over every reader flag (23 raised) — every flag
+adjudicated by the verifying model; all fixes gated through a fact/
+consistency/voice confirmation agent over the diff, which caught 2 more
+(the EC2 edit sharpening a pre-existing VM-boot tension; a broken
+preposition pair in the NUMA caption). The auditor re-read SEC Release
+34-70694 itself for the Knight strip.
+
+**The §4r load-bearing corrections: all stand.** Reconfirmed against primary
+sources: the Knight strip against the SEC order clause by clause (repurposed
+flag ¶13, seven-of-eight ¶15, stale-server Power Peg path ¶16, real router
+discontinued 2003 / counting moved 2005 and thereby "inadvertently disabled"
+¶14, 4M executions · 154 stocks · ~45 min ¶17; rescue 6 Aug ~70% dilution;
+Getco agreed 19 Dec 2012); CP/CMS-in-virtual-System/360; EC2 hourly→per-second
+(Oct 2017); Amdahl and Brewer pull quotes word-for-word against the 1967
+facsimile and IEEE Computer 2012; Herlihy wait-free-only scoping (TOPLAS
+1991); Lamport and Dijkstra quotes verbatim; Paxos 1989 (SRC RR-49) /
+submitted 1990 / printed 1998 / PMS 2001 all simultaneously right; FLP 1985;
+CAP 2000/2002; Raft 2014; Gustafson's formula recomputed as algebraically
+identical to CACM 1988; fig 18.2's "1 network · 1 kernel", Boole/Cork, and
+all seven timeline years; Dynamo-vs-DynamoDB descendant framing; the CUDA
+threads-within-a-block rescope against the programming guide; Docker/LXC/
+libcontainer; Google 2B/week; Lambda/Firecracker microVM reuse (NSDI'20);
+Spectre "mid-1990s" hedge; quantum-optimisation and neuromorphic 10–100×
+hedges; "nearly every entry" reading-list hedge. **The three re-carries and
+the rewritten Knight strip hold the bar** — blind readers, not knowing they
+were re-carries, independently named all four among their chapters' best
+passages (`ch16-lockfree-p3`, `ch17-consensus-p2`, `ch17-virt-p2`,
+`ch17-microservices-p8`); kept verbatim. All three chapters judged gripping
+and at bar by their blind readers.
+
+**Sanctioned geometry fixes (per figure, pass-2 screenshot discipline):**
+- **fig 16.8** — all four Amdahl curves redrawn as polylines through
+  S(N)=1/((1−p)+p/N) computed at the figure's own tick mapping (x: log-scaled
+  ticks N=1/8/32/128/512/∞; y: piecewise per the drawn 1/5/10/20/40/80×
+  labels), each ending exactly on its asymptote at the ∞ tick. Before: p=0.95
+  ended ~y164 (≈23× on a 20× ceiling), p=0.90 at y237 (>10×), p=0.50 at y280
+  (the 5× tick, on a 2× ceiling), and p=0.99 flattened at ≈75× under a 100×
+  label. The dashed 20× ceiling moved y184→180 (the true tick), its label
+  clear of it; every point spot-recomputed to 0.1px by the confirmation gate.
+- **fig 17.7** — pair-labels now sit on their own edges: CP block along the
+  C–P edge (diagonal stack tracking the edge slope), AP block centred inside
+  the A–P bottom edge (equidistant from A and P, far from C), and "CA
+  (impossible on real networks)" moved from the P-adjacent interior to
+  *outside* the C–A edge it names — the impossible pair literally outside the
+  feasible region. All positions computed against the edge equations; no text
+  crosses the triangle boundary.
+- **fig 17.8** — the AP dot-cluster translated from the C–A side to the
+  lower-right interior along the A–P edge (same scatter shape, SMIL opacity
+  animations untouched), "AP corner" label moved with it; the "CA edge:
+  unreachable" note moved from the centroid to outside the C–A edge midpoint,
+  indent echoing the edge slope. CP cluster already correct — untouched.
+
+**Wrongly cleared, found & fixed (20 surgical edits + 2 gate catches).**
+Fact-class: the **Part V opener's "sixty-four cores in your laptop"**
+contradicted Ch16's own (correct) "eight to sixteen" → the scale-step now
+runs 16 laptop / 64 cloud server / 10,000 machines a region (matches both
+heroes); `ch16-numa-p2` "runtimes (Java, Go, .NET) have NUMA-aware
+schedulers" — Go's runtime is affirmatively NUMA-oblivious (the 2014 Vyukov
+design was never implemented) and Java/.NET awareness lives in the GC, not a
+scheduler → "Java and .NET push the same awareness into their garbage
+collectors"; `ch16-lockfree-p2` called `ldxr/stxr` "a single atomic
+instruction" — it is an exclusive pair → "a single `cmpxchg` instruction on
+x86; the `ldxr/stxr` exclusive pair on ARM"; `ch17-microservices-p3` routed
+Linkerd through Envoy/xDS — Linkerd's own literature rejects both
+(linkerd2-proxy, Destination API) → caption decoupled ("Istio and Consul
+Connect drive Envoy through xDS… Linkerd runs its own lean Rust proxy
+instead") and the fig 17.10 label de-xDS'd ("all pushed live to every
+sidecar"); `ch17-virt-p3` **Dropbox** never scaled serverless-of-servers
+(own metadata servers in colo from early on) → Instagram (entirely on AWS
+until the Facebook era); Knight's "**lost $440 million**" was the superseded
+initial company estimate — the controlling SEC order says "over $460
+million" (Knight's own later filings ~$458M) → "over $460 million";
+`ch16-races-p6` Therac "the targeting magnet" — no such component; the
+mispositioned element was the turntable (Leveson–Turner) → "the turntable
+that shapes the beam"; `ch17-microservices-p7` "Eighteen thousand customers…
+installed" → "Nearly eighteen thousand" (the 8-K says "fewer than 18,000");
+`ch18-civilization-p1` the web "to organise lab notes" — the 1989 proposal
+is about CERN-wide information loss → "the lab's tangle of people, projects,
+and documents". Precision/dating: EC2 "fresh VM in 60 seconds" → "in
+minutes — today, in under one" (Amazon's own 2006 copy says minutes; the
+gate then aligned `ch17-containers-p1` to "a minute or more"); Firecracker
+"boot in 100 ms" → "about a tenth of a second" (the paper's figure is
+<125 ms); Borg "since 2003" → "had by then been running internally for over
+a decade" (no primary source attests 2003; EuroSys 2015 says only "more than
+a decade"); "Netflix, Amazon, and Spotify all famously decomposed" → "had
+all famously decomposed" (Amazon's decomposition predates 2014 by a decade);
+"a typical CI/CD pipeline pushes only kilobytes" → "a well-layered… can push
+just kilobytes" (best case, not typical); `ch18-future-p1` "problems
+classical computers fundamentally can't" → "problems no classical computer
+can attack efficiently" (hardness is unproven; the hedged structure kept);
+`ch16-numa-p4` "permanent" → "lasting" (post-2018 silicon fixed Meltdown in
+hardware; affected machines paid for life); `ch16-numa-p2` "inside
+high-performance GPUs" → "of GPU servers… and of multi-GPU setups" (system
+topology, not intra-GPU; prepositions parallel per the gate). Consistency/
+voice: `ch17-k8s-p2` announced five components then enumerated seven → the
+figure draws exactly five (API server, etcd, scheduler, controller manager,
+kubelet); kube-proxy and the runtime subordinated ("supported by…"), the
+count now honest; "traveling" → "travelling" (`ch18-trace-p5`), "modeled" →
+"modelled" (`ch18-intersect-p2`).
+
+**Considered and declined** (do not "fix" blindly): "3 nm" — re-flagged
+high by a third consecutive blind reader; owner-ruled, upheld again.
+`ch16-numa-p1` MESI body prose (the chapter's uniform body-introduces/
+caption-runs architecture; fig 16.11's caption carries ping-pong and false
+sharing). The Therac "first…fatalities were race conditions" plural — the
+*first* deaths (Tyler, 1986) were the Datent race; the Yakima overflow death
+came in 1987, so the sentence is strictly right. "$7 billion in positions"
+(WSJ-reported intraday peak; the SEC's end-state gross is $6.65B — noted,
+kept as the published peak figure). "Procurement" register in `ch17-cap-p4`
+(the caption's second decision is precisely procurement; the figure's own
+box says so). The "-ization" technical-name convention (virtualization,
+Wait-Free Synchronization, datacenter — uniform across Part V, matching
+vendor/paper names; part-3 precedent). The trace's Python station (Chapter
+7's waypoint in an explicitly chapter-tour figure). "The kernel that runs
+every cloud" (legacy-attribution sweep; Linux hosts on AWS/GCP, >60% of
+Azure VM cores). The Amdahl pull quote is the verbatim *tail* of a longer
+sentence, silently capitalised — standard quoting practice, noted for the
+record. Kata Containers "2018" (1.0 date; announced Dec 2017). Six
+pre-existing 1–11px text-vs-rect marginals in untouched figures (16.1,
+16.5, 16.7, 16.11, 17.2 — invisible at render, logged only).
+
+**Invariants.** Anchor-id set **byte-identical (189)** — verified against
+HEAD after both the geometry and text edits. Glossary regenerated: **count
+520, no entry added or removed** — the mesh-caption restructure initially
+dropped the `control plane` entry (its parenthetical was the extractor's
+definitional cue) and an appositive re-cue garbled the comma; final phrasing
+keeps the parenthetical cue, and the entry's definition now carries the
+corrected xDS scoping instead of the old falsehood. Six definitions
+refreshed, all improved (`control plane`, `kubernetes` Borg dating,
+`container`, `container runtime`, `docker`, `governance` "modelled"). §4g
+and every §4r correction survive in substance. Quorum identity, heroes,
+`.qm-quorum` closer, `#bca8ff` strip accent, `ch17-microservices-p6` stamp,
+thesis set and authorship line untouched.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308): Chromium **and** WebKit at 1440 + 375, dark + light, on
+part-5/index/glossary — 24 page-checks: **0 console errors, 0 external
+requests, 0 page h-scroll, nav 48 px** (the glossary page's own header is
+its own pass-2 design, no `.book-nav` — not a regression), fonts loaded,
+all internal #anchors resolve (30/30). bbox-vs-viewBox sweep: **0 overflows
+book-wide**. 96 screenshots: all 19 touched passages and all 4 touched
+figures in both engines, dark + light, fig 17.8's SMIL timeline sampled
+mid-cycle — the Amdahl curves approach their ceilings from below in both
+engines, the CAP encodings read correctly, no label collisions. **Live
+after push** (commit `42fe9d8`): all 22 corrected strings ("lost over $460
+million", "Linkerd runs its own lean Rust proxy", "sixteen cores in your
+laptop", "the turntable that shapes the beam", "Nearly eighteen thousand"
+among them), all four curve endpoints and both CAP label positions, and
+origin `glossary.json` count 520 with the corrected `control plane`
+definition confirmed on the live page.
+
+**For Pass 19 (additions to §4r's list):** the SVG source *comments* carry
+American spellings ("traveling packet" ×3 — invisible to readers; normalise
+or ignore); ratify the "-ization technical-name" convention book-wide while
+running the "recognized"/"recognizably" strays; the six pre-existing
+text-vs-rect marginals above are logged as non-defects unless the sweep
+disagrees; the Amdahl-quote clipping note stands for the owner read.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
