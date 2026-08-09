@@ -195,7 +195,7 @@
       When you press the power button on a computer, a sequence unfolds. The CPU starts
       executing instructions from a fixed firmware address — historically called the
       <strong>BIOS</strong>, now usually <strong>UEFI</strong> — built into the
-      motherboard. The firmware initializes hardware, finds the boot device, and loads
+      motherboard. The firmware initialises hardware, finds the boot device, and loads
       a small program called a <em>bootloader</em> (GRUB on Linux, Windows Boot Manager,
       iBoot on Apple devices). The bootloader's only job is to find the kernel image on
       disk, load it into memory, and jump to its entry point. From that moment, the
@@ -232,7 +232,7 @@
     </p>
 
     <p id="ch4-anatomy-p6">
-      In 1992, Tanenbaum publicly criticized the then-new Linux on a USENET group,
+      In 1992, Tanenbaum publicly criticised the then-new Linux on a USENET group,
       calling its monolithic design "obsolete" and "a giant step back into the 1970s."
       Linus Torvalds responded — bluntly, and at length. The exchange is one of the
       most-cited debates in computing history. Tanenbaum was correct in theory.
@@ -465,7 +465,7 @@
       <tbody>
         <tr><td>FCFS</td><td>First-come, first-served. Run processes in arrival order until they finish.</td><td>Simple. Terrible response time — one long process blocks all the short ones (the "convoy effect").</td></tr>
         <tr><td>SJF</td><td>Shortest Job First. Pick the process with the shortest remaining time.</td><td>Provably optimal for average wait time. Requires knowing job length in advance — usually you don't.</td></tr>
-        <tr><td>Round Robin</td><td>Each process gets a fixed time slice ("quantum"). When it expires, move to the next.</td><td>Fair. Responsive. Doesn't optimize for total throughput.</td></tr>
+        <tr><td>Round Robin</td><td>Each process gets a fixed time slice ("quantum"). When it expires, move to the next.</td><td>Fair. Responsive. Doesn't optimise for total throughput.</td></tr>
         <tr><td>Priority</td><td>Each process has a priority number. Higher priority runs first.</td><td>Lets the system favor critical work. Risk: low-priority processes can be <em>starved</em> indefinitely.</td></tr>
         <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length. Used by Windows, classic UNIX.</td></tr>
         <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default 2007–2023. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." O(log N) per scheduling decision via a red-black tree.</td></tr>
@@ -618,8 +618,8 @@
     </div>
 
     <div class="diagram-card light-diagram" id="fig-4-6">
-      <div class="diagram-label">Fig 4.6 — L = λ · W and the cliff at full utilization</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-7"><title id="svgt-part2-7">Fig 4.6 — L = λ · W and the cliff at full utilization</title>
+      <div class="diagram-label">Fig 4.6 — L = λ · W and the cliff at full utilisation</div>
+      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-7"><title id="svgt-part2-7">Fig 4.6 — L = λ · W and the cliff at full utilisation</title>
         <!-- Top: tap + queue + meter -->
         <text x="80" y="38" font-family="IBM Plex Mono" font-size="10" fill="rgba(62,138,94,0.85)">arrival rate λ</text>
         <text x="80" y="52" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.65)">requests / sec</text>
@@ -666,7 +666,7 @@
         <text x="615" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(180,40,40,0.95)">∞</text>
 
         <!-- Axis labels -->
-        <text x="370" y="346" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.85)">utilization ρ = λ / capacity</text>
+        <text x="370" y="346" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.85)">utilisation ρ = λ / capacity</text>
         <g font-family="IBM Plex Mono" font-size="8" fill="rgba(46,96,70,0.7)" text-anchor="middle">
           <text x="80"  y="334">0</text>
           <text x="200" y="334">50%</text>
@@ -680,21 +680,21 @@
         <text x="280" y="195" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(46,96,70,0.95)">"95% loaded" ≠ "5% slower"</text>
         <text x="280" y="213" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">→ wait time grows hyperbolically</text>
       </svg>
-      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law in two pictures. Top: a queue with arrivals (λ) flowing into a buffer of average length L; each item waits average W. The relationship L = λW is true for <em>any</em> stable queue, regardless of how arrivals are distributed or how long service takes. Bottom: the consequence — average wait time as utilization approaches 100% follows W ~ 1/(1−ρ), which is hyperbolic. At 50% utilization, doubling load barely budges the wait. At 95%, doubling load is catastrophic. This is why operations teams panic when a server crosses about 80% sustained utilization — they are not panicking about "the server being slow," they are panicking about the math curve they can see coming.</p>
+      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law in two pictures. Top: a queue with arrivals (λ) flowing into a buffer of average length L; each item waits average W. The relationship L = λW is true for <em>any</em> stable queue, regardless of how arrivals are distributed or how long service takes. Bottom: the consequence — average wait time as utilisation approaches 100% follows W ~ 1/(1−ρ), which is hyperbolic. At 50% utilisation, doubling load barely budges the wait. At 95%, doubling load is catastrophic. This is why operations teams panic when a server crosses about 80% sustained utilisation — they are not panicking about "the server being slow," they are panicking about the math curve they can see coming.</p>
     </div>
 
     <h3>Real-time scheduling: when missing a deadline kills</h3>
 
     <p id="ch4-scheduling-p12">
-      General-purpose schedulers like CFS optimize for average performance. They make
+      General-purpose schedulers like CFS optimise for average performance. They make
       no guarantees about worst-case latency. For most software this is fine. For some
       software it is catastrophically not fine: anti-lock braking systems, pacemakers,
       avionics flight control, industrial robots. These systems run on
       <span class="key-term">real-time kernels</span> — variants of Linux (PREEMPT_RT)
-      or specialized OSes (VxWorks, QNX, FreeRTOS) — that guarantee a task will run
+      or specialised OSes (VxWorks, QNX, FreeRTOS) — that guarantee a task will run
       within a bounded time after it becomes ready, even under load. The mathematical
       foundation is rate-monotonic scheduling and earliest-deadline-first scheduling,
-      analyzed by Liu and Layland in a foundational 1973 paper.
+      analysed by Liu and Layland in a foundational 1973 paper.
     </p>
 
     <div class="diagram-card" id="fig-4-7">
@@ -756,9 +756,9 @@
         <!-- Caption text -->
         <text x="60" y="100" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">in a real-time system, a missed deadline is a system failure,</text>
         <text x="60" y="116" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">not a slow-running app. EDF and rate-monotonic scheduling</text>
-        <text x="60" y="132" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">guarantee bounded response provided utilization &lt; a known limit.</text>
+        <text x="60" y="132" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">guarantee bounded response provided utilisation &lt; a known limit.</text>
       </svg>
-      <p id="ch4-scheduling-p13" class="diagram-caption">A real-time task that runs at 100Hz must complete its work within each 10ms window. The first three deadlines are met (5ms work, 10ms window — half the budget). The fourth job runs longer than expected (12ms) and overruns its deadline. In a non-real-time system this would be a slow frame or a stutter; in an anti-lock braking controller, a pacemaker, or a flight control loop, it is a system failure with physical consequences. Real-time kernels use schedulers (rate-monotonic, earliest-deadline-first) that mathematically guarantee deadlines provided the total task utilization stays below a known bound — about 69% for rate-monotonic, 100% for EDF. Going above that bound, missed deadlines become possible, and in a hard real-time system that is the same as broken.</p>
+      <p id="ch4-scheduling-p13" class="diagram-caption">A real-time task that runs at 100Hz must complete its work within each 10ms window. The first three deadlines are met (5ms work, 10ms window — half the budget). The fourth job runs longer than expected (12ms) and overruns its deadline. In a non-real-time system this would be a slow frame or a stutter; in an anti-lock braking controller, a pacemaker, or a flight control loop, it is a system failure with physical consequences. Real-time kernels use schedulers (rate-monotonic, earliest-deadline-first) that mathematically guarantee deadlines provided the total task utilisation stays below a known bound — about 69% for rate-monotonic, 100% for EDF. Going above that bound, missed deadlines become possible, and in a hard real-time system that is the same as broken.</p>
     </div>
   </section>
 
@@ -871,7 +871,7 @@
           <text x="0" y="120" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.4)">5 memory accesses per address translation — that's why the TLB exists</text>
         </g>
       </svg>
-      <p id="ch4-vm-p6" class="diagram-caption">Translating one virtual address into a physical address requires walking four levels of page tables. The CPU register CR3 points to the root (L4). Each level uses 9 bits of the address to index into a 512-entry table; the entry points to the next level. The bottom 12 bits give the byte offset within the final page. Without optimization, every memory access would cost five memory accesses.</p>
+      <p id="ch4-vm-p6" class="diagram-caption">Translating one virtual address into a physical address requires walking four levels of page tables. The CPU register CR3 points to the root (L4). Each level uses 9 bits of the address to index into a 512-entry table; the entry points to the next level. The bottom 12 bits give the byte offset within the final page. Without optimisation, every memory access would cost five memory accesses.</p>
     </div>
 
     <h3>The TLB: a cache for translations</h3>
@@ -1138,7 +1138,7 @@
       0, 1, 2, … An SSD presents the same abstraction even though the physical reality
       underneath is radically different. The kernel sees: a sequence of bytes, addressed
       by index. From this raw substrate, the filesystem builds the structure you
-      actually use — files with names, organized into directories, organized into a
+      actually use — files with names, organised into directories, organised into a
       tree, with metadata about ownership and permissions and timestamps. None of this
       structure exists at the hardware level. It exists because the filesystem code
       pretends it does.
@@ -1432,7 +1432,7 @@
         <tr><td>Signal</td><td>A small numeric notification sent to a process. <code>SIGTERM</code>, <code>SIGKILL</code>, <code>SIGINT</code> (Ctrl+C).</td><td>Asynchronous control: "stop," "reload config," "we're shutting down."</td></tr>
         <tr><td>Shared memory</td><td>Two processes map the same physical pages into both their address spaces.</td><td>The fastest IPC. No copying. Used by databases and high-performance systems.</td></tr>
         <tr><td>Message queue</td><td>A kernel-managed queue of typed messages between processes.</td><td>Structured communication; less common today.</td></tr>
-        <tr><td>Semaphore</td><td>A kernel-managed counter used to coordinate access to a shared resource.</td><td>Synchronizing without sharing data — "is it my turn yet?"</td></tr>
+        <tr><td>Semaphore</td><td>A kernel-managed counter used to coordinate access to a shared resource.</td><td>Synchronising without sharing data — "is it my turn yet?"</td></tr>
         <tr><td>UNIX socket</td><td>Like a network socket, but local — kernel-mediated, with proper authentication.</td><td>Modern desktop IPC. Used by Docker, systemd, X11, Wayland.</td></tr>
         <tr><td>Network socket</td><td>TCP or UDP connection, possibly to another machine.</td><td>Distributed systems. We'll cover these in depth in <a href="part-3">Part III</a>.</td></tr>
       </tbody>
@@ -1772,7 +1772,7 @@
     <h3>Sockets: when the other process is on another machine</h3>
 
     <p id="ch4-ipc-p14">
-      A <span class="key-term">socket</span> is a generalization of the pipe. Instead
+      A <span class="key-term">socket</span> is a generalisation of the pipe. Instead
       of communicating with another process on the same machine through a kernel-managed
       pipe, you communicate over a connection — either to another local process (a
       "UNIX domain socket") or to a process on a different machine entirely (a "network
@@ -1832,7 +1832,7 @@
     <p id="ch4-security-p5">
       Memorable kernel-level privilege escalation bugs in the last decade include
       <em>Dirty COW</em> (mentioned earlier — copy-on-write race condition, 2016),
-      <em>DirtyPipe</em> (a flaw in pipe-buffer initialization that allowed writes to
+      <em>DirtyPipe</em> (a flaw in pipe-buffer initialisation that allowed writes to
       read-only files, 2022), and dozens of bugs in device drivers — driver code is
       vast, often less audited than the core kernel, and runs in Ring 0. Most modern
       kernel exploits chain together <em>multiple</em> bugs: an information leak (to
@@ -1856,7 +1856,7 @@
     <p id="ch4-security-p8">
       <span class="key-term">Namespaces</span> partition kernel resources so that
       different processes see different views. There are namespaces for process IDs
-      (a containerized process believes it is PID 1, even though to the host it might
+      (a containerised process believes it is PID 1, even though to the host it might
       be PID 8472), for the network (the container has its own virtual network interface),
       for mounts (its own root filesystem), for user IDs, for hostnames, and more.
       Inside its namespaces, the container looks like a complete isolated system.
@@ -2059,7 +2059,7 @@
     <p id="ch4-security-p15">
       The obvious worry is that this lets user code into the kernel —
       historically the worst possible security outcome. eBPF answers with a
-      <strong>verifier</strong>: a static analyzer in the kernel that examines every
+      <strong>verifier</strong>: a static analyser in the kernel that examines every
       uploaded program and refuses to load it unless it can prove the program will
       always terminate, never read out-of-bounds memory, and never crash. Programs that
       pass the verifier are then JIT-compiled to native machine code and run essentially
@@ -2337,7 +2337,7 @@
         <!-- Footer -->
         <text x="360" y="358" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.45)" letter-spacing="0.1em">SAME C · DIFFERENT INSTRUCTIONS · DIFFERENT REGISTERS · IDENTICAL BEHAVIOR</text>
       </svg>
-      <p id="ch5-portability-p4" class="diagram-caption">A single C function, compiled for three architectures separated by fifty years of CPU design. The output is unrecognizably different — different mnemonics, different registers (<code>eax</code> vs <code>w0</code> vs <code>a0</code>), different encodings (variable-length on x86, fixed 4-byte on ARM and RISC-V) — but the program behaves identically. This is what "portable" actually means: not "binary works everywhere" but "source compiles cleanly to whatever the target needs." Before C, this property did not exist for systems software.</p>
+      <p id="ch5-portability-p4" class="diagram-caption">A single C function, compiled for three architectures separated by fifty years of CPU design. The output is unrecognisably different — different mnemonics, different registers (<code>eax</code> vs <code>w0</code> vs <code>a0</code>), different encodings (variable-length on x86, fixed 4-byte on ARM and RISC-V) — but the program behaves identically. This is what "portable" actually means: not "binary works everywhere" but "source compiles cleanly to whatever the target needs." Before C, this property did not exist for systems software.</p>
     </div>
 
     <h3>What makes a language portable</h3>
@@ -2507,7 +2507,7 @@
       with Prentice-Hall in 1978. Two hundred and twenty-eight pages. Every example a few
       lines, compilable, runnable. The famous opener — a program that prints
       <code>hello, world</code> — is on page 6. K&amp;R defined the language until ANSI
-      standardization in 1989, and it is still on the bookshelf of every working C
+      standardisation in 1989, and it is still on the bookshelf of every working C
       programmer. The book is unfussy, exact, and assumes intelligence. It teaches by
       showing rather than explaining. It is one of the small number of programming books
       that someone could plausibly read in an afternoon and write working code that night.
@@ -2662,7 +2662,7 @@
     </p>
 
     <p id="ch5-pointers-p2">
-      Recall from <a href="part-1#ch1">Chapter 1</a> that memory is a giant array of bytes, and each byte has an
+      To a C program, memory is a giant array of bytes, and each byte has an
       integer address. On a 64-bit machine, those addresses run from <code>0x0000_0000_0000_0000</code>
       to <code>0xFFFF_FFFF_FFFF_FFFF</code> — more addresses than any single machine
       will ever fill.
@@ -2831,7 +2831,7 @@
     </p>
 
     <p id="ch5-malloc-p2">
-      Recall from <a href="#ch4">Chapter 4</a> that memory comes in two main flavours: the <strong>stack</strong>,
+      Recall from <a href="part-1#ch3">Chapter 3</a> that memory comes in two main flavours: the <strong>stack</strong>,
       which grows and shrinks automatically as functions enter and exit, and the
       <strong>heap</strong>, a region the kernel hands the process for long-lived
       allocations. Stack memory is automatic — local variables come and go without your
@@ -2981,12 +2981,12 @@
 
   <section class="section" id="ch5-ub">
     <div class="section-number">05 — Undefined behavior</div>
-    <h2>The optimizer's cruel logic.</h2>
+    <h2>The optimiser's cruel logic.</h2>
 
     <p id="ch5-ub-p1" class="lead">
       The C standard contains a list of operations whose behavior is "undefined." This
       does not mean they crash, or fail, or return garbage. It means the standard places
-      no requirement at all on what happens — and modern optimizers will exploit that
+      no requirement at all on what happens — and modern optimisers will exploit that
       freedom in ways that look like betrayal. Code that worked for ten years can break
       catastrophically on the next compiler upgrade.
     </p>
@@ -2994,9 +2994,9 @@
     <p id="ch5-ub-p2">
       The list is short and dangerous: signed integer overflow; dereferencing a null
       pointer; reading or writing past the end of an array; using a value before
-      initializing it; modifying a string literal; data races between threads. Each is a
+      initialising it; modifying a string literal; data races between threads. Each is a
       <strong>contract</strong> the programmer has implicitly accepted: "I promise I will
-      never do this." The compiler trusts that promise — completely. Modern optimizers do
+      never do this." The compiler trusts that promise — completely. Modern optimisers do
       not check whether you can actually keep it. They simply assume you will, and
       generate code that <em>only makes sense if you did.</em>
     </p>
@@ -3033,9 +3033,9 @@
         <!-- Result -->
         <rect x="40" y="298" width="640" height="40" rx="6" fill="#101a14" stroke="rgba(132,255,178,0.6)"/>
         <text x="360" y="318" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">generated assembly: just `lea eax, [rdi+1]; ret`</text>
-        <text x="360" y="332" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">the bug check has been silently deleted by the optimizer</text>
+        <text x="360" y="332" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">the bug check has been silently deleted by the optimiser</text>
       </svg>
-      <p id="ch5-ub-p4" class="diagram-caption">The programmer wrote a check for signed overflow. The check is correct in principle. But because signed overflow is undefined behavior, the compiler is allowed to assume it never occurs — and from that assumption, it can prove the check is always false, and delete it as dead code. The programmer's defensive check has been silently removed. The compiler is not malicious; it is following the standard exactly. This pattern has caused real security bugs in real production code, including in the Linux kernel, which now compiles with explicit flags (<code>-fno-strict-overflow</code>, <code>-fno-delete-null-pointer-checks</code>) to prevent the optimizer from exploiting these particular freedoms.</p>
+      <p id="ch5-ub-p4" class="diagram-caption">The programmer wrote a check for signed overflow. The check is correct in principle. But because signed overflow is undefined behavior, the compiler is allowed to assume it never occurs — and from that assumption, it can prove the check is always false, and delete it as dead code. The programmer's defensive check has been silently removed. The compiler is not malicious; it is following the standard exactly. This pattern has caused real security bugs in real production code, including in the Linux kernel, which now compiles with explicit flags (<code>-fno-strict-overflow</code>, <code>-fno-delete-null-pointer-checks</code>) to prevent the optimiser from exploiting these particular freedoms.</p>
     </div>
 
     <h3>NULL dereference</h3>
@@ -3117,22 +3117,22 @@
       <p id="ch5-ub-p6" class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge — The Boundary, in <a href="part-1">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 — <code>SIGSEGV</code> — to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. The whole chain — MMU, kernel, signal, corpse — takes a few microseconds.</p>
     </div>
 
-    <h3>The optimizer's contract, the programmer's homework</h3>
+    <h3>The optimiser's contract, the programmer's homework</h3>
 
     <p id="ch5-ub-p7">
       "Trust the programmer" was C's original philosophy and is still its operating
-      stance. Modern optimizers take it to its logical limit: the compiler trusts you so
+      stance. Modern optimisers take it to its logical limit: the compiler trusts you so
       completely that it removes code based on assumptions you never knowingly made. The
       Linux kernel has accumulated a handful of <code>-f</code> flags telling GCC to <em>not</em>
-      exploit specific UB optimizations. Modern security-aware C codebases compile with
+      exploit specific UB optimisations. Modern security-aware C codebases compile with
       UndefinedBehaviorSanitizer in development — the compiler inserting checks for
-      exactly the assumptions its optimizing self exploits — to catch the cases
+      exactly the assumptions its optimising self exploits — to catch the cases
       where the programmer's and the compiler's models of "what is allowed" have
       drifted apart.
     </p>
 
     <div class="insight-strip">
-      <p id="ch5-ub-p8"><strong>The right way to think about UB:</strong> not "the program might crash" but "the program's behavior is no longer governed by the source you wrote." The optimizer is allowed to assume the input is well-defined, and once that assumption is wrong, the output may bear no resemblance to your code's intent. This is the cost of C's performance — and the cost is real.</p>
+      <p id="ch5-ub-p8"><strong>The right way to think about UB:</strong> not "the program might crash" but "the program's behavior is no longer governed by the source you wrote." The optimiser is allowed to assume the input is well-defined, and once that assumption is wrong, the output may bear no resemblance to your code's intent. This is the cost of C's performance — and the cost is real.</p>
     </div>
 
   </section>
@@ -3446,7 +3446,7 @@
 
     <p id="ch6-complexity-p1" class="lead">
       The 1980s software crisis was not a single failure. It was a slow, systemic
-      realization. Codebases that had been small enough for one team to keep in their
+      realisation. Codebases that had been small enough for one team to keep in their
       heads were now too large for any human to model. C gave you no tools above the
       function. Beyond fifty thousand lines, C codebases became unmaintainable — not
       because the code was wrong, but because no one could tell when it was right.
@@ -4821,7 +4821,7 @@
 
     <p id="ch7-cpython-p2">
       The pipeline inside CPython is short and unromantic. A source file is read. The
-      <strong>tokenizer</strong> splits it into tokens — identifiers, numbers, operators,
+      <strong>tokeniser</strong> splits it into tokens — identifiers, numbers, operators,
       indents and dedents. The <strong>parser</strong> assembles tokens into an abstract
       syntax tree. The <strong>compiler</strong> walks the AST and emits a list of
       <strong>bytecode</strong> instructions for a stack-based virtual machine. The
@@ -5025,7 +5025,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🔐</span>
       <p id="ch7-datasci-p7" class="insight-text">
-        <strong>The sharpest edge is one line long.</strong> <code>pickle.loads(data)</code> looks like a parser and is an interpreter: a pickle is a small program for a stack machine, and the machine can construct any Python object — including one whose construction calls <code>os.system()</code>. Unpickling attacker-controlled bytes is therefore arbitrary code execution by design, not by bug. Every web framework that accepted pickled session cookies has been bitten by this; the only real fix is to never deserialize pickled data you didn't sign. Python's other edges are the same property — data becoming code with almost no friction — met at different doors: <code>eval()</code> and <code>exec()</code> on user input repeat the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name, and a PyPI package named <code>requestz</code>, one keystroke from <code>requests</code>, runs whatever it likes the moment someone installs it. Dynamism is convenience; dynamism is also attack surface.
+        <strong>The sharpest edge is one line long.</strong> <code>pickle.loads(data)</code> looks like a parser and is an interpreter: a pickle is a small program for a stack machine, and the machine can construct any Python object — including one whose construction calls <code>os.system()</code>. Unpickling attacker-controlled bytes is therefore arbitrary code execution by design, not by bug. Every web framework that accepted pickled session cookies has been bitten by this; the only real fix is to never deserialise pickled data you didn't sign. Python's other edges are the same property — data becoming code with almost no friction — met at different doors: <code>eval()</code> and <code>exec()</code> on user input repeat the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name, and a PyPI package named <code>requestz</code>, one keystroke from <code>requests</code>, runs whatever it likes the moment someone installs it. Dynamism is convenience; dynamism is also attack surface.
       </p>
     </div>
 

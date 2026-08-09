@@ -906,7 +906,7 @@
       share one radio frequency by transmitting whenever they had data and
       retransmitting after random delays when collisions occurred. Metcalfe
       analysed the math on the plane home, realised Abramson had badly
-      under-estimated the achievable utilization of the protocol with smarter
+      under-estimated the achievable utilisation of the protocol with smarter
       timing, wrote the corrections into a revised thesis, and got his
       doctorate. He then took the same insight, improved with carrier sensing
       ("listen before transmit"), and applied it to a wire instead of radio.
@@ -1616,7 +1616,7 @@
       network at NPL by 1969. <strong>Leonard Kleinrock</strong> at MIT, in
       his 1962 doctoral thesis, had developed the queueing-theoretic
       mathematics showing that statistical multiplexing on a packet-switched
-      network would utilize bandwidth far more efficiently than circuit
+      network would utilise bandwidth far more efficiently than circuit
       switching could ever achieve. Kleinrock then took a faculty position
       at UCLA. When Larry Roberts at ARPA — the US Advanced Research
       Projects Agency, not yet renamed DARPA — was tasked in 1966 with building the
@@ -3025,7 +3025,7 @@
       paper's fix added two pieces — slow start and <span class="key-term">AIMD</span> — that became
       part of every TCP stack in the world over the next four years.
       Without that fix, the internet of the 1990s would not have existed;
-      every link of significant utilization would have spent its life
+      every link of significant utilisation would have spent its life
       collapsing. The 1986 incident is one of those quiet moments where
       computer science had to grow a new sub-discipline overnight, in
       response to a phenomenon nobody had seen before. The sub-discipline
@@ -4457,7 +4457,7 @@
         <!-- Defense -->
         <g transform="translate(40,322)">
           <rect x="0" y="0" width="640" height="36" rx="3" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="14" y="15" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">DEFENSE — randomise the source port too: 16-bit ID × 16-bit port = 32-bit guess space</text>
+          <text x="14" y="15" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">DEFENCE — randomise the source port too: 16-bit ID × 16-bit port = 32-bit guess space</text>
           <text x="14" y="29" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">~65,000× harder to forge · Kaminsky 2008 patch</text>
         </g>
       </svg>
@@ -4616,7 +4616,7 @@
       encrypted with the public key can only be decrypted with the matching
       private key. Two strangers who have never met can establish a shared
       secret over a public channel: send each other their public keys, do
-      a small mathematical dance (Diffie-Hellman, 1976 — key agreement
+      a small mathematical dance (Diffie–Hellman, 1976 — key agreement
       rather than encryption: each side combines its own private half with
       the other's public half and arrives at the same number), and both end up
       knowing a shared value that no eavesdropper can derive even with full
@@ -4719,7 +4719,7 @@
       manipulating the conversation can read or alter the result. The
       mechanism is breathtakingly compact in TLS 1.3 — <em>one round trip</em>,
       not the two of TLS 1.2 — and composes the primitives of §04. The
-      client's hello already carries its half of a fresh Diffie-Hellman
+      client's hello already carries its half of a fresh Diffie–Hellman
       exchange; the server answers with the other half, and from that moment
       both sides hold the same secret, so the server can encrypt the rest of
       its very first reply — certificate, signature and all. The signature,
@@ -4759,7 +4759,7 @@
           <polygon points="600,170 590,166 593,178" fill="rgba(150,216,150,0.85)"/>
           <text x="360" y="120" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">① ClientHello</text>
           <text x="360" y="138" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">supported ciphers · supported groups · client_random · key_share (X25519 ephemeral pubkey)</text>
-          <text x="360" y="154" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">"Here is half of a Diffie-Hellman, plus what I can do."</text>
+          <text x="360" y="154" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">"Here is half of a Diffie–Hellman, plus what I can do."</text>
         </g>
 
         <!-- Step 2: ServerHello + ... -->
@@ -4794,7 +4794,7 @@
           <text x="180" y="32" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">AES-GCM, ChaCha20-Poly1305, etc. · encrypted + authenticated</text>
         </g>
       </svg>
-      <p id="ch11-tls-p3" class="diagram-caption">The whole TLS 1.3 handshake: one round trip. The client sends a hello with half of an ephemeral Diffie-Hellman key exchange (an X25519 public key) plus the list of cipher suites it supports. The server replies with the other half plus its X.509 certificate plus a signature, with most of that already encrypted under the freshly derived shared key — possible because both sides can compute the shared key as soon as they see each other's public halves. The client verifies the certificate against its trusted root store (<a href="#fig-11-12">Fig 11.12</a>), checks the signature, and replies Finished. From this moment forward, every byte is encrypted with AES-GCM (or ChaCha20 on phones without AES hardware) and authenticated against the agreed key. TLS 1.2 needed two round trips to do the same job; TLS 1.3 saved one round trip by being smarter about message ordering.</p>
+      <p id="ch11-tls-p3" class="diagram-caption">The whole TLS 1.3 handshake: one round trip. The client sends a hello with half of an ephemeral Diffie–Hellman key exchange (an X25519 public key) plus the list of cipher suites it supports. The server replies with the other half plus its X.509 certificate plus a signature, with most of that already encrypted under the freshly derived shared key — possible because both sides can compute the shared key as soon as they see each other's public halves. The client verifies the certificate against its trusted root store (<a href="#fig-11-12">Fig 11.12</a>), checks the signature, and replies Finished. From this moment forward, every byte is encrypted with AES-GCM (or ChaCha20 on phones without AES hardware) and authenticated against the agreed key. TLS 1.2 needed two round trips to do the same job; TLS 1.3 saved one round trip by being smarter about message ordering.</p>
     </div>
 
     <h3>The certificate chain</h3>
@@ -4889,7 +4889,7 @@
 
     <p id="ch11-tls-p6">
       One subtlety in the TLS 1.3 design deserves explicit attention. The
-      key exchange uses <em>ephemeral</em> Diffie-Hellman keys — fresh
+      key exchange uses <em>ephemeral</em> Diffie–Hellman keys — fresh
       random values generated at the start of each connection, never
       reused, discarded the moment the connection ends. This property is
       called <span class="key-term">forward secrecy</span>, and it has a profound
@@ -6072,7 +6072,7 @@
           <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">① attacker → victim:  https://search.example.com/?q=&lt;script&gt;steal()&lt;/script&gt;</text>
           <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">② server response:  &lt;p&gt;Results for: &lt;script&gt;steal()&lt;/script&gt;&lt;/p&gt;</text>
           <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">③ browser executes the injected script as same-origin with example.com</text>
-          <text x="14" y="80" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defense: HTML-escape any user input echoed into HTML; never trust query strings</text>
+          <text x="14" y="80" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defence: HTML-escape any user input echoed into HTML; never trust query strings</text>
         </g>
 
         <!-- Stored XSS -->
@@ -6082,7 +6082,7 @@
           <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">① attacker posts comment:  Nice post! &lt;script&gt;steal()&lt;/script&gt;</text>
           <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">② server stores it · every later visitor's HTML contains the script</text>
           <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">③ all subsequent visitors' browsers execute the script on every page view</text>
-          <text x="14" y="80" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defense: same as reflected, plus output-encode at render time, not at storage time</text>
+          <text x="14" y="80" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defence: same as reflected, plus output-encode at render time, not at storage time</text>
         </g>
 
         <!-- DOM-based XSS -->
@@ -6092,7 +6092,7 @@
           <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">① page JS reads location.hash:  document.body.innerHTML = location.hash;</text>
           <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">② attacker's URL: https://example.com/#&lt;img src=x onerror=steal()&gt;</text>
           <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">③ browser parses the hash as HTML, runs the onerror — server saw nothing suspicious</text>
-          <text x="14" y="84" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defense: never assign untrusted strings to innerHTML; use textContent or DOM APIs that don't parse HTML</text>
+          <text x="14" y="84" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defence: never assign untrusted strings to innerHTML; use textContent or DOM APIs that don't parse HTML</text>
         </g>
       </svg>
       <p id="ch12-security-p5" class="diagram-caption">All three XSS variants share the same shape — attacker-controlled string ends up where the browser parses it as code — and all three are exploitable as long as user input flows into HTML, JavaScript, or attribute contexts without proper output encoding. The 2010s saw an industry-wide push toward template engines that escape by default (React's JSX, Vue's mustaches, Svelte's curly braces all encode by default), and toward <em>tainted-string</em> static analysis at build time. Even so, XSS still appears every year on the OWASP Top 10. The deeper fix — the one this section is heading toward — is <strong>Content Security Policy</strong>, which lets the server tell the browser "do not run inline scripts at all, and only run scripts from these specific origins." Even if an attacker injects a <code>&lt;script&gt;</code>, CSP prevents the browser from executing it.</p>
