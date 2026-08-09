@@ -1143,6 +1143,12 @@ Initialisation" (Pass-19 ratified sweep); fig 5.9 "roughly 10 µs" label vs
    **Ready one-word fix if you want it: `requestz` → `request`** — a
    documented malicious requests typosquat (Sonatype 2022 ransomware
    incident), currently 404 on PyPI, still one keystroke from `requests`.
+   **Resolved 2026-08-10** (owner-ratified 2026-08-09; bridge re-verified
+   against PyPI, and re-confirmed at apply time: `request` 404, `requestz`
+   200, `requests` 200) — the one word applied in `public/part-2.html`,
+   nothing else in the coda touched; anchors 346 byte-identical, glossary
+   519 with no entry added or removed and exactly one definition changed
+   (the `exec` entry, which carries this sentence as its extracted text).
 2. ch7 hero lead "an order of magnitude of performance" understates the
    chapter's own numbers (~150× fig 7.7, ~10,000× fig 7.9); heroes are
    untouchable.
