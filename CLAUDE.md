@@ -4,8 +4,9 @@
 under.atheric.eu. Public, CC BY-NC 4.0. This file is the signpost; it decides
 what you read next, nothing more.
 
-> Operating model: `atheric-studios/estate/OPERATING-MODEL.md` — read before
-> starting a session.
+> Operating model: `../estate/OPERATING-MODEL.md` (canonical name
+> `atheric-studios/estate`; on this disk the sibling folder is `estate/`) —
+> read before starting a session.
 
 ## Read in this order
 

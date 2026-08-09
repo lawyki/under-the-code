@@ -1235,6 +1235,147 @@ stock intact, math (`y²=x³+7`) and σ/π/⨝ symbols render. **Live after push
 (commit `e639b98`): corrected passages confirmed on the live page. **STOP for
 owner review before Part V** — the gate rhythm. Remaining language-pass part: V.
 
+### Pass-17 verification (2026-08-09, commit `186cd32`)
+
+Full Fable audit of Pass 17, whose clearances had never had a second read
+(brief: `docs/pass-17-verification-brief.md`). Method mirrored the 14/16
+pattern: deep read of all of Part IV by the verifying model, plus a 25-agent
+workflow — 6 independent per-chapter fresh readers (student + sceptic lens,
+web-enabled, blind to §4q), 4 primary-source verifiers over the load-bearing
+corrections, an adversarial defense per flagged anchor (15 run: 7 conceded,
+7 partial, 1 held) — 72 raw flags in 49 anchor groups, every one adjudicated
+by the verifying model; all fixes gated through a fact-and-voice confirmation
+agent over the diff, which caught the verifier's own error again ("two shapes
+this chapter closes on" against the chapter's six-pattern close).
+
+**The §4q load-bearing corrections: all stand.** Reconfirmed against primary
+sources or recomputed: RSA-250 (829 bits, 2020, ~2,700 core-years); SLH-DSA
+hash-based / ML-KEM+ML-DSA lattice (FIPS 205/203/204); fig-14-10 Cloudflare —
+the 2014 post's own sentence says the private-key op is cheaper "by a factor
+of 9.5x" (9516.8 vs 1001.8 signs/s recomputed), so "about 9×" is faithful;
+RSA-vs-ECC growth (SP 800-57 Table 2; ECC exactly 2s — linear); fig-14-3
+ordering coherent in labels, caption, and subtitle; fig-14-8 re-verified to
+the digit; Ed25519 2011 (eprint 2011/368); SHA-3 2012/2015 (FIPS 202);
+Bernstein/Junger; IMS alive (15.6 GA 2025); Selinger scoping (Codd 3,612 vs
+Selinger 2,489 citations — the old superlative would have been false);
+projection-pushdown recomputed under set semantics; B-tree 1970 SIGFIDET;
+Codd pp. 377–387 = eleven; relationally-complete per Codd 1972; Pwn2Own =
+ZDI-funded; prompt injection Sept 2022; Capital One $80M (OCC NR 2020-101)
++ $190M (Dec 2021); TJX WEP carve-out. **The four §4q re-carries hold the
+register** — blind readers, not knowing they were re-carries, quoted two as
+their chapters' best passages; kept verbatim (one caption echo trimmed,
+below). All six blind readers: Part IV grips; at bar for the large majority.
+
+**Wrongly cleared, found & fixed (~30 surgical edits).** Fact-class in prose:
+`ch14-history-p1` Enigma — "six years before *Bletchley* broke it" fused the
+Polish timeline with British credit (six years from 1926 military adoption
+lands on Rejewski's December 1932 reconstruction; the Bombe is 1940); credit
+re-aimed to Rejewski's team, "a break Bletchley industrialised with the
+Bombe", the settled six-year *count* untouched, Ch1 cross-ref kept (part-1
+verified silent on "six years" — the old decline rationale was hollow);
+`ch14-history-p3` observer list Bletchley → Rejewski. `ch13-acid-p1` +
+fig 13.5 "IBM's Jim Gray"/"IBM 1981" → Tandem (TR 81.3; Gray left IBM 1980).
+`ch13-codd-p5` System R "begun in 1973" → 1974 (Chamberlin; the body
+contradicted fig 13.1's correct 1974–1979 on the same page); Ellison's
+"small consulting firm" employer clause cut. `ch13-codd-p6`/`p7` "IBM
+Almaden" ×2 → San Jose (Almaden opened 1986; the figure had it right).
+`ch14-history-p4` "ceased to be a munition in 2000" → off the US Munitions
+List 1996 (EO 13026), rules liberalised 2000. `ch14-history-p6`
+Cocks/Williamson "implemented" → worked out on paper, never deployed.
+`ch15-mindset-p1` "Congressional Record" → Senate's published hearing record
+(S. Hrg. 105-609). `ch13-codd-p8` the non-existent title → two
+*Computerworld* pieces. `ch13-codd-p2` CODASYL was a committee, not a
+database. `ch15-defense-p6` SolarWinds Fortune-500 moved from
+malware-delivery claim to customer-roll fact; "(SLSA)" re-labelled signed
+build provenance (SLSA, sigstore). Figure text labels (a11y titles matched,
+zero geometry): fig 15.8 keyboard EoP CVE **2010-2549 → 2010-2743**
+(MS10-073, NVD: demonstrated in the wild by Stuxnet) and "three machines per
+host" → per USB drive (Symantec dossier); fig 15.2 "Google 2022" → **2020**;
+fig 13.1 PostgreSQL 16 → **18** (GA 2025-09-25; the figure's other branch is
+stamped 2026); fig 13.5 fsync listed as a hazard durability survives — cut;
+fig 13.6 ARIES footer no longer claims PostgreSQL (redo-only WAL noted — the
+§4g ZooKeeper/ZAB precedent class); fig 13.8 "~1 leaf per million rows" →
+per few hundred matches (contradicted its own caption by ~10⁴); fig 13.9
+index storage "of column data" → of the table; fig 13.10 "blind SQLi" on an
+error-based payload → error-based (body's blind definition re-scoped to
+timing/behaviour); fig 14.7 numbering gap ③→⑥ closed (⑥⑦ → ④⑤, both
+panels); fig 14.8 "e = 3 (very common choice)" → "small, for legibility;
+real RSA uses 65537" (contradicted its own caption); fig 14.3 MD5 cell
+"2⁶⁴ · feasible 2004" → "broken 2004 · seconds today" (a birthday bound
+masquerading as attack cost beside SHA-1's true 2⁶³); fig 14.13 Apple split
+out (Cloudflare/Google hybrid TLS 2023; Apple's 2024 item is iMessage PQ3 —
+Safari TLS PQC was not a 2023–24 fact); fig 15.4 attacker's forged MAC
+de-collided from the body's real-gateway MAC, "first wins" → keeps-answering
+(RFC 826 updates on later claims; matching one-liner in `ch15-network-p4`);
+fig 15.9 side-channel FIX → "constant-time code · isolation" (constant-time
+crypto does not fix Spectre); fig 15.10 → "Microsoft Bounty — top offers
+reach seven figures" (BlueHat is the conference; million-dollar *payouts*
+unsupported). Consistency/register: DBMS industry "fifty-billion" → hundred-
+billion (Gartner ~$120B 2024); Pwn2Own "Vancouver and Toronto" → Berlin/
+Cork/Tokyo; `ch14-tls-pqc-p3` verbatim-duplicated signature sentence cut;
+`ch13-sql-p5` caption's EXPLAIN closer cut (verbatim echo of the §4q
+re-carry's new close one screen up — the pass-14 self-created-duplication
+class); `ch15-defense-p2` caption's Helsinki/Tokyo pair trimmed (the
+re-carry p1 carries it); `ch13-acid-p2` aphorism un-crossed ("isolation
+protects against concurrency; consistency is what the other three exist to
+preserve"); `ch14-primer-p3` "four such operations are known" → four carry
+this chapter, the lattice fifth stands behind them (was contradicted by
+§06); `ch14-hashing-p3` BLAKE3-a-decade → the BLAKE family; `ch15-memory-p1`
+/`p2` "thirty-five years" ×2 → nearly forty (h2 says forty; axis 1988→2026)
+and "gotten" ×2 → grown; `ch15-memory-p4` PAC "a few transistors" → a corner
+of each core; `ch15-network-p1` "detectable and reversible" → a detected lie
+kills the connection; `ch15-web-p1` "most of those bugs are confused
+deputies" → two of the six shapes (gate's wording); `ch15-culture-p7`
+"empty" → pure data abstraction; Diffie–Hellman en dash in the TOC card and
+fig 14.7 caption.
+
+**Considered and declined** (do not "fix" blindly): **Sony PSN as SQLi** —
+owner-ruled since pass 7; re-flagged high by two blind readers and conceded
+by its own defense on the facts; left untouched per the ruling, with the
+readers' evidence recorded for the owner read (vector never publicly
+confirmed; the confirmed 2011 Sony SQLi is LulzSec/SonyPictures.com).
+Enigma six-year *count* (settled; only the attribution was repaired). Caesar
+"worked for a generation"/"contemporary cryptanalyst" (hedged narrative
+compression). The six-operator set counting ⨝ (pedagogical set; the
+paragraph itself derives join from × — formalism quibble). Caption
+self-containment (`ch13-codd-p7`, `ch13-indexes-p5`, `ch14-tls-pqc-p8` — house
+convention, pass-14 precedent) and the SolarWinds insight-strip double-tell
+(display element, self-contained by design). Fig 14.11 "every byte
+accounted for" vs the skipped Master Secret stage (teaching abstraction).
+Fig 14.1 "3-rotor + plug" on the 1923 cell and "Bombe 1940" marker (era
+compression; prose now carries the Polish credit). Fig 13.2 row-count/
+distinct-note compression. `ch15-memory-p1` superlative + itinerary leads
+(functional orientation). `ch14-publickey-p6` "RSA encryption takes
+microseconds" (public-op, defensible). The `key-term` "Diffie-Hellman"
+hyphen kept — it mints the glossary's `diffie-hellman` key, and part-3 has
+five more hyphenated instances: book-wide dash sweep is Pass 19's.
+
+**For Pass 19:** fig 15.2 *geometry* — the "PAC · CET shadow stack / 2017+"
+green group (x≈560) sits right of "Spectre / 2018" (x≈500), inverting
+chronology and implying PAC answers Spectre (it answers ROP/JOP); move the
+pair left of Spectre or give Spectre its own response dot (retpoline/
+microcode). Ch15 title "Attack and Defense" (American) vs the hero's own
+"DEFENCE IN DEPTH" and uniformly British body — title/identity call for the
+owner or the sweep. Book-wide Diffie–Hellman dash harmonisation (with the
+glossary-key migration it implies).
+
+**Invariants.** Anchor-id set byte-identical to HEAD (**228**). Glossary
+regenerated (twice, once after the gate repair): **count 520, no entry added
+or removed**; 6 definitions refreshed, all coherent (`pwn2own`/`ccc`/`black
+hat` carry the new venues, `edr` the deduped SIEM sentence, `codasyl` the
+committee correction, `hellman` the on-paper wording); no junk entries
+minted. §4g and every §4q correction survive in substance.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308): Chromium + WebKit at 1440 + 375, dark + light, part-4/index/glossary —
+24 page-checks: 0 console errors, 0 external requests, 0 h-scroll, nav
+48 px, fonts loaded; all 39 internal #anchors resolve. 24 touched passages
+screenshot-shot in both engines, dark + light (193 shots); the width-tight
+labels (Stuxnet USB line, PQC deploy line, ARP ③, ARIES footer, Gray/Tandem,
+fig 14.7 renumber) reviewed in both engines — all render inside their boxes.
+**Live after push** (commit `186cd32`): corrected strings confirmed on the
+live page.
+
 ## 4r. Pass 18 (2026-08-07): the language pass, Part V — Ch16–18 (commit `eb80d7a`)
 
 Same brief, same bar (pedagogy first, facts second; the Ch7 pickle coda —
