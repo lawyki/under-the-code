@@ -1661,6 +1661,257 @@ running the "recognized"/"recognizably" strays; the six pre-existing
 text-vs-rect marginals above are logged as non-defects unless the sweep
 disagrees; the Amdahl-quote clipping note stands for the owner read.
 
+## 4s. Pass 19 (2026-08-09): the book-wide closing sweep → READY
+
+The last pass before READY, run under the amended gate rhythm (`BRIDGE.md` §1)
+against the bridge-authored brief (`docs/pass-19-brief.md` — all five worklist
+items pre-ruled). Model: Fable throughout. The prose was closed: register-class
+findings are flagged below, not rewritten; fact-class errors were fixed under
+verify-before-fix.
+
+### The worklist
+
+**1 · fig 15.2 geometry (sanctioned).** Took the "move the pair left of
+Spectre" option: the PAC · CET group (green) and Spectre (red) swapped
+positions — PAC · CET now at x=500 on the high label tier (stem 200→160,
+labels y=150/138, the band free right of ROP), Spectre at x=560 on the below
+tier (labels y=252/264/276, sublabel split "2018 · speculative" / "side
+channel" to clear CFI's). The timeline now reads CFI 2015 → PAC·CET 2017+ →
+Spectre 2018 → MTE 2023, and PAC · CET sits directly after the ROP/JOP attacks
+it actually answers. HEAD-vs-working screenshots showed the old layout also
+carried two same-row text collisions (Spectre-sub × MTE-sub at y=148; CFI-sub
+× PAC-sub at y=264) — the swap removes both. A third, pre-existing overprint
+the screenshots surfaced (ROP main label × JOP sublabel, x=332–351, baselines
+2 px apart) was fixed in the same licence class by lifting ROP's label pair
+one row (stem 200→148, labels y=138/126); every row was recomputed clear.
+Its ASLR sublabel also took the item-4 spelling ("2003+ · randomisation").
+The figure is static (no SMIL); shot in Chromium + WebKit, dark + light,
+before and after; both sweeps clean; a11y title unchanged.
+
+**2 · Ch15 title → "Attack and Defence".** Every occurrence: the h1
+(`Attack and<br>Defence<br>`), the hero's a11y `<title>`, part-4's TOC card
+title and its "Defence in depth." card text, the three meta descriptions
+("attack and defence"), the chapter-nav item and section-number ("05 —
+Defence systems"), the index chapter card, `docs/plan.txt`, and
+`docs/figures.txt`. `book.js` derives nav readouts and stored-position labels
+from the h1 at runtime, so no code changed; previously stored position labels
+are user data and will show the old string until the next save (benign).
+Contrary to the brief's premise, eight anchor ids *do* contain the word
+(`ch15-defense`, `ch15-defense-p1…p6`, plus the `#ch15-defense` href) — all
+held byte-identical, verified. **Scope extension under the ruling's own
+"uniformly British house spelling" basis:** the audit found the claimed
+uniformity false outside Ch15 — part-1's Chapter 3 was uniformly American
+(nav item + section-number "06 — Defenses", four h3s "Defense one…four",
+eleven prose defense/defences, fig 3.11's DEFENSE ×4 labels and its caption's
+"broke the previous defense" — the very sentence fig 15.2's caption spells
+"defence"), and part-3 carried four American figure labels (fig 11.7
+"DEFENSE — randomise…", fig 12.9 "defense:" ×3). All fixed to British;
+`ch3-defenses*` ids untouched; figs 3.11/11.7/12.9 screenshot-reviewed in
+both engines. Owner may veto the title at the read — it is a per-site string
+change to revert.
+
+**3 · Diffie–Hellman en dash, book-wide.** Part-3's five hyphenated instances
+(two prose, the fig 11.11 caption + its SVG line "Here is half of a
+Diffie–Hellman…", the ephemeral-DH prose) and part-4's key-term span → en
+dash, matching the book's Jacobson–Karels/Leveson–Turner convention. The two
+SVG source comments (part-4, part-5) left per the item-5 class. **Glossary
+key migration — what was actually found:** the shipped 520 contained a
+shadowed *duplicate pair* — `diffie-hellman` (hyphen, minted by the key-term
+span, home ch14-publickey, a weaker definition, serving **zero** tooltips
+because its only wrapped occurrence was inside its own first-use section)
+alongside `diffie hellman` (term "Diffie–Hellman", curated, home
+ch14-primer, the good discrete-log definition, already serving the 17
+en-dash occurrences). The glossary index page showed both rows side by side.
+The migration merges them: **count 520 → 519, removed key `diffie-hellman`
+only, nothing added, no junk**, the surviving definition byte-stable, and
+one `cipher suite` definition picks up the en dash. The stop-if-broken guard
+did **not** trigger — the extractor already mints the en-dash key cleanly
+(the curated list carries 'Diffie–Hellman'; `book.js` normalises en dash
+identically, proven by the pre-existing en-dash tooltips). Verified locally:
+the migrated ch14-publickey span now carries a live tooltip (it previously
+served nothing); the ch14-primer `<strong>` is the first-use anchor. The
+brief's "count 520 ±0" rested on a single-entry premise; the −1 is the
+duplicate healing, an improvement, and STATE/README now say 519. Noted, not
+chased: `parameterized query` still sits in `curated_missing` (the book's
+British `parameterised queries` entry exists; the American curated spelling
+is a no-op line in the regen output).
+
+**4 · Spelling convention, ratified and recorded (§5).** Enumerated every
+-iz-/-yz-/-ll-/-og- variant book-wide (plus artefact and the defence
+cluster), classified each against the rule, fixed the strays: **part-1** ×9
+(mechanised, miniaturisation, optimisation, optimising, realisation, the
+known "recognised", specialised ×2, popularised) plus the item-2 defence
+cluster; **part-2** ×38 (initialises/initialisation/initialising, criticised,
+optimise ×3 + the optimiser/optimisers/optimisations/optimising cluster ×10
+incl. two headings, utilisation ×8 incl. the fig 4.6 label/caption/axis,
+specialised, analysed, analyser, organised ×2, Synchronising, generalisation,
+containerised, the known "unrecognisably", standardisation, realisation,
+deserialise, tokeniser); **part-3** ×3 (utilisation ×2, utilise); **part-4**
+×10 (Deserialisation h3, deserialisation ×4 prose + 2 figure labels,
+authorisation figure label, parameterised TOC card, randomisation fig-15.2
+label). The -ll- and -og-(catalog/dialog) families were already clean;
+artefact uniform. **Retained** (recorded in §5): proper names and quoted
+titles (ISO's full name, *Wait-Free Synchronization*, *Structured Computer
+Organization*, *Computer Organization and Design*, UndefinedBehaviorSanitizer,
+Baran's CENTRALIZED/DECENTRALIZED taxonomy labels, the Codd pull-quote's
+"organized" ×2 — quotations are never respelled); standard keywords and
+theory terms (SQL SERIALIZABLE/Serializable/serializable ×7); technology
+names (virtualization/paravirtualization ×11, datacenter ×3, analog ×4, the
+ASLR expansions ×2); code registers (CPython stage labels tokenize/optimize,
+`deserialize()`); and **civilization/civilizational** (~30 sites — uniform,
+owner-thesis vocabulary, deliberately left; owner call at the read). The
+-or/-our family (behavior ×9, color, favor) is **outside** the ratified
+scope and untouched.
+
+**5 · Ruled non-actions, declined as ruled.** SVG source comments with
+American spellings, enumerated for the record and left: "traveling" ×5
+(part-3 ×1, part-4 ×1, part-5 ×3 — the ruling's "×3" was Part V's own
+count), "Stylized" ×2, "Tokenizer" ×1, "utilization" ×1,
+"Centralized/Decentralized" ×2, "SERIALIZABLE" ×1, "Defense" ×1, hyphenated
+"Diffie-Hellman" ×2 — all invisible to readers. The six logged text-vs-rect
+marginals: confirmed non-defects (see the sweep below — nothing
+reader-visible). The Amdahl-quote clipping note stands for the owner read.
+Owner rulings verified untouched: "3 nm" ×4, Sony PSN, Morris 23 ×3, the
+Enigma six-year count.
+
+### The book-wide closing audits
+
+- **Cross-part consistency read** (4-agent Fable workflow: repeated claims /
+  seams / Chapter-N cross-references ×2; ~140 cross-references and every
+  repeated claim checked, all listed with verdicts). The core set is clean:
+  Morris 23 (part-1 + part-3 agree), Enigma six-years only in part-4 with
+  the Rejewski credit and part-1 verified silent, RAM 60 ns everywhere with
+  the T_avg arithmetic recomputed, figure counts 242/235/222 all consistent,
+  "A unified theory" masthead ×5 + index title ("A visual theory" appears
+  nowhere), all five closer stamps present exactly once with zero "The
+  recurring pattern." residue, all five closer→opener seams verified with
+  their promised names present. **Four fact-class breaks found and fixed**
+  (each verified at source before the fix): `ch5-malloc-p2` "Recall from
+  Chapter 4" for the stack/heap split — Chapter 4 never mentions the heap;
+  re-aimed at Chapter 3, whose fig 3.5 draws it (the `heap` glossary
+  definition follows); `ch5-pointers-p2` "Recall from Chapter 1 that memory
+  is a giant array of bytes" — Chapter 1 never states that model; now "To a
+  C program, memory is…" (no false recall, fits the pointers context);
+  `ch15-web-p2`'s "confused deputies (Chapter 11 §06 introduced the term
+  obliquely)" — the term appears nowhere in part-3 and ch11 §06 is HTTP/2–3;
+  the false parenthetical cut and the definition made a sentence ("A
+  confused deputy is code that has authority…"), phrased to mint no glossary
+  entry; `ch18-final-p6` "The book's first diagram showed a single
+  transistor" — Fig 1.1 is the Turing machine; now "Chapter 1 drew a single
+  transistor." And one fact-class hedge: the fig 1.2 caption's "It was the
+  first time a machine was built specifically to think through a problem
+  human minds could not" → "among the first machines" — Rejewski's bomba
+  (1938) precedes the Bombe, the same Polish lineage part-4 now credits.
+  **Flagged, not fixed (register-class, for the owner read):** part-2's
+  closer label "End of Part Two" (all others use Roman numerals) and its
+  headline "The kernel *and the languages*." breaking the "…is built."
+  pattern of the other four closers — possibly Greenbar-deliberate, never
+  ratified; the ASLR era labels 2001+ (fig 3.11) vs 2003+ (fig 15.2), both
+  era hedges in context; Ch2's promise that Boolean algebra returns as
+  "access control in security (Chapter 15)" lands only on least-privilege
+  material with no Boolean framing; Ch1's Spectre "we will return to this in
+  Chapter 15" is honoured at recap/caption level only; the index cover
+  eyebrow "A Visual Computer Science Book" (a distinct design element, not
+  the banned masthead string).
+- **Link and anchor audit:** 462 internal hrefs + 519 glossary
+  part/section references, all resolve; 0 broken. (Remaining flags are by
+  design: data-URI favicons, canonical/og self-URLs, the `href="/"` home
+  link, part-5's colophon externals, two JS template strings in
+  account.html.)
+- **Figure sweeps, book-wide** (both detectors first validated against a
+  deliberately failing baseline): bbox-vs-viewBox with the SMIL timeline
+  sampled 0–12 s — one pre-existing 3.2 px marginal (fig 1.4, present at
+  HEAD), 0 new; text-vs-containing-rect under a stricter belonging
+  heuristic than prior passes — 43 findings, **the finding set byte-identical
+  to a HEAD-checkout sweep run under identical conditions** (fonts loaded,
+  sequential), i.e. this pass introduced zero; the set contains the known
+  six-marginal class, and the largest escapes were screenshot-adjudicated
+  benign (annotation labels deliberately extending past background rects —
+  fig 11.14's bar label, fig 9.6's AS-path list, fig 11.6/11.7 speech
+  labels, fig 7.2/7.6/13.4 code-register lines). Decorative part-opener/hero
+  SVGs are excluded by scope (deliberate bleed, not registry figures).
+- **Glossary:** regenerated twice (after the worklist edits, after the
+  consistency fixes) — **519**, the DH merge the only key change; 10
+  definitions updated, every one a shadow of this pass's own edits
+  (spelling ×8, DH dash, the corrected Chapter-3 recall in `heap`); no junk,
+  no em-dash clipping.
+- **`docs/figures.txt` / `docs/plan.txt`:** registry re-checked against the
+  HTML — 19 heroes + 221 numbered cards + the trace = 241 in-book SVGs
+  (+ cover = 242) reconcile exactly after fixing a real registry defect:
+  the Ch 14 block still used the audit-era "14.0 math primer" numbering,
+  leaving titles 14.2–14.12 systematically one behind the HTML ids; block
+  realigned to 14.1–14.13. "Last verified" refreshed to 2026-08-09;
+  plan.txt's 18 chapter titles verified against the HTML TOCs (18/18,
+  including the new Ch15 title).
+- **Full §7 harness:** 100 checks — 8 pages × Chromium + WebKit ×
+  1440/375/320 × dark + light (96 page-checks) plus 404 spot-checks, all
+  pass: **0 console errors, 0 external requests, 0 page h-scroll, nav
+  48 px, fonts loaded**. Reduced-motion spot-check (part-4): SMIL paused on
+  all sampled figures, console clean. Print spot-check (part-4): renders,
+  console clean. After the consistency fixes, the four edited pages were
+  re-checked in both engines (console, h-scroll, marker strings) — clean.
+- **Live parity after push** (commit `1320be7`, deploy verified in single
+  page snapshots after a brief propagation window): all 15 marker strings
+  confirmed on the live pages ("05 — Defence systems", "Attack
+  and<br>Defence", the hero a11y title, "A confused deputy is code…",
+  "among the first machines", "06 — Defences", "2001+/2003+ ·
+  randomisation", "To a C program, memory", "The optimiser", "full
+  utilisation", "DEFENCE — randomise", part-3 "Diffie–Hellman", "Chapter 1
+  drew a single transistor", the index card title); fig 15.2's swapped dot
+  geometry and lifted ROP labels present in the live SVG; origin
+  `glossary.json` serves **count 519** with keys
+  `diffie`/`diffie hellman`/`hellman` and term "Diffie–Hellman" (the plain
+  URL keeps its documented 1-day `stale-while-revalidate` edge window);
+  live DH tooltip verified in **Chromium and WebKit** — the migrated
+  ch14-publickey span attaches (`glossary-ref`) and shows the definition on
+  hover, the ch14-primer first-use anchor set, 0 console errors on the live
+  page in both engines.
+
+### Invariants
+
+Anchor-id sets **byte-identical to HEAD in all five parts
+(354/346/380/228/189)** — verified after the worklist edits and again after
+the consistency fixes; the Ch15 title change moved no id. §4g and every
+later correction survive in substance (Morris, Enigma, RAM 60 ns, ZAB,
+Paxos-lore, "172 years", figure-count prose re-verified by the audit; "3 nm"
+and Sony PSN untouched). Glossary 519 as documented. Thesis set, authorship
+line, the five identities, heroes, closer stamps, reduced-motion/print
+grammar, zero-third-party: untouched and re-verified.
+
+### READY — the declaration
+
+**The book is prose-ready.** The language pass is complete and independently
+verified across all five parts; the closing sweep's worklist is executed,
+the book-wide audits are clean, and every invariant holds. *Under the Code*
+is declared **READY for the owner's complete read.**
+
+**Read-along notes for Tiger:**
+1. **Sony PSN 2011 = SQLi** stays as ruled — known-unconfirmed lore; the
+   blind-reader evidence is recorded in §4q's verification entry.
+2. **The Amdahl pull quote** is the verbatim tail of a longer sentence,
+   silently capitalised — standard quoting practice (§4r note).
+3. **Ch15 is now "Attack and Defence"** (with part-1 Ch3 and two part-3
+   figures brought to the same British spelling). Veto reverts a per-site
+   string list, no ids.
+4. **The glossary is 519**, not 520 — the Diffie–Hellman duplicate row
+   merged (this entry, item 3). STATE and README now say 519.
+5. **Spelling:** the ratified rule is recorded in §5. "Civilization/
+   civilizational" was classified as your thesis vocabulary and left
+   American throughout — flip it at the punch-list if you want
+   "civilisation". The -or/-our family (behavior, color) was outside the
+   ruling and untouched.
+6. **Register flags from the consistency read** (yours to keep or change):
+   part-2's closer label "End of Part Two" and its headline that breaks the
+   "…is built." pattern; ASLR "2001+" vs "2003+" between the paired
+   arms-race figures; Ch2's "access control (Chapter 15)" promise lands
+   thinly; Ch1's Spectre promise returns at recap level.
+7. **Five passages changed under fact rules this pass** — worth reading in
+   place: `ch5-pointers-p2`, `ch5-malloc-p2` (both false "Recall from"
+   references), `ch15-web-p2` (confused-deputy attribution),
+   `ch18-final-p6` (first-diagram claim), fig 1.2's caption (Bombe
+   priority hedged for Rejewski's bomba).
+8. **fig 15.2** was re-laid per the sanction — worth a look at render.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -1674,6 +1925,35 @@ disagrees; the Amdahl-quote clipping note stands for the owner read.
   This is deliberate Strongroom identity, ratified pass 5 — reading typography is
   per-volume (see §4d "What invariant means"). Not a regression to the sans
   reading default; do not "restore" it.
+- **House spelling — ratified Pass 19 (2026-08-09), do not relitigate.**
+  British **-ise/-yse/-ll-/-ogue** in ordinary prose (recognise, organised,
+  modelled, travelling, artefact, defence, optimiser, utilisation,
+  deserialisation). Canonical **-iz-/-og-** forms are RETAINED where the
+  string is:
+  (a) a **proper name or quoted title** — International Organization for
+  Standardization, *Wait-Free Synchronization*, *Structured Computer
+  Organization*, *Computer Organization and Design*,
+  UndefinedBehaviorSanitizer, Baran's CENTRALIZED/DECENTRALIZED figure
+  taxonomy, and any direct quotation (the Codd pull-quote's "organized" —
+  quotations are never respelled);
+  (b) a **standard's keyword or theory term** — SQL
+  SERIALIZABLE/Serializable, serializable isolation/schedules;
+  (c) an **industry term-of-art naming a technology** — virtualization,
+  paravirtualization, datacenter, analog (signal domain / analog computing),
+  the proper expansion "Address Space Layout Randomization";
+  (d) **code, identifiers, and code-register figure labels** — always
+  (`deserialize()`, the CPython stage labels tokenize/optimize);
+  (e) **civilization / civilizational** — owner-thesis vocabulary, uniform
+  book-wide, deliberately American; only the owner flips it.
+  The **-or/-our family** (behavior, color, favor) is OUTSIDE this ruling's
+  scope and follows the technical literature as-is. SVG/HTML **source
+  comments are exempt** (invisible to readers; never churn them).
+- **Diffie–Hellman takes an en dash** (the name-pair convention:
+  Jacobson–Karels, Leveson–Turner). The glossary key is `diffie hellman`
+  (en dash normalises to a space in both the extractor and book.js — they
+  must stay in lockstep). Since Pass 19 the glossary counts **519** terms:
+  the old hyphen key `diffie-hellman` was a shadowed duplicate row and was
+  merged away, not lost.
 
 ## 6. Prioritized improvement backlog (later passes — needs owner sign-off)
 

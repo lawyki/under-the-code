@@ -62,4 +62,6 @@ Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). 
 
 ## Status
 
-Active — last updated 2026-07-11.
+Content-complete — **READY for the owner's complete read** (Pass 19, the
+book-wide closing sweep, 2026-08-09; ledger in `UNDER.md` §4s). Last
+updated 2026-08-09.
