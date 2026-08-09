@@ -70,7 +70,7 @@
     <a href="#ch14" class="toc-card">
       <div class="toc-num">CHAPTER 14</div>
       <div class="toc-title">Cryptography — The Math That Keeps Secrets</div>
-      <div class="toc-desc">Caesar to AES. SHA-256 internals. Diffie-Hellman 1976 — the second invention of cryptography. RSA with worked numbers. Elliptic curves. Post-quantum standardisation. The math made physical.</div>
+      <div class="toc-desc">Caesar to AES. SHA-256 internals. Diffie–Hellman 1976 — the second invention of cryptography. RSA with worked numbers. Elliptic curves. Post-quantum standardisation. The math made physical.</div>
     </a>
     <a href="#ch15" class="toc-card">
       <div class="toc-num">CHAPTER 15</div>
@@ -199,7 +199,7 @@
       IBM's hierarchical database that ran on the System/360 and was used by
       banks and airlines, modelled data as a tree — to find a customer's
       orders you walked from a root to a customer node to an orders subtree.
-      <strong>CODASYL</strong>, a network database standardised in 1969,
+      <strong>CODASYL</strong>, the network-model standard drawn up by committee in 1969,
       modelled data as a graph — to find a customer's orders you traversed
       a "set" relationship from customer to orders, following pointers. Both
       worked well enough; neither would define the era that followed. IMS
@@ -233,9 +233,9 @@
     <p id="ch13-codd-p5">
       IBM was unenthusiastic. The internal IMS team viewed Codd's work as
       academic, abstract, and unmarketable; an IBM prototype called
-      <em>System R</em> was begun in 1973 but did not ship as a product
+      <em>System R</em> was begun in 1974 but did not ship as a product
       until 1981 (as <em>SQL/DS</em>). In the meantime, in 1977, a 32-year-old
-      programmer at a small consulting firm read Codd's paper, recognised
+      programmer read Codd's paper, recognised
       its commercial potential, and founded a company specifically to build
       a relational database before IBM did. His name was
       <strong>Larry Ellison</strong>, the company was Software Development
@@ -253,15 +253,15 @@
       which Microsoft licensed and turned into <em>SQL Server</em>. So the
       modern relational database landscape descends from two prototypes
       built within five hundred miles of each other in the 1970s: System R
-      at IBM Almaden, and Ingres at Berkeley. Almost every database in
+      at IBM San Jose, and Ingres at Berkeley. Almost every database in
       production in 2026 — Oracle, SQL Server, DB2, PostgreSQL, MySQL,
       SQLite, Snowflake, ClickHouse — has one of those two as its
       great-grandparent. Codd's paper produced an entire industry.
     </p>
 
     <div class="diagram-card" id="fig-13-1">
-      <div class="diagram-label">Fig 13.1 — Codd 1970 to PostgreSQL 16 · two lineages, fifty years</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-2"><title id="svgt-part4-2">Fig 13.1 — Codd 1970 to PostgreSQL 16 · two lineages, fifty years</title>
+      <div class="diagram-label">Fig 13.1 — Codd 1970 to PostgreSQL 18 · two lineages, fifty years</div>
+      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-2"><title id="svgt-part4-2">Fig 13.1 — Codd 1970 to PostgreSQL 18 · two lineages, fifty years</title>
         <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">one eleven-page paper, two prototypes, every modern relational database</text>
 
         <!-- Codd 1970 at top -->
@@ -316,7 +316,7 @@
 
           <line x1="58" y1="104" x2="58" y2="118" stroke="rgba(150,216,150,0.5)"/>
           <rect x="0" y="118" width="240" height="34" rx="4" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.85)" stroke-width="1.5"/>
-          <text x="120" y="134" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,1)">PostgreSQL 16 · MySQL · SQLite</text>
+          <text x="120" y="134" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,1)">PostgreSQL 18 · MySQL · SQLite</text>
           <text x="120" y="146" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)">open source · most deployed</text>
         </g>
 
@@ -327,13 +327,13 @@
           <text x="320" y="36" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">SQL, ACID, B-trees, query planners — every system above implements roughly the same surface contract</text>
         </g>
       </svg>
-      <p id="ch13-codd-p7" class="diagram-caption">Two prototypes spawned the entire industry. System R at IBM Almaden begat DB2 (still at IBM) and indirectly Oracle (Ellison read Codd's paper, founded a company, beat IBM to market). Ingres at Berkeley begat Postgres (Stonebraker again, ten years later), which became PostgreSQL — now the most-used open-source database — and Sybase, which Microsoft licensed and renamed SQL Server. SQLite, MySQL, Snowflake, ClickHouse, BigQuery: all descend, by code or by influence, from one of these two trees. Codd's eleven-page paper produced a fifty-billion-dollar-a-year industry, of which he received approximately none.</p>
+      <p id="ch13-codd-p7" class="diagram-caption">Two prototypes spawned the entire industry. System R at IBM San Jose begat DB2 (still at IBM) and indirectly Oracle (Ellison read Codd's paper, founded a company, beat IBM to market). Ingres at Berkeley begat Postgres (Stonebraker again, ten years later), which became PostgreSQL — now the most-used open-source database — and Sybase, which Microsoft licensed and renamed SQL Server. SQLite, MySQL, Snowflake, ClickHouse, BigQuery: all descend, by code or by influence, from one of these two trees. Codd's eleven-page paper produced a hundred-billion-dollar-a-year industry, of which he received approximately none.</p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon">📜</span>
       <p id="ch13-codd-p8" class="insight-text">
-        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. He spent his last decade increasingly frustrated that commercial databases — including IBM's — implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985 he published <em>"Twelve Rules for Relational Databases"</em> as a definitional response, listing properties any system claiming the title must satisfy. Most commercial systems satisfied perhaps eight. The gap between Codd's mathematics and the working systems descended from his idea — index hints, query planner overrides, vendor-specific dialects — has never closed.
+        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. He spent his last decade increasingly frustrated that commercial databases — including IBM's — implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985 he published his twelve rules — two <em>Computerworld</em> pieces asking "Is Your DBMS Really Relational?" — as a definitional response, listing properties any system claiming the title must satisfy. Most commercial systems satisfied perhaps eight. The gap between Codd's mathematics and the working systems descended from his idea — index hints, query planner overrides, vendor-specific dialects — has never closed.
       </p>
     </div>
   </section>
@@ -703,7 +703,7 @@
           <text x="100" y="270" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">columnar engines lean on this</text>
         </g>
       </svg>
-      <p id="ch13-sql-p5" class="diagram-caption">Same SQL <code>JOIN</code>, three execution strategies. <strong>Nested-loop</strong> is naive but optimal when one side is tiny or has a useful index — every row of the smaller side does an indexed lookup against the larger. <strong>Hash join</strong> builds an in-memory hash table on the smaller side keyed by the join column, then streams the larger side and probes the hash; linear in both sides, fast on equality joins, requires the small side to fit in memory. <strong>Merge join</strong> sorts both sides on the join column and then walks them in lockstep; linear once sorted, indispensable for column-store OLAP engines and for range joins. The optimiser picks based on table sizes, indexes available, and the join condition. Reading <code>EXPLAIN</code> output is, almost always, the act of figuring out which strategy was chosen — and whether it was the right one.</p>
+      <p id="ch13-sql-p5" class="diagram-caption">Same SQL <code>JOIN</code>, three execution strategies. <strong>Nested-loop</strong> is naive but optimal when one side is tiny or has a useful index — every row of the smaller side does an indexed lookup against the larger. <strong>Hash join</strong> builds an in-memory hash table on the smaller side keyed by the join column, then streams the larger side and probes the hash; linear in both sides, fast on equality joins, requires the small side to fit in memory. <strong>Merge join</strong> sorts both sides on the join column and then walks them in lockstep; linear once sorted, indispensable for column-store OLAP engines and for range joins. The optimiser picks based on table sizes, indexes available, and the join condition.</p>
     </div>
 
     <div class="insight-strip">
@@ -727,7 +727,7 @@
       transfers from the same account, racing each other, can read the
       same balance and double-spend it. Multiply these failure modes
       across millions of transfers per day and the financial system stops
-      working. The transaction concept, articulated by IBM's
+      working. The transaction concept, articulated by
       <strong>Jim Gray</strong> in a foundational 1981 paper, is the
       machinery that prevents this — and the four-letter acronym
       <span class="key-term">ACID</span> (Atomicity, Consistency, Isolation, Durability)
@@ -747,8 +747,9 @@
       <strong>Durability</strong>: once a transaction has been told it
       committed, the data survives any subsequent crash, power loss, or
       hardware failure short of total disk loss. Atomicity and durability
-      protect against failure; isolation and consistency protect against
-      concurrency. Together they let an application reason about state
+      protect against failure; isolation protects against concurrency;
+      consistency is what the other three exist to preserve. Together they
+      let an application reason about state
       changes as if the world stopped while each transaction ran.
     </p>
 
@@ -808,11 +809,11 @@
           <text x="500" y="66" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">→ locks or MVCC</text>
 
           <text x="14" y="88" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">D · DURABILITY</text>
-          <text x="120" y="88" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">committed changes survive crash, power loss, fsync</text>
+          <text x="120" y="88" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">committed changes survive crash and power loss</text>
           <text x="500" y="88" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">→ flushed to disk</text>
 
           <line x1="14" y1="100" x2="626" y2="100" stroke="rgba(207,141,120,0.25)"/>
-          <text x="320" y="118" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">JIM GRAY · "The Transaction Concept" · IBM 1981 · ACM Turing Award 1998</text>
+          <text x="320" y="118" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">JIM GRAY · "The Transaction Concept" · Tandem 1981 · ACM Turing Award 1998</text>
           <text x="320" y="134" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">died at sea January 2007 · the transaction guarantees survived him</text>
         </g>
       </svg>
@@ -907,7 +908,7 @@
           <text x="14" y="68" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ② replay WAL forward — re-apply every committed transaction past the checkpoint</text>
           <text x="14" y="84" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ③ undo WAL backward — roll back any uncommitted transaction whose effects leaked to disk</text>
           <text x="14" y="100" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">  ④ database is now exactly the state it would have been if the crash had not happened</text>
-          <text x="14" y="120" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">canonical algorithm: ARIES (IBM 1992) — used by DB2, MS SQL, MySQL InnoDB, PostgreSQL, …</text>
+          <text x="14" y="120" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">canonical algorithm: ARIES (IBM 1992) — DB2, MS SQL, MySQL InnoDB; PostgreSQL's WAL is redo-only</text>
         </g>
       </svg>
       <p id="ch13-acid-p5" class="diagram-caption">The trick is that <em>sequential</em> writes to the log fsync orders of magnitude faster than scattered random writes to the data pages. The engine takes the cost of one cheap, sequential, durable log write per transaction and amortises the expensive data-page writes asynchronously, batching them and writing them back when convenient. On crash, the log tells recovery exactly what to replay forward (committed but not yet flushed to data pages) and what to undo (uncommitted changes that leaked to data pages). The same mechanism appears in filesystems (<a href="part-2#ch4">Chapter 4</a> §04, journaled ext4), in distributed databases (Raft and Paxos logs in <a href="part-5#ch17">Chapter 17</a>), and in event-sourcing application architectures. <em>Write the intent before doing the deed</em> turns out to be one of the deepest patterns in systems engineering.</p>
@@ -1115,7 +1116,7 @@
         <g transform="translate(40,316)">
           <rect x="0" y="0" width="640" height="48" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
           <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">① descend root → internal → leaf · find first key ≥ 25  (3 page reads)</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">② walk leaves rightward emitting (key, row) pairs until key &gt; 40  (~1 leaf per million rows)</text>
+          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">② walk leaves rightward emitting (key, row) pairs until key &gt; 40  (~1 leaf per few hundred matches)</text>
         </g>
       </svg>
       <p id="ch13-indexes-p3" class="diagram-caption">A B+ tree on the <code>age</code> column. Internal nodes route lookups by comparing against keys; leaf nodes hold the actual (key, row-pointer) pairs. Crucially, the leaves are linked left-to-right, so a range scan — "find every user aged 25 to 40" — does one tree descent to the first matching key (3 page reads at depth 3) and then walks leaves rightward emitting matches until it overshoots. The total cost is roughly the depth of the tree plus the number of matches divided by the leaf size. On a billion-row table that's typically 3–4 page reads plus a small linear scan, total time milliseconds. Without the index, the same query would scan the whole table — minutes. The B+ tree is the reason every "find by ID" or "show me orders from last week" feels instant; without it, the modern web does not work.</p>
@@ -1159,7 +1160,7 @@
           <text x="14" y="122" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ORDER BY created_at LIMIT 10</text>
 
           <text x="14" y="148" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">cost:</text>
-          <text x="14" y="164" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  storage ~10–30% of column data</text>
+          <text x="14" y="164" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  storage ~10–30% of the table</text>
           <text x="14" y="180" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  inserts cost ~2× without index</text>
         </g>
 
@@ -1247,10 +1248,10 @@
           <rect x="0" y="14" width="640" height="68" rx="3" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
           <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">'; DROP TABLE users;--           "Bobby Tables" · destroys data</text>
           <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">' UNION SELECT pw FROM users--   exfiltrates every password hash</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">' OR 1=CONVERT(int,@@version)--  blind SQLi · leaks data via error messages</text>
+          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">' OR 1=CONVERT(int,@@version)--  error-based SQLi · leaks data via error messages</text>
         </g>
       </svg>
-      <p id="ch13-injection-p3" class="diagram-caption">The simplest SQL injection: an apostrophe in the input terminates the developer's quoted string, and <code>OR '1'='1</code> turns the WHERE clause into a tautology that matches every row. The login check returns the first user — usually an admin — and the attacker is logged in. More elaborate payloads use <code>UNION SELECT</code> to exfiltrate data from other tables, <code>DROP TABLE</code> to destroy data, or "blind" techniques that infer data one bit at a time from timing or error messages. The 2008 Heartland breach (130 million payment cards), the 2011 Sony PlayStation Network breach (77 million), the 2023 MOVEit breach (personal data on tens of millions), and dozens of smaller incidents were all SQL injection. (The 2007 TJX breach — 94 million cards — is often lumped in, but its front door was different: attackers cracked the WEP encryption on store wireless networks and walked in from the parking lot.) The cumulative direct cost runs into tens of billions of dollars.</p>
+      <p id="ch13-injection-p3" class="diagram-caption">The simplest SQL injection: an apostrophe in the input terminates the developer's quoted string, and <code>OR '1'='1</code> turns the WHERE clause into a tautology that matches every row. The login check returns the first user — usually an admin — and the attacker is logged in. More elaborate payloads use <code>UNION SELECT</code> to exfiltrate data from other tables, <code>DROP TABLE</code> to destroy data, or "blind" techniques that infer data one bit at a time from timing or from whether the page changes at all. The 2008 Heartland breach (130 million payment cards), the 2011 Sony PlayStation Network breach (77 million), the 2023 MOVEit breach (personal data on tens of millions), and dozens of smaller incidents were all SQL injection. (The 2007 TJX breach — 94 million cards — is often lumped in, but its front door was different: attackers cracked the WEP encryption on store wireless networks and walked in from the parking lot.) The cumulative direct cost runs into tens of billions of dollars.</p>
     </div>
 
     <h3>The fix · parameterised queries · and only that</h3>
@@ -1457,7 +1458,8 @@
       three hundred years — and then Charles Babbage broke it in 1854
       and Friedrich Kasiski published the method in 1863. Enigma, with
       rotors and a plugboard and a daily key, lasted six years before
-      Bletchley broke it (<a href="part-1#ch1">Chapter 1</a> §01).
+      Marian Rejewski's team at the Polish Cipher Bureau reconstructed it — a break
+      Bletchley industrialised with the Bombe (<a href="part-1#ch1">Chapter 1</a> §01).
     </p>
 
     <p id="ch14-history-p2">
@@ -1564,7 +1566,7 @@
           <text x="320" y="36" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">"New Directions in Cryptography" · IEEE Transactions on Information Theory · November 1976 · 11 pages</text>
         </g>
       </svg>
-      <p id="ch14-history-p3" class="diagram-caption">Two thousand years compressed onto one timeline. The pre-1976 era is everyone sharing keys in advance — Caesar, Vigenère, Enigma. Each was eventually broken by a clever observer (Babbage, Kasiski, Bletchley) noticing structural patterns — all except the <em>one-time pad</em>, which is provably unbreakable and instead foundered on the impossibility of sharing enough truly random key, one secret bit for every message bit. The 1976 paper changed the question. Diffie and Hellman did not provide the first practical public-key system — that was RSA in 1977 — but they articulated the framework, proved it was theoretically possible, and described an actual key-exchange protocol. Half a century later, every HTTPS connection on Earth runs on top of the framework it announced.</p>
+      <p id="ch14-history-p3" class="diagram-caption">Two thousand years compressed onto one timeline. The pre-1976 era is everyone sharing keys in advance — Caesar, Vigenère, Enigma. Each was eventually broken by a clever observer (Babbage, Kasiski, Rejewski) noticing structural patterns — all except the <em>one-time pad</em>, which is provably unbreakable and instead foundered on the impossibility of sharing enough truly random key, one secret bit for every message bit. The 1976 paper changed the question. Diffie and Hellman did not provide the first practical public-key system — that was RSA in 1977 — but they articulated the framework, proved it was theoretically possible, and described an actual key-exchange protocol. Half a century later, every HTTPS connection on Earth runs on top of the framework it announced.</p>
     </div>
 
     <p id="ch14-history-p4">
@@ -1582,8 +1584,9 @@
       was protected by the First Amendment in a way the export of
       <em>software</em> was not. Anyone abroad could buy the book, scan
       it back into source code with OCR, and compile a copy of PGP. The
-      investigation was dropped in 1996. Cryptography ceased to be a
-      munition in 2000. The principle that hardened out of that decade of
+      investigation was dropped in 1996, the same year cryptography came
+      off the US munitions list; the export rules that replaced it were
+      liberalised to near-irrelevance in 2000. The principle that hardened out of that decade of
       fights — that source code is protected speech, settled soon after in the
       Bernstein and Junger appeals — is the reason every cryptographic library today
       can be open source and globally distributed. PGP itself is rarely
@@ -1600,7 +1603,7 @@
     <div class="insight-strip">
       <span class="insight-icon">📜</span>
       <p id="ch14-history-p6" class="insight-text">
-        <strong>The hidden Cocks.</strong> Diffie–Hellman (1976) and RSA (1977) were independently invented by British cryptographers at GCHQ — <strong>James Ellis</strong> sketched the idea in 1969, <strong>Clifford Cocks</strong> implemented what is essentially RSA in 1973, and <strong>Malcolm Williamson</strong> implemented essentially Diffie–Hellman in 1974. All three were classified Top Secret by the British government and remained classified until 1997 — by which time RSA Inc. and Stanford had built billion-dollar industries on the public re-inventions. The hidden inventors got a footnote in cryptographic history; the public inventors got the Turing Award (Diffie and Hellman, 2015) and patents. The episode is a recurring lesson about classified research: discoveries kept secret are functionally non-discoveries. Public reinvention almost always wins.
+        <strong>The hidden Cocks.</strong> Diffie–Hellman (1976) and RSA (1977) were independently invented by British cryptographers at GCHQ — <strong>James Ellis</strong> sketched the idea in 1969, <strong>Clifford Cocks</strong> worked out what is essentially RSA in 1973, and <strong>Malcolm Williamson</strong> essentially Diffie–Hellman in 1974 — on paper; GCHQ judged the schemes impractical and never deployed them. All three were classified Top Secret by the British government and remained classified until 1997 — by which time RSA Inc. and Stanford had built billion-dollar industries on the public re-inventions. The hidden inventors got a footnote in cryptographic history; the public inventors got the Turing Award (Diffie and Hellman, 2015) and patents. The episode is a recurring lesson about classified research: discoveries kept secret are functionally non-discoveries. Public reinvention almost always wins.
       </p>
     </div>
   </section>
@@ -1651,9 +1654,10 @@
       squaring has square root — each takes about as long forward as
       backward. Cryptography needs operations where the inverse is
       <em>computationally</em> harder than the forward direction by a
-      factor large enough to be practically infinite. Four such operations
-      are known and broadly trusted in 2026; this chapter is, in a sense,
-      a tour through them.
+      factor large enough to be practically infinite. Only a handful of
+      such operations are known and broadly trusted in 2026; four of them
+      carry this chapter, and a fifth — the lattice problems of §06 — is
+      the hedge standing behind them.
     </p>
 
     <h3>3. "Hard" means what · and what kills it</h3>
@@ -1867,7 +1871,7 @@
 
           <text x="100" y="170" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">EASIEST</text>
           <text x="100" y="184" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">SHA-1: 2<tspan font-size="6" baseline-shift="super">63</tspan> · achieved 2017</text>
-          <text x="100" y="198" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">MD5: 2<tspan font-size="6" baseline-shift="super">64</tspan> · feasible 2004</text>
+          <text x="100" y="198" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">MD5: broken 2004 · seconds today</text>
         </g>
 
         <!-- Bottom: birthday paradox -->
@@ -1896,7 +1900,7 @@
       rounds that no shortcut to inversion is known. Designing such
       functions is genuinely hard: SHA-1 looked solid in 1995 and was
       broken by 2017; MD5 looked solid in 1991 and was broken by 2004.
-      The current generation (SHA-256, BLAKE3, SHA-3) has been studied
+      The current generation (SHA-256, SHA-3, the BLAKE family) has been studied
       for over a decade without a meaningful weakening.
     </p>
 
@@ -2280,8 +2284,8 @@
 
           <line x1="14" y1="178" x2="226" y2="178" stroke="rgba(150,216,150,0.4)"/>
 
-          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">⑥ receive B = 19</text>
-          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">⑦ compute K = B<tspan font-size="7" baseline-shift="super">a</tspan> mod p</text>
+          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">④ receive B = 19</text>
+          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">⑤ compute K = B<tspan font-size="7" baseline-shift="super">a</tspan> mod p</text>
           <text x="14" y="234" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  K = 19<tspan font-size="7" baseline-shift="super">6</tspan> mod 23</text>
           <text x="14" y="252" font-family="Courier Prime" font-size="14" fill="rgba(207,141,120,1)">  K = 2 ←  shared!
             <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
@@ -2345,8 +2349,8 @@
 
           <line x1="14" y1="178" x2="226" y2="178" stroke="rgba(100,150,255,0.4)"/>
 
-          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">⑥ receive A = 8</text>
-          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">⑦ compute K = A<tspan font-size="7" baseline-shift="super">b</tspan> mod p</text>
+          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">④ receive A = 8</text>
+          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">⑤ compute K = A<tspan font-size="7" baseline-shift="super">b</tspan> mod p</text>
           <text x="14" y="234" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  K = 8<tspan font-size="7" baseline-shift="super">15</tspan> mod 23</text>
           <text x="14" y="252" font-family="Courier Prime" font-size="14" fill="rgba(207,141,120,1)">  K = 2 ←  same!
             <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1.2s" repeatCount="indefinite"/>
@@ -2359,7 +2363,7 @@
           <text x="320" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)">because (g<tspan font-size="8" baseline-shift="super">a</tspan>)<tspan font-size="8" baseline-shift="super">b</tspan> ≡ (g<tspan font-size="8" baseline-shift="super">b</tspan>)<tspan font-size="8" baseline-shift="super">a</tspan> ≡ g<tspan font-size="8" baseline-shift="super">ab</tspan> (mod p)  ·  Alice and Bob compute the same K from different sides</text>
         </g>
       </svg>
-      <p id="ch14-publickey-p3" class="diagram-caption">The whole Diffie–Hellman protocol in actual numbers. Alice picks secret <em>a</em>=6, Bob picks secret <em>b</em>=15; they both know the public prime <em>p</em>=23 and base <em>g</em>=5. Alice sends Bob A=g<sup>a</sup> mod p = 8; Bob sends Alice B=g<sup>b</sup> mod p = 19. Each then raises the received value to their own secret: Alice computes B<sup>a</sup>=2, Bob computes A<sup>b</sup>=2. They have the same shared secret. The eavesdropper Eve sees p, g, A, B — but to compute K she would need to solve g<sup>a</sup> mod p = A for <em>a</em>, the discrete logarithm problem. With <em>p</em>=23 it's trivial; with the 2048-bit primes used in real Diffie-Hellman, no efficient algorithm is known. The same construction with <em>elliptic curves</em> (§05) instead of integer modular arithmetic gives ECDH, the key exchange of choice in TLS 1.3.</p>
+      <p id="ch14-publickey-p3" class="diagram-caption">The whole Diffie–Hellman protocol in actual numbers. Alice picks secret <em>a</em>=6, Bob picks secret <em>b</em>=15; they both know the public prime <em>p</em>=23 and base <em>g</em>=5. Alice sends Bob A=g<sup>a</sup> mod p = 8; Bob sends Alice B=g<sup>b</sup> mod p = 19. Each then raises the received value to their own secret: Alice computes B<sup>a</sup>=2, Bob computes A<sup>b</sup>=2. They have the same shared secret. The eavesdropper Eve sees p, g, A, B — but to compute K she would need to solve g<sup>a</sup> mod p = A for <em>a</em>, the discrete logarithm problem. With <em>p</em>=23 it's trivial; with the 2048-bit primes used in real Diffie–Hellman, no efficient algorithm is known. The same construction with <em>elliptic curves</em> (§05) instead of integer modular arithmetic gives ECDH, the key exchange of choice in TLS 1.3.</p>
     </div>
 
     <h3>RSA · the same idea with factoring instead of discrete log</h3>
@@ -2417,7 +2421,7 @@
           <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">① pick two large primes:                p = 17, q = 23  (real RSA: ~1024-bit each)</text>
           <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">② compute modulus:                       n = p·q = 17·23 = 391</text>
           <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">③ compute Euler's totient:                φ(n) = (p-1)(q-1) = 16·22 = 352</text>
-          <text x="14" y="80" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">④ pick e coprime to φ(n):                 e = 3   (very common choice; can also use 65537)</text>
+          <text x="14" y="80" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">④ pick e coprime to φ(n):                 e = 3   (small, for legibility; real RSA uses 65537)</text>
           <text x="14" y="96" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">⑤ find d such that e·d ≡ 1 (mod φ(n)):    3·d ≡ 1 (mod 352) → d = 235</text>
           <text x="14" y="116" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">PUBLIC KEY:  (e, n) = (3, 391)            PRIVATE KEY:  (d, n) = (235, 391)</text>
         </g>
@@ -2458,7 +2462,7 @@
     <div class="insight-strip">
       <span class="insight-icon">⚙️</span>
       <p id="ch14-publickey-p6" class="insight-text">
-        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. A 2048-bit RSA encryption takes microseconds; AES-128 encrypts megabytes in the same time. This is why TLS does not use RSA for the actual data: the handshake uses RSA (or ECDHE) once to agree on a 256-bit AES key, and AES handles the rest. <span class="key-term">Diffie-Hellman</span> is in the same performance class as RSA — a few milliseconds per handshake — but with the bonus property of <em>forward secrecy</em> (<a href="part-3#ch11">Chapter 11</a> §05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. Modern TLS 1.3 mandates ephemeral key exchange (ECDHE specifically) and uses the long-term RSA or ECDSA key only for signing the handshake, not for the key exchange itself.
+        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. A 2048-bit RSA encryption takes microseconds; AES-128 encrypts megabytes in the same time. This is why TLS does not use RSA for the actual data: the handshake uses RSA (or ECDHE) once to agree on a 256-bit AES key, and AES handles the rest. <span class="key-term">Diffie-Hellman</span> is in the same performance class as RSA — a few milliseconds per handshake — but with the bonus property of <em>forward secrecy</em> (<a href="part-3#ch11">Chapter 11</a> §05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. Modern TLS 1.3 mandates ephemeral key exchange (in practice always ECDHE) and uses the long-term RSA or ECDSA key only for signing the handshake, not for the key exchange itself.
       </p>
     </div>
   </section>
@@ -2762,8 +2766,7 @@
       actually uses) it is a different curve computation with the same shape.
       Either way, the result is a value only the holder of the private key
       could have produced, and anyone holding the public key can confirm it
-      matches this exact message. Only someone with the private key could have
-      produced the signature; anyone with the public key can verify it. This
+      matches this exact message. This
       asymmetric primitive is the basis of the entire TLS certificate
       system: a CA's certificate is signed by a more trusted CA's
       private key; a server's certificate is signed by a CA's; the
@@ -2960,7 +2963,7 @@
         <g transform="translate(40,316)">
           <rect x="0" y="0" width="640" height="48" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
           <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">"HARVEST NOW, DECRYPT LATER" — adversaries record encrypted traffic today, decrypt it when CRQC exists</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Cloudflare, Google, Apple all began deploying hybrid (X25519 + ML-KEM) TLS in 2023–2024 to defend against this</text>
+          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Cloudflare and Google began deploying hybrid (X25519 + ML-KEM) TLS in 2023; Apple's iMessage PQ3 followed in 2024</text>
         </g>
       </svg>
       <p id="ch14-tls-pqc-p8" class="diagram-caption">The migration is real and underway. Symmetric cryptography (AES, SHA-256, HMAC) is essentially unaffected by quantum computing — Grover's algorithm offers a square-root speedup on brute-force search, which means doubling the key size restores security. Public-key cryptography is the problem: Shor's algorithm breaks RSA, DH, and ECC in polynomial time on a sufficiently large quantum computer. The standardised replacements published by NIST in August 2024 — Kyber (now ML-KEM), Dilithium (ML-DSA), and SPHINCS+ (SLH-DSA) — are based on lattice problems (or, for SPHINCS+, hash chains) that are believed quantum-resistant. As of 2026, hybrid handshakes that use both classical ECDH and post-quantum Kyber simultaneously are deploying across major web infrastructure, defending against the "harvest now, decrypt later" attack where an adversary records encrypted traffic today to decrypt years later when a CRQC exists.</p>
@@ -3123,7 +3126,7 @@
       The senators looked uncertain. The hackers were not joking; the
       <a href="part-3#ch9">BGP</a> and <a href="part-3#ch11">DNS</a>
       vulnerabilities they had in mind were real, and the testimony was
-      carried verbatim into the Congressional Record. It was the first
+      carried verbatim into the Senate's published hearing record. It was the first
       time the American government received the news, on the record,
       that adversaries thought about computer systems differently than
       the people who built them — that there was a discipline of
@@ -3275,10 +3278,10 @@
       attacker-supplied code. <a href="part-1#ch3">Chapter 3</a> §06 traced the arms race from
       stack canaries through DEP and ASLR to ROP. This section continues
       the story past <a href="part-1#ch3">Chapter 3</a>'s stopping point. The defences have
-      gotten more sophisticated; the attacks have gotten more inventive;
+      grown more sophisticated; the attacks more inventive;
       the underlying problem — that C and C++ allow memory access without
       proof of correctness — has not gone away. The cumulative effect of
-      thirty-five years of attack and defence, surveyed in one diagram,
+      nearly forty years of attack and defence, surveyed in one diagram,
       is the deepest example in computing of layered engineering against
       a moving adversary.
     </p>
@@ -3367,10 +3370,10 @@
           <rect x="0" y="0" width="640" height="60" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
           <text x="320" y="20" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">THE STRUCTURAL CONCLUSION</text>
           <text x="320" y="36" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Microsoft 2019: 70% of severe security bugs in our C/C++ codebases are memory safety bugs.</text>
-          <text x="320" y="50" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Google 2022: same conclusion in Chromium. The fix is no longer "another mitigation" — it's a memory-safe language.</text>
+          <text x="320" y="50" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Google 2020: same conclusion in Chromium. The fix is no longer "another mitigation" — it's a memory-safe language.</text>
         </g>
       </svg>
-      <p id="ch15-memory-p2" class="diagram-caption">Thirty-five years of memory-corruption arms race. Each red dot is an attack technique that broke the previous defence; each green dot is a defence that responded. Stack canaries, DEP, ASLR, CFI, Pointer Authentication (ARM PAC), Control-flow Enforcement Technology (Intel CET, including shadow stacks), Memory Tagging Extension (ARM MTE) — each is real and valuable, but the cumulative experience of the industry is that mitigations have diminishing returns. Microsoft and Google have both publicly concluded that ~70% of severe security bugs in their C/C++ codebases are memory-safety bugs, and that the most cost-effective response is no longer "another mitigation" but rewriting in memory-safe languages. Linux began accepting Rust kernel modules in 2022. Chromium and Firefox are progressively rewriting subsystems in Rust. The arms race continues at the layer of mitigations; the war is being lost at the layer of language choice.</p>
+      <p id="ch15-memory-p2" class="diagram-caption">Nearly forty years of memory-corruption arms race. Each red dot is an attack technique that broke the previous defence; each green dot is a defence that responded. Stack canaries, DEP, ASLR, CFI, Pointer Authentication (ARM PAC), Control-flow Enforcement Technology (Intel CET, including shadow stacks), Memory Tagging Extension (ARM MTE) — each is real and valuable, but the cumulative experience of the industry is that mitigations have diminishing returns. Microsoft and Google have both publicly concluded that ~70% of severe security bugs in their C/C++ codebases are memory-safety bugs, and that the most cost-effective response is no longer "another mitigation" but rewriting in memory-safe languages. Linux began accepting Rust kernel modules in 2022. Chromium and Firefox are progressively rewriting subsystems in Rust. The arms race continues at the layer of mitigations; the war is being lost at the layer of language choice.</p>
     </div>
 
     <h3>CFI · Pointer Authentication · the contemporary defences</h3>
@@ -3400,7 +3403,7 @@
       who overwrites a return address cannot produce a valid signature
       without the per-process key, and gadget addresses harvested from
       one binary cannot be used (they don't have valid PAC tags). PAC
-      is implemented in silicon — a few transistors per core, near-zero
+      is implemented in silicon — a corner of each core, near-zero
       runtime cost — and is one of the most effective ROP defences
       shipped in the last decade. Intel's equivalent, the
       <strong>CET</strong> (Control-flow Enforcement Technology) shadow
@@ -3419,8 +3422,9 @@
       modified, or forged at any hop. The defence to all of this — the
       cryptographic layer of <a href="#ch14">Chapter 14</a> applied at the transport layer
       — is TLS, which authenticates endpoints and encrypts traffic so
-      that whatever the network does to a TLS-wrapped flow is detectable
-      and reversible. This section walks through the canonical network
+      that whatever the network does to a TLS-wrapped flow is detected —
+      and a detected lie kills the connection instead of reaching the
+      application. This section walks through the canonical network
       attacks, locates each in the layer where it operates, and shows
       how <a href="#ch14">Chapter 14</a>'s primitives neutralise them. The pattern is
       consistent: anything below TLS can be lied to; TLS itself, properly
@@ -3539,13 +3543,14 @@
       sends every packet destined for the gateway to the attacker
       instead. The attacker forwards traffic to the real gateway,
       becoming a transparent intermediary. ARP has no authentication
-      and no signature; the protocol believes whatever speaks first.
+      and no signature; the protocol believes whatever it is told — so
+      the attacker tells it, and keeps telling it.
     </p>
 
     <div class="diagram-card" id="fig-15-4">
       <div class="diagram-label">Fig 15.4 — ARP spoofing · poisoning the address-resolution cache</div>
       <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-31"><title id="svgt-part4-31">Fig 15.4 — ARP spoofing · poisoning the address-resolution cache</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">whoever answers first wins · ARP has no authentication</text>
+        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">whoever keeps answering wins · ARP has no authentication</text>
 
         <!-- Three nodes -->
         <g transform="translate(40,80)">
@@ -3573,12 +3578,12 @@
 
         <!-- Step 2: attacker answers first -->
         <g transform="translate(40,170)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">② attacker replies first:  "I do, MAC = aa:bb:cc:dd:ee:ff"  (forged · not actually the gateway)</text>
+          <text x="0" y="0" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">② attacker replies first:  "I do, MAC = 66:66:66:dd:ee:ff"  (the attacker's own NIC · a forged claim)</text>
         </g>
 
         <!-- Step 3: gateway answers second -->
         <g transform="translate(40,192)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">③ real gateway also replies — too late, laptop already cached attacker's answer</text>
+          <text x="0" y="0" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">③ real gateway replies too — but the attacker re-sends constantly; the cache keeps the freshest claim</text>
         </g>
 
         <!-- Step 4: traffic flows through attacker -->
@@ -3636,8 +3641,9 @@
       that has authority to do something, tricked into using that
       authority on the attacker's behalf. The 2010s saw the OWASP Top
       10 — the curated list of the most consequential web vulnerabilities
-      — settle into a stable shape, and most of those bugs are confused
-      deputies of one form or another.
+      — settle into a stable shape, and most of its entries reduce to
+      two of the six shapes this chapter closes on: data parsed as code,
+      or a deputy confused.
     </p>
 
     <h3>SQL injection in defence-in-depth</h3>
@@ -3878,7 +3884,7 @@
           <text x="320" y="14" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">no single layer is sufficient · production runs all five concurrently</text>
         </g>
       </svg>
-      <p id="ch15-defense-p2" class="diagram-caption">Industrial-scale defence is layered. The firewall blocks the obvious bad traffic at the perimeter (and, in cloud-native deployments, between every pair of microservices). IDS/IPS spots known-malicious patterns inside the traffic the firewall let through. SIEMs aggregate logs from every component and look for cross-cutting patterns ("this user logged in from Helsinki and Tokyo within 30 seconds"). EDR agents sit on every laptop and server modelling normal process behaviour and alerting on anomalies — the modern detection layer where most novel attacks first show their hand. Zero trust dispenses with the network perimeter altogether: every request to every service authenticates and authorises independently, regardless of where the request came from. Each generation was the response to the previous one's failure mode; deploying all five is not redundant but cumulative.</p>
+      <p id="ch15-defense-p2" class="diagram-caption">Industrial-scale defence is layered. The firewall blocks the obvious bad traffic at the perimeter (and, in cloud-native deployments, between every pair of microservices). IDS/IPS spots known-malicious patterns inside the traffic the firewall let through. SIEMs aggregate logs from every component and look for the cross-cutting patterns no single sensor can see. EDR agents sit on every laptop and server modelling normal process behaviour and alerting on anomalies — the modern detection layer where most novel attacks first show their hand. Zero trust dispenses with the network perimeter altogether: every request to every service authenticates and authorises independently, regardless of where the request came from. Each generation was the response to the previous one's failure mode; deploying all five is not redundant but cumulative.</p>
     </div>
 
     <h3>Stuxnet · what a state-grade attack actually looks like</h3>
@@ -3930,8 +3936,8 @@
             <animate attributeName="fill-opacity" values="0.6;0.6;1.4;0.6;0.6;0.6" keyTimes="0;0.20;0.30;0.50;0.80;1" dur="10s" repeatCount="indefinite"/>
           </rect>
           <text x="14" y="20" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">② SPREAD — find the actual target</text>
-          <text x="14" y="38" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">lateral movement: print-spooler RCE (2010-2729) · task-scheduler EoP (2010-3338) · keyboard EoP (2010-2549)</text>
-          <text x="14" y="54" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Stuxnet was self-propagating but constrained — only infected three machines per host, only spread for 21 days.</text>
+          <text x="14" y="38" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">lateral movement: print-spooler RCE (2010-2729) · task-scheduler EoP (2010-3338) · keyboard EoP (2010-2743)</text>
+          <text x="14" y="54" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Stuxnet was self-propagating but constrained — only infected three machines per USB drive, only spread for 21 days.</text>
         </g>
 
         <!-- Stage 3: identify -->
@@ -3998,7 +4004,7 @@
     <div class="insight-strip">
       <span class="insight-icon">🛰️</span>
       <p id="ch15-defense-p6" class="insight-text">
-        <strong>SolarWinds 2020 · the supply-chain shape.</strong> SVR operatives compromised SolarWinds' build environment, modified the Orion source code to insert a backdoor (called <em>SUNBURST</em>), and let the company's own digitally-signed updates carry the malware to ~18,000 customers including the Treasury, State, Commerce, and Energy departments, and most of the Fortune 500. The backdoor lay dormant for two weeks after install, then beaconed home. FireEye discovered it after spotting unusual traffic on its own network in December 2020. The fundamental lesson: every dependency you ship is part of your attack surface, including dependencies you trust because they're "established" or "enterprise-grade." The 2020s response — Software Bills of Materials (SBOMs), reproducible builds, signed transparency logs of build artifacts (SLSA) — is the supply-chain equivalent of Certificate Transparency from <a href="#ch14">Chapter 14</a>.
+        <strong>SolarWinds 2020 · the supply-chain shape.</strong> SVR operatives compromised SolarWinds' build environment, modified the Orion source code to insert a backdoor (called <em>SUNBURST</em>), and let the company's own digitally-signed updates carry the malware to ~18,000 customers — the Treasury, State, Commerce, and Energy departments among them — from a customer roll that included most of the Fortune 500. The backdoor lay dormant for two weeks after install, then beaconed home. FireEye discovered it after spotting unusual traffic on its own network in December 2020. The fundamental lesson: every dependency you ship is part of your attack surface, including dependencies you trust because they're "established" or "enterprise-grade." The 2020s response — Software Bills of Materials (SBOMs), reproducible builds, signed build provenance (SLSA, sigstore) — is the supply-chain equivalent of Certificate Transparency from <a href="#ch14">Chapter 14</a>.
       </p>
     </div>
   </section>
@@ -4079,7 +4085,7 @@
             <text x="14" y="38" font-size="8" fill="rgba(230,217,189,0.85)">leak via timing, cache, power</text>
             <text x="14" y="54" font-size="8" fill="rgba(230,217,189,0.7)">Spectre · Meltdown · timing on RSA</text>
             <text x="14" y="68" font-size="8" fill="rgba(230,217,189,0.7)">cache-prime · TLBleed</text>
-            <text x="14" y="86" font-size="8" fill="rgba(150,216,150,0.85)" font-style="italic">FIX: constant-time crypto</text>
+            <text x="14" y="86" font-size="8" fill="rgba(150,216,150,0.85)" font-style="italic">FIX: constant-time code · isolation</text>
           </g>
 
           <!-- Privilege escalation -->
@@ -4169,7 +4175,7 @@
       enterprise twin held the same week), <strong>CCC</strong> (Chaos
       Communication Congress, the European centre, late December in
       Hamburg, sociologically distinct), <strong>Pwn2Own</strong>
-      (Vancouver and Toronto, biannual, where Trend Micro's Zero Day
+      (hosted from Berlin to Cork to Tokyo in recent years, where Trend Micro's Zero Day
       Initiative funds a prize pool and researchers compete to break shipping
       products live on stage — ZDI buys the demonstrated exploits and reports
       them to the vendors), and <strong>USENIX Security</strong> (academic).
@@ -4227,7 +4233,7 @@
           <rect x="0" y="0" width="640" height="60" rx="4" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.65)"/>
           <text x="14" y="22" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">REWARDS — the bug bounty economy</text>
           <text x="14" y="40" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">low-severity bugs: ~$50–$500 · high-severity: $1K–$50K · critical chains (sandbox escape + RCE): $100K–$1M+</text>
-          <text x="14" y="56" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Apple Security Bounty, Google VRP, MS BlueHat — million-dollar payouts have happened</text>
+          <text x="14" y="56" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Apple Security Bounty, Google VRP, Microsoft Bounty — top offers reach seven figures</text>
         </g>
       </svg>
       <p id="ch15-culture-p6" class="diagram-caption">The security field is unusually well-organised as an ecosystem. Learning environments — PicoCTF, OverTheWire, HackTheBox — provide free or low-cost on-ramps. Working environments split into red team (offensive), blue team (defensive), and the bug bounty market that connects independent researchers to corporate budgets. The annual meeting points — DEF CON, Black Hat, CCC, Pwn2Own, USENIX Security — are where the field collectively decides what it knows. Holding all of it together is the responsible-disclosure norm: find a vulnerability, tell the vendor privately, give them a fixed window to ship a fix, then publish regardless of what they did. The norm is not enforceable; it is sustained by reputation and the alternative being worse for everyone. A working security engineer participates in all three rings — they learn through CTFs, they work in red or blue or both, and they spend at least one week a year somewhere where the field exchanges its current understanding.</p>
@@ -4236,7 +4242,7 @@
     <h3>Closing the chapter · closing Part IV</h3>
 
     <p id="ch15-culture-p7">
-      <a href="#ch15">Chapter 15</a> closes Part IV. We started with an empty data
+      <a href="#ch15">Chapter 15</a> closes Part IV. We started with a pure data
       abstraction (Codd's relations, <a href="#ch13">Chapter 13</a>), built up the
       mathematics that protects it (cryptography, <a href="#ch14">Chapter 14</a>), and
       ended by surveying the entire attack and defence landscape that
