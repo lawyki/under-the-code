@@ -1016,6 +1016,181 @@ engines, dark + light. Live glossary serves 520 with `timer interrupt`
 restored. **STOP for owner review before Part III** — the gate rhythm.
 Remaining language-pass parts: III, IV, V.
 
+### Pass-15 verification (2026-08-10)
+
+Full Fable audit of Pass 15, whose clearances never had a second read and
+whose in-flight defense was partially self-defended (brief:
+`docs/pass-15-verification-brief.md`); run in parallel with the owner's read —
+fact fixes only, zero register churn, anchors byte-identical. Method mirrored
+the 14/16/17/18 pattern: deep read of all of Part II by the verifying model,
+then a 17-agent workflow — 8 independent per-chapter fresh readers (student +
+sceptic lens, web-enabled, blind to §4o), 4 primary-source verifiers over the
+§4o correction list, an adversarial defense over every contested flag (4
+defenders, one per chapter batch: 21 overturned, 8 conceded, 1 partial), and
+a fact/consistency/voice confirmation gate over the diff. The first 12-agent
+wave died whole on a session limit — the exact Pass-15 failure mode — and was
+re-run complete after the reset; nothing was self-defended. The gate found no
+verifier error (a first in five verifications), returning only cosmetic
+notes; its second look ratified one post-gate banner iteration (below).
+
+**The §4o load-bearing corrections: all stand.** Reconfirmed against primary
+sources or recomputed: both replacement Stroustrup pull-quotes word-for-word
+(foot quote per stroustrup.com/quotes.html; "smaller and cleaner language" =
+D&E p. 207, 1994); WAL = Gray/System R late 1970s; pipes conceived by
+McIlroy, built by Thompson in a night (McIlroy, *A Research UNIX Reader*);
+scheduler tick = on-core APIC timer; major ≈1000× minor; commit-record "in
+practice"; WAFL early 1990s; four-syscalls + socket door (POSIX read() on
+sockets); cgroups / CPU-quota descheduling (CFS bandwidth-control docs);
+Firecracker micro-VM; eBPF verifier + who-may-load; proof-up-front vs
+fenced-at-runtime; CFS-and-EEVDF (6.6, 2023); PDP-7 minicomputer; "after B"
+(Ritchie's "progression through the alphabet" account); no K&R-unrevised
+claim remains; browser = C++ (every major engine); 70% scoped to MSRC 2019 /
+Chromium; the kernel's exact -f flags in its Makefile; Zig not memory-safe;
+OS/360 for Brooks; Stroustrup thesis = distributed systems, Simula
+simulator; Simula words class/object/virtual/THIS vs ideas
+(subclasses/virtual procedures); modules = C++20, std::print = C++23;
+moved-from = valid-but-unspecified ([lib.types.movedfrom]); Christmas-1989
+seam; ANSI committee Dec 1989 → C++98; Dartmouth compile-and-go misclaim
+absent, ROM-BASIC lineage correct; McCarthy "had written"; Zen = Tim Peters
+1999; GIL 5 ms; .pyc = imports cached, `__main__` recompiled;
+bytecode/stack-machine lineage; asyncio and PEP-703 scopings; matmul figure
+re-benchmarked locally (42.2 s pure Python / 0.0023 s NumPy on this machine;
+the printed ~2 min / 0.012 s / ~10,000× is self-consistent to the digit).
+**The four §4o re-carries hold the register** — blind readers, not knowing
+they were re-carries, named the GIL lost-update race and the pickle coda
+among the chapters' best passages; kept verbatim.
+
+**Wrongly cleared, found & fixed (20 surgical edits).** Quote-class — the
+§4o replacement class, a third instance inside its own chapter: fig 6.2's
+"I wanted Simula's expressiveness and BCPL's efficiency, on a real machine,
+for real systems" is attested nowhere → replaced with the verbatim HOPL-II
+opening sentence ("C++ was designed to provide Simula's facilities for
+program organization together with C's efficiency and flexibility for
+systems programming" — *A History of C++*, 1993); fig 7.2's first-person van
+Rossum naming quote was a recasting of the third-person Python FAQ →
+replaced with his real first-person sentence from the *Programming Python*
+foreword (1996; python.org/doc/essays/foreword), attribution updated;
+fig 4.1's "microkernels have won the intellectual debate" was
+paraphrase-in-quotes → the verbatim "the debate is essentially over.
+Microkernels have won." Figure arithmetic (all recomputed): fig 4.5 avg
+waits 8.5/7.0 → **8.75/7.75** (from the figure's own workload; the RR and
+MLFQ lane sequences verified exact); fig 5.1 x86-64 "7 bytes" → **4**
+(8D 04 37 C3, assembled twice independently); fig 5.6 malloc(150) fit its
+own free 240 B chunk → **malloc(300)**; fig 6.9 banner "six standards" →
+**seven** (98/03/11/14/17/20/23 drawn); fig 4.21 batch net 2 → **4 Gbps**
+(the one column that broke the figure's own "fully accounted" invariant —
+CPU/RAM/IO sum exactly). Fact-class: the inode table glossed ctime as
+"created" → "changed" (POSIX st_ctime = status change; classic inodes store
+no creation time); figs 5.2/5.3 "UNIX v1 · PDP-7 asm / 1971" → "UNIX ·
+1969" (First Edition, Nov 1971, was PDP-11 assembly — the labels
+contradicted fig 5.3's own caption); fig 4.3 "~30 million lines of C,
+loaded once at boot" → "carved from ~30 million…" (the tree is not the boot
+image — the label undercut the figure's own modules story); fig 5.7 banner
+"EVERY MAJOR BROWSER CVE OF THE 2010S WAS ONE OF THESE TWO" (leaks are
+never CVEs; UAF ≈ a third) → "UAF ALONE: A THIRD OF SEVERE BROWSER CVES" —
+the render check found the old banner also physically interleaved with both
+columns' bottom lines at HEAD (36×6 / 20×6 px), so the shorter true banner
+clears them in both engines; fig 7.6 "BINARY_MUL" (an opcode that never
+existed) → "BINARY_MULTIPLY" at font-size 7 (same footprint; sanctioned);
+fig 7.8 "return view" → "return array" (np.dot allocates, and the label
+contradicted its own caption); ch5-portability-p7 "B's wordless model" →
+"word-only" (contradicted "word-oriented" two sentences up);
+ch5-ub-p2 "The list is short" → "The core of the list is short" (C11 Annex
+J.2 enumerates ~200 UB kinds); ch5-survives-p3 "the Android Bluetooth stack
+moved" → "is moving" (partial migration); ch7-gil-p2's mid-word HTML break
+rendered "single- threaded" → rewrapped.
+
+**Considered and declined** (defense overturned with sources, or
+documented; do not "fix" blindly): Dirty COW "patched it within hours" —
+the fix commit's author date is 2016-10-13T20:07Z, the same day as the
+07:45 UTC Red Hat report (the 18 Oct date is the embargo merge; verified
+against the GitHub API directly); pipe dating stays 1973 (conflict of
+primaries: Ritchie's Evolution paper says 1972, the V3 manual documenting
+pipe(2) is Feb 1973 — flagged, not guessed); Steve Russell "transcribing
+the paper" — attested in his Smithsonian oral history ("I'd been
+hand-compiling all sorts of things like that for two or three months");
+ceval.c "ten thousand lines" (generated_cases.c.h is #included at the
+switch site: 3.13 ≈ 9.4k, 3.14 ≈ 16k); CPython "roughly one million lines
+of C" (current trees measure 0.93–1.04M raw .c+.h lines); array decay as
+PDP-11 idiom (Ritchie invented the decay rule for the PDP-11 retarget — the
+flag had it backwards); "(seL4, QNX, the formally-verified ones)"
+(enumeration, and p5 already scopes seL4 precisely); "pipes between every
+pair" (neighbour idiom, figure disambiguates); SJF row + "lowest possible
+average wait" (canonical Silberschatz claim, non-preemptive class); MLFQ
+caption (the "demoted" stamp carries C's descent); "Until 1973 … assembly"
+(generic self-scoped by p3's "the normal state"; MCP/Multics never left
+their machines); fig 6.1 "had not evolved since 1973" (Ritchie: X3J11's one
+important change was borrowed *from* C++); "1980s software crisis" phase
+framing; "50,000 lines" era-scoped; moved-from "valid-but-empty"
+(guaranteed for vector, the drawn case); fig 6.5 return-value asymmetry
+(the exception path is the C++ error path, primed by p2/p3); modules
+"obsoleted/replacing" (the parallel C++11 panel defines the idiom); "ANSI
+ratifies" (ANSI approved the US edition, 27 July 1998); "Cox · NeXT ·
+Apple" (lineage idiom, matches the tree's loose slot grammar); "C's first
+child" (conception 1979); ~20 lines of C per NumPy op (the ufunc tutorial's
+inner loop is literally 21 lines); "favor"/"behavior"/"math" (-or/-our
+outside the §5 ruling; register is the owner's); fig 7.1
+"tokenize/optimize" (§5(d) code registers); "Resource Acquisition Is
+Initialisation" (Pass-19 ratified sweep); fig 5.9 "roughly 10 µs" label vs
+"a few µs" caption (both order-correct, §4o wording deliberate).
+
+**Flagged for the owner read (no edits — untouchables and register):**
+1. **`requestz` in the pickle coda (`ch7-datasci-p7`)** — the named
+   typosquat is a real, live, apparently legitimate PyPI package (author
+   Han Zhichao, HTTP 200, benign metadata; verified twice independently);
+   the sentence effectively labels a real maintainer's package malware.
+   The coda is untouchable under this brief, so nothing was changed.
+   **Ready one-word fix if you want it: `requestz` → `request`** — a
+   documented malicious requests typosquat (Sonatype 2022 ransomware
+   incident), currently 404 on PyPI, still one keystroke from `requests`.
+2. ch7 hero lead "an order of magnitude of performance" understates the
+   chapter's own numbers (~150× fig 7.7, ~10,000× fig 7.9); heroes are
+   untouchable.
+3. ch6 hero lead "By 1979, C was running million-line systems" —
+   unverifiable (V7 ≈ 10⁵ lines; 5ESS is 1982+).
+4. Geometry, punch-list class: fig 6.1's "C++ released" marker sits on the
+   1995 tick (x=540; 1985 ≈ x=312); fig 4.5's MLFQ lane leaves C undrawn
+   from its t=2 arrival until t=17 (not a legal MLFQ trace as drawn);
+   fig 4.5's RR lane draws 14 uniform slices = 28 units against 26 of
+   work; fig 7.6's BINARY_MULTIPLY line overhangs its rect ~8 px/side
+   (pre-existing overhang class).
+5. Register-class reader flags (punch-list): the fig 4.1 caption
+   re-litigates the body's verdict; the fig 4.9 caption re-runs the fault
+   taxonomy; fig 5.3's caption/banner/body triple the "portable PDP-11
+   assembler" thesis; the fig 6.9 caption repeats the SVG's own closing
+   lines; ch7-cpython-p2 retells the §01 switch sentence; "Inheritance is
+   layout" promises layout, delivers dispatch; ch7's nav item 06 diverges
+   from its section eyebrow; "Van Rossum 1989-91" hyphen. Pass 19's
+   Part II flags (closer label / headline) stand untouched.
+
+**Invariants.** Anchor-id set **byte-identical to HEAD (346)** — verified
+after every edit block (sorted-set md5 unchanged). Glossary regenerated:
+**count 519, no entry added or removed, zero definition changes** —
+timestamp-only diff; the DH merge state and the `thompson` quirk stand.
+Greenbar identity, heroes, LISTING lines, EOF closer, Phase-2 items
+(Little's Law mechanism, the ch4-security-p18 stamp), the pickle coda,
+thesis set and authorship line untouched. Figure edits: text labels only;
+the single attribute change is one font-size 8→7 (BINARY_MULTIPLY, width
+containment); no geometry moved.
+
+**Verification.** Local (CF-mimicking server: extensionless 200, `.html`
+308): Chromium **and** WebKit at 1440 + 375, dark + light, on
+part-2/index/glossary — 24 page-checks: **0 console errors, 0 external
+requests, 0 page h-scroll, nav 48 px** (index and glossary carry their own
+headers by design), fonts loaded, all internal #anchors resolve. All 18
+touched sites screenshot-captured in both engines, dark + light (76
+shots); the width-sensitive labels (both replacement quotes, the
+BINARY_MULTIPLY line, the carved-from label, the new fig 5.7 banner)
+reviewed at zoom — the fig 5.7 banner now clears the lines the old one
+crossed; zero viewBox overflows across all touched figures. **Live after
+push** (commit `f9c399b`): all 18 corrected strings confirmed on the live
+page ("avg wait: 8.75", "4 bytes", "malloc(300)", "seven standards",
+"changed, modified, accessed", "net: 4 Gbps", "the debate is essentially",
+"C++ was designed to provide Simula", "I chose Python as a working title",
+"UNIX · 1969", "carved from ~30 million", "UAF ALONE", "BINARY_MULTIPLY",
+"return array", "word-only", "The core of the list", "is moving", the
+rewrapped "single-threaded" among them); origin glossary.json serves 519.
+
 ## 4p. Pass 16 (2026-08-02): the language pass, Part III — Ch8–12 (commit `c4c41ea`)
 
 Same brief, same bar (the Ch7 pickle coda — Part II — untouched). **Method:**

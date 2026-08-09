@@ -7,8 +7,12 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 **READY.** Pass 19 — the book-wide closing sweep — completed 2026-08-09
 (ledger `UNDER.md` §4s) and declared the book prose-ready for the owner's
-complete read. The language pass is complete and independently verified
-across all five parts; the sweep executed every ruled worklist item
+complete read. The language pass is complete across all five parts and
+independently verified in all five — Part II's audit (Pass-15 verification)
+landed 2026-08-10 in parallel with the read: 20 surgical fact fixes, three
+fabricated-or-recast quotes replaced with verbatim sourced ones, every §4o
+load-bearing correction reconfirmed, ledger under §4o. The coverage table is
+now uniform. The sweep before it executed every ruled worklist item
 (fig 15.2 geometry re-laid; Ch15 → "Attack and Defence" with the
 defence-spelling strays in part-1/part-3 brought along; the Diffie–Hellman
 en-dash migration with its glossary-key merge; the house spelling convention
@@ -31,9 +35,15 @@ in substance throughout.
    end of `UNDER.md` §4s (Sony PSN evidence, the Amdahl clipping note, the
    Ch15 title change and its veto path, the 519 glossary count, the
    register-class flags, the five fact-fixed passages worth reading in
-   place).
+   place) — plus the Pass-15 verification's owner flags under §4o:
+   **above all the `requestz` item** (the pickle coda names a real, live,
+   apparently legitimate PyPI package as a typosquat; a documented
+   one-word replacement is staged in the ledger, the coda was untouchable
+   for the audit), the two Part-II hero-lead overclaims, and four
+   punch-list geometry notes.
 2. **The punch-list pass** from the read's findings; the §6 P1 polish
    backlog is decided there (parked per the 2026-08-06 amendment).
+   Register-class flags from all ledgers converge here.
 
 ## BLOCKED ON TIGER
 
