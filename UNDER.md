@@ -2093,6 +2093,97 @@ is declared **READY for the owner's complete read.**
    priority hedged for Rejewski's bomba).
 8. **fig 15.2** was re-laid per the sanction — worth a look at render.
 
+## 4t. Pass 20 (2026-08-17): figure-truth, Part II — the four flagged geometry defects (commit `cff08e3`)
+
+Owner-ratified sanctioned-geometry pass (brief `docs/pass-20-brief.md`, the
+16.8/CAP/15.2 licence class): exactly the four defects from the Pass-15
+verification's flag 4, nothing else. Every flag independently recomputed
+against the figures' own coordinate systems before any move (verify before
+fix); prose zero-touch, anchors byte-identical. Three figures touched
+(fig 4.5 carries two of the four defects). Model: Fable, start to ledger.
+
+**1 · fig 6.1 — "C++ released" marker, x=540 → x=310.** The timeline's own
+tick row maps 1975→80 · 1980→195 · 1985→310 · 1990→425 · 1995→540 (115 px
+per 5 years; last segment 120). The start-anchored marker sat on the 1995
+tick; C++'s release is 1985 (§4g: name coined 1983, book + Cfront 1985), so
+the correct x is exactly **310** — the flag's ≈312 was an estimate, the tick
+mapping is authoritative. Neighbour check at the new position, measured at
+render: the marker spans 310–367.6; "Mythical Man-Month" ends ≈291, "1980s
+software crisis" starts 425 — no collision. The label now also sits inside
+the decade the figure is about, instead of undercutting it.
+
+**2–3 · fig 4.5 — both illegal lanes redrawn as legal traces of the
+figure's own workload** (A arr 0 run 8 · B arr 1 run 4 · C arr 2 run 9 ·
+D arr 3 run 5; Σ = 26 units; 20 px/unit, lane origin x=60 = t0).
+
+- **RR (q=2)** drew 14 uniform 2-unit slices = 28 units, ending t=28; the
+  drawn cycle order (A B C D repeated) is also unreachable — at t=6 the
+  ready queue holds A (re-queued at t=2) ahead of D (arrived t=3), so D
+  cannot run fourth. Legal trace (arrivals enqueue before the preempted
+  job): **A B C A D B C A D C A D C** — 13 slices, D's final slice 1 unit
+  (t 22–23, the brief's "final short slice" grammar), C's tail 3 units
+  (23–26), ending t=26 flush with FCFS/SJF. Completions: A=22, B=12, C=26,
+  D=23.
+- **MLFQ** left C undrawn from its t=2 arrival until t=17 while
+  lower-queue A ran — illegal (a Q1 arrival outranks Q2/Q3 work) — and ran
+  B 4 straight units in Q1 past any quantum. Legal trace under the classic
+  doubling rules (Q1 q=2 · Q2 q=4 · Q3 q=8, demote on a full quantum,
+  round-robin within a queue; no arrivals after t=3, so no cross-queue
+  preemption events arise): **A·B·C·D 2 units each through Q1 (0–8) →
+  A(Q2) 8–12 → B(Q2) 12–14 done → C(Q2) 14–18 → D(Q2) 18–21 done →
+  A(Q3) 21–23 done → C(Q3) 23–26 done.** Σ = 26, ends t=26. Every slice now
+  carries its queue label (A (Q1) … C (Q3)); the old "demoted" stamp's
+  story is drawn by the descent itself.
+- **The coupling arithmetic (shown per the brief).** The figure's avg-wait
+  labels belong to the FCFS and SJF lanes, both verified legal as drawn and
+  untouched: FCFS waits 0 + 7 + 10 + 18 = 35, 35/4 = **8.75** ✓; SJF waits
+  0 + 7 + 9 + 15 = 31, 31/4 = **7.75** ✓ — the §4o-corrected labels
+  **stand**. The redrawn lanes print no averages (their strips are
+  qualitative, per the figure's grammar); for the record the legal traces
+  give RR waits 14 + 7 + 15 + 15 = 51 → 12.75 and MLFQ waits
+  15 + 9 + 15 + 13 = 52 → 13.0, deliberately unprinted.
+- Caption re-read against the new lanes — true as written, no edit: RR
+  "interleaves all four constantly" (longest run is C's closing 3 units);
+  "A and C drift down level by level and finish last" (Q1→Q2→Q3, done
+  23/26); "B and D clear out quickly from the high-priority queues" (done
+  14/21 from Q2, never reaching Q3).
+
+**4 · fig 7.6 — BINARY_MULTIPLY line contained.** Measured at HEAD: the
+font-size-7 line spans 511.9–688.1 against its rect 520–680 — 8.1 px
+overhang per side (42 mono chars × 0.6 em × 7 px = 176.4 px; both engines
+agree within 0.1 px). The layout allows widening — nothing sits right of
+the bytecode box: rect 160 → **186** wide (520–706 inside the 720 viewBox),
+its three texts recentred 600 → 613. The line now spans 524.9–701.2 with
+≈4.9 px margins; the fs-8 line above (553–673) and the header (572.5–653.5)
+sit clear. The x=500 arrow gap is untouched; font stays at the sanctioned
+7; §5(d) code-register spelling unchanged.
+
+**New flag → punch list (seen, not fixed — beyond the four items):**
+fig 7.6's eval-loop line `while (true) { switch(opcode) … }` (fs 9) spans
+149.5–570.5 against its rect 200–520 — ≈50 px overhang per side,
+pre-existing, same overhang class, visible at render in both engines.
+
+**Invariants.** Anchor-id set **byte-identical to HEAD (346)** — sorted-set
+md5 unchanged. Glossary regenerated: **519, timestamp-only diff** — no
+entry added, removed, or changed; the lane labels and marker feed no term.
+Captions and a11y `<title>`s re-read against all three redrawn figures —
+accurate as written, zero caption edits. Heroes, thesis set, coda
+untouched.
+
+**Verification.** Local CF-mimicking server (extensionless 200, `.html`
+308): per-slice text-vs-rect audit over every label in both redrawn lanes —
+**zero violations in Chromium and WebKit**; bbox-vs-viewBox on all three
+figures in both engines (fig 7.6 bbox right edge 688.1 → 706 ≤ 720;
+figs 6.1/4.5 unchanged). Before/after screenshots of all three touched
+figures, Chromium + WebKit, dark + light at 1440, plus a 375 mobile set; no
+SMIL in any touched figure. §7 spot-check on part-2, both engines,
+1440 + 375: **0 console errors, 0 external requests, 0 page h-scroll, nav
+48 px, fonts loaded, 32/32 internal #anchors resolve — 4/4 PASS.** Live
+after push (commit `cff08e3`): all fix strings confirmed on the live page —
+the x=310 marker, the 13-slice RR lane with its 1-unit D slice, the
+Q1/Q2/Q3-labelled MLFQ lane, the 186-wide bytecode rect and recentred
+texts.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).

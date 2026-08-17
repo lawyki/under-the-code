@@ -27,6 +27,18 @@ HEAD-identical baseline; full §7 harness 100/100; docs registries
 realigned), and confirmed live parity after push. Anchor-id sets
 byte-identical in all five parts (354/346/380/228/189).
 
+**Pass 20 — figure-truth, Part II — landed 2026-08-17** (ledger `UNDER.md`
+§4t, commit `cff08e3`): the Pass-15 verification's four flagged geometry
+defects fixed and live — fig 6.1's "C++ released" marker moved from the
+1995 tick to the 1985 tick (x=310, from the timeline's own mapping);
+fig 4.5's RR and MLFQ lanes redrawn as legal traces of the figure's own
+workload (13-slice RR ending t=26; MLFQ with every slice queue-labelled;
+the 8.75/7.75 avg-wait labels recomputed and standing); fig 7.6's
+BINARY_MULTIPLY line contained (rect 160→186). Anchors 346 byte-identical,
+glossary 519 ±0, §7 spot-check 4/4, live parity confirmed. One new
+punch-list flag: fig 7.6's eval-loop line overhangs its rect ~50 px/side
+(pre-existing, same class).
+
 The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
 242 figures, glossary at **519** terms (the Diffie–Hellman duplicate row
 merged in Pass 19 — see §4s item 3). Five volume identities live; magic-link
@@ -40,11 +52,28 @@ in substance throughout.
    Ch15 title change and its veto path, the 519 glossary count, the
    register-class flags, the five fact-fixed passages worth reading in
    place) — plus the Pass-15 verification's owner flags still open under
-   §4o: the two Part-II hero-lead overclaims and four punch-list geometry
-   notes.
-2. **The punch-list pass** from the read's findings; the §6 P1 polish
-   backlog is decided there (parked per the 2026-08-06 amendment).
-   Register-class flags from all ledgers converge here.
+   §4o: the two Part-II hero-lead overclaims (the four geometry notes are
+   closed — Pass 20, §4t).
+2. **Pass 21 — the icon pass** (§6 P1.2, unparked by the owner 2026-08-17):
+   emoji icons → hand-drawn inline SVG in the book's grammar, themed by
+   each volume's tokens. Fable. Brief: `docs/pass-21-brief.md`. Ledger §4u.
+3. **Pass 22 — the interaction pair** (§6 P1.3 + P1.4, unparked
+   2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
+   under the Law of Invisible Software. Fable. Brief:
+   `docs/pass-22-brief.md`. Ledger §4v.
+4. **Pass 23 (PROPOSED, awaiting owner go) — the book-arc read**:
+   report-only whole-book pedagogy audit — accumulation, seams at book
+   altitude, promise accounting, the recurring instruments, the ending.
+   Zero edits; its dossier merges into the punch list. Brief:
+   `docs/pass-23-brief.md`. Ledger §4w.
+5. **The punch-list pass** from the read's findings plus all converged
+   register-class flags (now including fig 7.6's eval-loop line overhang,
+   flagged by Pass 20). P1 is no longer parked (items 2–3 above); what
+   remains for the punch list is prose, heroes, and anything the read and
+   the arc dossier surface.
+
+Passes 21–23 run sequentially (one writing session per repo); all are
+prose-free and anchor-safe, so the read proceeds in parallel throughout.
 
 ## BLOCKED ON TIGER
 
