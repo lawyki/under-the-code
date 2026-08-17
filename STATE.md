@@ -39,6 +39,23 @@ glossary 519 ±0, §7 spot-check 4/4, live parity confirmed. One new
 punch-list flag: fig 7.6's eval-loop line overhangs its rect ~50 px/side
 (pre-existing, same class).
 
+**Pass 23 — the book-arc read — landed 2026-08-17** (ledger `UNDER.md`
+§4w): the report-only whole-book pedagogy audit, one continuous Fable read
+cover→glossary plus two blind mid-book entrants (Part III, Part V). Zero
+edits to any book file. **Verdict: the arc holds** — the synthesis is
+earned (Ch15's six-pattern unification and Ch18's trace cash the cover's
+exact promises; the four disciplines are handed over three times), the
+part-identity micro-arcs complete (position fixes → landfall, redactions
+→ zero, listing lines → EOF, "Quorum reached · 5 of 5"), and "open any
+part to begin" is true. Seven ranked findings for the punch list, top
+three: Ch16 §03's memory-ordering peak leans on store buffers (taught
+nowhere) and cache coherence (taught three sections later); Ch1's
+locality-thread promise ("same equation, all the way up the stack") is
+never picked up by name in Parts II–IV; the "What you now understand"
+codas stop at Ch4, leaving Ch14/Ch16 without consolidation and Ch18's
+title-echo unprimed. Full ranked list with locations and one-line
+directions in §4w.
+
 The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
 242 figures, glossary at **519** terms (the Diffie–Hellman duplicate row
 merged in Pass 19 — see §4s item 3). Five volume identities live; magic-link
@@ -61,19 +78,18 @@ in substance throughout.
    2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
    under the Law of Invisible Software. Fable. Brief:
    `docs/pass-22-brief.md`. Ledger §4v.
-4. **Pass 23 (PROPOSED, awaiting owner go) — the book-arc read**:
-   report-only whole-book pedagogy audit — accumulation, seams at book
-   altitude, promise accounting, the recurring instruments, the ending.
-   Zero edits; its dossier merges into the punch list. Brief:
-   `docs/pass-23-brief.md`. Ledger §4w.
-5. **The punch-list pass** from the read's findings plus all converged
-   register-class flags (now including fig 7.6's eval-loop line overhang,
-   flagged by Pass 20). P1 is no longer parked (items 2–3 above); what
-   remains for the punch list is prose, heroes, and anything the read and
-   the arc dossier surface.
+4. **The punch-list pass** from the read's findings plus all converged
+   register-class flags: the §4w arc dossier's seven ranked findings
+   (Ch16 §03 scaffolding, the locality thread, the coda instrument, the
+   integer-overflow and De Morgan promises, the Ch14 primer callback, the
+   Ch17 §02 revisit gloss), fig 7.6's eval-loop line overhang (Pass 20),
+   and the open §4o/§4s register flags. P1 is no longer parked (items 2–3
+   above); what remains for the punch list is prose, heroes, and anything
+   the owner's read surfaces.
 
-Passes 21–23 run sequentially (one writing session per repo); all are
+Passes 21–22 run sequentially (one writing session per repo); both are
 prose-free and anchor-safe, so the read proceeds in parallel throughout.
+Pass 23 is complete (§4w, 2026-08-17).
 
 ## BLOCKED ON TIGER
 

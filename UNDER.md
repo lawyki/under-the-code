@@ -2184,6 +2184,165 @@ the x=310 marker, the 13-slice RR lane with its 1-unit D slice, the
 Q1/Q2/Q3-labelled MLFQ lane, the 186-wide bytecode rect and recentred
 texts.
 
+## 4w. Pass 23 (2026-08-17): the book-arc read — report-only whole-book pedagogy dossier
+
+The first pass to judge the book as ONE argument, cover to cover (brief
+`docs/pass-23-brief.md`, ratified 2026-08-17). **Zero edits to the book** —
+this entry and STATE.md are the pass's only writes. Model: Fable, start to
+ledger. **Method:** one continuous deep read by the judging model — cover,
+Parts I–V with the Bridge in place, every opener and closer, the glossary
+page last — as a committed student; plus the brief's sanctioned independent
+lens: two blind mid-book entrants (one starting at Part III, one at Part V,
+neither shown any ledger), because the cover itself promises "open any part
+to begin" and a linear read cannot test that. Prior per-part verdicts were
+not re-litigated; every finding below was verified against the source
+(grep/recount) before entering the ledger. **Verdict up front: the arc
+holds.** Seven places strain, ranked below; none is structural.
+
+### What the book does best at arc level (what not to break)
+
+1. **The synthesis is earned, and it cashes the cover's exact words.** The
+   cover promises "every attack we have foreshadowed" turned into "one
+   working theory" — Ch15 §06 delivers it explicitly, enumerating the
+   foreshadowed attacks chapter by chapter and reducing them to six named
+   patterns (fig 15.9). The cover promises "the four disciplines" — Ch18
+   hands them over three times (§04, §06, the end-of-book closer), verbatim
+   consistent: *resolve into layers · follow the math · locate the security
+   boundary · name the historical decision*. **Ch18 earns the ending as
+   payoff, not recap**: the trace (fig 18.1.5) is the one figure that
+   visits every chapter, its two exceptions (Ch15 woven as red trust-
+   boundary lines; Ch18 *being* the figure) are handled honestly, and the
+   interview-question framing gives the reader something to do with it.
+   Even a cold entrant (the blind Part V reader) called the trace "the
+   single best advertisement for reading the rest" — Ch18 fails gracefully
+   for the reader it excludes, converting them into a front-of-book reader.
+2. **The part identities carry micro-arcs only a continuous read completes.**
+   Chart Room's position fixes accumulate 0 nm → 1,183 → 1,819 → 2,480 →
+   3,129 nm · *landfall* across Part III; Strongroom's redaction chips
+   count down "§3 redactions remain → §1 → nothing remains redacted"
+   exactly as the security chapter unifies; Greenbar's listing lines run
+   0001→3199 to the EOF closer; Quorum's cluster chips scale 1 machine →
+   10,000 machines → "one curriculum · five layers · one reader"; and the
+   five closer stamps crescendo to "Quorum reached · 5 of 5" / "Under the
+   Code is built." At book altitude these read as designed, not decorative.
+3. **Back-reference hygiene is real.** Ch18 §06's self-claim ("never
+   assuming that an idea introduced in the third chapter will be remembered
+   three hundred pages later — every reference back is explicit")
+   substantially holds; both blind readers independently identified the
+   house pattern (one-line local gloss first, chapter citation second) as
+   what makes their entry survivable. The exceptions are findings 1 and 7.
+4. **The cover's "open any part to begin" is true.** Part III is a
+   best-case cold entry (blind reader: "I would finish the part," zero
+   stops); Part V's Ch16–17 are survivable cold with two friction points
+   (findings 1 and 7). The seam rhythm holds across all four part
+   boundaries without becoming formula — each closer names the next part's
+   actual content, each opener restates the whole journey so far, and the
+   Bridge's §06 synthesis pre-figures Ch18's method, a rhyme the ending
+   quietly completes.
+5. **The promise ledger is otherwise clean.** Ch11 §04's crypto briefing →
+   Ch14 depth is the book's cleanest two-altitude layering; journaling →
+   Ch13 WAL cashes in both directions ("we'll meet it again" / "the same
+   mechanism appears in filesystems"); the Part II→III seam's six promised
+   names (Shannon, Baran, Davies, Cerf, Berners-Lee, Eich) all arrive; the
+   difficulty profile has exactly the two spikes the brief predicted —
+   Ch14, well-ramped by its §01.5 primer and worked numbers, and Ch16 §03
+   (finding 1) — with no sags.
+
+### Findings, ranked by what they'd cost a real student
+
+Each: location · symptom · one-line direction. No rewrites.
+
+1. **Ch16 §03 — the book's difficulty peak arrives with its scaffolding
+   inverted.** `part-5` ch16-lockfree §03 vs §06. The hardest passage in
+   the book opens "Out-of-order execution (Chapter 1 §04), store buffers,
+   and cache coherence all conspire…" — but **store buffers are taught
+   nowhere in the book** (grep: the two §03 mentions are the only
+   occurrences in all five parts) and **cache coherence is taught three
+   sections later** (§06 MESI). The linear reader and the blind Part V
+   entrant hit the same wall independently (the blind reader "reread the
+   paragraph twice… moved on with a dent"). Direction: one appositive
+   clause glossing the store buffer plus a forward-pointer to §06 (or the
+   §06 coherence paragraph moved ahead of §03) makes the peak climbable
+   with only what the book has taught.
+2. **The locality thread — the book's most explicit recurring-instrument
+   promise is never picked up.** `part-1` ch1-memory, the "Why caches
+   multiply speed" callout: "We will see the same locality argument
+   resurface in Part II's kernel chapter… in Part III's web chapter when we
+   examine DNS caching, and in Part IV's data chapter when we examine
+   database buffer pools. The same equation, the same intuition, all the
+   way up the stack." Verified: **"locality" occurs zero times in parts
+   2–4**; Ch13 never mentions buffer pools; the phenomena all appear (TLB
+   hit rates, DNS TTLs, B-tree page caching) but no later chapter names the
+   thread, so the student told to watch the instrument never hears the
+   chord resolve. (Side note, same item: the bolded term mints no glossary
+   entry — the "This is called X, and…" cue misses the extractor — so
+   hovering later cache mentions offers no way back either.) Direction: one
+   recall clause at each promised stop, or soften the Ch1 promise to what
+   the book actually does.
+3. **The consolidation coda vanishes exactly where difficulty peaks.**
+   "What you now understand" closes Ch1–Ch4, then never recurs (grep: zero
+   in parts 3–5) until the phrase returns transformed as Ch18's title. The
+   two hardest late chapters (14, 16) end without the instrument the early
+   chapters trained the reader to expect, and after thirteen silent
+   chapters the Ch18 title-echo reads as new rather than as the
+   instrument's return. Possibly per-identity design — flagged, not
+   presumed. Direction: a closing coda on Ch14 and Ch16 alone, or one Ch18
+   §06 clause explicitly recalling the early codas so the echo lands as an
+   echo.
+4. **Ch2's integer-overflow promise points at a Ch15 that doesn't deliver
+   it.** `part-1` ch2-twos ⚠ strip: "We will see exact exploits of this in
+   Part IV's security chapter." Verified: **"integer overflow" occurs zero
+   times in part-4**; Ch15's memory section deliberately continues Ch3's
+   arms race instead, and the promised exact exploit already lives one
+   figure down in Ch2's own fig 2.9 (the signed-check/memcpy card).
+   Direction: re-aim the strip at fig 2.9 below it, or at Ch3 — not at
+   Part IV.
+5. **Ch14's math primer misses the book's own best on-ramp.** `part-4`
+   ch14 §01.5 teaches modular arithmetic from a 12-hour clock as if new —
+   but the reader spent Ch2 on the two's-complement wheel (fig 2.8),
+   literally arithmetic mod 2⁸ drawn as a clock, and the primer never
+   recalls it. The accumulation the earlier chapter built sits unused at
+   the exact distance it was built for. Direction: one clause — "you have
+   been computing modulo 2⁶⁴ since Chapter 2's wheel" — converts a new idea
+   into a recognised one.
+6. **De Morgan's forward promise oversells both landings.** `part-1`
+   ch2-gates callout: "They will reappear later when we discuss filtering
+   in databases (Chapter 13) and access control in security (Chapter 15)."
+   Verified: **"De Morgan" occurs zero times in part-4** — Ch13's "right
+   math" callout ties relational to Boolean algebra in spirit but never
+   applies De Morgan to filtering; the Ch15 access-control leg was already
+   flagged thin (Pass 19, §4s register flags — not re-litigated here; the
+   arc read adds that the promise fails at *both* ends). Direction: trim
+   the callout's forward promise to what Ch13/15 do, or add the one-line
+   De Morgan predicate-rewrite where the optimiser is discussed.
+7. **Ch17 §02 "Containers revisited" is the one revisit with no local
+   gloss.** `part-5` ch17-containers. The section re-enters namespaces and
+   cgroups by citation only ("Chapter 4 §06 introduced containers as
+   kernel-level isolation built on namespaces and cgroups") — the blind
+   Part V entrant could follow the economics but not the mechanism, and
+   this is the only revisit in the book that breaks the gloss-first house
+   pattern. Costs mid-book entrants only; the linear reader is fine.
+   Direction: one appositive clause (namespaces = what the process may
+   *see*; cgroups = what it may *use*) restores the pattern.
+
+### For the record (not findings)
+
+- The two blind-entrant reports are raw data for the punch-list pass; their
+  remaining notes (Ch10's unglossed TCB/kernel lean for cold readers,
+  the dB unit in Ch8, fig 16.1's GIL name-drop) fall below the ranked bar —
+  each is a one-word or one-clause matter a cold entrant glides over.
+- Owner-ruled items sighted and left untouched, as ruled: "3 nm" (Ch18 §03
+  among them), Sony PSN, Morris 23, Enigma six-years, the -or/-our family,
+  civilization vocabulary, the open §4o hero-lead flags, Pass 19's §4s
+  register flags, fig 7.6's eval-loop overhang (§4t punch-list).
+- Glossary met last, per the brief: 519 entries, part/section homes
+  correct in every spot-check; the one coverage gap found is folded into
+  finding 2.
+
+**Invariants.** No book file touched — working tree diff is UNDER.md and
+STATE.md only; anchors, glossary, figures, prose all byte-identical to
+HEAD. The dossier merges into the punch list (STATE item renumbered).
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
