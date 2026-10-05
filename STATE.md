@@ -92,7 +92,7 @@ in substance throughout.
    link only to confirm new accounts (unconfirmed removed after 14 days)
    and for recovery; magic-link readers keep their positions. Workers Paid
    confirmed → Argon2id. Proportionate security ("a book, not a bank").
-   Fixes an open redirect in `next` that exists today. Brief
+   (The open redirect in `next` was fixed on its own 2026-10-05.) Brief
    `docs/pass-24-brief.md`. Ledger §4x.
 6. **The punch-list pass** from the read's findings plus all converged
    register-class flags: the §4w arc dossier's seven ranked findings

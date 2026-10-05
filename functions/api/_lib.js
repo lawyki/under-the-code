@@ -83,6 +83,18 @@ export function isValidEmail(email) {
 }
 
 // A next-path must be a same-origin absolute path like "/part-2#ch5".
+// Parsed with the WHATWG URL parser (the one the browser will apply to the
+// Location header), so "/\evil.com" and tab/newline tricks — which a regex
+// passes but the parser resolves off-site — are rejected. Returns the
+// normalised path or null.
+const NEXT_BASE = 'https://next.invalid';
 export function safeNextPath(p) {
-  return (typeof p === 'string' && p.length <= 200 && /^\/(?!\/)/.test(p)) ? p : null;
+  if (typeof p !== 'string' || p.length > 200 || p[0] !== '/') return null;
+  if (/[\u0000-\u001f\u007f\\]/.test(p)) return null;
+  let u;
+  try { u = new URL(p, NEXT_BASE); } catch { return null; }
+  if (u.origin !== NEXT_BASE) return null;
+  const out = u.pathname + u.search + u.hash;
+  // Normalising can itself produce "//host" (e.g. "/..//evil.com").
+  return out.startsWith('//') ? null : out;
 }

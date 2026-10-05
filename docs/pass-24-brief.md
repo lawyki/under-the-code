@@ -88,9 +88,11 @@ intact.
 1. **Every credential change needs a fresh sign-in** (session < 15 min) or
    `currentPassword` — including setting a *first* password. No exemption
    for accounts without one (otherwise a stolen old cookie takes over).
-2. **Fix the open redirect in `next`** (exists today: `/\evil.com` passes
-   `safeNextPath`). Parse with `new URL(p, SITE_ORIGIN)` and require the
-   same origin; re-check on the client before navigating.
+2. **Open redirect in `next` — FIXED 2026-10-05, ahead of this pass**
+   (`safeNextPath` now parses with the WHATWG URL parser, rejects
+   backslashes/control chars and normalised `//host`; `verify.js`
+   re-checks stored paths). Keep that function for every new `next` sink
+   this pass adds, and re-check on the client before navigating.
 3. **No timing leaks:** signup and recover send mail inside `waitUntil` in
    every branch and do equal database work; login always runs Argon2
    (dummy hash for unknown / unconfirmed / no-password).

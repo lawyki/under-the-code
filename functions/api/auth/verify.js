@@ -9,7 +9,7 @@
 'use strict';
 
 import {
-  json, newToken, sha256Hex, sessionCookies, SESSION_MAX_AGE,
+  json, newToken, sha256Hex, sessionCookies, safeNextPath, SESSION_MAX_AGE,
 } from '../_lib.js';
 
 function page(inner) {
@@ -93,7 +93,9 @@ export async function onRequestPost({ request, env }) {
   ).bind(await sha256Hex(session), row.user_id, now, now + SESSION_MAX_AGE * 1000).run();
 
   const headers = new Headers({
-    Location: row.next_path || '/account',
+    // Re-checked here too: tokens issued before the stricter check may hold
+    // a stored path the old regex let through.
+    Location: safeNextPath(row.next_path) || '/account',
     'Cache-Control': 'no-store',
   });
   for (const c of sessionCookies(session)) headers.append('Set-Cookie', c);
