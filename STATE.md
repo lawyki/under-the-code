@@ -78,7 +78,23 @@ in substance throughout.
    2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
    under the Law of Invisible Software. Fable. Brief:
    `docs/pass-22-brief.md`. Ledger §4v.
-4. **The punch-list pass** from the read's findings plus all converged
+4. **Pass 25 — Place and Marks** (ratified 2026-10-05, after Pass 22):
+   intelligent reading-place tracking (steady reading commits; skims,
+   look-ups and detours become excursions), a nav-edge cue that widens on
+   hover and can be corrected by hand (place bar on phones), coloured
+   section marks with a palette per volume, synced for signed-in readers.
+   Fable. Brief `docs/pass-25-brief.md` + spec `docs/pass-25-spec.md` +
+   review `docs/pass-25-review.md`. Ledger §4y. Owner approves the privacy
+   copy at the pass.
+5. **Pass 24 — accounts v2: passkey or password** (ratified 2026-10-05,
+   runs **after the domain move**, ~1 month — passkeys are bound to the
+   domain): always-on sign-in, reader chooses passkey or password, email
+   link only to confirm new accounts (unconfirmed removed after 14 days)
+   and for recovery; magic-link readers keep their positions. Workers Paid
+   confirmed → Argon2id. Proportionate security ("a book, not a bank").
+   Fixes an open redirect in `next` that exists today. Brief
+   `docs/pass-24-brief.md`. Ledger §4x.
+6. **The punch-list pass** from the read's findings plus all converged
    register-class flags: the §4w arc dossier's seven ranked findings
    (Ch16 §03 scaffolding, the locality thread, the coda instrument, the
    integer-overflow and De Morgan promises, the Ch14 primer callback, the
@@ -97,3 +113,5 @@ Owner decisions live here and nowhere else. If it is not on this list, it is
 not blocking.
 
 - **Read the book.** Everything else waits on the complete read.
+- **Copy approvals at Passes 24/25:** account-page and privacy-notice
+  wording (drafted by each pass).
