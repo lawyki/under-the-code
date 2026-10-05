@@ -1,7 +1,7 @@
 # PASS 22 BRIEF — the interaction pair (§6 P1.3 + P1.4, ledger §4v)
 
 Authored by the bridge, 2026-08-17. Owner-ratified: the two remaining P1
-items. **Model: Fable** (the tooltip work is interaction judgment; the
+items. **Model: Opus 5.5**, Sonnet 5.5 verification after (BRIDGE §5, 2026-10-05; the tooltip work is interaction judgment; the
 scroll-spy rides along). Both are `book.js`/`book.css` work — zero prose,
 zero anchors, zero figures.
 

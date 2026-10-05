@@ -4,7 +4,8 @@ Authored by the bridge, 2026-08-17. Owner-ratified: the P1 backlog's emoji
 icons (⚡-class glyphs in `.insight-icon` / `.concept-icon`) become
 hand-drawn inline SVG — the book's last non-SVG drawing surface goes
 native, and the cross-platform rendering inconsistency dies. **Model:
-Fable** — this is visual craft across five identities.
+Opus 5.5** (BRIDGE §5 amendment, 2026-10-05) — this is visual craft across
+five identities. A Sonnet 5.5 verification follows.
 
 **Context:** *Under the Code* is the owner's own published book
 (under.atheric.eu); approved editorial plan. Read first: `CLAUDE.md`,

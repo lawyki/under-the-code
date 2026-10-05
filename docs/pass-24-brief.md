@@ -5,7 +5,7 @@ Authored by the bridge, 2026-10-05, from a 9-agent design workflow
 review). **Status: ratified 2026-10-05 — owner decisions answered (bottom);
 runs after the domain move.** Site work: `functions/`,
 `schema.sql`, `public/account.html`, `wrangler.toml`, `package.json`. **Zero
-book prose, zero anchors, zero figures, zero glossary.** Model: Fable.
+book prose, zero anchors, zero figures, zero glossary.** Model: Opus 5.5; Sonnet 5.5 verification after (BRIDGE §5).
 
 **Context:** *Under the Code* is the owner's own published book
 (under.atheric.eu). Read first: `CLAUDE.md`, `BRIDGE.md`, `UNDER.md` §4c

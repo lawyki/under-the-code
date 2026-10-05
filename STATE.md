@@ -73,17 +73,17 @@ in substance throughout.
    closed — Pass 20, §4t).
 2. **Pass 21 — the icon pass** (§6 P1.2, unparked by the owner 2026-08-17):
    emoji icons → hand-drawn inline SVG in the book's grammar, themed by
-   each volume's tokens. Fable. Brief: `docs/pass-21-brief.md`. Ledger §4u.
+   each volume's tokens. Opus 5.5. Brief: `docs/pass-21-brief.md`. Ledger §4u.
 3. **Pass 22 — the interaction pair** (§6 P1.3 + P1.4, unparked
    2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
-   under the Law of Invisible Software. Fable. Brief:
+   under the Law of Invisible Software. Opus 5.5. Brief:
    `docs/pass-22-brief.md`. Ledger §4v.
 4. **Pass 25 — Place and Marks** (ratified 2026-10-05, after Pass 22):
    intelligent reading-place tracking (steady reading commits; skims,
    look-ups and detours become excursions), a nav-edge cue that widens on
    hover and can be corrected by hand (place bar on phones), coloured
    section marks with a palette per volume, synced for signed-in readers.
-   Fable. Brief `docs/pass-25-brief.md` + spec `docs/pass-25-spec.md` +
+   Opus 5.5. Brief `docs/pass-25-brief.md` + spec `docs/pass-25-spec.md` +
    review `docs/pass-25-review.md`. Ledger §4y. Owner approves the privacy
    copy at the pass.
 5. **Pass 24 — accounts v2: passkey or password** (ratified 2026-10-05,
@@ -105,6 +105,8 @@ in substance throughout.
 
 Passes 21–22 run sequentially (one writing session per repo); both are
 prose-free and anchor-safe, so the read proceeds in parallel throughout.
+**Model (owner ruling 2026-10-05, BRIDGE §5):** every pass runs on Opus 5.5;
+each is followed by an independent Sonnet 5.5 verification.
 Pass 23 is complete (§4w, 2026-08-17).
 
 ## BLOCKED ON TIGER

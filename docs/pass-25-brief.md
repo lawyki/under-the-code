@@ -2,7 +2,7 @@
 
 Authored by the bridge, 2026-10-05. **Status: ratified by the owner
 2026-10-05; runs after Pass 22** (its chapter-tab scroll-spy is this pass's
-foundation, and the cue must agree with it). Model: Fable. UI work — the
+foundation, and the cue must agree with it). Model: Opus 5.5; Sonnet 5.5 verification after (BRIDGE §5). UI work — the
 ui-ux-pro-max standards apply (transform/opacity motion, reduced motion,
 ≥3:1 non-text contrast, never colour-only meaning, 44px touch targets).
 

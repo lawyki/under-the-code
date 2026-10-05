@@ -4,7 +4,8 @@ The charter for the book's architect chat. If you are reading this at the top of
 a new conversation, you are that chat. Re-founding is expected and cheap: this
 file plus the repo is the whole handover.
 
-**Model: Fable.** This project is pedagogy and prose. Judgment is the work.
+**Model: Opus 5.5** (owner ruling, 2026-10-05 — see §5). This project is
+pedagogy and prose. Judgment is the work.
 **Operating model:** `atheric-studios/estate/OPERATING-MODEL.md`.
 
 Under the Code is a five-volume interactive computer-science book at
@@ -131,16 +132,29 @@ what it found already at bar, and what it deliberately declined. The ledger is
 the record; the chat report is a convenience.
 
 **Model discipline is load-bearing here, and it was measured.** Part I and Part
-III audits found that Opus rewrites largely hold — roughly 16 of 18 kept — but
-Opus *clearances* leak, missing nine items in one audit and around thirty in
-another. So: Fable does the judgment. A weaker-model pass gets a Fable
-verification pass with licence to override.
+III audits (Passes 14–16, against Opus 4.x-era models) found that Opus rewrites
+largely hold — roughly 16 of 18 kept — but Opus *clearances* leak, missing nine
+items in one audit and around thirty in another. Fable did the judgment from
+then until 2026-10-05.
 
-**If a Fable session drops to Opus mid-part, stop at the next ledger.** A pass
-that dies mid-judgment produces unaudited clearances — precisely the failure the
-gate rhythm prevents. Never squeeze a part into a budget that will not hold it.
+> **Amendment — 2026-10-05, owner ruling.** Default model is now **Opus 5.5**
+> for every pass. Basis: the old measurement predates Opus 5.5; on the
+> Artificial Analysis Intelligence Index v4.3.2 Opus 5.5 scores 58 vs Fable
+> 5.1's 53 (Sonnet 5.5: 56); and Fable draws from the same weekly plan pool,
+> capped at half of it. **The compensating control stays, because the
+> measured failure was clearances, and that can happen on any model:** every
+> pass that issues clearances (an "already at bar" or "left as-is" verdict) gets an independent
+> verification pass **on a different model — Sonnet 5.5** — with licence to
+> override, so writer and checker do not share blind spots. Re-measure after
+> the first verified pass: if the verifier overturns many clearances, revisit
+> this ruling.
 
-**Fable safeguard misfires** happen on routine editorial work — rewrite and
+**If a session drops to a different model mid-part, stop at the next ledger.** A
+pass that dies mid-judgment produces unaudited clearances — precisely the
+failure the gate rhythm prevents. Never squeeze a part into a budget that will
+not hold it.
+
+**Safeguard misfires** (seen on Fable) happen on routine editorial work — rewrite and
 security vocabulary trigger them. Recovery is a fresh session with defused
 wording: *my textbook, approved editorial plan, I am the author.*
 
