@@ -419,6 +419,15 @@
     };
   }
 
+  // Headings break lines with <br> ("The Machine<br>Beneath<br>Everything");
+  // textContent drops those breaks and glues the words together. Read the
+  // heading with each <br> as a space, whitespace collapsed.
+  function headingText(el) {
+    const c = el.cloneNode(true);
+    c.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+
   function snapshot() {
     const a = computeAnchor();
     if (!a) return null;
@@ -429,7 +438,7 @@
     let chapterTitle = '';
     if (chapter) {
       const h1 = chapter.querySelector('.chapter-hero h1, h1');
-      if (h1) chapterTitle = h1.textContent.trim();
+      if (h1) chapterTitle = headingText(h1);
     }
     const h2 = section ? section.querySelector('h2') : null;
     const sLabel = section ? section.querySelector('.section-number') : null;
@@ -442,7 +451,7 @@
       chapterNum: formatChapterNum(chapterId),
       chapterTitle,
       sectionLabel: sLabel ? sLabel.textContent.trim() : '',
-      sectionTitle: h2 ? h2.textContent.trim() : '',
+      sectionTitle: h2 ? headingText(h2) : '',
       timestamp: Date.now()
     };
   }
