@@ -2227,6 +2227,51 @@ five parts; glossary regenerated → 519, timestamp-only diff, so the shipped
 file was left unchanged. §6 P1.2 done. **Sonnet 5.5 verification owed**
 (BRIDGE §5).
 
+## 4v. Pass 22 (2026-10-09): the interaction pair — chapter-tab scroll-spy, tap-friendly glossary (§6 P1.3 + P1.4)
+
+Owner-ratified (brief `docs/pass-22-brief.md`), under the Law of Invisible
+Software. `book.js` only: zero prose, anchors, figures, CSS or glossary.
+Model: Opus 5.5 (BRIDGE §5 amendment).
+
+**1 · Chapter-tab scroll-spy (P1.3), as shipped.** The left rail's existing
+IntersectionObserver already knew the active section; its `paintActive()`
+now also paints the horizontal `.chapter-nav` of the current chapter — one
+observer, two readouts, no duplicated logic. The matching `.nav-item` gets
+`.active` (styled per volume by the existing tokens) and
+`aria-current="location"`; the others lose both. When the active tab is
+outside the nav's visible strip it is brought in with an **instant**
+`scrollLeft` (24 px clear of the §4e edge fade), and only when the active
+section changes — no smooth chase under the reader's eye, so reduced motion
+needs no special case. The rail's observer has no width gate, so this works
+on phones, where the rail itself is hidden. The hard-coded first-tab
+`.active` in the HTML stays as the no-JS default.
+
+**2 · Glossary tooltips on touch (P1.4), as shipped.** A tap toggles the
+term's tooltip; a second tap, a tap anywhere else, or Esc dismisses it;
+scrolling leaves it open; rotation re-places it; taps inside the tooltip
+keep it open, so its "§ →" link works. Mechanism: a capture-phase
+`pointerdown` (touch/pen) marks an 800 ms touch window, inside which the
+emulated `mouseenter`/`focus`/`blur` a tap generates are ignored and a
+`click` toggles instead; a tooltip opened by touch also ignores
+`mouseleave`/`blur` until closed — WebKit fires a synthetic `mouseleave`
+after a scroll moves text under the old tap point (found by an event trace;
+it was closing the tooltip mid-read). **Desktop hover (160 ms delay),
+leave-to-close, and keyboard focus/blur are unchanged**; Esc now also
+closes a focus-opened tooltip (WCAG 1.4.13 dismissible). No modal,
+backdrop, or positioning rewrite; first-use sections stay tooltip-free.
+
+**Verification.** Playwright, local static server, Chromium and WebKit —
+**68/68**: touch at 375 px (tap opens, second tap closes, tap inside keeps,
+scroll keeps, tap elsewhere closes, Esc closes, rotate to 700×375 keeps it
+open and on-screen, tooltip link navigates, 0 page errors); desktop 1440
+(nothing before the 160 ms hover delay, hover opens, leave closes, keyboard
+focus opens, Esc closes); scroll-spy in all five volumes at 375 and 1440
+(exactly one active tab, it is the section in view, `aria-current`
+set, the tab is inside the nav's visible strip; edge fades still update).
+Profile: 4× CPU throttle, scripted scroll through 60% of Part III — 0 long
+tasks (same as before the change). §6 P1.3 + P1.4 done. **Sonnet 5.5
+verification owed** (BRIDGE §5).
+
 ## 4w. Pass 23 (2026-08-17): the book-arc read — report-only whole-book pedagogy dossier
 
 The first pass to judge the book as ONE argument, cover to cover (brief
@@ -2543,10 +2588,8 @@ after 2026-11-15. **Verification pass (Sonnet 5.5) owed** per BRIDGE §5.
    `role="img"` + `aria-labelledby` → their descriptive `<title>`.
 2. ~~**Emoji as icons**~~ — DONE in Pass 21 (§4u): 39 strip icons are
    hand-drawn inline SVG themed by each volume's colour.
-3. **Chapter-nav active state**: `.nav-item.active` styling exists but no scroll
-   spy sets it on the horizontal chapter nav (the left rail has one); minor JS.
-4. **Glossary tooltips on touch**: hover/focus only; tap works via `tabindex` but
-   dismissal is awkward. Consider tap-toggle semantics.
+3. ~~**Chapter-nav active state**~~ — DONE in Pass 22 (§4v).
+4. ~~**Glossary tooltips on touch**~~ — DONE in Pass 22 (§4v).
 
 **P2 — performance**
 5. ~~Version-stamp `glossary.json` + long-cache headers~~ — DONE in pass 2 via the

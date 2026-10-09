@@ -129,6 +129,31 @@
     rail.querySelectorAll('.rail-tick').forEach(t => {
       t.classList.toggle('active', t.dataset.target === activeId);
     });
+    paintChapterNav();
+  }
+
+  // Pass 22: the horizontal .chapter-nav shows the same active section the
+  // rail tracks (one observer, two readouts). When the active tab is outside
+  // the nav's visible strip it is brought into view with an instant scroll —
+  // no smooth chase while the reader scrolls, so nothing moves under the eye
+  // and reduced-motion needs no special case.
+  function paintChapterNav() {
+    if (!currentChapter || !activeId) return;
+    const nav = currentChapter.querySelector('.chapter-nav');
+    if (!nav) return;
+    let activeItem = null;
+    nav.querySelectorAll('.nav-item').forEach(item => {
+      const on = item.getAttribute('href') === '#' + activeId;
+      item.classList.toggle('active', on);
+      if (on) { item.setAttribute('aria-current', 'location'); activeItem = item; }
+      else item.removeAttribute('aria-current');
+    });
+    if (!activeItem || nav.scrollWidth <= nav.clientWidth + 1) return;
+    const left = activeItem.offsetLeft - nav.offsetLeft;
+    const right = left + activeItem.offsetWidth;
+    const pad = 24;   // keep clear of the edge fade
+    if (left < nav.scrollLeft + pad) nav.scrollLeft = Math.max(0, left - pad);
+    else if (right > nav.scrollLeft + nav.clientWidth - pad) nav.scrollLeft = right - nav.clientWidth + pad;
   }
 
   function recompute() {
@@ -909,10 +934,35 @@
     requestAnimationFrame(() => tip.classList.add('visible'));
   }
 
+  // Pass 22 — touch. A tap on a term toggles its tooltip; a second tap, a tap
+  // anywhere else, or Esc dismisses it; scrolling leaves it open; rotating
+  // re-places it. Mouse hover and keyboard focus behave exactly as before:
+  // the touch path only engages for ~800 ms after a touch/pen pointerdown,
+  // which suppresses the emulated mouseenter/focus/blur a tap generates.
+  let lastTouch = 0;
+  let openedByTouch = false;   // a touch-opened tip ignores mouse-leave/blur (WebKit
+                              // fires them after a scroll moves text under the old tap point)
+  const touchRecent = () => Date.now() - lastTouch < 800;
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+    lastTouch = Date.now();
+    if (!activeAnchor) return;
+    const t = e.target;
+    if (activeAnchor.contains(t) || (tipEl && tipEl.contains(t))) return;
+    hideTip();
+  }, { passive: true, capture: true });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && activeAnchor) hideTip();
+  });
+  window.addEventListener('resize', () => {
+    if (activeAnchor && tipEl && tipEl.classList.contains('visible')) placeTip(activeAnchor);
+  }, { passive: true });
+
   function hideTip() {
     if (!tipEl) return;
     tipEl.classList.remove('visible');
     activeAnchor = null;
+    openedByTouch = false;
     if (hideTimer) clearTimeout(hideTimer);
     hideTimer = setTimeout(() => {
       if (tipEl) tipEl.style.display = 'none';
@@ -925,7 +975,7 @@
     tip.addEventListener('mouseenter', () => {
       if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
     });
-    tip.addEventListener('mouseleave', hideTip);
+    tip.addEventListener('mouseleave', () => { if (!openedByTouch) hideTip(); });
   }
 
   // -------- ATTACH TOOLTIPS ---------------------------------------------------
@@ -968,14 +1018,20 @@
 
       let openTimer = null;
       el.addEventListener('mouseenter', () => {
+        if (touchRecent()) return;
         openTimer = setTimeout(() => showTip(el, entry), 160);
       });
       el.addEventListener('mouseleave', () => {
         if (openTimer) { clearTimeout(openTimer); openTimer = null; }
+        if (touchRecent() || openedByTouch) return;
         hideTip();
       });
-      el.addEventListener('focus', () => showTip(el, entry));
-      el.addEventListener('blur', hideTip);
+      el.addEventListener('focus', () => { if (!touchRecent()) showTip(el, entry); });
+      el.addEventListener('blur', () => { if (!touchRecent() && !openedByTouch) hideTip(); });
+      el.addEventListener('click', () => {
+        if (!touchRecent()) return;
+        if (activeAnchor === el) hideTip(); else { showTip(el, entry); openedByTouch = true; }
+      });
     });
 
     bindTipPersistence();

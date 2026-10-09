@@ -74,10 +74,9 @@ in substance throughout.
 2. **Pass 21 — the icon pass: LANDED 2026-10-09** (ledger `UNDER.md`
    §4u): 39 emoji → 17 drawn SVG icons, themed by each volume's colour.
    Sonnet 5.5 verification owed.
-3. **Pass 22 — the interaction pair** (§6 P1.3 + P1.4, unparked
-   2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
-   under the Law of Invisible Software. Opus 5.5. Brief:
-   `docs/pass-22-brief.md`. Ledger §4v.
+3. **Pass 22 — the interaction pair: LANDED 2026-10-09** (ledger
+   `UNDER.md` §4v): chapter tabs highlight the section in view; glossary
+   tooltips work by tap on phones. Sonnet 5.5 verification owed.
 4. **Pass 25 — Place and Marks** (ratified 2026-10-05, after Pass 22):
    intelligent reading-place tracking (steady reading commits; skims,
    look-ups and detours become excursions), a nav-edge cue that widens on
