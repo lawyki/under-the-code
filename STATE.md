@@ -71,9 +71,9 @@ in substance throughout.
    place) — plus the Pass-15 verification's owner flags still open under
    §4o: the two Part-II hero-lead overclaims (the four geometry notes are
    closed — Pass 20, §4t).
-2. **Pass 21 — the icon pass** (§6 P1.2, unparked by the owner 2026-08-17):
-   emoji icons → hand-drawn inline SVG in the book's grammar, themed by
-   each volume's tokens. Opus 5.5. Brief: `docs/pass-21-brief.md`. Ledger §4u.
+2. **Pass 21 — the icon pass: LANDED 2026-10-09** (ledger `UNDER.md`
+   §4u): 39 emoji → 17 drawn SVG icons, themed by each volume's colour.
+   Sonnet 5.5 verification owed.
 3. **Pass 22 — the interaction pair** (§6 P1.3 + P1.4, unparked
    2026-08-17): chapter-nav scroll-spy + tap-friendly glossary tooltips,
    under the Law of Invisible Software. Opus 5.5. Brief:

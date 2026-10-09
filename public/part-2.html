@@ -1067,7 +1067,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch4-vm-p17" class="insight-text">
         <strong>Dirty COW (CVE-2016-5195).</strong> A bug in Linux's copy-on-write logic, present in the kernel for nine years before being discovered, allowed an unprivileged attacker to write to read-only files — including <code>/etc/passwd</code> — by exploiting a race condition between the page fault handler and the kernel's COW machinery. Privilege escalation followed trivially. The bug's existence and longevity is a reminder of how much of operating system security depends on subtle correctness in subsystems most users will never see.
       </p>
@@ -2134,7 +2134,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch4-security-p18" class="insight-text">
         <strong>The question every layer answers.</strong> What is less-trusted code allowed to do here — and what stops it? Every mechanism in this chapter — the kernel itself, the privilege boundary, virtual memory, filesystem permissions, container isolation, eBPF verification — is a different answer to that one question, and each <em>restricts</em> rather than trusts. Operating system security, fundamentally, is the discipline of building such mechanisms and then living with the fact that any one of them can have a bug. The kernel is not a fortress. It is a series of carefully designed walls, each one with a guard at every gate, and the guards themselves have to be checked by other guards. There is no bottom — only better and worse layers.
       </p>
@@ -4299,7 +4299,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch6-modern-p9" class="insight-text">
         <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid but unspecified state, and reading it yields an answer that means nothing — legal, silent, and wrong, with no compiler warning. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code — the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
       </p>
@@ -5026,7 +5026,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch7-datasci-p7" class="insight-text">
         <strong>The sharpest edge is one line long.</strong> <code>pickle.loads(data)</code> looks like a parser and is an interpreter: a pickle is a small program for a stack machine, and the machine can construct any Python object — including one whose construction calls <code>os.system()</code>. Unpickling attacker-controlled bytes is therefore arbitrary code execution by design, not by bug. Every web framework that accepted pickled session cookies has been bitten by this; the only real fix is to never deserialise pickled data you didn't sign. Python's other edges are the same property — data becoming code with almost no friction — met at different doors: <code>eval()</code> and <code>exec()</code> on user input repeat the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name, and a PyPI package named <code>request</code>, one keystroke from <code>requests</code>, runs whatever it likes the moment someone installs it. Dynamism is convenience; dynamism is also attack surface.
       </p>

@@ -2184,6 +2184,49 @@ the x=310 marker, the 13-slice RR lane with its 1-unit D slice, the
 Q1/Q2/Q3-labelled MLFQ lane, the 186-wide bytecode rect and recentred
 texts.
 
+## 4u. Pass 21 (2026-10-09): the icon pass — emoji become drawn SVG (§6 P1.2)
+
+Owner-ratified (brief `docs/pass-21-brief.md`). Model: Opus 5.5 (BRIDGE §5
+amendment). Zero prose, anchors, figures or glossary entries changed.
+
+**Inventory.** 39 emoji icons, all `.insight-icon` in insight strips (no
+`.concept-icon` is used anywhere; index, glossary and account pages have
+none): part-1 12, part-2 4, part-3 9, part-4 8, part-5 6. 21 code points,
+17 distinct icons once the variation-selector twins merge (⚠/⚠️, ⏱/⏱️):
+🛡️×7, 🔐×6, ⚙️×3, 🔁×3, 📜×3, ⚠×4, 💡×2, ⏱×2, and one each of ⚡ 🔬 📐 💸
+🔗 📅 📚 🪤 🛰️.
+
+**Design, in two sentences.** One set of 17 stroke icons on a 24-unit grid
+— 1.5 stroke, round caps and joins, no fill, drawn in `currentColor` —
+quoting the figures' own line grammar, so each volume's existing
+`.insight-icon` colour (gold, phosphor, cyan, seal, teal) themes them with
+no new CSS per part. Where a metaphor needed a complex drawing it was
+simplified rather than detailed: 📚 "Defence in depth" → stacked layers,
+🛰️ supply chain → one node fanning out to many, 📜 → a document, 🪤 → a
+hook, 💸 → a coin, 📐 → a set square; the first gear (a ray-burst) read as a
+sun and was redrawn as a true eight-tooth cog.
+
+**Markup.** Each `<span class="insight-icon">emoji</span>` became
+`<span class="insight-icon" aria-hidden="true"><svg class="insight-svg"
+viewBox="0 0 24 24" aria-hidden="true" focusable="false" …>…</svg></span>`
+— same element, no new depth, no id, no JS, no animation (the SMIL pauser
+in `book.js` touches every SVG but these have nothing to pause). CSS:
+`.insight-icon { line-height: 0; margin-top: 3px }`, `.insight-svg`
+22×22, block. Print keeps strips with exact colours, so the icons print in
+their volume colour.
+
+**Verification.** Local static server, Chromium and WebKit at 1440 and 375
+(2× scale), all five parts: every icon 22×22 in both engines, computed
+colour equals the volume token (I `#d4a853`, II `#84ffb2`, III `#4fc4e6`,
+IV `#e6a892`, V `#4fd8c2`), 0 page errors, 0 horizontal scroll — 20/20.
+Contact sheet of all 17 icons in all five palettes reviewed, and in-context
+strips (Part IV on cream stock) reviewed for alignment with the first text
+line. The book has no light theme (no `prefers-color-scheme` in any
+stylesheet), so dark is the only mode. Anchor-id sets byte-identical in all
+five parts; glossary regenerated → 519, timestamp-only diff, so the shipped
+file was left unchanged. §6 P1.2 done. **Sonnet 5.5 verification owed**
+(BRIDGE §5).
+
 ## 4w. Pass 23 (2026-08-17): the book-arc read — report-only whole-book pedagogy dossier
 
 The first pass to judge the book as ONE argument, cover to cover (brief
@@ -2498,8 +2541,8 @@ after 2026-11-15. **Verification pass (Sonnet 5.5) owed** per BRIDGE §5.
 **P1 — reader-facing polish**
 1. ~~**Figure a11y**~~ — DONE in pass 2. All 241 figure SVGs + the cover carry
    `role="img"` + `aria-labelledby` → their descriptive `<title>`.
-2. **Emoji as icons** in `.insight-icon`/`.concept-icon` (⚡ etc.) — inconsistent
-   cross-platform rendering; the book otherwise draws everything as SVG.
+2. ~~**Emoji as icons**~~ — DONE in Pass 21 (§4u): 39 strip icons are
+   hand-drawn inline SVG themed by each volume's colour.
 3. **Chapter-nav active state**: `.nav-item.active` styling exists but no scroll
    spy sets it on the horizontal chapter nav (the left rail has one); minor JS.
 4. **Glossary tooltips on touch**: hover/focus only; tap works via `tabindex` but

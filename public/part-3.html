@@ -341,7 +341,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch8-substrates-p5" class="insight-text">
         <strong>The substrate is the first attack surface.</strong> Each of
         these three media leaks differently. Copper wires emit small amounts of
@@ -1153,7 +1153,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch8-ethernet-p11" class="insight-text">
         <strong>MAC flooding — when a switch forgets it is a switch.</strong>
         A switch's MAC table has finite size — usually a few thousand entries
@@ -2255,7 +2255,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch9-security-p2" class="insight-text">
         <strong>The Morris worm — 2 November 1988 — the moment computer
         security became a discipline.</strong> Robert Tappan Morris, a
@@ -3586,7 +3586,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch10-attacks-p9" class="insight-text">
         <strong>State is the attack surface.</strong> TCP gives you reliability, ordering, and back-pressure — and pays for each in kernel-side state that an attacker can force it to spend. The defences are nearly all about <em>making the protocol stateless under attack</em>: SYN cookies (state in the wire), random ISNs (state in the unguessable), TLS underneath (state cryptographically authenticated). Every layer of the network stack, from here onward, exhibits the same arc: protocol invented for a reason; protocol exploited; protocol patched in a way that pushes state into harder places. <a href="#ch11">Chapter 11</a>'s TLS handshake will follow the same shape, only with mathematics, not just hashes, doing the cryptographic heavy lifting.
       </p>
@@ -3858,7 +3858,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">📜</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg></span>
       <p id="ch11-bernerslee-p11" class="insight-text">
         <strong>The 1993 release.</strong> On 30 April 1993 CERN released the entire web — code, protocols, specifications — into the public domain, with a one-page document declaring no royalties were owed and no patents would be filed. That document is now in the CERN archive. It is, by some measures, the most economically significant piece of paper of the late twentieth century. Releasing the technology rather than licensing it foreclosed the possibility that any single company could capture it — and is the reason every later attempt to build a "private web" (AOL, MSN, Compuserve in their walled-garden phases) eventually surrendered.
       </p>
@@ -4168,7 +4168,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚠️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch11-http-p10" class="insight-text">
         <strong>The double-charge problem.</strong> Stripe's idempotency-key documentation (and every payment processor's equivalent) exists because of one specific failure mode: client sends POST <code>/charge</code>, server processes the charge, server crashes before sending the 200, client times out, client retries — and now the customer is charged twice. The fix is for the client to attach a unique <code>Idempotency-Key</code> header; the server records the key alongside the result of the first execution and, on a duplicate request with the same key, returns the stored result instead of re-executing. The mechanism turns a non-idempotent operation into an effectively idempotent one. Every serious payment, signup, or stateful POST in production runs through some version of this dance — because HTTP itself does not guarantee what its method properties promise; the network does that, and the network is not entirely reliable.
       </p>
@@ -4465,7 +4465,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch11-dns-p9" class="insight-text">
         <strong>The 2016 Dyn attack.</strong> On 21 October 2016, the Mirai botnet (~100,000 compromised IoT devices) directed sustained UDP floods at <strong>Dyn</strong>, a major DNS provider that hosted authoritative servers for Twitter, Netflix, Reddit, GitHub, Spotify, and dozens of others. For most of the morning on the US East Coast, those sites were unreachable — not because their own servers were down, but because nobody could resolve their names. DNS is a centralised dependency for half the internet's user-visible names. Take down a major DNS operator and a thousand sites go dark together. Dyn's engineers fought the flood through three waves across the day before traffic scrubbing finally held. The lesson — that even a "decentralised" tree has heavy concentration points — drove the modern push toward redundant DNS: a domain's authoritative NS records spread across two or more independent providers, so no single operator going dark takes the name with it.
       </p>
@@ -5143,7 +5143,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔁</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg></span>
       <p id="ch11-modern-p7" class="insight-text">
         <strong>Protocols earn their shape.</strong> Every protocol in this chapter follows the same arc. Berners-Lee's HTTP — minimal, text-based, perfect for 1991 — got progressively pushed past its limits and replaced with denser, harder, more cryptographic versions. DNS — designed in 1983 with no adversarial model — got progressively patched with port randomisation, DNSSEC, DoH, DoT. TLS — born as Netscape's SSL 1.0, never released because broken — went through six numbered versions before reaching the clean 1.3 most browsers now use. None of these protocols was correctly designed at first issue; all of them earned their current shape from twenty-plus years of attacks and patches. This is unusually true of network protocols specifically, because their designers cannot iterate quickly: every change has to be deployed across millions of independently operated machines without breaking the existing ones. The slow grace of protocol evolution is one of the more remarkable forms of engineering humans have ever managed at planetary scale.
       </p>
@@ -5482,7 +5482,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⏱️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5v-4M10 2.5h4M12 2.5v4M17.5 7.5l1.5-1.5"/></svg></span>
       <p id="ch12-eich-p6" class="insight-text">
         <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked — an artefact of how Mocha tagged its values (null shared the object tag), left unfixed and now unfixable. <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2">Chapter 2</a>.6), but the choice to have <em>no integer type at all</em> — every number is a 64-bit float — meant JavaScript could never expose the difference. Implicit coercion (<code>[] + {} === "[object Object]"</code>) is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. The shape JavaScript will have in fifty years is the shape it has today, plus careful additions; it cannot remove anything.
       </p>

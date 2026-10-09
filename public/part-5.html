@@ -518,7 +518,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚠</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch16-races-p6" class="insight-text">
         <strong>Therac-25, 1985–87.</strong> The first known software-caused medical fatalities were race conditions. The Therac-25 radiation therapy machine used a single computer to control beam intensity and targeting, with no hardware interlock — its predecessors had hardware interlocks, but the engineers had concluded the software was reliable enough to remove them. A specific keystroke sequence, fast enough to interleave with the beam-mode-select state machine, could leave the machine in high-power X-ray mode while the turntable that shapes the beam was set for low-power electron mode. Six patients received radiation overdoses of up to a hundred times the prescribed dose; three died. The lesson is older than the field: any concurrent state machine without explicit synchronisation will eventually be observed in every reachable state, including the states the designer assumed were impossible.
       </p>
@@ -1170,7 +1170,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch16-numa-p4" class="insight-text">
         <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution — the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s — could be coerced into reading memory across security boundaries. The trick: speculative loads pulled secret data into the cache; even though the speculation was rolled back at the architectural level, the cache state survived, and an attacker measuring access timings could read out the secret bit by bit. The fix required microcode patches, kernel page-table isolation (KPTI), and a lasting ~5–30% performance regression on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
       </p>
@@ -1473,7 +1473,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚙️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="ch17-containers-p3" class="insight-text">
         <strong>The MicroVM convergence.</strong> The trade between VM isolation and container speed has been narrowing. AWS Firecracker (2018) and Kata Containers (2018) build "microVMs" — extremely lightweight VMs that boot in about a tenth of a second, weigh a few megabytes, and provide near-VM isolation while preserving most of containers' speed and density; Google's gVisor (2018) attacks the same trade from the other side, wrapping the container in a user-space kernel that intercepts every syscall rather than booting a VM at all. AWS Lambda runs every function in dedicated Firecracker microVMs — each reused across invocations, never shared between functions or customers. Modern serverless platforms have effectively pushed past the container/VM dichotomy by making both fast enough that the practical difference dissolves. The deeper trajectory: as hardware virtualization extensions get cheaper and faster, the security argument for VMs over containers gets stronger, and the speed argument against VMs gets weaker. Expect the boundary between the two to keep eroding.
       </p>
@@ -2383,21 +2383,21 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔁</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg></span>
       <p id="ch17-microservices-p6" class="insight-text">
         <strong>Ask what the abstraction still charges.</strong> Every layer of the cloud abstracts away the layer beneath while preserving its essential trades. Hypervisors abstract physical hardware but preserve the cost of virtualization overhead. Containers abstract operating systems but preserve the cost of process isolation. Kubernetes abstracts cluster operations but preserves the cost of distributed-systems complexity. Serverless abstracts servers entirely but preserves the cost of cold starts and per-invocation latency. None of these abstractions are leak-free; every one of them eventually requires the engineer to understand the layer below. The skill of working in the cloud is, in part, the skill of knowing which layer is currently the source of your problem. We have been building stacks of leaky abstractions for sixty years; we will probably keep doing it for at least sixty more.
       </p>
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch17-microservices-p7" class="insight-text">
         <strong>SolarWinds, December 2020.</strong> Nearly eighteen thousand customers of a network-management vendor installed a routine update of Orion. The update had been silently poisoned at build-time inside SolarWinds's own CI pipeline — a backdoor compiled into the binary the vendor itself signed and shipped. Among the customers were US federal agencies, parts of Microsoft, and SolarWinds itself. The cloud era amplifies the blast radius of supply-chain compromise: one compromised vendor reaches every customer simultaneously, the update mechanism is the attack vector, and the trust boundary that mattered was not in any customer's network. SBOMs, reproducible builds, and signed-but-also-attested artefacts are the industry's response to discovering that a software-update channel is architecturally identical to a worm.
       </p>
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚠</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch17-microservices-p8" class="insight-text">
         <strong>Knight Capital, 1 August 2012, 9:30 a.m.</strong> A high-frequency trading firm pushed a new build to seven of its eight production servers. The new code reused an old feature flag — one that, on the un-updated eighth server, still meant "run Power Peg", a retired order-routing routine whose stop-counting logic had been disabled years before. Every order routed to that one stale machine spawned child orders that nothing counted and nothing stopped. In forty-five minutes Knight Capital racked up four million unintended trades and seven billion dollars in positions; it lost over $460 million, survived the week only through a rescue that cost its shareholders 70% of the company, and agreed to be acquired by a rival before the year was out. Heterogeneous deployment state across a cluster is the distributed-systems version of a race condition: a single machine out of phase with its peers, doing the wrong thing at the right speed, is enough to end a company. Every modern deployment system — blue-green, canary, progressive rollout — is a response to the cost of this specific failure mode.
       </p>

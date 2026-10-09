@@ -481,7 +481,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚡</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 6 13.5h5l-1 7.5 7-10.5h-5z"/></svg></span>
       <p id="ch1-context-p11" class="insight-text">
         <strong>Historical note.</strong> Turing was prosecuted for homosexuality in 1952, sentenced to chemical castration by court order, and died in 1954 — officially by cyanide poisoning, likely suicide. He never saw the computer revolution he made possible. Britain issued a formal apology in 2009. He now appears on the £50 note.
       </p>
@@ -1540,7 +1540,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔬</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5 20 20"/></svg></span>
       <p id="ch1-cpu-p11" class="insight-text">
         <strong>Spectre and Meltdown (2018).</strong> Two catastrophic CPU vulnerabilities discovered in nearly every processor made since 1995. They exploited speculative execution: when the CPU guessed wrong and discarded the work, traces of that work remained in the cache — traces that an attacker could measure to read memory they should not have access to. Hardware has bugs too, and they are far harder to fix than software bugs. We will return to this in <a href="part-4#ch15">Chapter 15</a>.
       </p>
@@ -1801,7 +1801,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🛡️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch1-kernel-p10" class="insight-text">
         <strong>Why this matters for security.</strong> A <strong>privilege escalation</strong> attack is one in which an unprivileged process — your malicious program running in Ring 3 — finds a way to gain Ring 0 access. If it succeeds, it has full control of the machine: it can read any file, watch any keypress, install any rootkit. Every major operating system has had privilege escalation vulnerabilities. The kernel is the most security-critical code on any computer. We will spend significant time on this in <a href="part-2">Part II</a>'s kernel chapter and again in <a href="part-4">Part IV</a>'s unified security chapter.
       </p>
@@ -1970,7 +1970,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">💡</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch1-memory-p11" class="insight-text">
         <strong>Buffer overflow attacks</strong> exploit the memory model directly. If a program writes more data than a buffer can hold, the extra bytes spill into adjacent memory. If that memory contains a return address — an address the CPU will jump to when the current function ends — an attacker who controls the input controls where the CPU jumps next. Three layered defences each cut a different link in that chain: a <strong>stack canary</strong> is a known value planted between the buffer and the return address, so an overflow must trample it on the way and the change is caught before the function returns; <strong>ASLR</strong> (Address Space Layout Randomization) reshuffles where code and data load on every run, so the attacker no longer knows which address to aim at; and <strong>DEP</strong> (Data Execution Prevention) marks writable memory as non-executable, so bytes smuggled into a buffer cannot run as instructions even if the CPU is redirected into them. We'll see exactly how each of these works at the assembly level in <a href="#ch3">Chapter 3</a>.
       </p>
@@ -2305,7 +2305,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">📐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5v15h15z"/><path d="M8.5 12.5v3h3z"/><path d="M4.5 8.5h2M4.5 12h1.5M4.5 15.5h2"/></svg></span>
       <p id="ch2-boole-p10" class="insight-text">
         <strong>The deeper claim.</strong> Anything that can be computed — any function that takes some input and produces some output by following a finite procedure — can be expressed as a Boolean formula and built as a circuit of AND, OR, and NOT gates. This is the practical version of Turing's universality theorem. It is why the same hardware can run a calculator, a video game, and a neural network. They are all, at the bottom, Boolean expressions.
       </p>
@@ -2969,7 +2969,7 @@
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚠️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch2-twos-p10" class="insight-text">
         <strong>Integer overflow vulnerabilities.</strong> Because the range is finite, adding two large positive numbers can produce a negative result — the carry overflows the most significant bit and changes the sign. In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a 64-bit floating-point velocity value was converted to a 16-bit signed integer that overflowed. Cost: $370 million. In security, integer overflow bugs are a classic source of buffer overflows: a length check using a signed integer can be tricked into accepting an enormous "negative" length that bypasses bounds checking. We will see exact exploits of this in <a href="part-4">Part IV</a>'s security chapter.
       </p>
@@ -3253,7 +3253,7 @@
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">💸</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 6.5v11"/><path d="M14.6 9.2c-.5-.8-1.4-1.2-2.6-1.2-1.4 0-2.6.7-2.6 1.9s1.1 1.6 2.6 2 2.6.9 2.6 2.1-1.2 1.9-2.6 1.9c-1.2 0-2.1-.4-2.6-1.2"/></svg></span>
       <p id="ch2-float-p11" class="insight-text">
         <strong>Real-world consequences.</strong> Financial software cannot use floating point for currency, because rounding errors compound across millions of transactions. Banks use either integer cents or special decimal types instead. The 1991 Patriot missile failure during the Gulf War — which killed 28 American soldiers — was traced to a floating-point timing error that accumulated over 100 hours of operation, causing the missile to miscalculate the position of an incoming Scud. Floating point is precise enough for almost everything, but its errors are real, and they compound. Knowing when to use floats and when not to is a basic competency in software engineering.
       </p>
@@ -4178,7 +4178,7 @@ main:
     </div>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔗</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1 1"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1-1"/></svg></span>
       <p id="ch3-call-p6" class="insight-text">
         <strong>Why this matters.</strong> The return address is just a number stored in memory. The CPU has no way to verify it is the same number that was pushed there originally. If anything overwrites it between the <code>call</code> and the <code>ret</code> — anything at all — the CPU will obediently jump wherever the new value points. This is the seam from which an entire era of computer security emerged.
       </p>
@@ -4324,7 +4324,7 @@ main:
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">📅</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14" rx="1.5"/><path d="M4 9.5h16M8.5 3.5v4M15.5 3.5v4M8 13h2M11 13h2M14 13h2M8 16h2M11 16h2"/></svg></span>
       <p id="ch3-overflow-p10" class="insight-text">
         <strong>Famous buffer overflow incidents.</strong> The Morris Worm (1988, fingerd). The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL — technically a buffer over-<em>read</em> rather than overflow: the server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer — including the private keys of millions of HTTPS servers). For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels — including, as of 2022, Linux itself.
       </p>
@@ -5023,7 +5023,7 @@ main:
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">⚙️</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="chBridge-mode-p8" class="insight-text">
         <strong>Why this is the seam.</strong> Every protection the operating system claims to enforce — process isolation, file permissions, network sandboxing, container boundaries — bottoms out in this one bit. If a user-mode program could clear the bit by itself, the entire stack would collapse. It cannot, because the bit lives in silicon: it is set only by a small set of instructions that themselves require Ring 0 to execute. The whole tower of operating-system security stands on the bit's circular self-protection.
       </p>
@@ -5259,7 +5259,7 @@ main:
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">🔐</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="chBridge-trap-p7" class="insight-text">
         <strong>The kernel's authority is registered, not assumed.</strong> The CPU does not know what the kernel is. It knows where to jump on each kind of trap, because the kernel told it at boot — by writing the IDT into memory and pointing <code>IDTR</code> at it. After boot, that pointer is in a privileged register that user code cannot change. The kernel's authority is an arrangement the kernel made with the silicon while it was still alone with the machine.
       </p>
@@ -5570,7 +5570,7 @@ main:
     </p>
 
     <div class="insight-strip">
-      <span class="insight-icon">⏱</span>
+      <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5v-4M10 2.5h4M12 2.5v4M17.5 7.5l1.5-1.5"/></svg></span>
       <p id="chBridge-timer-p5" class="insight-text">
         <strong>Why the timer is irreducible.</strong> Privilege rings, traps, and the MMU all give the kernel <em>authority</em> over what user code can do. The timer is what gives the kernel a chance to <em>exercise</em> that authority. Without it, the kernel has the right to act but no way to ever begin acting if the user code refuses to call it. Multitasking, time-sharing, fairness, deadline scheduling, even the ability to kill a misbehaving program — all rest on this one circuit firing on a schedule the user cannot disable.
       </p>
