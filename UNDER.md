@@ -2272,6 +2272,16 @@ Profile: 4× CPU throttle, scripted scroll through 60% of Part III — 0 long
 tasks (same as before the change). §6 P1.3 + P1.4 done. **Sonnet 5.5
 verification owed** (BRIDGE §5).
 
+**Aftercare 2026-10-09 — account mark.** Owner request: make the account
+findable, subtly. `book.js` injects a bookmark link (`/account`) at the
+right end of the top bar on every part page and in the cover's top-right
+corner (with a small "Sign in"/"Account" label there): outline at 42 %
+white when signed out, filled gold when the `under_signedin` hint cookie is
+present — no request, so signed-out readers still make zero API calls. 44 px
+target, `aria-label` + `title`, hidden in print. Verified Chromium + WebKit
+at 1440 and 375, signed in and out, all six pages: bar exactly 48 px, no
+overlap with the part readout, no horizontal scroll, 0 errors.
+
 ### Verification of Passes 21, 22 and 24 (2026-10-09, Sonnet 5.5, BRIDGE §5)
 
 The first verification under the 2026-10-05 model ruling: an independent

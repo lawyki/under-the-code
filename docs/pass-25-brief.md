@@ -96,6 +96,18 @@ and the rail; synced for signed-in readers via a new `marks` table and
    per-origin localStorage. Not this pass, but keep the stored formats
    versioned and portable so the move's hand-off is simple.
 
+## Note added 2026-10-09 — the account mark shares the bar
+
+Since this brief was written the bar gained an account mark (`.book-account`,
+a bookmark at the right end of `.book-nav`; filled gold when signed in;
+injected by `book.js`, `.book-nav.has-account` layout). The cue's
+`place-btn` and readout must sit alongside it — place-btn immediately left of
+the account mark at ≤620 px, the 2 px cue line under both — and the "synced"
+state of the cue should not contradict the account mark's signed-in fill
+(the mark reflects the hint cookie; the cue reflects the last real server
+answer, which is the more truthful of the two: when they disagree, prefer
+fixing the mark to follow the cue's knowledge of a 401).
+
 ## Invariants
 
 Nav exactly 48.0px. Anchor set and `candidates()` count byte-identical;

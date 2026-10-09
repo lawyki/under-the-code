@@ -56,6 +56,32 @@
   @media (max-width: 960px) { .book-title-sub { display: none; } }
   @media (max-width: 620px) { .book-progress { display: none; } }
 
+  /* Account corner (2026-10-09): a quiet bookmark at the right end of the
+     bar — outline when signed out, filled gold when this browser is signed
+     in (read from the hint cookie; no request). Part of the invariant spine:
+     same gold, same place, every volume. */
+  .book-nav.has-account { justify-content: flex-start; }
+  .book-nav.has-account .book-title { margin-right: auto; }
+  .book-account {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; height: 44px; min-width: 44px; margin-right: -12px; padding: 0 12px;
+    color: rgba(255,255,255,0.42); text-decoration: none;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+  .book-account:hover, .book-account:focus-visible { color: var(--accent); }
+  .book-account:focus-visible { outline: 2px solid var(--accent); outline-offset: -6px; border-radius: 4px; }
+  .book-account svg { display: block; width: 15px; height: 15px; overflow: visible; }
+  .book-account.is-signed-in { color: rgba(212,168,83,0.75); }
+  .book-account.is-signed-in svg path { fill: currentColor; }
+  .book-account-label { display: none; }
+  /* On the cover there is no bar: the same mark sits in the top-right corner
+     with a small label. */
+  .cover { position: relative; }
+  .cover > .book-account { position: absolute; top: 14px; right: 26px; margin: 0; }
+  .cover > .book-account .book-account-label { display: inline; }
+  @media (max-width: 620px) { .cover > .book-account { right: 10px; top: 6px; } }
+
   .part-opener {
     background: var(--black); color: white;
     min-height: 100vh;
@@ -1257,6 +1283,7 @@
     .part-opener h1, .chapter-hero h1 { font-size: 28pt !important; }
     .chapter-hero { grid-template-columns: 1fr !important; }
     .chapter-hero-visual { display: none !important; }
+    .book-account { display: none !important; }
 
     /* Force backgrounds to print on figure/code/callout cards.
        Without these declarations the browser strips backgrounds by default,

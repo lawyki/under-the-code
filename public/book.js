@@ -88,6 +88,31 @@
   });
 })();
 
+// --- Account corner -----------------------------------------------------------
+// A quiet way to find the account page: a bookmark at the right end of the top
+// bar on part pages, and in the cover's top-right corner. Outline when signed
+// out; filled gold when this browser holds a session (the JS-readable hint
+// cookie — no request is made, so signed-out readers still generate zero API
+// traffic).
+(function () {
+  'use strict';
+  const nav = document.querySelector('.book-nav');
+  const cover = document.querySelector('.cover');
+  const host = nav || cover;
+  if (!host) return;
+  const signedIn = /(?:^|;\s*)under_signedin=1(?:;|$)/.test(document.cookie);
+  const a = document.createElement('a');
+  a.className = 'book-account' + (signedIn ? ' is-signed-in' : '');
+  a.href = '/account';
+  const label = signedIn ? 'Your account — your place is kept across devices' : 'Account — keep your place across devices';
+  a.setAttribute('aria-label', label);
+  a.title = label;
+  a.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 2.5h8v11l-4-3-4 3z"/></svg>'
+    + '<span class="book-account-label">' + (signedIn ? 'Account' : 'Sign in') + '</span>';
+  if (nav) nav.classList.add('has-account');
+  host.appendChild(a);
+})();
+
 // --- Section progress rail ----------------------------------------------------
 (function () {
   'use strict';
