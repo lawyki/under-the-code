@@ -304,6 +304,7 @@ export async function maybeCleanup(env, waitUntil) {
   const cutoff = now - UNVERIFIED_TTL_MS;
   const work = env.DB.batch([
     env.DB.prepare(`DELETE FROM positions WHERE user_id IN (${stale})`).bind(cutoff, now),
+    env.DB.prepare(`DELETE FROM marks WHERE user_id IN (${stale})`).bind(cutoff, now),
     env.DB.prepare(`DELETE FROM sessions WHERE user_id IN (${stale})`).bind(cutoff, now),
     env.DB.prepare(`DELETE FROM credentials WHERE user_id IN (${stale})`).bind(cutoff, now),
     env.DB.prepare(`DELETE FROM webauthn_challenges WHERE user_id IN (${stale})`).bind(cutoff, now),

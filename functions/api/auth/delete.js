@@ -1,8 +1,10 @@
 // POST /api/auth/delete — delete the account and everything attached to it:
-// position, passkeys, challenges, sessions, outstanding emailed links,
-// rate-limit nudge, then the user row. Needs a fresh sign-in. This is the
-// deletion route promised in the privacy notice; there is nothing else to
-// delete anywhere.
+// position, section marks (live and removed), passkeys, challenges, sessions,
+// outstanding emailed links, rate-limit nudge, then the user row. Needs a
+// fresh sign-in. This is the deletion route promised in the privacy notice;
+// there is nothing else to delete anywhere. (The marks table comes from
+// migration 0002, which must be applied before this ships, or every deletion
+// fails.)
 'use strict';
 
 import { json, getSession, isRecent, strictOrigin, clearedCookies } from '../_lib.js';
@@ -17,6 +19,7 @@ export async function onRequestPost({ request, env }) {
   const id = session.userId;
   await env.DB.batch([
     env.DB.prepare('DELETE FROM positions WHERE user_id = ?').bind(id),
+    env.DB.prepare('DELETE FROM marks WHERE user_id = ?').bind(id),
     env.DB.prepare('DELETE FROM credentials WHERE user_id = ?').bind(id),
     env.DB.prepare('DELETE FROM webauthn_challenges WHERE user_id = ?').bind(id),
     env.DB.prepare('DELETE FROM sessions WHERE user_id = ?').bind(id),

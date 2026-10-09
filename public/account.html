@@ -82,6 +82,22 @@
   .acct-place em { font-family: var(--serif); color: var(--accent); }
   .acct-place a { color: var(--accent); }
   .acct-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .acct-marks { max-width: 640px; margin-top: 56px; }
+  .acct-marks-list { list-style: none; margin: 14px 0 0; padding: 0; }
+  .acct-marks-list li { border-top: 1px solid rgba(255, 255, 255, 0.07); }
+  .acct-marks-list li:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+  .acct-marks-list a {
+    display: flex; align-items: baseline; gap: 12px; min-height: 44px; padding: 10px 2px;
+    color: rgba(245, 240, 230, 0.82); text-decoration: none;
+    font-family: var(--sans); font-weight: 300; font-size: 0.95rem; line-height: 1.5;
+  }
+  .acct-marks-list a:hover .am-sec, .acct-marks-list a:focus-visible .am-sec { color: var(--accent); }
+  .acct-marks-list a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .am-sw { flex: none; width: 10px; height: 10px; border-radius: 2px; background: var(--mk-c); align-self: center; }
+  .am-part { flex: none; min-width: 4.2em; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: rgba(245, 240, 230, 0.55); text-transform: uppercase; }
+  .am-sec { flex: 1 1 auto; min-width: 0; }
+  .am-col { flex: none; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: rgba(245, 240, 230, 0.6); }
+  @media (max-width: 520px) { .acct-marks-list a { flex-wrap: wrap; gap: 4px 12px; } .am-sec { flex-basis: calc(100% - 22px); order: 3; margin-left: 22px; } }
 
 
   .acct-form input[type="password"], .acct-form input[type="text"].acct-field {
@@ -317,6 +333,12 @@
         <p class="acct-status" id="acct-in-status" role="status"></p>
       </div>
     </div>
+
+    <!-- ===== Your marks (Pass 25): every marked section, book-wide ===== -->
+    <section class="acct-marks" id="acct-marks" hidden aria-labelledby="acct-marks-h">
+      <h2 class="acct-h" id="acct-marks-h">Your <em>marks</em></h2>
+      <ul class="acct-marks-list" id="acct-marks-list"></ul>
+    </section>
 
     <section class="acct-privacy" id="privacy">
       <h2>What this stores — a <em>privacy</em> notice.</h2>
@@ -761,7 +783,7 @@
 
   // ---- Session actions ----
   $('acct-signout').addEventListener('click', () => {
-    api('/api/auth/logout', {}).finally(() => location.reload());
+    api('/api/auth/logout', {}).finally(() => { forgetAccountHere(); location.reload(); });
   });
   $('acct-signout-others').addEventListener('click', async () => {
     const res = await api('/api/auth/signout-others', {});
@@ -783,9 +805,110 @@
     busy(btn, true);
     const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Nothing about you remains on the server.', 'acct-in-status', true);
     busy(btn, false);
-    if (res.ok) setTimeout(() => location.replace('/account'), 1600);
-    else if (pending) pending.after = () => setTimeout(() => location.replace('/account'), 1600);
+    const done = () => { keepMarksLocal(); setTimeout(() => location.replace('/account'), 1600); };
+    if (res.ok) done();
+    else if (pending) pending.after = done;
   });
+
+  // =================== Your marks (Pass 25) ===================
+  // Local marks always; signed in, the server's too (once it has marks on).
+  // Colour swatches come from book.css's [data-vol] palette table; the slot
+  // names below must stay in step with VOLUMES in book.js.
+  const MARKS_KEY = 'under-the-code:marks';
+  const PROGRESS_KEY = 'under-the-code:progress';
+  const SLOT_NAMES = {
+    'part-1': ['Sienna', 'Madder', 'Smalt', 'Verdigris', 'Murex'],
+    'part-2': ['P3 amber', 'Ribbon red', '3270 blue', 'P1 green', 'Carbon'],
+    'part-3': ['Route', 'Port', 'Prussian', 'Starboard', 'Sounding'],
+    'part-4': ['Ochre', 'Sealing wax', 'Registry ink', 'Baize', 'Graphite'],
+    'part-5': ['Candidate', 'Heartbeat', 'Replica', 'Follower', 'Commit'],
+  };
+  const ROMAN = { 'part-1': 'I', 'part-2': 'II', 'part-3': 'III', 'part-4': 'IV', 'part-5': 'V' };
+  function readStore(key) { try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { return null; } }
+  function writeStore(key, v) { try { if (v == null) localStorage.removeItem(key); else localStorage.setItem(key, JSON.stringify(v)); } catch (e) { /* ignore */ } }
+
+  // Signing out: this device forgets what belongs to the account — its synced
+  // marks and its synced place. Both stay on the server for the next sign-in.
+  function forgetAccountHere() {
+    const m = readStore(MARKS_KEY);
+    if (m && m.m) {
+      Object.keys(m.m).forEach(k => { if (m.m[k].o) delete m.m[k]; });
+      m.owner = null; m.cursor = 0;
+      writeStore(MARKS_KEY, m);
+    }
+    const p = readStore(PROGRESS_KEY);
+    if (p && (p.sa || p.acct)) writeStore(PROGRESS_KEY, null);
+    writeStore('under-the-code:before-detour', null);
+  }
+  // Deleting the account: the server copy is gone; what this device holds
+  // becomes plain signed-out marks and place again (they would upload to a
+  // new account on its first sign-in, like any signed-out marks).
+  function keepMarksLocal() {
+    const m = readStore(MARKS_KEY);
+    if (m && m.m) {
+      Object.keys(m.m).forEach(k => {
+        const e = m.m[k];
+        if (e.x) delete m.m[k];
+        else m.m[k] = { c: e.c, t: e.t, s: 0, x: 0, o: null };
+      });
+      m.owner = null; m.cursor = 0;
+      writeStore(MARKS_KEY, m);
+    }
+    const p = readStore(PROGRESS_KEY);
+    if (p) { delete p.sa; delete p.sb; delete p.acct; writeStore(PROGRESS_KEY, p); }
+  }
+
+  async function renderMarks() {
+    const store = readStore(MARKS_KEY);
+    const all = {};
+    if (store && store.m) Object.keys(store.m).forEach(k => { const e = store.m[k]; if (!e.x && e.c >= 1 && e.c <= 5) all[k] = e.c; });
+    if (hint) {
+      const r = await api('/api/marks?since=0');
+      if (r.ok && Array.isArray(r.data.rows)) {
+        r.data.rows.forEach(row => {
+          const k = row.part + '|' + row.a;
+          const local = store && store.m && store.m[k];
+          if (local && !local.s) return;              // a change on this device waits to sync
+          if (row.x) delete all[k]; else all[k] = row.c;
+        });
+      }
+    }
+    const keys = Object.keys(all);
+    if (!keys.length) { $('acct-marks').hidden = true; return; }
+    let map = {};
+    try { const s = await fetch('/sections.json').then(r => (r.ok ? r.json() : null)); if (s && s.sections) map = s.sections; } catch (e) { /* labels fall back to ids */ }
+    const order = Object.keys(map);
+    keys.sort((a, b) => {
+      const ia = order.indexOf(a), ib = order.indexOf(b);
+      return (ia < 0 ? 1e9 : ia) - (ib < 0 ? 1e9 : ib) || a.localeCompare(b);
+    });
+    const list = $('acct-marks-list');
+    list.textContent = '';
+    keys.forEach(k => {
+      const [part, a] = k.split('|');
+      if (!SLOT_NAMES[part]) return;
+      const c = all[k];
+      const sec = map[k];
+      const li = document.createElement('li');
+      li.dataset.vol = part;
+      const link = document.createElement('a');
+      link.href = part + '#' + a;
+      const sw = document.createElement('span');
+      sw.className = 'am-sw'; sw.dataset.c = String(c); sw.setAttribute('aria-hidden', 'true');
+      const pt = document.createElement('span');
+      pt.className = 'am-part'; pt.textContent = 'Part ' + ROMAN[part];
+      const st = document.createElement('span');
+      st.className = 'am-sec';
+      st.textContent = sec ? ('§' + (sec.label || '').split('—')[0].trim() + ' ' + (sec.title || '')) : a;
+      const col = document.createElement('span');
+      col.className = 'am-col'; col.textContent = SLOT_NAMES[part][c - 1];
+      link.append(sw, pt, st, col);
+      li.appendChild(link);
+      list.appendChild(li);
+    });
+    $('acct-marks').hidden = false;
+  }
+  renderMarks();
 
   if (hint) refresh(); else showSignedOut();
   // Tidy the address bar once the setup/recover flags have been read.

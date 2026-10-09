@@ -185,7 +185,8 @@ h4 { font-family: var(--sans); font-weight: 600; }
   margin: 8px 12px 0 0;
   color: var(--accent-dim);
 }
-.section-number::before { box-shadow: 0 0 8px rgba(47, 157, 196, 0.5); }
+.section-number::before,
+.section-number .mark-dot:not(.is-marked) { box-shadow: 0 0 8px rgba(47, 157, 196, 0.5); }
 
 .pull-quote {
   border-left: 3px solid var(--accent-dim);
@@ -314,3 +315,25 @@ h3 { background-image: linear-gradient(to right, rgba(47, 157, 196, 0.5), rgba(4
   .part-opener::before, .part-opener::after, .diagram-card::after { display: none !important; }
   .cr-arc { display: none !important; }
 }
+
+/* --- Pass 25: the reading cue and section marks, Chart Room ---------------------
+   The saved place is a signal "+" (drawn open while only on this device, closed
+   once synced); marked sections are route legs; a mark lands with a short scale. */
+:root { --mk-w: 7px; --mk-h: 7px; }
+.utc-shape {
+  box-shadow: none;
+  background:
+    linear-gradient(var(--cue-mark), var(--cue-mark)) 50% 0 / 1.5px 2.6px no-repeat,
+    linear-gradient(var(--cue-mark), var(--cue-mark)) 50% 100% / 1.5px 2.6px no-repeat,
+    linear-gradient(var(--cue-mark), var(--cue-mark)) 0 50% / 2.6px 1.5px no-repeat,
+    linear-gradient(var(--cue-mark), var(--cue-mark)) 100% 50% / 2.6px 1.5px no-repeat;
+}
+.utc-shape > b {
+  background:
+    linear-gradient(var(--cue-mark-synced), var(--cue-mark-synced)) 50% 50% / 1.5px 100% no-repeat,
+    linear-gradient(var(--cue-mark-synced), var(--cue-mark-synced)) 50% 50% / 100% 1.5px no-repeat;
+}
+.is-synced .utc-shape { box-shadow: none; }
+.cue-seg.is-marked { height: 4px; bottom: 2px; border-left: 0; margin-left: 1px; border-radius: 2px; }
+@keyframes mkScale { from { transform: scale(0.8); opacity: 0.4; } }
+.mark-dot.mk-anim svg, .cue-mark.mk-anim .utc-shape { animation: mkScale 160ms cubic-bezier(0.2, 0.7, 0.2, 1); }

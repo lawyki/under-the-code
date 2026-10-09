@@ -16,11 +16,12 @@ public/          ← the static site · what the domain serves
   part-2.css ... part-5.css ← per-volume identity layers
   fonts.css, fonts-part2..5.css, fonts/ ← self-hosted webfonts (no third-party requests)
   glossary.html, glossary.json
+  sections.json  ← section labels for the account page's "Your marks" (npm run build:sections)
   account.html   ← sign-in + privacy notice (/account)
   og-image.svg, og-image.png
   robots.txt, sitemap.xml, 404.html, _headers
 functions/       ← Cloudflare Pages Functions · the account/position API (/api/*)
-schema.sql       ← D1 schema: users, sessions, login tokens, reading positions
+schema.sql       ← D1 schema: users, sessions, login tokens, reading positions (+ migrations/: accounts v2, section marks)
 wrangler.toml    ← Pages + D1 bindings
 scripts/         ← build tooling (not served)
   build-glossary.js
@@ -38,13 +39,16 @@ npm run serve
 
 # Re-extract the auto-glossary from the part-N.html files
 npm run build:glossary
+
+# Rebuild the section-label map after any heading edit
+npm run build:sections
 ```
 
 The book itself is a static site — no framework, no bundler. Everything in `public/` is plain HTML + CSS + JS that a browser parses directly. Alongside it runs one small optional service: the account/position API in `functions/`, deployed as Cloudflare Pages Functions against a D1 database.
 
 ## Reading positions & accounts
 
-Signed out, your reading position is kept in the browser's `localStorage` only — it never leaves the device. Signing in (a password; the email is used only to confirm the account and to recover it — passkeys follow at the domain move) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
+Signed out, your reading position — and any sections you mark — is kept in the browser's `localStorage` only — it never leaves the device. The place is the paragraph you were *reading*: skims, look-ups and detours don't move it, and you can set it by hand from the place button on the bar (Pass 25, `UNDER.md` §4y; `?utc-debug` on a part page shows the tracker). Signing in (a password; the email is used only to confirm the account and to recover it — passkeys follow at the domain move) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
 
 ## Deploy
 

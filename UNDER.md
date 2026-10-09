@@ -2605,6 +2605,246 @@ first sign-in is that test.
 real passkey on Safari, Chrome and Firefox. Retire `/api/auth/request`
 after 2026-11-15. **Verification pass (Sonnet 5.5) owed** per BRIDGE §5.
 
+## 4y. Pass 25 (2026-10-09): Place and Marks — the reading place, a cue you can correct, coloured section marks (§6 P3.10)
+
+Owner-ratified (brief `docs/pass-25-brief.md`, 2026-10-05; review
+`docs/pass-25-review.md` binding over spec `docs/pass-25-spec.md`). Site work
+only: zero prose, anchors, figures or glossary (the five part files are
+byte-identical to HEAD; glossary regenerated → timestamp-only diff, not
+shipped). Model: Opus 5.5 (BRIDGE §5). Built as one integrator writing the
+client while a workflow built the palettes, the server side and the test
+harness in parallel; then a three-lens adversarial review (reader /
+accessibility / engineering) with a skeptic verifying every finding.
+
+**What the reader gets.**
+
+- **The place is where they were reading.** A steady reading step commits the
+  place 400 ms after the scroll stops. A fling, a jump, a link, find-in-page,
+  Home/End or a scroll that outruns the reading budget starts an *excursion*
+  that remembers the place (R): coming back costs nothing (0 writes); only
+  sustained reading elsewhere promotes the excursion. Look-ups are hard to
+  promote (links — including new-tab look-ups detected by referrer —, other
+  parts, going back: ≥ 3 min and ≥ 5 paragraphs, or reading past the end of
+  the section). Skipping ahead on purpose (fling, scrollbar) and direct
+  arrivals (index shelf, typed URL) promote after 25 s and 300 characters, or
+  90 s on one spot. For 24 h the place bar offers "Back to before the
+  detour"; for 10 min one reading step at the old place restores it.
+- **Labels name the paragraph actually being read** (K, at the attention line
+  a third of the way down the reading area), while the stored anchor and
+  fraction keep Pass 3's 56 px meaning, so restores stay pixel-exact and old
+  clients read the record (review H1).
+- **The cue.** A 2 px line on the bar's bottom edge: chapter progress in the
+  volume's fill, and a mark at the saved place — hollow while saved on this
+  device, solid once synced, dimmer while sync is paused, docked at an end
+  (60 %) when the place is in another chapter or part, a faint halo when set by
+  hand. At rest nothing else shows. Under a slow mouse (moving < 0.5 px/ms,
+  120 ms dwell) the line widens to 8 px with the chapter's sections, marked
+  ones textured by slot; the readout previews the section under the pointer;
+  a click jumps there; the mark can be dragged to any paragraph (snaps from
+  the table, no layout reads, Esc cancels).
+- **The place button** (`place-btn`): above 620 px it *is* the readout
+  (`CH 4 · §03 · ¶7`, location only, changes at most on a section change or
+  every 10 s); at ≤ 620 px a 44 px button with the volume's mark, immediately
+  left of the account mark. It opens the **place bar** (slides over the
+  chapter nav, pushes nothing): where the place is and its sync state, a
+  paragraph slider (◀¶ ¶▶; ←/→, PgUp/PgDn by section, Home/End), "Set to where
+  I'm reading", "Go to saved place", "Mark this section", and when they apply
+  "Back to before the detour", "Let the book track", "Undo". Setting the place
+  pins it (`src:'set'`): it holds against tracking until the reader reads on
+  from it, reads 3 min / 5 paragraphs elsewhere, sets a new one, or lets the
+  book track. A toast "Place set · §03 ¶4 · Undo" sits in the chip slot for
+  6 s (held on hover/focus; the other-device chip waits).
+- **Section marks.** Each section's pulsing dot is now a button (same 6×6 slot,
+  same pulse; no JS → the old dot). It opens a small menu: None + five
+  colours (glyph + name) + "Set my place here". A marked section shows its
+  slot glyph on the dot, a textured 3 px strip on its chapter tab, its colour
+  on the rail and on the widened cue. The account page lists every mark
+  book-wide ("Your marks": part · section · colour, linked) — the overview
+  the review found missing.
+- **Per volume** (the gold spine stays gold): I a gilt 3×6 notch, fade; II a
+  phosphor cursor cell, marked segments in 4 px listing cells, a two-step
+  cut; III a signal "+" (open while local, closed when synced), route-leg
+  segments, a short scale; IV a seal ring (filled when synced), ledger rules
+  above and below, a stamp; V a quorum — one violet node local, three teal
+  synced, one lit and two dim paused — capsules arriving node by node.
+
+**Palettes (bridge resolution 1).** One hue family per slot in every volume
+(1 amber, 2 red, 3 blue, 4 green, 5 violet or neutral), each volume its own
+tint, names and glyphs; one table in `book.css` keyed by `[data-vol]`.
+Measured (WCAG 2.x), every slot ≥ 3.05:1 on the bar `#0a0a0a`, the volume's
+chapter nav and its page:
+
+| Part | 1 amber | 2 red | 3 blue | 4 green | 5 violet/neutral |
+|---|---|---|---|---|---|
+| I | Sienna `#b27749` ✱ 5.31/5.06/3.30 | Madder `#9f4447` † 3.20/3.05/5.47 | Smalt `#787adf` ‡ 5.32/5.08/3.28 | Verdigris `#459881` ‖ 5.71/5.45/3.06 | Murex `#725491` ¶ 3.20/3.05/5.47 |
+| II | P3 amber `#805c00` > 3.25/3.09/5.65 | Ribbon red `#d35f51` # 5.21/4.95/3.53 | 3270 blue `#6680e2` = 5.42/5.15/3.39 | P1 green `#06a175` / 6.00/5.70/3.06 | Carbon `#616462` * 3.31/3.14/5.56 |
+| III | Route `#c36f16` arrowhead 5.28/4.65/3.33 | Port `#b9392b` diamond 3.47/3.05/5.06 | Prussian `#5569ca` wave 4.02/3.53/4.38 | Starboard `#2e7e4f` triangle 3.97/3.49/4.42 | Sounding `#7c8589` ring 5.25/4.62/3.35 |
+| IV | Ochre `#ab7916` tick 5.16/5.11/3.17 | Sealing wax `#9a4536` redaction bar 3.09/3.06/5.30 | Registry ink `#7378b9` double rule 4.82/4.77/3.39 | Baize `#43946a` lozenge 5.36/5.30/3.06 | Graphite `#64615e` tab corner 3.22/3.18/5.09 |
+| V | Candidate `#7b5e10` half node 3.25/3.24/5.47 | Heartbeat `#d54e5a` zigzag 4.78/4.76/3.72 | Replica `#3f639a` double ring 3.26/3.25/5.45 | Follower `#1c9c7f` hollow ring 5.76/5.74/3.09 | Commit `#a078d8` square 5.82/5.80/3.06 |
+
+Ratios are bar / chapter nav / page. Minimum pairwise CIEDE2000 within a
+volume, normal / protan / deutan / tritan: I 18.5/13.9/14.6/14.0 · II
+23.8/12.3/12.7/12.0 · III 18.8/11.7/11.4/11.7 · IV 22.5/12.8/14.2/14.7 · V
+22.7/14.8/14.8/18.1 (worst III Port–Starboard under deuteranopia, 11.4; the
+spec's palette was 11.3). Slot OKLCH hues: amber 58–86°, red 19–32°, blue
+259–280°, green 154–173°; slot 5 violet in I and V, neutral grey in II–IV (all
+five violet collapses blue/violet under protan/deutan — recorded, not
+fixable inside the rule). Sealing wax is a dark brown oxblood (C 0.117), not a
+signal red. Every glyph differs from its neighbours in shape and in
+solid/open, so no meaning rests on colour; forced-colors draws them in
+`CanvasText` and the tab strips keep their textures. Saved marks
+(`#d4a853`, `#84ffb2`, `#4fc4e6`, `#cf8d78`, `#a08cff`/`#4fd8c2`) are
+7.25–15.96:1 on the bar; against the head fill they are 1.54–2.44:1, so the
+mark is drawn with a 1 px `#0a0a0a` gap (gap vs fill 3.94–7.12:1); the paused
+mark sits at 65 % opacity (≥ 3:1 in every volume). Head fill vs track
+3.31–6.00:1. Readout alpha raised .40 → .55 (3.77 → 6.28:1, review M11). New
+owner-facing names: II-4 P1 green, II-5 Carbon (was slot 4), III-2 Port, IV-2
+Sealing wax, IV-4 Baize, V-5 Commit (now violet).
+
+**Thresholds as shipped** (`T` in `book.js`; `?utc-debug` shows the live
+state, K, C, R, budget and counters, local only, for the re-tune after the
+owner's read): burst ends 250 ms after the last scroll event (or `scrollend`);
+step commits 400 ms later; reading budget 60 chars/s capped at the
+characters on screen at the last commit (floor 600), starting at half;
+overspend below −cap/4 is seeking; back > 0.5B or forward > 1.5B is seeking;
+an unexplained jump (no input in 300 ms) > 1.25B is seeking; skipped text =
+a gap > 0.25B holding a whole paragraph; reading time stops 120 s after the
+last input (a reading-shaped step counts as activity, so screen-reader
+read-all keeps the clock running); a tooltip pauses the clock at most 30 s;
+promotion soft 25 s + 300 chars or 90 s on one spot, hard 180 s + 5
+paragraphs or past the section's end; return band ±max(0.5B, 80 px); pin
+released by reading on from within 1B; first commit on a first visit after
+8 s of reading past the opener; settle 1.5 s (400 ms after fullscreen);
+position POST 2 s after a change (5 % dedupe, one in flight, latest wins);
+marks POST 1 s; place bar closes on a > 0.5B scroll or 30 s idle (never from
+under the reader's focus).
+
+**One measured deviation from the spec.** The budget charges text that was
+on screen and has left the top of the reading area, not text crossing the
+attention line: crossing-L charged up to 300 characters a page-sized step had
+not yet shown, which turned a PageDown after 45 s of reading into a "skim"
+(trace: 3 of 4 commits). With the change the PageDown, wheel and tall-figure
+traces all hold.
+
+**Review items.** H1–H13 all taken: labels from K (H1); hard look-ups,
+"Back to before the detour" 24 h, detour-close-reopen trace (H2); dirty-only
+beacons, `storage` adoption, re-read on `pageshow`/visible (H3); timers
+cancelled by Set/Undo, one POST in flight, `cid`+`seq` with a server-side
+409 for out-of-order writes, solid only on the current write's ack (H4);
+overlays pause only the clock, hover/focus tooltips close on scroll (touch
+tooltips keep Pass 22's rule), place bar and menu close on scroll/idle (H5);
+focusin/selectionchange count as input, the unexplained rule only beyond
+1.25B (H6); dots `tabindex=-1` + `aria-hidden`, keyboard path place-btn →
+place bar → "Mark this section", exactly one new Tab stop (H7); readout
+location-only (H8); sync shown as health, readout cadence (H9); hue families
+(H10); local tombstones for anything that may be on the server (H11);
+owner tag on marks, upload only unowned/this-owner marks, sign-out forgets
+the account's place and marks on this device (H12); the 180-day tombstone
+purge runs inside every `/api/marks` request (H13). MEDIUM 1–20 taken
+(server clocks and per-user versions as the cursor; `x`/`s`/`st`/`o`
+defined; never adopt over an unsynced place; restore only on a plain
+navigation; width/DPR change re-pins the place, height-only moves the
+attention line; constant navB; hover only on real pointer movement; segments
+only when wide; Part I 3×6 notch; readout contrast; Label in Name;
+Undo kept in the bar; `menuitemradio` committing on Enter; ordinals from the
+table; `anchorAt` with a parity test; menu closes on scroll; one Esc owner;
+401 clears the hint cookie and stops calls; adopted remote pins enter PINNED).
+**Declined, with reasons:** spec §10's reduced-motion `opacity:.35` on idle
+dots (review LOW: it would change how dots look today); `popover="auto"` →
+`manual` with the module's own light dismiss (one Esc owner; an auto popover
+closes others and handles Esc itself); a pointer-opened menu releases focus
+instead of focusing the `aria-hidden` dot; reading-on into Part N's first
+chapter by the chapter nav still starts a (hard) look-up (review LOW, rare);
+Undo of a first-ever Set leaves that Set on the server (the next commit
+overwrites it); the 250-mark cap is unreachable (116 sections) and tested
+only with a seeded fake.
+
+**The adversarial review of the build** (three lenses, 31 findings, each
+re-checked by a skeptic): 27 held, 4 refuted. Fixed before shipping, the
+HIGHs: an idle device's unsynced place could be pushed over a newer place
+from another device (now: this device's own landed beacon is recognised;
+otherwise it only offers the chip and the next real commit pushes); a step's
+commit could land mid-scroll during a seek (commits, promotions and gates
+now wait for the burst to end); screen-reader read-all never refreshed the
+idle clock; forced-colors left the place bar and menu text unremapped. And
+the MEDIUM/LOW: new-tab look-ups now count as look-ups (referrer); a hard
+look-up stays hard through Set/Undo/another tab; focus never drops to
+`<body>` from the place bar (idle close, hidden buttons, Tab out of the menu);
+deletion behind a re-auth still converts local marks; sign-out forgets a
+place made signed in even before its first ack; a mark sent once is
+tombstoned on removal; > 50 queued mark ops drain; a removal the server never
+held writes nothing (no unbounded tombstones); POST acks match by bucket;
+`k`/`end` travel with the place; textures on marked tabs; reduced motion
+also zeroes delays; Esc folds the widened cue; a dot toggles its menu.
+
+**Server and data.** `migrations/0002_marks.sql` (additive): `marks(user_id →
+users ON DELETE CASCADE, part, a, c, x, t, v, PK(user_id, part, a))`, indexes
+on `(user_id, v)` and tombstones by `t`. `functions/api/marks.js`: GET
+`?since=` → `{owner, cursor, rows, more?}`; POST `{v:1, ops}` (≤ 50 ops, 8 KB,
+regex-checked, all-or-nothing batch, atomic 250-live limit → 409). The
+server owns `t` (max(now, old+1)) and `v`. `position.js` gains `src`, `k`,
+`end`, `cid`, `seq` with a conditional upsert (409 `stale`). Deletion and the
+unconfirmed-account sweep remove marks. **All of it ships behind
+`MARKS_SYNC = "0"`** (wrangler.toml): `/api/marks` answers 404 and
+`/api/position` behaves exactly as before, until the owner approves the
+privacy wording (`docs/pass-25-copy.md` — four replacements in
+`account.html`, then flip the flag). Meanwhile signed-in readers sync their
+place exactly as today and their marks stay on the device (tagged to the
+account, so sign-out forgets them). `public/sections.json`
+(`npm run build:sections`, 116 sections) labels the account page's list;
+regenerate it with the glossary after any heading edit.
+
+**Verification.** Local static server with Cloudflare-like routing,
+Playwright 1.61.1, Chromium + WebKit, 1440 / 375 / 320, all five volumes,
+signed out and signed in (in-memory fake of the API), plus the real API
+under `wrangler pages dev` with a fresh local D1:
+
+- Invariants **812 / 0** (30 skips = nav checks on pages without a bar): nav
+  exactly 48.0 px; anchor-id sets identical to the source; injected ids all
+  `utc-`; exactly one new Tab stop; 0 other-origin requests; signed out 0
+  `/api` calls; 0 horizontal scroll; 0 console errors.
+- Traces **228 / 1** (+1 skip; the one failure is WebKit jumping to the URL
+  fragment on reload by itself, reproduced with no saved place at all) (spec §13 + the review's: wheel steps, PageDown
+  45 s ×4 → 4 commits, PageDown 2 s ×8 ≤ 1 screen, fling and back 0 writes,
+  scripted jump, fullscreen 60 s, chapter-nav click, tooltip link + back,
+  direct arrival, detour-close-reopen → C0, undo-by-reading 1 write, hidden
+  tab sends C, pin held/released, end of page, tall figure, no-hash restore
+  pixel-exact, reload and history keep the browser's scroll, rotation and zoom
+  re-pin within 2 px, multi-tab, out-of-order POSTs, labels at section
+  starts, keyboard reader with a focused term, reduced motion identical,
+  4× CPU fling 0 rect reads and no long task, CDP flick 0.4B reads / 4B
+  seeks).
+- Parity `anchorAt` ↔ `computeAnchor`: **1000 / 1000** (50 positions × 5 parts
+  × 2 engines × 2 widths, after the layout settles); the anchor id is
+  identical at every position; within 250–700 ms of a big jump the table can
+  trail by ≤ 1.5 px (late heading-box collapse, Pass 6) or ≤ 20 px while an
+  entrance transform runs — commits and Set re-check one anchor and rebuild.
+- Marks **106 / 0**, UI **93 / 0** (slow-hover gate, parked pointer,
+  drag with 0 rect reads, Esc paths, slider keys, 44 px targets, forced
+  colors, print hides the cue, readout unclipped at 621/960/1100/1440, solid
+  only after a 200).
+- Server (curl, local D1) **89 / 89**; two-device end-to-end against the real
+  API **14 / 14** (Set → server `src:'set'` + `cid`/`seq`, solid mark; mark
+  synced and acked; second device adopts the pin as PINNED, gets the chip and
+  the mark; "Your marks" lists it; removal tombstones and propagates;
+  sign-out forgets the account's place and marks).
+- **Not exercised here, owed to the Sonnet 5.5 verification and the owner:**
+  VoiceOver and NVDA reading traces; real iPhone momentum; headless WebKit
+  does not scroll on ArrowDown from a focused term (Chromium covers it);
+  WebKit refuses `Secure` cookies on http://localhost, so the real-API run is
+  Chromium-only (production is https). WebKit jumps to the URL fragment on
+  reload by itself — engine behaviour, the book does not move it.
+
+**Found, not this pass's to fix:** the "Chapter 15" link in the Spectre and
+Meltdown insight strip (Part I, Ch1 §04, `ch1-cpu-p11`) renders in the
+browser's default link blue on the dark strip — no `.insight-text a` rule.
+Punch list.
+
+**Deploy.** Migration 0002 applied to production after an export backup
+(`~/under-the-code-backups/pre-0002-*.sql`, local only) — required before
+the push because deletion and the account sweep now touch `marks`. Pushed;
+live parity checked. **Sonnet 5.5 verification owed** (BRIDGE §5).
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
@@ -2683,8 +2923,10 @@ after 2026-11-15. **Verification pass (Sonnet 5.5) owed** per BRIDGE §5.
    `.chapter-end`, `.diagram-grid-2`, `.tall` are defined but unused (legacy of
    earlier drafts). Harmless; strip in a cleanup commit.
 9. `glossary.html` lacks canonical/OG meta (all other pages have full sets).
-10. A "part N of V" progress indicator exists in the header but there is no
-    per-chapter progress bar; the rail covers desktop only.
+10. ~~A "part N of V" progress indicator exists in the header but there is no
+    per-chapter progress bar; the rail covers desktop only.~~ — DONE in Pass 25
+    (§4y): the reading cue on the bar is a per-chapter progress line at every
+    width.
 11. `docs/plan.txt` / `docs/figures.txt` "last verified" dates are stale
     (2026-05-01); re-verify after content edits. (`glossary.json` itself was
     regenerated in pass 2 and is now current.)

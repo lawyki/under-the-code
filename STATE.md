@@ -56,6 +56,17 @@ codas stop at Ch4, leaving Ch14/Ch16 without consolidation and Ch18's
 title-echo unprimed. Full ranked list with locations and one-line
 directions in §4w.
 
+**Pass 25 — Place and Marks — landed 2026-10-09** (ledger `UNDER.md` §4y):
+the saved place is now where the reader was *reading* (skims, look-ups,
+pop-ups and fullscreen figures no longer move it; detours are remembered and
+undoable), shown as a seamless 2 px cue on the bar that widens under the mouse
+and can be dragged or set by hand from the place button; sections can be
+marked in five colours per volume (glyph + texture, one hue family per slot,
+all ≥ 3.05:1, colour-blind-safe), listed book-wide under "Your marks" on the
+account page. Server-side marks ship **switched off** (`MARKS_SYNC = "0"`)
+until the owner approves the privacy wording; place sync for signed-in
+readers is unchanged meanwhile. Migration 0002 is applied in production.
+
 The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
 242 figures, glossary at **519** terms (the Diffie–Hellman duplicate row
 merged in Pass 19 — see §4s item 3). Five volume identities live; magic-link
@@ -64,15 +75,12 @@ in substance throughout.
 
 ## WHAT'S NEXT — the to-do list (in order)
 
-1. **Pass 25 — Place and Marks** (ratified 2026-10-05; Passes 21–22 done,
-   so it is unblocked): intelligent reading-place tracking (steady reading
-   commits; skims, look-ups and detours become excursions), a nav-edge cue
-   that widens on hover and can be corrected by hand (place bar on phones),
-   coloured section marks with a palette per volume, synced for signed-in
-   readers, opening a part restores your place. Brief
-   `docs/pass-25-brief.md` + spec `docs/pass-25-spec.md` + review
-   `docs/pass-25-review.md`. Ledger §4y. Owner approves the privacy copy.
-2. **Sonnet 5.5 verification of Pass 25** (BRIDGE §5).
+1. **Sonnet 5.5 verification of Pass 25** (BRIDGE §5), including the manual
+   VoiceOver/NVDA reading traces and real-iPhone momentum the pass could not
+   run (§4y "Not exercised here").
+2. **Marks sync on** once the owner approves `docs/pass-25-copy.md`: apply
+   its four replacements in `public/account.html`, set `MARKS_SYNC = "1"`,
+   push.
 3. **Domain move** (~early November 2026, owner's timing): set
    `SITE_ORIGIN` (wrangler.toml), redirect old URLs with `#anchor` intact,
    hand signed-out readers' local place (and Pass 25 marks) across the
@@ -80,17 +88,20 @@ in substance throughout.
    D1 first, `PASSKEYS_ENABLED = "1"`, `utc-passkeys` meta → `on` in
    `public/account.html`, account intro copy may mention passkeys again.
 4. **Retire `/api/auth/request`** after 2026-11-15 (replace with a 410).
-5. **The punch-list pass**, after Tiger's read: the read's findings, the
+5. **Re-tune the Pass 25 thresholds** after the owner's read (`?utc-debug`
+   on any part shows the tracker's state; constants in `book.js` `T`).
+6. **The punch-list pass**, after Tiger's read: the read's findings, the
    §4w arc dossier's seven ranked findings (Ch16 §03 scaffolding, the
    locality thread, the coda instrument, the integer-overflow and De Morgan
    promises, the Ch14 primer callback, the Ch17 §02 revisit gloss), fig
    7.6's eval-loop line overhang (Pass 20), the open §4o register flags (two
-   Part II hero-lead overclaims) and §4s register flags.
+   Part II hero-lead overclaims) and §4s register flags, the default-blue
+   "Chapter 15" link in Part I's Spectre/Meltdown insight strip (§4y).
 
 **Model (owner ruling 2026-10-05, BRIDGE §5):** every pass runs on Opus 5.5;
 each is followed by an independent Sonnet 5.5 verification.
 
-**Done:** Pass 23 book-arc read (§4w) · Pass 24 accounts v2 (§4x) · Pass 21
+**Done:** Pass 25 place and marks (§4y) · Pass 23 book-arc read (§4w) · Pass 24 accounts v2 (§4x) · Pass 21
 icons (§4u) · Pass 22 tabs + touch tooltips (§4v) · Sonnet verification of
 21/22/24 with fixes · open-redirect fix · saved-title spacing fix · account
 bookmark in the bar (all 2026-10-05 → 10-09). Owner's two old accounts
@@ -107,5 +118,7 @@ this list, it is not blocking.
 - **Create your new account** at /account ("New here? Create an account")
   — the first real end-to-end email test of Pass 24. Report if the mail
   doesn't arrive.
-- **Approve the Pass 25 privacy wording** when the pass drafts it.
+- **Approve the Pass 25 privacy wording** — `docs/pass-25-copy.md` (four
+  short replacements on the account page). Until then marks stay on each
+  device.
 - **`.kilo/`** (another tool's folder, untracked in the repo): keep or delete.

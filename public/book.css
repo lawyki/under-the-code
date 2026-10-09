@@ -50,7 +50,7 @@
   }
   .book-title { font-family: var(--serif); font-size: 14px; letter-spacing: 0.02em; color: inherit; text-decoration: none; white-space: nowrap; }
   .book-title em { color: var(--accent); font-style: italic; }
-  .book-progress { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; white-space: nowrap; }
+  .book-progress { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; white-space: nowrap; }
   /* Progressive trimming keeps the bar one line at every width: drop the
      subtitle first, then the part/chapter readout on phones. */
   @media (max-width: 960px) { .book-title-sub { display: none; } }
@@ -318,7 +318,8 @@
     align-items: center;
     gap: 10px;
   }
-  .section-number::before {
+  .section-number::before,
+  .section-number .mark-dot {
     content: '';
     width: 6px; height: 6px;
     border-radius: 50%;
@@ -1231,6 +1232,8 @@
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
+      transition-delay: 0s !important;
+      animation-delay: 0s !important;
       scroll-behavior: auto !important;
     }
   }
@@ -1437,4 +1440,287 @@
   .colophon-pane__links a:hover {
     color: var(--accent-dim);
     border-bottom-color: var(--accent);
+  }
+
+  /* === Reading place: the cue, the place bar, section marks (Pass 25) =========
+     UNDER.md §4y. At rest the bar shows one 2px line on its bottom edge —
+     chapter progress and a mark at the saved place (hollow = saved on this
+     device, solid = synced). Under a slow mouse the line widens to 8px and
+     shows the chapter's sections and marks. Motion is transform/opacity only.
+     Per-volume colour lives on the cue and the marks; the spine stays gold.
+     Volume tokens — the one table of marker colours, keyed by [data-vol]
+     (book.js sets it on part pages; the account page sets it per list row):
+       --mk-1…--mk-5   section-mark slots (1 amber, 2 red, 3 blue, 4 green,
+                       5 violet/neutral in every volume)
+       --cue-mark      the saved-place mark · --cue-mark-synced (Part V only differs)
+       --cue-fill      the progress head */
+  :root { --cue-track: #1e1e1e; --mk-w: 3px; --mk-h: 6px; }
+  :root, [data-vol="part-1"] {
+    --mk-1: #b27749; --mk-2: #9f4447; --mk-3: #787adf; --mk-4: #459881; --mk-5: #725491;
+    --cue-mark: #d4a853; --cue-mark-synced: #d4a853; --cue-fill: #8a6a2a;
+  }
+  [data-vol="part-2"] {
+    --mk-1: #805c00; --mk-2: #d35f51; --mk-3: #6680e2; --mk-4: #06a175; --mk-5: #616462;
+    --cue-mark: #84ffb2; --cue-mark-synced: #84ffb2; --cue-fill: #3fae7c;
+  }
+  [data-vol="part-3"] {
+    --mk-1: #c36f16; --mk-2: #b9392b; --mk-3: #5569ca; --mk-4: #2e7e4f; --mk-5: #7c8589;
+    --cue-mark: #4fc4e6; --cue-mark-synced: #4fc4e6; --cue-fill: #2f9dc4;
+  }
+  [data-vol="part-4"] {
+    --mk-1: #ab7916; --mk-2: #9a4536; --mk-3: #7378b9; --mk-4: #43946a; --mk-5: #64615e;
+    --cue-mark: #cf8d78; --cue-mark-synced: #cf8d78; --cue-fill: #946657;
+  }
+  [data-vol="part-5"] {
+    --mk-1: #7b5e10; --mk-2: #d54e5a; --mk-3: #3f639a; --mk-4: #1c9c7f; --mk-5: #a078d8;
+    --cue-mark: #a08cff; --cue-mark-synced: #4fd8c2; --cue-fill: #7a68e0;
+  }
+  [data-c="1"] { --mk-c: var(--mk-1); }
+  [data-c="2"] { --mk-c: var(--mk-2); }
+  [data-c="3"] { --mk-c: var(--mk-3); }
+  [data-c="4"] { --mk-c: var(--mk-4); }
+  [data-c="5"] { --mk-c: var(--mk-5); }
+
+  .utc-sr {
+    position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+
+  /* --- the bar's own items sit above the hover strip --- */
+  .book-nav > .book-title, .book-nav > .place-btn, .book-nav > .book-account { position: relative; z-index: 1; }
+
+  /* --- the cue: a 2px line on the bar's bottom edge (above its hairline) --- */
+  .reading-cue {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 8px;
+    pointer-events: none; z-index: 2;
+    transition: opacity 200ms ease;
+  }
+  .reading-cue.is-idle, .reading-cue.is-swapping { opacity: 0; }
+  .reading-cue.is-swapping { transition-duration: 160ms; }
+  .cue-rail {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    transform-origin: 50% 100%;
+    transition: transform 140ms ease-in;
+  }
+  .cue-track { position: absolute; inset: 0; background: var(--cue-track); }
+  .cue-head {
+    position: absolute; inset: 0; background: var(--cue-fill);
+    transform-origin: 0 50%;
+    transform: scaleX(var(--cue-p, 0));
+  }
+  .cue-ticks { position: absolute; inset: 0; opacity: 0; transition: opacity 140ms ease-in; }
+  .cue-tick { position: absolute; top: 0; bottom: 0; width: 1px; margin-left: -0.5px; background: rgba(255,255,255,0.18); }
+  .cue-segs { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; }
+  .cue-seg {
+    position: absolute; bottom: 0; height: 8px;
+    border-left: 1px solid #0a0a0a; box-sizing: border-box;
+    opacity: 0; transition: opacity 140ms ease-in;
+  }
+  .cue-seg:first-child { border-left: 0; }
+  .cue-seg.is-marked[data-c="1"] { background: var(--mk-c); }
+  .cue-seg.is-marked[data-c="2"] { background: repeating-linear-gradient(135deg, var(--mk-c) 0 2px, transparent 2px 4px); box-shadow: inset 0 2px 0 var(--mk-c); }
+  .cue-seg.is-marked[data-c="3"] { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 4px; box-shadow: inset 0 2px 0 var(--mk-c); }
+  .cue-seg.is-marked[data-c="4"] { background: linear-gradient(to top, var(--mk-c) 50%, transparent 50%); }
+  .cue-seg.is-marked[data-c="5"] { box-shadow: inset 0 0 0 1px var(--mk-c); }
+
+  /* the mark at the saved place: shape per volume, hollow → solid when synced */
+  .cue-mark, .cue-ghost {
+    position: absolute; left: 0; bottom: 0;
+    transform: translateX(calc(var(--mx, 0px) - 50%));
+  }
+  .cue-mark.is-none, .cue-ghost { opacity: 0; }
+  .cue-mark.is-docked { opacity: 0.6; }
+  .cue-mark.is-paused { opacity: 0.65; }   /* still ≥3:1 on the bar in every volume */
+  .cue-mark.is-gliding { transition: transform 240ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .utc-shape {
+    position: relative; display: block;
+    width: var(--mk-w); height: var(--mk-h);
+    box-shadow: inset 0 0 0 1px var(--cue-mark), 0 0 0 1px #0a0a0a;
+    transform-origin: 50% 100%;
+    transition: transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .utc-shape > b {
+    position: absolute; inset: 0; background: var(--cue-mark-synced);
+    opacity: 0; transition: opacity 180ms ease;
+  }
+  .is-synced .utc-shape > b { opacity: 1; }
+  .is-synced .utc-shape { box-shadow: inset 0 0 0 1px var(--cue-mark-synced), 0 0 0 1px #0a0a0a; }
+  .cue-mark.is-pinned .utc-shape { outline: 1px solid color-mix(in srgb, var(--cue-mark) 40%, transparent); outline-offset: 1px; }
+
+  /* widened under the mouse */
+  .reading-cue.is-wide .cue-rail { transform: scaleY(4); transition: transform 180ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .reading-cue.is-wide .cue-ticks { opacity: 1; transition: opacity 160ms 40ms ease-out; }
+  .reading-cue.is-wide .cue-seg { opacity: 1; transition: opacity 160ms 40ms ease-out; }
+  .reading-cue.is-wide .cue-mark { pointer-events: auto; cursor: grab; }
+  .reading-cue.is-wide .cue-mark .utc-shape { transform: scaleY(1.34); }
+  .reading-cue.is-wide .cue-mark::after { content: ''; position: absolute; left: -8px; right: -8px; top: -6px; bottom: 0; }
+  .reading-cue.is-wide .cue-mark.is-docked { cursor: pointer; }
+  .reading-cue.is-dragging .cue-mark { cursor: grabbing; }
+  .reading-cue.is-dragging .cue-ghost { opacity: 0.3; }
+  .cue-hit { position: absolute; left: 0; right: 0; bottom: 0; height: 12px; z-index: 0; }
+  body.has-fullscreen .reading-cue, body.has-fullscreen .place-bar { opacity: 0; pointer-events: none; }
+
+  /* --- the place button: the readout itself above 620px, a mark glyph on phones --- */
+  .place-btn {
+    flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 44px; min-width: 44px; padding: 0 12px; margin: 0 -8px 0 0;
+    background: none; border: 0; border-radius: 4px; color: inherit; font: inherit; cursor: pointer;
+  }
+  .place-btn:hover .book-progress, .place-btn[aria-expanded="true"] .book-progress { color: rgba(255,255,255,0.8); }
+  .place-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -6px; }
+  .place-glyph { display: none; }
+  @media (max-width: 620px) {
+    .place-glyph { display: inline-flex; align-items: flex-end; justify-content: center; width: 20px; height: 20px; }
+    .place-glyph .utc-shape { transform: scale(2); }
+  }
+
+  /* --- the place bar: slides over the chapter nav, pushes nothing --- */
+  .place-bar {
+    position: fixed; top: 48px; left: 0; right: 0; z-index: 160;
+    padding: 6px 60px 10px;
+    background: #0a0a0a; color: rgba(255,255,255,0.82);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.04em; line-height: 1.4;
+    opacity: 0; transform: translateY(-8px);
+    transition: opacity 120ms ease-in, transform 120ms ease-in;
+  }
+  .place-bar.is-open { opacity: 1; transform: none; transition: opacity 160ms ease-out, transform 160ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .pb-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .pb-head { flex-wrap: nowrap; align-items: center; }
+  .pb-info { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; }
+  .pb-where { min-width: 0; color: rgba(255,255,255,0.86); }
+  .pb-sync { font-size: 10px; letter-spacing: 0.16em; color: rgba(255,255,255,0.6); white-space: nowrap; }
+  .pb-sync.is-synced { color: var(--cue-mark-synced); }
+  .pb-sync a { color: var(--accent); text-decoration: none; letter-spacing: 0.08em; }
+  .pb-close, .pb-step {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; padding: 0; margin: 0;
+    background: none; border: 0; border-radius: 4px; color: rgba(255,255,255,0.7); cursor: pointer; font: inherit;
+  }
+  .pb-close { margin-right: -12px; }
+  .pb-close svg { width: 12px; height: 12px; }
+  .pb-close:hover, .pb-step:hover { color: #fff; }
+  .pb-nudge { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.16); border-radius: 4px; }
+  .pb-slider { display: inline-flex; align-items: center; justify-content: center; min-width: 76px; min-height: 44px; padding: 0 4px; color: #fff; white-space: nowrap; border-radius: 2px; cursor: default; }
+  .pb-btn {
+    min-height: 44px; padding: 0 14px;
+    background: transparent; color: rgba(255,255,255,0.88);
+    border: 1px solid rgba(255,255,255,0.16); border-radius: 4px;
+    font: inherit; letter-spacing: 0.04em; cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .pb-btn:hover:not(:disabled) { border-color: var(--accent); color: #fff; }
+  .pb-btn:disabled { opacity: 0.45; cursor: default; }
+  .pb-btn[hidden] { display: none; }
+  .place-bar :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (max-width: 620px) {
+    .place-bar { padding: 2px 12px 10px; }
+    .pb-actions .pb-btn { flex: 1 1 auto; }
+  }
+
+  /* --- section dots become mark buttons (same 6×6 slot, same pulse) --- */
+  .section-number.has-dot::before { display: none; }
+  .section-number .mark-dot {
+    position: relative; flex: none; display: inline-flex; align-items: center; justify-content: center;
+    padding: 0; margin: 0; border: 0; color: inherit; font: inherit; cursor: pointer; overflow: visible;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .section-number .mark-dot.is-marked {
+    background: none; box-shadow: none; animation: none; border-radius: 0; color: var(--mk-c);
+  }
+  .mark-dot svg { flex: none; width: 10px; height: 10px; overflow: visible; }
+  @media (pointer: coarse) {
+    .section-number .mark-dot::after { content: ''; position: absolute; left: -19px; top: -19px; width: 44px; height: 44px; }
+  }
+
+  /* marked section tab: a 2px strip above the label (the bottom border still means "active") */
+  .nav-item { position: relative; }
+  /* textured like the cue's segments, so the slot reads without colour */
+  .nav-item.is-marked::before {
+    content: ''; position: absolute; left: 20px; right: 20px; top: 0; height: 3px; background: var(--mk-c);
+  }
+  .nav-item.is-marked[data-c="2"]::before { background: repeating-linear-gradient(135deg, var(--mk-c) 0 2px, transparent 2px 4px); }
+  .nav-item.is-marked[data-c="3"]::before { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 3px; }
+  .nav-item.is-marked[data-c="4"]::before { background: linear-gradient(to bottom, var(--mk-c) 50%, transparent 50%); }
+  .nav-item.is-marked[data-c="5"]::before { background: none; box-shadow: inset 0 0 0 1px var(--mk-c); }
+  .rail-tick.is-marked::before { background: var(--mk-c); height: 2px; }
+
+  /* hash jumps land below the stuck chapter nav, not under it (G5) */
+  section.section, section.section p[id], section.section [id^="fig-"] { scroll-margin-top: 116px; }
+
+  /* the paragraph the place bar points at: no layout change */
+  .utc-target { outline: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 6px; }
+
+  /* --- the mark menu --- */
+  .mark-menu {
+    position: fixed; inset: auto; margin: 0; z-index: 1000;
+    min-width: 212px; padding: 6px;
+    background: #0a0a0a; color: rgba(255,255,255,0.88);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 6px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.04em;
+    opacity: 0; transform: translateY(4px);
+    transition: opacity 120ms ease-in, transform 120ms ease-in;
+  }
+  .mark-menu.is-open { opacity: 1; transform: none; transition: opacity 160ms ease-out, transform 160ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .mark-menu[hidden] { display: none; }
+  .mm-title { padding: 6px 10px 6px; font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+  .mm-item {
+    display: flex; align-items: center; gap: 12px; width: 100%; min-height: 40px; padding: 0 10px;
+    background: none; border: 0; border-radius: 4px; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  }
+  .mm-item:hover { background: rgba(255,255,255,0.07); }
+  .mm-item:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; background: rgba(255,255,255,0.07); }
+  .mm-item[aria-checked="true"] { color: #fff; }
+  .mm-item[aria-checked="true"]::after { content: ''; margin-left: auto; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .mm-glyph { flex: none; display: inline-flex; width: 12px; height: 12px; color: var(--mk-c); }
+  .mm-glyph svg { width: 12px; height: 12px; overflow: visible; }
+  .mm-none { border: 1px dashed rgba(255,255,255,0.45); border-radius: 50%; box-sizing: border-box; }
+  .mm-sep { height: 1px; margin: 4px 6px; background: rgba(255,255,255,0.1); }
+  @media (pointer: coarse) { .mm-item { min-height: 44px; } }
+
+  /* --- the toast in the chip slot --- */
+  .place-toast { align-items: center; }
+  .place-toast-where { font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--accent); white-space: nowrap; }
+  .place-toast-undo {
+    min-height: 44px; margin: -12px -8px -12px auto; padding: 0 10px;
+    background: none; border: 0; color: rgba(255,255,255,0.75); cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .place-toast-undo:hover { color: #fff; }
+  .place-toast-undo:focus-visible { outline: 2px solid var(--accent); outline-offset: -8px; }
+  .sync-chip.is-waiting { opacity: 0 !important; pointer-events: none; }
+
+  /* --- the volume's set motion (once, when a mark is set) --- */
+  @keyframes mkFade { from { opacity: 0; } }
+  .mark-dot.mk-anim svg, .cue-mark.mk-anim .utc-shape { animation: mkFade 160ms ease-out; }
+
+  /* --- ?utc-debug: a local overlay for re-tuning thresholds; no network --- */
+  .utc-debug {
+    position: fixed; left: 8px; bottom: 8px; z-index: 9999; margin: 0; padding: 8px 10px;
+    background: rgba(0,0,0,0.86); color: #9fe8b0; border-radius: 4px;
+    font: 11px/1.45 'DM Mono', monospace; white-space: pre; pointer-events: none;
+  }
+
+  @media (forced-colors: active) {
+    .reading-cue, .place-glyph { forced-color-adjust: none; }
+    .place-glyph .utc-shape { background: none !important; }
+    .place-glyph .utc-shape > b { background: CanvasText !important; }
+    .cue-track { background: CanvasText; transform: scaleY(0.5); }
+    .cue-head { background: Highlight; }
+    .cue-tick { background: Canvas; }
+    .utc-shape { box-shadow: inset 0 0 0 1px CanvasText, 0 0 0 1px Canvas !important; }
+    .utc-shape > b { background: CanvasText; }
+    .cue-seg.is-marked { background: CanvasText !important; box-shadow: none !important; }
+    .section-number .mark-dot.is-marked { color: CanvasText; }
+    .mark-menu, .place-bar { border: 1px solid CanvasText; }
+    .nav-item.is-marked::before { forced-color-adjust: none; background-color: CanvasText; }
+    .nav-item.is-marked[data-c]::before { --mk-c: CanvasText; }
+    .rail-tick.is-marked::before { background: CanvasText; }
+  }
+
+  @media print {
+    .reading-cue, .cue-hit, .place-bar, .mark-menu, .place-toast, .utc-debug { display: none !important; }
+    .mark-dot { animation: none !important; }
   }

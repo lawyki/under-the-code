@@ -198,7 +198,8 @@ h3 {
   letter-spacing: -0.01em;
 }
 h4 { font-family: var(--sans); }
-.section-number::before {
+.section-number::before,
+.section-number .mark-dot:not(.is-marked) {
   border-radius: 1px;               /* a character cell, not a dot */
   box-shadow: 0 0 8px rgba(63, 174, 124, 0.5);
   animation-timing-function: steps(2, jump-none);
@@ -314,3 +315,11 @@ h3 { background-image: linear-gradient(to right, rgba(63, 174, 124, 0.5), rgba(6
   .part-opener h1::after { display: none !important; }
   .content > .section:first-child::before { display: none !important; }
 }
+
+/* --- Pass 25: the reading cue and section marks, Greenbar ----------------------
+   The saved place is a phosphor cursor cell (no blink); marked sections fill
+   4px listing cells; a mark lands as a two-step cut, the terminal's own motion. */
+:root { --mk-w: 4px; --mk-h: 6px; }
+.cue-seg.is-marked { -webkit-mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 4px); mask: repeating-linear-gradient(90deg, #000 0 3px, transparent 3px 4px); }
+@keyframes mkCut { 0% { opacity: 0; } 100% { opacity: 1; } }
+.mark-dot.mk-anim svg, .cue-mark.mk-anim .utc-shape { animation: mkCut 160ms steps(2, jump-none); }

@@ -25,5 +25,11 @@ SITE_ORIGIN = "https://under.atheric.eu"
 # At the move: set SITE_ORIGIN to the new origin, PASSKEYS_ENABLED = "1", and
 # flip the utc-passkeys meta in public/account.html to "on".
 PASSKEYS_ENABLED = "0"
+# Pass 25: server-side section marks (/api/marks) and the place 'src'/'seq'
+# fields in /api/position stay off until the owner approves the privacy
+# wording; flip to "1" in the same deploy as that copy. Migration 0002 must
+# be applied first. While "0", /api/marks answers 404 and /api/position
+# behaves exactly as before.
+MARKS_SYNC = "0"
 # Secrets (not in this file): EMAIL_API_TOKEN, PASSWORD_PEPPER —
 #   npx wrangler pages secret put PASSWORD_PEPPER --project-name under-the-code
