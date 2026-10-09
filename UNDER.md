@@ -2841,7 +2841,7 @@ browser's default link blue on the dark strip — no `.insight-text a` rule.
 Punch list.
 
 **Deploy.** Migration 0002 applied to production after an export backup
-(`~/under-the-code-backups/pre-0002-*.sql`, local only) — required before
+(`~/under-the-code-backups/pre-0002-20261009T1929.sql`, local only) — required before
 the push because deletion and the account sweep now touch `marks`. Pushed;
 live parity checked. **Sonnet 5.5 verification owed** (BRIDGE §5).
 
