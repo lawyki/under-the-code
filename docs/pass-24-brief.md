@@ -2,8 +2,8 @@
 
 Authored by the bridge, 2026-10-05, from a 9-agent design workflow
 (technical research with local tests, architect, adversarial security
-review). **Status: ratified 2026-10-05 — owner decisions answered (bottom);
-runs after the domain move.** Site work: `functions/`,
+review). **Status: LANDED 2026-10-09 (ledger §4x) — run before the domain move with
+passkeys switched off until it; owner decisions answered (bottom).** Site work: `functions/`,
 `schema.sql`, `public/account.html`, `wrangler.toml`, `package.json`. **Zero
 book prose, zero anchors, zero figures, zero glossary.** Model: Opus 5.5; Sonnet 5.5 verification after (BRIDGE §5).
 

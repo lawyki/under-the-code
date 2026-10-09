@@ -86,14 +86,12 @@ in substance throughout.
    Opus 5.5. Brief `docs/pass-25-brief.md` + spec `docs/pass-25-spec.md` +
    review `docs/pass-25-review.md`. Ledger §4y. Owner approves the privacy
    copy at the pass.
-5. **Pass 24 — accounts v2: passkey or password** (ratified 2026-10-05,
-   runs **after the domain move**, ~1 month — passkeys are bound to the
-   domain): always-on sign-in, reader chooses passkey or password, email
-   link only to confirm new accounts (unconfirmed removed after 14 days)
-   and for recovery; magic-link readers keep their positions. Workers Paid
-   confirmed → Argon2id. Proportionate security ("a book, not a bank").
-   (The open redirect in `next` was fixed on its own 2026-10-05.) Brief
-   `docs/pass-24-brief.md`. Ledger §4x.
+5. **Pass 24 — accounts v2: LANDED 2026-10-09** (ledger `UNDER.md` §4x,
+   commit `7d466c2`): sign-in page with password or passkey, email only to
+   confirm and recover, live in production; passkeys built but **off until
+   the domain move** (then: `SITE_ORIGIN`, `PASSKEYS_ENABLED = "1"`, account
+   page meta → on). Owed: a Sonnet 5.5 verification pass; retire
+   `/api/auth/request` after 2026-11-15.
 6. **The punch-list pass** from the read's findings plus all converged
    register-class flags: the §4w arc dossier's seven ranked findings
    (Ch16 §03 scaffolding, the locality thread, the coda instrument, the
@@ -115,5 +113,7 @@ Owner decisions live here and nowhere else. If it is not on this list, it is
 not blocking.
 
 - **Read the book.** Everything else waits on the complete read.
-- **Copy approvals at Passes 24/25:** account-page and privacy-notice
-  wording (drafted by each pass).
+- **Copy approval at Pass 25:** privacy-notice wording for section marks
+  (drafted by the pass).
+- **First sign-in after Pass 24:** open /account, choose a password or
+  "Email me a sign-in link" — the first real end-to-end mail test.

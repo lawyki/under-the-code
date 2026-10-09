@@ -2343,6 +2343,107 @@ Each: location · symptom · one-line direction. No rewrites.
 STATE.md only; anchors, glossary, figures, prose all byte-identical to
 HEAD. The dossier merges into the punch list (STATE item renumbered).
 
+## 4x. Pass 24 (2026-10-09): accounts v2 — password or passkey, email only to confirm and recover (commit `7d466c2`)
+
+Owner-ratified (brief `docs/pass-24-brief.md`; owner decisions 2026-10-05,
+copy approved 2026-10-09). Site work only: zero book prose, anchors,
+figures or glossary. Model: Opus 5.5 (BRIDGE §5 amendment). Run **before**
+the domain move, as the bridge offered: passkeys are built, tested and
+**switched off** until the move (a passkey is bound to its domain).
+
+**What shipped.** `/account` is now an always-available sign-in page:
+email + password, "Sign in with a passkey" (hidden while off), passkey
+autofill (`autocomplete="username webauthn"` + conditional mediation),
+"Email me a sign-in link" (forgotten password / lost passkey / email-link-era
+readers), "Create an account" (email first; the confirmation link signs the
+reader in and opens a setup panel to choose passkey or password). Signed in:
+a **Sign-in methods** block (password set/change/remove, passkey list with
+rename/remove), "Sign out everywhere else", delete, and an inline "Confirm
+it's you" step that retries the action after a fresh sign-in. Email-link-era
+readers see "Email links are retiring — choose how you'll sign in"; reading
+is never interrupted and positions are untouched (`users.id` unchanged).
+
+**Endpoints** (`functions/api/auth/`): `signup`, `recover`, `request`
+(legacy, retire after 2026-11-15), `verify` (purpose-aware GET page,
+Origin-checked POST), `login`, `me`, `credentials`, `password`,
+`password-remove`, `signout-others`, `delete`, `passkey/{register-options,
+register-verify,login-options,login-verify,rename,remove}`; shared code in
+`_lib.js`, `_account.js`, `_mailroute.js`, `_signin.js`, `passkey/_wa.js`;
+`functions/api/_middleware.js` host guard. **Database:** tracked D1
+migration `migrations/0001_accounts_v2.sql` (additive). Applied to
+production 2026-10-09 after an export backup
+(`~/under-the-code-backups/pre-0001-20261009T1357.sql`, local only). Both
+existing accounts confirmed (each holds a session and a position); a row
+that never clicked a link would have stayed unconfirmed.
+
+**One deliberate deviation from the brief — password hashing.** Argon2id
+(`argon2id` 1.0.1) was dropped after inspection: its Wasm build reserves a
+65 MB memory per isolate against Workers' 128 MB limit (review item M7). The
+brief's documented fallback shipped instead: PBKDF2-SHA256 at exactly
+100,000 iterations (the workerd cap — verified working in production) over
+an HMAC-SHA256 pepper held in the Pages secret `PASSWORD_PEPPER`; hashes are
+versioned (`p1$…`) for a later upgrade. If the pepper were ever lost, no one
+is locked out — readers use "Email me a sign-in link" and set a new one.
+Passkeys use `@simplewebauthn/server` 14.0.3, **vendored** as a 304 KB ESM
+bundle in `functions/_vendor/webauthn.mjs` (`npm run vendor`), so the
+deploy never depends on Cloudflare installing packages; the browser side
+uses the native WebAuthn API (no library, no third-party request).
+
+**Security requirements from the brief, as shipped:** fresh sign-in (<15
+min) or current password for every credential change, including a first
+password (H1); open redirect closed (fixed 2026-10-05, reused here) (H2);
+signup/recover send mail inside `waitUntil` in every branch and do the
+same budget work for known and unknown addresses; login always runs the
+full derivation (H3); attempt counters reserved before hashing, unknown
+addresses counted, 10 per address and 50 per IP per 15 min (H4); signup on a
+confirmed address sends a no-token notice, per-address mail cap 3/15 min
+and 10/day, per-IP 20/hour (M1); `POST /verify` requires the site Origin,
+confirm page referrer `same-origin` (M2); migration confirms only proven
+readers (M4); other sessions end on password change/removal and passkey
+removal, notice mail on every credential change, "Sign out everywhere
+else", fresh sign-in for delete (M3); passkey challenges keyed by the
+challenge's own hash (M5); current-password checks rate-limited (M6);
+pages.dev and preview hosts get 404 on `/api/*` (M8/M9); last-method
+removals are single conditional statements (L1); `ON CONFLICT` signup (L2);
+reauth refuses a different account (L6); daily nudge stored as
+`nudge:<id>` (L7); cleanup skips accounts with a live confirm link (L8);
+passkey names via `textContent`, control characters stripped (L10); D1
+BLOB → `Uint8Array` (L11); `meta.value` INTEGER (L12); D1 tracked
+migrations (L13). **Declined per the owner's proportion ruling** ("a book,
+not a bank"): breached/common-password lists (L14), a separate preview
+database (the host guard covers the risk), killing other sessions when a
+recovery link is used (it is also the normal email sign-in path; "Sign out
+everywhere else" is one click). Lazy cleanup without cron runs at most every
+6 h inside signup/login/recover.
+
+**Copy** (owner-approved 2026-10-09): new account-page intro, privacy
+notice (stored data, mail, retention, deletion), and four mails (confirm,
+sign-in link, already-have-an-account, settings-changed).
+
+**Verification.** Local Pages dev (wrangler 4.147.0, fresh D1 + migration):
+Playwright end-to-end **30/30** — Chromium: signup → confirm → setup →
+password; wrong password generic; sign-in returns to `next`; passkey add,
+autofill sign-in and button sign-in (CDP virtual authenticator);
+old-session reauth with retry; last-credential guard (UI + server 409);
+recovery; enumeration-safe recover/signup; delete with passkey reauth,
+nothing left; 0 console errors. WebKit 375 px: render, view switches,
+password toggle, no horizontal scroll, 0 errors (WebKit refuses `Secure`
+cookies on http://localhost, so session flows are Chromium-only locally;
+production is https). Security probes: login CSRF 403, `/..//evil.com`
+lands `/account`, pages.dev host 404, 11th wrong login 429, no-Origin 403.
+Migration simulated on v1-shaped data. **Live after push:** deployment
+active; new page served; passkeys `passkeys_disabled`; unknown login
+`invalid_credentials` (full PBKDF2 + pepper ran in production); evil Origin
+403; pages.dev 404; book pages and glossary 200. **Not exercised live:** a
+real emailed link end to end (it would mail a real inbox) — the owner's
+first sign-in is that test.
+
+**At the domain move:** set `SITE_ORIGIN` to the new origin and
+`PASSKEYS_ENABLED = "1"` in `wrangler.toml`, flip
+`<meta name="utc-passkeys">` in `public/account.html` to `on`, and test a
+real passkey on Safari, Chrome and Firefox. Retire `/api/auth/request`
+after 2026-11-15. **Verification pass (Sonnet 5.5) owed** per BRIDGE §5.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
