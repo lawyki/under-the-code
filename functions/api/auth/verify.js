@@ -1,16 +1,15 @@
-// /api/auth/verify — the magic-link landing.
+// /api/auth/verify — the landing page for every emailed link.
 //
-// GET renders a tiny self-contained confirm page and does NOT consume the
-// token: corporate mail scanners and link-preview bots prefetch GET links,
-// and a consumed-by-scanner token would strand the actual reader. The
-// human presses the one button, which POSTs back here; POST atomically
-// consumes the token (DELETE … RETURNING), mints a session, sets cookies,
-// and redirects into the book.
+// GET renders a tiny confirm page and does NOT consume the token: mail
+// scanners and link-preview bots prefetch GET links, and a token consumed by
+// a scanner would strand the reader. The human presses the one button,
+// which POSTs back here; POST requires the site's own Origin (no login CSRF),
+// atomically consumes the token, confirms the address, mints a session and
+// lands on the account page — in setup mode after a confirm link, in
+// recovery mode after a sign-in link.
 'use strict';
 
-import {
-  json, newToken, sha256Hex, sessionCookies, safeNextPath, SESSION_MAX_AGE,
-} from '../_lib.js';
+import { json, sha256Hex, safeNextPath, strictOrigin, createSession } from '../_lib.js';
 
 function page(inner) {
   return new Response(
@@ -20,7 +19,7 @@ function page(inner) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<meta name="referrer" content="no-referrer">
+<meta name="referrer" content="same-origin">
 <title>Sign in — Under the Code</title>
 <style>
   body { background:#0a0a0a; color:rgba(245,240,230,0.9); font-family:Georgia,serif;
@@ -49,23 +48,36 @@ function page(inner) {
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{20,128}$/;
 
-export async function onRequestGet({ request }) {
+const EXPIRED = `<h1>This link has expired.</h1>
+  <p>Emailed links work once and expire — confirm links after 24 hours,
+  sign-in links after 30 minutes. Get a fresh one from
+  <a href="/account">your account page</a>.</p>`;
+
+export async function onRequestGet({ request, env }) {
   const token = new URL(request.url).searchParams.get('token') || '';
   if (!TOKEN_RE.test(token)) {
     return page(`<h1>That link isn&rsquo;t right.</h1>
-      <p>The sign-in link is malformed. Request a fresh one from
+      <p>The link is malformed. Get a fresh one from
       <a href="/account">your account page</a>.</p>`);
   }
-  return page(`<h1>Continue where you left off.</h1>
-    <p>Press the button to finish signing in. The link works once
-    and expires fifteen minutes after it was sent.</p>
+  // Read-only lookup to word the page; the token is not consumed here.
+  const row = await env.DB.prepare(
+    'SELECT purpose FROM login_tokens WHERE token_hash = ? AND expires_at > ?'
+  ).bind(await sha256Hex(token), Date.now()).first();
+  if (!row) return page(EXPIRED);
+  const confirm = row.purpose === 'verify';
+  return page(`<h1>${confirm ? 'Confirm your email.' : 'Continue where you left off.'}</h1>
+    <p>${confirm
+      ? 'Press the button to confirm this address. Next you choose how you&rsquo;ll sign in: a passkey or a password.'
+      : 'Press the button to finish signing in. The link works once.'}</p>
     <form method="POST" action="/api/auth/verify">
       <input type="hidden" name="token" value="${token}">
-      <button type="submit">Sign in &rarr;</button>
+      <button type="submit">${confirm ? 'Confirm &rarr;' : 'Sign in &rarr;'}</button>
     </form>`);
 }
 
 export async function onRequestPost({ request, env }) {
+  if (!strictOrigin(request, env)) return json({ error: 'bad_origin' }, 403);
   let token = '';
   const type = request.headers.get('Content-Type') || '';
   if (type.includes('form')) {
@@ -78,26 +90,18 @@ export async function onRequestPost({ request, env }) {
   const now = Date.now();
   // Atomic consume: the row is gone the instant it is read.
   const row = await env.DB.prepare(
-    'DELETE FROM login_tokens WHERE token_hash = ? AND expires_at > ? RETURNING user_id, next_path'
+    'DELETE FROM login_tokens WHERE token_hash = ? AND expires_at > ? RETURNING user_id, next_path, purpose'
   ).bind(await sha256Hex(token), now).first();
+  if (!row) return page(EXPIRED);
 
-  if (!row) {
-    return page(`<h1>This link has expired.</h1>
-      <p>Sign-in links work once and expire after fifteen minutes.
-      Request a fresh one from <a href="/account">your account page</a>.</p>`);
-  }
+  // Clicking any emailed link proves the reader controls the inbox.
+  await env.DB.prepare('UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?')
+    .bind(now, row.user_id).run();
 
-  const session = newToken();
-  await env.DB.prepare(
-    'INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)'
-  ).bind(await sha256Hex(session), row.user_id, now, now + SESSION_MAX_AGE * 1000).run();
-
-  const headers = new Headers({
-    // Re-checked here too: tokens issued before the stricter check may hold
-    // a stored path the old regex let through.
-    Location: safeNextPath(row.next_path) || '/account',
-    'Cache-Control': 'no-store',
-  });
-  for (const c of sessionCookies(session)) headers.append('Set-Cookie', c);
+  const mode = row.purpose === 'verify' ? 'setup' : 'recover';
+  const next = safeNextPath(row.next_path);
+  const location = `/account?${mode}=1` + (next && next !== '/account' ? '&next=' + encodeURIComponent(next) : '');
+  const headers = new Headers({ Location: location, 'Cache-Control': 'no-store' });
+  for (const c of await createSession(env, row.user_id)) headers.append('Set-Cookie', c);
   return new Response(null, { status: 303, headers });
 }

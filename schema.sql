@@ -1,4 +1,8 @@
 -- Under the Code — accounts + reading-position sync.
+-- This is the ORIGINAL (v1) schema. Changes since ship as tracked D1
+-- migrations in migrations/ (0001 = accounts v2: passwords, passkeys,
+-- confirmation). A fresh database: apply this file, then
+--   npx wrangler d1 migrations apply under-book --local|--remote
 -- Apply with:
 --   npx wrangler d1 execute under-book --local  --file=schema.sql   (dev)
 --   npx wrangler d1 execute under-book --remote --file=schema.sql   (production)

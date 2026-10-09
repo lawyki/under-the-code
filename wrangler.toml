@@ -18,3 +18,12 @@ database_id = "a3dc4bc2-5ff7-4715-ae3a-e937a88dacae"
 # Until the secret exists, /api/auth/request answers 503 delivery_unavailable.
 [vars]
 CF_ACCOUNT_ID = "1ae05809e015cd076b0e28c3b2e1d08b"
+# The one origin mail links are built from and auth POSTs must come from;
+# /api/* on any other host (the pages.dev aliases) answers 404.
+SITE_ORIGIN = "https://under.atheric.eu"
+# Passkeys stay off until the domain move (a passkey is bound to its domain).
+# At the move: set SITE_ORIGIN to the new origin, PASSKEYS_ENABLED = "1", and
+# flip the utc-passkeys meta in public/account.html to "on".
+PASSKEYS_ENABLED = "0"
+# Secrets (not in this file): EMAIL_API_TOKEN, PASSWORD_PEPPER —
+#   npx wrangler pages secret put PASSWORD_PEPPER --project-name under-the-code

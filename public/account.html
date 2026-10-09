@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Account — Under the Code</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
-<meta name="description" content="Keep your place in Under the Code across devices — one email, one signed link, no password.">
+<meta name="description" content="Keep your place in Under the Code across devices. Sign in with a password or a passkey.">
+<!-- Passkeys stay off until the domain move (they are bound to the domain).
+     At the move: content="on", plus PASSKEYS_ENABLED / SITE_ORIGIN in wrangler.toml. -->
+<meta name="utc-passkeys" content="off">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://under.atheric.eu/account">
 <!-- Self-hosted fonts — local mirror of the Google css2 payload (see fonts.css).
@@ -80,6 +83,66 @@
   .acct-place a { color: var(--accent); }
   .acct-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
+
+  .acct-form input[type="password"], .acct-form input[type="text"].acct-field {
+    flex: 1; min-width: 220px;
+    font-family: var(--mono); font-size: 14px; font-weight: 300;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 3px;
+    color: rgba(245, 240, 230, 0.92);
+  }
+  .acct-form input:focus { outline: none; border-color: rgba(212, 168, 83, 0.55); }
+  .acct-stack { display: flex; flex-direction: column; gap: 10px; }
+  .acct-stack input { width: 100%; box-sizing: border-box; min-width: 0; }
+  .acct-pw { position: relative; display: flex; }
+  .acct-pw input { flex: 1; padding-right: 64px !important; }
+  .acct-pw button {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    background: none; border: 0; color: rgba(245, 240, 230, 0.55); cursor: pointer;
+    padding: 10px 8px; min-height: 36px;
+  }
+  .acct-pw button:hover, .acct-pw button:focus-visible { color: var(--accent); }
+  .acct-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .acct-help {
+    font-family: var(--sans); font-weight: 300; font-size: 0.85rem; line-height: 1.6;
+    color: rgba(245, 240, 230, 0.5); margin: 2px 0 0;
+  }
+  .acct-links { margin-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+  .acct-link {
+    font-family: var(--sans); font-weight: 300; font-size: 0.9rem; color: var(--accent);
+    background: none; border: 0; padding: 4px 0; cursor: pointer; text-align: left;
+    text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(212, 168, 83, 0.35);
+  }
+  .acct-link:hover { text-decoration-color: var(--accent); }
+  .acct-sub { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.07); }
+  .acct-sub:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .acct-h {
+    font-family: var(--serif); font-weight: 500; font-size: 1.15rem;
+    color: rgba(245, 240, 230, 0.92); margin: 0 0 8px;
+  }
+  .acct-h em { color: var(--accent); }
+  .acct-method {
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .acct-method:last-of-type { border-bottom: 0; }
+  .acct-method-name { font-family: var(--mono); font-size: 13px; color: rgba(245, 240, 230, 0.88); overflow-wrap: anywhere; }
+  .acct-method-meta { font-family: var(--sans); font-weight: 300; font-size: 0.82rem; color: rgba(245, 240, 230, 0.5); }
+  .acct-tag {
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(212, 168, 83, 0.75); border: 1px solid rgba(212, 168, 83, 0.3); border-radius: 2px;
+    padding: 2px 5px; margin-left: 6px; vertical-align: 1px;
+  }
+  .acct-btn--small { padding: 8px 12px; font-size: 10px; }
+  .acct-reauth { border-color: rgba(212, 168, 83, 0.45); background: rgba(212, 168, 83, 0.07); }
+  .acct-continue { display: inline-block; margin-top: 14px; font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+  .acct-btn, .acct-link { min-height: 40px; }
+  .acct-btn:focus-visible, .acct-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
   .acct-privacy { max-width: 640px; margin-top: 72px; }
   .acct-privacy h2 {
     font-family: var(--serif); font-weight: 500; font-size: 1.4rem;
@@ -105,30 +168,148 @@
     <div class="glossary-eyebrow">Account</div>
     <h1 class="glossary-title">Keep your <em>place</em>.</h1>
     <p class="glossary-intro">
-      One email, one signed link, no password. Signed in, the book remembers the exact
-      paragraph you stopped at and offers it back on any device. Signed out, nothing
-      changes — your place still lives in this browser alone, as it always has.
+      Signed in, the book remembers the exact paragraph you stopped at and offers it
+      back on any device. Sign in with a password or a passkey; your email is only for
+      confirming the account and for getting back in. Signed out, nothing changes —
+      your place still lives in this browser alone, as it always has.
     </p>
 
+    <!-- ===== Signed out ===== -->
     <div class="acct-block" id="acct-signed-out" hidden>
-      <div class="acct-label">Sign in · or create an account</div>
-      <form class="acct-form" id="acct-form">
-        <input type="email" name="email" id="acct-input" placeholder="you@example.com"
-               autocomplete="email" required aria-label="Email address">
-        <button type="submit" class="acct-btn" id="acct-send">Email me a link</button>
-      </form>
-      <p class="acct-status" id="acct-out-status" role="status"></p>
+
+      <div id="view-signin">
+        <div class="acct-label">Sign in</div>
+        <form class="acct-stack" id="signin-form" novalidate>
+          <label class="acct-help" for="si-email">Email</label>
+          <div class="acct-form"><input type="email" id="si-email" name="email" autocomplete="username webauthn" required></div>
+          <label class="acct-help" for="si-pass">Password</label>
+          <div class="acct-form acct-pw">
+            <input type="password" id="si-pass" name="password" autocomplete="current-password" required>
+            <button type="button" class="pw-toggle" aria-controls="si-pass" aria-pressed="false">Show</button>
+          </div>
+          <div class="acct-row">
+            <button type="submit" class="acct-btn" id="si-submit">Sign in</button>
+            <button type="button" class="acct-btn acct-btn--quiet" id="si-passkey" hidden>Sign in with a passkey</button>
+          </div>
+        </form>
+        <p class="acct-status" id="si-status" role="status"></p>
+        <div class="acct-links">
+          <button type="button" class="acct-link" data-view="recover">Forgot your password, or used email links before? Email me a sign-in link</button>
+          <button type="button" class="acct-link" data-view="create">New here? Create an account</button>
+        </div>
+      </div>
+
+      <div id="view-create" hidden>
+        <div class="acct-label">Create an account</div>
+        <p class="acct-help">Enter your email. We send one link to confirm it; then you choose how you&rsquo;ll sign in.</p>
+        <form class="acct-form" id="create-form" style="margin-top:12px">
+          <input type="email" id="cr-email" name="email" autocomplete="username" required aria-label="Email address">
+          <button type="submit" class="acct-btn" id="cr-submit">Send confirmation link</button>
+        </form>
+        <p class="acct-status" id="cr-status" role="status"></p>
+        <div class="acct-links"><button type="button" class="acct-link" data-view="signin">Already have an account? Sign in</button></div>
+      </div>
+
+      <div id="view-recover" hidden>
+        <div class="acct-label">Email me a sign-in link</div>
+        <p class="acct-help">For a forgotten password, a lost passkey, or an account from the email-link days. Once in, you can set a password or create a passkey.</p>
+        <form class="acct-form" id="recover-form" style="margin-top:12px">
+          <input type="email" id="rc-email" name="email" autocomplete="username" required aria-label="Email address">
+          <button type="submit" class="acct-btn" id="rc-submit">Email me a link</button>
+        </form>
+        <p class="acct-status" id="rc-status" role="status"></p>
+        <div class="acct-links"><button type="button" class="acct-link" data-view="signin">Back to sign in</button></div>
+      </div>
     </div>
 
+    <!-- ===== Signed in ===== -->
     <div class="acct-block" id="acct-signed-in" hidden>
       <div class="acct-label">Signed in</div>
       <p class="acct-email" id="acct-who"></p>
       <p class="acct-place" id="acct-place"></p>
-      <div class="acct-actions">
-        <button type="button" class="acct-btn acct-btn--quiet" id="acct-signout">Sign out</button>
-        <button type="button" class="acct-btn acct-btn--danger" id="acct-delete">Delete account</button>
+      <a class="acct-continue" id="acct-next" hidden>Continue reading &rarr;</a>
+
+      <!-- "Confirm it's you" — shown when an action needs a fresh sign-in -->
+      <div class="acct-block acct-reauth" id="reauth" hidden style="margin-top:24px">
+        <h2 class="acct-h">Confirm it&rsquo;s <em>you</em>.</h2>
+        <p class="acct-help" id="reauth-why">This change needs a fresh sign-in.</p>
+        <form class="acct-stack" id="reauth-form" style="margin-top:12px" hidden>
+          <input type="text" name="username" autocomplete="username" hidden id="ra-user">
+          <div class="acct-form acct-pw">
+            <input type="password" id="ra-pass" autocomplete="current-password" aria-label="Your password">
+            <button type="button" class="pw-toggle" aria-controls="ra-pass" aria-pressed="false">Show</button>
+          </div>
+          <div class="acct-row"><button type="submit" class="acct-btn">Confirm</button></div>
+        </form>
+        <div class="acct-row" style="margin-top:10px">
+          <button type="button" class="acct-btn acct-btn--quiet" id="ra-passkey" hidden>Use my passkey</button>
+          <button type="button" class="acct-btn acct-btn--quiet" id="ra-mail">Email me a link instead</button>
+          <button type="button" class="acct-link" id="ra-cancel">Cancel</button>
+        </div>
+        <p class="acct-status" id="ra-status" role="status"></p>
       </div>
-      <p class="acct-status" id="acct-in-status" role="status"></p>
+
+      <!-- Setup: no sign-in method yet, or just arrived from an emailed link -->
+      <div class="acct-sub" id="setup" hidden>
+        <h2 class="acct-h" id="setup-title">Choose how you&rsquo;ll <em>sign in</em>.</h2>
+        <p class="acct-help" id="setup-help">Pick one now; you can add the other any time below.</p>
+        <div class="acct-row" style="margin-top:12px">
+          <button type="button" class="acct-btn" id="setup-passkey" hidden>Create a passkey</button>
+          <button type="button" class="acct-btn" id="setup-password">Set a password</button>
+        </div>
+        <p class="acct-help" id="setup-passkey-help" hidden>A passkey uses Face ID, Touch ID or your device&rsquo;s PIN &mdash; nothing to remember.</p>
+      </div>
+
+      <!-- Sign-in methods -->
+      <div class="acct-sub" id="methods">
+        <h2 class="acct-h">Sign-in <em>methods</em></h2>
+        <div class="acct-method" id="pw-row">
+          <div>
+            <div class="acct-method-name">Password</div>
+            <div class="acct-method-meta" id="pw-meta">Not set</div>
+          </div>
+          <div class="acct-row">
+            <button type="button" class="acct-btn acct-btn--quiet acct-btn--small" id="pw-edit">Set</button>
+            <button type="button" class="acct-btn acct-btn--quiet acct-btn--small" id="pw-remove" hidden>Remove</button>
+          </div>
+        </div>
+        <form class="acct-stack" id="pw-form" hidden style="margin:6px 0 14px">
+          <input type="text" name="username" autocomplete="username" hidden id="pw-user">
+          <div id="pw-current-wrap" hidden>
+            <label class="acct-help" for="pw-current">Current password</label>
+            <div class="acct-form acct-pw">
+              <input type="password" id="pw-current" autocomplete="current-password">
+              <button type="button" class="pw-toggle" aria-controls="pw-current" aria-pressed="false">Show</button>
+            </div>
+          </div>
+          <label class="acct-help" for="pw-new">New password</label>
+          <div class="acct-form acct-pw">
+            <input type="password" id="pw-new" autocomplete="new-password" minlength="8" maxlength="128" aria-describedby="pw-rule">
+            <button type="button" class="pw-toggle" aria-controls="pw-new" aria-pressed="false">Show</button>
+          </div>
+          <p class="acct-help" id="pw-rule">At least 8 characters. Longer is better.</p>
+          <div class="acct-row">
+            <button type="submit" class="acct-btn" id="pw-save">Save password</button>
+            <button type="button" class="acct-link" id="pw-cancel">Cancel</button>
+          </div>
+        </form>
+        <div id="pk-section" hidden>
+          <div id="pk-list"></div>
+          <div class="acct-row" style="margin-top:10px">
+            <button type="button" class="acct-btn acct-btn--quiet acct-btn--small" id="pk-add">Add a passkey</button>
+          </div>
+        </div>
+        <p class="acct-status" id="methods-status" role="status"></p>
+      </div>
+
+      <div class="acct-sub">
+        <div class="acct-actions">
+          <button type="button" class="acct-btn acct-btn--quiet" id="acct-signout">Sign out</button>
+          <button type="button" class="acct-btn acct-btn--quiet" id="acct-signout-others">Sign out everywhere else</button>
+          <button type="button" class="acct-btn acct-btn--danger" id="acct-delete">Delete account</button>
+        </div>
+        <p class="acct-status" id="acct-in-status" role="status"></p>
+      </div>
     </div>
 
     <section class="acct-privacy" id="privacy">
@@ -141,23 +322,30 @@
         devices. In detail:
       </p>
       <ul>
-        <li><strong>What is stored:</strong> your email address; a session identifier
-          (only its hash is kept); and one reading position — which part of the book,
-          a paragraph anchor, an offset within it, chapter and section titles, and when
-          it was last updated. That is the whole database.</li>
+        <li><strong>What is stored:</strong> your email address and when you confirmed
+          it; if you set a password, a salted, peppered PBKDF2 hash of it (never the
+          password itself); for each passkey, its public key, a label, and when it was
+          added and last used (the private key never leaves your device); a session
+          identifier (only its hash is kept); and one reading position — which part of
+          the book, a paragraph anchor, an offset within it, chapter and section titles,
+          and when it was last updated. To slow down password guessing, short-lived
+          counters of sign-in attempts are kept against a hash of the address or network
+          — never the address itself — for at most a day. That is the whole database.</li>
         <li><strong>What it is for:</strong> signing you in and putting you back at your
-          paragraph. Nothing else. Your address receives only the sign-in links you
-          yourself request — no announcements, no marketing — and is never shared
-          or sold.</li>
+          paragraph. Nothing else. Your address receives only the links you yourself
+          request and a short notice whenever your sign-in settings change — no
+          announcements, no marketing — and is never shared or sold.</li>
         <li><strong>Where it lives:</strong> a Cloudflare D1 database in the European
-          Union, the same infrastructure that already serves the book. Sign-in mail is
-          delivered by Cloudflare Email Sending — our host's own service, no
-          third-party mail provider.</li>
-        <li><strong>Retention:</strong> sign-in links expire after 15 minutes and work
-          once; sessions expire after 180 days; the reading position is overwritten in
-          place as you read and exists only while your account does.</li>
-        <li><strong>Deletion:</strong> the button above removes your email, sessions,
-          and position immediately and completely — or write to
+          Union, the same infrastructure that already serves the book. Mail is delivered
+          by Cloudflare Email Sending — our host's own service, no third-party mail
+          provider.</li>
+        <li><strong>Retention:</strong> emailed links work once — confirmation links
+          expire after 24 hours, sign-in links after 30 minutes; an account whose email
+          is never confirmed is removed after 14 days; sessions expire after 180 days;
+          the reading position is overwritten in place as you read and exists only while
+          your account does.</li>
+        <li><strong>Deletion:</strong> the button above removes your email, password,
+          passkeys, sessions and position immediately and completely — or write to
           <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
       </ul>
       <p>
@@ -173,112 +361,429 @@
   'use strict';
 
   const $ = id => document.getElementById(id);
-  const signedOutBlock = $('acct-signed-out');
-  const signedInBlock = $('acct-signed-in');
   const hint = /(?:^|;\s*)under_signedin=1(?:;|$)/.test(document.cookie);
+  const params = new URLSearchParams(location.search);
+  const meta = document.querySelector('meta[name="utc-passkeys"]');
+  const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const passkeysOn = !!window.PublicKeyCredential && ((meta && meta.content === 'on') || local);
+
+  // Same-origin path only (mirrors the server's check) before any navigation.
+  function safeNext(p) {
+    if (typeof p !== 'string' || p[0] !== '/' || /[\u0000-\u001f\u007f\\]/.test(p)) return null;
+    try {
+      const u = new URL(p, location.origin);
+      const out = u.pathname + u.search + u.hash;
+      return u.origin === location.origin && !out.startsWith('//') ? out : null;
+    } catch { return null; }
+  }
+  const nextPath = safeNext(params.get('next'));
+
+  function api(path, body) {
+    return fetch(path, {
+      method: body === undefined ? 'GET' : 'POST',
+      headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    }).then(r => r.json().catch(() => ({})).then(data => ({ ok: r.ok, status: r.status, data })))
+      .catch(() => ({ ok: false, status: 0, data: { error: 'network' } }));
+  }
+  function say(el, text) { $(el).textContent = text || ''; }
+  function busy(btn, on) { if (btn) btn.disabled = !!on; }
+
+  // Show/hide toggles on every password field.
+  document.querySelectorAll('.pw-toggle').forEach(btn => btn.addEventListener('click', () => {
+    const input = $(btn.getAttribute('aria-controls'));
+    const show = input.type === 'password';
+    input.type = show ? 'text' : 'password';
+    btn.textContent = show ? 'Hide' : 'Show';
+    btn.setAttribute('aria-pressed', String(show));
+  }));
+
+  // ---- WebAuthn JSON <-> browser objects (native helpers where present) ----
+  const b64uToBuf = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/').padEnd(Math.ceil(s.length / 4) * 4, '=')), c => c.charCodeAt(0)).buffer;
+  const bufToB64u = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  function creationFromJSON(o) {
+    if (PublicKeyCredential.parseCreationOptionsFromJSON) return PublicKeyCredential.parseCreationOptionsFromJSON(o);
+    return Object.assign({}, o, {
+      challenge: b64uToBuf(o.challenge),
+      user: Object.assign({}, o.user, { id: b64uToBuf(o.user.id) }),
+      excludeCredentials: (o.excludeCredentials || []).map(c => Object.assign({}, c, { id: b64uToBuf(c.id) })),
+    });
+  }
+  function requestFromJSON(o) {
+    if (PublicKeyCredential.parseRequestOptionsFromJSON) return PublicKeyCredential.parseRequestOptionsFromJSON(o);
+    return Object.assign({}, o, {
+      challenge: b64uToBuf(o.challenge),
+      allowCredentials: (o.allowCredentials || []).map(c => Object.assign({}, c, { id: b64uToBuf(c.id) })),
+    });
+  }
+  function credToJSON(c) {
+    if (typeof c.toJSON === 'function') { try { return c.toJSON(); } catch (e) { /* fall back */ } }
+    const r = c.response;
+    const out = { id: c.id, rawId: bufToB64u(c.rawId), type: c.type,
+      clientExtensionResults: c.getClientExtensionResults ? c.getClientExtensionResults() : {},
+      authenticatorAttachment: c.authenticatorAttachment || undefined, response: { clientDataJSON: bufToB64u(r.clientDataJSON) } };
+    if (r.attestationObject) {
+      out.response.attestationObject = bufToB64u(r.attestationObject);
+      out.response.transports = r.getTransports ? r.getTransports() : [];
+    } else {
+      out.response.authenticatorData = bufToB64u(r.authenticatorData);
+      out.response.signature = bufToB64u(r.signature);
+      if (r.userHandle) out.response.userHandle = bufToB64u(r.userHandle);
+    }
+    return out;
+  }
+
+  let conditional = null;   // AbortController of the autofill passkey request
+  function stopConditional() { if (conditional) { conditional.abort(); conditional = null; } }
+
+  async function passkeySignIn(extra, statusEl) {
+    const opt = await api('/api/auth/passkey/login-options', {});
+    if (!opt.ok) { say(statusEl, 'Passkeys are unavailable right now.'); return null; }
+    let cred;
+    try { cred = await navigator.credentials.get({ publicKey: requestFromJSON(opt.data) }); }
+    catch (e) { return null; }   // cancelled — say nothing
+    if (!cred) return null;
+    return api('/api/auth/passkey/login-verify', Object.assign({ response: credToJSON(cred) }, extra));
+  }
+
+  // =================== Signed out ===================
+  function showView(name) {
+    ['signin', 'create', 'recover'].forEach(v => { $('view-' + v).hidden = v !== name; });
+    const first = $('view-' + name).querySelector('input[type="email"]');
+    const typed = $('si-email').value.trim();
+    if (first && typed && !first.value) first.value = typed;
+    if (first) first.focus();
+  }
+  document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+
+  function afterSignIn(data) {
+    location.href = safeNext(data && data.next) || nextPath || '/account';
+  }
 
   function showSignedOut() {
-    signedOutBlock.hidden = false;
-    signedInBlock.hidden = true;
+    $('acct-signed-out').hidden = false;
+    $('acct-signed-in').hidden = true;
+    if (passkeysOn) {
+      $('si-passkey').hidden = false;
+      startConditional();
+    }
   }
+
+  async function startConditional() {
+    try {
+      const caps = PublicKeyCredential.getClientCapabilities ? await PublicKeyCredential.getClientCapabilities() : null;
+      const ok = caps ? caps.conditionalGet : (PublicKeyCredential.isConditionalMediationAvailable && await PublicKeyCredential.isConditionalMediationAvailable());
+      if (!ok) return;
+      const opt = await api('/api/auth/passkey/login-options', {});
+      if (!opt.ok) return;
+      conditional = new AbortController();
+      const cred = await navigator.credentials.get({ publicKey: requestFromJSON(opt.data), mediation: 'conditional', signal: conditional.signal });
+      conditional = null;
+      if (!cred) return;
+      const res = await api('/api/auth/passkey/login-verify', { response: credToJSON(cred), next: nextPath });
+      if (res.ok) afterSignIn(res.data); else say('si-status', 'That passkey didn’t work. Try again, or use your password.');
+    } catch (e) { conditional = null; }
+  }
+
+  $('signin-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = $('si-email').value.trim();
+    const password = $('si-pass').value;
+    if (!email || !password) { say('si-status', 'Enter your email and password.'); return; }
+    stopConditional();
+    busy($('si-submit'), true);
+    say('si-status', 'Signing in…');
+    const res = await api('/api/auth/login', { email, password, next: nextPath });
+    busy($('si-submit'), false);
+    if (res.ok) return afterSignIn(res.data);
+    const err = res.data.error;
+    if (err === 'slow_down') say('si-status', 'Too many tries. Wait a few minutes, or use “Email me a sign-in link” below.');
+    else if (err === 'network') say('si-status', 'Network error — please try again.');
+    else if (err === 'unavailable') say('si-status', 'Sign-in is temporarily unavailable — please try again shortly.');
+    else say('si-status', 'That email and password don’t match. Used email links before, or forgot your password? Choose “Email me a sign-in link” below.');
+    $('si-pass').focus();
+  });
+
+  $('si-passkey').addEventListener('click', async () => {
+    stopConditional();
+    say('si-status', '');
+    const res = await passkeySignIn({ next: nextPath }, 'si-status');
+    if (res && res.ok) afterSignIn(res.data);
+    else if (res) say('si-status', 'That passkey didn’t work. Try again, or use your password.');
+  });
+
+  function mailForm(formId, inputId, btnId, statusId, path, okText) {
+    $(formId).addEventListener('submit', async e => {
+      e.preventDefault();
+      const email = $(inputId).value.trim();
+      if (!email) return;
+      busy($(btnId), true);
+      say(statusId, 'Sending…');
+      const res = await api(path, { email, next: nextPath || '/account' });
+      busy($(btnId), false);
+      if (res.ok && res.data.devLink) {
+        // Local development only — the API echoes the link instead of mailing it.
+        $(statusId).innerHTML = 'Dev link: <a href="' + res.data.devLink + '">open →</a>';
+      } else if (res.ok) say(statusId, okText);
+      else if (res.data.error === 'slow_down') say(statusId, 'Too many requests from this network. Try again in a few minutes.');
+      else if (res.data.error === 'bad_email') say(statusId, 'That doesn’t look like an email address.');
+      else say(statusId, 'That didn’t work — please try again.');
+    });
+  }
+  mailForm('create-form', 'cr-email', 'cr-submit', 'cr-status', '/api/auth/signup',
+    'Check your email. The link works for 24 hours. Nothing is created until you click it.');
+  mailForm('recover-form', 'rc-email', 'rc-submit', 'rc-status', '/api/auth/recover',
+    'If an account exists for that address, a link is on its way. It works once, within 30 minutes.');
+
+  // =================== Signed in ===================
+  let me = null;
 
   function describePlace(data) {
     if (!data || !data.position) return 'No position synced yet — open a part and start reading.';
     const p = data.position;
-    const meta = [];
-    if (p.chapterNum) meta.push(p.chapterNum);
+    const parts = [];
+    if (p.chapterNum) parts.push(p.chapterNum);
     if (p.sectionLabel) {
       const num = p.sectionLabel.split('—')[0].trim();
-      if (num) meta.push('§' + num);
+      if (num) parts.push('§' + num);
     }
-    const label = (meta.length ? meta.join(' · ') + ' — ' : '') + (p.sectionTitle || p.chapterTitle || 'your place');
+    const label = (parts.length ? parts.join(' · ') + ' — ' : '') + (p.sectionTitle || p.chapterTitle || 'your place');
     const href = p.part + '#' + (p.anchor || p.section || '');
     return 'Your place: <a href="' + href + '"><em>' + label.replace(/[<>&]/g, '') + '</em> →</a>';
   }
 
-  function showSignedIn(email) {
-    signedOutBlock.hidden = true;
-    signedInBlock.hidden = false;
-    $('acct-who').textContent = email;
-    fetch('/api/position').then(r => (r.ok ? r.json() : null)).then(data => {
-      $('acct-place').innerHTML = describePlace(data);
-    }).catch(() => {});
+  function fmtDate(ms) { return ms ? new Date(ms).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : ''; }
+
+  async function refresh() {
+    const res = await api('/api/auth/me');
+    if (!res.ok) return showSignedOut();
+    me = res.data;
+    $('acct-signed-out').hidden = true;
+    $('acct-signed-in').hidden = false;
+    $('acct-who').textContent = me.email;
+    $('pw-user').value = me.email;
+    $('ra-user').value = me.email;
+    if (nextPath && nextPath !== '/account') { $('acct-next').hidden = false; $('acct-next').href = nextPath; }
+
+    const noMethod = !me.hasPassword && !me.passkeyCount;
+    const arrived = params.has('setup') || params.has('recover');
+    $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup));
+    if (params.has('recover') && !noMethod) {
+      $('setup-title').innerHTML = 'You&rsquo;re <em>signed in</em>.';
+      $('setup-help').textContent = 'Set a new password, or create a passkey, so next time you won’t need an email.';
+    } else if (noMethod && !arrived) {
+      $('setup-title').innerHTML = 'Email links are <em>retiring</em>.';
+      $('setup-help').textContent = 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.';
+    }
+    $('setup-passkey').hidden = !passkeysOn;
+    $('setup-passkey-help').hidden = !passkeysOn;
+    $('setup-password').textContent = me.hasPassword ? 'Set a new password' : 'Set a password';
+
+    $('pw-meta').textContent = me.hasPassword ? 'Set' : 'Not set';
+    $('pw-edit').textContent = me.hasPassword ? 'Change' : 'Set';
+    $('pw-remove').hidden = !(me.hasPassword && me.passkeyCount > 0);
+    $('pw-current-wrap').hidden = !(me.hasPassword && !me.recent);
+
+    $('pk-section').hidden = !passkeysOn;
+    if (passkeysOn) renderPasskeys();
+    api('/api/position').then(r => { $('acct-place').innerHTML = describePlace(r.ok ? r.data : null); });
   }
 
-  if (hint) {
-    fetch('/api/auth/me').then(r => (r.ok ? r.json() : null)).then(data => {
-      if (data && data.email) showSignedIn(data.email);
-      else showSignedOut();
-    }).catch(showSignedOut);
-  } else {
-    showSignedOut();
-  }
-
-  $('acct-form').addEventListener('submit', e => {
-    e.preventDefault();
-    const email = $('acct-input').value.trim();
-    if (!email) return;
-    const btn = $('acct-send');
-    const status = $('acct-out-status');
-    btn.disabled = true;
-    status.textContent = 'Sending…';
-    fetch('/api/auth/request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, next: '/account' })
-    }).then(r => r.json().then(body => ({ ok: r.ok, body }))).then(({ ok, body }) => {
-      btn.disabled = false;
-      if (ok && body.devLink) {
-        // Local development only — the API echoes the link instead of mailing it.
-        status.innerHTML = 'Dev link: <a href="' + body.devLink + '">sign in →</a>';
-      } else if (ok) {
-        status.textContent = 'Sent. Check your email — the link works once and expires in 15 minutes.';
-      } else if (body && body.error === 'slow_down') {
-        status.textContent = 'A link was already sent — check your email, or try again in a few minutes.';
-      } else if (body && body.error === 'delivery_unavailable') {
-        status.textContent = 'Email delivery is temporarily unavailable. Nothing was sent — please try again later.';
-      } else {
-        status.textContent = 'That didn’t work — check the address and try again.';
-      }
-    }).catch(() => {
-      btn.disabled = false;
-      status.textContent = 'Network error — please try again.';
+  async function renderPasskeys() {
+    const res = await api('/api/auth/credentials');
+    const list = $('pk-list');
+    list.textContent = '';
+    if (!res.ok) return;
+    const keys = res.data.passkeys;
+    keys.forEach(k => {
+      const row = document.createElement('div');
+      row.className = 'acct-method';
+      const left = document.createElement('div');
+      const name = document.createElement('div');
+      name.className = 'acct-method-name';
+      name.textContent = k.name || 'Passkey';
+      if (k.backedUp) { const t = document.createElement('span'); t.className = 'acct-tag'; t.textContent = 'synced'; name.appendChild(t); }
+      const metaEl = document.createElement('div');
+      metaEl.className = 'acct-method-meta';
+      metaEl.textContent = 'Added ' + fmtDate(k.createdAt) + (k.lastUsedAt ? ' · last used ' + fmtDate(k.lastUsedAt) : '');
+      left.append(name, metaEl);
+      const actions = document.createElement('div');
+      actions.className = 'acct-row';
+      const ren = document.createElement('button');
+      ren.type = 'button'; ren.className = 'acct-btn acct-btn--quiet acct-btn--small'; ren.textContent = 'Rename';
+      ren.setAttribute('aria-label', 'Rename ' + (k.name || 'passkey'));
+      ren.addEventListener('click', () => renamePasskey(k, name));
+      const rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'acct-btn acct-btn--quiet acct-btn--small'; rm.textContent = 'Remove';
+      rm.setAttribute('aria-label', 'Remove ' + (k.name || 'passkey'));
+      const last = keys.length === 1 && !me.hasPassword;
+      if (last) { rm.disabled = true; rm.title = 'Add another way to sign in before removing this one.'; }
+      rm.addEventListener('click', () => guarded(() => api('/api/auth/passkey/remove', { id: k.id }), 'Passkey removed.'));
+      actions.append(ren, rm);
+      row.append(left, actions);
+      list.appendChild(row);
     });
+    if (!keys.length) {
+      const empty = document.createElement('p');
+      empty.className = 'acct-method-meta';
+      empty.textContent = 'No passkeys yet.';
+      list.appendChild(empty);
+    }
+  }
+
+  function renamePasskey(k, nameEl) {
+    const form = document.createElement('form');
+    form.className = 'acct-form';
+    const input = document.createElement('input');
+    input.type = 'text'; input.className = 'acct-field'; input.maxLength = 60; input.value = k.name || '';
+    input.setAttribute('aria-label', 'Passkey name');
+    const save = document.createElement('button');
+    save.type = 'submit'; save.className = 'acct-btn acct-btn--small'; save.textContent = 'Save';
+    form.append(input, save);
+    nameEl.replaceWith(form);
+    input.focus(); input.select();
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const res = await api('/api/auth/passkey/rename', { id: k.id, name: input.value });
+      if (!res.ok) say('methods-status', 'Couldn’t rename it — use 1 to 60 characters.');
+      renderPasskeys();
+    });
+  }
+
+  // ---- "Confirm it's you": any action answering reauth_required lands here,
+  // and is retried once the reader has signed in afresh. ----
+  let pending = null;
+  async function guarded(action, okText, statusId, noRefresh) {
+    statusId = statusId || 'methods-status';
+    const res = await action();
+    if (res.ok) {
+      say(statusId, okText);
+      refresh.dismissedSetup = true;
+      if (!noRefresh) await refresh();
+      return res;
+    }
+    if (res.data.error === 'reauth_required') { openReauth(action, okText, statusId, noRefresh); return res; }
+    const err = res.data.error;
+    say(statusId,
+      err === 'last_credential' ? 'Add another way to sign in before removing this one.' :
+      err === 'weak_password' ? 'Use at least 8 characters (at most 128).' :
+      err === 'wrong_password' ? 'That current password isn’t right.' :
+      err === 'slow_down' ? 'Too many tries. Wait a few minutes.' :
+      err === 'network' ? 'Network error — please try again.' :
+      'That didn’t work — please try again.');
+    return res;
+  }
+
+  function openReauth(action, okText, statusId, noRefresh) {
+    pending = { action, okText, statusId, noRefresh };
+    $('reauth').hidden = false;
+    $('reauth-form').hidden = !me.hasPassword;
+    $('ra-passkey').hidden = !(passkeysOn && me.passkeyCount > 0);
+    say('ra-status', '');
+    $('reauth-why').textContent = me.hasPassword || me.passkeyCount
+      ? 'This change needs a fresh sign-in.'
+      : 'This change needs a fresh sign-in. You haven’t set a password or passkey yet, so we’ll email you a link — after you click it, come back and try again.';
+    (me.hasPassword ? $('ra-pass') : $('ra-mail')).focus();
+  }
+  function closeReauth() { $('reauth').hidden = true; $('ra-pass').value = ''; pending = null; }
+  async function reauthDone(res) {
+    if (res && res.ok) {
+      const p = pending; closeReauth();
+      await refresh();
+      if (p) {
+        const res = await guarded(p.action, p.okText, p.statusId, p.noRefresh);
+        if (res.ok && p.after) p.after(res);
+      }
+    } else if (res && res.data.error === 'different_account') {
+      say('ra-status', 'That signed in as a different account. Use this account’s password or passkey.');
+    } else if (res) {
+      say('ra-status', res.data.error === 'slow_down' ? 'Too many tries. Wait a few minutes.' : 'That didn’t work — try again.');
+    }
+  }
+  $('reauth-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    reauthDone(await api('/api/auth/login', { email: me.email, password: $('ra-pass').value, reauth: true }));
+  });
+  $('ra-passkey').addEventListener('click', async () => reauthDone(await passkeySignIn({ reauth: true }, 'ra-status')));
+  $('ra-mail').addEventListener('click', async () => {
+    const res = await api('/api/auth/recover', { email: me.email, next: '/account' });
+    if (res.ok && res.data.devLink) $('ra-status').innerHTML = 'Dev link: <a href="' + res.data.devLink + '">open →</a>';
+    else say('ra-status', res.ok ? 'Sent — open the link in your email, then try again here.' : 'That didn’t work — please try again.');
+  });
+  $('ra-cancel').addEventListener('click', closeReauth);
+
+  // ---- Password ----
+  function openPwForm() {
+    $('pw-form').hidden = false;
+    $('pw-current-wrap').hidden = !(me.hasPassword && !me.recent);
+    $('pw-new').value = ''; $('pw-current').value = '';
+    $('pw-new').focus();
+  }
+  $('pw-edit').addEventListener('click', openPwForm);
+  $('setup-password').addEventListener('click', () => { $('setup').hidden = true; refresh.dismissedSetup = true; openPwForm(); });
+  $('pw-cancel').addEventListener('click', () => { $('pw-form').hidden = true; });
+  $('pw-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const body = { newPassword: $('pw-new').value };
+    if (!$('pw-current-wrap').hidden && $('pw-current').value) body.currentPassword = $('pw-current').value;
+    busy($('pw-save'), true);
+    const res = await guarded(() => api('/api/auth/password', body),
+      'Password saved. Every other device has been signed out.');
+    busy($('pw-save'), false);
+    if (res.ok) $('pw-form').hidden = true;
+  });
+  $('pw-remove').addEventListener('click', () => guarded(() => api('/api/auth/password-remove', {}), 'Password removed.'));
+
+  // ---- Passkeys ----
+  async function addPasskey() {
+    return guarded(async () => {
+      const opt = await api('/api/auth/passkey/register-options', {});
+      if (!opt.ok) return opt;
+      let cred;
+      try { cred = await navigator.credentials.create({ publicKey: creationFromJSON(opt.data) }); }
+      catch (e) { return { ok: false, data: { error: e && e.name === 'InvalidStateError' ? 'already' : 'cancelled' } }; }
+      return api('/api/auth/passkey/register-verify', { response: credToJSON(cred) });
+    }, 'Passkey created. Next time, sign in with it — no password needed.');
+  }
+  $('pk-add').addEventListener('click', addPasskey);
+  $('setup-passkey').addEventListener('click', async () => {
+    const res = await addPasskey();
+    if (res && res.ok) { $('setup').hidden = true; refresh.dismissedSetup = true; }
   });
 
+  // ---- Session actions ----
   $('acct-signout').addEventListener('click', () => {
-    fetch('/api/auth/logout', { method: 'POST' }).finally(() => location.reload());
+    api('/api/auth/logout', {}).finally(() => location.reload());
+  });
+  $('acct-signout-others').addEventListener('click', async () => {
+    const res = await api('/api/auth/signout-others', {});
+    say('acct-in-status', res.ok
+      ? (res.data.ended ? 'Signed out on ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.')
+      : 'That didn’t work — please try again.');
   });
 
   let armed = false;
-  $('acct-delete').addEventListener('click', () => {
+  $('acct-delete').addEventListener('click', async () => {
     const btn = $('acct-delete');
-    const status = $('acct-in-status');
     if (!armed) {
       armed = true;
       btn.textContent = 'Press again to delete everything';
-      status.textContent = 'This removes your email, sessions, and reading position immediately.';
-      setTimeout(() => {
-        armed = false;
-        btn.textContent = 'Delete account';
-        status.textContent = '';
-      }, 6000);
+      say('acct-in-status', 'This removes your email, password, passkeys, sessions and reading position immediately.');
+      setTimeout(() => { armed = false; btn.textContent = 'Delete account'; }, 6000);
       return;
     }
-    btn.disabled = true;
-    fetch('/api/auth/delete', { method: 'POST' }).then(r => {
-      if (r.ok) {
-        status.textContent = 'Deleted. Nothing about you remains on the server.';
-        setTimeout(() => location.reload(), 1600);
-      } else {
-        btn.disabled = false;
-        status.textContent = 'Deletion failed — please try again.';
-      }
-    }).catch(() => {
-      btn.disabled = false;
-      status.textContent = 'Network error — please try again.';
-    });
+    busy(btn, true);
+    const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Nothing about you remains on the server.', 'acct-in-status', true);
+    busy(btn, false);
+    if (res.ok) setTimeout(() => location.replace('/account'), 1600);
+    else if (pending) pending.after = () => setTimeout(() => location.replace('/account'), 1600);
   });
+
+  if (hint) refresh(); else showSignedOut();
+  // Tidy the address bar once the setup/recover flags have been read.
+  if (params.has('setup') || params.has('recover')) {
+    history.replaceState(null, '', '/account' + (nextPath ? '?next=' + encodeURIComponent(nextPath) : ''));
+  }
 })();
 </script>
 </body>
