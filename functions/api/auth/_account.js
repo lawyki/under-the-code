@@ -30,39 +30,58 @@ export async function ensureUser(env, email) {
 export async function signupMail(env, request, email, nextPath) {
   const user = await ensureUser(env, email);
   if (!user) return null;
-  if (!(await mailBudgetOk(env, email))) return null;
+  if (!(await mailBudgetOk(env, email, request))) return null;
   if (!user.verifiedAt) {
-    await env.DB.prepare("DELETE FROM login_tokens WHERE user_id = ? AND purpose = 'verify'").bind(user.id).run();
-    const link = await issueToken(env, request, user.id, 'verify', nextPath);
-    const { text, html } = mailBody({
-      lead: 'Confirm your email to finish creating your Under the Code account.',
-      linkText: 'Confirm my email →', link,
-      note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it — an unconfirmed account is removed after 14 days.',
-    });
-    return { link, send: () => sendMail(env, { to: email, subject: 'Confirm your email — Under the Code', text, html }) };
+    // Token work happens inside the job (after the response), so every
+    // branch answers after the same work.
+    const make = async () => {
+      await env.DB.prepare("DELETE FROM login_tokens WHERE user_id = ? AND purpose = 'verify'").bind(user.id).run();
+      return issueToken(env, request, user.id, 'verify', nextPath);
+    };
+    return mailJob(make, link => ({
+      to: email, subject: 'Confirm your email — Under the Code',
+      ...mailBody({
+        lead: 'Confirm your email to finish creating your Under the Code account.',
+        linkText: 'Confirm my email →', link,
+        note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it — an unconfirmed account is removed after 14 days.',
+      }),
+    }), env);
   }
   const { text, html } = mailBody({
     lead: 'Someone (hopefully you) tried to create an Under the Code account with this address — you already have one.',
     linkText: 'Sign in →', link: `${siteOrigin(env, request)}/account`,
     note: 'Forgot how you sign in? On that page choose “Email me a sign-in link”. If this wasn’t you, nothing has changed.',
   });
-  return { link: null, send: () => sendMail(env, { to: email, subject: 'You already have an account — Under the Code', text, html }) };
+  return { link: null, make: null, send: () => sendMail(env, { to: email, subject: 'You already have an account — Under the Code', text, html }) };
+}
+
+// A mail job whose token is created inside send(). For local development the
+// route awaits make() to echo the link; in production it all runs after the response.
+function mailJob(make, compose, env) {
+  let made = null;
+  const ensure = () => (made = made || make());
+  return {
+    make: ensure,
+    send: async () => sendMail(env, compose(await ensure())),
+  };
 }
 
 // Recovery: a sign-in link (30 min) for a known address; nothing for an
 // unknown one. Confirms the address too (clicking proves inbox control).
 export async function recoverMail(env, request, email, nextPath) {
-  // Budget first for every address, so known and unknown cost the same work.
-  const budget = await mailBudgetOk(env, email);
+  // Budget first for every address, so known and unknown cost the same work;
+  // the token itself is written inside the job, after the response.
+  const budget = await mailBudgetOk(env, email, request);
   const user = await findUser(env, email);
   if (!user || !budget) return null;
-  const link = await issueToken(env, request, user.id, 'recover', nextPath);
-  const { text, html } = mailBody({
-    lead: 'Your sign-in link for Under the Code.',
-    linkText: 'Sign in →', link,
-    note: 'It works once and expires in 30 minutes. Once in, you can set a password or create a passkey. If you didn’t ask for this, ignore it — nothing happens without the link.',
-  });
-  return { link, send: () => sendMail(env, { to: email, subject: 'Your sign-in link — Under the Code', text, html }) };
+  return mailJob(() => issueToken(env, request, user.id, 'recover', nextPath), link => ({
+    to: email, subject: 'Your sign-in link — Under the Code',
+    ...mailBody({
+      lead: 'Your sign-in link for Under the Code.',
+      linkText: 'Sign in →', link,
+      note: 'It works once and expires in 30 minutes. Once in, you can set a password. If you didn’t ask for this, ignore it — nothing happens without the link.',
+    }),
+  }), env);
 }
 
 // Notice after any change to how an account signs in.

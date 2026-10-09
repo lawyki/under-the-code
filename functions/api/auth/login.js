@@ -7,8 +7,8 @@
 'use strict';
 
 import {
-  json, strictOrigin, isValidEmail, hit, clearHits, emailKey, ipKey,
-  verifyPassword, maybeCleanup,
+  json, strictOrigin, isValidEmail, hit, clearHits, emailKey, ipKey, pairKey,
+  verifyPassword, maybeCleanup, readBody, safeNextPath,
 } from '../_lib.js';
 import { findUser, recoverMail } from './_account.js';
 import { finishSignin } from './_signin.js';
@@ -18,17 +18,22 @@ const WINDOW = 15 * 60 * 1000;
 export async function onRequestPost(context) {
   const { request, env } = context;
   if (!strictOrigin(request, env)) return json({ error: 'bad_origin' }, 403);
-  let body;
-  try { body = JSON.parse((await request.text()).slice(0, 2048)); } catch { return json({ error: 'bad_request' }, 400); }
+  const body = await readBody(request);
+  if (!body) return json({ error: 'bad_request' }, 400);
   const email = String(body.email || '').trim().toLowerCase();
   const password = typeof body.password === 'string' ? body.password : '';
   if (!isValidEmail(email) || !password || password.length > 512) return json({ error: 'invalid_credentials' }, 401);
 
-  const ipK = await ipKey('pw-ip', request);
-  const emK = await emailKey('pw-email', email);
+  // Attempts are counted per (address, network) — so a stranger guessing from
+  // elsewhere cannot lock the owner out — per network, and loosely per
+  // address across all networks (a distributed guesser still hits a wall).
+  const ipK = await ipKey(env, 'pw-ip', request);
+  const emK = await pairKey(env, 'pw-pair', email, request);
+  const allK = await emailKey(env, 'pw-email', email);
   const ipCount = await hit(env, ipK, WINDOW);
   const emCount = await hit(env, emK, WINDOW);
-  if (ipCount > 50 || emCount > 10) {
+  const allCount = await hit(env, allK, WINDOW);
+  if (ipCount > 50 || emCount > 10 || allCount > 100) {
     return json({ error: 'slow_down' }, 429, { 'Retry-After': '900' });
   }
 
@@ -53,7 +58,7 @@ export async function onRequestPost(context) {
   if (user && user.verifiedAt && !user.passwordHash) {
     const passkeys = await env.DB.prepare('SELECT COUNT(*) AS n FROM credentials WHERE user_id = ?').bind(user.id).first();
     if (!passkeys.n && await hit(env, 'nudge:' + user.id, 24 * 60 * 60 * 1000) === 1) {
-      const job = await recoverMail(env, request, email, body.next);
+      const job = await recoverMail(env, request, email, safeNextPath(body.next));
       if (job) context.waitUntil(job.send());
     }
   }

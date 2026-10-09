@@ -2272,6 +2272,69 @@ Profile: 4× CPU throttle, scripted scroll through 60% of Part III — 0 long
 tasks (same as before the change). §6 P1.3 + P1.4 done. **Sonnet 5.5
 verification owed** (BRIDGE §5).
 
+### Verification of Passes 21, 22 and 24 (2026-10-09, Sonnet 5.5, BRIDGE §5)
+
+The first verification under the 2026-10-05 model ruling: an independent
+Sonnet 5.5 pass, report-only, with licence to override; fixes then applied
+and re-tested by the writer. **Verdicts: Pass 21 holds; Pass 22 and Pass 24
+hold with fixes.** The verifier could not break Pass 24's core controls
+(origin checks, open-redirect fuzz with server/client parity, reauth gate,
+one-time links, last-method guard, cleanup, migration, passkeys off in
+production, vendored bundle byte-identical to a rebuild, no XSS sink) but
+found real defects the writer's tests missed. **Fixed (commit below):**
+
+- **HIGH — a stranger could lock a named reader out** (brief requirement 5
+  was not met as specified): 10 wrong passwords from anywhere blocked the
+  owner's correct password, and a few recover/signup calls drained the
+  owner's mail budget. Now: login attempts count per (address, network),
+  per network (50), and loosely per address across networks (100); the mail
+  budget is per (address, network /24) 3/15 min plus 20/day per address.
+  Re-tested: 11 attacker tries → 429 for the attacker only; the owner from
+  another network is not blocked; the owner still gets a recovery link
+  after attacker spam.
+- **MEDIUM — signed-in account page:** `.acct-stack{display:flex}` beat the
+  `hidden` attribute, so the password form, the reauth password field and a
+  hrefless "Continue reading" link were always shown → `[hidden]{display:
+  none!important}`. The h2 glass-reveal animation ended in ink colour on the
+  dark panels → `animation:none` on account headings (the privacy heading
+  had the same pre-existing defect).
+- **MEDIUM — 500 on the nudge path** for confirmed no-method accounts (both
+  existing readers) when `next` was absent or non-string → `safeNextPath`.
+- **MEDIUM (Pass 22) — a real finger swipe closed the tooltip** (dismissal
+  ran on `pointerdown`); now it runs at the end of a tap that moved < 10 px
+  and was not cancelled, so a swipe scrolls and keeps it. **MEDIUM (Pass
+  22) — touch-opened tooltips could stick** on touch+mouse or touch+keyboard
+  devices → the flag resets on every non-touch open, on real mouse movement,
+  and a mouse click elsewhere closes it.
+- **LOW, fixed:** mail routes write tokens inside the post-response job
+  (equal response work for known/unknown/confirmed); non-object JSON bodies
+  → 400 not 500; host guard fails closed without `SITE_ORIGIN`; a failure
+  after consuming a link restores it; confirm page sends `X-Frame-Options:
+  DENY` and `frame-ancestors 'none'`; counter keys HMAC'd with the pepper
+  (plain SHA-256 of an IPv4 address is reversible); stale `aria-current` in
+  off-screen chapter navs cleared; tooltip link closes the tooltip; privacy
+  notice made exact (it now names the short-lived link/challenge records and
+  says counters clear "after about a day", swept every few hours); account
+  intro and README no longer promise passkeys before the move.
+- **Ledger corrections:** §4v's "scrolling leaves it open" was false for a
+  real swipe until this fix, and "desktop unchanged" overlooked the new
+  resize re-place handler (harmless). §4x did not record that the
+  per-(address, network) recovery budget had been dropped — now
+  implemented.
+- **Left as declined / noted:** a recovery link does not end other
+  sessions (owner's proportion ruling; "Sign out everywhere else" exists);
+  PBKDF2 at the workerd cap with a pepper; the passkey path must be tested
+  against production D1 before enabling (local D1 + virtual authenticator
+  pass); preview-environment var inheritance unproven, now moot with the
+  fail-closed guard.
+
+**Re-test after fixes:** account end-to-end 36/36 (new: password form and
+reauth hidden until asked, no stray Continue link, headings light on dark,
+Change/Cancel open and close the form); Pass 22 suite 75/75 in Chromium and
+WebKit (new: real CDP touch swipe keeps the tooltip and scrolls; touch-then-
+mouse, mouse-click-elsewhere, touch-then-keyboard all close correctly);
+targeted API probes as above.
+
 ## 4w. Pass 23 (2026-08-17): the book-arc read — report-only whole-book pedagogy dossier
 
 The first pass to judge the book as ONE argument, cover to cover (brief

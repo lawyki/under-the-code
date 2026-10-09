@@ -39,7 +39,10 @@ export function consumeChallenge(env, purpose, userId) {
 }
 
 export async function readJson(request) {
-  try { return JSON.parse((await request.text()).slice(0, 16384)); } catch { return null; }
+  try {
+    const v = JSON.parse((await request.text()).slice(0, 16384));
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : null;
+  } catch { return null; }
 }
 
 // Reader-chosen passkey label: control characters stripped, 60 chars max.

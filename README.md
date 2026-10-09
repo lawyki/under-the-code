@@ -44,7 +44,7 @@ The book itself is a static site — no framework, no bundler. Everything in `pu
 
 ## Reading positions & accounts
 
-Signed out, your reading position is kept in the browser's `localStorage` only — it never leaves the device. Signing in (one email, one magic link, no password) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
+Signed out, your reading position is kept in the browser's `localStorage` only — it never leaves the device. Signing in (a password; the email is used only to confirm the account and to recover it — passkeys follow at the domain move) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
 
 ## Deploy
 

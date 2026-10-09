@@ -139,6 +139,10 @@
   // and reduced-motion needs no special case.
   function paintChapterNav() {
     if (!currentChapter || !activeId) return;
+    // Only the chapter in view asserts a current location.
+    document.querySelectorAll('.chapter-nav [aria-current]').forEach(el => {
+      if (!currentChapter.contains(el)) el.removeAttribute('aria-current');
+    });
     const nav = currentChapter.querySelector('.chapter-nav');
     if (!nav) return;
     let activeItem = null;
@@ -927,6 +931,7 @@
 
   function showTip(anchor, entry) {
     if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    openedByTouch = false;   // the touch path sets it again after this call
     activeAnchor = anchor;
     const tip = ensureTip();
     tip.innerHTML = buildTipContent(entry);
@@ -943,10 +948,32 @@
   let openedByTouch = false;   // a touch-opened tip ignores mouse-leave/blur (WebKit
                               // fires them after a scroll moves text under the old tap point)
   const touchRecent = () => Date.now() - lastTouch < 800;
+  // Dismiss on the END of a tap outside (little movement, not cancelled):
+  // a swipe to keep reading becomes a scroll (pointercancel) and leaves the
+  // tooltip open.
+  let downAt = null;
   document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen') {
+      downAt = null;
+      // Hybrid devices: a mouse click elsewhere closes a touch-opened tip.
+      if (openedByTouch && activeAnchor && !activeAnchor.contains(e.target) && !(tipEl && tipEl.contains(e.target))) hideTip();
+      return;
+    }
+    lastTouch = Date.now();
+    downAt = { x: e.clientX, y: e.clientY };
+  }, { passive: true, capture: true });
+  document.addEventListener('pointercancel', () => { downAt = null; }, { passive: true, capture: true });
+  // A real mouse moving (pointer events never come from a tap's emulated mouse
+  // events) hands a touch-opened tip back to ordinary hover rules.
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType === 'mouse' && openedByTouch && !touchRecent()) openedByTouch = false;
+  }, { passive: true });
+  document.addEventListener('pointerup', e => {
     if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
     lastTouch = Date.now();
-    if (!activeAnchor) return;
+    const start = downAt; downAt = null;
+    if (!activeAnchor || !start) return;
+    if (Math.hypot(e.clientX - start.x, e.clientY - start.y) > 10) return;
     const t = e.target;
     if (activeAnchor.contains(t) || (tipEl && tipEl.contains(t))) return;
     hideTip();
@@ -976,6 +1003,7 @@
       if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
     });
     tip.addEventListener('mouseleave', () => { if (!openedByTouch) hideTip(); });
+    tip.addEventListener('click', e => { if (e.target.closest('.glossary-tip-link')) hideTip(); });
   }
 
   // -------- ATTACH TOOLTIPS ---------------------------------------------------

@@ -9,7 +9,7 @@ import { rp, disabled, storeChallenge } from './_wa.js';
 export async function onRequestPost({ request, env }) {
   const off = disabled(env); if (off) return off;
   if (!strictOrigin(request, env)) return json({ error: 'bad_origin' }, 403);
-  if (await hit(env, await ipKey('wa-ip', request), 5 * 60 * 1000) > 30) {
+  if (await hit(env, await ipKey(env, 'wa-ip', request), 5 * 60 * 1000) > 30) {
     return json({ error: 'slow_down' }, 429, { 'Retry-After': '300' });
   }
   const { rpID } = rp(env, request);

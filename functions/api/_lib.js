@@ -199,14 +199,26 @@ export async function clearHits(env, key) {
   await env.DB.prepare('DELETE FROM auth_attempts WHERE key = ?').bind(key).run();
 }
 
-export async function emailKey(prefix, email) { return prefix + ':' + await sha256Hex(email); }
+// Counter keys are HMAC'd with the server pepper (a plain SHA-256 of an IPv4
+// address is trivially reversible), so the stored key reveals neither the
+// address nor the network.
+async function keyHash(env, value) {
+  if (!env.PASSWORD_PEPPER) return sha256Hex(value);
+  const k = await crypto.subtle.importKey('raw', enc.encode(env.PASSWORD_PEPPER), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = new Uint8Array(await crypto.subtle.sign('HMAC', k, enc.encode('counter:' + value)));
+  return Array.from(sig, b => b.toString(16).padStart(2, '0')).join('');
+}
 
-// Client IP as Cloudflare reports it; IPv6 bucketed by /64, IPv4 optionally by /24.
-export async function ipKey(prefix, request, v4Prefix24 = false) {
+export function clientIp(request, v4Prefix24 = false) {
   let ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  if (ip.includes(':')) ip = ip.split(':').slice(0, 4).join(':') + '::/64';
-  else if (v4Prefix24) ip = ip.split('.').slice(0, 3).join('.') + '.0/24';
-  return prefix + ':' + await sha256Hex(ip);
+  if (ip.includes(':')) return ip.split(':').slice(0, 4).join(':') + '::/64';
+  return v4Prefix24 ? ip.split('.').slice(0, 3).join('.') + '.0/24' : ip;
+}
+
+export async function emailKey(env, prefix, email) { return prefix + ':' + await keyHash(env, email); }
+export async function ipKey(env, prefix, request, v4Prefix24 = false) { return prefix + ':' + await keyHash(env, clientIp(request, v4Prefix24)); }
+export async function pairKey(env, prefix, email, request) {
+  return prefix + ':' + await keyHash(env, email + '|' + clientIp(request, true));
 }
 
 // --- Mail ------------------------------------------------------------------
@@ -264,13 +276,14 @@ export async function issueToken(env, request, userId, purpose, nextPath) {
   return `${siteOrigin(env, request)}/api/auth/verify?token=${token}`;
 }
 
-// Mail budget for one address: 3 per 15 min and 10 per day, shared by every
-// mail the site sends to it. Over budget, callers skip sending silently (the
-// response never changes, so the limit reveals nothing about the account).
-export async function mailBudgetOk(env, email) {
-  const short = await hit(env, await emailKey('mail-15m', email), 15 * 60 * 1000);
-  const day = await hit(env, await emailKey('mail-day', email), 24 * 60 * 60 * 1000);
-  return short <= 3 && day <= 10;
+// Mail budget: 3 per 15 min per (address, requesting network /24) — so a
+// stranger cannot use up the owner's budget from elsewhere — plus a loose
+// 20-a-day cap per address against mail-bombing. Over budget, callers skip
+// sending silently (the response never changes).
+export async function mailBudgetOk(env, email, request) {
+  const short = await hit(env, await pairKey(env, 'mail-15m', email, request), 15 * 60 * 1000);
+  const day = await hit(env, await emailKey(env, 'mail-day', email), 24 * 60 * 60 * 1000);
+  return short <= 3 && day <= 20;
 }
 
 // --- Cleanup without cron --------------------------------------------------
@@ -307,6 +320,15 @@ export async function maybeCleanup(env, waitUntil) {
 // Passkeys stay switched off until the domain move (a passkey is bound to
 // the domain it was created on). PASSKEYS_ENABLED="1" turns them on.
 export function passkeysOn(env) { return env.PASSKEYS_ENABLED === '1'; }
+
+// Parse a small JSON object body; anything else (null, arrays, numbers,
+// oversized, malformed) is null.
+export async function readBody(request, max = 2048) {
+  try {
+    const v = JSON.parse((await request.text()).slice(0, max));
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : null;
+  } catch { return null; }
+}
 
 export function isValidEmail(email) {
   return typeof email === 'string'

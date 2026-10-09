@@ -7,12 +7,10 @@
 
 export async function onRequest(context) {
   const { request, env, next } = context;
-  if (env.SITE_ORIGIN) {
-    const host = new URL(request.url).hostname;
-    const site = new URL(env.SITE_ORIGIN).hostname;
-    if (host !== site && host !== 'localhost' && host !== '127.0.0.1') {
-      return new Response('Not found', { status: 404 });
-    }
-  }
+  const host = new URL(request.url).hostname;
+  const local = host === 'localhost' || host === '127.0.0.1';
+  // Fail closed: without SITE_ORIGIN only local development is served.
+  const site = env.SITE_ORIGIN ? new URL(env.SITE_ORIGIN).hostname : null;
+  if (!local && host !== site) return new Response('Not found', { status: 404 });
   return next();
 }

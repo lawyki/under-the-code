@@ -73,10 +73,11 @@ in substance throughout.
    closed — Pass 20, §4t).
 2. **Pass 21 — the icon pass: LANDED 2026-10-09** (ledger `UNDER.md`
    §4u): 39 emoji → 17 drawn SVG icons, themed by each volume's colour.
-   Sonnet 5.5 verification owed.
+   Verified (Sonnet 5.5): holds.
 3. **Pass 22 — the interaction pair: LANDED 2026-10-09** (ledger
    `UNDER.md` §4v): chapter tabs highlight the section in view; glossary
-   tooltips work by tap on phones. Sonnet 5.5 verification owed.
+   tooltips work by tap on phones. Verified (Sonnet 5.5): two touch
+   defects found and fixed.
 4. **Pass 25 — Place and Marks** (ratified 2026-10-05, after Pass 22):
    intelligent reading-place tracking (steady reading commits; skims,
    look-ups and detours become excursions), a nav-edge cue that widens on
@@ -89,8 +90,10 @@ in substance throughout.
    commit `7d466c2`): sign-in page with password or passkey, email only to
    confirm and recover, live in production; passkeys built but **off until
    the domain move** (then: `SITE_ORIGIN`, `PASSKEYS_ENABLED = "1"`, account
-   page meta → on). Owed: a Sonnet 5.5 verification pass; retire
-   `/api/auth/request` after 2026-11-15.
+   page meta → on). Verified (Sonnet 5.5): one HIGH lockout defect and
+   three MEDIUMs found and fixed. Before enabling passkeys: test a real
+   passkey against production D1. Retire `/api/auth/request` after
+   2026-11-15.
 6. **The punch-list pass** from the read's findings plus all converged
    register-class flags: the §4w arc dossier's seven ranked findings
    (Ch16 §03 scaffolding, the locality thread, the coda instrument, the

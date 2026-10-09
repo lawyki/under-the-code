@@ -43,7 +43,11 @@ function page(inner) {
 </main>
 </body>
 </html>`,
-    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+    { status: 200, headers: {
+      'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store',
+      // The confirm button must never be clickable inside someone else's frame.
+      'X-Frame-Options': 'DENY', 'Content-Security-Policy': "frame-ancestors 'none'",
+    } });
 }
 
 const TOKEN_RE = /^[A-Za-z0-9_-]{20,128}$/;
@@ -89,19 +93,30 @@ export async function onRequestPost({ request, env }) {
 
   const now = Date.now();
   // Atomic consume: the row is gone the instant it is read.
+  const tokenHash = await sha256Hex(token);
   const row = await env.DB.prepare(
-    'DELETE FROM login_tokens WHERE token_hash = ? AND expires_at > ? RETURNING user_id, next_path, purpose'
-  ).bind(await sha256Hex(token), now).first();
+    'DELETE FROM login_tokens WHERE token_hash = ? AND expires_at > ? RETURNING user_id, next_path, purpose, created_at, expires_at'
+  ).bind(tokenHash, now).first();
   if (!row) return page(EXPIRED);
 
-  // Clicking any emailed link proves the reader controls the inbox.
-  await env.DB.prepare('UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?')
-    .bind(now, row.user_id).run();
+  let cookies;
+  try {
+    // Clicking any emailed link proves the reader controls the inbox.
+    await env.DB.prepare('UPDATE users SET email_verified_at = COALESCE(email_verified_at, ?) WHERE id = ?')
+      .bind(now, row.user_id).run();
+    cookies = await createSession(env, row.user_id);
+  } catch (e) {
+    // A transient failure after the consume must not burn the reader's link.
+    await env.DB.prepare(
+      'INSERT OR IGNORE INTO login_tokens (token_hash, user_id, next_path, created_at, expires_at, purpose) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(tokenHash, row.user_id, row.next_path, row.created_at, row.expires_at, row.purpose).run().catch(() => {});
+    return json({ error: 'unavailable' }, 503);
+  }
 
   const mode = row.purpose === 'verify' ? 'setup' : 'recover';
   const next = safeNextPath(row.next_path);
   const location = `/account?${mode}=1` + (next && next !== '/account' ? '&next=' + encodeURIComponent(next) : '');
   const headers = new Headers({ Location: location, 'Cache-Control': 'no-store' });
-  for (const c of await createSession(env, row.user_id)) headers.append('Set-Cookie', c);
+  for (const c of cookies) headers.append('Set-Cookie', c);
   return new Response(null, { status: 303, headers });
 }

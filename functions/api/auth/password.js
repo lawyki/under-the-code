@@ -7,7 +7,7 @@
 
 import {
   json, getSession, isRecent, strictOrigin, passwordProblem, hashPassword,
-  verifyPassword, hit, emailKey,
+  verifyPassword, hit, pairKey, readBody,
 } from '../_lib.js';
 import { changeNotice } from './_account.js';
 
@@ -16,8 +16,8 @@ export async function onRequestPost(context) {
   if (!strictOrigin(request, env)) return json({ error: 'bad_origin' }, 403);
   const session = await getSession(request, env);
   if (!session) return json({ error: 'signed_out' }, 401);
-  let body;
-  try { body = JSON.parse((await request.text()).slice(0, 2048)); } catch { return json({ error: 'bad_request' }, 400); }
+  const body = await readBody(request);
+  if (!body) return json({ error: 'bad_request' }, 400);
 
   const problem = passwordProblem(body.newPassword);
   if (problem) return json({ error: problem }, 400);
@@ -31,7 +31,7 @@ export async function onRequestPost(context) {
         return json({ error: 'reauth_required' }, 403);
       }
       // The same attempt counter as sign-in guards the current-password check.
-      if (await hit(env, await emailKey('pw-email', session.email), 15 * 60 * 1000) > 10) {
+      if (await hit(env, await pairKey(env, 'pw-pair', session.email, request), 15 * 60 * 1000) > 10) {
         return json({ error: 'slow_down' }, 429, { 'Retry-After': '900' });
       }
       if (!(await verifyPassword(env, body.currentPassword, user.passwordHash))) {

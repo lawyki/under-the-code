@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Account — Under the Code</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
-<meta name="description" content="Keep your place in Under the Code across devices. Sign in with a password or a passkey.">
+<meta name="description" content="Keep your place in Under the Code across devices. Sign in with a password.">
 <!-- Passkeys stay off until the domain move (they are bound to the domain).
      At the move: content="on", plus PASSKEYS_ENABLED / SITE_ORIGIN in wrangler.toml. -->
 <meta name="utc-passkeys" content="off">
@@ -143,6 +143,12 @@
   .acct-btn, .acct-link { min-height: 40px; }
   .acct-btn:focus-visible, .acct-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+  /* `hidden` must win over the flex layouts above (.acct-stack etc.). */
+  [hidden] { display: none !important; }
+  /* The book's h2 glass-reveal ends in ink colour, meant for paper sections;
+     on these dark panels it made the headings vanish. */
+  .acct-h, .acct-privacy h2 { animation: none !important; }
+
   .acct-privacy { max-width: 640px; margin-top: 72px; }
   .acct-privacy h2 {
     font-family: var(--serif); font-weight: 500; font-size: 1.4rem;
@@ -169,8 +175,8 @@
     <h1 class="glossary-title">Keep your <em>place</em>.</h1>
     <p class="glossary-intro">
       Signed in, the book remembers the exact paragraph you stopped at and offers it
-      back on any device. Sign in with a password or a passkey; your email is only for
-      confirming the account and for getting back in. Signed out, nothing changes —
+      back on any device. Sign in with a password; your email is only for confirming
+      the account and for getting back in. Signed out, nothing changes —
       your place still lives in this browser alone, as it always has.
     </p>
 
@@ -328,9 +334,11 @@
           added and last used (the private key never leaves your device); a session
           identifier (only its hash is kept); and one reading position — which part of
           the book, a paragraph anchor, an offset within it, chapter and section titles,
-          and when it was last updated. To slow down password guessing, short-lived
-          counters of sign-in attempts are kept against a hash of the address or network
-          — never the address itself — for at most a day. That is the whole database.</li>
+          and when it was last updated. Briefly, the database also holds hashed one-time
+          sign-in links and passkey challenges until they are used or expire, and — to
+          slow down password guessing and mail abuse — counters keyed by a keyed hash of
+          the address or network, never the address itself, cleared after about a day.
+          Nothing else.</li>
         <li><strong>What it is for:</strong> signing you in and putting you back at your
           paragraph. Nothing else. Your address receives only the links you yourself
           request and a short notice whenever your sign-in settings change — no
@@ -343,7 +351,7 @@
           expire after 24 hours, sign-in links after 30 minutes; an account whose email
           is never confirmed is removed after 14 days; sessions expire after 180 days;
           the reading position is overwritten in place as you read and exists only while
-          your account does.</li>
+          your account does. Expired records are swept automatically every few hours.</li>
         <li><strong>Deletion:</strong> the button above removes your email, password,
           passkeys, sessions and position immediately and completely — or write to
           <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
