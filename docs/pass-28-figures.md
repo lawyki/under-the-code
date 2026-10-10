@@ -143,7 +143,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 133 | 3 | `fig-10-11` Fig 10.11 · SYN cookies: the state goes into the wire | 2.5 px · cap 143 | deferred: conceptual pass |
 | 134 | 3 | `fig-11-1` Fig 11.1 · March 1989 to August 1991 · a quiet two and a half years | 2.2 px · cap 105 | done 2026-10-11 |
 | 135 | 3 | `fig-11-2` Fig 11.2 · A complete HTTP exchange · request and response, byte for byte | 2.5 px · cap 98 | done 2026-10-11 |
-| 136 | 3 | `fig-11-3` Fig 11.3 · One curl, fully traced | 2.5 px · cap 96 | todo |
+| 136 | 3 | `fig-11-3` Fig 11.3 · One curl, fully traced | 2.5 px · cap 96 | done 2026-10-11 |
 | 137 | 3 | `fig-11-4` Fig 11.4 · HTTP methods · what they promise, what caches and clients assume | 2.5 px · cap 111 | todo |
 | 138 | 3 | `fig-11-5` Fig 11.5 · The DNS namespace · a tree, read right to left | 2.2 px · cap 119 | todo |
 | 139 | 3 | `fig-11-6` Fig 11.6 · Recursive resolution · four servers, four questions, one answer | 2.2 px · cap 74 | todo |
