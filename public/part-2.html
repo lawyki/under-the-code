@@ -340,54 +340,46 @@
       system lists hundreds of them.
     </p>
 
-    <div class="diagram-card" id="fig-4-3">
-      <div class="diagram-label">Fig 4.3 · A kernel module loading at runtime</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-4"><title id="svgt-part2-4">Fig 4.3 · A kernel module loading at runtime</title>
-        <!-- Kernel base -->
-        <rect x="60" y="180" width="600" height="80" rx="8" fill="#0e1a13" stroke="rgba(132,255,178,0.7)" stroke-width="2"/>
-        <text x="360" y="206" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.95)" letter-spacing="0.15em">LINUX KERNEL · Ring 0</text>
-        <text x="360" y="226" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.65)">scheduler · VM · syscall layer · symbol table</text>
-        <text x="360" y="244" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.5)">carved from ~30 million lines of C, loaded once at boot</text>
-
-        <!-- Module slots -->
-        <g font-family="IBM Plex Mono" font-size="9" text-anchor="middle">
-          <!-- nvidia.ko already loaded -->
-          <rect x="80"  y="100" width="120" height="50" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.6)"/>
-          <text x="140" y="120" fill="rgba(150,216,150,0.95)">nvidia.ko</text>
-          <text x="140" y="134" fill="rgba(255,255,255,0.55)" font-size="7">GPU driver · loaded</text>
-          <line x1="140" y1="150" x2="140" y2="180" stroke="rgba(150,216,150,0.6)" stroke-dasharray="3,3"/>
-
-          <rect x="220" y="100" width="120" height="50" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.6)"/>
-          <text x="280" y="120" fill="rgba(150,216,150,0.95)">btrfs.ko</text>
-          <text x="280" y="134" fill="rgba(255,255,255,0.55)" font-size="7">filesystem · loaded</text>
-          <line x1="280" y1="150" x2="280" y2="180" stroke="rgba(150,216,150,0.6)" stroke-dasharray="3,3"/>
-
-          <rect x="360" y="100" width="120" height="50" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.6)"/>
-          <text x="420" y="120" fill="rgba(150,216,150,0.95)">snd_hda.ko</text>
-          <text x="420" y="134" fill="rgba(255,255,255,0.55)" font-size="7">audio · loaded</text>
-          <line x1="420" y1="150" x2="420" y2="180" stroke="rgba(150,216,150,0.6)" stroke-dasharray="3,3"/>
-
-          <!-- The one currently loading -->
-          <rect x="500" y="100" width="120" height="50" rx="6" fill="rgba(132,255,178,0.25)" stroke="rgba(132,255,178,0.85)" stroke-width="1.5">
-            <animate attributeName="opacity" values="1;0.5;1" dur="1.6s" repeatCount="indefinite"/>
-          </rect>
-          <text x="560" y="120" fill="rgba(132,255,178,1)">my_driver.ko</text>
-          <text x="560" y="134" fill="rgba(255,255,255,0.55)" font-size="7">insmod just now</text>
-          <line x1="560" y1="150" x2="560" y2="180" stroke="rgba(132,255,178,0.85)" stroke-dasharray="3,3">
-            <animate attributeName="stroke-dashoffset" values="0;6" dur="0.6s" repeatCount="indefinite"/>
-          </line>
-        </g>
-
-        <!-- Top: insmod command -->
-        <text x="60" y="40" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.85)">$ sudo insmod my_driver.ko</text>
-        <text x="60" y="58" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)"># kernel resolves symbols, allocates memory, calls module_init()</text>
-        <text x="60" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">→ now in Ring 0, can crash everything if buggy</text>
-
-        <!-- Bottom: lsmod -->
-        <text x="60" y="290" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">$ lsmod | wc -l   →   typically 100–300 modules on a running desktop</text>
-        <text x="60" y="306" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">"monolithic but modular": the practical compromise that ate the world</text>
-      </svg>
-      <p id="ch4-anatomy-p11" class="diagram-caption">Linux at runtime is a base kernel image plus a constellation of modules that have been linked into it dynamically. Each <code>insmod</code> resolves the module's symbols against the kernel's symbol table, allocates kernel memory, copies the module's code in, and calls its <code>module_init()</code> entry. From that moment the module runs in Ring 0 (a buggy module can panic the whole machine), but the source tree, build system, and distribution channel are independent of the main kernel. Distributions ship pre-compiled modules; vendors (NVIDIA, Broadcom) ship out-of-tree modules signed for specific kernel versions. <code>rmmod</code> reverses the process: call <code>module_exit()</code>, free the memory, remove the symbols. This is how Linux maintains both the speed of monolithic design and the operational flexibility microkernels promised.</p>
+    <div class="diagram-card fig-v2" id="fig-4-3">
+      <div class="diagram-label">Fig 4.3&nbsp;· A kernel module loading at runtime</div>
+      <svg viewBox="0 0 400 334" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-3 svgd-part2-3">
+<title id="svgt-part2-3">Fig 4.3 · A kernel module loading at runtime</title>
+<desc id="svgd-part2-3">A running Linux kernel with modules already loaded beside it: nvidia.ko, btrfs.ko, snd_hda.ko. The command sudo insmod my_driver.ko brings a new module into Ring 0; its calls are linked against the kernel's symbol table and its module_init function runs. Later rmmod reverses it: module_exit runs and the module is removed.</desc>
+<rect x="20" y="12" width="360" height="62" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.4)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.5098;0.5099;0.5399;0.5400;0.5699;0.5700;1.0000" dur="10s" repeatCount="indefinite"/><text x="32" y="36" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">$ sudo insmod my_driver.ko</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1799;0.1800;0.5098;0.5099;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="32" y="60" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">$ sudo rmmod my_driver</text></g>
+<rect x="20" y="100" width="360" height="226" rx="6" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="32" y="120" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">KERNEL · Ring 0</text>
+<rect x="32" y="134" width="150" height="176" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.6"/>
+<text x="44" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">kernel image</text>
+<text x="44" y="178" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">scheduler, VM,</text>
+<text x="44" y="196" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">syscall layer</text>
+<rect x="44" y="240" width="126" height="56" rx="4" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.6"/>
+<text x="56" y="264" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">symbol</text>
+<text x="56" y="282" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">table</text>
+<rect x="200" y="134" width="170" height="34" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.5"/>
+<text x="212" y="156" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">nvidia.ko</text>
+<rect x="200" y="178" width="170" height="34" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.5"/>
+<text x="212" y="200" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">btrfs.ko</text>
+<rect x="200" y="222" width="170" height="34" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.5"/>
+<text x="212" y="244" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">snd_hda.ko</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.2598;0.2599;0.5399;0.5400;0.6599;0.6600;1.0000" dur="10s" repeatCount="indefinite"/><rect x="200" y="266" width="170" height="34" rx="4" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2" stroke-width="1.8"/><text x="212" y="288" font-family="IBM Plex Mono" font-size="14" fill="#fff">my_driver.ko</text></g>
+<rect class="fx" x="196" y="262" width="178" height="42" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.5399;0.5400;0.6599;0.6600;0.7298;0.7299;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<line x1="200" y1="276" x2="170" y2="270" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.2398;0.2399;0.5399;0.5400;0.7599;0.7600;1.0000" dur="10s" repeatCount="indefinite"/></line>
+<line x1="200" y1="290" x2="170" y2="284" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.2398;0.2399;0.5399;0.5400;0.7899;0.7900;1.0000" dur="10s" repeatCount="indefinite"/></line>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1798;0.1799;0.5399;0.5400;0.8399;0.8400;1.0000" dur="10s" repeatCount="indefinite"/><rect x="200" y="306" width="170" height="16" rx="2" fill="none"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">module_init()</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1999;0.2000;0.2598;0.2599;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">module_exit()</text></g>
+</svg>
+      <p id="ch4-anatomy-p11" class="diagram-caption">insmod links a separately built module into the running kernel: its calls are resolved against the kernel's symbol table, its init function runs, and from then on it is part of Ring 0. rmmod takes it out again, so Linux stays monolithic in speed but modular in practice.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Load.</b> The kernel allocates memory for the module, copies its code in, and resolves every kernel function it calls by name in the symbol table.</li>
+          <li><b>Start.</b> It calls the module's module_init(); a driver registers itself with the subsystem it serves.</li>
+          <li><b>Still Ring 0.</b> A loaded module has the kernel's full power, so a buggy one can crash the machine (Fig 4.2).</li>
+          <li><b>Unload.</b> rmmod calls module_exit(), frees the memory and forgets the module. lsmod lists what is loaded.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch4-anatomy-p12">
