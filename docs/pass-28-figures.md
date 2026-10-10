@@ -120,7 +120,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 110 | 3 | `fig-8-12` Fig 8.12 · OSI vs TCP/IP, side by side | 2.5 px · cap 108 | done 2026-10-11 |
 | 111 | 3 | `fig-9-1` Fig 9.1 · One call, two architectures | 2.5 px · cap 122 | done 2026-10-11 |
 | 112 | 3 | `fig-9-2` Fig 9.2 · The first internet | 2.2 px · cap 121 | done 2026-10-11 |
-| 113 | 3 | `fig-9-3` Fig 9.3 · Baran 1964: three architectural shapes | 2.5 px · cap 118 | todo |
+| 113 | 3 | `fig-9-3` Fig 9.3 · Baran 1964: three architectural shapes | 2.5 px · cap 118 | done 2026-10-11 |
 | 114 | 3 | `fig-9-4` Fig 9.4 · The IPv4 header, byte by byte | 2.2 px · cap 153 | todo |
 | 115 | 3 | `fig-9-5` Fig 9.5 · A 4 KB packet, fragmented onto a 1500-byte link | 2.2 px · cap 149 | todo |
 | 116 | 3 | `fig-9-6` Fig 9.6 · BGP path-vector announcements | 2.2 px · cap 131 | todo |
