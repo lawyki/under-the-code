@@ -554,6 +554,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 8.4: fibre marker "~12-14 b/Hz" against the caption's "~15 dB effective SNR" | log₂(1 + 10^1.5) ≈ 5 b/Hz per polarisation, so the marker contradicted its own caption; the fibre point is dropped and the checked pair (phone line 30 dB ≈ 10 b/Hz, V.34 33.6 kbps/4 kHz = 8.4) carries the figure | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.5: banner "CONVENTION: HIGH→LOW = 1, LOW→HIGH = 0"; "a 10 Mbps Ethernet stream actually carries 20 million signal transitions per second" | That is the G. E. Thomas convention; Ethernet's IEEE 802.3 uses a rising mid-bit edge for 1. 20 million per second is the maximum (runs of equal bits), so "up to" | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.8: "k doubles per collision, capped at 10"; caption: the backoff machinery "is what makes Wi-Fi (which still has shared-medium collisions) work" | k counts consecutive collisions (the range 0 to 2^k − 1 doubles), capped at 10, with up to 16 attempts; Wi-Fi uses random backoff but avoids collisions (CSMA/CA) rather than detecting them | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 9.2: growth list "1981 · ~300 hosts" | The ARPANET host table counted 213 hosts in August 1981 | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3564,7 +3565,9 @@ and other debatable layer placements moved out of the drawing), 8.12 (OSI rows b
 span them, each pairing lit in turn; RFC 1122 named as the source of the four), 9.1 (a circuit reserved end to end, the
 voice flowing and stopping for a silence while the path stays held; three
 packets crossing a mesh by three paths, arriving 2, 1, 3, reordered at B;
-"circuit switching" kept as a key-term for the glossary). The sweep's overlap test now compares ink boxes (font boxes trimmed
+"circuit switching" kept as a key-term for the glossary), 9.2 (the four-node map of December 1969,
+the first message replayed, L and O reaching SRI and then the crash, the
+milestones lit in turn; 1981 "~300 hosts" corrected to 213, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
