@@ -3580,7 +3580,10 @@ fragment 2 and the whole packet is discarded), 9.6 (an announcement spreading ac
 ASes, each adding its number, edges lit as it crosses; 65030 picks by policy;
 the copy back at the origin dropped as a loop; the steps listed), 9.7 (a packet climbing three tiers, crossing
 between two Tier 1s by peering and descending, with "pays" arrows going up;
-Telia renamed Arelion, §4g; IXP shortcuts noted). The sweep's overlap test now compares ink boxes (font boxes trimmed
+Telia renamed Arelion, §4g; IXP shortcuts noted), 9.8 (CGNAT run: homes in 100.64.0.0/10 go
+out through one public address, the table filling port by port; an outside
+connection finds no entry and is dropped; IPv6 "about 40% of traffic" restated
+as close to half of Google's users by 2025; CGNAT kept as a key-term). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
