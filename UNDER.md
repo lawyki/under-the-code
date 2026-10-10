@@ -3570,7 +3570,10 @@ the first message replayed, L and O reaching SRI and then the crash, the
 milestones lit in turn; 1981 "~300 hosts" corrected to 213, §4g), 9.3 (paper card: the same strike on Baran's
 three shapes, survivors that can still reach another counted by search and
 asserted, 0 of 8, 8 of 11, 9 of 9; "the internet is a Baran-shaped network"
-softened: it routes around failures but has hubs). The sweep's overlap test now compares ink boxes (font boxes trimmed
+softened: it routes around failures but has hubs), 9.4 (one real header, 192.0.2.10 to
+198.51.100.7, TCP, its checksum computed and asserted (0x3231, 0x3331 after the
+hop); a router hop run on it: destination looked up, TTL 64 to 63, checksum
+recomputed; IHL, ToS, Total length and TTL kept as key-terms). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

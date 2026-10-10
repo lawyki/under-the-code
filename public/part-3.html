@@ -1616,88 +1616,71 @@
       transmit.
     </p>
 
-    <div class="diagram-card" id="fig-9-4">
-      <div class="diagram-label">Fig 9.4 · The IPv4 header, byte by byte</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-18"><title id="svgt-part3-18">Fig 9.4 · The IPv4 header, byte by byte</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">IPv4 packet header: 20 bytes, RFC 791, 1981</text>
-
-        <!-- Header table layout: 4 bytes per row, 5 rows -->
-        <!-- Bit ruler -->
-        <g font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)" text-anchor="middle">
-          <text x="120" y="56">0</text>
-          <text x="240" y="56">8</text>
-          <text x="360" y="56">16</text>
-          <text x="480" y="56">24</text>
-          <text x="600" y="56">31</text>
-        </g>
-
-        <!-- Row 1: Version | IHL | ToS | Total Length -->
-        <g transform="translate(120,60)">
-          <rect x="0"   y="0" width="60" height="36" fill="rgba(150,216,150,0.22)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="30"  y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">Ver</text>
-          <text x="30"  y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">4 bits</text>
-          <rect x="60"  y="0" width="60" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="90"  y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">IHL</text>
-          <text x="90"  y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">4 bits</text>
-          <rect x="120" y="0" width="120" height="36" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.7)"/>
-          <text x="180" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">Type of Service</text>
-          <text x="180" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">8 bits · DSCP/ECN</text>
-          <rect x="240" y="0" width="240" height="36" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="360" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(100,150,255,0.95)">Total Length</text>
-          <text x="360" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(100,150,255,0.7)">16 bits · header + payload, max 65 535</text>
-        </g>
-
-        <!-- Row 2: Identification | Flags | Fragment Offset -->
-        <g transform="translate(120,100)">
-          <rect x="0"   y="0" width="240" height="36" fill="rgba(180,140,200,0.18)" stroke="rgba(120,80,160,0.7)"/>
-          <text x="120" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(200,160,220,0.95)">Identification</text>
-          <text x="120" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(200,160,220,0.7)">16 bits · for fragment reassembly</text>
-          <rect x="240" y="0" width="60"  height="36" fill="rgba(232,140,80,0.18)" stroke="rgba(180,100,60,0.7)"/>
-          <text x="270" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,140,80,0.95)">Flags</text>
-          <text x="270" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(232,140,80,0.7)">3 bits</text>
-          <rect x="300" y="0" width="180" height="36" fill="rgba(232,140,80,0.14)" stroke="rgba(180,100,60,0.55)"/>
-          <text x="390" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,140,80,0.95)">Fragment Offset</text>
-          <text x="390" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(232,140,80,0.7)">13 bits · in 8-byte units</text>
-        </g>
-
-        <!-- Row 3: TTL | Protocol | Header Checksum -->
-        <g transform="translate(120,140)">
-          <rect x="0"   y="0" width="120" height="36" fill="rgba(232,120,120,0.22)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="60"  y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">TTL</text>
-          <text x="60"  y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)">8 bits · time to live</text>
-          <rect x="120" y="0" width="120" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="180" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">Protocol</text>
-          <text x="180" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">6=TCP, 17=UDP, 1=ICMP</text>
-          <rect x="240" y="0" width="240" height="36" fill="rgba(100,150,255,0.14)" stroke="rgba(60,100,180,0.55)"/>
-          <text x="360" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(100,150,255,0.95)">Header Checksum</text>
-          <text x="360" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(100,150,255,0.7)">16 bits · recomputed at every hop</text>
-        </g>
-
-        <!-- Row 4: Source Address -->
-        <g transform="translate(120,180)">
-          <rect x="0"   y="0" width="480" height="36" fill="rgba(79,196,230,0.22)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="240" y="16" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">Source Address</text>
-          <text x="240" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">32 bits · e.g. 192.0.2.42 · set by sender, NOT verified</text>
-        </g>
-
-        <!-- Row 5: Destination Address -->
-        <g transform="translate(120,220)">
-          <rect x="0"   y="0" width="480" height="36" fill="rgba(79,196,230,0.22)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="240" y="16" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">Destination Address</text>
-          <text x="240" y="30" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">32 bits · the only field routers really care about</text>
-        </g>
-
-        <!-- Then payload -->
-        <g transform="translate(120,266)">
-          <rect x="0"   y="0" width="480" height="42" rx="3" fill="#0a1e31" stroke="rgba(180,200,220,0.5)" stroke-dasharray="4,3"/>
-          <text x="240" y="22" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(180,200,220,0.95)">payload: TCP segment, UDP datagram, ICMP message…</text>
-          <text x="240" y="36" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">opaque to IP: only the receiver looks at this</text>
-        </g>
-
-        <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">all routers care about: TTL (decrement), Total Length (forward), Destination (which way?)</text>
-        <text x="360" y="356" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">EVERYTHING ELSE IS METADATA · THE SOURCE FIELD IS SET BY THE SENDER, NOT CHECKED, HENCE IP SPOOFING</text>
-      </svg>
-      <p id="ch9-ip-p2" class="diagram-caption">The IPv4 header is 20 bytes, packed tight, dating to 1981. Reading byte-by-byte: <strong>Version</strong> (4 = IPv4), <strong>IHL</strong> (header length in 4-byte units, almost always 5), <strong>ToS</strong> (Type of Service: historically priority hints, now used for DSCP and ECN), <strong>Total Length</strong> (header + payload, up to 65 535 bytes). Then <strong>Identification</strong> + <strong>Flags</strong> + <strong>Fragment Offset</strong> for fragmentation reassembly. Then <strong>TTL</strong> (decremented at every router; if it reaches 0, the packet is dropped and the router reports back, which is the mechanism <code>traceroute</code> exploits, sending probes with TTL 1, 2, 3… to make each hop in turn announce itself), <strong>Protocol</strong> (what's in the payload: 6 = TCP, 17 = UDP, 1 = ICMP), and <strong>Header Checksum</strong>. The last eight bytes are the source and destination IP addresses. The destination is the only field most routers care about. The source is set by the sender and never verified, which is why IP spoofing exists.</p>
+    <div class="diagram-card fig-v2" id="fig-9-4">
+      <div class="diagram-label">Fig 9.4&nbsp;· The IPv4 header, byte by byte</div>
+      <svg viewBox="0 0 400 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-18 svgd-part3-18">
+<title id="svgt-part3-18">Fig 9.4 · The IPv4 header, byte by byte</title>
+<desc id="svgd-part3-18">A real 20-byte IPv4 header, laid out 32 bits to a row as in RFC 791: version 4, header length 5 words, type of service 0, total length 60 bytes; identification 0x1C46, the don't-fragment flag, offset 0; time to live 64, protocol 6 for TCP, header checksum 0x3231; source 192.0.2.10; destination 198.51.100.7. A router reads the destination to choose the next hop, lowers the time to live to 63, recomputes the checksum to 0x3331 and forwards the packet.</desc>
+<text x="24" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">0</text>
+<text x="376" y="22" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">31</text>
+<text x="200" y="22" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">bits</text>
+<rect x="24" y="34" width="44" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="30" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Ver</text>
+<text x="30" y="68" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<rect x="68" y="34" width="44" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="74" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">IHL</text>
+<text x="74" y="68" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">5</text>
+<rect x="112" y="34" width="88" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="118" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">ToS</text>
+<text x="118" y="68" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">0</text>
+<rect x="200" y="34" width="176" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="206" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Total length</text>
+<text x="206" y="68" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">60</text>
+<rect x="24" y="76" width="176" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="30" y="92" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Identification</text>
+<text x="30" y="110" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">0x1C46</text>
+<rect x="200" y="76" width="33" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="206" y="92" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Flg</text>
+<text x="206" y="110" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">DF</text>
+<rect x="233" y="76" width="143" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="239" y="92" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Fragment offset</text>
+<text x="239" y="110" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">0</text>
+<rect x="24" y="118" width="88" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="30" y="134" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">TTL</text>
+<rect x="112" y="118" width="88" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="118" y="134" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Protocol</text>
+<text x="118" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">6 TCP</text>
+<rect x="200" y="118" width="176" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="206" y="134" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Header checksum</text>
+<rect x="24" y="160" width="352" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="30" y="176" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Source address</text>
+<text x="30" y="194" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">192.0.2.10</text>
+<rect x="24" y="202" width="352" height="42" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="30" y="218" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Destination address</text>
+<text x="30" y="236" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">198.51.100.7</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.288000;0.288333;0.955333;0.955556;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="30" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">64</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.954667;0.955000;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="30" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">63</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.443556;0.443889;0.955333;0.955556;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="206" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">0x3231</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.444222;0.444444;0.954667;0.955000;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="206" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">0x3331</text></g>
+<rect class="fx" x="24" y="202" width="352" height="42" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.110889;0.111111;0.288000;0.288333;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="118" width="88" height="42" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.443556;0.443889;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="200" y="118" width="176" height="42" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.444222;0.444444;0.599111;0.599444;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="24" y="252" width="352" height="30" fill="#081b2e" stroke="rgba(79,196,230,0.25)" stroke-dasharray="4 3"/>
+<text x="30" y="272" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">payload: a TCP segment</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.110889;0.111111;0.288000;0.288333;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="24" y="306" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">router: look up the destination</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.443556;0.443889;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="24" y="306" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">decrement the time to live</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.444222;0.444444;0.599111;0.599444;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="24" y="306" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">recompute the checksum</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.599778;0.600000;0.954667;0.955000;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="24" y="306" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">forward to the next hop</text></g>
+</svg>
+      <p id="ch9-ip-p2" class="diagram-caption">Twenty bytes in front of every IPv4 packet, laid out as RFC 791 set them in 1981. At each hop a router reads the destination to pick the next link, lowers the time to live by one and recomputes the checksum; the rest travels untouched.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The small fields.</b> <span class="key-term">IHL</span> is the header length in 32-bit words, almost always 5; <span class="key-term">ToS</span> once meant priority and now carries DSCP and ECN; <span class="key-term">Total length</span> counts header and payload, at most 65,535 bytes.</li>
+          <li><b>Time to live.</b> The <span class="key-term">TTL</span> drops by one at every hop; if it reaches 0 the router drops the packet and reports back, which is how <code>traceroute</code> maps a path: probes with TTL 1, 2, 3 make each hop answer in turn. The checksum covers only the header, so each hop recomputes it.</li>
+          <li><b>The source.</b> The sender writes it and no router checks it, which is why a source address alone proves nothing.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch9-ip-p3">
