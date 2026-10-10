@@ -16,6 +16,8 @@ class Timeline:
         return (tau - self.shift) % self.dur
     def anim(self, attr, pts, extra=''):
         D = self.dur
+        # tau = dur is the same instant as tau = 0: authors write it as "back to the start", so drop it
+        pts = [(t, v) for t, v in pts if t < D - 1e-9]
         ev = sorted(((self.t(t), v) for t, v in pts), key=lambda p: p[0])
         def at(t):
             seq = [(ev[-1][0] - D, ev[-1][1])] + ev + [(ev[0][0] + D, ev[0][1])]

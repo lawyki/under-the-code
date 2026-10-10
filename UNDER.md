@@ -3306,7 +3306,12 @@ kept verbatim, moved into How it works), 1.6 (Moore's Law on a log scale
 with a two-year doubling line the chips fall below after ~2015; overall
 doubling 2.25 years, from the book's own data), 1.7 (each machine at its
 own marked scale; the caption's "twelve million times as many switches" was
-4004 → M4: ENIAC → M4 is 1.6 million, §4g), 1.10, 1.15.
+4004 → M4: ENIAC → M4 is 1.6 million, §4g), 1.8 (a three-line program
+and its data in one memory, code and data taking turns on one bus), 1.9 (the
+cycle as a ring; the PC advances by 5 bytes, then 3, and a jmp sends it
+back), 1.10, 1.15. `figlib.Timeline` fix found on 1.9: a point at the loop's
+end is the same instant as its start and is dropped (two values at one
+instant made a label stay lit); all done figures regenerated and re-swept.
 
 **Tests (this commit):** every redesigned figure 0 fail in `figs.mjs`
 (Chromium + WebKit, 320/360/375/1440, frames across its loop);

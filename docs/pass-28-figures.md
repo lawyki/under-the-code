@@ -13,8 +13,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 5 | 1 | `fig-1-5` Fig 1.5 · Inside the switch · a field-effect transistor in cross-section | 2.9 px · cap 168 | done 2026-10-10 |
 | 6 | 1 | `fig-1-6` Fig 1.6 · Moore's Law · transistors per chip, 1971 to 2024 | 2.9 px · cap 71 | done 2026-10-10 |
 | 7 | 1 | `fig-1-7` Fig 1.7 · ENIAC and the Apple M4 · the same job, 79 years apart | 2.6 px · cap 71 | done 2026-10-10 |
-| 8 | 1 | `fig-1-8` Fig 1.8 · Von Neumann architecture, in motion | 2.2 px · cap 74 | todo |
-| 9 | 1 | `fig-1-9` Fig 1.9 · The instruction cycle, in motion | 2.2 px · cap 47 | todo |
+| 8 | 1 | `fig-1-8` Fig 1.8 · Von Neumann architecture · one memory, one bus | 2.2 px · cap 74 | done 2026-10-10 |
+| 9 | 1 | `fig-1-9` Fig 1.9 · The instruction cycle · fetch, decode, execute, writeback | 2.2 px · cap 47 | done 2026-10-10 |
 | 10 | 1 | `fig-1-10` Fig 1.10 · From assembly to binary · one instruction decoded | 2.6 px · cap 97 | done (pilot, 2026-10-10) |
 | 11 | 1 | `fig-1-11` Fig 1.11 · Pipelined execution · five instructions, five stages | 2.9 px · cap 93 | todo |
 | 12 | 1 | `fig-1-12` Fig 1.12 · Speculative execution · the CPU guesses, then checks | 2.6 px · cap 107 | todo |
