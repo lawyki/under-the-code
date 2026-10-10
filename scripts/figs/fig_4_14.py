@@ -72,7 +72,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Crash safety.</b> Before the switch the old tree is whole; after it the new one is. A crash before the switch loses only the change, never the filesystem.</li>
           <li><b>Checksums.</b> Every block can carry a checksum checked on each read, so silent disk corruption is caught. ZFS and btrfs cover data too; APFS covers metadata.</li>
-          <li><b>The cost.</b> One changed byte rewrites a block at every level up to the root: write amplification. NetApp's WAFL made this trade in the early 1990s; ZFS, btrfs and APFS make it now.</li>
+          <li><b>The cost.</b> One changed byte rewrites a block at every level up to the root: <span class="key-term">write amplification</span>. NetApp's WAFL made this trade in the early 1990s; ZFS, btrfs and APFS make it now.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card light-diagram fig-v2" id="fig-4-14">

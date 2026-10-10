@@ -47,7 +47,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Brooks\'s arithmetic: <em>n</em> parts that can each affect the others have <em>n</em>(<em>n</em>&#8239;−&#8239;1)/2 possible interactions, so doubling the parts roughly quadruples what can go wrong between them. '
-           'C had no way to wall parts off from one another, and the classes and access rules of C++ were the answer.')
+           'C offered no compiler-enforced way to wall parts off from one another, and the classes and access rules of C++ were the answer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

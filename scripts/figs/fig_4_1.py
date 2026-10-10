@@ -42,13 +42,13 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('In January 1992 Andrew Tanenbaum told comp.os.minix that Linux\'s monolithic design was obsolete; Linus Torvalds, twenty-two, answered at length. '
-           'Three decades on both were right: microkernels hold the safety-critical niche, and Linux runs nearly everything else.')
+           'Three decades on both were right: microkernels are strong in safety-critical systems, and Linux runs nearly everything else.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Tanenbaum's case.</b> Theory: a microkernel keeps drivers and services out of the kernel, so one bug cannot take the machine down. He also predicted Linux, tied to the 386, would not last.</li>
           <li><b>Torvalds's case.</b> Running code: a monolithic kernel is simpler and faster, and Linux was free and worked on the machines people had.</li>
-          <li><b>The outcome.</b> Formally verified microkernels such as seL4 rule where one kernel bug is unacceptable; Linux runs servers, phones and supercomputers.</li>
+          <li><b>The outcome.</b> Microkernels such as seL4 (formally verified) and QNX are used where one kernel bug is unacceptable; Linux runs servers, phones and supercomputers.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-1">

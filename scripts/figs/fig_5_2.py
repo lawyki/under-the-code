@@ -9,7 +9,7 @@ EVENTS = [('1969', 'UNIX on a PDP-7, in assembly', 'asm'),
           ('1969', 'B: Thompson\'s typeless language', None),
           ('1970', 'PDP-11 arrives: byte-addressed', None),
           ('1971', 'First Edition: PDP-11 assembly', 'asm'),
-          ('1972', 'C: B plus types and structs', None),
+          ('1972', 'C: B plus types', None),
           ('1973', 'UNIX rewritten in C', 'c'),
           ('1977', 'ported to the Interdata 8/32', 'c'),
           ('1978', 'K&amp;R: the C book, 228 pages', None)]
@@ -27,7 +27,7 @@ H = ry(len(EVENTS) - 1) + 30
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-26 svgd-part2-26">')
 a('<title id="svgt-part2-26">Fig 5.2 · UNIX\'s rewrite, in time</title>')
 a('<desc id="svgd-part2-26">A timeline from 1969 to 1978, coloured by the language UNIX itself was written in. 1969: UNIX on a PDP-7, in assembly; Thompson\'s typeless language B. '
-  '1970: the byte-addressed PDP-11 arrives. 1971: the First Edition, in PDP-11 assembly. 1972: C, which is B plus types and structs. '
+  '1970: the byte-addressed PDP-11 arrives. 1971: the First Edition, in PDP-11 assembly. 1972: C, which is B plus types. '
   '1973: UNIX is rewritten in C, and the colour changes from assembly to C. 1977: UNIX is ported to the Interdata 8/32. 1978: Kernighan and Ritchie\'s book on C, 228 pages.</desc>')
 a(text(20, 22, 'UNIX source in:', size=13, fill=MUTED, ls='0'))
 a(f'<rect x="150" y="12" width="12" height="12" rx="2" fill="{GOLD}"/>')

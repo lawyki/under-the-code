@@ -36,7 +36,7 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Whatever a program is written in, its work soon runs in C: a Python program\'s request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. '
+caption = ('Underneath a Python program the work soon runs in C: its request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. '
            'C holds the layers where cycles and predictability matter most, and pays for it in memory-safety bugs.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

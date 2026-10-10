@@ -17,9 +17,9 @@ def win(t0, t1):
     return T.anim('opacity', [(0.0, 0.0), (t0 - 0.001, 0.0), (t0, 1.0), (t1 - 0.002, 1.0), (t1 - 0.001, 0.0), (D - 0.0005, 0.0)])
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-6 svgd-part2-6">')
-a('<title id="svgt-part2-6">Fig 4.6 · L = λ · W and the cliff at full utilisation</title>')
-a('<desc id="svgd-part2-6">A queue in front of one server, at three loads. At 50% utilisation one request waits on average and each spends twice the service time in the system. '
-  'At 80%, four wait and the time is five times the service time. At 95%, nineteen wait and the time is twenty times. Below, the curve W = 1/(1 − ρ) climbs steeply toward 100%. Little\'s Law, L = λW, links the three numbers.</desc>')
+a('<title id="svgt-part2-6">Fig 4.6 · Little\'s Law and the cliff at full utilisation</title>')
+a('<desc id="svgd-part2-6">A queue in front of one server, at three loads. At 50% utilisation one request is in the system on average, waiting or being served, and each spends twice the service time there. '
+  'At 80%, four are in the system and the time is five times the service time. At 95%, nineteen are in it and the time is twenty times. Below, the curve W = 1/(1 − ρ) climbs steeply toward 100%. Little\'s Law, L = λW, links the three numbers.</desc>')
 # the queue and the server
 a(text(20, 24, 'QUEUE → SERVER', size=13, fill=MUTED))
 a(f'<rect x="334" y="36" width="46" height="46" rx="6" fill="{PANEL}" stroke="{PHOS}" stroke-width="1.8"/>')
@@ -28,7 +28,7 @@ for k, rho in enumerate(LOADS):
     L = round(rho / (1 - rho)); Wt = round(1 / (1 - rho))
     t0, t1 = k * SPAN, (k + 1) * SPAN
     g = [f'<g opacity="0">{win(t0, t1)}']
-    for i in range(L):
+    for i in range(L - 1):          # L counts the one in service too: L - 1 wait in line
         row, col = divmod(i, 10)
         x = 314 - col * 30 - (0 if row == 0 else 0)
         y = 48 + row * 30 if row == 0 else 84
@@ -61,13 +61,13 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Little\'s Law ties a queue\'s length to its arrival rate and wait: L = λW, for any stable queue. '
-           'As utilisation nears 100% the wait grows like 1/(1 − ρ): five times the bare service time at 80% load, twenty times at 95%.')
+           'As utilisation nears 100% the time in the system grows like <span style="white-space:nowrap">1/(1 − ρ)</span>: five times the bare service time at 80% load, twenty times at 95%.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The law.</b> Average number in the system = arrival rate × average time in it. It needs no assumption about how arrivals or service times are distributed.</li>
           <li><b>The curve.</b> For the simplest queue (random arrivals, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
-          <li><b>The cliff.</b> From 50% to 60% load the wait grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
+          <li><b>The cliff.</b> From 50% to 60% load the time in the system grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-6">

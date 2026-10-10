@@ -72,7 +72,7 @@
     <a href="#ch5" class="toc-card">
       <div class="toc-num">CHAPTER 05</div>
       <div class="toc-title">C: The Language That Built Everything</div>
-      <div class="toc-desc">The portability problem, Ritchie and Thompson at Bell Labs, pointers as math, manual memory, undefined behavior.</div>
+      <div class="toc-desc">The portability problem, Ritchie and Thompson at Bell Labs, pointers as math, manual memory, undefined behaviour.</div>
     </a>
     <a href="#ch6" class="toc-card">
       <div class="toc-num">CHAPTER 06</div>
@@ -253,13 +253,13 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.739900;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="342" width="360" height="26" rx="4" fill="#152016" stroke="rgba(132,255,178,0.35)"/><text x="30" y="360" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">microkernels</text><text x="370" y="360" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">seL4, QNX: safety-critical</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.799900;0.800000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="372" width="360" height="26" rx="4" fill="#152016" stroke="rgba(132,255,178,0.35)"/><text x="30" y="390" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">monolithic</text><text x="370" y="390" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">Linux: nearly everywhere</text></g>
 </svg>
-      <p id="ch4-anatomy-p7" class="diagram-caption">In January 1992 Andrew Tanenbaum told comp.os.minix that Linux's monolithic design was obsolete; Linus Torvalds, twenty-two, answered at length. Three decades on both were right: microkernels hold the safety-critical niche, and Linux runs nearly everything else.</p>
+      <p id="ch4-anatomy-p7" class="diagram-caption">In January 1992 Andrew Tanenbaum told comp.os.minix that Linux's monolithic design was obsolete; Linus Torvalds, twenty-two, answered at length. Three decades on both were right: microkernels are strong in safety-critical systems, and Linux runs nearly everything else.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Tanenbaum's case.</b> Theory: a microkernel keeps drivers and services out of the kernel, so one bug cannot take the machine down. He also predicted Linux, tied to the 386, would not last.</li>
           <li><b>Torvalds's case.</b> Running code: a monolithic kernel is simpler and faster, and Linux was free and worked on the machines people had.</li>
-          <li><b>The outcome.</b> Formally verified microkernels such as seL4 rule where one kernel bug is unacceptable; Linux runs servers, phones and supercomputers.</li>
+          <li><b>The outcome.</b> Microkernels such as seL4 (formally verified) and QNX are used where one kernel bug is unacceptable; Linux runs servers, phones and supercomputers.</li>
         </ol>
       </details>
     </div>
@@ -323,7 +323,7 @@
         <ol>
           <li><b>Monolithic.</b> Scheduler, memory, file systems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
           <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that talks by IPC.</li>
-          <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; every component outside Ring 0 is a bug that cannot corrupt the kernel, so they are safer.</li>
+          <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; a bug in any component outside Ring 0 cannot corrupt the kernel, so microkernels are safer.</li>
         </ol>
       </details>
     </div>
@@ -344,7 +344,7 @@
       <div class="diagram-label">Fig 4.3&nbsp;· A kernel module loading at runtime</div>
       <svg viewBox="0 0 400 334" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-3 svgd-part2-3">
 <title id="svgt-part2-3">Fig 4.3 · A kernel module loading at runtime</title>
-<desc id="svgd-part2-3">A running Linux kernel with modules already loaded beside it: nvidia.ko, btrfs.ko, snd_hda.ko. The command sudo insmod my_driver.ko brings a new module into Ring 0; its calls are linked against the kernel's symbol table and its module_init function runs. Later rmmod reverses it: module_exit runs and the module is removed.</desc>
+<desc id="svgd-part2-3">A running Linux kernel with modules already loaded beside it: nvidia.ko, btrfs.ko, snd_hda_intel.ko. The command sudo insmod my_driver.ko brings a new module into Ring 0; its calls are linked against the kernel's symbol table and its module_init function runs. Later rmmod reverses it: module_exit runs and the module is removed.</desc>
 <rect x="20" y="12" width="360" height="62" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.4)"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.509800;0.509900;0.539950;0.540000;0.569900;0.570000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="36" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">$ sudo insmod my_driver.ko</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.179900;0.180000;0.509800;0.509900;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="60" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">$ sudo rmmod my_driver</text></g>
@@ -362,7 +362,7 @@
 <rect x="200" y="178" width="170" height="34" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.5"/>
 <text x="212" y="200" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">btrfs.ko</text>
 <rect x="200" y="222" width="170" height="34" rx="4" fill="#1b2a1f" stroke="rgba(198,222,206,0.85)" stroke-opacity="0.5"/>
-<text x="212" y="244" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">snd_hda.ko</text>
+<text x="212" y="244" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="rgba(198,222,206,0.85)">snd_hda_intel.ko</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.259800;0.259900;0.539950;0.540000;0.659900;0.660000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="200" y="266" width="170" height="34" rx="4" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2" stroke-width="1.8"/><text x="212" y="288" font-family="IBM Plex Mono" font-size="14" fill="#fff">my_driver.ko</text></g>
 <rect class="fx" x="196" y="262" width="178" height="42" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.539950;0.540000;0.659900;0.660000;0.729800;0.729900;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <line x1="200" y1="276" x2="170" y2="270" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.239800;0.239900;0.539950;0.540000;0.759900;0.760000;1.000000" dur="10s" repeatCount="indefinite"/></line>
@@ -434,10 +434,10 @@
       <thead><tr><th>Algorithm</th><th>How it works</th><th>Trade-off</th></tr></thead>
       <tbody>
         <tr><td>FCFS</td><td>First-come, first-served. Run processes in arrival order until they finish.</td><td>Simple. Terrible response time: one long process blocks all the short ones (the "convoy effect").</td></tr>
-        <tr><td>SJF</td><td>Shortest Job First. Pick the process with the shortest remaining time.</td><td>Provably optimal for average wait time. Requires knowing job length in advance, which you usually don't.</td></tr>
+        <tr><td>SJF</td><td>Shortest Job First. Pick the process with the shortest remaining time.</td><td>Provably optimal for average wait when every job is ready at the start. Requires knowing job length in advance, which you usually don't.</td></tr>
         <tr><td>Round Robin</td><td>Each process gets a fixed time slice ("quantum"). When it expires, move to the next.</td><td>Fair. Responsive. Doesn't optimise for total throughput.</td></tr>
         <tr><td>Priority</td><td>Each process has a priority number. Higher priority runs first.</td><td>Lets the system favor critical work. Risk: low-priority processes can be <em>starved</em> indefinitely.</td></tr>
-        <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length. Used by Windows, classic UNIX.</td></tr>
+        <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length. Windows and classic UNIX schedulers descend from it.</td></tr>
         <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default 2007–2023. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." O(log N) per scheduling decision via a red-black tree.</td></tr>
       </tbody>
     </table>
@@ -476,16 +476,16 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339900;0.340000;0.399800;0.399900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">11.0</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.399900;0.400000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">13.0</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099900;0.100000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="108" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">virtual runtime grows</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">13.0 goes back in on the right</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">13.0 goes back in, after 12.4</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">idle for an instant</text></g>
 </svg>
-      <p id="ch4-scheduling-p6" class="diagram-caption">CFS keeps runnable processes in a tree ordered by virtual runtime, the CPU time each has had. The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in further right.</p>
+      <p id="ch4-scheduling-p6" class="diagram-caption">CFS keeps runnable processes in a tree ordered by virtual runtime, the CPU time each has had. The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in among the larger values.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Virtual runtime.</b> CPU time received, weighted by priority. Whoever has had least is owed the CPU.</li>
-          <li><b>The tree.</b> A red-black tree, kept balanced, so finding the leftmost, removing it and inserting a process are all O(log N), even with thousands runnable.</li>
-          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the same bookkeeping and adds a deadline per task so latency-sensitive work runs on time.</li>
+          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process are both O(log N), even with thousands runnable.</li>
+          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so latency-sensitive work runs on time.</li>
         </ol>
       </details>
     </div>
@@ -562,11 +562,11 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU. Every schedule here is simulated, not drawn by hand.</li>
+          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU.</li>
           <li><b>FCFS.</b> First come, first served: A's eight units hold up everyone behind it, the convoy effect.</li>
-          <li><b>SJF.</b> Shortest job first: provably the lowest average wait, but it needs to know job lengths in advance.</li>
+          <li><b>SJF.</b> Shortest job first: the lowest average wait of the four here, and provably optimal when every job is ready at the start, but it needs to know job lengths in advance.</li>
           <li><b>Round robin.</b> Each job runs for a quantum of 2, then goes to the back of the queue: responsive, at the cost of many switches.</li>
-          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers work this way.</li>
+          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers descend from this idea.</li>
         </ol>
       </details>
     </div>
@@ -581,14 +581,14 @@
     <div class="diagram-card fig-v2" id="fig-4-6">
       <div class="diagram-label">Fig 4.6&nbsp;· Little's Law and the cliff at full utilisation</div>
       <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-6 svgd-part2-6">
-<title id="svgt-part2-6">Fig 4.6 · L = λ · W and the cliff at full utilisation</title>
-<desc id="svgd-part2-6">A queue in front of one server, at three loads. At 50% utilisation one request waits on average and each spends twice the service time in the system. At 80%, four wait and the time is five times the service time. At 95%, nineteen wait and the time is twenty times. Below, the curve W = 1/(1 − ρ) climbs steeply toward 100%. Little's Law, L = λW, links the three numbers.</desc>
+<title id="svgt-part2-6">Fig 4.6 · Little's Law and the cliff at full utilisation</title>
+<desc id="svgd-part2-6">A queue in front of one server, at three loads. At 50% utilisation one request is in the system on average, waiting or being served, and each spends twice the service time there. At 80%, four are in the system and the time is five times the service time. At 95%, nineteen are in it and the time is twenty times. Below, the curve W = 1/(1 − ρ) climbs steeply toward 100%. Little's Law, L = λW, links the three numbers.</desc>
 <text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">QUEUE → SERVER</text>
 <rect x="334" y="36" width="46" height="46" rx="6" fill="#152016" stroke="#84ffb2" stroke-width="1.8"/>
 <circle cx="357" cy="59" r="9" fill="#84ffb2"/>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.166603;0.166667;0.499744;0.499872;1.000000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 50%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 1</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 2</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.166603;0.166667;0.499872;0.500000;0.833077;0.833205;1.000000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 80%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 4</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 5</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.166410;0.166538;0.166603;0.166667;0.833205;0.833333;1.000000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="74" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="44" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="314" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="74" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 95%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 19</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 20</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.166603;0.166667;0.499744;0.499872;1.000000" dur="7.8s" repeatCount="indefinite"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 50%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 1</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.166603;0.166667;0.499872;0.500000;0.833077;0.833205;1.000000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 80%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 4</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.166410;0.166538;0.166603;0.166667;0.833205;0.833333;1.000000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="74" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="44" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="314" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 95%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 19</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 20</text></g>
 <line x1="64" y1="352" x2="380" y2="352" stroke="rgba(132,255,178,0.35)"/><line x1="64" y1="352" x2="64" y2="170" stroke="rgba(132,255,178,0.35)"/>
 <polyline points="64.0,343.2 67.2,343.1 70.3,343.0 73.5,342.9 76.6,342.8 79.8,342.7 83.0,342.6 86.1,342.5 89.3,342.4 92.4,342.3 95.6,342.2 98.8,342.1 101.9,342.0 105.1,341.9 108.2,341.8 111.4,341.6 114.6,341.5 117.7,341.4 120.9,341.3 124.0,341.1 127.2,341.0 130.4,340.9 133.5,340.7 136.7,340.6 139.8,340.4 143.0,340.3 146.2,340.1 149.3,339.9 152.5,339.8 155.6,339.6 158.8,339.4 162.0,339.2 165.1,339.1 168.3,338.9 171.4,338.7 174.6,338.5 177.8,338.2 180.9,338.0 184.1,337.8 187.2,337.6 190.4,337.3 193.6,337.1 196.7,336.8 199.9,336.6 203.0,336.3 206.2,336.0 209.4,335.7 212.5,335.4 215.7,335.1 218.8,334.7 222.0,334.4 225.2,334.0 228.3,333.7 231.5,333.3 234.6,332.9 237.8,332.4 241.0,332.0 244.1,331.5 247.3,331.0 250.4,330.5 253.6,330.0 256.8,329.4 259.9,328.8 263.1,328.2 266.2,327.6 269.4,326.9 272.6,326.1 275.7,325.3 278.9,324.5 282.0,323.6 285.2,322.7 288.4,321.7 291.5,320.6 294.7,319.4 297.8,318.2 301.0,316.8 304.2,315.3 307.3,313.7 310.5,312.0 313.6,310.1 316.8,308.0 320.0,305.7 323.1,303.1 326.3,300.2 329.4,297.0 332.6,293.3 335.8,289.1 338.9,284.3 342.1,278.7 345.2,272.0 348.4,264.0 351.6,254.2 354.7,242.0 357.9,226.3 361.0,205.3 364.2,176.0" fill="none" stroke="#84ffb2" stroke-width="2.4"/>
 <line x1="380" y1="170" x2="380" y2="352" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/>
@@ -607,13 +607,13 @@
 <circle cx="364.2" cy="176.0" r="5" fill="#d4a853" fill-opacity="0.5"/>
 <circle cx="364.2" cy="176.0" r="8" fill="#d4a853" stroke="#0c120e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.166410;0.166538;0.166603;0.166667;0.833205;0.833333;1.000000" dur="7.8s" repeatCount="indefinite"/></circle>
 </svg>
-      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law ties a queue's length to its arrival rate and wait: L = λW, for any stable queue. As utilisation nears 100% the wait grows like 1/(1 − ρ): five times the bare service time at 80% load, twenty times at 95%.</p>
+      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law ties a queue's length to its arrival rate and wait: L = λW, for any stable queue. As utilisation nears 100% the time in the system grows like <span style="white-space:nowrap">1/(1 − ρ)</span>: five times the bare service time at 80% load, twenty times at 95%.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The law.</b> Average number in the system = arrival rate × average time in it. It needs no assumption about how arrivals or service times are distributed.</li>
           <li><b>The curve.</b> For the simplest queue (random arrivals, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
-          <li><b>The cliff.</b> From 50% to 60% load the wait grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
+          <li><b>The cliff.</b> From 50% to 60% load the time in the system grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
         </ol>
       </details>
     </div>
@@ -1437,7 +1437,7 @@
         <ol>
           <li><b>Crash safety.</b> Before the switch the old tree is whole; after it the new one is. A crash before the switch loses only the change, never the filesystem.</li>
           <li><b>Checksums.</b> Every block can carry a checksum checked on each read, so silent disk corruption is caught. ZFS and btrfs cover data too; APFS covers metadata.</li>
-          <li><b>The cost.</b> One changed byte rewrites a block at every level up to the root: write amplification. NetApp's WAFL made this trade in the early 1990s; ZFS, btrfs and APFS make it now.</li>
+          <li><b>The cost.</b> One changed byte rewrites a block at every level up to the root: <span class="key-term">write amplification</span>. NetApp's WAFL made this trade in the early 1990s; ZFS, btrfs and APFS make it now.</li>
         </ol>
       </details>
     </div>
@@ -1722,7 +1722,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate, stop, or nothing.</li>
+          <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate (sometimes with a core dump), stop, continue, or nothing.</li>
           <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that has trapped everything else.</li>
           <li><b>Crude by design.</b> A signal is just a number. A second signal of the same kind arriving while the first is still pending merges with it.</li>
         </ol>
@@ -1879,7 +1879,7 @@
 
     <p id="ch4-security-p9">
       <span class="key-term">Cgroups</span> (control groups) limit how much of each
-      resource a process group can use: CPU time, memory, disk I/O, network bandwidth.
+      resource a process group can use: CPU time, memory, disk I/O, the number of processes.
       Together with namespaces, this gives Docker its model: cheap, fast isolation
       that doesn't require a hypervisor.
     </p>
@@ -2001,8 +2001,8 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Eight kinds.</b> Mount, UTS (hostname), IPC, PID, network, user, cgroup and, since Linux 5.6, time. Each can be set separately.</li>
-          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> puts a process in a fresh namespace; its children inherit it.</li>
-          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, which routes between them.</li>
+          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> gives a new process (or, for PID, the caller's next children) a fresh namespace, which its children inherit.</li>
+          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, on a bridge the host routes from.</li>
         </ol>
       </details>
     </div>
@@ -2440,7 +2440,7 @@
       <div class="diagram-label">Fig 5.2&nbsp;· UNIX's rewrite, in time</div>
       <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-26 svgd-part2-26">
 <title id="svgt-part2-26">Fig 5.2 · UNIX's rewrite, in time</title>
-<desc id="svgd-part2-26">A timeline from 1969 to 1978, coloured by the language UNIX itself was written in. 1969: UNIX on a PDP-7, in assembly; Thompson's typeless language B. 1970: the byte-addressed PDP-11 arrives. 1971: the First Edition, in PDP-11 assembly. 1972: C, which is B plus types and structs. 1973: UNIX is rewritten in C, and the colour changes from assembly to C. 1977: UNIX is ported to the Interdata 8/32. 1978: Kernighan and Ritchie's book on C, 228 pages.</desc>
+<desc id="svgd-part2-26">A timeline from 1969 to 1978, coloured by the language UNIX itself was written in. 1969: UNIX on a PDP-7, in assembly; Thompson's typeless language B. 1970: the byte-addressed PDP-11 arrives. 1971: the First Edition, in PDP-11 assembly. 1972: C, which is B plus types. 1973: UNIX is rewritten in C, and the colour changes from assembly to C. 1977: UNIX is ported to the Interdata 8/32. 1978: Kernighan and Ritchie's book on C, 228 pages.</desc>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">UNIX source in:</text>
 <rect x="150" y="12" width="12" height="12" rx="2" fill="#d4a853"/>
 <text x="168" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">assembly</text>
@@ -2476,7 +2476,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/>
 <text x="20" y="193" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1972</text>
 <circle cx="74" cy="188" r="5" fill="#0c120e" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/>
-<text x="92" y="193" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">C: B plus types and structs</text>
+<text x="92" y="193" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">C: B plus types</text>
 </g>
 <circle class="fx" cx="74" cy="188" r="11" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.479800;0.480000;0.540000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
 <g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.564800;0.565000;1.000000" dur="10s" repeatCount="indefinite"/>
@@ -2765,7 +2765,7 @@
         <ol>
           <li><b>The rule.</b> C99 §6.5.2.1: "<code>E1[E2]</code> is identical to <code>(*((E1)+(E2)))</code>."</li>
           <li><b>The decay.</b> In most expressions an array's name turns into a pointer to its first element, which is why <code>a + 2</code> means an address at all.</li>
-          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array reads whatever lies beyond it.</li>
+          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour; in practice it reads whatever lies beyond it.</li>
         </ol>
       </details>
     </div>
@@ -2876,7 +2876,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199333;0.199583;0.233292;0.233333;0.899833;0.900000;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">none fits: ask the kernel for more</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.899833;0.900000;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="206" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">largest free piece: 176 B</text></g>
 </svg>
-      <p id="ch5-malloc-p4" class="diagram-caption">After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. That is fragmentation: free memory in pieces too small to use, so the allocator must ask the kernel for more.</p>
+      <p id="ch5-malloc-p4" class="diagram-caption">After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. The heap is <span class="key-term">fragmented</span>: free memory in pieces too small to use, so the allocator must ask the kernel for more.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3003,7 +3003,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.469800;0.470000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">4</text><text x="40" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">so abort() is dead code</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="262" width="360" height="56" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.7"/><text x="32" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">lea eax,[rdi+1]</text><text x="32" y="306" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">ret</text><text x="368" y="284" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no check left</text></g>
 </svg>
-      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is undefined behaviour, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code. At <code>-O2</code> gcc deletes it, leaving only an add and a return.</p>
+      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is <span class="key-term">undefined behaviour</span>, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code. At <code>-O2</code> gcc deletes it, leaving only an add and a return.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3157,7 +3157,7 @@
 <rect x="300" y="262" width="80" height="42" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.8"/>
 <text x="340" y="288" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">mostly C</text>
 </svg>
-      <p id="ch5-survives-p3" class="diagram-caption">Whatever a program is written in, its work soon runs in C: a Python program's request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. C holds the layers where cycles and predictability matter most, and pays for it in memory-safety bugs.</p>
+      <p id="ch5-survives-p3" class="diagram-caption">Underneath a Python program the work soon runs in C: its request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. C holds the layers where cycles and predictability matter most, and pays for it in memory-safety bugs.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3172,7 +3172,7 @@
       <div class="diagram-label">Fig 5.11&nbsp;· The C family tree&nbsp;· half a century of descendants</div>
       <svg viewBox="0 0 400 392" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-35 svgd-part2-35">
 <title id="svgt-part2-35">Fig 5.11 · The C family tree · half a century of descendants</title>
-<desc id="svgd-part2-35">C, from Bell Labs in 1972, at the root of three waves of descendants. Keeping C's speed and adding objects: Objective-C (1984) and C++ (1985). Keeping C's syntax on a managed runtime: Perl (1987), Java, JavaScript and PHP (all 1995), C# (2000) and Kotlin (2011). Keeping C's speed and adding memory safety: Go (2009), Rust (2010), Swift (2014) and Zig (2016).</desc>
+<desc id="svgd-part2-35">C, from Bell Labs in 1972, at the root of three waves of descendants. Keeping C's speed and adding objects: Objective-C (1984) and C++ (1985). Keeping C's syntax on a managed runtime: Perl (1987), Java, JavaScript and PHP (all 1995), C# (2000) and Kotlin (2011). Keeping C's speed and adding safety: Go (2009), Rust (2010) and Swift (2014), which are memory-safe, and Zig (2016), which keeps manual control with fewer traps.</desc>
 <rect x="20" y="12" width="360" height="38" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-width="1.5"/>
 <text x="32" y="36" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">C · 1972 · Bell Labs</text>
 <g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.331652;0.331818;0.346303;0.346553;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">1984</text></g>
@@ -3205,7 +3205,7 @@
 <rect class="fx" x="153" y="212" width="108" height="40" rx="3" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.574076;0.574242;0.615909;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066625;0.066667;0.100000;0.100417;0.740742;0.740909;1.000000" dur="12s" repeatCount="indefinite"/><rect x="266" y="212" width="108" height="40" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.7"/><text x="276" y="229" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">Kotlin</text><text x="276" y="245" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2011</text></g>
 <rect class="fx" x="266" y="212" width="108" height="40" rx="3" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.740742;0.740909;0.782576;1.000000" dur="12s" repeatCount="indefinite"/></rect>
-<text x="40" y="280" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">keep the speed, add memory safety</text>
+<text x="40" y="280" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">keep the speed, add safety</text>
 <line x1="26" y1="275" x2="34" y2="275" stroke="rgba(198,222,206,0.4)" stroke-width="1.5"/>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066625;0.066667;0.100000;0.100417;0.710439;0.710606;1.000000" dur="12s" repeatCount="indefinite"/><rect x="40" y="290" width="108" height="40" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.7"/><text x="50" y="307" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">Go</text><text x="50" y="323" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2009</text></g>
 <rect class="fx" x="40" y="290" width="108" height="40" rx="3" fill="#84ffb2" fill-opacity="0.25" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.710439;0.710606;0.752273;1.000000" dur="12s" repeatCount="indefinite"/></rect>
@@ -3217,7 +3217,7 @@
 <rect class="fx" x="40" y="338" width="108" height="40" rx="3" fill="#84ffb2" fill-opacity="0.25" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.816500;0.816667;0.858333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <line x1="26" y1="50" x2="26" y2="275" stroke="rgba(198,222,206,0.4)" stroke-width="1.5"/>
 </svg>
-      <p id="ch5-survives-p4" class="diagram-caption">Most major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C's speed, C's syntax on a managed runtime, and C's speed with memory safety. The braces, semicolons and <code>for</code> loops of much of today's code are C's.</p>
+      <p id="ch5-survives-p4" class="diagram-caption">Many major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C's speed, C's syntax on a managed runtime, and C's speed with more safety. The braces, semicolons and <code>for</code> loops of much of today's code are C's.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3567,7 +3567,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.111111;0.111667;0.688667;0.688889;1.000000" dur="9s" repeatCount="indefinite"/><text x="20" y="313" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">16 parts</text><rect x="112" y="300" width="210.0" height="16" rx="2" fill="#d4a853" fill-opacity="0.6"/><text x="330" y="313" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">120</text></g>
 <text x="380" y="214" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">possible interactions</text>
 </svg>
-      <p id="ch6-complexity-p4" class="diagram-caption">Brooks's arithmetic: <em>n</em> parts that can each affect the others have <em>n</em>(<em>n</em>&#8239;−&#8239;1)/2 possible interactions, so doubling the parts roughly quadruples what can go wrong between them. C had no way to wall parts off from one another, and the classes and access rules of C++ were the answer.</p>
+      <p id="ch6-complexity-p4" class="diagram-caption">Brooks's arithmetic: <em>n</em> parts that can each affect the others have <em>n</em>(<em>n</em>&#8239;−&#8239;1)/2 possible interactions, so doubling the parts roughly quadruples what can go wrong between them. C offered no compiler-enforced way to wall parts off from one another, and the classes and access rules of C++ were the answer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3624,7 +3624,7 @@
       In 1983 the language was renamed
       <strong>C++</strong>, a pun on C's increment operator, <code>++</code>,
       meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and
-      that year's release shipped as a true compiler. In 1989 ANSI convened a standards
+      that year's release shipped as Cfront, a compiler that still emitted C. In 1989 ANSI convened a standards
       committee; the standard itself, C++98, took nine more years. By 2000 it was
       the dominant language for systems where
       C alone could not scale: trading platforms, telecommunications switches, browser
@@ -3800,7 +3800,7 @@
       <div class="diagram-label">Fig 6.4&nbsp;· Inheritance: same vptr slot, different function</div>
       <svg viewBox="0 0 400 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-40 svgd-part2-40">
 <title id="svgt-part2-40">Fig 6.4 · Inheritance: same vptr slot, different function</title>
-<desc id="svgd-part2-40">A function print(Shape* s) calls s-&gt;area(). The pointer s is given a Circle with r = 2, then a Square with s = 3, then a Triangle with base 4 and height 3. Each object's vptr leads to its own class's vtable, where slot 0 holds that class's area: Circle::area computes π·r·r and prints 12.57, Square::area s·s and prints 9, Triangle::area ½·b·h and prints 6. The caller never changes.</desc>
+<desc id="svgd-part2-40">A function print(Shape* s) calls s-&gt;area(). The pointer s is given a Circle with r = 2, then a Square with side 3, then a Triangle with base 4 and height 3. Each object's vptr leads to its own class's vtable, where slot 0 holds that class's area: Circle::area computes π·r·r and prints 12.57, Square::area side² and prints 9, Triangle::area ½·b·h and prints 6. The caller never changes.</desc>
 <rect x="20" y="12" width="360" height="40" rx="3" fill="#f5f8f3" stroke="#1d2b22" stroke-opacity="0.5"/>
 <text x="32" y="37" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">print(Shape* s): s-&gt;area()</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.154667;0.155000;0.777722;0.777778;0.977556;0.977778;1.000000" dur="9s" repeatCount="indefinite"/><text x="368" y="37" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">prints 12.57</text></g>
@@ -3824,7 +3824,7 @@
 <rect x="142" y="86" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
 <rect class="fx" x="142" y="86" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.155333;0.155556;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="200" y="103" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">Square</text>
-<text x="200" y="119" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">s = 3</text>
+<text x="200" y="119" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">side = 3</text>
 <line x1="200.0" y1="126" x2="200.0" y2="140" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
 <polygon points="196.0,138 204.0,138 200.0,145" fill="rgba(29,43,34,0.5)"/>
 <rect x="142" y="146" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
@@ -3835,7 +3835,7 @@
 <polygon points="196.0,198 204.0,198 200.0,205" fill="rgba(29,43,34,0.5)"/>
 <rect x="142" y="206" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
 <rect class="fx" x="142" y="206" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.244222;0.244444;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
-<text x="200" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">s·s</text>
+<text x="200" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">side²</text>
 <rect x="264" y="86" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
 <rect class="fx" x="264" y="86" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.466444;0.466667;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="322" y="103" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">Triangle</text>
@@ -3853,12 +3853,12 @@
 <text x="322" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">½·b·h</text>
 <g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;122.00 0;122.00 0;244.00 0;244.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.122222;0.155556;0.433333;0.466667;0.733333;0.766667;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><line x1="78.0" y1="52" x2="78.0" y2="78" stroke="#8a5a00" stroke-width="2"/><polygon points="73.0,76 83.0,76 78.0,85" fill="#8a5a00"/><text x="86" y="72" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">s</text></g>
 </svg>
-      <p id="ch6-classes-p5" class="diagram-caption">One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class's vtable leads to that class's own <code>area()</code>. The caller never changes; that is polymorphism, code written against an interface rather than an implementation.</p>
+      <p id="ch6-classes-p5" class="diagram-caption">One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class's vtable leads to that class's own <code>area()</code>. The caller never changes; that is <span class="key-term">polymorphism</span>, code written against an interface rather than an implementation.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Same layout.</b> Every class derived from <code>Shape</code> puts <code>area()</code> in the same slot of its vtable, so the call compiles to the same two instructions.</li>
-          <li><b>New shapes for free.</b> A <code>Hexagon</code> added next year works with <code>print()</code> unchanged and uncompiled.</li>
+          <li><b>New shapes for free.</b> A <code>Hexagon</code> added next year works with <code>print()</code> unchanged and without recompiling.</li>
           <li><b>The rule.</b> <code>= 0</code> makes <code>Shape::area</code> pure virtual: <code>Shape</code> itself cannot be created, only its subclasses.</li>
         </ol>
       </details>
@@ -4091,7 +4091,7 @@
       years, added mechanisms that obsoleted most of the patterns the previous
       generation had hated: smart pointers replaced raw <code>new/delete</code>, move
       semantics replaced expensive copies, <code>auto</code> replaced verbose type
-      declarations, lambdas replaced function pointers. None of the old features were
+      declarations, lambdas replaced function pointers. Almost none of the old features were
       removed; the new ones were so much better that competent C++ stopped using
       the old.
     </p>
@@ -4114,7 +4114,7 @@
       <div class="diagram-label">Fig 6.7&nbsp;· Three pointer flavours, three ownership semantics</div>
       <svg viewBox="0 0 400 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-43 svgd-part2-43">
 <title id="svgt-part2-43">Fig 6.7 · Three pointer flavours, three ownership semantics</title>
-<desc id="svgd-part2-43">Three lifecycles. unique_ptr: one owner, p; when p goes out of scope the object is freed. shared_ptr: two owners, a and b, and a count of 2; when a goes the count is 1, when b goes it is 0 and the object is freed. weak_ptr: an owner s and a weak observer w; when s goes the object is freed even though w still points at it, and w reports that it has expired.</desc>
+<desc id="svgd-part2-43">Three lifecycles. unique_ptr: one owner, p; when p goes out of scope the object is freed. shared_ptr: two owners, a and b, and a count of 2; when a goes the count is 1, when b goes it is 0 and the object is freed. weak_ptr: an owner s and a weak observer w; when s goes the object is destroyed even though w is still watching it, and w reports that it has expired.</desc>
 <text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">unique_ptr · one owner</text>
 <rect x="20" y="30" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
 <g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.199200;0.199500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="30" width="130" height="34" rx="3" fill="#152016" stroke="#84ffb2"/><text x="85" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner p</text><line x1="150" y1="47" x2="256" y2="47" stroke="#84ffb2" stroke-width="1.5"/><polygon points="255,43 262,47 255,51" fill="#84ffb2"/></g>
@@ -4418,7 +4418,7 @@
       <div class="diagram-label">Fig 7.1&nbsp;· The two pipelines, side by side</div>
       <svg viewBox="0 0 400 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-47 svgd-part2-47">
 <title id="svgt-part2-47">Fig 7.1 · The two pipelines, side by side</title>
-<desc id="svgd-part2-47">Two programs, each run three times. The C program is compiled and linked once, on the developer's machine, and every run executes native machine code. The Python program is parsed and compiled to bytecode on its first run, and the bytecode is saved in a .pyc file; later runs load it from the cache, but every run, the first and the later ones, goes through CPython's eval loop, which interprets the bytecode one instruction at a time.</desc>
+<desc id="svgd-part2-47">Two programs, each run three times. The C program is compiled and linked once, on the developer's machine, and every run executes native machine code. The Python module is parsed and compiled to bytecode the first time it is imported, and the bytecode is saved in a .pyc file; later runs load it from the cache, but every run, the first and the later ones, goes through CPython's eval loop, which interprets the bytecode one instruction at a time.</desc>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.424833;0.425000;0.674333;0.674583;1.000000" dur="12s" repeatCount="indefinite"/><text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">run 1 of 3</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.674833;0.675000;0.924333;0.924583;1.000000" dur="12s" repeatCount="indefinite"/><text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">run 2 of 3</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.258292;0.258333;0.924833;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">run 3 of 3</text></g>
@@ -4437,7 +4437,7 @@
 <line x1="205" y1="54" x2="205" y2="100" stroke="rgba(198,222,206,0.4)" stroke-dasharray="3 3"/>
 <text x="20" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">once, before shipping</text>
 <text x="380" y="114" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">every run</text>
-<text x="20" y="146" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">Python · main.py</text>
+<text x="20" y="146" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">Python · an imported module</text>
 <g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0;1;1;0;0" keyTimes="0.000000;0.058167;0.058333;0.258292;0.258333;0.674333;0.674583;0.808167;0.808333;0.924333;0.924583;1.000000" dur="12s" repeatCount="indefinite"/>
 <rect x="20" y="160" width="80" height="34" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.6"/>
 <text x="60" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">parse</text>
@@ -4457,12 +4457,12 @@
 <text x="20" y="214" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">first run, then cached</text>
 <text x="380" y="214" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">every run</text>
 </svg>
-      <p id="ch7-interpret-p4" class="diagram-caption">C pays for translation once, on the developer's machine, and every run executes native code; Python translates on the user's machine, caches the bytecode in a <code>.pyc</code> file, and interprets it on every run. Python ships source that runs wherever there is an interpreter, and pays in cycles each time it runs.</p>
+      <p id="ch7-interpret-p4" class="diagram-caption">C pays for translation once, on the developer's machine, and every run executes native code; Python translates on the user's machine, caches an imported module's bytecode in a <code>.pyc</code> file, and interprets it on every run. Python ships source that runs wherever there is an interpreter, and pays in cycles each time it runs.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>C.</b> The compiler parses, optimises and emits machine code; the linker joins the pieces into one executable for one kind of machine.</li>
-          <li><b>Python.</b> CPython parses to a syntax tree, compiles it to bytecode, saves that in <code>__pycache__</code>, and its eval loop runs one bytecode instruction at a time.</li>
+          <li><b>Python.</b> CPython parses a module to a syntax tree, compiles it to bytecode and caches that in <code>__pycache__</code> when it is imported (a script run directly is recompiled each time); its eval loop runs one bytecode instruction at a time.</li>
           <li><b>In between.</b> Just-in-time compilers (PyPy, and CPython 3.13's experimental JIT) turn hot bytecode into machine code while the program runs.</li>
         </ol>
       </details>
@@ -4630,7 +4630,7 @@
 <text x="20" y="204" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">no shared parent class, no declared interface</text>
 <g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;122.00 0;122.00 0;244.00 0;244.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.122222;0.155556;0.433333;0.466667;0.733333;0.766667;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><line x1="78.0" y1="66" x2="78.0" y2="88" stroke="#8a5a00" stroke-width="2"/><polygon points="73.0,86 83.0,86 78.0,95" fill="#8a5a00"/><text x="86" y="84" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">thing</text></g>
 </svg>
-      <p id="ch7-types-p4" class="diagram-caption"><code>announce</code> works on any object that has a <code>speak</code> method: Python looks the name up on the object itself, at the moment of the call. A Duck and an unrelated Robot both answer; an int has no <code>speak</code>, and the mistake surfaces only when that call runs, as <code>AttributeError</code>.</p>
+      <p id="ch7-types-p4" class="diagram-caption"><code>announce</code> works on any object that has a <code>speak</code> method: Python looks the name up on the object, at the moment of the call. A Duck and an unrelated Robot both answer; an int has no <code>speak</code>, and the mistake surfaces only when that call runs, as <code>AttributeError</code>.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4677,7 +4677,7 @@
       <div class="diagram-label">Fig 7.4&nbsp;· Two Python threads, one GIL</div>
       <svg viewBox="0 0 400 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-50 svgd-part2-50">
 <title id="svgt-part2-50">Fig 7.4 · Two Python threads, one GIL</title>
-<desc id="svgd-part2-50">Thirty milliseconds of two Python threads. With the global interpreter lock, only the thread holding it runs: thread 1 runs for 5 ms, then thread 2, then thread 1, the lock passing at the 5 ms switch interval. From 15 ms thread 1 waits on I/O and releases the lock, so thread 2 runs for those 10 ms; at 25 ms thread 1 takes the lock back. In Python 3.13's optional free-threaded build there is no such lock, and both threads run for the whole 30 ms.</desc>
+<desc id="svgd-part2-50">Thirty milliseconds of two Python threads. With the global interpreter lock, only the thread holding it runs: thread 1 runs for 5 ms, then thread 2, then thread 1, the lock passing at the 5 ms switch interval. From 15 ms thread 1 waits on I/O and releases the lock, so thread 2 runs for those 10 ms; at 25 ms thread 1 takes the lock back. In Python 3.13's optional free-threaded build there is no such lock: both threads run at the same time, except while thread 1 waits on I/O.</desc>
 <text x="20" y="18" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">default build: one lock</text>
 <text x="20" y="44" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
 <rect x="92" y="28" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
@@ -4697,7 +4697,9 @@
 <text x="20" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">3.13 free-threaded build</text>
 <text x="20" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
 <rect x="92" y="142" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
-<rect x="92.0" y="142" width="287.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="287;287;287;287;0;0;287;287" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="92.0" y="142" width="143.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="143;143;143;143;0;0;143;143" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.510000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="236.0" y="142" width="95.0" height="22" rx="2" fill="#d4a853" fill-opacity="0.55"><animate attributeName="width" values="95;95;95;95;0;0;95;95" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.510000;0.743333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="332.0" y="142" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T2</text>
 <rect x="92" y="170" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
 <rect x="92.0" y="170" width="287.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="287;287;287;287;0;0;287;287" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
@@ -4768,7 +4770,7 @@
 <text x="234" y="196" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">awaits a reply</text>
 <line y1="20" y2="168" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.099950;0.100000;0.159000;0.160000;0.860000;0.870000;1.000000" dur="10s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch7-gil-p4" class="diagram-caption">One thread runs an event loop: each task runs until it awaits a network reply, and the loop switches to another that is ready, so the waits overlap although only one task runs at a time. No locks are needed, because a task can be interrupted only where it says <code>await</code>.</p>
+      <p id="ch7-gil-p4" class="diagram-caption">One thread runs an event loop: each task runs until it awaits a network reply, and the loop switches to another that is ready, so the waits overlap although only one task runs at a time. A task can be interrupted only where it says <code>await</code>, so most shared state needs no locks.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4918,7 +4920,7 @@
 <text x="42" y="324" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">9</text>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.189950;0.190000;0.230000;0.230500;0.969800;0.970000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="352" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">each step is several instructions, every time</text></g>
 </svg>
-      <p id="ch7-cpython-p4" class="diagram-caption">C's compiler knows both values are ints and emits one add; CPython learns what they are only at run time, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. Most programs spend their time waiting on disks, networks or libraries written in C, so the gap rarely shows.</p>
+      <p id="ch7-cpython-p4" class="diagram-caption">C's compiler knows both values are ints and emits one add; CPython learns what they are only at run time, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. Many programs spend most of their time waiting on disks, networks or libraries written in C, and there the gap does not show.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4947,7 +4949,7 @@
       <div class="diagram-label">Fig 7.8&nbsp;· How NumPy actually does work</div>
       <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-54 svgd-part2-54">
 <title id="svgt-part2-54">Fig 7.8 · How NumPy actually does work</title>
-<desc id="svgd-part2-54">One line of Python, C = np.dot(A, B), descends four layers. NumPy's C code checks the types and shapes and picks a routine. A BLAS routine, dgemm, does the multiplication, blocked to fit the cache and using vector instructions, which the CPU's vector units execute four or eight doubles at a time. The Python and NumPy layers take microseconds; for a 1000 by 1000 matrix the BLAS work takes milliseconds. The result comes back up as one NumPy array.</desc>
+<desc id="svgd-part2-54">One line of Python, C = np.dot(A, B), descends four layers. NumPy's C code checks the types and shapes and picks a routine. A BLAS routine, dgemm, does the multiplication, blocked to fit the cache and using vector instructions, which the CPU's vector units execute several doubles at a time (four or eight on typical x86 chips). The Python and NumPy layers take microseconds; for a 1000 by 1000 matrix the BLAS work takes milliseconds. The result comes back up as one NumPy array.</desc>
 <rect x="20" y="12" width="360" height="52" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.6"/>
 <text x="32" y="33" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#86a8ff">Python</text>
 <text x="32" y="53" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">C = np.dot(A, B)</text>
@@ -4975,7 +4977,7 @@
 <rect x="20" y="210" width="360" height="52" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
 <rect class="fx" x="20" y="210" width="360" height="52" rx="3" fill="#d4a853" fill-opacity="0.22"><animate attributeName="width" values="180;360;360;0;0;0;0;180" keyTimes="0.000000;0.177778;0.333333;0.355556;0.566611;0.566667;0.822222;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="32" y="231" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">CPU vector units</text>
-<text x="32" y="251" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">4 or 8 doubles per instruction</text>
+<text x="32" y="251" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">several doubles per instruction</text>
 <rect class="fx" x="20" y="210" width="360" height="52" rx="3" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.566611;0.566667;0.799778;0.800000;0.865778;0.866111;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.532444;0.532778;0.566611;0.566667;1.000000" dur="9s" repeatCount="indefinite"/><text x="20" y="282" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">back in Python: one array</text></g>
 </svg>
@@ -4983,9 +4985,9 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>BLAS.</b> The Basic Linear Algebra Subprograms were specified in 1979; NumPy's standard builds ship OpenBLAS, written in C and assembly and tuned for each processor.</li>
+          <li><b>BLAS.</b> The Basic Linear Algebra Subprograms began in 1979, and matrix routines such as dgemm joined in 1990. NumPy's Linux and Windows builds ship OpenBLAS; on Apple Silicon Macs it can use Apple's Accelerate.</li>
           <li><b>Blocking.</b> dgemm multiplies the matrices in tiles small enough to stay in cache, so each number fetched from memory is used many times.</li>
-          <li><b>Vectors.</b> AVX2 instructions work on 4 doubles at once and AVX-512 on 8, and the work is split across every core.</li>
+          <li><b>Vectors.</b> On x86, AVX2 works on 4 doubles at once and AVX-512 on 8; Arm's NEON on 2. The work is also split across every core.</li>
         </ol>
       </details>
     </div>
@@ -5020,7 +5022,7 @@
 <text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">log scale: each tick is ×10</text>
 <line y1="34" y2="140" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.099950;0.100000;0.159000;0.160000;0.860000;0.870000;1.000000" dur="10s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch7-datasci-p3" class="diagram-caption">Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter's toll, and about a hundredth of a second with <code>np.dot</code>. On this logarithmic axis that is four steps of ten: none of the gap is Python getting faster.</p>
+      <p id="ch7-datasci-p3" class="diagram-caption">Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter's toll, and about a hundredth of a second with <code>np.dot</code>. On this logarithmic axis that is four steps of ten.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>

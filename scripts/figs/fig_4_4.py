@@ -52,19 +52,19 @@ for k, v in enumerate(VR):
     a(f'<g opacity="0">{win(t0, t1)}<circle cx="70" cy="286" r="22" fill="{PHOS}" fill-opacity="0.3" stroke="{PHOS}" stroke-width="2"/>'
       f'<text x="70" y="291" text-anchor="middle" {PLEX} font-size="14" fill="#fff">{v:.1f}</text></g>')
 a(f'<g opacity="0">{win(1.6, 5.4)}{text(108, 291, "virtual runtime grows", size=13, fill=PHOS_SOFT, ls="0")}</g>')
-a(f'<g opacity="0">{win(5.4, 9.4)}{text(32, 291, "13.0 goes back in on the right", size=13, fill=PHOS_SOFT, ls="0")}</g>')
+a(f'<g opacity="0">{win(5.4, 9.4)}{text(32, 291, "13.0 goes back in, after 12.4", size=13, fill=PHOS_SOFT, ls="0")}</g>')
 a(f'<g opacity="0">{win(0.0, 1.6)}{text(32, 291, "idle for an instant", size=13, fill=MUTED, ls="0")}</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('CFS keeps runnable processes in a tree ordered by virtual runtime, the CPU time each has had. '
-           'The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in further right.')
+           'The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in among the larger values.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Virtual runtime.</b> CPU time received, weighted by priority. Whoever has had least is owed the CPU.</li>
-          <li><b>The tree.</b> A red-black tree, kept balanced, so finding the leftmost, removing it and inserting a process are all O(log N), even with thousands runnable.</li>
-          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the same bookkeeping and adds a deadline per task so latency-sensitive work runs on time.</li>
+          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process are both O(log N), even with thousands runnable.</li>
+          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so latency-sensitive work runs on time.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-4">

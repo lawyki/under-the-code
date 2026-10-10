@@ -19,7 +19,7 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-43 svgd-part2-43">')
 a('<title id="svgt-part2-43">Fig 6.7 · Three pointer flavours, three ownership semantics</title>')
 a('<desc id="svgd-part2-43">Three lifecycles. unique_ptr: one owner, p; when p goes out of scope the object is freed. shared_ptr: two owners, a and b, and a count of 2; when a goes the count is 1, when b goes it is 0 and the object is freed. '
-  'weak_ptr: an owner s and a weak observer w; when s goes the object is freed even though w still points at it, and w reports that it has expired.</desc>')
+  'weak_ptr: an owner s and a weak observer w; when s goes the object is destroyed even though w is still watching it, and w reports that it has expired.</desc>')
 def chip(x, y, w, label, col, dashed=False):
     da = ' stroke-dasharray="4 3"' if dashed else ''
     return f'<rect x="{x}" y="{y}" width="{w}" height="34" rx="3" fill="{PANEL}" stroke="{col}"{da}/>' + text(x + w / 2, y + 22, label, anchor='middle', size=13, fill='#fff', ls='0')

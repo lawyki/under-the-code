@@ -6,7 +6,7 @@ figlib.FONT = PLEX
 
 WAVES = [('keep the speed, add objects', GOLD, [('Objective-C', 1984), ('C++', 1985)]),
          ('keep the syntax, add a managed runtime', BLUE, [('Perl', 1987), ('Java', 1995), ('JavaScript', 1995), ('PHP', 1995), ('C#', 2000), ('Kotlin', 2011)]),
-         ('keep the speed, add memory safety', PHOS, [('Go', 2009), ('Rust', 2010), ('Swift', 2014), ('Zig', 2016)])]
+         ('keep the speed, add safety', PHOS, [('Go', 2009), ('Rust', 2010), ('Swift', 2014), ('Zig', 2016)])]
 W = 400
 CX0, CWD, CH, CG = 40, 108, 40, 8
 D = 12.0
@@ -49,12 +49,12 @@ o.append(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="i
 o.append('<title id="svgt-part2-35">Fig 5.11 · The C family tree · half a century of descendants</title>')
 o.append('<desc id="svgd-part2-35">C, from Bell Labs in 1972, at the root of three waves of descendants. Keeping C\'s speed and adding objects: Objective-C (1984) and C++ (1985). '
          'Keeping C\'s syntax on a managed runtime: Perl (1987), Java, JavaScript and PHP (all 1995), C# (2000) and Kotlin (2011). '
-         'Keeping C\'s speed and adding memory safety: Go (2009), Rust (2010), Swift (2014) and Zig (2016).</desc>')
+         'Keeping C\'s speed and adding safety: Go (2009), Rust (2010) and Swift (2014), which are memory-safe, and Zig (2016), which keeps manual control with fewer traps.</desc>')
 o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Most major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C\'s speed, C\'s syntax on a managed runtime, and C\'s speed with memory safety. '
+caption = ('Many major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C\'s speed, C\'s syntax on a managed runtime, and C\'s speed with more safety. '
            'The braces, semicolons and <code>for</code> loops of much of today\'s code are C\'s.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

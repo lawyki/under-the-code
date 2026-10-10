@@ -86,7 +86,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Monolithic.</b> Scheduler, memory, file systems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
           <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that talks by IPC.</li>
-          <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; every component outside Ring 0 is a bug that cannot corrupt the kernel, so they are safer.</li>
+          <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; a bug in any component outside Ring 0 cannot corrupt the kernel, so microkernels are safer.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-2">

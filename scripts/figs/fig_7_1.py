@@ -15,7 +15,7 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-47 svgd-part2-47">')
 a('<title id="svgt-part2-47">Fig 7.1 · The two pipelines, side by side</title>')
 a('<desc id="svgd-part2-47">Two programs, each run three times. The C program is compiled and linked once, on the developer\'s machine, and every run executes native machine code. '
-  'The Python program is parsed and compiled to bytecode on its first run, and the bytecode is saved in a .pyc file; later runs load it from the cache, but every run, the first and the later ones, '
+  'The Python module is parsed and compiled to bytecode the first time it is imported, and the bytecode is saved in a .pyc file; later runs load it from the cache, but every run, the first and the later ones, '
   'goes through CPython\'s eval loop, which interprets the bytecode one instruction at a time.</desc>')
 for k, t in enumerate(RUNS):
     t1 = RUNS[k + 1] if k < 2 else D - 0.3
@@ -37,7 +37,7 @@ a(text(20, y + 54, 'once, before shipping', size=13, fill=MUTED, ls='0'))
 a(text(380, y + 54, 'every run', anchor='end', size=13, fill=MUTED, ls='0'))
 # Python lane
 y = 160
-a(text(20, y - 14, 'Python · main.py', size=13, fill=BLUE, ls='0'))
+a(text(20, y - 14, 'Python · an imported module', size=13, fill=BLUE, ls='0'))
 CACHE = [(t, t + 1.6) for t in RUNS[1:]]
 pts = [(0.0, 1.0)]
 for t0, t1 in CACHE:
@@ -57,13 +57,13 @@ a(text(380, y + 54, 'every run', anchor='end', size=13, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('C pays for translation once, on the developer\'s machine, and every run executes native code; Python translates on the user\'s machine, caches the bytecode in a <code>.pyc</code> file, and interprets it on every run. '
+caption = ('C pays for translation once, on the developer\'s machine, and every run executes native code; Python translates on the user\'s machine, caches an imported module\'s bytecode in a <code>.pyc</code> file, and interprets it on every run. '
            'Python ships source that runs wherever there is an interpreter, and pays in cycles each time it runs.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>C.</b> The compiler parses, optimises and emits machine code; the linker joins the pieces into one executable for one kind of machine.</li>
-          <li><b>Python.</b> CPython parses to a syntax tree, compiles it to bytecode, saves that in <code>__pycache__</code>, and its eval loop runs one bytecode instruction at a time.</li>
+          <li><b>Python.</b> CPython parses a module to a syntax tree, compiles it to bytecode and caches that in <code>__pycache__</code> when it is imported (a script run directly is recompiled each time); its eval loop runs one bytecode instruction at a time.</li>
           <li><b>In between.</b> Just-in-time compilers (PyPy, and CPython 3.13's experimental JIT) turn hot bytecode into machine code while the program runs.</li>
         </ol>
       </details>'''

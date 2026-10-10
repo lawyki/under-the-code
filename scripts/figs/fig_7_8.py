@@ -8,7 +8,7 @@ figlib.FONT = PLEX
 LAYERS = [('Python', 'C = np.dot(A, B)', 'µs', BLUE),
           ('NumPy, in C', 'check types and shapes, pick a routine', 'µs', BLUE),
           ('BLAS: dgemm', 'blocked for the cache, vector instructions', 'ms', GOLD),
-          ('CPU vector units', '4 or 8 doubles per instruction', '', GOLD)]
+          ('CPU vector units', 'several doubles per instruction', '', GOLD)]
 W, H = 400, 290
 LH, GAP, Y0 = 52, 14, 12
 D = 9.0
@@ -22,7 +22,7 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-54 svgd-part2-54">')
 a('<title id="svgt-part2-54">Fig 7.8 · How NumPy actually does work</title>')
 a('<desc id="svgd-part2-54">One line of Python, C = np.dot(A, B), descends four layers. NumPy\'s C code checks the types and shapes and picks a routine. A BLAS routine, dgemm, does the multiplication, blocked to fit the cache and using vector instructions, '
-  'which the CPU\'s vector units execute four or eight doubles at a time. The Python and NumPy layers take microseconds; for a 1000 by 1000 matrix the BLAS work takes milliseconds. The result comes back up as one NumPy array.</desc>')
+  'which the CPU\'s vector units execute several doubles at a time (four or eight on typical x86 chips). The Python and NumPy layers take microseconds; for a 1000 by 1000 matrix the BLAS work takes milliseconds. The result comes back up as one NumPy array.</desc>')
 for k, (name, what, tm, col) in enumerate(LAYERS):
     y = Y0 + k * (LH + GAP)
     a(f'<rect x="20" y="{y}" width="360" height="{LH}" rx="3" fill="{PANEL}" stroke="{col}" stroke-opacity="0.6"/>')
@@ -47,9 +47,9 @@ caption = ('One line of Python descends through NumPy\'s C code into a BLAS rout
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>BLAS.</b> The Basic Linear Algebra Subprograms were specified in 1979; NumPy's standard builds ship OpenBLAS, written in C and assembly and tuned for each processor.</li>
+          <li><b>BLAS.</b> The Basic Linear Algebra Subprograms began in 1979, and matrix routines such as dgemm joined in 1990. NumPy's Linux and Windows builds ship OpenBLAS; on Apple Silicon Macs it can use Apple's Accelerate.</li>
           <li><b>Blocking.</b> dgemm multiplies the matrices in tiles small enough to stay in cache, so each number fetched from memory is used many times.</li>
-          <li><b>Vectors.</b> AVX2 instructions work on 4 doubles at once and AVX-512 on 8, and the work is split across every core.</li>
+          <li><b>Vectors.</b> On x86, AVX2 works on 4 doubles at once and AVX-512 on 8; Arm's NEON on 2. The work is also split across every core.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-7-8">

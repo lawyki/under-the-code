@@ -62,11 +62,11 @@ caption = ('The same four jobs under four schedulers. Shortest-job-first gives t
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU. Every schedule here is simulated, not drawn by hand.</li>
+          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU.</li>
           <li><b>FCFS.</b> First come, first served: A's eight units hold up everyone behind it, the convoy effect.</li>
-          <li><b>SJF.</b> Shortest job first: provably the lowest average wait, but it needs to know job lengths in advance.</li>
+          <li><b>SJF.</b> Shortest job first: the lowest average wait of the four here, and provably optimal when every job is ready at the start, but it needs to know job lengths in advance.</li>
           <li><b>Round robin.</b> Each job runs for a quantum of 2, then goes to the back of the queue: responsive, at the cost of many switches.</li>
-          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers work this way.</li>
+          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers descend from this idea.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-5">

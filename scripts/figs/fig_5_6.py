@@ -81,7 +81,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. '
-           'That is fragmentation: free memory in pieces too small to use, so the allocator must ask the kernel for more.')
+           'The heap is <span class="key-term">fragmented</span>: free memory in pieces too small to use, so the allocator must ask the kernel for more.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

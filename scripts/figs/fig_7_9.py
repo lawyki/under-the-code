@@ -52,7 +52,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter\'s toll, and about a hundredth of a second with <code>np.dot</code>. '
-           'On this logarithmic axis that is four steps of ten: none of the gap is Python getting faster.')
+           'On this logarithmic axis that is four steps of ten.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

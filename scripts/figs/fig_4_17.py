@@ -88,7 +88,7 @@ caption = ('Ctrl+C makes the kernel mark SIGINT pending; the program runs on unt
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate, stop, or nothing.</li>
+          <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate (sometimes with a core dump), stop, continue, or nothing.</li>
           <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that has trapped everything else.</li>
           <li><b>Crude by design.</b> A signal is just a number. A second signal of the same kind arriving while the first is still pending merges with it.</li>
         </ol>

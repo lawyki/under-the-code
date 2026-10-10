@@ -12,7 +12,7 @@ def win(t0, t1):
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-3 svgd-part2-3">')
 a('<title id="svgt-part2-3">Fig 4.3 · A kernel module loading at runtime</title>')
-a('<desc id="svgd-part2-3">A running Linux kernel with modules already loaded beside it: nvidia.ko, btrfs.ko, snd_hda.ko. The command sudo insmod my_driver.ko brings a new module into Ring 0; '
+a('<desc id="svgd-part2-3">A running Linux kernel with modules already loaded beside it: nvidia.ko, btrfs.ko, snd_hda_intel.ko. The command sudo insmod my_driver.ko brings a new module into Ring 0; '
   'its calls are linked against the kernel\'s symbol table and its module_init function runs. Later rmmod reverses it: module_exit runs and the module is removed.</desc>')
 # terminal
 a(f'<rect x="20" y="12" width="360" height="62" rx="4" fill="{PLATE}" stroke="rgba(132,255,178,0.4)"/>')
@@ -27,7 +27,7 @@ a(text(44, 178, 'scheduler, VM,', size=13, fill=MUTED, ls='0'))
 a(text(44, 196, 'syscall layer', size=13, fill=MUTED, ls='0'))
 a(f'<rect x="44" y="240" width="126" height="56" rx="4" fill="{PLATE}" stroke="{PHOS}" stroke-opacity="0.6"/>')
 a(text(56, 264, 'symbol', size=13, fill=PHOS, ls='0')); a(text(56, 282, 'table', size=13, fill=PHOS, ls='0'))
-SLOTS = ['nvidia.ko', 'btrfs.ko', 'snd_hda.ko']
+SLOTS = ['nvidia.ko', 'btrfs.ko', 'snd_hda_intel.ko']
 for k, m in enumerate(SLOTS):
     y = 134 + k * 44
     a(f'<rect x="200" y="{y}" width="170" height="34" rx="4" fill="#1b2a1f" stroke="{PHOS_SOFT}" stroke-opacity="0.5"/>')

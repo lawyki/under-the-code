@@ -49,7 +49,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>The rule.</b> C99 §6.5.2.1: "<code>E1[E2]</code> is identical to <code>(*((E1)+(E2)))</code>."</li>
           <li><b>The decay.</b> In most expressions an array's name turns into a pointer to its first element, which is why <code>a + 2</code> means an address at all.</li>
-          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array reads whatever lies beyond it.</li>
+          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour; in practice it reads whatever lies beyond it.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-5-5">

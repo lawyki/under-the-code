@@ -55,8 +55,8 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Eight kinds.</b> Mount, UTS (hostname), IPC, PID, network, user, cgroup and, since Linux 5.6, time. Each can be set separately.</li>
-          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> puts a process in a fresh namespace; its children inherit it.</li>
-          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, which routes between them.</li>
+          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> gives a new process (or, for PID, the caller\'s next children) a fresh namespace, which its children inherit.</li>
+          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, on a bridge the host routes from.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-20">

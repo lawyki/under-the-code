@@ -3514,7 +3514,27 @@ radio band corrected, §4g), 8.3 (paper card: H(p) computed exactly, a
 marker sweeping p across the curve, the fair coin and the 90/10 point at 0.47
 marked; paper cards in Part III get an ink-on-paper legend box), 8.4 (log₂(1 + SNR) exact, the region
 above it shaded unreachable, a marker sweeping SNR; phone line 10 b/Hz with
-V.34 at 8.4 under it, Wi-Fi 6 at 6.7; the fibre point dropped, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+V.34 at 8.4 under it, Wi-Fi 6 at 6.7; the fibre point dropped, §4g).
+
+**Part II verification (Sonnet 5.5, 2026-10-11; report in the session scratchpad):** 49 cards, every
+caption ≤ 2 sentences, no em dash, all recomputed arithmetic and encodings correct.
+Fixed: H1 fig 7.1 showed a directly run script cached as .pyc (CPython caches
+imported modules only; the lane is now an imported module, matching the chapter
+prose); H2 fig 4.6's desc said L requests "wait" (L counts the one in service; the
+queue now draws L − 1 waiting plus the server). M: 4.5 SJF optimality scoped to
+"every job ready at the start", MLFQ "descend from this idea" (figure and the ch4
+table); 7.4's two panels now run the same workload; 7.5 "most shared state needs
+no locks"; 7.9's unclear closing clause cut; 5.11 "many" languages and Zig no
+longer filed as memory-safe; 5.10 scoped to a Python program; 4.4 "goes back in,
+after 12.4"; 4.2 strip sentence repaired; prose: cgroups "network bandwidth" →
+"the number of processes" (§4g fig 4.21 row), "None of the old features" →
+"Almost none", C++ 1985 "true compiler" → "Cfront, a compiler that still emitted
+C". L: 4.1, 4.3 (snd_hda_intel.ko), 4.4, 4.5, 4.6, 4.17, 4.20, 5.2 (structs
+unsaid at 1972), 5.5, 6.1, 6.4, 6.7, 7.3, 7.7, 7.8 (BLAS 1979 / dgemm 1990,
+OpenBLAS vs Accelerate, NEON). Glossary: four terms whose only definitional use
+was in rewritten captions (fragmented, polymorphism, write amplification,
+undefined behaviour) are now key-term spans in their figures; the curated key
+moves to the book's British "undefined behaviour"; 462 terms, unchanged. The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

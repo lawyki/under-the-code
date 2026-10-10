@@ -96,7 +96,7 @@ const CURATED_TERMS = [
   'pipe', 'signal', 'shared memory', 'semaphore',
   'monolithic kernel', 'microkernel', 'eBPF', 'Dirty COW',
   // Languages (Part II Ch 5–7)
-  'undefined behavior', 'pointer arithmetic', 'stack frame', 'heap',
+  'undefined behaviour', 'pointer arithmetic', 'stack frame', 'heap',
   'malloc', 'free', 'use-after-free', 'memory leak',
   'compiler', 'bytecode', 'GIL',
   'inheritance', 'vtable', 'RAII', 'move semantics',
