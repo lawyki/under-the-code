@@ -4665,82 +4665,59 @@ main:
 
     <h3>The path of one syscall</h3>
 
-    <div class="diagram-card" id="fig-br-2">
-      <div class="diagram-label">Fig BR.2 · The trap mechanism · one round trip across the boundary</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-44"><title id="svgt-part1-44">Fig BR.2 · The trap mechanism · one round trip across the boundary</title>
-        <!-- Lanes -->
-        <text x="50" y="68" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.55)" letter-spacing="0.18em">USER · RING 3</text>
-        <text x="50" y="208" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">KERNEL · RING 0</text>
-
-        <!-- The boundary -->
-        <line x1="40" y1="135" x2="700" y2="135" stroke="rgba(212,168,83,0.55)" stroke-width="1.5" stroke-dasharray="6,4"/>
-        <text x="50" y="130" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.55)" letter-spacing="0.15em">PRIVILEGE BOUNDARY</text>
-
-        <!-- User lane: code stream -->
-        <rect x="60" y="78" width="160" height="40" rx="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.18)"/>
-        <text x="140" y="98" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.6)">user instructions</text>
-        <text x="140" y="110" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.35)">mov · add · push · …</text>
-
-        <!-- SYSCALL instruction box -->
-        <rect x="240" y="78" width="100" height="40" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.85)" stroke-width="1.5"/>
-        <text x="290" y="96" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,1)">SYSCALL</text>
-        <text x="290" y="110" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.6)">RAX = syscall #</text>
-
-        <!-- Resume box on user lane -->
-        <rect x="500" y="78" width="160" height="40" rx="5" fill="#1a1a1a" stroke="rgba(255,255,255,0.18)"/>
-        <text x="580" y="98" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.6)">user instructions resume</text>
-        <text x="580" y="110" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.35)">return value in RAX</text>
-
-        <!-- DOWN arrow: trap -->
-        <path d="M 290 120 L 290 175" stroke="rgba(212,168,83,0.85)" stroke-width="1.6"/>
-        <polygon points="285,170 290,180 295,170" fill="rgba(212,168,83,0.85)"/>
-        <text x="305" y="155" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.75)">trap · CPL → 0</text>
-        <text x="305" y="167" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.5)">RIP, RFLAGS saved</text>
-
-        <!-- UP arrow: return -->
-        <path d="M 545 175 L 545 120" stroke="rgba(150,216,150,0.85)" stroke-width="1.6"/>
-        <polygon points="540,125 545,115 550,125" fill="rgba(150,216,150,0.85)"/>
-        <text x="555" y="155" font-family="DM Mono" font-size="8" fill="rgba(150,216,150,0.75)">SYSRET · CPL → 3</text>
-        <text x="555" y="167" font-family="DM Mono" font-size="7" fill="rgba(150,216,150,0.5)">user state restored</text>
-
-        <!-- Kernel lane: handler stream -->
-        <rect x="240" y="180" width="80" height="40" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
-        <text x="280" y="198" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.9)">entry stub</text>
-        <text x="280" y="210" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.55)">MSR_LSTAR</text>
-
-        <rect x="335" y="180" width="100" height="40" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
-        <text x="385" y="198" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.9)">syscall_table[N]</text>
-        <text x="385" y="210" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.55)">dispatch by RAX</text>
-
-        <rect x="450" y="180" width="80" height="40" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.7)"/>
-        <text x="490" y="198" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.9)">do work</text>
-        <text x="490" y="210" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.55)">read · write · …</text>
-
-        <!-- Connecting lines on kernel lane -->
-        <line x1="320" y1="200" x2="335" y2="200" stroke="rgba(212,168,83,0.5)"/>
-        <line x1="435" y1="200" x2="450" y2="200" stroke="rgba(212,168,83,0.5)"/>
-
-        <!-- Time axis -->
-        <line x1="50" y1="280" x2="700" y2="280" stroke="rgba(255,255,255,0.15)"/>
-        <g font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)" text-anchor="middle">
-          <text x="140" y="295">t = 0</text>
-          <text x="290" y="295">SYSCALL fires</text>
-          <text x="385" y="295">handler runs</text>
-          <text x="490" y="295">work done</text>
-          <text x="580" y="295">resume</text>
-        </g>
-        <text x="375" y="320" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)" letter-spacing="0.12em">~ ONE MICROSECOND TYPICAL · NO SCHEDULING NEEDED · HARDWARE ROUND TRIP</text>
-
-        <!-- Animated trap pulse -->
-        <circle r="3.5" fill="#d4a853">
-          <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto">
-            <mpath href="#trapPath"/>
-          </animateMotion>
-          <animate attributeName="opacity" values="0;0.95;0.95;0.95;0.95;0.95;0" dur="3.6s" repeatCount="indefinite"/>
-        </circle>
-        <path id="trapPath" d="M 80 98 L 290 98 L 290 200 L 490 200 L 545 200 L 545 98 L 660 98" fill="none" stroke="none"/>
-      </svg>
-      <p id="chBridge-trap-p3" class="diagram-caption">A single system call, traced across the boundary. The user program runs ordinary instructions until it executes <code>SYSCALL</code> with the syscall number in <code>RAX</code> and arguments in the standard ABI registers. The CPU does five things atomically: it sets the privilege bit to 0, saves the user-mode <code>RIP</code> and <code>RFLAGS</code>, loads <code>RIP</code> from a model-specific register (<code>MSR_LSTAR</code>) the kernel set at boot, masks interrupts, and starts running. The kernel's entry stub looks up <code>RAX</code> in a syscall dispatch table, runs the handler, places the return value back in <code>RAX</code>, and executes <code>SYSRET</code>, which restores user state and jumps back to the instruction after the original <code>SYSCALL</code>. The whole round trip is typically under a microsecond. A typical desktop performs millions of these per second.</p>
+    <div class="diagram-card fig-v2" id="fig-br-2">
+      <div class="diagram-label">Fig BR.2&nbsp;· The trap mechanism&nbsp;· one round trip across the boundary</div>
+      <svg viewBox="0 0 400 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40 svgd-part1-40">
+<title id="svgt-part1-40">Fig BR.2 · The trap mechanism · one round trip across the boundary</title>
+<desc id="svgd-part1-40">A write system call, step by step, time flowing down. In user mode the program puts 1, the number of write, in RAX and executes SYSCALL. The CPU saves RIP in RCX and RFLAGS in R11, switches to Ring 0 and jumps to the entry point the kernel stored in MSR_LSTAR. The kernel looks up entry 1 in its syscall table, runs write, puts the result, 6 bytes written, in RAX, and executes SYSRET, which restores user mode at the next instruction.</desc>
+<text x="20" y="24" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#86a8ff">USER · RING 3</text>
+<text x="214" y="24" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#d4a853">KERNEL · RING 0</text>
+<line x1="200" y1="32" x2="200" y2="322" stroke="#d4a853" stroke-width="2" stroke-dasharray="6 5"/>
+<rect x="20" y="48" width="166" height="32" rx="5" fill="#86a8ff" fill-opacity="0.1" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="69" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">mov rax, 1</text>
+<rect class="fx" x="18" y="46" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.1332;0.1333;0.2444;0.2446;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="20" y="88" width="166" height="32" rx="5" fill="#86a8ff" fill-opacity="0.1" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="109" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">syscall</text>
+<rect class="fx" x="18" y="86" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.2499;0.2500;0.3611;0.3612;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="214" y="128" width="166" height="32" rx="5" fill="#d4a853" fill-opacity="0.1" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="226" y="149" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">entry · MSR_LSTAR</text>
+<rect class="fx" x="212" y="126" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.3666;0.3667;0.4778;0.4779;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="214" y="168" width="166" height="32" rx="5" fill="#d4a853" fill-opacity="0.1" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="226" y="189" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">table[1] → write</text>
+<rect class="fx" x="212" y="166" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.4832;0.4833;0.5944;0.5946;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="214" y="208" width="166" height="32" rx="5" fill="#d4a853" fill-opacity="0.1" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="226" y="229" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">write; rax = 6</text>
+<rect class="fx" x="212" y="206" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.5999;0.6000;0.7111;0.7112;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="214" y="248" width="166" height="32" rx="5" fill="#d4a853" fill-opacity="0.1" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="226" y="269" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">sysret</text>
+<rect class="fx" x="212" y="246" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.7166;0.7167;0.8278;0.8279;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<rect x="20" y="288" width="166" height="32" rx="5" fill="#86a8ff" fill-opacity="0.1" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="309" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">next instruction</text>
+<rect class="fx" x="18" y="286" width="170" height="36" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.8332;0.8333;0.9444;0.9446;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<path d="M 186 104 C 200 104 200 144 214 144" fill="none" stroke="#d4a853" stroke-width="2"/><polygon points="214,144 206,139 206,149" fill="#d4a853"/>
+<path d="M 214 264 C 200 264 200 304 186 304" fill="none" stroke="#86a8ff" stroke-width="2"/><polygon points="186,304 194,299 194,309" fill="#86a8ff"/>
+<text x="20" y="348" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">REGISTERS</text>
+<rect x="20" y="362" width="360" height="26" rx="4" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<text x="32" y="380" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">RAX</text>
+<text x="90" y="380" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1 · write<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0888;0.0889;0.1332;0.1333;0.5998;0.5999;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text x="90" y="380" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">6 · bytes written<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0664;0.0666;0.0888;0.0889;0.5999;0.6000;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<rect x="20" y="392" width="360" height="26" rx="4" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<text x="32" y="410" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">RCX</text>
+<text x="90" y="410" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">saved RIP<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0664;0.0666;0.0888;0.0889;0.2832;0.2833;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<rect x="20" y="422" width="360" height="26" rx="4" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<text x="32" y="440" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">R11</text>
+<text x="90" y="440" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">saved RFLAGS<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0664;0.0666;0.0888;0.0889;0.2832;0.2833;1.0000" dur="9s" repeatCount="indefinite"/></text>
+</svg>
+      <p id="chBridge-trap-p3" class="diagram-caption">One system call, start to finish: the program names the call in RAX and executes SYSCALL; the CPU saves where it was, switches to Ring 0 and jumps to the entry point the kernel registered. The kernel does the work and SYSRET brings it back, typically in under a microsecond.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The number.</b> RAX names the call (1 is write on x86-64 Linux); the arguments sit in the ABI registers.</li>
+          <li><b>SYSCALL.</b> In one instruction the CPU saves RIP in RCX and RFLAGS in R11, sets CPL to 0, masks interrupts, and loads RIP from MSR_LSTAR, a register only the kernel can set.</li>
+          <li><b>Dispatch.</b> The entry stub indexes the syscall table with RAX and runs that handler; the result comes back in RAX.</li>
+          <li><b>SYSRET.</b> Restores RIP and RFLAGS from RCX and R11 and drops back to Ring 3. No scheduling is involved.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Traps, interrupts, exceptions: the same mechanism, three names</h3>

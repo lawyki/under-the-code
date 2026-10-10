@@ -3352,7 +3352,9 @@ owner:** 3.7 to 3.11 (the attack-and-defence figures; a redesign of 3.7 was
 stopped by a safety filter, so these wait for the owner's call: redraw
 conceptually, defences without exploit mechanics, or keep as they are).
 Bridge: BR.1 (the same three instructions in Ring 0 and Ring 3; #GP hands
-Ring 3's privileged ones to the kernel). The sweep now also fails labels
+Ring 3's privileged ones to the kernel), BR.2 (one write() as a sequence
+across the boundary: RAX 1 → 6, RIP into RCX, RFLAGS into R11; the
+unverified "millions per second" dropped again). The sweep now also fails labels
 crowding each other on one line (gap under 3 px), except pieces composed on
 purpose (`.run`: a line of code, a row of bits). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
