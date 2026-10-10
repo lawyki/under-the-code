@@ -478,58 +478,45 @@
       <p id="ch8-shannon-p10">If you transmit at rate <em>R &lt; C</em>, there exists a coding scheme that achieves arbitrarily low error rate. If <em>R &gt; C</em>, errors are inevitable, no matter how clever the encoding. The proof is non-constructive: Shannon proved good codes <em>exist</em>, decades before anyone knew how to build them. Modern error-correcting codes (LDPC, Polar, Turbo) approach within a fraction of a dB of Shannon's limit.</p>
     </div>
 
-    <div class="diagram-card" id="fig-8-4">
-      <div class="diagram-label">Fig 8.4 · Channel capacity as a function of SNR</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-5"><title id="svgt-part3-5">Fig 8.4 · Channel capacity as a function of SNR</title>
-        <!-- Axes -->
-        <line x1="80" y1="260" x2="660" y2="260" stroke="rgba(79,196,230,0.6)" stroke-width="1.5"/>
-        <line x1="80" y1="60" x2="80" y2="260" stroke="rgba(79,196,230,0.6)" stroke-width="1.5"/>
-
-        <!-- X axis: SNR in dB -->
-        <g font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)" text-anchor="middle">
-          <text x="80"  y="280">0</text>
-          <text x="190" y="280">10</text>
-          <text x="300" y="280">20</text>
-          <text x="410" y="280">30</text>
-          <text x="520" y="280">40</text>
-          <text x="630" y="280">50</text>
-          <text x="370" y="306" font-size="10">SNR (dB)</text>
-        </g>
-
-        <!-- Y axis: bits/Hz -->
-        <g font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)" text-anchor="end">
-          <text x="74" y="264">0</text>
-          <text x="74" y="220">2</text>
-          <text x="74" y="176">4</text>
-          <text x="74" y="132">8</text>
-          <text x="74" y="88">14</text>
-          <text x="46" y="160" transform="rotate(-90,46,160)" text-anchor="middle">C / B (bits / Hz)</text>
-        </g>
-
-        <!-- The capacity curve: log2(1 + SNR), with SNR in dB along x -->
-        <path d="M 80,255 Q 140,235 180,212 Q 220,184 260,158 Q 300,138 340,124 Q 380,114 420,106 Q 460,100 500,94 Q 540,90 580,86 Q 620,82 660,80" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="2.5"/>
-
-        <!-- Real-world markers -->
-        <g font-family="Space Mono" font-size="8">
-          <circle cx="180" cy="212" r="4" fill="rgba(232,140,80,0.95)"/>
-          <text x="186" y="208" fill="rgba(232,140,80,0.95)">noisy radio · ~3 b/Hz</text>
-
-          <circle cx="300" cy="158" r="4" fill="rgba(100,150,255,0.95)"/>
-          <text x="306" y="154" fill="rgba(100,150,255,0.95)">Wi-Fi 6 · ~6.5 b/Hz</text>
-
-          <circle cx="410" cy="120" r="4" fill="rgba(79,196,230,0.95)"/>
-          <text x="416" y="116" fill="rgba(79,196,230,0.95)">phone modem · ~10 b/Hz · V.34 33.6k</text>
-
-          <circle cx="540" cy="92" r="4" fill="rgba(232,120,120,0.95)"/>
-          <line x1="543" y1="95" x2="557" y2="102" stroke="rgba(232,120,120,0.65)" stroke-width="1"/>
-          <text x="561" y="106" fill="rgba(232,120,120,0.95)">fibre · ~12-14 b/Hz</text>
-        </g>
-
-        <!-- Annotation: Shannon limit -->
-        <text x="600" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C = B · log₂(1 + SNR)</text>
-        <text x="600" y="78" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.7)">above this curve, errors are inevitable</text>
-      </svg>
-      <p id="ch8-shannon-p11" class="diagram-caption">Shannon's channel capacity curve: the maximum number of bits per second per Hertz of bandwidth as a function of signal-to-noise ratio. A V.34 phone modem operated at roughly 30 dB SNR over a 4 kHz channel; the math gives 4000 × 10 ≈ 40 kbps, and V.34 topped out at 33.6 kbps, hugging the limit. (The later 56k modems beat it only by cheating. The downstream path ran digital almost the whole way, turning analog just for the last local loop, and so dodged most of the noise this figure assumes.) Modern Wi-Fi 6 at ~20 dB SNR over 80 MHz channels achieves several hundred Mbps. Coherent fibre at ~15 dB effective SNR over tens of GHz of bandwidth pushes terabits per second on a single strand. The curve says nothing about <em>how</em> to achieve these rates, only that they cannot be exceeded. Every modulation, coding, and equalisation technique invented since 1948 is, in the end, a different way to climb closer to this single curve.</p>
+    <div class="diagram-card fig-v2" id="fig-8-4">
+      <div class="diagram-label">Fig 8.4&nbsp;· Channel capacity as a function of SNR</div>
+      <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-5 svgd-part3-5">
+<title id="svgt-part3-5">Fig 8.4 · Channel capacity as a function of SNR</title>
+<desc id="svgd-part3-5">Shannon's limit, in bits per second per hertz of bandwidth, against signal-to-noise ratio in decibels: log₂(1 + SNR). Above the curve no code can transmit without errors. Wi-Fi 6 at about 20 dB is allowed about 6.7 bits per hertz. A phone line at about 30 dB is allowed about 10, which over 4 kHz is 40 kbps; V.34 modems reached 33.6 kbps, 8.4 bits per hertz, just under the curve.</desc>
+<polygon points="60,44 60.0,229.7 62.0,229.1 63.9,228.5 65.8,227.9 67.8,227.2 69.8,226.5 71.7,225.8 73.7,225.1 75.6,224.4 77.5,223.7 79.5,222.9 81.5,222.2 83.4,221.4 85.3,220.6 87.3,219.8 89.2,219.0 91.2,218.1 93.2,217.3 95.1,216.4 97.0,215.5 99.0,214.6 101.0,213.7 102.9,212.8 104.8,211.9 106.8,210.9 108.8,210.0 110.7,209.0 112.7,208.0 114.6,207.0 116.5,206.0 118.5,205.0 120.5,204.0 122.4,203.0 124.3,202.0 126.3,200.9 128.2,199.9 130.2,198.8 132.2,197.8 134.1,196.7 136.1,195.7 138.0,194.6 139.9,193.5 141.9,192.4 143.8,191.3 145.8,190.2 147.8,189.1 149.7,188.0 151.7,186.9 153.6,185.8 155.6,184.7 157.5,183.6 159.4,182.4 161.4,181.3 163.3,180.2 165.3,179.0 167.2,177.9 169.2,176.8 171.2,175.6 173.1,174.5 175.1,173.3 177.0,172.2 178.9,171.0 180.9,169.9 182.8,168.7 184.8,167.6 186.8,166.4 188.7,165.2 190.7,164.1 192.6,162.9 194.6,161.8 196.5,160.6 198.4,159.4 200.4,158.3 202.3,157.1 204.3,155.9 206.2,154.7 208.2,153.6 210.2,152.4 212.1,151.2 214.1,150.1 216.0,148.9 217.9,147.7 219.9,146.5 221.9,145.4 223.8,144.2 225.8,143.0 227.7,141.8 229.6,140.6 231.6,139.5 233.6,138.3 235.5,137.1 237.4,135.9 239.4,134.7 241.4,133.6 243.3,132.4 245.2,131.2 247.2,130.0 249.1,128.8 251.1,127.7 253.1,126.5 255.0,125.3 256.9,124.1 258.9,122.9 260.9,121.7 262.8,120.6 264.8,119.4 266.7,118.2 268.6,117.0 270.6,115.8 272.6,114.6 274.5,113.5 276.4,112.3 278.4,111.1 280.4,109.9 282.3,108.7 284.2,107.5 286.2,106.4 288.1,105.2 290.1,104.0 292.1,102.8 294.0,101.6 295.9,100.4 297.9,99.2 299.9,98.1 301.8,96.9 303.8,95.7 305.7,94.5 307.6,93.3 309.6,92.1 311.6,90.9 313.5,89.8 315.4,88.6 317.4,87.4 319.4,86.2 321.3,85.0 323.2,83.8 325.2,82.6 327.1,81.5 329.1,80.3 331.1,79.1 333.0,77.9 334.9,76.7 336.9,75.5 338.9,74.3 340.8,73.2 342.8,72.0 344.7,70.8 346.6,69.6 348.6,68.4 350.6,67.2 352.5,66.0 354.4,64.8 356.4,63.7 358.4,62.5 360.3,61.3 362.2,60.1 364.2,58.9 366.1,57.7 368.1,56.5 370.1,55.4 372.0,54.2 372,44" fill="#e07a3f" fill-opacity="0.1"/>
+<text x="74" y="66" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">no code can go here</text>
+<line x1="60" y1="244" x2="372" y2="244" stroke="rgba(223,234,242,0.6)"/>
+<line x1="60" y1="244" x2="60" y2="44" stroke="rgba(223,234,242,0.6)"/>
+<text x="60" y="264" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">0</text>
+<text x="138" y="264" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">10</text>
+<text x="216" y="264" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">20</text>
+<text x="294" y="264" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">30</text>
+<text x="372" y="264" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">40</text>
+<text x="372" y="286" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">SNR, dB</text>
+<text x="52" y="249" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">0</text>
+<text x="52" y="177.571" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">5</text>
+<text x="52" y="106.143" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">10</text>
+<text x="52" y="32" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">bits per Hz</text>
+<polyline points="60.0,229.7 62.0,229.1 63.9,228.5 65.8,227.9 67.8,227.2 69.8,226.5 71.7,225.8 73.7,225.1 75.6,224.4 77.5,223.7 79.5,222.9 81.5,222.2 83.4,221.4 85.3,220.6 87.3,219.8 89.2,219.0 91.2,218.1 93.2,217.3 95.1,216.4 97.0,215.5 99.0,214.6 101.0,213.7 102.9,212.8 104.8,211.9 106.8,210.9 108.8,210.0 110.7,209.0 112.7,208.0 114.6,207.0 116.5,206.0 118.5,205.0 120.5,204.0 122.4,203.0 124.3,202.0 126.3,200.9 128.2,199.9 130.2,198.8 132.2,197.8 134.1,196.7 136.1,195.7 138.0,194.6 139.9,193.5 141.9,192.4 143.8,191.3 145.8,190.2 147.8,189.1 149.7,188.0 151.7,186.9 153.6,185.8 155.6,184.7 157.5,183.6 159.4,182.4 161.4,181.3 163.3,180.2 165.3,179.0 167.2,177.9 169.2,176.8 171.2,175.6 173.1,174.5 175.1,173.3 177.0,172.2 178.9,171.0 180.9,169.9 182.8,168.7 184.8,167.6 186.8,166.4 188.7,165.2 190.7,164.1 192.6,162.9 194.6,161.8 196.5,160.6 198.4,159.4 200.4,158.3 202.3,157.1 204.3,155.9 206.2,154.7 208.2,153.6 210.2,152.4 212.1,151.2 214.1,150.1 216.0,148.9 217.9,147.7 219.9,146.5 221.9,145.4 223.8,144.2 225.8,143.0 227.7,141.8 229.6,140.6 231.6,139.5 233.6,138.3 235.5,137.1 237.4,135.9 239.4,134.7 241.4,133.6 243.3,132.4 245.2,131.2 247.2,130.0 249.1,128.8 251.1,127.7 253.1,126.5 255.0,125.3 256.9,124.1 258.9,122.9 260.9,121.7 262.8,120.6 264.8,119.4 266.7,118.2 268.6,117.0 270.6,115.8 272.6,114.6 274.5,113.5 276.4,112.3 278.4,111.1 280.4,109.9 282.3,108.7 284.2,107.5 286.2,106.4 288.1,105.2 290.1,104.0 292.1,102.8 294.0,101.6 295.9,100.4 297.9,99.2 299.9,98.1 301.8,96.9 303.8,95.7 305.7,94.5 307.6,93.3 309.6,92.1 311.6,90.9 313.5,89.8 315.4,88.6 317.4,87.4 319.4,86.2 321.3,85.0 323.2,83.8 325.2,82.6 327.1,81.5 329.1,80.3 331.1,79.1 333.0,77.9 334.9,76.7 336.9,75.5 338.9,74.3 340.8,73.2 342.8,72.0 344.7,70.8 346.6,69.6 348.6,68.4 350.6,67.2 352.5,66.0 354.4,64.8 356.4,63.7 358.4,62.5 360.3,61.3 362.2,60.1 364.2,58.9 366.1,57.7 368.1,56.5 370.1,55.4 372.0,54.2" fill="none" stroke="#4fc4e6" stroke-width="2.5"/>
+<circle cx="216.0" cy="148.9" r="4.5" fill="#4fc4e6"/>
+<text x="226" y="168.883" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">Wi-Fi 6 · 6.7</text>
+<circle cx="294.0" cy="101.6" r="4.5" fill="#4fc4e6"/>
+<circle cx="294.0" cy="124.0" r="4.5" fill="#e07a3f"/>
+<line x1="294.0" y1="106.6" x2="294.0" y2="119.0" stroke="#e07a3f" stroke-dasharray="2 2"/>
+<text x="304" y="126" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">V.34</text>
+<text x="304" y="143" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">8.4</text>
+<text x="284" y="91.6111" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">phone line · 10</text>
+<g><animateTransform attributeName="transform" type="translate" values="234.00 0;241.80 0;249.60 0;257.40 0;265.20 0;273.00 0;280.80 0;288.60 0;296.40 0;304.20 0;312.00 0;0.00 0;0.00 0;0.00 0;7.80 0;15.60 0;23.40 0;31.20 0;39.00 0;46.80 0;54.60 0;62.40 0;70.20 0;78.00 0;85.80 0;93.60 0;101.40 0;109.20 0;117.00 0;124.80 0;132.60 0;140.40 0;148.20 0;156.00 0;163.80 0;171.60 0;179.40 0;187.20 0;195.00 0;202.80 0;210.60 0;218.40 0;226.20 0;234.00 0" keyTimes="0.000000;0.021875;0.043750;0.065625;0.087500;0.109375;0.131250;0.153125;0.175000;0.196875;0.218750;0.293687;0.293750;0.343750;0.365625;0.387500;0.409375;0.431250;0.453125;0.475000;0.496875;0.518750;0.540625;0.562500;0.584375;0.606250;0.628125;0.650000;0.671875;0.693750;0.715625;0.737500;0.759375;0.781250;0.803125;0.825000;0.846875;0.868750;0.890625;0.912500;0.934375;0.956250;0.978125;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -128.10;0 -132.84;0 -137.59;0 -142.33;0 -147.07;0 -151.82;0 -156.56;0 -161.31;0 -166.05;0 -170.80;0 -175.54;0 0.00;0 0.00;0 0.00;0 -2.51;0 -5.29;0 -8.32;0 -11.60;0 -15.11;0 -18.81;0 -22.68;0 -26.71;0 -30.87;0 -35.13;0 -39.49;0 -43.92;0 -48.42;0 -52.96;0 -57.54;0 -62.16;0 -66.80;0 -71.46;0 -76.14;0 -80.83;0 -85.54;0 -90.25;0 -94.97;0 -99.69;0 -104.42;0 -109.15;0 -113.89;0 -118.62;0 -123.36;0 -128.10" keyTimes="0.000000;0.021875;0.043750;0.065625;0.087500;0.109375;0.131250;0.153125;0.175000;0.196875;0.218750;0.293687;0.293750;0.343750;0.365625;0.387500;0.409375;0.431250;0.453125;0.475000;0.496875;0.518750;0.540625;0.562500;0.584375;0.606250;0.628125;0.650000;0.671875;0.693750;0.715625;0.737500;0.759375;0.781250;0.803125;0.825000;0.846875;0.868750;0.890625;0.912500;0.934375;0.956250;0.978125;1.000000" dur="8s" repeatCount="indefinite"/><circle class="fx" cx="60.0" cy="229.7" r="7" fill="none" stroke="#fff" stroke-width="2"/></g></g>
+</svg>
+      <p id="ch8-shannon-p11" class="diagram-caption">Shannon's limit: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above the curve errors cannot be avoided. A phone line at 30&nbsp;dB allows about 10 bits per hertz, 40&nbsp;kbps in 4&nbsp;kHz; V.34 modems reached 33.6&nbsp;kbps, just under it.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Reading it.</b> At high SNR each doubling of signal power (+3 dB) buys about one more bit per hertz; doubling the bandwidth doubles the capacity outright.</li>
+          <li><b>Wi-Fi 6.</b> At about 20 dB the limit is 6.7 bits per hertz; over an 80 MHz channel that is a few hundred Mbps per stream.</li>
+          <li><b>56k modems.</b> They beat 33.6k only because the downstream path stayed digital until the last stretch of phone line, dodging most of the noise.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
