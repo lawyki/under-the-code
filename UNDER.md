@@ -3434,7 +3434,9 @@ the 1977 Interdata 8/32 port added as the payoff; the "first OS you could move"
 banner dropped, per the §4 "considered and declined" note on MCP and Multics), 5.3 (the machine difference that
 shaped C, drawn: "UNIX" in PDP-7 words, two characters per 18-bit word, against
 PDP-11 bytes with their own addresses; char * steps by 1, int * by 2; the
-"portable PDP-11 assembler" banner dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
+"portable PDP-11 assembler" banner dropped), 5.4 (one ribbon of eight ints and a
+track per pointer: char, int and double pointers start at 0x100 and step
+together, +1, +4, +8, each span the bytes *p reads). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

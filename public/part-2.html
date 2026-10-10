@@ -2620,65 +2620,95 @@
       The compiler scales the arithmetic for you. This is the entire trick.
     </p>
 
-    <div class="diagram-card" id="fig-5-4">
-      <div class="diagram-label">Fig 5.4 · A pointer walks down memory</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-28"><title id="svgt-part2-28">Fig 5.4 · A pointer walks down memory</title>
-        <!-- Memory ribbon -->
-        <text x="60" y="50" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.85)">memory:</text>
-        <g font-family="IBM Plex Mono" font-size="8" text-anchor="middle">
-          <!-- Eight 4-byte cells -->
-          <g transform="translate(60,80)">
-            <rect x="0"   y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="35"  y="20" fill="rgba(255,255,255,0.85)" font-size="11">17</text>
-            <text x="35"  y="42" fill="rgba(132,255,178,0.55)">0x100</text>
-            <rect x="70"  y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="105" y="20" fill="rgba(255,255,255,0.85)" font-size="11">42</text>
-            <text x="105" y="42" fill="rgba(132,255,178,0.55)">0x104</text>
-            <rect x="140" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="175" y="20" fill="rgba(255,255,255,0.85)" font-size="11">99</text>
-            <text x="175" y="42" fill="rgba(132,255,178,0.55)">0x108</text>
-            <rect x="210" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="245" y="20" fill="rgba(255,255,255,0.85)" font-size="11">−7</text>
-            <text x="245" y="42" fill="rgba(132,255,178,0.55)">0x10C</text>
-            <rect x="280" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="315" y="20" fill="rgba(255,255,255,0.85)" font-size="11">23</text>
-            <text x="315" y="42" fill="rgba(132,255,178,0.55)">0x110</text>
-            <rect x="350" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="385" y="20" fill="rgba(255,255,255,0.85)" font-size="11">8</text>
-            <text x="385" y="42" fill="rgba(132,255,178,0.55)">0x114</text>
-            <rect x="420" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="455" y="20" fill="rgba(255,255,255,0.85)" font-size="11">61</text>
-            <text x="455" y="42" fill="rgba(132,255,178,0.55)">0x118</text>
-            <rect x="490" y="0" width="70" height="50" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="525" y="20" fill="rgba(255,255,255,0.85)" font-size="11">12</text>
-            <text x="525" y="42" fill="rgba(132,255,178,0.55)">0x11C</text>
-          </g>
-        </g>
-
-        <!-- Animated pointer arrow -->
-        <g>
-          <text x="60" y="160" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.85)">int *p =</text>
-          <polygon points="95,182 105,176 105,188" fill="rgba(150,216,150,0.95)">
-            <animateTransform attributeName="transform" type="translate"
-              values="0,0; 70,0; 140,0; 210,0; 280,0; 0,0"
-              keyTimes="0;0.2;0.4;0.6;0.8;1"
-              dur="6s" repeatCount="indefinite"/>
-          </polygon>
-          <line x1="105" y1="182" x2="125" y2="182" stroke="rgba(150,216,150,0.9)" stroke-width="2">
-            <animateTransform attributeName="transform" type="translate"
-              values="0,0; 70,0; 140,0; 210,0; 280,0; 0,0"
-              keyTimes="0;0.2;0.4;0.6;0.8;1"
-              dur="6s" repeatCount="indefinite"/>
-          </line>
-        </g>
-
-        <!-- p++ explanation -->
-        <text x="60" y="220" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.85)">p++ advances by sizeof(int) = 4 bytes</text>
-        <text x="60" y="240" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">because p's type is int*: the compiler scales the arithmetic for you</text>
-
-        <text x="360" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.6)" letter-spacing="0.1em">A POINTER IS AN INTEGER + A TYPE. THE TYPE TELLS C HOW BIG A "STEP" IS</text>
-      </svg>
-      <p id="ch5-pointers-p4" class="diagram-caption">A pointer to an int starts at address <code>0x100</code>. <code>p++</code> doesn't move forward by one byte; it moves forward by <code>sizeof(int)</code>, which is four bytes on most modern systems. The compiler does the multiplication. The same expression <code>p++</code> on a <code>double *</code> would advance eight bytes; on a <code>char *</code>, one byte. The arithmetic always means "next thing," never "next byte." This single design choice unlocks the equivalence of arrays and pointers, the entire C string library, and every buffer overflow you met in Chapter 3.</p>
+    <div class="diagram-card fig-v2" id="fig-5-4">
+      <div class="diagram-label">Fig 5.4&nbsp;· A pointer walks down memory</div>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-28 svgd-part2-28">
+<title id="svgt-part2-28">Fig 5.4 · A pointer walks down memory</title>
+<desc id="svgd-part2-28">Thirty-two bytes of memory from address 0x100, holding eight 4-byte ints: 17, 42, 99, −7, 23, 8, 61, 12. Three pointers start at 0x100 and each is incremented together. The char pointer moves one byte per step, the int pointer four, the double pointer eight. A bracket under each shows how many bytes it reads: one, four or eight.</desc>
+<rect x="96.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="104.8" y1="57" x2="104.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="113.5" y1="57" x2="113.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="122.2" y1="57" x2="122.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="113.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">17</text>
+<text x="96" y="82" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x100</text>
+<rect x="131.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="139.8" y1="57" x2="139.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="148.5" y1="57" x2="148.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="157.2" y1="57" x2="157.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="148.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">42</text>
+<rect x="166.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="174.8" y1="57" x2="174.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="183.5" y1="57" x2="183.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="192.2" y1="57" x2="192.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="183.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">99</text>
+<text x="166" y="82" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x108</text>
+<rect x="201.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="209.8" y1="57" x2="209.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="218.5" y1="57" x2="218.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="227.2" y1="57" x2="227.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="218.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">−7</text>
+<rect x="236.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="244.8" y1="57" x2="244.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="253.5" y1="57" x2="253.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="262.2" y1="57" x2="262.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="253.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">23</text>
+<text x="236" y="82" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x110</text>
+<rect x="271.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="279.8" y1="57" x2="279.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="288.5" y1="57" x2="288.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="297.2" y1="57" x2="297.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="288.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">8</text>
+<rect x="306.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="314.8" y1="57" x2="314.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="323.5" y1="57" x2="323.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="332.2" y1="57" x2="332.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="323.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">61</text>
+<text x="306" y="82" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x118</text>
+<rect x="341.0" y="30" width="35.0" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="349.8" y1="57" x2="349.8" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="358.5" y1="57" x2="358.5" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<line x1="367.2" y1="57" x2="367.2" y2="64" stroke="rgba(132,255,178,0.3)"/>
+<text x="358.5" y="51" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">12</text>
+<text x="20" y="122" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">char *c</text>
+<rect x="96" y="108" width="280.0" height="20" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<g><animateTransform attributeName="transform" type="translate" values="8.75 0;8.75 0;17.50 0;17.50 0;26.25 0;26.25 0;35.00 0;35.00 0;43.75 0;43.75 0;52.50 0;52.50 0;61.25 0;61.25 0;0.00 0;0.00 0;0.00 0;0.00 0;8.75 0;8.75 0" keyTimes="0.000000;0.043750;0.062500;0.156250;0.175000;0.268750;0.287500;0.381250;0.400000;0.493750;0.512500;0.606250;0.625000;0.725000;0.762500;0.787438;0.787500;0.931250;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><rect class="fx" x="96" y="108" width="8.8" height="20" rx="2" fill="rgba(198,222,206,0.85)" fill-opacity="0.45" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.762250;0.762500;0.787438;0.787500;0.949000;0.949375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x100</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.061500;0.061875;0.787438;0.787500;0.949750;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x101</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.062250;0.062500;0.174000;0.174375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x102</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.286500;0.286875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x103</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.287250;0.287500;0.399000;0.399375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x104</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.399750;0.400000;0.511500;0.511875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x105</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.512250;0.512500;0.624000;0.624375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x106</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.624750;0.625000;0.761500;0.761875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="142" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x107</text></g>
+<text x="20" y="166" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">int *p</text>
+<rect x="96" y="152" width="280.0" height="20" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<g><animateTransform attributeName="transform" type="translate" values="35.00 0;35.00 0;70.00 0;70.00 0;105.00 0;105.00 0;140.00 0;140.00 0;175.00 0;175.00 0;210.00 0;210.00 0;245.00 0;245.00 0;0.00 0;0.00 0;0.00 0;0.00 0;35.00 0;35.00 0" keyTimes="0.000000;0.043750;0.062500;0.156250;0.175000;0.268750;0.287500;0.381250;0.400000;0.493750;0.512500;0.606250;0.625000;0.725000;0.762500;0.787438;0.787500;0.931250;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><rect class="fx" x="96" y="152" width="35.0" height="20" rx="2" fill="#84ffb2" fill-opacity="0.45" stroke="#84ffb2" stroke-width="1.5"/></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.762250;0.762500;0.787438;0.787500;0.949000;0.949375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x100</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.061500;0.061875;0.787438;0.787500;0.949750;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x104</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.062250;0.062500;0.174000;0.174375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x108</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.286500;0.286875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x10C</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.287250;0.287500;0.399000;0.399375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x110</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.399750;0.400000;0.511500;0.511875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x114</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.512250;0.512500;0.624000;0.624375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x118</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.624750;0.625000;0.761500;0.761875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x11C</text></g>
+<text x="20" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">double *d</text>
+<rect x="96" y="196" width="280.0" height="20" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<g><animateTransform attributeName="transform" type="translate" values="70.00 0;70.00 0;140.00 0;140.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;210.00 0;0.00 0;0.00 0;0.00 0;0.00 0;70.00 0;70.00 0" keyTimes="0.000000;0.043750;0.062500;0.156250;0.175000;0.268750;0.287500;0.381250;0.400000;0.493750;0.512500;0.606250;0.625000;0.725000;0.762500;0.787438;0.787500;0.931250;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><rect class="fx" x="96" y="196" width="70.0" height="20" rx="2" fill="#86a8ff" fill-opacity="0.45" stroke="#86a8ff" stroke-width="1.5"/></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.762250;0.762500;0.787438;0.787500;0.949000;0.949375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x100</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.061500;0.061875;0.787438;0.787500;0.949750;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x108</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.062250;0.062500;0.174000;0.174375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x110</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.761500;0.761875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x118</text></g>
+<text x="376" y="20" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">each ++ moves one element</text>
+</svg>
+      <p id="ch5-pointers-p4" class="diagram-caption">Three pointers start at 0x100 and take the same step, <code>++</code>: the <code>char</code> pointer moves 1 byte, the <code>int</code> pointer 4, the <code>double</code> pointer 8. The compiler scales pointer arithmetic by the size of the type, so <code>p + 1</code> always means the next element, never the next byte.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The sizes.</b> A <code>char</code> is 1 byte by definition; <code>int</code> is 4 and <code>double</code> 8 on today's common machines, though the standard only sets minimums.</li>
+          <li><b>What <code>*p</code> reads.</b> The bracket under each pointer is the span a dereference loads: one, four or eight bytes from its address.</li>
+          <li><b>Where it leads.</b> Strings are <code>char</code> pointers walking to a zero byte, and arrays are the same arithmetic in disguise, as the next figure shows.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Arrays are pointers in disguise</h3>

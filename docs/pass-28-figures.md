@@ -80,7 +80,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 70 | 2 | `fig-5-1` Fig 5.1 · One C source, many targets | 2.2 px · cap 74 | done 2026-10-10 |
 | 71 | 2 | `fig-5-2` Fig 5.2 · UNIX's rewrite, in time | 2.2 px · cap 75 | done 2026-10-10 |
 | 72 | 2 | `fig-5-3` Fig 5.3 · PDP-7 to PDP-11 · the machines that shaped C | 2.2 px · cap 190 | done 2026-10-10 |
-| 73 | 2 | `fig-5-4` Fig 5.4 · A pointer walks down memory | 2.5 px · cap 86 | todo |
+| 73 | 2 | `fig-5-4` Fig 5.4 · A pointer walks down memory | 2.5 px · cap 86 | done 2026-10-10 |
 | 74 | 2 | `fig-5-5` Fig 5.5 · a[i] ≡ *(a + i) | 2.5 px · cap 76 | todo |
 | 75 | 2 | `fig-5-6` Fig 5.6 · The heap, as a free list | 2.5 px · cap 90 | todo |
 | 76 | 2 | `fig-5-7` Fig 5.7 · Leak vs use-after-free | 2.5 px · cap 107 | todo |
