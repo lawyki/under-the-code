@@ -3587,7 +3587,10 @@ connection finds no entry and is dropped; IPv6 "about 40% of traffic" restated
 as close to half of Google's users by 2025; CGNAT kept as a key-term), 9.9 (paper card: the IPv6 address shortened
 in its two legal steps, computed with Python's ipaddress and asserted, the /64
 network and device halves marked; the "every atom in the Earth's crust" banner
-corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+corrected, §4g). 9.11 (Pakistan/YouTube, a hijack) joins the
+deferred conceptual pass with 9.10. 9.12 (a route leak run: traffic crosses the
+providers' direct link, C leaks P2's routes to P1, P1 prefers the customer
+route and traffic squeezes through C; "route leak" kept as a key-term). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
