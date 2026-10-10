@@ -728,60 +728,117 @@
       megabytes of page tables, not 512 gigabytes.
     </p>
 
-    <div class="diagram-card" id="fig-4-8">
-      <div class="diagram-label">Fig 4.8 · x86-64 four-level page table walk</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-9"><title id="svgt-part2-9">Fig 4.8 · x86-64 four-level page table walk</title>
-        <text x="360" y="30" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">VIRTUAL ADDRESS · 48 BITS</text>
-
-        <g transform="translate(40,50)">
-          <rect x="0" y="0" width="100" height="36" rx="4" fill="#1b2a1f" stroke="rgba(132,255,178,0.6)"/>
-          <text x="50" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.9)">PML4 idx</text>
-          <text x="50" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">9 bits</text>
-          <rect x="120" y="0" width="100" height="36" rx="4" fill="#1b2a1f" stroke="rgba(132,255,178,0.6)"/>
-          <text x="170" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.9)">PDPT idx</text>
-          <text x="170" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">9 bits</text>
-          <rect x="240" y="0" width="100" height="36" rx="4" fill="#1b2a1f" stroke="rgba(132,255,178,0.6)"/>
-          <text x="290" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.9)">PD idx</text>
-          <text x="290" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">9 bits</text>
-          <rect x="360" y="0" width="100" height="36" rx="4" fill="#1b2a1f" stroke="rgba(132,255,178,0.6)"/>
-          <text x="410" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.9)">PT idx</text>
-          <text x="410" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">9 bits</text>
-          <rect x="480" y="0" width="160" height="36" rx="4" fill="#0f1a1a" stroke="rgba(100,150,255,0.5)"/>
-          <text x="560" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(100,150,255,0.85)">page offset</text>
-          <text x="560" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">12 bits = 4 KB</text>
-        </g>
-
-        <g transform="translate(40,150)">
-          <text x="0" y="0" font-family="IBM Plex Mono" font-size="10" fill="rgba(255,255,255,0.4)" letter-spacing="0.1em">PAGE TABLE TREE WALK:</text>
-          <rect x="0" y="20" width="100" height="60" rx="4" fill="#152016" stroke="rgba(132,255,178,0.5)"/>
-          <text x="50" y="42" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.8)">L4 table</text>
-          <text x="50" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">CR3 →</text>
-          <text x="50" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">512 entries</text>
-          <line x1="100" y1="50" x2="140" y2="50" stroke="rgba(132,255,178,0.5)"/>
-          <polygon points="138,46 146,50 138,54" fill="rgba(132,255,178,0.5)"/>
-          <rect x="140" y="20" width="100" height="60" rx="4" fill="#152016" stroke="rgba(132,255,178,0.5)"/>
-          <text x="190" y="42" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.8)">L3 table</text>
-          <text x="190" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">PDPT</text>
-          <line x1="240" y1="50" x2="280" y2="50" stroke="rgba(132,255,178,0.5)"/>
-          <polygon points="278,46 286,50 278,54" fill="rgba(132,255,178,0.5)"/>
-          <rect x="280" y="20" width="100" height="60" rx="4" fill="#152016" stroke="rgba(132,255,178,0.5)"/>
-          <text x="330" y="42" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.8)">L2 table</text>
-          <text x="330" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">PD</text>
-          <line x1="380" y1="50" x2="420" y2="50" stroke="rgba(132,255,178,0.5)"/>
-          <polygon points="418,46 426,50 418,54" fill="rgba(132,255,178,0.5)"/>
-          <rect x="420" y="20" width="100" height="60" rx="4" fill="#152016" stroke="rgba(132,255,178,0.5)"/>
-          <text x="470" y="42" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.8)">L1 table</text>
-          <text x="470" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">PT</text>
-          <line x1="520" y1="50" x2="560" y2="50" stroke="rgba(150,216,150,0.7)"/>
-          <polygon points="558,46 566,50 558,54" fill="rgba(150,216,150,0.7)"/>
-          <rect x="560" y="20" width="100" height="60" rx="4" fill="#0f1a0f" stroke="rgba(150,216,150,0.7)" stroke-width="1.5"/>
-          <text x="610" y="42" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.9)">physical</text>
-          <text x="610" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.9)">page</text>
-          <text x="610" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.4)">+ offset</text>
-          <text x="0" y="120" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.4)">5 memory accesses per address translation: that's why the TLB exists</text>
-        </g>
-      </svg>
-      <p id="ch4-vm-p6" class="diagram-caption">Translating one virtual address into a physical address requires walking four levels of page tables. The CPU register CR3 points to the root (L4). Each level uses 9 bits of the address to index into a 512-entry table; the entry points to the next level. The bottom 12 bits give the byte offset within the final page. Without optimisation, every memory access would cost five memory accesses.</p>
+    <div class="diagram-card fig-v2" id="fig-4-8">
+      <div class="diagram-label">Fig 4.8&nbsp;· x86-64 four-level page table walk</div>
+      <svg viewBox="0 0 400 432" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-9 svgd-part2-9">
+<title id="svgt-part2-9">Fig 4.8 · x86-64 four-level page table walk</title>
+<desc id="svgd-part2-9">The 48-bit virtual address 0x7FFA_0A32_C5E8 split into four 9-bit table indices (255, 488, 81, 300) and a 12-bit page offset (1512). The CR3 register holds the address of the top table. Entry 255 of the level-4 table points to a level-3 table, its entry 488 to a level-2 table, entry 81 to a level-1 table, and entry 300 to the physical page, where the offset picks the byte. Four table reads and then the data: five memory reads for one load.</desc>
+<text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">VIRTUAL ADDRESS 0x7FFA_0A32_C5E8</text>
+<rect x="20.0" y="34" width="63.5" height="46" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.45"/>
+<rect class="fx" x="20.0" y="34" width="63.5" height="46" rx="3" fill="#84ffb2" fill-opacity="0.18" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0545;0.0545;0.1454;0.1455;0.2908;0.2909;1.0000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="51.75" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L4</text>
+<text x="51.75" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">255</text>
+<text x="51.75" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">9 bits</text>
+<rect x="87.5" y="34" width="63.5" height="46" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.45"/>
+<rect class="fx" x="87.5" y="34" width="63.5" height="46" rx="3" fill="#84ffb2" fill-opacity="0.18" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0545;0.0545;0.2908;0.2909;0.4363;0.4364;1.0000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="119.25" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L3</text>
+<text x="119.25" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">488</text>
+<text x="119.25" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">9 bits</text>
+<rect x="155.0" y="34" width="63.5" height="46" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.45"/>
+<rect class="fx" x="155.0" y="34" width="63.5" height="46" rx="3" fill="#84ffb2" fill-opacity="0.18" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0545;0.0545;0.4363;0.4364;0.5817;0.5818;1.0000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="186.75" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L2</text>
+<text x="186.75" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">81</text>
+<text x="186.75" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">9 bits</text>
+<rect x="222.5" y="34" width="63.5" height="46" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.45"/>
+<rect class="fx" x="222.5" y="34" width="63.5" height="46" rx="3" fill="#84ffb2" fill-opacity="0.18" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0545;0.0545;0.5817;0.5818;0.7272;0.7273;1.0000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="254.25" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L1</text>
+<text x="254.25" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">300</text>
+<text x="254.25" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">9 bits</text>
+<rect x="290.0" y="34" width="86.0" height="46" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.45"/>
+<rect class="fx" x="290.0" y="34" width="86.0" height="46" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0545;0.0545;0.7272;0.7273;0.8726;0.8727;1.0000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="333" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">offset</text>
+<text x="333" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#86a8ff">1512</text>
+<text x="333" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">12 bits</text>
+<text x="20" y="130" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">CR3</text>
+<path d="M52 126 H56 V161.0 H66" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/>
+<polygon points="66,157.0 72,161.0 66,165.0" fill="rgba(198,222,206,0.85)"/>
+<text x="20" y="166" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L4</text>
+<rect x="70" y="150" width="302" height="22" rx="2" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<line x1="107.8" y1="153" x2="107.8" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="145.5" y1="153" x2="145.5" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="183.2" y1="153" x2="183.2" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="221.0" y1="153" x2="221.0" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="258.8" y1="153" x2="258.8" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="296.5" y1="153" x2="296.5" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<line x1="334.2" y1="153" x2="334.2" y2="169" stroke="rgba(132,255,178,0.12)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.1726;0.1727;1.0000" dur="11s" repeatCount="indefinite"/><rect x="216.4" y="148" width="8" height="26" rx="1" fill="#84ffb2"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.2272;0.2273;1.0000" dur="11s" repeatCount="indefinite"/><path d="M220.4 174 L76 192" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="71,194 82,189 77,184" fill="rgba(198,222,206,0.85)"/></g>
+<text x="20" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L3</text>
+<rect x="70" y="196" width="302" height="22" rx="2" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<line x1="107.8" y1="199" x2="107.8" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="145.5" y1="199" x2="145.5" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="183.2" y1="199" x2="183.2" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="221.0" y1="199" x2="221.0" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="258.8" y1="199" x2="258.8" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="296.5" y1="199" x2="296.5" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<line x1="334.2" y1="199" x2="334.2" y2="215" stroke="rgba(132,255,178,0.12)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.3181;0.3182;1.0000" dur="11s" repeatCount="indefinite"/><rect x="353.8" y="194" width="8" height="26" rx="1" fill="#84ffb2"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.3726;0.3727;1.0000" dur="11s" repeatCount="indefinite"/><path d="M357.8 220 L76 238" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="71,240 82,235 77,230" fill="rgba(198,222,206,0.85)"/></g>
+<text x="20" y="258" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L2</text>
+<rect x="70" y="242" width="302" height="22" rx="2" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<line x1="107.8" y1="245" x2="107.8" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="145.5" y1="245" x2="145.5" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="183.2" y1="245" x2="183.2" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="221.0" y1="245" x2="221.0" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="258.8" y1="245" x2="258.8" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="296.5" y1="245" x2="296.5" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<line x1="334.2" y1="245" x2="334.2" y2="261" stroke="rgba(132,255,178,0.12)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.4635;0.4636;1.0000" dur="11s" repeatCount="indefinite"/><rect x="113.8" y="240" width="8" height="26" rx="1" fill="#84ffb2"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.5181;0.5182;1.0000" dur="11s" repeatCount="indefinite"/><path d="M117.8 266 L76 284" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="71,286 82,281 77,276" fill="rgba(198,222,206,0.85)"/></g>
+<text x="20" y="304" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">L1</text>
+<rect x="70" y="288" width="302" height="22" rx="2" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<line x1="107.8" y1="291" x2="107.8" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="145.5" y1="291" x2="145.5" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="183.2" y1="291" x2="183.2" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="221.0" y1="291" x2="221.0" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="258.8" y1="291" x2="258.8" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="296.5" y1="291" x2="296.5" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<line x1="334.2" y1="291" x2="334.2" y2="307" stroke="rgba(132,255,178,0.12)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.6090;0.6091;1.0000" dur="11s" repeatCount="indefinite"/><rect x="243.0" y="286" width="8" height="26" rx="1" fill="#84ffb2"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.6635;0.6636;1.0000" dur="11s" repeatCount="indefinite"/><path d="M247.0 312 L76 330" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="71,332 82,327 77,322" fill="rgba(198,222,206,0.85)"/></g>
+<text x="20" y="350" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">page</text>
+<rect x="70" y="334" width="302" height="22" rx="2" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<line x1="107.8" y1="337" x2="107.8" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="145.5" y1="337" x2="145.5" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="183.2" y1="337" x2="183.2" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="221.0" y1="337" x2="221.0" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="258.8" y1="337" x2="258.8" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="296.5" y1="337" x2="296.5" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<line x1="334.2" y1="337" x2="334.2" y2="353" stroke="rgba(132,255,178,0.12)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.7545;0.7545;1.0000" dur="11s" repeatCount="indefinite"/><rect x="177.5" y="332" width="8" height="26" rx="1" fill="#86a8ff"/></g>
+<text x="372" y="376" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">4096 bytes</text>
+<text x="372" y="142" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">512 entries each</text>
+<text x="20" y="413" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">reads</text>
+<rect x="70" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.1726;0.1727;1.0000" dur="11s" repeatCount="indefinite"/><rect x="70" y="396" width="54" height="24" rx="2" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="97" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">L4</text></g>
+<rect x="132" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.3181;0.3182;1.0000" dur="11s" repeatCount="indefinite"/><rect x="132" y="396" width="54" height="24" rx="2" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="159" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">L3</text></g>
+<rect x="194" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.4635;0.4636;1.0000" dur="11s" repeatCount="indefinite"/><rect x="194" y="396" width="54" height="24" rx="2" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="221" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">L2</text></g>
+<rect x="256" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.6090;0.6091;1.0000" dur="11s" repeatCount="indefinite"/><rect x="256" y="396" width="54" height="24" rx="2" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="283" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">L1</text></g>
+<rect x="318" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0545;0.0545;0.0909;0.0910;0.7545;0.7545;1.0000" dur="11s" repeatCount="indefinite"/><rect x="318" y="396" width="54" height="24" rx="2" fill="#86a8ff" fill-opacity="0.3" stroke="#86a8ff"/><text x="345" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">data</text></g>
+</svg>
+      <p id="ch4-vm-p6" class="diagram-caption">The CPU splits a 48-bit address into four 9-bit indices and a 12-bit offset, then follows CR3 down a tree of four tables, one index per level. Four table reads come before the data itself: five memory reads for one load, unless the TLB already holds the answer.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why 9 bits.</b> A table is one 4 KB page of 8-byte entries, so it holds 512 of them, and 2<sup>9</sup> = 512. The last 12 bits address a byte inside a 4 KB page.</li>
+          <li><b>The pointers.</b> CR3 holds the physical address of the top table; each entry holds the physical address of the next table down, plus permission bits.</li>
+          <li><b>Sparse by design.</b> Tables exist only for regions the process uses, so a few megabytes of tables map a whole program. Newer CPUs can add a fifth level for 57-bit addresses.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The TLB: a cache for translations</h3>
