@@ -3460,7 +3460,9 @@ unsourced "C-family syntax runs 80%+ of production code" banner dropped), 6.1 (B
 2, 4, 8, 16 parts with every pair, and a bar per stage, 1, 6, 28, 120; the old
 invented bug-density curve and "grew 100×" removed, §4g), 6.2 (vertical timeline, Simula 67 to
 C++23, the axis turning modern at C++11; C++20 added; Cfront "true compiler"
-and "all backwards compatible" corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+and "all backwards compatible" corrected, §4g), 6.3 (object, vtable, function and the
+two instructions; s->area() lights each hop with its instruction; the unsourced
+"~3 cycles" dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

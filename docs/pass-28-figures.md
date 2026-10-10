@@ -90,7 +90,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 80 | 2 | `fig-5-11` Fig 5.11 · The C family tree · half a century of descendants | 2.2 px · cap 159 | done 2026-10-10 |
 | 81 | 2 | `fig-6-1` Fig 6.1 · The 1980s software crisis, in one chart | 2.5 px · cap 89 | done 2026-10-10 |
 | 82 | 2 | `fig-6-2` Fig 6.2 · C++, in time | 2.5 px · cap 90 | done 2026-10-10 |
-| 83 | 2 | `fig-6-3` Fig 6.3 · A class, an object, and a vtable | 2.5 px · cap 105 | todo |
+| 83 | 2 | `fig-6-3` Fig 6.3 · A class, an object, and a vtable | 2.5 px · cap 105 | done 2026-10-10 |
 | 84 | 2 | `fig-6-4` Fig 6.4 · Inheritance: same vptr slot, different function | 2.5 px · cap 94 | todo |
 | 85 | 2 | `fig-6-5` Fig 6.5 · RAII: scope acquires, scope releases | 2.9 px · cap 125 | todo |
 | 86 | 2 | `fig-6-6` Fig 6.6 · qsort vs std::sort, same algorithm, different cost | 2.5 px · cap 119 | todo |

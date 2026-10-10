@@ -3750,76 +3750,48 @@
       index slot 0, jump to that address."
     </p>
 
-    <div class="diagram-card" id="fig-6-3">
-      <div class="diagram-label">Fig 6.3 · A class, an object, and a vtable</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-39"><title id="svgt-part2-39">Fig 6.3 · A class, an object, and a vtable</title>
-        <!-- Source -->
-        <rect x="40" y="20" width="640" height="60" rx="4" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-        <text x="60" y="40" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">class Shape  { virtual double area() = 0; virtual void draw() = 0; };</text>
-        <text x="60" y="58" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">class Circle : public Shape { double r; double area() override; void draw() override; };</text>
-        <text x="60" y="74" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">Shape* s = new Circle{2.0};   s-&gt;area();</text>
-
-        <!-- Object in memory -->
-        <text x="100" y="116" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(132,255,178,0.9)" text-anchor="middle">the object 's' in memory</text>
-        <g transform="translate(40,128)">
-          <rect x="0"  y="0" width="120" height="40" fill="#0e1510" stroke="rgba(132,255,178,0.5)"/>
-          <text x="60" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">vptr</text>
-          <text x="60" y="32" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">→ Circle vtable</text>
-
-          <rect x="0"  y="44" width="120" height="40" fill="#0e1510" stroke="rgba(150,216,150,0.5)"/>
-          <text x="60" y="62" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">r = 2.0</text>
-          <text x="60" y="76" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">double, 8 bytes</text>
-        </g>
-
-        <!-- Arrow to vtable -->
-        <line x1="160" y1="148" x2="280" y2="170" stroke="rgba(132,255,178,0.6)" stroke-width="1"/>
-        <polygon points="280,170 274,164 274,176" fill="rgba(132,255,178,0.7)"/>
-
-        <!-- Circle vtable -->
-        <text x="380" y="116" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(132,255,178,0.9)" text-anchor="middle">Circle's vtable (one per class)</text>
-        <g transform="translate(280,128)">
-          <rect x="0"  y="0" width="200" height="32" fill="#101a14" stroke="rgba(132,255,178,0.5)"/>
-          <text x="14" y="20" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">slot 0:</text>
-          <text x="100" y="20" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">→ Circle::area</text>
-
-          <rect x="0"  y="36" width="200" height="32" fill="#101a14" stroke="rgba(132,255,178,0.5)"/>
-          <text x="14" y="56" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">slot 1:</text>
-          <text x="100" y="56" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">→ Circle::draw</text>
-        </g>
-
-        <!-- Generated assembly for s->area() -->
-        <text x="540" y="116" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(132,255,178,0.9)" text-anchor="middle">what s-&gt;area() compiles to</text>
-        <g transform="translate(490,128)">
-          <rect x="0" y="0" width="220" height="80" rx="4" fill="#0f1418" stroke="rgba(100,150,255,0.5)"/>
-          <text x="10" y="18" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">mov  rax, [rdi]      ; load vptr</text>
-          <text x="10" y="34" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">call [rax+0]         ; jump to slot 0</text>
-          <line x1="10" y1="48" x2="210" y2="48" stroke="rgba(100,150,255,0.3)"/>
-          <text x="10" y="64" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.6)">2 instructions · 1 indirect call</text>
-          <text x="10" y="76" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.6)">~3 cycles, branch-predicted</text>
-        </g>
-
-        <!-- Per-call timeline -->
-        <g transform="translate(40,250)">
-          <text x="0" y="0" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(132,255,178,0.9)">at runtime, when s-&gt;area() executes:</text>
-
-          <g transform="translate(0,16)" font-family="IBM Plex Mono" font-size="9">
-            <rect x="0"   y="0" width="145" height="24" rx="3" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="72"  y="16" text-anchor="middle" fill="rgba(132,255,178,0.9)">load vptr</text>
-            <text x="155" y="16" font-size="11" fill="rgba(132,255,178,0.6)">→</text>
-            <rect x="175" y="0" width="145" height="24" rx="3" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="247" y="16" text-anchor="middle" fill="rgba(132,255,178,0.9)">read slot 0 of vtable</text>
-            <text x="330" y="16" font-size="11" fill="rgba(132,255,178,0.6)">→</text>
-            <rect x="350" y="0" width="145" height="24" rx="3" fill="#0e1510" stroke="rgba(132,255,178,0.45)"/>
-            <text x="422" y="16" text-anchor="middle" fill="rgba(132,255,178,0.9)">jump to Circle::area</text>
-            <text x="505" y="16" font-size="11" fill="rgba(132,255,178,0.6)">→</text>
-            <rect x="525" y="0" width="130" height="24" rx="3" fill="#101a14" stroke="rgba(132,255,178,0.55)"/>
-            <text x="590" y="16" text-anchor="middle" fill="rgba(132,255,178,0.95)">execute body</text>
-          </g>
-        </g>
-
-        <text x="360" y="358" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">DYNAMIC DISPATCH IS A FUNCTION-POINTER LOOKUP: TWO INSTRUCTIONS, ONE INDIRECT CALL</text>
-      </svg>
-      <p id="ch6-classes-p4" class="diagram-caption">A class with virtual methods adds one pointer per object: the <em>vptr</em>, set automatically by the constructor. Each class has one vtable, shared by all its objects. Calling a virtual method compiles to two memory accesses (load vptr, load slot), one indirect call, and the body of the chosen function. On a modern CPU with branch prediction, this is roughly three cycles in steady state, barely more expensive than a direct call. The C equivalent is "a struct containing function pointers, manually managed", which is exactly how the Linux kernel's file_operations and many other systems are built. C++ just makes the compiler do the bookkeeping.</p>
+    <div class="diagram-card fig-v2" id="fig-6-3">
+      <div class="diagram-label">Fig 6.3&nbsp;· A class, an object, and a vtable</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-39 svgd-part2-39">
+<title id="svgt-part2-39">Fig 6.3 · A class, an object, and a vtable</title>
+<desc id="svgd-part2-39">Shape* s = new Circle{2.0}; then s-&gt;area(). The object holds a hidden vptr and its field r = 2.0. The vptr points to Circle's vtable, one per class, whose slot 0 points to Circle::area and slot 1 to Circle::draw. The call compiles to two instructions: mov rax, [rdi] loads the vptr, and call [rax] jumps through slot 0 to Circle::area.</desc>
+<text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">Shape* s = new Circle{2.0};  s-&gt;area();</text>
+<text x="20" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the object</text>
+<rect x="20" y="60" width="130" height="64" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<line x1="20" y1="92" x2="150" y2="92" stroke="rgba(132,255,178,0.25)"/>
+<text x="32" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">vptr</text>
+<text x="32" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">r = 2.0</text>
+<rect class="fx" x="20" y="60" width="130" height="32" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.142571;0.142857;0.313143;0.313571;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
+<text x="200" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">Circle's vtable</text>
+<rect x="200" y="60" width="180" height="64" rx="3" fill="#0c120e" stroke="#d4a853" stroke-opacity="0.7"/>
+<line x1="200" y1="92" x2="380" y2="92" stroke="rgba(212,168,83,0.3)"/>
+<text x="212" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">0: Circle::area</text>
+<text x="212" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">1: Circle::draw</text>
+<rect class="fx" x="200" y="60" width="180" height="32" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.314000;0.314286;0.484571;0.485000;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
+<path d="M150 76 L194 76" stroke="#d4a853" stroke-width="1.5"/><polygon points="192,71 200,76 192,81" fill="#d4a853"/>
+<rect x="200" y="152" width="180" height="50" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="212" y="172" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">Circle::area()</text>
+<text x="212" y="192" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">return π·r·r;</text>
+<rect class="fx" x="200" y="152" width="180" height="50" rx="3" fill="#84ffb2" fill-opacity="0.2" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.485429;0.485714;0.770286;0.770714;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
+<path d="M380 76 H392 V177 H388" fill="none" stroke="#d4a853" stroke-width="1.5"/><polygon points="389,172 389,182 381,177" fill="#d4a853"/>
+<text x="20" y="232" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">what s-&gt;area() compiles to</text>
+<rect x="20" y="240" width="360" height="52" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.25)"/>
+<text x="32" y="260" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">mov rax, [rdi]</text>
+<text x="368" y="260" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">load the vptr</text>
+<rect class="fx" x="24" y="245" width="352" height="21" rx="2" fill="#86a8ff" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.142571;0.142857;0.313143;0.313571;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
+<text x="32" y="282" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">call [rax]</text>
+<text x="368" y="282" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">through slot 0</text>
+<rect class="fx" x="24" y="267" width="352" height="21" rx="2" fill="#86a8ff" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.314000;0.314286;0.770286;0.770714;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
+</svg>
+      <p id="ch6-classes-p4" class="diagram-caption">A class with virtual functions gives each object one hidden pointer, the vptr, to a table shared by the whole class. Calling <code>s-&gt;area()</code> loads the vptr, reads slot 0, and jumps there: two instructions, the second an indirect call.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Who sets it.</b> The constructor writes the vptr, so a <code>Circle</code> always points at <code>Circle</code>'s table, whatever type of pointer holds it.</li>
+          <li><b>The cost.</b> One extra load and an indirect call; when the processor predicts the target, that is close to a direct call.</li>
+          <li><b>The C version.</b> A struct of function pointers, kept by hand, is the same design: the Linux kernel's <code>file_operations</code> is one.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Inheritance is layout</h3>
