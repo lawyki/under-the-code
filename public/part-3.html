@@ -4328,8 +4328,8 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Plain and braced.</b> Only the two hellos cross in the clear; everything in braces is encrypted under keys derived (with HKDF) from the shared Diffie–Hellman secret. The gold lane marks when each side holds them.</li>
-          <li><b>Proof of identity.</b> The certificate binds the server's public key to its name (Fig 11.12); the signature, over the handshake so far, proves the server holds the matching private key. Each Finished is a MAC over the whole transcript, so tampering shows.</li>
-          <li><b>The cost.</b> One round trip before data, against two in TLS 1.2. A client returning to a server it has met can even send early data with its hello (0-RTT).</li>
+          <li><b>Proof of identity.</b> The <span class="key-term">X.509</span> certificate binds the server's public key to its name (Fig 11.12); the signature, over the handshake so far, proves the server holds the matching private key. Each Finished is a MAC over the whole transcript, so tampering shows.</li>
+          <li><b>The cost.</b> One round trip before data, against two in TLS 1.2; the hellos also settle the <span class="key-term">cipher suite</span>, such as AES-GCM or ChaCha20-Poly1305. A client returning to a server it has met can even send early data with its hello (0-RTT).</li>
         </ol>
       </details>
     </div>
