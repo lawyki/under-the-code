@@ -3540,7 +3540,10 @@ Suite after the fixes: invariants 812/0, traces 229/0, parity 40/40, marks 106/0
 UI 93/0.
 
 Part III continued: 8.5 (Manchester for 1011001 in the IEEE 802.3 convention, a
-cursor reading each mid-bit edge into the decoded row; convention corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+cursor reading each mid-bit edge into the decoded row; convention corrected, §4g), 8.6 (the mechanism made visible: a
+receiver clock 20% fast, exaggerated; NRZ samples the four-zero run five times
+and reads an extra 0, Manchester resyncs on every mid-bit edge and reads all
+seven; the sampling is simulated and asserted). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
