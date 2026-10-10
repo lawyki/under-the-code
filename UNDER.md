@@ -531,6 +531,8 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fibre light "pulsed at frequencies around 200 THz" (ch8-substrates-p3) | ~193 THz is the optical carrier; the bits are the carrier switched on and off, far slower | "a carrier at around 200 THz switched on and off to carry the bits" (Pass 27, 2026-10-10) |
 | SYN-cookie ACK carries the cookie "as its acknowledgement number" (ch10-attacks-p4) | The ACK acknowledges ISN+1: its number is the cookie plus one (as the figure says) | "its acknowledgement number is the cookie plus one" (Pass 27, 2026-10-10) |
 | "ZIP, JPEG, MP3": every compressor bounded by entropy (ch8-shannon-p6) | The entropy bound is for lossless coding; JPEG and MP3 are lossy | "any lossless compression scheme… from ZIP to PNG" (Pass 27, 2026-10-10) |
+| Rainbow tables listed as "hardware" (ch14-tls-pqc-p9 strip) | Rainbow tables are precomputation, not hardware | "through precomputation and hardware (rainbow tables, then GPUs, eventually quantum computers)" (Pass 27, 2026-10-10) |
+| "Every chapter in this book has had attacks woven into it" (ch15-hero-lead) | Several chapters (e.g. Ch2, Ch6–7) carry no attack | "Attacks have run through this whole book." (Pass 27, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3148,6 +3150,97 @@ anchor, 1.6 px against the 1.5 px bar) repeats on rerun at that sample; a
 4 px sweep of the whole gap after the offset table settles agrees within
 0.5 px in both engines, so it is the sample landing during the table's
 rebuild after the jump, not a drift a reader meets. The test is unchanged.
+
+### Part IV
+
+**11,238 → 10,057 section-prose words (10.5 %)** before the verification's
+trims. Per section: codd 739→645, algebra 622→576, sql 380→366, acid
+670→558, indexes 411→382, injection 686→584, history 718→650, primer
+676→597, hashing 418→406, symmetric 362→297, publickey 660→627, ecc
+421→394, tls-pqc 1137→982, mindset 322→289, memory 345→294, network
+522→451, web 634→576, defense 704→637, culture 811→746. The Ch13 → Ch14
+seam, which said the same three things twice in a row (ch13-injection-p8
+and the Ch14 hero lead), is merged into the hero lead. No paragraph
+removed: ids identical (228), no aliases. Strongroom register untouched.
+
+**Facts.** Two corrected (§4g): rainbow tables are precomputation, not
+hardware; the Ch15 hero lead's "every chapter" overclaim.
+
+**Verification (Sonnet 5.5).** No H. 4 M fixed (IMS unframed after the cut,
+the PGP paragraph's reason, the hash-uses list's governing sentence, RSA's
+one-way function named again) and 7 L (ECC "cannot leak" softened and
+split, "closes that hole", "Chapter 15", the defence-in-depth hinge, pickle
+named once, "SQL is not…", the AES sentence). Four law-2 trims taken: the
+EXPLAIN restatement, the hash-index restatement, the Ch14 → Ch15 seam cut to
+its first sentence (the Ch15 lead and coda carry the rest), the Pwn2Own
+aside. The σ/π/⨝ double announcement sits in a caption: Pass 28 (the
+operators' definitions move into the prose there). Glossary: "Larry
+Ellison" dropped (his sentence lost its "His name was" cue); Atomicity,
+Signal, CT, CTF join the authoring list.
+
+**Tests:** `npm run check:dashes` clean; `tests/pass25`: invariants 812/0,
+traces 228/0 (+1 skip), parity 39/40 (the Part III sample above, unchanged),
+marks 106/0, UI 93/0.
+
+### Part V
+
+**7,059 → 6,245 section-prose words (11.5 %)** before the verification's
+trims and the restorations below. Per section: threads 284→262, races
+473→422, lockfree 447→431, gpu 294→240, amdahl 369→302, numa 487→432, virt
+270→225, containers 317→302, k8s 294→271, consensus 763→725, cap 172→156,
+microservices 933→827, math 129→99, trace 422→369, civilization 184→154,
+future 331→298, intersect 326→273, reading 87→60, final 477→397. The Amdahl
+ceiling was stated three times before its figure: now the lead hooks, the
+callout derives. No paragraph removed: ids identical (189), no aliases.
+
+**The epilogue is owner ground** (BRIDGE §1: what the book claims about
+itself). The bridge restored the book's closing paragraph (ch18-final-p4)
+verbatim, and on the verifier's list put back four changes that altered a
+claim rather than a restatement: "in a precise sense" (math-p1), "in some
+precise sense" (trace-p7), the reader condition "(really finished, having
+followed the diagrams…)" (final-p1), and "who knows what else" plus "The
+vocabulary is durable." (final-p3). **For the owner's sign-off** (trims of
+restatement only, all four moves intact): math-p1's closing "translating"
+sentence and its merged "realised in" list; trace-p1/2/3/5/7 announcements
+("That is what reading the book has done"); civilization-p1's contingency
+list collapsed to "none of it was inevitable"; future-p1/p3 (a direct
+question opens p3); intersect-p1 ("Modern art is increasingly computational"
+cut; "or an artist" kept in p3); reading-p1 ("None of them are substitutes
+for this book"); final-p2 ("the reader now sees the layers…").
+
+**Verification (Sonnet 5.5).** No H. 1 M fixed (k8s-p3: "the pattern" named
+again) and 5 L (threads "That separation", the EC2 parentheticals, the
+SolarWinds pointer no longer promises "the full story", "That interview
+question", "or an artist"). Six law-2 trims taken: the Ch16 hero lead's
+flourish, NUMA's halving said twice, FLP's escape routes (p9 and p12 define
+them), "The pendulum keeps swinging", a serverless restatement, a praise
+closer. The reading-list evidence stays in the body until Pass 28 decides
+its caption.
+
+### Pass 27, closed: totals and the glossary
+
+**Section prose, Pass 26 → Pass 27 (after every verification fix):** Part I
+13,483 → 12,095 (10.3 %), II 12,124 → 10,891 (10.2 %), III 15,740 → 14,012
+(11.0 %), IV 11,238 → 9,761 (13.1 %), V 7,059 → 6,181 (12.4 %). **The book:
+59,644 → 52,940 words, 11.2 % shorter**, with eight anchors aliased and no
+mechanism removed (five independent verifications, no H). Captions are
+untouched; Pass 28 rewrites them with their figures.
+
+**The glossary is authored.** The extractor still finds terms and their
+first-use sections, but the words a reader sees now come from
+`scripts/glossary-defs.json`: one sentence per term, at most 30 words,
+written from the book's own text per part and checked by an independent
+reader against the prose and §4g (61 fixes across the five batches: e.g.
+TCP's 1974 design had no congestion control; the TLB is consulted before
+the page table; P vs NP stated properly; Boolean algebra "published 1847").
+43 non-terms dropped (plain words, plural duplicates, figure-caption
+groupings, fragments): **505 → 462 entries**, none a fragment. `C++` no
+longer shares the key `c` with the RSA ciphertext (keys keep "+", in
+`build-glossary.js` and `book.js` alike; a one-letter `<em>` is a variable
+and never gets a tooltip). A term with no authored definition is listed by
+the build. Expansions and dates the book does not itself state were added
+only where standard (DOM, CORS, ICMP, IETF, HMAC, ECDSA, SIEM, JOP, UEFI;
+Boole 1815–1864).
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

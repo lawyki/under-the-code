@@ -96,11 +96,7 @@
       putting <em>many cores</em> on the same chip and asking software
       to use them. Twenty years later, every phone has six to ten cores,
       every laptop has eight to sixteen, and every cloud server has
-      sixty-four or more. Writing code that uses them correctly is one
-      of the deepest skills in programming. The mathematics underneath
-      it is concurrency theory; the engineering is forty years of
-      careful primitive-building; and the failure modes are some of the
-      most frustrating bugs ever produced.
+      sixty-four or more. Writing code that uses them correctly is one of the deepest skills in programming, and its failure modes are some of the most frustrating bugs ever produced.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Threads · races · CAS · GPU · Amdahl · NUMA · MESI</span></div>
@@ -189,22 +185,20 @@
     <p id="ch16-threads-p1" class="lead">
       By 1990, the kernel had given UNIX programmers a clean answer to
       "how do I run two things at once": <code>fork</code>. The child
-      process ran in parallel with the parent, isolated from it, with
-      its own address space, its own file descriptors, its own
-      everything (<a href="part-2#ch4">Chapter 4</a>). The
-      isolation was exactly the problem when the two processes wanted
-      to <em>cooperate</em>. A parent that wanted to share a
-      million-element array with its child had to copy it across the
-      kernel boundary with every message, or hand-manage an explicitly
-      shared segment, paying for privacy it did not want.
+      process ran in parallel with the parent, with its own address
+      space, its own file descriptors, its own everything
+      (<a href="part-2#ch4">Chapter 4</a>). That separation was exactly the problem when the two processes wanted to <em>cooperate</em>.
+      A parent that wanted to share a million-element array with its
+      child had to copy it across the kernel boundary with every
+      message, or hand-manage an explicitly shared segment.
       <strong>POSIX 1003.1c</strong>, ratified in 1995, codified the
       alternative, the <strong>thread</strong>: a separate stream of
-      execution that <em>shares the address space</em> of its parent
-      process, can be scheduled onto a different core, and can read
-      and write the same memory directly. Threads are the cheap, fast,
-      dangerous answer to "how do I use more than one core"; processes
-      are the slow, safe one. The next thirty years of concurrent
-      programming are essentially about the price of the danger.
+      execution that can be scheduled onto a different core and
+      <em>shares the address space</em> of its parent process, so it can
+      read and write the same memory directly. Threads are the cheap,
+      fast, dangerous answer to "how do I use more than one core";
+      processes are the slow, safe one. The next thirty years of
+      concurrent programming are about the price of the danger.
     </p>
 
     <div class="diagram-card" id="fig-16-1">
@@ -297,13 +291,12 @@
       processing pixels, web servers handling unrelated requests,
       Monte Carlo simulations running independent samples) are called
       <em>embarrassingly parallel</em> and scale almost linearly with
-      core count. Programs whose steps depend on each other, such as most
-      stateful computations or anything sequential, benefit much less, or
-      not at all. The mathematics of this constraint is Amdahl's law,
-      which we get to in §05; for now the practical observation is that
-      adding cores is not a substitute for serial speed. A 64-core
-      laptop runs a pure-sequential program no faster than a 1-core one
-      with the same clock speed.
+      core count. Programs whose steps depend on each other benefit
+      much less, or not at all. Amdahl's law (§05) gives the
+      mathematics; the practical point is that adding cores is no
+      substitute for serial speed. A 64-core laptop runs a
+      pure-sequential program no faster than a 1-core one with the
+      same clock speed.
     </p>
   </section>
 
@@ -313,13 +306,12 @@
 
     <p id="ch16-races-p1" class="lead">
       The price of shared memory shows up the first time two threads
-      modify the same variable concurrently. The classic example is so
-      simple it sounds harmless: two threads each incrementing a shared
-      counter a million times. The expected result is two million. The
-      actual result, on any real machine, is somewhere between one
-      million and two million, with the exact value depending on
-      scheduling, cache coherence, and luck. The increment that looks
-      <span class="key-term">atomic</span> in source code (<code>counter++</code>) is in fact three
+      modify the same variable concurrently. The classic example sounds
+      harmless: two threads each increment a shared counter a million
+      times. The expected result is two million. The actual result, on
+      any real machine, is somewhere between one million and two
+      million, depending on scheduling, cache coherence, and luck. The
+      increment that looks <span class="key-term">atomic</span> in source code (<code>counter++</code>) is in fact three
       operations underneath: read the value into a register, add one,
       write it back. If two threads' three-step sequences overlap, the
       writes can stomp on each other.
@@ -393,15 +385,13 @@
       Each thread, before touching the shared counter, calls
       <code>mutex.lock()</code>; after touching it, calls
       <code>mutex.unlock()</code>. Only one thread can hold the lock at
-      a time. Any other thread that calls <code>lock()</code> while it
-      is held blocks until the holder releases. The protected
-      region (between lock and unlock) is called the <strong>critical
-      section</strong>, and the rule is that all critical sections that
-      touch the same data are serialised. The mutex itself is implemented
-      using atomic CPU instructions (<code>compare-and-swap</code> or
-      <code>load-link/store-conditional</code>), operations the CPU
-      guarantees are indivisible at the hardware level. Underneath every
-      thread-safe data structure is a chain of these primitives.
+      a time; any other thread that calls <code>lock()</code> blocks
+      until the holder releases. The region between lock and unlock is
+      the <strong>critical section</strong>, and all critical sections
+      that touch the same data are serialised. The mutex itself is built
+      on atomic CPU instructions (<code>compare-and-swap</code> or
+      <code>load-link/store-conditional</code>), which the hardware
+      guarantees are indivisible.
     </p>
 
     <div class="code-block">
@@ -436,17 +426,16 @@
     <p id="ch16-races-p4">
       Locks solve the race; they introduce a new failure mode.
       <strong>Deadlock</strong> happens when two or more threads each
-      hold a lock the other one needs, and both wait forever. The
+      hold a lock another one needs, and all of them wait forever. The
       canonical recipe: thread A holds lock <em>L1</em> and tries to
       acquire <em>L2</em>; thread B holds <em>L2</em> and tries to
-      acquire <em>L1</em>. Each is blocked waiting for the other; neither
-      can make progress; the program freezes. Deadlock is mathematically
-      characterised by the existence of a <em>cycle</em> in the
-      "wait-for" graph: an arrow from each waiting thread to the thread
-      whose lock it wants. If the graph has a cycle, there is deadlock;
-      if it has no cycle, there isn't. The standard prevention is
-      <em>lock ordering</em>. Every thread acquires locks in the same
-      global order, which ensures the wait-for graph remains acyclic.
+      acquire <em>L1</em>. Each waits for the other, and the program
+      freezes. Deadlock is mathematically characterised by
+      a <em>cycle</em> in the "wait-for" graph: an arrow from each
+      waiting thread to the thread whose lock it wants. The standard
+      prevention is <em>lock ordering</em>: every thread acquires locks
+      in the same global order, which keeps the wait-for graph acyclic,
+      and with no cycle there is no deadlock.
     </p>
 
     <div class="diagram-card" id="fig-16-3">
@@ -520,7 +509,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch16-races-p6" class="insight-text">
-        <strong>Therac-25, 1985–87.</strong> The first known software-caused medical fatalities were race conditions. The Therac-25 radiation therapy machine used a single computer to control beam intensity and targeting, with no hardware interlock. Its predecessors had hardware interlocks, but the engineers had concluded the software was reliable enough to remove them. A specific keystroke sequence, fast enough to interleave with the beam-mode-select state machine, could leave the machine in high-power X-ray mode while the turntable that shapes the beam was set for low-power electron mode. Six patients received radiation overdoses of up to a hundred times the prescribed dose; three died. The lesson is older than the field: any concurrent state machine without explicit synchronisation will eventually be observed in every reachable state, including the states the designer assumed were impossible.
+        <strong>Therac-25, 1985–87.</strong> The first known software-caused medical fatalities were race conditions. The Therac-25 radiation therapy machine used a single computer to control beam intensity and targeting. Its predecessors had hardware interlocks; the engineers had concluded the software was reliable enough to remove them. A specific keystroke sequence, fast enough to interleave with the beam-mode-select state machine, could leave the machine in high-power X-ray mode while the turntable that shapes the beam was set for low-power electron mode. Six patients received radiation overdoses of up to a hundred times the prescribed dose; three died. Any concurrent state machine without explicit synchronisation will eventually be observed in every reachable state, including the states the designer assumed were impossible.
       </p>
     </div>
   </section>
@@ -530,16 +519,15 @@
     <h2>Concurrency without locks · the deeper rabbit hole.</h2>
 
     <p id="ch16-lockfree-p1" class="lead">
-      Locks have a fundamental cost beyond their nanosecond overhead:
-      they serialise. A queue protected by a single mutex can be used by
-      one thread at a time regardless of how many cores are available.
-      In high-performance contexts (kernels, databases, network stacks,
-      JavaScript engines, garbage collectors), engineers reach for
-      <strong>lock-free</strong> data structures: queues, stacks, hash
-      tables built so that multiple threads can read and write
-      concurrently without ever blocking each other. The mechanism is
-      the same atomic CPU instruction that mutexes are built on, used
-      directly: <span class="key-term">compare-and-swap</span> (CAS). With CAS, a
+      Locks have a cost beyond their nanosecond overhead: they serialise.
+      A queue protected by a single mutex can be used by one thread at a
+      time regardless of how many cores are available. In
+      high-performance contexts (kernels, databases, garbage collectors),
+      engineers reach for <strong>lock-free</strong> data structures:
+      queues, stacks, hash tables built so that multiple threads can read
+      and write concurrently without ever blocking each other. The
+      mechanism is the same atomic CPU instruction that mutexes are built
+      on, used directly: <span class="key-term">compare-and-swap</span> (CAS). With CAS, a
       thread can perform an "if the value is still <em>x</em>, change
       it to <em>y</em>; otherwise tell me what it is now" operation as
       a single indivisible step. Built carefully, CAS-based data
@@ -549,11 +537,10 @@
       <strong>Maurice Herlihy</strong>'s 1991 paper <em>Wait-Free
       Synchronization</em>, which proved a hierarchy of exactly which
       data structures can be implemented wait-free on which atomic
-      primitives. That result turned an engineering practice into
-      a mathematical theory. The cost is that the code is
-      genuinely difficult to write correctly, and reasoning about it
-      requires understanding <em>memory orderings</em>, the rules by
-      which writes from one core become visible to others.
+      primitives, turning an engineering practice into a mathematical
+      theory. The cost is that the code is hard to write correctly, and
+      reasoning about it requires understanding <em>memory orderings</em>,
+      the rules by which writes from one core become visible to others.
     </p>
 
     <div class="diagram-card" id="fig-16-4">
@@ -598,30 +585,26 @@
     <h3>Memory orderings · why the world is not sequentially consistent</h3>
 
     <p id="ch16-lockfree-p3">
-      The deeper subtlety is that on modern multi-core CPUs, the order
-      in which one core's writes become visible to another core is
-      <em>not</em> the order they were issued. Out-of-order execution
-      (<a href="part-1#ch1">Chapter 1</a> §04), store buffers, and cache coherence all conspire
-      to let writes appear reordered from another core's perspective.
-      A thread that writes <code>x = 1; flag = true;</code> may have
+      On modern multi-core CPUs, the order in which one core's writes
+      become visible to another core is <em>not</em> the order they were
+      issued. Out-of-order execution (<a href="part-1#ch1">Chapter 1</a> §04), store
+      buffers, and cache coherence all conspire to let writes appear
+      reordered. A thread that writes <code>x = 1; flag = true;</code> may have
       another thread on a different core observe <code>flag = true</code>
-      while still reading <code>x = 0</code>. The writes were visible
-      out of order. Programs that depend on cross-thread ordering must
-      say so, by annotating each atomic operation with a
-      <em>memory ordering</em> (a contract about what other cores are
-      guaranteed to see). The pair that repairs the broken example: the
-      writer tags its flag store <em>release</em> (a promise: every
-      write before it on this thread, the <code>x = 1</code> included,
-      is visible by the time the flag is); the reader tags its flag load
-      <em>acquire</em> (the matching demand: everything the releaser
-      promised is visible before any later load runs). Release
+      while still reading <code>x = 0</code>. Programs that depend on
+      cross-thread ordering must say so, by annotating each atomic
+      operation with a <em>memory ordering</em> (a contract about what
+      other cores are guaranteed to see). The pair that repairs the
+      broken example: the writer tags its flag store <em>release</em> (a
+      promise: every write before it on this thread, the <code>x = 1</code>
+      included, is visible by the time the flag is); the reader tags its
+      flag load <em>acquire</em> (the matching demand: everything the
+      releaser promised is visible before any later load runs). Release
       and acquire meet at the flag, and <code>x</code> crosses with it.
       Above the pair sits <em>sequentially consistent</em> (the
       strongest ordering: one global order every thread agrees on,
       priced accordingly); below it sits <em>relaxed</em>, which
-      promises atomicity and nothing else. Reasoning about which ordering each
-      operation needs is the deepest skill in multi-threaded systems
-      programming, and the one most often gotten wrong.
+      promises atomicity and nothing else.
     </p>
 
     <div class="diagram-card" id="fig-16-5">
@@ -690,21 +673,16 @@
       The CPU we have built (out-of-order execution, branch prediction,
       caches, all the machinery of <a href="part-1#ch1">Chapter 1</a>) is optimised for fast
       <em>sequential</em> execution: do one thing, do it as fast as
-      possible, then move to the next. The GPU is the opposite. It has
-      thousands of small cores running in lockstep, each executing the
-      same instruction on different data. It evolved from the
-      requirements of 3D graphics: every pixel on a million-pixel screen
-      needs the same shading calculation applied to different inputs,
-      and the natural way to do that is many small processors running
-      the same code on different pixels. Around 2007, NVIDIA realised
-      that this hardware was useful for any embarrassingly parallel
-      computation, exposed it through the <span class="key-term">CUDA</span>
-      programming model, and watched a new computational substrate
-      emerge. Today GPUs do most of the world's machine learning
-      training and inference, most of its scientific simulation, all of
-      its real-time graphics. They are a fundamentally different shape
-      of computer, and software that uses them well looks very different
-      from software that uses CPUs well.
+      possible, then move to the next. The GPU is the opposite: thousands
+      of small cores running in lockstep, each executing the same
+      instruction on different data. It grew out of 3D graphics, where
+      every pixel on a million-pixel screen needs the same shading
+      calculation applied to different inputs. Around 2007, NVIDIA
+      realised that this hardware was useful for any embarrassingly
+      parallel computation and exposed it through the
+      <span class="key-term">CUDA</span> programming model. Today GPUs do
+      most of the world's machine learning training and inference, most
+      of its scientific simulation, all of its real-time graphics.
     </p>
 
     <div class="diagram-card" id="fig-16-6">
@@ -791,12 +769,11 @@
       instruction. CPUs have SIMD too (SSE, AVX on x86; NEON on ARM),
       typically 128 or 256 bits wide, processing 4 or 8 values at once.
       GPUs take this much further: a CUDA <em>warp</em> is 32 threads
-      running in lockstep, executing the same instruction on different
-      data. Many warps are grouped into a <em>block</em>; many blocks
-      make a <em>grid</em>; the entire grid is dispatched to the GPU as
-      a single kernel launch. The programmer writes code that looks like
-      it runs on a single thread; the runtime replicates it across the
-      grid.
+      running in lockstep. Many warps are grouped into a <em>block</em>;
+      many blocks make a <em>grid</em>; the entire grid is dispatched to
+      the GPU as a single kernel launch. The programmer writes code that
+      looks like it runs on a single thread; the runtime replicates it
+      across the grid.
     </p>
 
     <div class="diagram-card" id="fig-16-7">
@@ -876,22 +853,16 @@
       Adding cores to a computation is not free, and it is not unbounded.
       Two laws govern what you can expect. <span class="key-term">Amdahl's law</span>
       (Gene Amdahl, 1967) says that if a fraction <em>p</em> of a
-      program is parallelisable and the rest is sequential, then the
-      maximum speedup from <em>N</em> cores is
-      <em>1 / ((1−p) + p/N)</em>. As <em>N</em> grows, the speedup
-      approaches <em>1/(1−p)</em> as a hard ceiling. Even with infinite
-      cores, the sequential 5% of the program limits speedup to 20×.
-      The ceiling is brutal in practice: a program with 90% parallel
-      code maxes out at 10×; with 95% parallel, 20×. Adding cores
-      beyond the point where the parallel portion is fully exploited
-      buys you nothing.
+      program is parallelisable, the sequential rest sets a hard ceiling on speedup that no number of
+      cores can lift. The ceiling is brutal in practice: a program with
+      90% parallel code maxes out at 10×.
     </p>
 
     <div class="math-callout">
       <div class="math-label">The ceiling, in one equation</div>
-      <p id="ch16-amdahl-p2">If a fraction <em>p</em> of a program parallelises perfectly and the remaining <em>1−p</em> is strictly sequential, the speedup on <em>N</em> cores is:</p>
+      <p id="ch16-amdahl-p2">If the fraction <em>p</em> parallelises perfectly and the remaining <em>1−p</em> is strictly sequential, the speedup on <em>N</em> cores is:</p>
       <p id="ch16-amdahl-p3" class="math-formula">S(N) = 1 / ((1 − p) + p / N)</p>
-      <p id="ch16-amdahl-p4">The <em>p/N</em> term shrinks toward zero as you add cores; the <em>(1−p)</em> term does not move. So <em>S(N) → 1 / (1 − p)</em> as <em>N → ∞</em>. A program that is 95% parallel cannot exceed 20× speedup no matter how much hardware you buy.</p>
+      <p id="ch16-amdahl-p4">The <em>p/N</em> term shrinks toward zero as you add cores; the <em>(1−p)</em> term does not move. So <em>S(N) → 1 / (1 − p)</em> as <em>N → ∞</em>. A program that is 95% parallel cannot exceed 20× speedup.</p>
     </div>
 
     <div class="pull-quote">
@@ -958,18 +929,16 @@
       <span class="key-term">Gustafson's law</span> (1988) appears to
       contradict Amdahl's; it is actually the answer to a different
       question: what happens when the problem grows with the machine?
-      Amdahl asks:
-      "I have a fixed problem. How much faster can I make it with more
-      cores?" Gustafson asks: "I have more cores. How much bigger a
-      problem can I tackle in the same time?" If problem size grows
-      with the available compute (more particles in a physics
-      simulation, more pixels in a rendering, more samples in a Monte
-      Carlo), the sequential portion stays roughly constant while the
-      parallel portion scales, and effective speedup,
+      Amdahl fixes the problem and asks how much faster more cores make
+      it; Gustafson fixes the time and asks how much bigger a problem
+      the extra cores can tackle. If problem size grows with the available compute
+      (more particles in a physics simulation, more pixels in a
+      rendering), the sequential portion stays roughly constant while
+      the parallel portion scales, and effective speedup,
       <em>S(N) = N − (1 − p)·(N − 1)</em>, grows nearly
       linearly with cores. This is why GPU-driven workloads (training a
       bigger neural network on more GPUs) and HPC workloads (simulating
-      a finer-grained physical model on more nodes) really do scale to
+      a finer-grained physical model on more nodes) do scale to
       thousands of cores: the problem grew with the resources.
     </p>
 
@@ -1027,23 +996,18 @@
     <h2>Memory is not flat any more · cache coherence is the only reason it pretends to be.</h2>
 
     <p id="ch16-numa-p1" class="lead">
-      Two more facts about modern multi-core machines deserve naming.
-      First: <strong>memory is not uniformly accessible</strong>. On a
-      server with two CPU sockets, each socket has its own local DRAM,
-      and accessing memory attached to your own socket is dramatically
-      faster than accessing memory attached to the other socket. This
-      is <span class="key-term">NUMA</span> (Non-Uniform Memory Access), and a
-      thread that runs on socket 0 but accesses memory allocated on
-      socket 1 pays a 50–100% latency penalty per access. Operating
-      systems and runtimes try to keep threads near their data
-      automatically; when they fail, performance silently halves.
-      Second: caches must stay coherent across cores even though each
-      core has its own L1 and L2. This is the property called
-      <strong>cache coherence</strong>. The mechanism is a
-      hardware protocol called <strong>MESI</strong> (Modified,
-      Exclusive, Shared, Invalid) that tracks the state of every
-      cache line on every core and ensures that no two cores have
-      conflicting writes to the same line.
+      On a multi-core server, <strong>memory is not uniformly accessible</strong>.
+      In a machine with two CPU sockets, each socket has its own local
+      DRAM. This is <span class="key-term">NUMA</span> (Non-Uniform Memory
+      Access): a thread that runs on socket 0 but accesses memory allocated on
+      socket 1 pays a 50–100% latency penalty per access.
+      Each core also has its own L1 and L2, and
+      <strong>cache coherence</strong> is the property that those private
+      caches still agree with one another. A hardware protocol called
+      <strong>MESI</strong> (Modified, Exclusive, Shared, Invalid)
+      maintains coherence by tracking the state of every cache line on
+      every core and ensuring that no two cores have conflicting writes
+      to the same line.
     </p>
 
     <div class="diagram-card" id="fig-16-10">
@@ -1181,17 +1145,14 @@
     <p id="ch16-numa-p5">
       Parallelism scales the single computer up: from one core to
       sixty-four, from one socket to two, from CPU to GPU. It runs
-      against three constraints we have just named: Amdahl's ceiling
-      on speedup, NUMA's penalty for non-local memory, and MESI's
-      cache-line-ping-pong. The discipline of high-performance
-      code is the discipline of designing around all three. Above the
-      single computer is the next category: <em>many computers</em>,
-      not sharing memory, communicating over a network, having to
-      reach agreement despite the network being unreliable and the
-      computers being individually fallible. That is the problem of
-      <a href="#ch17">Chapter 17</a>. The mathematics that governs it (distributed
-      consensus, the CAP theorem) is one of the most consequential
-      bodies of work in computer science.
+      against three constraints: Amdahl's ceiling on speedup, NUMA's
+      penalty for non-local memory, and MESI's cache-line ping-pong.
+      Writing high-performance code means designing around all three.
+      Above the single computer are <em>many computers</em>, sharing no
+      memory, communicating over an unreliable network, and having to
+      reach agreement although each of them can fail. That is the
+      problem of <a href="#ch17">Chapter 17</a>, governed by the
+      mathematics of distributed consensus and the CAP theorem.
     </p>
   </section>
 
@@ -1213,7 +1174,7 @@
       laptop. It is built from a handful of layered abstractions:
       virtualization, containers, orchestration, consensus protocols,
       service meshes. Each of them solves a problem the layer below
-      could not. This chapter walks through them in order.
+      could not.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Hypervisor · Docker · Kubernetes · Paxos/Raft · CAP · microservices</span></div>
@@ -1295,12 +1256,10 @@
       System/360, share one expensive mainframe. The
       x86 world rediscovered virtualization in the late 1990s
       (VMware founded 1998), and CPU-level support arrived with Intel
-      VT-x in 2005 and AMD-V in 2006. These special instruction-set
-      extensions let a hypervisor run guest operating systems at
-      near-native speed. AWS launched EC2 in 2006, and the public clouds
-      took the technology and turned it into a commodity: pay for
-      exactly what you use (by the hour at launch, by the second
-      today) and get an isolated VM in any datacenter on Earth.
+      VT-x in 2005 and AMD-V in 2006. These instruction-set extensions
+      let a hypervisor run guest operating systems at near-native
+      speed. AWS launched EC2 in 2006, and the public clouds turned
+      the technology into a commodity.
     </p>
 
     <div class="diagram-card" id="fig-17-1">
@@ -1367,19 +1326,13 @@
     </div>
 
     <p id="ch17-virt-p3">
-      The economic consequence is the on-demand, elastic, pay-per-use
-      cloud. Before EC2, deploying a web service required buying or
-      leasing physical servers, racking them in a colocation facility,
-      and waiting weeks for capacity. After EC2 (and its successors),
-      you ran a single API call and got a fresh VM in minutes (today,
-      in under one), billed
-      only for what you used, in any of dozens of regions worldwide. The
-      capability transformed startup economics: Airbnb and Instagram and
-      Pinterest could each scale from zero to millions of users without
-      ever owning a server. It also changed how the rest of the industry
-      thought about infrastructure. The hypervisor underneath all of
-      this is invisible to the customer; the abstraction it provides is
-      what they pay for.
+      The economic consequence is the on-demand, elastic cloud. Before
+      EC2, deploying a web service required buying or leasing physical
+      servers, racking them in a colocation facility, and waiting weeks
+      for capacity. After EC2, a single API call got you a fresh VM in minutes (today, in under one), in any of dozens of regions worldwide, billed only for what you used: by the hour at launch, by the second today. The capability transformed startup economics:
+      Instagram could scale from zero to millions of users without ever
+      owning a server. The hypervisor underneath is invisible to the
+      customer; the abstraction it provides is what they pay for.
     </p>
   </section>
 
@@ -1400,11 +1353,10 @@
       userspace container runtime it soon replaced with its own. Running
       <code>docker run nginx</code> downloads a layered image, creates
       the namespaces, configures cgroups, and starts the process; the
-      whole thing takes a second. Compared to launching a VM, that's
-      a hundredfold improvement in start time and a tenfold improvement
-      in density. By 2014 Google alone was starting over two billion
-      containers every week; modern Kubernetes clusters routinely run
-      tens of thousands at a time.
+      whole thing takes a second. Against a VM, that is a hundredfold
+      improvement in start time and a tenfold one in density. By 2014
+      Google alone was starting over two billion containers every week;
+      modern Kubernetes clusters routinely run tens of thousands at a time.
     </p>
 
     <div class="diagram-card" id="fig-17-2">
@@ -1475,7 +1427,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="ch17-containers-p3" class="insight-text">
-        <strong>The MicroVM convergence.</strong> The trade between VM isolation and container speed has been narrowing. AWS Firecracker (2018) and Kata Containers (2018) build "microVMs", extremely lightweight VMs that boot in about a tenth of a second, weigh a few megabytes, and provide near-VM isolation while preserving most of containers' speed and density. Google's gVisor (2018) attacks the same trade from the other side, wrapping the container in a user-space kernel that intercepts every syscall rather than booting a VM at all. AWS Lambda runs every function in dedicated Firecracker microVMs, each reused across invocations but never shared between functions or customers. Modern serverless platforms have effectively pushed past the container/VM dichotomy by making both fast enough that the practical difference dissolves. The deeper trajectory: as hardware virtualization extensions get cheaper and faster, the security argument for VMs over containers gets stronger, and the speed argument against VMs gets weaker. Expect the boundary between the two to keep eroding.
+        <strong>The MicroVM convergence.</strong> The trade between VM isolation and container speed has been narrowing. AWS Firecracker (2018) and Kata Containers (2018) build "microVMs", lightweight VMs that boot in about a tenth of a second, weigh a few megabytes, and provide near-VM isolation while preserving most of containers' speed and density. Google's gVisor (2018) attacks the same trade from the other side, wrapping the container in a user-space kernel that intercepts every syscall rather than booting a VM at all. AWS Lambda runs every function in dedicated Firecracker microVMs, each reused across invocations but never shared between functions or customers. As hardware virtualization extensions get cheaper and faster, the security argument for VMs over containers gets stronger and the speed argument against VMs gets weaker.
       </p>
     </div>
   </section>
@@ -1488,14 +1440,14 @@
       A handful of containers on one host is easy. A thousand containers
       across a hundred hosts, with health checks, automatic restarts,
       rolling updates, traffic routing, secret management, and storage
-      attachment, is not. The system that solved this problem at scale,
-      and won the orchestration wars in the late 2010s, is
+      attachment, is not. The system that solved this problem, and won
+      the orchestration wars in the late 2010s, is
       <span class="key-term">Kubernetes</span>, originally built at Google (where its
       ancestor, Borg, had by then been running internally for over a decade), open-sourced
       in 2014, and now the dominant deployment substrate for cloud-native
-      software. Kubernetes is not a single program; it is a set of
-      cooperating control-plane components and a fleet of worker nodes,
-      glued together by a deceptively simple architectural idea: the
+      software. Kubernetes is not one program but a set of cooperating
+      control-plane components and a fleet of worker nodes, glued together
+      by a simple architectural idea: the
       <span class="key-term">control loop</span>. The user declares <em>what</em> the
       system should look like; the controllers continuously observe what
       it does look like and reconcile the difference.
@@ -1603,23 +1555,20 @@
     <h3>The control loop · the deepest pattern in Kubernetes</h3>
 
     <p id="ch17-k8s-p3">
-      The heart of Kubernetes is not its components but its
-      <em>architectural pattern</em>. Every controller, meaning every piece of
-      logic in Kubernetes that maintains some kind of object, is a
+      Every controller in Kubernetes, meaning every piece of logic that
+      maintains some kind of object, is a
       <strong>reconcile loop</strong>: a tight loop that observes the
       current state of the world, compares it to the desired state, and
       takes whichever action will move current closer to desired. Run
       forever. The loop is idempotent: if it runs twice without anything
       changing, the second run does nothing. The loop is robust: if a
-      command fails, the loop runs again, observes that the change still
-      hasn't happened, and tries again. The loop is stateless: it does
-      not remember what it did last time; it only looks at what is
-      versus what should be. This pattern of <em>declarative desired
-      state, observed actual state, continuous reconciliation</em> is
-      borrowed from control theory (<a href="part-3#ch10">Chapter 10</a>'s TCP congestion control
-      is the same shape) and is the architectural genus of all
-      modern infrastructure-as-code: Terraform, Pulumi, Argo CD,
-      everything.
+      command fails, the next run observes that the change still hasn't
+      happened and tries again. The loop is stateless: it does not
+      remember what it did last time; it only looks at what is versus
+      what should be. The pattern of <em>declared desired state, observed actual state, continuous reconciliation</em> is borrowed from control theory
+      (<a href="part-3#ch10">Chapter 10</a>'s TCP congestion control is the same shape)
+      and is the architectural genus of all modern
+      infrastructure-as-code: Terraform, Pulumi, Argo CD.
     </p>
 
     <div class="diagram-card" id="fig-17-4">
@@ -1728,13 +1677,11 @@
       Machines can crash. The network can partition into halves that
       can't reach each other. <em>Distributed consensus</em> is the
       formal problem of getting <em>n</em> machines to agree on a value
-      despite up to <em>f</em> of them failing. The math underneath it
-      is some of the most consequential in computer science: Lamport's
-      <strong>Paxos</strong> (1989, finally clearly explained 2001),
-      and Diego Ongaro and John Ousterhout's <span class="key-term">Raft</span>
-      (2014), which was explicitly designed to be more
-      understandable than Paxos and has since become the dominant
-      consensus protocol in industry.
+      despite up to <em>f</em> of them failing. Its classic protocols
+      are Lamport's <strong>Paxos</strong> (1989) and Diego Ongaro and
+      John Ousterhout's <span class="key-term">Raft</span> (2014), which
+      was explicitly designed to be more understandable than Paxos and
+      has since become the dominant consensus protocol in industry.
     </p>
 
     <h3>Paxos · the harder ancestor</h3>
@@ -1758,10 +1705,10 @@
       holding several rounds and proposal numbers in your head
       simultaneously, and Lamport's original presentation used a parable
       about a fictional Greek parliament that, instead of clarifying
-      things, famously kept the paper unpublished for most of a decade
+      things, kept the paper unpublished for most of a decade
       (submitted 1990, printed 1998, still in costume). The field
-      then waited until 2001 for <em>Paxos Made Simple</em>, the paper
-      that explained the same protocol in plain language.
+      then waited until 2001 for <em>Paxos Made Simple</em>, which
+      explained the same protocol in plain language.
       Raft's contribution was the same correctness with a single
       leader, sequential terms, and an explicit log, at half the
       cognitive load. That is why etcd uses Raft.
@@ -1776,7 +1723,7 @@
       <div class="math-label">Why a quorum is N/2 + 1</div>
       <p id="ch17-consensus-p4">Raft tolerates up to <em>f</em> node failures with a cluster of <em>N</em> = 2<em>f</em> + 1 nodes. A <strong>quorum</strong>, the smallest set of nodes whose agreement counts as the cluster's decision, is:</p>
       <p id="ch17-consensus-p5" class="math-formula">Q = ⌊N / 2⌋ + 1</p>
-      <p id="ch17-consensus-p6">So 5 nodes need 3, 7 need 4, 9 need 5. The reason: any two quorums must <em>intersect</em> in at least one node, so two leaders elected in different terms cannot both have a majority without sharing a witness who would force one to step down. This intersection property is what prevents <em>split brain</em>. It is also why even-numbered cluster sizes are wasteful (4 nodes need 3, giving the same fault tolerance as 3). Add nodes only in odd numbers.</p>
+      <p id="ch17-consensus-p6">So 5 nodes need 3, 7 need 4, 9 need 5. The reason: any two quorums must <em>intersect</em> in at least one node, so two leaders elected in different terms cannot both have a majority without sharing a witness who would force one to step down. This intersection property is what prevents <em>split brain</em>. It is also why even-numbered cluster sizes are wasteful (4 nodes need 3, giving the same fault tolerance as 3).</p>
     </div>
 
     <div class="diagram-card" id="fig-17-5">
@@ -1841,8 +1788,7 @@
 
     <p id="ch17-consensus-p8">
       The deep reason consensus is hard is the <strong>FLP impossibility
-      result</strong> (Fischer, Lynch, Paterson, 1985), one of the most
-      important negative results in computer science. It states: in an
+      result</strong> (Fischer, Lynch, Paterson, 1985): in an
       asynchronous distributed system where messages can be delayed
       arbitrarily and even one process can crash, no deterministic
       consensus protocol can guarantee both <em>safety</em> (never
@@ -1850,11 +1796,7 @@
       eventually reaching a decision). Some run of the protocol can
       always be constructed in which it spins forever without
       deciding. Every real-world consensus protocol (Paxos, Raft, PBFT,
-      Tendermint) works around FLP either by assuming partial synchrony
-      (eventually messages will arrive within some bound) or by giving
-      up determinism (using randomisation, as in some BFT protocols).
-      Neither escape is free; both are pragmatic compromises that the
-      math forces.
+      Tendermint) works around FLP by adding an assumption, and the assumption is the price.
     </p>
 
     <div class="diagram-card" id="fig-17-6">
@@ -1925,13 +1867,11 @@
       write), <strong>Availability</strong> (every request gets a
       response), and <strong>Partition tolerance</strong> (the system
       keeps working when the network splits the cluster). Network
-      partitions are a real fact of distributed systems. They happen,
-      whether you like it or not, so the practical choice during a
-      partition is between C and A. A consistent system, partitioned,
-      refuses to serve requests on the wrong side of the split (you
-      lose A). An available system, partitioned, serves possibly-stale
-      data (you lose C). Different applications choose different
-      points on the spectrum.
+      partitions happen whether you like it or not, so the practical
+      choice during a partition is between C and A. A consistent
+      system, partitioned, refuses to serve requests on the wrong side
+      of the split (you lose A). An available system, partitioned,
+      serves possibly-stale data (you lose C).
     </p>
 
     <div class="pull-quote">
@@ -2099,16 +2039,15 @@
       hundreds of small services, each owning its own data, communicating
       over the network. The motivation was real: independent
       deployability, team autonomy, technology heterogeneity, fault
-      isolation. The cost was also real: every former function call
+      isolation. So was the cost: every former function call
       became a network call, every former invariant became a distributed
       consistency problem, every former crash became a partial failure.
-      By the early 2020s the industry had partially walked the pendulum
-      back. Many companies that had eagerly decomposed into microservices
-      discovered they had built a "distributed monolith" with all the
-      complexity of microservices and none of the benefits, and
-      consolidated. The lesson is older than computing: architecture is
-      a series of trades, not a series of progressions, and the same
-      problems return every fifteen years in slightly different costume.
+      By the early 2020s the pendulum had partly swung back. Many
+      companies that had decomposed eagerly found they had built a
+      "distributed monolith", with all the complexity of microservices
+      and none of the benefits, and consolidated. Architecture is a
+      series of trades, not of progressions, and the same problems
+      return every fifteen years in slightly different costume.
     </p>
 
     <div class="diagram-card" id="fig-17-9">
@@ -2310,22 +2249,19 @@
 
     <p id="ch17-microservices-p4">
       The newer wave is <strong>serverless</strong>: write a function,
-      upload it to AWS Lambda or Google Cloud Functions or Azure
-      Functions, and the platform runs it on demand, scales to whatever
-      number of invocations you receive, meters the bill in
-      milliseconds of execution, and otherwise abstracts away
-      every notion of a server. The trade is sharp: serverless is
-      cheap and elastic for sporadic workloads (a function called a
-      thousand times per day costs cents); it is expensive for
-      sustained workloads (the same function called a thousand times
-      per second is dramatically cheaper on a dedicated server). The
-      cold-start problem, where the first invocation after a quiet period
-      may take hundreds of milliseconds while the platform spins up
-      a runtime, has gotten dramatically better with microVMs (Firecracker
-      again) but still exists. As of 2026, serverless is the right
-      answer for event-driven, bursty workloads (image processing,
-      webhooks, infrequent APIs); it is the wrong answer for sustained
-      high-throughput services. The pendulum keeps swinging.
+      upload it to a platform such as AWS Lambda, and the platform runs
+      it on demand, scales to whatever number of invocations you
+      receive, meters the bill in milliseconds of execution, and
+      otherwise abstracts away every notion of a server. The trade is
+      sharp: serverless is cheap and elastic for sporadic, bursty
+      workloads such as image processing, webhooks, and infrequent APIs
+      (a function called a thousand times per day costs cents); it is
+      expensive for sustained ones (the same function called a thousand
+      times per second is dramatically cheaper on a dedicated server).
+      The cold-start problem, where the first invocation after a quiet
+      period may take hundreds of milliseconds while the platform spins
+      up a runtime, has eased dramatically with microVMs (Firecracker
+      again) but still exists.
     </p>
 
     <div class="diagram-card" id="fig-17-11">
@@ -2385,14 +2321,14 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg></span>
       <p id="ch17-microservices-p6" class="insight-text">
-        <strong>Ask what the abstraction still charges.</strong> Every layer of the cloud abstracts away the layer beneath while preserving its essential trades. Hypervisors abstract physical hardware but preserve the cost of virtualization overhead. Containers abstract operating systems but preserve the cost of process isolation. Kubernetes abstracts cluster operations but preserves the cost of distributed-systems complexity. Serverless abstracts servers entirely but preserves the cost of cold starts and per-invocation latency. None of these abstractions are leak-free; every one of them eventually requires the engineer to understand the layer below. The skill of working in the cloud is, in part, the skill of knowing which layer is currently the source of your problem. We have been building stacks of leaky abstractions for sixty years; we will probably keep doing it for at least sixty more.
+        <strong>Ask what the abstraction still charges.</strong> Every layer of the cloud abstracts away the layer beneath while preserving its essential trades. Hypervisors abstract physical hardware but preserve the cost of virtualization overhead. Containers abstract operating systems but preserve the cost of process isolation. Kubernetes abstracts cluster operations but preserves the cost of distributed-systems complexity. Serverless abstracts servers entirely but preserves the cost of cold starts and per-invocation latency. None of these abstractions is leak-free: each eventually requires the engineer to understand the layer below. The skill of working in the cloud is, in part, knowing which layer is currently the source of your problem.
       </p>
     </div>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch17-microservices-p7" class="insight-text">
-        <strong>SolarWinds, December 2020.</strong> Nearly eighteen thousand customers of a network-management vendor installed a routine update of Orion. The update had been silently poisoned at build-time inside SolarWinds's own CI pipeline: a backdoor compiled into the binary the vendor itself signed and shipped. Among the customers were US federal agencies, parts of Microsoft, and SolarWinds itself. The cloud era amplifies the blast radius of supply-chain compromise: one compromised vendor reaches every customer simultaneously, the update mechanism is the attack vector, and the trust boundary that mattered was not in any customer's network. SBOMs, reproducible builds, and signed-but-also-attested artefacts are the industry's response to discovering that a software-update channel is architecturally identical to a worm.
+        <strong>SolarWinds, December 2020.</strong> Nearly eighteen thousand customers of a network-management vendor installed a routine update of Orion, silently poisoned at build-time inside SolarWinds's own CI pipeline: a backdoor compiled into the binary the vendor itself signed and shipped (<a href="part-4#ch15-defense">Chapter 15</a> has the attack in detail). The cloud era amplifies the blast radius of supply-chain compromise: one compromised vendor reaches every customer at once, through the update mechanism, across a trust boundary that sat in no customer's network. SBOMs, reproducible builds, and signed-but-also-attested artefacts are the industry's response to discovering that a software-update channel is architecturally identical to a worm.
       </p>
     </div>
 
@@ -2407,16 +2343,12 @@
 
     <p id="ch17-microservices-p9">
       <a href="#ch17">Chapter 17</a> closes the substrate-and-scale arc that began with the
-      single transistor in <a href="part-1#ch1">Chapter 1</a>. We have followed the layers all
-      the way out: from one transistor to one CPU to one operating
-      system to one network to one TLS connection to one database to
-      one cryptographic primitive, then up again: many cores, many
-      machines, many datacenters, many regions. There is no further
-      "out" we can go without reaching the human social systems that
-      computing intersects with. That is, in some sense, where <a href="#ch18">Chapter
-      18</a> looks. Eighteen chapters of mechanism, ending in the
-      observation that the mechanism is now a substrate for everything
-      else.
+      single transistor in <a href="part-1#ch1">Chapter 1</a>: out from one transistor to
+      one CPU, one operating system, one network, one TLS connection,
+      one database, one cryptographic primitive, then up again to many
+      cores, many machines, many datacenters, many regions. There is no
+      further "out" to go without reaching the human social systems that
+      computing intersects with, which is where <a href="#ch18">Chapter 18</a> looks.
     </p>
   </section>
 
@@ -2499,19 +2431,16 @@
     <h2>Every layer is math made physical · made physical again, on top.</h2>
 
     <p id="ch18-math-p1" class="lead">
-      The deepest claim this book has made, implicit in every chapter and
-      visible in retrospect, is that the modern computer is, in a
-      precise sense, a mathematical object. It is a stack of layers in
-      which each layer is a mathematical structure realised in the layer
-      below, and the next layer up is another mathematical structure
-      realised in <em>this</em> one. Boolean algebra is realised in
-      voltages and gates. Arithmetic is realised in adders and
-      registers. The instruction set is realised in microcode. The
-      kernel is a state machine over processes. The relational model
-      is set theory over rows. TLS is number theory over network
-      packets. Distributed consensus is quorum arithmetic over
-      asynchronous nodes. The whole tower is built by translating one
-      kind of mathematics into the operations of another.
+      The deepest claim this book has made, implicit in every chapter,
+      is that the modern computer is, in a precise sense, a mathematical object: a stack of
+      layers in which each layer is a mathematical structure realised in
+      the layer below, and the next layer up is another mathematical
+      structure realised in <em>this</em> one. Boolean algebra is
+      realised in voltages and gates; arithmetic in adders and
+      registers; the instruction set in microcode. The kernel is a
+      state machine over processes. The relational model is set theory
+      over rows. TLS is number theory over network packets. Distributed
+      consensus is quorum arithmetic over asynchronous nodes.
     </p>
 
     <div class="diagram-card" id="fig-18-1">
@@ -2590,25 +2519,23 @@
       Every senior engineer is supposed to be able to answer one question:
       <em>"what happens when you type</em> <code>google.com</code>
       <em>into your browser and press Enter?"</em> The honest answer
-      touches every layer of computing. The book you have just read is,
-      structurally, the long-form answer. This section is the visual one.
-      One figure, one keystroke, every chapter activated at once.
+      touches every layer of computing. The book you have just read is
+      the long-form answer. This section is the visual one: one figure,
+      one keystroke, every chapter activated at once.
     </p>
 
     <p id="ch18-trace-p2">
-      The trace below follows a single keystroke from the moment your
-      finger closes a contact on a key (voltage rising on a wire, in
-      the same way <a href="part-1#ch1">Chapter 1</a>
-      described) through every layer of your machine, out across the
-      network, into Google's server stack, back through the network,
-      and onto pixels on your screen. Eighteen waypoints, one for each
-      chapter (almost). The pulse animates the journey end to end. The
-      reader who has finished the book can name what is happening at
-      every station.
+      The trace below follows that keystroke from the moment your
+      finger closes a contact on a key (voltage rising on a wire, as
+      <a href="part-1#ch1">Chapter 1</a> described) through every layer
+      of your machine, out across the network, into Google's server
+      stack, back through the network, and onto pixels on your screen.
+      Eighteen waypoints, one for each chapter (almost). A reader who
+      has finished the book can name what is happening at every station.
     </p>
 
     <p id="ch18-trace-p3">
-      Two chapters are not numbered stations and warrant a note.
+      Two chapters are not numbered stations.
       <strong><a href="part-4#ch15">Chapter 15</a> (security)</strong>
       is woven across the trace rather than located at one point. Each
       time the journey crosses from less-trusted to more-trusted
@@ -2616,7 +2543,7 @@
       server's TLS endpoint; HTTP query → SQL parser), a threat
       boundary is crossed and a defence layer applies. The figure marks
       these transitions with thin red dotted lines.
-      <strong><a href="#ch18">Chapter 18</a></strong> is not a station because <a href="#ch18">Chapter 18</a>
+      <strong><a href="#ch18">Chapter 18</a></strong> is not a station because it
       <em>is</em> this figure: the moment the layers stop being a list
       and become a system.
     </p>
@@ -2946,15 +2873,12 @@
     </div>
 
     <p id="ch18-trace-p5">
-      That is the answer the book has been long-form preparing you to
-      give. The interview question <em>"what happens when you press
-      Enter on google.com?"</em> has been answered countless times in
-      blog posts, in lectures, in technical books. Most answers are
-      lists. The book's contribution is the <em>visual</em> answer: the
-      pulse travelling along a single arc through eighteen distinct
-      mathematical and engineering structures, every one of which had
-      to be invented by specific people in specific decades to be
-      available at this moment.
+      That interview question has been answered countless times, in blog posts,
+      lectures and technical books, and most answers are lists. The
+      book's contribution is the <em>visual</em> answer: the pulse travelling along a single arc through
+      eighteen distinct mathematical and engineering structures, every
+      one of which had to be invented by specific people in specific
+      decades to be available at this moment.
     </p>
 
     <div class="pull-quote">
@@ -2964,13 +2888,11 @@
 
     <p id="ch18-trace-p7">
       That sentence has been the through-line of <em>Under the Code</em>
-      from the first transistor to this trace. The two hundred and thirty-five
-      figures that came before have, in retrospect, been preparation for
-      the figure above. A reader who has finished the book has, in some
-      precise sense, watched a keystroke travel through their entire
-      civilization and come back. Whatever they go on to build or break
-      or maintain, they will see those layers from now on. That is what
-      reading the book has done.
+      from the first transistor to this trace, and the two hundred and
+      thirty-five figures that came before were preparation for the
+      figure above. A reader who has finished the book has, in some precise sense, watched a keystroke travel through their entire civilization and come back.
+      Whatever they go on to build or break or maintain, they will see
+      those layers from now on.
     </p>
   </section>
 
@@ -2979,11 +2901,8 @@
     <h2>The chain of decisions, in time, by people in real places.</h2>
 
     <p id="ch18-civilization-p1" class="lead">
-      Every layer in that diagram is also a piece of history. Each one
-      was invented by specific people, in specific places, in response
-      to specific problems they were trying to solve. None of them was
-      inevitable. Each could have happened differently, or not at all,
-      or much later. The Boolean algebra in your CPU was invented by
+      Every layer in that diagram is also a piece of history, and none
+      of it was inevitable. The Boolean algebra in your CPU was invented by
       a Lincolnshire schoolteacher who died in 1864. The transistor
       came out of three physicists at Bell Labs in 1947. The kernel
       structure of every modern operating system descends from UNIX,
@@ -3081,25 +3000,21 @@
     <h2>The substrate is changing again · which parts will survive it?</h2>
 
     <p id="ch18-future-p1" class="lead">
-      Three forces are visibly reshaping the substrate as this book is
+      Three forces are reshaping the substrate as this book is
       written. <strong>Moore's Law is ending</strong>: the
       transistor-density doubling we tracked from <a href="part-1#ch1">Chapter 1</a> has slowed
       to a near-halt below 3 nanometres because we are running into
       single-atom-width physics. <strong>Quantum computing</strong> is
       going from laboratory demonstrations to early useful machines,
-      not replacing classical computers but solving the specific
-      problems no classical computer can attack efficiently (factoring, the
-      simulation of quantum systems), with optimisation a more
-      speculative third. <strong>Neuromorphic
+      solving the specific problems no classical computer can attack
+      efficiently (factoring, the simulation of quantum systems), with
+      optimisation a more speculative third. <strong>Neuromorphic
       and analog AI accelerators</strong> are becoming a real
       alternative substrate for one specific workload (large neural
       networks) that classical von Neumann hardware is, by 2026,
       visibly straining to run. None of these will replace the stack
-      this book described. All of them will sit alongside it as
-      additional substrates. The question, in the long view, is which
-      mathematical primitives travel. Boolean algebra survives
-      anything; relational algebra survives most things; specific
-      cryptographic schemes do not survive quantum.
+      this book described; all of them will sit alongside it as
+      additional substrates.
     </p>
 
     <div class="diagram-card" id="fig-18-3">
@@ -3188,9 +3103,8 @@
     </div>
 
     <p id="ch18-future-p3">
-      The deeper claim under all three forces is about which intellectual
-      content of this book will still be useful in fifty years. The
-      mathematical primitives almost always survive: Boolean algebra
+      Which of this book's ideas will still be useful in fifty years?
+      The mathematical primitives almost always survive: Boolean algebra
       (<a href="part-1#ch2">Chapter 2</a>), set theory and relational
       algebra (<a href="part-4#ch13">Chapter 13</a>), information
       theory (<a href="part-3#ch8">Chapter 8</a>), graph theory
@@ -3205,11 +3119,11 @@
       what computes it. The specific implementations are the most
       fragile: x86 will eventually be a curiosity, RSA will retire when
       fault-tolerant quantum computers can run Shor's algorithm at
-      scale, particular libraries will become archaic. The reader who
-      has internalised the patterns rather than the products will not
-      be inconvenienced by any of those losses. The reader who has
-      memorised the products will need to keep relearning. That is the
-      whole bet of writing a book about perspective rather than facts.
+      scale, and particular libraries will become archaic. The reader
+      who has internalised the patterns rather than the products will
+      not be inconvenienced by those losses; the reader who has
+      memorised the products will keep relearning. That is the whole
+      bet of writing a book about perspective rather than facts.
     </p>
   </section>
 
@@ -3218,21 +3132,19 @@
     <h2>The substrate of this book is now the substrate of much else.</h2>
 
     <p id="ch18-intersect-p1" class="lead">
-      Computer science as a discipline began as a branch of mathematics
-      and electrical engineering. It is now the substrate that every
-      other discipline runs on, and increasingly the methodological
-      lens that other fields adopt. Modern biology is computational:
-      genomes are bytes, protein folding is an optimisation problem,
-      drug discovery is a search through chemical space. Modern economics
-      is computational: markets are distributed systems, financial
-      contracts are state machines, trading is a latency competition.
-      Modern governance is increasingly computational: every public
-      service is a software system, public records are databases, the
-      shape of public discourse is shaped by recommendation algorithms.
-      Modern art is increasingly computational: generative models,
-      procedural environments, real-time graphics. The sentences in this
-      paragraph are slogans, but each one names a real arc that is in
-      progress now, that this book's reader will be in the middle of.
+      Computer science began as a branch of mathematics and electrical
+      engineering. It is now the substrate every other discipline runs
+      on, and increasingly the methodological lens other fields adopt.
+      Modern biology is computational: genomes are bytes, protein
+      folding is an optimisation problem, drug discovery is a search
+      through chemical space. Modern economics is computational: markets
+      are distributed systems, financial contracts are state machines,
+      trading is a latency competition. Modern governance is
+      increasingly computational: every public service is a software
+      system, public records are databases, public discourse is shaped
+      by recommendation algorithms. These are slogans, but each names an
+      arc in progress now, one this book's reader will be in the middle
+      of.
     </p>
 
     <div class="diagram-card" id="fig-18-4">
@@ -3308,25 +3220,23 @@
     </div>
 
     <p id="ch18-intersect-p3">
-      The transitive direction matters too. A computer scientist who
+      The vocabulary moves both ways. A computer scientist who
       understands the substrate of biology can talk to biologists about
       why a particular algorithm scales; one who understands market
       microstructure can talk to economists about why a particular
-      distributed-ledger design will or will not work. The vocabulary
-      moves both ways. The deeper consequence is that "computer
-      science" is becoming less a separate field and more a kind of
-      literacy, one that other disciplines increasingly assume in the
-      way they once assumed statistics or basic mathematics. Within
-      fifty years, the question may not be whether a biologist or an
-      economist or an artist knows computer science, but which parts of
-      it they know to which depth, and whether they can recognise when
-      a problem in their own domain is actually a computational problem
-      they are trying to solve without the vocabulary. The reader who
-      has finished this book has, on top of that vocabulary, the
-      discipline that produced it: resolve into layers, follow the
-      math, locate the security boundary, name the historical
-      decision. Those four moves work in any computational domain,
-      regardless of which surface field it is wearing.
+      distributed-ledger design will or will not work. "Computer
+      science" is becoming less a separate field than a literacy, one
+      other disciplines increasingly assume the way they once assumed
+      statistics or basic mathematics. Within fifty years, the question may not be
+      whether a biologist or an economist or an artist knows computer science, but
+      which parts, to what depth, and whether they can recognise a
+      problem in their own domain as a computational one they are
+      trying to solve without the vocabulary. The reader who has
+      finished this book has, on top of that vocabulary, the discipline
+      that produced it: resolve into layers, follow the math, locate the
+      security boundary, name the historical decision. Those four moves
+      work in any computational domain, whatever surface field it is
+      wearing.
     </p>
   </section>
 
@@ -3335,14 +3245,12 @@
     <h2>The books that go deeper · one shelf per part of the book.</h2>
 
     <p id="ch18-reading-p1" class="lead">
-      Every chapter of <em>Under the Code</em> compresses what is, in
-      its target field, several books worth of detail. The point of
-      compression was to give a reader the whole arc and the
-      vocabulary to navigate; the point of the books below is to give
-      the reader the depth to do real work. The list is curated for
-      durability. Nearly every entry has been the reference text of
-      its field for a decade or more. None of them are substitutes for
-      this book; all of them are deeper.
+      Every chapter of <em>Under the Code</em> compresses what its
+      field spreads across several books. The compression gave the
+      reader the whole arc and the vocabulary to navigate it; the
+      books below give the depth to do real work. The list is curated
+      for durability: nearly every entry has been the reference text
+      of its field for a decade or more.
     </p>
 
     <div class="diagram-card" id="fig-18-5">
@@ -3412,15 +3320,12 @@
       this book has been to introduce nothing without its history,
       explain nothing without its mathematics, name no specific
       vulnerability without the structural pattern beneath it, describe
-      no protocol without the human decisions that produced it. The
-      reader who has finished (really finished, having followed the
-      diagrams, the worked examples, the pull quotes, the cross-chapter
-      threads) is now able, in principle, to look at any piece of
-      software, any network, any device, and resolve it into the layers
-      it is made of. To recognise that each of those layers is the
-      consequence of specific human decisions made under specific
-      historical pressures. To recognise the math underneath each one.
-      To see where the security lives, and where it doesn't.
+      no protocol without the human decisions that produced it. The reader who has finished (really finished, having followed the diagrams, the worked examples, the pull quotes, the cross-chapter threads) is now able, in principle, to look at any
+      piece of software, any network, any device, and resolve it into
+      the layers it is made of. To recognise the human decisions and
+      historical pressures behind each of those layers, and the math
+      underneath each one. To see where the security lives, and where
+      it doesn't.
     </p>
 
     <p id="ch18-final-p2">
@@ -3429,26 +3334,21 @@
       and without ever assuming that an idea introduced in the third
       chapter will be remembered three hundred pages later. Every
       reference back is explicit, every primitive is named, every figure
-      builds on the figures before. If the discipline has worked, the
-      reader now sees the layers when they didn't before, and that
+      builds on the figures before. If the discipline has worked, that
       seeing will be portable to new domains the book did not cover.
     </p>
 
     <p id="ch18-final-p3">
-      The substrate is changing. New chips, new substrates, new
-      paradigms (quantum, neuromorphic, who knows what else) will
-      sit alongside the stack this book described. Some of the specific
-      content will go out of date; most of the structural content
-      won't. The reasoning skills the book asked for are not specific
-      to any year of computing: resolve into layers, follow the math
-      underneath, locate the security boundary, name the historical
-      decision. They will be useful in fifty years for the
-      same reason they are useful now: every layer of every system,
-      no matter what substrate it runs on, will still be a mathematical
-      structure realised in the layer below, built by specific people
-      under specific constraints, defended by carefully chosen
-      assumptions. The vocabulary is durable.
-    </p>
+      The substrate is changing. New chips and new paradigms (quantum, neuromorphic, who knows what else) will sit alongside the stack this book described.
+      Some of the specific content will go out of date; most of the
+      structural content won't. The reasoning skills the book asked for
+      are not specific to any year of computing: resolve into layers,
+      follow the math underneath, locate the security boundary, name
+      the historical decision. They will be useful in fifty years for
+      the same reason they are useful now: every layer of every system,
+      whatever it runs on, will still be a mathematical structure
+      realised in the layer below, built by specific people under
+      specific constraints, defended by carefully chosen assumptions. The vocabulary is durable. </p>
 
     <p id="ch18-final-p4">
       Eighteen chapters from a single transistor to a planet-scale

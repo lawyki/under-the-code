@@ -2790,7 +2790,7 @@
   function normalizeKey(s) {
     return s.toLowerCase()
       .replace(/<[^>]+>/g, ' ')
-      .replace(/[^a-z0-9 -]/g, ' ')
+      .replace(/[^a-z0-9 +-]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
   }
@@ -2986,6 +2986,7 @@
       if (!text || text.length > 80) return;
       const key = normalizeKey(text);
       if (!key) return;
+      if (key.length === 1 && el.tagName === 'EM') return;   // a variable (the RSA ciphertext c), not a term
       const entry = entries[key];
       if (!entry) return;
 

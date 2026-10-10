@@ -98,9 +98,7 @@ in substance throughout.
 4. **Re-tune the Pass 25 thresholds** after the owner's read (`?utc-debug`
    on any part shows the tracker's state; constants in `book.js` `T`).
 5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
-   cut, one part at a time (`docs/pass-27-brief.md`; Parts I–III done, §4aa;
-   after Part V, authored one-line glossary definitions replace the ~100
-   fragment definitions);
+   cut, DONE (§4aa: 11.2 % shorter, glossary authored);
    28 figures, pilot of three, then every figure one by one, handcrafted and
    tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
    fig 1.2 note: the image explains itself, text goes into explainers).
@@ -138,6 +136,10 @@ this list, it is not blocking.
 - **Sign off the Pass 26 wording choices** (§4z "Owner sign-off list": the Zen
   of Python's own punctuation, the shortened Berners-Lee pull-quote, the
   epilogue ornament, quote attributions). Silence keeps them.
+- **Sign off the Pass 27 epilogue trims** (§4aa Part V, "For the owner's
+  sign-off": restatement cut from Ch18's math, trace, civilization, future,
+  intersect, reading and final paragraphs; the book's closing paragraph and
+  every changed claim were restored verbatim). Silence keeps them.
 - **Approve the Pass 25 privacy wording** — `docs/pass-25-copy.md` (five
   short replacements on the account page). Until then marks stay on each
   device.

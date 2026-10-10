@@ -182,10 +182,11 @@ function isDefContext(after) {
 }
 
 function normalizeKey(term) {
+  // '+' stays so C and C++ are different terms (book.js normalizes the same way).
   return term
     .toLowerCase()
     .replace(/<[^>]+>/g, ' ')
-    .replace(/[^a-z0-9 -]/g, ' ')
+    .replace(/[^a-z0-9 +-]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -793,8 +794,27 @@ const DEFINITION_OVERRIDES = {
   'boole': 'George Boole, a self-taught English mathematician, published The Mathematical Analysis of Logic in 1847: an algebra whose variables are not numbers but truth values, true or false.',
   'split brain': 'Any two quorums must intersect in at least one node, so two leaders elected in different terms cannot both have a majority without sharing a witness who would force one to step down. This intersection property is what prevents split brain.',
 };
+// Stripped tags leave a space before punctuation ("binary digit ."); close it.
+for (const e of Object.values(out.entries || {})) if (e.definition) e.definition = e.definition.replace(/\s+([.,:;!?)])/g, '$1').replace(/\(\s+/g, '(');
 for (const [k, d] of Object.entries(DEFINITION_OVERRIDES)) if (out.entries && out.entries[k]) out.entries[k].definition = d;
+// Authored definitions (Pass 27): one sentence per term, written from the
+// book's text and checked against it. The extractor still finds the terms and
+// their first-use sections; the words a reader sees come from here. A term the
+// file marks { drop: true } is not a glossary term and is removed.
+const DEFS_PATH = path.join(__dirname, 'glossary-defs.json');
+let unauthored = [];
+if (fs.existsSync(DEFS_PATH)) {
+  const defs = JSON.parse(fs.readFileSync(DEFS_PATH, 'utf8'));
+  for (const k of Object.keys(out.entries)) {
+    const d = defs[k];
+    if (!d) { unauthored.push(k); continue; }
+    if (d.drop) { delete out.entries[k]; continue; }
+    out.entries[k].definition = d.definition;
+  }
+  out.count = Object.keys(out.entries).length;
+}
 fs.writeFileSync(outPath, JSON.stringify(out, null, 2));
+if (unauthored.length) console.log(`Entries with no authored definition in scripts/glossary-defs.json (${unauthored.length}): ${unauthored.join(', ')}`);
 console.log(`Scanned ${scanned} candidates across <span class="key-term">, <em>, <strong>.`);
 console.log(`Kept ${kept} glossary entries (${curatedAdded} added by curated backfill).`);
 if (curatedMissing.length > 0) {
