@@ -3428,7 +3428,10 @@ removed, §4g), 4.22 (two programs through the
 verifier: a packet counter is proven, JIT-compiled and runs per packet; an
 unbounded loop is refused with EINVAL; concept only, no exploit mechanics), 5.1 (three target cards with their real
 encodings as cells sized by byte count: 8D 04 37 + C3, 0B010000 + D65F03C0,
-00B5053B + 00008067; RISC-V corrected to addw, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+00B5053B + 00008067; RISC-V corrected to addw, §4g), 5.2 (vertical timeline whose axis is
+coloured by the language of UNIX's own source, assembly to 1973 and C after;
+the 1977 Interdata 8/32 port added as the payoff; the "first OS you could move"
+banner dropped, per the §4 "considered and declined" note on MCP and Multics). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
