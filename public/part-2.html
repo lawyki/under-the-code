@@ -1581,86 +1581,85 @@
       applications.
     </p>
 
-    <div class="diagram-card" id="fig-4-16">
-      <div class="diagram-label">Fig 4.16 · The UNIX philosophy, in five processes</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-17"><title id="svgt-part2-17">Fig 4.16 · The UNIX philosophy, in five processes</title>
-        <!-- Five processes in a horizontal pipeline -->
-        <g font-family="IBM Plex Mono" text-anchor="middle">
-          <!-- cat -->
-          <rect x="40"  y="80" width="100" height="60" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="90"  y="102" font-size="11" fill="rgba(150,216,150,0.95)">cat</text>
-          <text x="90"  y="120" font-size="8" fill="rgba(255,255,255,0.7)">read file</text>
-          <text x="90"  y="132" font-size="8" fill="rgba(150,216,150,0.7)">→ stream bytes</text>
-
-          <!-- grep -->
-          <rect x="180" y="80" width="100" height="60" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="230" y="102" font-size="11" fill="rgba(100,150,255,0.95)">grep ^ERROR</text>
-          <text x="230" y="120" font-size="8" fill="rgba(255,255,255,0.7)">filter lines</text>
-          <text x="230" y="132" font-size="8" fill="rgba(100,150,255,0.7)">→ matches only</text>
-
-          <!-- sort -->
-          <rect x="320" y="80" width="100" height="60" rx="6" fill="rgba(132,255,178,0.18)" stroke="rgba(62,138,94,0.7)"/>
-          <text x="370" y="102" font-size="11" fill="rgba(132,255,178,0.95)">sort</text>
-          <text x="370" y="120" font-size="8" fill="rgba(255,255,255,0.7)">order them</text>
-          <text x="370" y="132" font-size="8" fill="rgba(132,255,178,0.7)">→ sorted lines</text>
-
-          <!-- uniq -->
-          <rect x="460" y="80" width="100" height="60" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.7)"/>
-          <text x="510" y="102" font-size="11" fill="rgba(232,120,120,0.95)">uniq</text>
-          <text x="510" y="120" font-size="8" fill="rgba(255,255,255,0.7)">dedupe adjacent</text>
-          <text x="510" y="132" font-size="8" fill="rgba(232,120,120,0.7)">→ unique lines</text>
-
-          <!-- wc -->
-          <rect x="600" y="80" width="80" height="60" rx="6" fill="rgba(180,140,200,0.18)" stroke="rgba(120,80,160,0.7)"/>
-          <text x="640" y="102" font-size="11" fill="rgba(200,160,220,0.95)">wc -l</text>
-          <text x="640" y="120" font-size="8" fill="rgba(255,255,255,0.7)">count</text>
-          <text x="640" y="132" font-size="8" fill="rgba(200,160,220,0.7)">→ "47"</text>
-        </g>
-
-        <!-- Pipes between -->
-        <g stroke="rgba(132,255,178,0.7)" stroke-width="1.5">
-          <line x1="140" y1="110" x2="180" y2="110"/>
-          <polygon points="180,110 174,104 174,116" fill="rgba(132,255,178,0.7)"/>
-          <line x1="280" y1="110" x2="320" y2="110"/>
-          <polygon points="320,110 314,104 314,116" fill="rgba(132,255,178,0.7)"/>
-          <line x1="420" y1="110" x2="460" y2="110"/>
-          <polygon points="460,110 454,104 454,116" fill="rgba(132,255,178,0.7)"/>
-          <line x1="560" y1="110" x2="600" y2="110"/>
-          <polygon points="600,110 594,104 594,116" fill="rgba(132,255,178,0.7)"/>
-        </g>
-
-        <!-- Pipe labels -->
-        <g font-family="IBM Plex Mono" font-size="7" fill="rgba(132,255,178,0.6)" text-anchor="middle">
-          <text x="160" y="74">| pipe</text>
-          <text x="300" y="74">| pipe</text>
-          <text x="440" y="74">| pipe</text>
-          <text x="580" y="74">| pipe</text>
-        </g>
-
-        <!-- Animated bytes flowing -->
-        <g>
-          <circle cx="155" cy="110" r="3" fill="rgba(132,255,178,0.9)">
-            <animate attributeName="cx" values="155;295;435;575;680" dur="3.2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;1;1;1;0" dur="3.2s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="155" cy="110" r="3" fill="rgba(132,255,178,0.9)">
-            <animate attributeName="cx" values="155;295;435;575;680" dur="3.2s" begin="0.8s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;1;1;1;0" dur="3.2s" begin="0.8s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="155" cy="110" r="3" fill="rgba(132,255,178,0.9)">
-            <animate attributeName="cx" values="155;295;435;575;680" dur="3.2s" begin="1.6s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;1;1;1;0" dur="3.2s" begin="1.6s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <!-- Bottom: properties -->
-        <text x="360" y="186" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">five processes · five small jobs · zero coordination · streamed in parallel</text>
-        <text x="360" y="208" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">none of the five tools knows about the others. The shell wires them together via pipes,</text>
-        <text x="360" y="224" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">and the kernel makes "stdin" and "stdout" look like ordinary files to each one.</text>
-
-        <text x="360" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">"WRITE PROGRAMS THAT DO ONE THING WELL · WRITE PROGRAMS TO WORK TOGETHER"</text>
-      </svg>
-      <p id="ch4-ipc-p7" class="diagram-caption">Five processes, each doing one small task, with pipes between every pair. <code>cat</code> reads the file. <code>grep</code> filters to lines starting with <code>ERROR</code>. <code>sort</code> orders them. <code>uniq</code> drops adjacent duplicates. <code>wc&nbsp;-l</code> counts what's left. None of these programs was written knowing about the others; each just reads from stdin and writes to stdout. The shell connects them with pipes, and the kernel runs all five in parallel. Bytes stream through the pipeline as fast as the slowest stage allows. This is the canonical illustration of the UNIX philosophy: composition through tiny, sharp tools and a universal interface (text bytes), so any new tool you write joins the pipeline for free.</p>
+    <div class="diagram-card fig-v2" id="fig-4-16">
+      <div class="diagram-label">Fig 4.16&nbsp;· The UNIX philosophy, in five processes</div>
+      <svg viewBox="0 0 400 464" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-17 svgd-part2-17">
+<title id="svgt-part2-17">Fig 4.16 · The UNIX philosophy, in five processes</title>
+<desc id="svgd-part2-17">Five processes joined by pipes: cat server.log, grep ^ERROR, sort, uniq, wc -l. cat streams five log lines; grep passes the three ERROR lines as each arrives; sort must wait until its input ends and then prints all three in order; uniq drops the repeated "ERROR disk"; wc -l prints 2.</desc>
+<rect x="20" y="12" width="140" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="30" y="31" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">cat server.log</text>
+<text x="30" y="49" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">read the file</text>
+<rect x="176" y="12" width="204" height="106" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.18)"/>
+<line x1="160" y1="35.0" x2="176" y2="35.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.149750;0.150000;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="33" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">INFO start</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.212250;0.212500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="51" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.274750;0.275000;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="69" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.337250;0.337500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="87" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">WARN cpu</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.399750;0.400000;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="105" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<line x1="50" y1="58" x2="50" y2="140" stroke="rgba(132,255,178,0.5)" stroke-width="2"/>
+<polygon points="45,134 55,134 50,142" fill="rgba(132,255,178,0.5)"/>
+<text x="60" y="105" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(132,255,178,0.6)">pipe</text>
+<line class="fx" x1="50" y1="58" x2="50" y2="140" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.149750;0.150000;0.176500;0.176875;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="58" x2="50" y2="140" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.212250;0.212500;0.239000;0.239375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="58" x2="50" y2="140" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.274750;0.275000;0.301500;0.301875;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="58" x2="50" y2="140" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.337250;0.337500;0.364000;0.364375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="58" x2="50" y2="140" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.399750;0.400000;0.426500;0.426875;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="20" y="142" width="140" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="30" y="161" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">grep ^ERROR</text>
+<text x="30" y="179" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">keep matches</text>
+<rect x="176" y="142" width="204" height="70" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.18)"/>
+<line x1="160" y1="165.0" x2="176" y2="165.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.243500;0.243750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="163" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.306000;0.306250;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="181" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.431000;0.431250;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="199" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<line x1="50" y1="188" x2="50" y2="234" stroke="rgba(132,255,178,0.5)" stroke-width="2"/>
+<polygon points="45,228 55,228 50,236" fill="rgba(132,255,178,0.5)"/>
+<text x="60" y="217" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(132,255,178,0.6)">pipe</text>
+<line class="fx" x1="50" y1="188" x2="50" y2="234" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.243500;0.243750;0.270250;0.270625;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="188" x2="50" y2="234" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.306000;0.306250;0.332750;0.333125;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="188" x2="50" y2="234" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.431000;0.431250;0.457750;0.458125;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="20" y="236" width="140" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="30" y="255" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">sort</text>
+<text x="30" y="273" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">waits for end</text>
+<rect x="176" y="236" width="204" height="70" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.18)"/>
+<line x1="160" y1="259.0" x2="176" y2="259.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="257" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="275" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="293" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
+<line x1="50" y1="282" x2="50" y2="328" stroke="rgba(132,255,178,0.5)" stroke-width="2"/>
+<polygon points="45,322 55,322 50,330" fill="rgba(132,255,178,0.5)"/>
+<text x="60" y="311" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(132,255,178,0.6)">pipe</text>
+<line class="fx" x1="50" y1="282" x2="50" y2="328" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.512250;0.512500;0.539000;0.539375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="282" x2="50" y2="328" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.512250;0.512500;0.539000;0.539375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="282" x2="50" y2="328" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.512250;0.512500;0.539000;0.539375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="20" y="330" width="140" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="30" y="349" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">uniq</text>
+<text x="30" y="367" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">drop repeats</text>
+<rect x="176" y="330" width="204" height="52" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.18)"/>
+<line x1="160" y1="353.0" x2="176" y2="353.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.562250;0.562500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="351" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.593500;0.593750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="369" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
+<line x1="50" y1="376" x2="50" y2="404" stroke="rgba(132,255,178,0.5)" stroke-width="2"/>
+<polygon points="45,398 55,398 50,406" fill="rgba(132,255,178,0.5)"/>
+<text x="60" y="396" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(132,255,178,0.6)">pipe</text>
+<line class="fx" x1="50" y1="376" x2="50" y2="404" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.562250;0.562500;0.589000;0.589375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<line class="fx" x1="50" y1="376" x2="50" y2="404" stroke="#84ffb2" stroke-width="3.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.593500;0.593750;0.620250;0.620625;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="20" y="406" width="140" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="30" y="425" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">wc -l</text>
+<text x="30" y="443" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">count</text>
+<rect x="176" y="406" width="204" height="46" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.18)"/>
+<line x1="160" y1="429.0" x2="176" y2="429.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.668500;0.668750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="427" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">2</text></g>
+</svg>
+      <p id="ch4-ipc-p7" class="diagram-caption">Five small programs joined by four pipes run at once, each reading standard input and writing standard output with no idea what is on the other end. Lines stream through as they arrive, except at <code>sort</code>, which must see the last line before it can print the first.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The wiring.</b> The shell calls <code>pipe()</code> four times and <code>fork()</code> five, then points each program's standard output at the next one's standard input.</li>
+          <li><b>Streaming.</b> <code>grep</code> and <code>uniq</code> work a line at a time; <code>sort</code> and <code>wc</code> must reach the end of their input before they can answer.</li>
+          <li><b>The philosophy.</b> Doug McIlroy's summary: write programs that do one thing well, and write them to work together.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="pull-quote">
