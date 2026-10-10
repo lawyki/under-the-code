@@ -534,6 +534,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Rainbow tables listed as "hardware" (ch14-tls-pqc-p9 strip) | Rainbow tables are precomputation, not hardware | "through precomputation and hardware (rainbow tables, then GPUs, eventually quantum computers)" (Pass 27, 2026-10-10) |
 | "Every chapter in this book has had attacks woven into it" (ch15-hero-lead) | Several chapters (e.g. Ch2, Ch6–7) carry no attack | "Attacks have run through this whole book." (Pass 27, 2026-10-10) |
 | ENIAC → M4 "roughly twelve million times as many switches" (fig 1.7 caption) | 28 billion ÷ 17,468 tubes ≈ 1.6 million; twelve million is 4004 → M4 (2,300 → 28 B) | "about 1.6 million times as many switches" (Pass 28, 2026-10-10) |
+| Fig 2.9: int −1 as size_t = "4,294,967,295" / "4 billion" (bottom panel, caption) beside "18 446 744 073 709 551 615" (step 2) | On a 64-bit machine the 32-bit −1 is widened to 64 one-bits: 2^64 − 1; 4,294,967,295 is the 32-bit size_t case | The figure now follows the 64-bit case throughout (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3327,7 +3328,8 @@ ripple-carry adder, carries rippling left as 5 + 3 settles to 1000), 2.6
 used to repeat is Fig 2.5), 2.7 (7 + (−5) in a drawn 8-bit register, the
 ninth bit falling off), 2.8 (the two's-complement wheel at true angles:
 the old dial put +127 at three o'clock and +64 at 45°; a pointer steps
-across the bottom seam into overflow and across the top into a correct 0). `figlib.Timeline` fix found on 1.9: a point at the loop's
+across the bottom seam into overflow and across the top into a correct 0), 2.9 (the check, the cast, the copy
+running red over the buffer's neighbours; one machine width, 64-bit, §4g). `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

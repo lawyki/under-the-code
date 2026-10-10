@@ -49,7 +49,8 @@ function measureFigs(only) {
     }
     const outside = boxes.filter(b => b.x < sr.left - 1 || b.y < sr.top - 1 || b.x + b.w > sr.right + 1 || b.y + b.h > sr.bottom + 1).map(b => b.t);
     // spill: a label whose centre sits in a shape must fit inside that shape (the smallest one holding its centre)
-    const shapes = [...svg.querySelectorAll('rect, circle, ellipse, polygon')].filter(r => shown(r) && r.getAttribute('fill') !== 'none'
+    // .fx marks a moving overlay (a highlight, a spreading fill), not a container
+    const shapes = [...svg.querySelectorAll('rect, circle, ellipse, polygon')].filter(r => shown(r) && !r.closest('.fx') && r.getAttribute('fill') !== 'none'
       && !/^(0|0\.0+)$/.test(r.getAttribute('fill-opacity') || '1')).map(r => r.getBoundingClientRect()).filter(b => b.width > 4 && b.height > 4 && b.width < sr.width * 0.9);
     const spill = [];
     boxes.forEach(b => {
