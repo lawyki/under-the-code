@@ -35,8 +35,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 27 | 1 | `fig-2-12` Fig 2.12 · The Patriot missile · a clock that lost a third of a second | 2.6 px · cap 135 | done 2026-10-10 |
 | 28 | 1 | `fig-3-1` Fig 3.1 · Same operation · three ISAs · three encodings | 2.2 px · cap 106 | done 2026-10-10 |
 | 29 | 1 | `fig-3-2` Fig 3.2 · Rosetta 2 · an Intel app, translated once for an ARM chip | 2.2 px · cap 173 | done 2026-10-10 |
-| 30 | 1 | `fig-3-3` Fig 3.3 · The x86-64 register file · 16 + 2 + 45 years of names | 2.1 px · cap 122 | todo |
-| 31 | 1 | `fig-3-4` Fig 3.4 · System V calling convention · which register holds which argument | 2.4 px · cap 103 | todo |
+| 30 | 1 | `fig-3-3` Fig 3.3 · The x86-64 register file · one register, four names | 2.1 px · cap 122 | done 2026-10-10 |
+| 31 | 1 | `fig-3-4` Fig 3.4 · System V calling convention · which register holds which argument | 2.4 px · cap 103 | done 2026-10-10 |
 | 32 | 1 | `fig-3-5` Fig 3.5 · A process's virtual address space | 2.6 px · cap 50 | todo |
 | 33 | 1 | `fig-3-6` Fig 3.6 · The stack during a function call | 2.9 px · cap 58 | todo |
 | 34 | 1 | `fig-3-7` Fig 3.7 · Stack frame of greet(): normal vs overflow | 2.6 px · cap 57 | todo |

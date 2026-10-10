@@ -3469,149 +3469,73 @@
       replaced "E" with "R": RAX, RBX, RCX, RDX. The names persist; the chip remembers.
     </p>
 
-    <div class="diagram-card" id="fig-3-3">
-      <div class="diagram-label">Fig 3.3 · The x86-64 register file · 16 + 2 + 45 years of names</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-33"><title id="svgt-part1-33">Fig 3.3 · The x86-64 register file · 16 + 2 + 45 years of names</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">SIXTEEN 64-BIT GENERAL-PURPOSE REGISTERS · NAMING SHOWS THEIR AGE</text>
-
-        <!-- The 4x4 GP register grid -->
-        <g transform="translate(40, 60)">
-          <text x="200" y="-4" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">GP REGISTERS · 64 BITS EACH</text>
-          <!-- Row 0: AMD-era names (the historical "A,B,C,D" four) -->
-          <g font-family="DM Mono" font-size="10">
-            <rect x="0" y="0" width="98" height="48" rx="5" fill="rgba(100,150,255,0.14)" stroke="rgba(100,150,255,0.7)" stroke-width="1.4"/>
-            <text x="49" y="18" text-anchor="middle" fill="rgba(100,150,255,0.95)">RAX</text>
-            <text x="49" y="34" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">accumulator</text>
-            <text x="49" y="44" text-anchor="middle" font-size="6.5" fill="rgba(212,168,83,0.6)">return value</text>
-
-            <rect x="100" y="0" width="98" height="48" rx="5" fill="rgba(100,150,255,0.1)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="149" y="18" text-anchor="middle" fill="rgba(100,150,255,0.85)">RBX</text>
-            <text x="149" y="34" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">base</text>
-            <text x="149" y="44" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.4)">callee-saved</text>
-
-            <rect x="200" y="0" width="98" height="48" rx="5" fill="rgba(100,150,255,0.1)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="249" y="18" text-anchor="middle" fill="rgba(100,150,255,0.85)">RCX</text>
-            <text x="249" y="34" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">counter</text>
-            <text x="249" y="44" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.4)">arg 4</text>
-
-            <rect x="300" y="0" width="98" height="48" rx="5" fill="rgba(100,150,255,0.1)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="349" y="18" text-anchor="middle" fill="rgba(100,150,255,0.85)">RDX</text>
-            <text x="349" y="34" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">data</text>
-            <text x="349" y="44" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.4)">arg 3</text>
-
-            <!-- Row 1 -->
-            <rect x="0" y="54" width="98" height="48" rx="5" fill="rgba(100,150,255,0.1)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="49" y="72" text-anchor="middle" fill="rgba(100,150,255,0.85)">RSI</text>
-            <text x="49" y="88" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">source idx</text>
-            <text x="49" y="98" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.4)">arg 2</text>
-
-            <rect x="100" y="54" width="98" height="48" rx="5" fill="rgba(100,150,255,0.1)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="149" y="72" text-anchor="middle" fill="rgba(100,150,255,0.85)">RDI</text>
-            <text x="149" y="88" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">dest idx</text>
-            <text x="149" y="98" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,0.4)">arg 1</text>
-
-            <rect x="200" y="54" width="98" height="48" rx="5" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.4"/>
-            <text x="249" y="72" text-anchor="middle" fill="rgba(212,168,83,0.95)">RBP</text>
-            <text x="249" y="88" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">base ptr</text>
-            <text x="249" y="98" text-anchor="middle" font-size="6.5" fill="rgba(212,168,83,0.6)">stack frame</text>
-
-            <rect x="300" y="54" width="98" height="48" rx="5" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.4"/>
-            <text x="349" y="72" text-anchor="middle" fill="rgba(212,168,83,0.95)">RSP</text>
-            <text x="349" y="88" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">stack ptr</text>
-            <text x="349" y="98" text-anchor="middle" font-size="6.5" fill="rgba(212,168,83,0.6)">top of stack</text>
-
-            <!-- Row 2: R8-R11 (added in AMD64, 2003) -->
-            <rect x="0" y="108" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="49" y="126" text-anchor="middle" fill="rgba(150,216,150,0.85)">R8</text>
-            <text x="49" y="142" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">arg 5</text>
-
-            <rect x="100" y="108" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="149" y="126" text-anchor="middle" fill="rgba(150,216,150,0.85)">R9</text>
-            <text x="149" y="142" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">arg 6</text>
-
-            <rect x="200" y="108" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="249" y="126" text-anchor="middle" fill="rgba(150,216,150,0.85)">R10</text>
-            <text x="249" y="142" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">scratch</text>
-
-            <rect x="300" y="108" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="349" y="126" text-anchor="middle" fill="rgba(150,216,150,0.85)">R11</text>
-            <text x="349" y="142" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">scratch</text>
-
-            <!-- Row 3: R12-R15 -->
-            <rect x="0" y="162" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="49" y="180" text-anchor="middle" fill="rgba(150,216,150,0.85)">R12</text>
-            <text x="49" y="196" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">callee-saved</text>
-
-            <rect x="100" y="162" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="149" y="180" text-anchor="middle" fill="rgba(150,216,150,0.85)">R13</text>
-            <text x="149" y="196" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">callee-saved</text>
-
-            <rect x="200" y="162" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="249" y="180" text-anchor="middle" fill="rgba(150,216,150,0.85)">R14</text>
-            <text x="249" y="196" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">callee-saved</text>
-
-            <rect x="300" y="162" width="98" height="48" rx="5" fill="rgba(150,216,150,0.1)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="349" y="180" text-anchor="middle" fill="rgba(150,216,150,0.85)">R15</text>
-            <text x="349" y="196" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.45)">callee-saved</text>
-          </g>
-
-          <!-- Special regs below -->
-          <text x="200" y="232" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.7)" letter-spacing="0.15em">SPECIAL, NOT GENERAL-PURPOSE</text>
-          <g font-family="DM Mono" font-size="10">
-            <rect x="0" y="240" width="180" height="44" rx="5" fill="rgba(232,120,120,0.1)" stroke="rgba(232,120,120,0.55)" stroke-width="1.4"/>
-            <text x="90" y="256" text-anchor="middle" fill="rgba(232,120,120,0.95)">RIP</text>
-            <text x="90" y="268" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">instruction pointer</text>
-            <text x="90" y="278" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">"control RIP, control the program"</text>
-
-            <rect x="200" y="240" width="200" height="44" rx="5" fill="rgba(232,120,120,0.1)" stroke="rgba(232,120,120,0.55)" stroke-width="1.4"/>
-            <text x="300" y="256" text-anchor="middle" fill="rgba(232,120,120,0.95)">RFLAGS</text>
-            <text x="300" y="268" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">CF · ZF · SF · OF · IF · DF · …</text>
-            <text x="300" y="278" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">status of last operation</text>
-          </g>
-        </g>
-
-        <!-- RIGHT: RAX legacy nesting -->
-        <g transform="translate(450, 60)">
-          <text x="120" y="-4" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">RAX · NESTED LEGACY</text>
-
-          <rect x="0" y="0" width="240" height="44" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.85)" stroke-width="1.5"/>
-          <text x="120" y="22" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.95)">RAX (64 bits)</text>
-          <text x="120" y="36" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">AMD 2003 · "R" for register</text>
-
-          <rect x="0" y="50" width="240" height="42" rx="6" fill="rgba(100,150,255,0.16)" stroke="rgba(100,150,255,0.7)"/>
-          <rect x="120" y="50" width="120" height="42" fill="rgba(100,150,255,0.3)" stroke="rgba(100,150,255,0.85)" stroke-width="1.4" rx="6"/>
-          <text x="180" y="72" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">EAX (32)</text>
-          <text x="180" y="84" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">Intel 1985 · "E" for extended</text>
-          <text x="60" y="68" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">upper 32 bits unused</text>
-          <text x="60" y="78" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">if EAX is written</text>
-
-          <rect x="0" y="98" width="240" height="42" rx="6" fill="rgba(100,150,255,0.14)" stroke="rgba(100,150,255,0.55)"/>
-          <rect x="180" y="98" width="60" height="42" fill="rgba(100,150,255,0.4)" stroke="rgba(100,150,255,0.95)" stroke-width="1.4" rx="6"/>
-          <text x="210" y="120" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)">AX (16)</text>
-          <text x="210" y="132" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.5)">Intel 1978</text>
-
-          <rect x="0" y="146" width="240" height="42" rx="6" fill="rgba(100,150,255,0.14)" stroke="rgba(100,150,255,0.55)"/>
-          <rect x="180" y="146" width="30" height="42" fill="rgba(100,150,255,0.5)" stroke="rgba(100,150,255,0.95)" stroke-width="1.4" rx="6"/>
-          <rect x="210" y="146" width="30" height="42" fill="rgba(100,150,255,0.6)" stroke="rgba(100,150,255,0.95)" stroke-width="1.4" rx="6"/>
-          <text x="195" y="168" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.95)">AH</text>
-          <text x="225" y="168" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.95)">AL</text>
-          <text x="120" y="168" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">8 bits · 8 bits · Intel 1978</text>
-          <text x="120" y="178" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">"high" / "low" of AX</text>
-
-          <text x="120" y="208" text-anchor="middle" font-family="serif" font-size="9.5" font-style="italic" fill="rgba(255,255,255,0.55)">writing AL touches the bottom 8 bits of RAX</text>
-          <text x="120" y="222" text-anchor="middle" font-family="serif" font-size="9.5" font-style="italic" fill="rgba(255,255,255,0.55)">writing EAX zeros the upper 32 bits of RAX</text>
-          <text x="120" y="236" text-anchor="middle" font-family="serif" font-size="9.5" font-style="italic" fill="rgba(212,168,83,0.7)">forty-five years of names in one register</text>
-
-          <!-- Pulse highlighting active alias -->
-          <circle cy="22" cx="240" r="3" fill="#d4a853" opacity="0.85">
-            <animate attributeName="cy" values="22;72;120;168;22" dur="6s" repeatCount="indefinite"/>
-            <animate attributeName="cx" values="240;240;240;240;240" dur="6s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <text x="360" y="364" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">All four widths exist simultaneously · the same physical register, different names · backward compatibility, in silicon</text>
-      </svg>
-      <p id="ch3-registers-p3" class="diagram-caption">x86-64 has sixteen 64-bit general-purpose registers: the original "A, B, C, D" set from the 8086, the "source/destination index" pair RSI/RDI, the stack-frame pair RBP/RSP, and the eight registers R8–R15 added by AMD64 in 2003. Plus two non-general-purpose registers: <code>RIP</code>, the instruction pointer, and <code>RFLAGS</code>, which holds the condition codes after every arithmetic operation. The right panel zooms into RAX. Because every generation of x86 had to remain backward-compatible with the previous one, RAX still contains the bits that were called EAX in 1985, AX in 1978, and AH/AL when split into bytes. Writing <code>AL</code> changes only the bottom 8 bits of RAX, leaving the rest untouched. That quirk has shaped C compilers, assembly-language style, and the encoding of the entire ISA.</p>
+    <div class="diagram-card fig-v2" id="fig-3-3">
+      <div class="diagram-label">Fig 3.3&nbsp;· The x86-64 register file&nbsp;· one register, four names</div>
+      <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31">
+<title id="svgt-part1-31">Fig 3.3 · The x86-64 register file · one register, four names</title>
+<desc id="svgd-part1-31">RAX holds eight bytes. Its lower four bytes are also called EAX (1985), the lower two AX (1978), and those two bytes AH and AL. Starting from 11 22 33 44 55 66 77 88, mov al, 0xFF changes only the lowest byte. mov eax, 1 writes the lower half and clears the upper half too: 00 00 00 00 00 00 00 01. Below, the sixteen general-purpose registers: eight 8086 names widened twice, and eight added by AMD64 in 2003.</desc>
+<text x="20" y="22" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">RAX · 64 BITS · 2003</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.0000;0.6222;0.6223;0.6666;0.6667;0.8220;0.8221;1.0000" dur="9s" repeatCount="indefinite"/><rect x="20" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="41.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">11</text><rect x="65" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="86.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">22</text><rect x="110" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="131.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">33</text><rect x="155" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="176.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">44</text><rect x="200" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="221.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">55</text><rect x="245" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="266.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">66</text><rect x="290" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="311.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">77</text><rect x="335" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="356.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">88</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1776;0.1777;0.6666;0.6667;0.8221;0.8222;1.0000" dur="9s" repeatCount="indefinite"/><rect x="20" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="41.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">11</text><rect x="65" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="86.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">22</text><rect x="110" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="131.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">33</text><rect x="155" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="176.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">44</text><rect x="200" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="221.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">55</text><rect x="245" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="266.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">66</text><rect x="290" y="32" width="42" height="34" rx="3" fill="#86a8ff" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="311.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">77</text><rect x="335" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="356.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">FF</text><text x="200" y="196" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#d4a853">mov al, 0xFF</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1777;0.1778;0.6220;0.6221;0.6666;0.6667;1.0000" dur="9s" repeatCount="indefinite"/><rect x="20" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="41.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="65" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="86.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="110" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="131.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="155" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="176.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="200" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="221.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="245" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="266.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="290" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="311.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">00</text><rect x="335" y="32" width="42" height="34" rx="3" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-opacity="0.8"/><text x="356.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">01</text><text x="200" y="196" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#d4a853">mov eax, 1</text></g>
+<path d="M 20 74 V 82 H 377 V 74" fill="none" stroke="#86a8ff" stroke-width="1.5"/>
+<text x="198.5" y="99" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RAX</text>
+<path d="M 200 104 V 112 H 377 V 104" fill="none" stroke="#86a8ff" stroke-width="1.5"/>
+<text x="288.5" y="129" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">EAX · 1985</text>
+<path d="M 290 134 V 142 H 377 V 134" fill="none" stroke="#86a8ff" stroke-width="1.5"/>
+<text x="333.5" y="159" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">AX · 1978</text>
+<path d="M 290 164 V 172 H 332 V 164" fill="none" stroke="rgba(134,168,255,0.8)" stroke-width="1.5"/>
+<text x="311" y="189" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(134,168,255,0.8)">AH</text>
+<path d="M 335 164 V 172 H 377 V 164" fill="none" stroke="rgba(134,168,255,0.8)" stroke-width="1.5"/>
+<text x="356" y="189" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(134,168,255,0.8)">AL</text>
+<text x="20" y="196" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">write:</text>
+<text x="20" y="232" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">THE SIXTEEN</text>
+<rect x="20" y="242" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="63" y="261" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RAX</text>
+<rect x="112" y="242" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="155" y="261" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RBX</text>
+<rect x="204" y="242" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="247" y="261" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RCX</text>
+<rect x="296" y="242" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="339" y="261" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RDX</text>
+<rect x="20" y="274" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="63" y="293" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RSI</text>
+<rect x="112" y="274" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="155" y="293" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RDI</text>
+<rect x="204" y="274" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="247" y="293" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RBP</text>
+<rect x="296" y="274" width="86" height="27" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="339" y="293" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">RSP</text>
+<rect x="20" y="306" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="63" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R8</text>
+<rect x="112" y="306" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="155" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R9</text>
+<rect x="204" y="306" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="247" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R10</text>
+<rect x="296" y="306" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="339" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R11</text>
+<rect x="20" y="338" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="63" y="357" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R12</text>
+<rect x="112" y="338" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="155" y="357" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R13</text>
+<rect x="204" y="338" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="247" y="357" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R14</text>
+<rect x="296" y="338" width="86" height="27" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="339" y="357" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#fff">R15</text>
+<rect x="20" y="380" width="14" height="14" rx="2" fill="#86a8ff" fill-opacity="0.4" stroke="#86a8ff"/>
+<text x="40" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">8086 names, widened</text>
+<rect x="210" y="380" width="14" height="14" rx="2" fill="#9bd89b" fill-opacity="0.4" stroke="#9bd89b"/>
+<text x="230" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">added by AMD64</text>
+</svg>
+      <p id="ch3-registers-p3" class="diagram-caption">One register, four names: RAX (2003) contains EAX (1985), which contains AX (1978), split into AH and AL. Writing AL changes only that byte; writing EAX also clears the upper half, a rule of x86-64.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The names.</b> The 8086 had 16-bit AX, BX, CX, DX; 32-bit chips added an E for extended; AMD64 replaced it with R and added R8 to R15.</li>
+          <li><b>The quirk.</b> 8- and 16-bit writes leave the rest of the register alone; 32-bit writes zero the top 32 bits.</li>
+          <li><b>Two more.</b> RIP, the instruction pointer, and RFLAGS, the condition codes set by every arithmetic operation, are not general-purpose.</li>
+        </ol>
+      </details>
     </div>
 
     <table class="summary-table">
@@ -3636,131 +3560,72 @@
       <strong>If you control RIP, you control the program.</strong>
     </p>
 
-    <div class="diagram-card" id="fig-3-4">
-      <div class="diagram-label">Fig 3.4 · System V calling convention · which register holds which argument</div>
-      <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34"><title id="svgt-part1-34">Fig 3.4 · System V calling convention · which register holds which argument</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">SYSTEM V AMD64 ABI · LINUX, MACOS, BSD · FIRST 6 ARGS GO IN REGISTERS</text>
-
-        <!-- Top: C function call -->
-        <g transform="translate(40, 60)">
-          <rect x="0" y="0" width="640" height="56" rx="6" fill="#0d0d0d" stroke="rgba(212,168,83,0.3)"/>
-          <text x="14" y="20" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.6)" letter-spacing="0.1em">CALLER WRITES C</text>
-          <g font-family="DM Mono" font-size="11">
-            <text x="14" y="44" fill="rgba(212,168,83,0.85)">int</text>
-            <text x="42" y="44" fill="rgba(255,255,255,0.85)"> result = </text>
-            <text x="118" y="44" fill="rgba(212,168,83,0.85)">work</text>
-            <text x="148" y="44" fill="rgba(255,255,255,0.85)">(</text>
-            <text x="156" y="44" fill="rgba(100,150,255,0.85)">a</text>
-            <text x="172" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="186" y="44" fill="rgba(100,150,255,0.85)">b</text>
-            <text x="202" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="216" y="44" fill="rgba(100,150,255,0.85)">c</text>
-            <text x="232" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="246" y="44" fill="rgba(100,150,255,0.85)">d</text>
-            <text x="262" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="276" y="44" fill="rgba(100,150,255,0.85)">e</text>
-            <text x="292" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="306" y="44" fill="rgba(100,150,255,0.85)">f</text>
-            <text x="320" y="44" fill="rgba(255,255,255,0.85)">, </text>
-            <text x="334" y="44" fill="rgba(150,216,150,0.85)">g</text>
-            <text x="348" y="44" fill="rgba(255,255,255,0.85)">);</text>
-            <text x="500" y="44" fill="rgba(255,255,255,0.4)" font-style="italic">// 7 arguments</text>
-          </g>
-        </g>
-
-        <!-- Argument routing diagram -->
-        <g transform="translate(40, 144)">
-          <text x="320" y="-4" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.65)" letter-spacing="0.15em">COMPILER PLACES ARGS IN REGISTERS · 7TH AND BEYOND ON THE STACK</text>
-
-          <!-- 6 register destinations -->
-          <g font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.85)">
-            <rect x="0" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="40" y="40" text-anchor="middle">RDI</text>
-            <text x="40" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 1: a</text>
-
-            <rect x="90" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="130" y="40" text-anchor="middle">RSI</text>
-            <text x="130" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 2: b</text>
-
-            <rect x="180" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="220" y="40" text-anchor="middle">RDX</text>
-            <text x="220" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 3: c</text>
-
-            <rect x="270" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="310" y="40" text-anchor="middle">RCX</text>
-            <text x="310" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 4: d</text>
-
-            <rect x="360" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="400" y="40" text-anchor="middle">R8</text>
-            <text x="400" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 5: e</text>
-
-            <rect x="450" y="20" width="80" height="40" rx="5" fill="rgba(100,150,255,0.12)" stroke="rgba(100,150,255,0.55)"/>
-            <text x="490" y="40" text-anchor="middle">R9</text>
-            <text x="490" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 6: f</text>
-
-            <!-- 7th arg goes to stack -->
-            <rect x="550" y="20" width="100" height="40" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(150,216,150,0.55)"/>
-            <text x="600" y="40" text-anchor="middle" fill="rgba(150,216,150,0.85)">[rsp]</text>
-            <text x="600" y="54" text-anchor="middle" font-size="7.5" fill="rgba(255,255,255,0.5)">arg 7: g</text>
-          </g>
-
-          <!-- Animated pulses -->
-          <g>
-            <circle cy="0" cx="40" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="40;40" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="130" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="130;130" dur="3s" begin="0.2s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="0.2s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.2s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="220" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="220;220" dur="3s" begin="0.4s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="0.4s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.4s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="310" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="310;310" dur="3s" begin="0.6s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="0.6s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.6s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="400" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="400;400" dur="3s" begin="0.8s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="0.8s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="0.8s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="490" r="3" fill="rgba(100,150,255,0.95)">
-              <animate attributeName="cx" values="490;490" dur="3s" begin="1s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="1s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1s" repeatCount="indefinite"/>
-            </circle>
-            <circle opacity="0" cy="0" cx="600" r="3" fill="rgba(150,216,150,0.95)">
-              <animate attributeName="cx" values="600;600" dur="3s" begin="1.2s" repeatCount="indefinite"/>
-              <animate attributeName="cy" values="0;30" dur="3s" begin="1.2s" repeatCount="indefinite"/>
-              <animate attributeName="opacity" values="0;1;1;0" dur="3s" begin="1.2s" repeatCount="indefinite"/>
-            </circle>
-          </g>
-        </g>
-
-        <!-- The function box and return -->
-        <g transform="translate(220, 226)">
-          <rect x="0" y="0" width="280" height="60" rx="8" fill="#1a1200" stroke="rgba(212,168,83,0.85)" stroke-width="1.5"/>
-          <text x="140" y="20" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">work(a, b, c, d, e, f, g)</text>
-          <text x="140" y="36" text-anchor="middle" font-family="serif" font-style="italic" font-size="10" fill="rgba(255,255,255,0.55)">reads args from registers and stack</text>
-          <text x="140" y="50" text-anchor="middle" font-family="serif" font-style="italic" font-size="10" fill="rgba(255,255,255,0.55)">computes · places result in <tspan fill="rgba(212,168,83,0.85)" font-family="DM Mono">RAX</tspan></text>
-        </g>
-
-        <!-- Return value arrow back -->
-        <path d="M 220 256 Q 130 280 130 250" fill="none" stroke="rgba(212,168,83,0.85)" stroke-width="1.4" stroke-dasharray="5,3"/>
-        <polygon points="126,254 130,244 134,254" fill="rgba(212,168,83,0.85)"/>
-        <text x="120" y="294" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">RAX ← return value</text>
-        <text x="120" y="306" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.5)">caller reads RAX</text>
-
-        <text x="360" y="328" text-anchor="middle" font-family="serif" font-style="italic" font-size="10" fill="rgba(255,255,255,0.5)">Windows uses a different convention: only four register-passed args (RCX, RDX, R8, R9). ABIs are local laws.</text>
-      </svg>
-      <p id="ch3-registers-p5" class="diagram-caption">The System V AMD64 ABI (used by Linux, macOS, BSD) lays down which physical registers carry which arguments. The first six integer or pointer arguments go into RDI, RSI, RDX, RCX, R8, R9, in that order. The seventh argument and beyond are pushed onto the stack. The return value comes back in RAX. Floating-point arguments use a different set of registers (XMM0–XMM7), and structures larger than 16 bytes are passed by hidden pointer. The convention is what makes a compiled function callable from any other compiler, any other language, any other source file. Without it, every library linkage on every system would break.</p>
+    <div class="diagram-card fig-v2" id="fig-3-4">
+      <div class="diagram-label">Fig 3.4&nbsp;· System V calling convention&nbsp;· which register holds which argument</div>
+      <svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32 svgd-part1-32">
+<title id="svgt-part1-32">Fig 3.4 · System V calling convention · which register holds which argument</title>
+<desc id="svgd-part1-32">A call work(a, b, c, d, e, f, g) with seven arguments. Under the System V AMD64 convention the first six go into the registers RDI, RSI, RDX, RCX, R8 and R9 in that order; the seventh is passed on the stack. The function's result comes back in RAX and lands in r.</desc>
+<text x="20" y="22" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">THE CALL</text>
+<text x="20" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">int r = work(</text>
+<text x="137.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">a</text>
+<text x="146.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="164.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">b</text>
+<text x="173.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="191.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">c</text>
+<text x="200.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="218.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">d</text>
+<text x="227.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="245.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">e</text>
+<text x="254.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="272.0" y="48" font-family="DM Mono" font-size="15" fill="#d4a853">f</text>
+<text x="281.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">, </text>
+<text x="299.0" y="48" font-family="DM Mono" font-size="15" fill="#9bd89b">g</text>
+<text x="308.0" y="48" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.85)">);</text>
+<rect x="20" y="94" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="115" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RDI</text>
+<text x="122" y="115" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1</text>
+<rect x="144" y="94" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="156" y="115" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RSI</text>
+<text x="246" y="115" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2</text>
+<rect x="268" y="94" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="280" y="115" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RDX</text>
+<text x="370" y="115" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">3</text>
+<rect x="20" y="158" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="179" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RCX</text>
+<text x="122" y="179" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4</text>
+<rect x="144" y="158" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="156" y="179" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">R8</text>
+<text x="246" y="179" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">5</text>
+<rect x="268" y="158" width="114" height="54" rx="6" fill="#151a24" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="280" y="179" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">R9</text>
+<text x="370" y="179" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">6</text>
+<text x="20" y="248" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">STACK · ARGUMENTS 7 ONWARD</text>
+<rect x="20" y="258" width="360" height="34" rx="5" fill="#161616" stroke="rgba(255,255,255,0.3)"/>
+<line x1="80" y1="258" x2="80" y2="292" stroke="rgba(255,255,255,0.12)"/>
+<line x1="140" y1="258" x2="140" y2="292" stroke="rgba(255,255,255,0.12)"/>
+<line x1="200" y1="258" x2="200" y2="292" stroke="rgba(255,255,255,0.12)"/>
+<line x1="260" y1="258" x2="260" y2="292" stroke="rgba(255,255,255,0.12)"/>
+<line x1="320" y1="258" x2="320" y2="292" stroke="rgba(255,255,255,0.12)"/>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">a<animate attributeName="x" values="72.5;72.5;137;137;137;72.5;72.5;72.5" keyTimes="0.0000;0.1111;0.1111;0.1556;0.1759;0.1963;0.2167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="138;138;70;70;76;76;138;138" keyTimes="0.0000;0.1111;0.1111;0.1556;0.1759;0.1963;0.2167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.1554;0.1556;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">b<animate attributeName="x" values="196.5;196.5;164;164;164;196.5;196.5;196.5" keyTimes="0.0000;0.1111;0.1111;0.2222;0.2426;0.2630;0.2833;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="138;138;70;70;76;76;138;138" keyTimes="0.0000;0.1111;0.1111;0.2222;0.2426;0.2630;0.2833;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.2221;0.2222;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">c<animate attributeName="x" values="320.5;320.5;191;191;191;320.5;320.5;320.5" keyTimes="0.0000;0.1111;0.1111;0.2889;0.3093;0.3296;0.3500;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="138;138;70;70;76;76;138;138" keyTimes="0.0000;0.1111;0.1111;0.2889;0.3093;0.3296;0.3500;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.2888;0.2889;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">d<animate attributeName="x" values="72.5;72.5;218;218;218;134.5;134.5;72.5;72.5" keyTimes="0.0000;0.1111;0.1111;0.3556;0.3708;0.3861;0.4014;0.4167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="202;202;70;70;76;76;202;202;202" keyTimes="0.0000;0.1111;0.1111;0.3556;0.3708;0.3861;0.4014;0.4167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.3554;0.3556;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">e<animate attributeName="x" values="196.5;196.5;245;245;245;258.5;258.5;196.5;196.5" keyTimes="0.0000;0.1111;0.1111;0.4222;0.4375;0.4528;0.4681;0.4833;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="202;202;70;70;76;76;202;202;202" keyTimes="0.0000;0.1111;0.1111;0.4222;0.4375;0.4528;0.4681;0.4833;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.4221;0.4222;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#d4a853" opacity="0">f<animate attributeName="x" values="320.5;320.5;272;272;272;258.5;258.5;320.5;320.5" keyTimes="0.0000;0.1111;0.1111;0.4889;0.5042;0.5194;0.5347;0.5500;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="202;202;70;70;76;76;202;202;202" keyTimes="0.0000;0.1111;0.1111;0.4889;0.5042;0.5194;0.5347;0.5500;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.4888;0.4889;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<text font-family="DM Mono" font-size="18" fill="#9bd89b" opacity="0">g<animate attributeName="x" values="45.5;45.5;299;299;299;386;386;45.5;45.5" keyTimes="0.0000;0.1111;0.1111;0.5556;0.5708;0.5861;0.6014;0.6167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="y" values="281;281;70;70;76;76;281;281;281" keyTimes="0.0000;0.1111;0.1111;0.5556;0.5708;0.5861;0.6014;0.6167;1.0000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.5554;0.5556;1.0000" dur="9s" repeatCount="indefinite"/></text>
+<rect x="20" y="306" width="180" height="40" rx="6" fill="#d4a853" fill-opacity="0.12" stroke="#d4a853" stroke-opacity="0.7"/>
+<text x="34" y="331" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">RAX</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.1111;0.1111;0.7333;0.7334;1.0000" dur="9s" repeatCount="indefinite"/><text x="84" y="331" font-family="DM Mono" font-size="15" fill="#fff">result</text><path d="M 206 326 H 262" stroke="#d4a853" stroke-width="2"/><polygon points="262,320 272,326 262,332" fill="#d4a853"/><text x="282" y="331" font-family="DM Mono" font-size="15" fill="#fff">r</text></g>
+</svg>
+      <p id="ch3-registers-p5" class="diagram-caption">Under the System V convention (Linux, macOS, BSD) the first six integer or pointer arguments travel in RDI, RSI, RDX, RCX, R8 and R9, the seventh and beyond on the stack, and the result comes back in RAX. That agreement lets code from any compiler call any other.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Registers first.</b> Registers are the fastest place to put a value, so the common case, six arguments or fewer, never touches memory.</li>
+          <li><b>Other kinds.</b> Floating-point arguments use XMM0 to XMM7; structures larger than 16 bytes are passed by a hidden pointer.</li>
+          <li><b>Who saves what.</b> The caller saves any volatile registers it still needs; the callee must preserve RBX, RBP and R12 to R15.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
