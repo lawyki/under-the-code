@@ -28,7 +28,7 @@ class Timeline:
                     f = (t - a[0]) / (b[0] - a[0]); return a[1] + f * (b[1] - a[1])
             return ev[-1][1]
         ts = sorted(set([0.0, D] + [p[0] for p in ev]))
-        kt = ';'.join(f'{t / D:.4f}' for t in ts)
+        kt = ';'.join(f'{t / D:.6f}' for t in ts)
         vs = ';'.join(f'{at(t):.3f}'.rstrip('0').rstrip('.') for t in ts)
         return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"{extra}/>'
     def translate(self, pts, axis='y'):
@@ -44,7 +44,7 @@ class Timeline:
             return ev[-1][1]
         ts = sorted(set([0.0, D] + [p[0] for p in ev]))
         vals = ';'.join((f'0 {at(t):.2f}' if axis == 'y' else f'{at(t):.2f} 0') for t in ts)
-        kt = ';'.join(f'{t / D:.4f}' for t in ts)
+        kt = ';'.join(f'{t / D:.6f}' for t in ts)
         return f'<animateTransform attributeName="transform" type="translate" values="{vals}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"/>'
     def pulse(self, t0, t1, ramp=0.2, lo=0.0, hi=1.0):
         """opacity points: off, on from t0 to t1, off."""

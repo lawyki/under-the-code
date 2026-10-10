@@ -67,7 +67,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 57 | 2 | `fig-4-10` Fig 4.10 · Fork, then write: when shared pages diverge | 2.5 px · cap 123 | done 2026-10-10 |
 | 58 | 2 | `fig-4-11` Fig 4.11 · Dirty COW: the race that broke Linux | 2.5 px · cap 163 | deferred: conceptual pass |
 | 59 | 2 | `fig-4-12` Fig 4.12 · Filename → inode → data blocks | 2.5 px · cap 56 | done 2026-10-10 |
-| 60 | 2 | `fig-4-13` Fig 4.13 · Journaling: write your intent before doing it | 2.5 px · cap 139 | todo |
+| 60 | 2 | `fig-4-13` Fig 4.13 · Journaling: write your intent before doing it | 2.5 px · cap 139 | done 2026-10-10 |
 | 61 | 2 | `fig-4-14` Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point | 2.2 px · cap 155 | todo |
 | 62 | 2 | `fig-4-15` Fig 4.15 · A pipe is a kernel ring buffer with two ends | 2.5 px · cap 89 | todo |
 | 63 | 2 | `fig-4-16` Fig 4.16 · The UNIX philosophy, in five processes | 2.2 px · cap 111 | todo |

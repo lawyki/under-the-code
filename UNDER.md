@@ -539,6 +539,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.6 caption: "At 50% utilisation, doubling load barely budges the wait" | Doubling 50% load is 100%, where the wait is unbounded; with W ∝ 1/(1 − ρ), 50% → 60% adds a quarter, 90% → 95% doubles it | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.10 drawing: after the child's write, the parent's page is "RW restored" | The copy changes only the writer's entry; the parent's stays read-only until it writes, and Linux then makes it writable without a copy because no one else maps it | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.12 drawing: inode of 24,873 bytes listing five blocks (102–104, 500, 501) | 24,873 bytes needs seven 4 KB blocks; the redrawn inode is 18,400 bytes in five blocks, with an assert in the generator | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 4.13 caption: "A journaling filesystem does every write twice" | ext4 by default (data=ordered) and NTFS journal metadata only; file contents are written twice only in full data journaling (ext4 data=journal) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3395,7 +3396,13 @@ drawing's "RW restored" on the parent at copy time corrected: the parent's
 entry stays read-only until its own write, which then needs no copy), 4.12 (directory rows, inode, disk strip
 stacked; opening notes.txt and then backup.txt lights the same inode and the
 same scattered blocks; the old inode's size, 24,873 bytes, needed seven 4 KB
-blocks against the five it listed: now 18,400 bytes, five blocks, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+blocks against the five it listed: now 18,400 bytes, five blocks, §4g), 4.13 (journal slots fill and
+commit, then a power cut: boot replays the committed change, v1 → v2; a
+second change cut before its commit is discarded and v2 stands; the old
+"every write twice" corrected, §4g). `figlib` now writes keyTimes to six
+decimals: at four, a 1 ms swap on a 13 s loop rounded onto one instant and
+two labels showed together; every generator re-run, every done figure
+re-swept. The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
