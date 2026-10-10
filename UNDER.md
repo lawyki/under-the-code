@@ -3329,7 +3329,10 @@ used to repeat is Fig 2.5), 2.7 (7 + (−5) in a drawn 8-bit register, the
 ninth bit falling off), 2.8 (the two's-complement wheel at true angles:
 the old dial put +127 at three o'clock and +64 at 45°; a pointer steps
 across the bottom seam into overflow and across the top into a correct 0), 2.9 (the check, the cast, the copy
-running red over the buffer's neighbours; one machine width, 64-bit, §4g). `figlib.Timeline` fix found on 1.9: a point at the loop's
+running red over the buffer's neighbours; one machine width, 64-bit, §4g),
+2.10 (6.5 and −0.75 decoded from their real bits, field by field), 2.11
+(the doubles near 0.3 to scale: stored 0.3 below the true value, the sum
+one double above it; positions computed, not drawn by eye). `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

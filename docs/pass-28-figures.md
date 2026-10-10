@@ -30,8 +30,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 22 | 1 | `fig-2-7` Fig 2.7 · Computing 7 − 5 = 2 with two's complement | 3.5 px · cap 51 | done 2026-10-10 |
 | 23 | 1 | `fig-2-8` Fig 2.8 · The two's-complement wheel · where addition wraps | 2.6 px · cap 122 | done 2026-10-10 |
 | 24 | 1 | `fig-2-9` Fig 2.9 · How a signed overflow becomes a buffer overflow | 2.9 px · cap 126 | done 2026-10-10 |
-| 25 | 1 | `fig-2-10` Fig 2.10 · IEEE 754 double-precision layout | 2.6 px · cap 63 | todo |
-| 26 | 1 | `fig-2-11` Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives | 2.9 px · cap 122 | todo |
+| 25 | 1 | `fig-2-10` Fig 2.10 · IEEE 754 double precision · sign, exponent, mantissa | 2.6 px · cap 63 | done 2026-10-10 |
+| 26 | 1 | `fig-2-11` Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives | 2.9 px · cap 122 | done 2026-10-10 |
 | 27 | 1 | `fig-2-12` Fig 2.12 · The Patriot missile · 0.0000000953 s × 100 hours = 28 lives | 2.6 px · cap 135 | todo |
 | 28 | 1 | `fig-3-1` Fig 3.1 · Same operation · three ISAs · three encodings | 2.2 px · cap 106 | todo |
 | 29 | 1 | `fig-3-2` Fig 3.2 · Rosetta 2 · how a chip pretends to be a different chip | 2.2 px · cap 173 | todo |

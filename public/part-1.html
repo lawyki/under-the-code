@@ -2893,27 +2893,42 @@
 
     <p id="ch2-float-p4">A 64-bit "double precision" float divides its 64 bits into three fields, in a structure that mimics scientific notation:</p>
 
-    <div class="diagram-card" id="fig-2-10">
-      <div class="diagram-label">Fig 2.10 · IEEE 754 double-precision layout</div>
-      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-27"><title id="svgt-part1-27">Fig 2.10 · IEEE 754 double-precision layout</title>
-        <rect x="40" y="40" width="40" height="50" rx="4" fill="#e87878" fill-opacity="0.3" stroke="rgba(232,120,120,0.7)"/>
-        <text x="60" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(232,120,120,0.9)">S</text>
-        <text x="60" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">1 bit</text>
-        <text x="60" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">sign</text>
-        <text x="60" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">0=pos, 1=neg</text>
-        <rect x="90" y="40" width="200" height="50" rx="4" fill="#d4a853" fill-opacity="0.3" stroke="rgba(212,168,83,0.7)"/>
-        <text x="190" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.9)">E (exponent)</text>
-        <text x="190" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">11 bits</text>
-        <text x="190" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">scale factor</text>
-        <text x="190" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">range ≈ 10⁻³⁰⁸ to 10³⁰⁸</text>
-        <rect x="300" y="40" width="380" height="50" rx="4" fill="#96d896" fill-opacity="0.3" stroke="rgba(150,216,150,0.7)"/>
-        <text x="490" y="70" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(150,216,150,0.9)">M (mantissa / fraction)</text>
-        <text x="490" y="110" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">52 bits</text>
-        <text x="490" y="125" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">precision (significand)</text>
-        <text x="490" y="146" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">about 15–17 decimal digits</text>
-        <text x="360" y="180" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="16" fill="rgba(255,255,255,0.7)">value = (−1)<tspan baseline-shift="super" font-size="11">S</tspan>  ·  1.M  ·  2<tspan baseline-shift="super" font-size="11">E−1023</tspan></text>
-      </svg>
-      <p id="ch2-float-p5" class="diagram-caption">An IEEE 754 double divides 64 bits into a sign bit, an 11-bit exponent (with a bias of 1023, so it can represent both positive and negative exponents), and a 52-bit mantissa. The actual value is computed using the formula at the bottom: essentially binary scientific notation. The same structure with smaller fields gives the 32-bit "single precision" float (1, 8, 23 bits).</p>
+    <div class="diagram-card fig-v2" id="fig-2-10">
+      <div class="diagram-label">Fig 2.10&nbsp;· IEEE 754 double precision&nbsp;· sign, exponent, mantissa</div>
+      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-26 svgd-part1-26">
+<title id="svgt-part1-26">Fig 2.10 · IEEE 754 double precision · sign, exponent, mantissa</title>
+<desc id="svgd-part1-26">A 64-bit double is a sign bit, an 11-bit exponent and a 52-bit mantissa, read as (−1)^S × 1.M × 2^(E − 1023). 6.5 has sign 0, exponent 10000000001 (1025, so 2 to the 2 = 4) and mantissa 101 then zeros (1.101 in binary = 1.625): 1.625 × 4 = 6.5. −0.75 has sign 1, exponent 01111111110 (1022, so one half) and mantissa 1 then zeros (1.5): −1.5 × ½ = −0.75.</desc>
+<text x="200" y="66" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">(−1)^S × 1.M × 2^(E − 1023)</text>
+<text x="20" y="92" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#ec8d8d">S</text>
+<text x="52" y="92" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#86a8ff">exponent · 11 bits</text>
+<text x="20" y="148" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#d4a853">mantissa · 52 bits</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1" keyTimes="0.0000;0.0398;0.0399;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="200" y="38" text-anchor="middle" font-family="DM Mono" font-size="28" fill="#fff">6.5</text><rect x="20" y="100" width="24" height="28" rx="3" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d"/><text x="32.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="52" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="64.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="78" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="90.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="104" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="116.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="130" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="142.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="156" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="168.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="182" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="194.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="208" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="220.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="234" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="246.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="260" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="272.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="286" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="298.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="312" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="324.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="20" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="32.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="46" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="58.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="72" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="84.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="98" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="110.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="124" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="136.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="150" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="162.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="176" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="188.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="202" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="214.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="228" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="240.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="254" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="266.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="280" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="292.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="306" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="318.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><text x="380" y="204" text-anchor="end" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.5)">… 40 more bits, all 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0398;0.0399;0.5399;0.5400;0.5999;0.6000;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="236" font-family="DM Mono" font-size="15" fill="#ec8d8d">sign 0</text><text x="380" y="236" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">+</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0398;0.0399;0.5399;0.5400;0.6999;0.7000;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="264" font-family="DM Mono" font-size="15" fill="#86a8ff">exponent 1025 − 1023 = 2</text><text x="380" y="264" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">× 4</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0398;0.0399;0.5399;0.5400;0.7999;0.8000;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="292" font-family="DM Mono" font-size="15" fill="#d4a853">mantissa 1.101 (binary)</text><text x="380" y="292" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">= 1.625</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0398;0.0399;0.5399;0.5400;0.8999;0.9000;1.0000" dur="10s" repeatCount="indefinite"/><line x1="20" y1="306" x2="380" y2="306" stroke="rgba(255,255,255,0.3)"/><text x="380" y="330" text-anchor="end" font-family="DM Mono" font-size="20" fill="#d4a853">+1.625 × 4 = 6.5</text></g>
+<rect x="18" y="98" width="28" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.5399;0.5400;0.5999;0.6000;0.6998;0.6999;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="50" y="98" width="288" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.5399;0.5400;0.6999;0.7000;0.7998;0.7999;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="18" y="154" width="314" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.5399;0.5400;0.7999;0.8000;0.8998;0.8999;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.0399;0.0400;0.5398;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="200" y="38" text-anchor="middle" font-family="DM Mono" font-size="28" fill="#fff">−0.75</text><rect x="20" y="100" width="24" height="28" rx="3" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d"/><text x="32.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="52" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="64.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="78" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="90.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="104" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="116.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="130" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="142.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="156" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="168.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="182" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="194.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="208" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="220.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="234" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="246.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="260" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="272.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="286" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="298.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="312" y="100" width="24" height="28" rx="3" fill="#86a8ff" fill-opacity="0.2" stroke="#86a8ff" stroke-opacity="0.8"/><text x="324.0" y="120" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="20" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="32.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">1</text><rect x="46" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="58.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="72" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="84.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="98" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="110.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="124" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="136.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="150" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="162.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="176" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="188.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="202" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="214.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="228" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="240.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="254" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="266.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="280" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="292.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><rect x="306" y="156" width="24" height="28" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.8"/><text x="318.0" y="176" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">0</text><text x="380" y="204" text-anchor="end" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.5)">… 40 more bits, all 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.0999;0.1000;0.5398;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="236" font-family="DM Mono" font-size="15" fill="#ec8d8d">sign 1</text><text x="380" y="236" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">−</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1999;0.2000;0.5398;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="264" font-family="DM Mono" font-size="15" fill="#86a8ff">exponent 1022 − 1023 = −1</text><text x="380" y="264" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">× ½</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.2999;0.3000;0.5398;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><text x="20" y="292" font-family="DM Mono" font-size="15" fill="#d4a853">mantissa 1.1 (binary)</text><text x="380" y="292" text-anchor="end" font-family="DM Mono" font-size="15" fill="#fff">= 1.5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.3999;0.4000;0.5398;0.5399;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/><line x1="20" y1="306" x2="380" y2="306" stroke="rgba(255,255,255,0.3)"/><text x="380" y="330" text-anchor="end" font-family="DM Mono" font-size="20" fill="#d4a853">−1.5 × ½ = −0.75</text></g>
+<rect x="18" y="98" width="28" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.0999;0.1000;0.1998;0.1999;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="50" y="98" width="288" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1999;0.2000;0.2998;0.2999;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="18" y="154" width="314" height="32" rx="4" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.0000;0.2999;0.3000;0.3998;0.3999;0.5399;0.5400;1.0000" dur="10s" repeatCount="indefinite"/></rect>
+</svg>
+      <p id="ch2-float-p5" class="diagram-caption">A double is binary scientific notation: a sign, an 11-bit exponent stored 1023 too high so it can be negative, and 52 bits of mantissa after an implied leading 1. Here 6.5 and −0.75 are read straight off their bits.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Sign.</b> 0 is positive, 1 negative.</li>
+          <li><b>Exponent.</b> Stored with a bias of 1023: 1025 means 2², 1022 means 2⁻¹. Eleven bits give a range of about 10⁻³⁰⁸ to 10³⁰⁸.</li>
+          <li><b>Mantissa.</b> The digits after the binary point of 1.M; the leading 1 is implied, never stored. Fifty-two bits give 15 to 17 decimal digits.</li>
+          <li><b>Single precision.</b> The 32-bit float is the same with 1, 8 and 23 bits.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch2-float-p6">
@@ -2944,90 +2959,48 @@
 <span class="cm"># the infinite repeating binary fraction.</span></pre>
     </div>
 
-    <div class="diagram-card" id="fig-2-11">
-      <div class="diagram-label">Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives</div>
-      <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-28"><title id="svgt-part1-28">Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">DECIMAL FRACTION → REPEATING BINARY → ROUNDED MANTISSA</text>
-
-        <!-- Headers -->
-        <g font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.5)">
-          <text x="40" y="60">decimal</text>
-          <text x="160" y="60">exact binary fraction (repeats forever)</text>
-          <text x="600" y="60" text-anchor="middle">rounded to 52 bits</text>
-        </g>
-        <line x1="30" y1="68" x2="690" y2="68" stroke="rgba(212,168,83,0.25)"/>
-
-        <!-- Row: 0.1 -->
-        <g transform="translate(40, 90)">
-          <text x="0" y="0" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.85)">0.1</text>
-          <g font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.7)">
-            <text x="120" y="0">0.0001</text>
-            <tspan><text x="178" y="0" fill="rgba(212,168,83,0.85)">1001 1001 1001</text></tspan>
-            <text x="298" y="0" fill="rgba(212,168,83,0.95)" font-style="italic">1001…</text>
-          </g>
-          <text x="538" y="0" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)" font-style="italic">cut here</text>
-          <line x1="538" y1="-12" x2="538" y2="6" stroke="rgba(232,120,120,0.7)" stroke-dasharray="2,2"/>
-          <g font-family="DM Mono" font-size="11">
-            <text x="560" y="0" fill="rgba(255,255,255,0.55)">…</text>
-            <text x="580" y="0" fill="rgba(212,168,83,0.85)">1010</text>
-          </g>
-          <text x="0" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">≈ 0.10000000000000000555…</text>
-        </g>
-
-        <!-- Row: 0.2 -->
-        <g transform="translate(40, 140)">
-          <text x="0" y="0" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.85)">0.2</text>
-          <g font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.7)">
-            <text x="120" y="0">0.0011</text>
-            <text x="178" y="0" fill="rgba(150,216,150,0.85)">0011 0011 0011</text>
-            <text x="298" y="0" fill="rgba(150,216,150,0.95)" font-style="italic">0011…</text>
-          </g>
-          <line x1="538" y1="-12" x2="538" y2="6" stroke="rgba(232,120,120,0.7)" stroke-dasharray="2,2"/>
-          <g font-family="DM Mono" font-size="11">
-            <text x="560" y="0" fill="rgba(255,255,255,0.55)">…</text>
-            <text x="580" y="0" fill="rgba(150,216,150,0.85)">0011</text>
-          </g>
-          <text x="0" y="22" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">≈ 0.20000000000000001110…</text>
-        </g>
-
-        <!-- Sum line -->
-        <line x1="40" y1="186" x2="680" y2="186" stroke="rgba(212,168,83,0.5)" stroke-width="1.4"/>
-
-        <!-- Row: Sum -->
-        <g transform="translate(40, 210)">
-          <text x="0" y="0" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.95)">+ =</text>
-          <g font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.85)">
-            <text x="120" y="0">0.0100</text>
-            <text x="178" y="0" fill="rgba(212,168,83,0.85)">1100 1100 1100</text>
-            <text x="298" y="0" fill="rgba(212,168,83,0.85)">1100</text>
-          </g>
-          <text x="538" y="0" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)" font-style="italic">round bit</text>
-          <line x1="538" y1="-12" x2="538" y2="6" stroke="rgba(232,120,120,0.7)" stroke-dasharray="2,2"/>
-          <!-- The error bit highlighted -->
-          <rect x="558" y="-13" width="46" height="18" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.85)" rx="2"/>
-          <text x="562" y="0" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,0.95)" font-weight="500">1101</text>
-          <!-- pulse animation on the error -->
-          <rect x="558" y="-13" width="46" height="18" fill="none" stroke="rgba(232,120,120,0.85)" stroke-width="1.5" rx="2">
-            <animate attributeName="stroke-opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
-          </rect>
-          <text x="0" y="22" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">= 0.30000000000000004</text>
-          <text x="200" y="22" font-family="serif" font-size="10" font-style="italic" fill="rgba(255,255,255,0.55)">not 0.3, but a few quadrillionths above it</text>
-        </g>
-
-        <!-- Bottom legend -->
-        <line x1="40" y1="262" x2="680" y2="262" stroke="rgba(255,255,255,0.12)"/>
-        <g transform="translate(40, 280)">
-          <rect x="0" y="-9" width="14" height="14" fill="rgba(212,168,83,0.4)" rx="2"/>
-          <text x="22" y="2" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.65)">repeating quartet of 0.1</text>
-          <rect x="220" y="-9" width="14" height="14" fill="rgba(150,216,150,0.4)" rx="2"/>
-          <text x="242" y="2" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.65)">repeating quartet of 0.2</text>
-          <rect x="440" y="-9" width="14" height="14" fill="rgba(232,120,120,0.4)" rx="2"/>
-          <text x="462" y="2" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.65)">where the rounding error appears</text>
-        </g>
-
-        <text x="360" y="320" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.5)">Both inputs are already wrong before addition starts. The sum is wrong because both operands are.</text>
-      </svg>
-      <p id="ch2-float-p8" class="diagram-caption">Decimal 0.1 has no exact binary representation: its binary expansion repeats forever, just as 1/3 in decimal is 0.3333… The IEEE-754 double rounds it to 52 mantissa bits, introducing a tiny error in the last digit. The same happens to 0.2. When the CPU adds the two rounded values, both errors carry through into the result. The output is not 0.3. It is the next representable binary fraction <em>above</em> 0.3, which prints as 0.30000000000000004. The bug is not in the addition; the bug was already there in the inputs. Every floating-point computation, on every modern CPU, accumulates these tiny rounding errors at every step. The discipline of <em>numerical analysis</em> is the study of how to keep them from compounding into something dangerous.</p>
+    <div class="diagram-card fig-v2" id="fig-2-11">
+      <div class="diagram-label">Fig 2.11&nbsp;· 0.1 + 0.2 in binary&nbsp;· where the famous error lives</div>
+      <svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-27 svgd-part1-27">
+<title id="svgt-part1-27">Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives</title>
+<desc id="svgd-part1-27">0.1 in binary is 0.0 0011 0011 0011 and so on forever, so a double keeps only the first 52 bits and rounds. Near 0.3 the doubles are spaced about 5.6 × 10⁻¹⁷ apart. The exact value 0.3 lies a fifth of a step above the double that 0.3 is stored as. Adding the rounded 0.1 and 0.2 lands on the next double up, which prints as 0.30000000000000004.</desc>
+<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">0.1 IN BINARY</text>
+<text x="20" y="56" font-family="DM Mono" font-size="17" fill="#fff">0.0</text>
+<text x="70" y="56" font-family="DM Mono" font-size="17" fill="#d4a853">0011<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.1936;0.1937;1.0000" dur="8s" repeatCount="indefinite"/></text>
+<text x="122" y="56" font-family="DM Mono" font-size="17" fill="rgba(212,168,83,0.75)">0011<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.2249;0.2250;1.0000" dur="8s" repeatCount="indefinite"/></text>
+<text x="174" y="56" font-family="DM Mono" font-size="17" fill="#d4a853">0011<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.2561;0.2562;1.0000" dur="8s" repeatCount="indefinite"/></text>
+<text x="226" y="56" font-family="DM Mono" font-size="17" fill="rgba(212,168,83,0.75)">0011<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.2874;0.2875;1.0000" dur="8s" repeatCount="indefinite"/></text>
+<text x="278" y="56" font-family="DM Mono" font-size="17" fill="#d4a853">0011<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.3186;0.3187;1.0000" dur="8s" repeatCount="indefinite"/></text>
+<text x="330" y="56" font-family="DM Mono" font-size="17" fill="rgba(212,168,83,0.5)">…</text>
+<text x="20" y="80" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">repeats forever; a double keeps 52 bits</text>
+<text x="20" y="128" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">THE DOUBLES NEAR 0.3</text>
+<line x1="14" y1="196" x2="386" y2="196" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<line x1="16" y1="184" x2="16" y2="208" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+<line x1="108" y1="184" x2="108" y2="208" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+<line x1="200" y1="184" x2="200" y2="208" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+<line x1="292" y1="184" x2="292" y2="208" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+<path d="M 108 216 v 6 h 92 v -6" fill="none" stroke="rgba(255,255,255,0.4)"/>
+<text x="154" y="240" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">5.6 × 10⁻¹⁷</text>
+<line x1="126.4" y1="150" x2="126.4" y2="196" stroke="#9bd89b" stroke-width="2" stroke-dasharray="4 3"/>
+<text x="132.4" y="146" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">exact 0.3</text>
+<circle cx="108" cy="196" r="8" fill="#86a8ff" stroke="#0e0e0e" stroke-width="2"/>
+<text x="108" y="268" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#86a8ff">0.3</text>
+<text x="108" y="286" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">as stored</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.4249;0.4250;1.0000" dur="8s" repeatCount="indefinite"/><circle cx="200" cy="196" r="8" fill="#ec8d8d" stroke="#0e0e0e" stroke-width="2"/></g>
+<circle r="8" fill="#ec8d8d" opacity="0" cy="196"><animate attributeName="cx" values="52.143;20;20;200;52.143" keyTimes="0.0000;0.1250;0.3000;0.4250;1.0000" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1249;0.1250;0.2987;0.3000;0.4250;0.4251;1.0000" dur="8s" repeatCount="indefinite"/></circle>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.4249;0.4250;1.0000" dur="8s" repeatCount="indefinite"/><text x="210" y="268" font-family="DM Mono" font-size="15" fill="#ec8d8d">0.1 + 0.2</text><text x="210" y="286" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">one double up</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0875;0.0876;0.1249;0.1250;0.5499;0.5500;1.0000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" font-family="DM Mono" font-size="16" fill="#fff">0.1 + 0.2 prints <tspan fill="#ec8d8d">0.30000000000000004</tspan></text></g>
+</svg>
+      <p id="ch2-float-p8" class="diagram-caption">0.1 never fits in binary: its digits repeat forever, so the double keeps the nearest 52-bit fraction, and 0.2 likewise. Their sum lands one representable step above where 0.3 itself is stored; the error was in the inputs, not the addition.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why it repeats.</b> 0.1 is 1/10, and 10 has a factor of 5 that no power of two can supply, just as 1/3 never ends in decimal.</li>
+          <li><b>The grid.</b> Doubles are not continuous. Near 0.3 neighbours are 2⁻⁵⁴, about 5.6 × 10⁻¹⁷, apart; the true 0.3 falls between two of them.</li>
+          <li><b>The result.</b> "0.3" is stored as the double just below it; the rounded 0.1 and 0.2 add up to the one just above. So in most languages 0.1 + 0.2 == 0.3 is false.</li>
+          <li><b>Living with it.</b> Compare floats within a tolerance, and count money in whole cents.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Special values: ±∞ and NaN</h3>
