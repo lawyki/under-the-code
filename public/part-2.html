@@ -3026,71 +3026,52 @@
       fault (core dumped)</code> message that has greeted C programmers for fifty years.
     </p>
 
-    <div class="diagram-card" id="fig-5-9">
-      <div class="diagram-label">Fig 5.9 · A NULL dereference, traced</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-33"><title id="svgt-part2-33">Fig 5.9 · A NULL dereference, traced</title>
-        <!-- Stages -->
-        <g font-family="IBM Plex Mono" font-size="9">
-          <!-- 1. user code -->
-          <rect x="20"  y="60" width="120" height="80" rx="6" fill="#0e1510" stroke="rgba(150,216,150,0.5)"/>
-          <text x="80"  y="42" text-anchor="middle" font-size="10" fill="rgba(150,216,150,0.95)">user code</text>
-          <text x="32"  y="84" fill="rgba(198,222,206,0.85)">char *p = NULL;</text>
-          <text x="32"  y="100" fill="rgba(198,222,206,0.85)">*p = 'a';</text>
-          <text x="32"  y="124" fill="rgba(232,120,120,0.85)">// fault!</text>
-
-          <!-- 2. CPU -->
-          <rect x="160" y="60" width="120" height="80" rx="6" fill="#0e1510" stroke="rgba(132,255,178,0.5)"/>
-          <text x="220" y="42" text-anchor="middle" font-size="10" fill="rgba(132,255,178,0.95)">CPU</text>
-          <text x="172" y="84" fill="rgba(198,222,206,0.85)">MMU walks page</text>
-          <text x="172" y="98" fill="rgba(198,222,206,0.85)">tables, finds no</text>
-          <text x="172" y="112" fill="rgba(198,222,206,0.85)">mapping for 0x0</text>
-          <text x="172" y="128" fill="rgba(232,120,120,0.85)">→ raise #PF</text>
-
-          <!-- 3. kernel -->
-          <rect x="300" y="60" width="160" height="80" rx="6" fill="#0e1510" stroke="rgba(232,120,120,0.5)"/>
-          <text x="380" y="42" text-anchor="middle" font-size="10" fill="rgba(232,120,120,0.95)">kernel page-fault handler</text>
-          <text x="312" y="84" fill="rgba(198,222,206,0.85)">looks up faulting</text>
-          <text x="312" y="98" fill="rgba(198,222,206,0.85)">address: 0x0</text>
-          <text x="312" y="112" fill="rgba(198,222,206,0.85)">no VMA covers it</text>
-          <text x="312" y="128" fill="rgba(232,120,120,0.85)">→ illegal access</text>
-
-          <!-- 4. signal -->
-          <rect x="480" y="60" width="120" height="80" rx="6" fill="#0e1510" stroke="rgba(232,120,120,0.5)"/>
-          <text x="540" y="42" text-anchor="middle" font-size="10" fill="rgba(232,120,120,0.95)">SIGSEGV</text>
-          <text x="492" y="84" fill="rgba(198,222,206,0.85)">kernel queues</text>
-          <text x="492" y="98" fill="rgba(198,222,206,0.85)">signal #11 to</text>
-          <text x="492" y="112" fill="rgba(198,222,206,0.85)">the process</text>
-
-          <!-- 5. dies -->
-          <rect x="620" y="60" width="80"  height="80" rx="6" fill="#0e1510" stroke="rgba(232,120,120,0.5)"/>
-          <text x="660" y="42" text-anchor="middle" font-size="10" fill="rgba(232,120,120,0.95)">death</text>
-          <text x="632" y="84" fill="rgba(198,222,206,0.85)">default</text>
-          <text x="632" y="98" fill="rgba(198,222,206,0.85)">handler:</text>
-          <text x="632" y="112" fill="rgba(232,120,120,0.85)">terminate</text>
-          <text x="632" y="126" fill="rgba(198,222,206,0.7)">+ core dump</text>
-
-          <!-- arrows -->
-          <g stroke="rgba(132,255,178,0.6)" stroke-width="1" fill="none" marker-end="url(#arrowSeg)">
-            <line x1="140" y1="100" x2="160" y2="100"/>
-            <line x1="280" y1="100" x2="300" y2="100"/>
-            <line x1="460" y1="100" x2="480" y2="100"/>
-            <line x1="600" y1="100" x2="620" y2="100"/>
-          </g>
-        </g>
-
-        <defs>
-          <marker id="arrowSeg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M0,0 L10,5 L0,10 z" fill="rgba(132,255,178,0.7)"/>
-          </marker>
-        </defs>
-
-        <text x="360" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)" letter-spacing="0.1em">USER CODE → CPU → KERNEL → SIGNAL → PROCESS DEATH</text>
-        <text x="360" y="210" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">a four-machine round trip in roughly 10 microseconds</text>
-
-        <text x="360" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">"Segmentation fault (core dumped)"</text>
-        <text x="360" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">the message every C programmer has seen ten thousand times</text>
-      </svg>
-      <p id="ch5-ub-p6" class="diagram-caption">A NULL dereference traverses every layer of the system. The CPU's memory management unit (Bridge: The Boundary, in <a href="part-1">Part I</a>) detects that no page-table entry exists for address 0x0 and raises a hardware exception. The kernel's page-fault handler examines the faulting address, finds it lies outside any of the process's mapped regions, and decides this is an illegal access. It queues signal 11 (<code>SIGSEGV</code>) to the offending process. The process's default signal handler is "terminate, dump core for the debugger," which is what you see. MMU, kernel, signal, corpse: the whole chain takes a few microseconds.</p>
+    <div class="diagram-card fig-v2" id="fig-5-9">
+      <div class="diagram-label">Fig 5.9&nbsp;· A NULL dereference, traced</div>
+      <svg viewBox="0 0 400 362" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-33 svgd-part2-33">
+<title id="svgt-part2-33">Fig 5.9 · A NULL dereference, traced</title>
+<desc id="svgd-part2-33">User code writes through a NULL pointer: *p = 'a' with p equal to NULL. The MMU finds no page mapping address 0 and raises a page fault. The kernel's fault handler finds that address 0 lies in no region the process owns, so the access is illegal, and it sends the process SIGSEGV, signal number 11. The default action for that signal terminates the process and dumps core, and the shell prints Segmentation fault (core dumped).</desc>
+<rect x="20" y="12" width="360" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="20" y="12" width="360" height="46" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.066444;0.066667;0.176889;0.177222;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="30" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">user code</text>
+<text x="32" y="49" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">*p = 'a';  with p == NULL</text>
+<line x1="200" y1="59" x2="200" y2="69" stroke="rgba(198,222,206,0.5)" stroke-width="1.5"/>
+<polygon points="195,65 205,65 200,71" fill="rgba(198,222,206,0.5)"/>
+<rect x="20" y="72" width="360" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="20" y="72" width="360" height="46" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.177556;0.177778;0.288000;0.288333;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="90" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">MMU</text>
+<text x="32" y="109" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">no page maps address 0: fault</text>
+<line x1="200" y1="119" x2="200" y2="129" stroke="rgba(198,222,206,0.5)" stroke-width="1.5"/>
+<polygon points="195,125 205,125 200,131" fill="rgba(198,222,206,0.5)"/>
+<rect x="20" y="132" width="360" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="20" y="132" width="360" height="46" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.399111;0.399444;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="150" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">kernel</text>
+<text x="32" y="169" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">0 is in none of the process's regions</text>
+<line x1="200" y1="179" x2="200" y2="189" stroke="rgba(198,222,206,0.5)" stroke-width="1.5"/>
+<polygon points="195,185 205,185 200,191" fill="rgba(198,222,206,0.5)"/>
+<rect x="20" y="192" width="360" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="20" y="192" width="360" height="46" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.399778;0.400000;0.510222;0.510556;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">signal</text>
+<text x="32" y="229" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">SIGSEGV, number 11</text>
+<line x1="200" y1="239" x2="200" y2="249" stroke="rgba(198,222,206,0.5)" stroke-width="1.5"/>
+<polygon points="195,245 205,245 200,251" fill="rgba(198,222,206,0.5)"/>
+<rect x="20" y="252" width="360" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="20" y="252" width="360" height="46" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.510889;0.511111;0.621333;0.621667;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="270" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">default action</text>
+<text x="32" y="289" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">terminate, dump core</text>
+<rect x="20" y="316" width="360" height="34" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.3)"/>
+<text x="32" y="338" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">$</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.044444;0.045000;0.599778;0.600000;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="48" y="338" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">Segmentation fault (core dumped)</text></g>
+</svg>
+      <p id="ch5-ub-p6" class="diagram-caption">A write through a NULL pointer crosses every layer: the MMU finds no mapping for address 0 and faults, and the kernel, finding the address in no region the process owns, sends <code>SIGSEGV</code>. The default action for that signal ends the process, which the shell reports as a segmentation fault.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why address 0 faults.</b> Operating systems leave the lowest pages unmapped on purpose (Linux's <code>mmap_min_addr</code>), so a NULL access always traps.</li>
+          <li><b>The same path.</b> This is the "invalid" exit of the page-fault tree in Fig 4.9; only the outcome differs from a minor fault.</li>
+          <li><b>The core file.</b> "Core dumped" appears only when the system allows it; the dump is a snapshot of memory for a debugger to open.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The optimiser's contract, the programmer's homework</h3>
