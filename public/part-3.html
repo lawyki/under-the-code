@@ -4351,73 +4351,49 @@
       placed in those operators.
     </p>
 
-    <div class="diagram-card" id="fig-11-12">
-      <div class="diagram-label">Fig 11.12 · The certificate chain · why your browser trusts a stranger</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-51"><title id="svgt-part3-51">Fig 11.12 · The certificate chain · why your browser trusts a stranger</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">three signatures, walked from leaf to root, must all verify</text>
-
-        <!-- Root CA at top -->
-        <g transform="translate(220,60)">
-          <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.95)" stroke-width="2"/>
-          <text x="140" y="22" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(79,196,230,1)">ROOT CA · self-signed</text>
-          <text x="140" y="38" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">e.g. "ISRG Root X1" (Let's Encrypt)</text>
-          <text x="140" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">shipped in browser/OS trust store · ~150 worldwide</text>
-        </g>
-
-        <!-- Arrow down -->
-        <line x1="360" y1="116" x2="360" y2="144" stroke="rgba(79,196,230,0.6)"/>
-        <polygon points="360,144 354,136 366,136" fill="rgba(79,196,230,0.7)"/>
-        <text x="376" y="134" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.7)">signs</text>
-
-        <!-- Intermediate -->
-        <g transform="translate(220,150)">
-          <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="140" y="22" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(150,216,150,0.95)">INTERMEDIATE CA</text>
-          <text x="140" y="38" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">e.g. "R3"</text>
-          <text x="140" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">private key online · root key offline in a vault</text>
-        </g>
-
-        <line x1="360" y1="206" x2="360" y2="234" stroke="rgba(150,216,150,0.7)"/>
-        <polygon points="360,234 354,226 366,226" fill="rgba(150,216,150,0.85)"/>
-        <text x="376" y="224" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">signs</text>
-
-        <!-- Leaf -->
-        <g transform="translate(220,240)">
-          <rect x="0" y="0" width="280" height="56" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="140" y="22" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(100,150,255,0.95)">LEAF: example.com</text>
-          <text x="140" y="38" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">contains: hostnames, public key, validity dates</text>
-          <text x="140" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">renewed every ~90 days · key never leaves the server</text>
-        </g>
-
-        <!-- Verification arrow flowing up -->
-        <g transform="translate(40,80)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">CLIENT VERIFY</text>
-          <text x="0" y="14" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">walk leaf → root</text>
-          <line x1="50" y1="200" x2="50" y2="40" stroke="rgba(150,216,150,0.5)" stroke-dasharray="3,3"/>
-          <polygon points="50,40 44,52 56,52" fill="rgba(150,216,150,0.7)"/>
-          <text x="0" y="106" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">verify each</text>
-          <text x="0" y="120" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">signature with</text>
-          <text x="0" y="134" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">parent's pubkey</text>
-        </g>
-
-        <!-- Right side: failure modes -->
-        <g transform="translate(530,80)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">FAILURE MODES</text>
-          <text x="0" y="20" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">• hostname doesn't match</text>
-          <text x="0" y="34" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">• certificate expired</text>
-          <text x="0" y="48" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">• signature invalid</text>
-          <text x="0" y="62" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">• root not in trust store</text>
-          <text x="0" y="76" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">• certificate revoked (CRL/OCSP)</text>
-          <text x="0" y="100" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.85)" font-style="italic">→ browser warning page</text>
-        </g>
-
-        <!-- Bottom note -->
-        <g transform="translate(40,322)">
-          <rect x="0" y="0" width="640" height="32" rx="3" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">Certificate Transparency (RFC 6962): every issued cert publicly logged · misissuance now detectable retroactively</text>
-        </g>
-      </svg>
-      <p id="ch11-tls-p5" class="diagram-caption">A web server presents not one certificate but a chain. The leaf certificate is for the actual hostname (<code>example.com</code>); it is signed by an intermediate CA's private key. The intermediate's certificate is signed by a root CA's private key. The root is self-signed and shipped in your browser's trust store. The client walks the chain from leaf to root, verifying every signature; if any link fails, the connection is aborted with a scary browser warning. One rogue or breached operator can sign a certificate for any site on Earth, which is why every issued certificate is now published to append-only <em>Certificate Transparency</em> logs (mandatory since 2018), so misbehaviour cannot stay hidden even when a signature is technically valid. In 2011 the Dutch CA DigiNotar had its private keys stolen and used to issue fraudulent <code>*.google.com</code> certificates. The compromise destroyed the company within weeks and was the event that drove modern transparency requirements.</p>
+    <div class="diagram-card fig-v2" id="fig-11-12">
+      <div class="diagram-label">Fig 11.12&nbsp;· The certificate chain&nbsp;· why your browser trusts a stranger</div>
+      <svg viewBox="0 0 400 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-51 svgd-part3-51">
+<title id="svgt-part3-51">Fig 11.12 · The certificate chain · why your browser trusts a stranger</title>
+<desc id="svgd-part3-51">Three certificates. At the top the root, ISRG Root X1, which signs itself and ships in the browser's trust store. It signs the intermediate R11, which signs the leaf for shop.example, valid 90 days. The browser checks upward: the leaf's signature with R11's public key, R11's signature with the root's public key, and finally that the root is in its trust store.</desc>
+<rect x="20" y="40" width="280" height="58" rx="6" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.8"/>
+<text x="32" y="63" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">ISRG Root X1</text>
+<text x="32" y="83" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">self-signed, in the store</text>
+<rect x="20" y="138" width="280" height="58" rx="6" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.8"/>
+<text x="32" y="161" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">R11</text>
+<text x="32" y="181" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">intermediate</text>
+<rect x="20" y="236" width="280" height="58" rx="6" fill="#0a1c2d" stroke="#86a8ff" stroke-opacity="0.8"/>
+<text x="32" y="259" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">shop.example</text>
+<text x="32" y="279" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">leaf, 90 days</text>
+<line x1="60" y1="98" x2="60" y2="136" stroke="rgba(223,234,242,0.6)"/><path d="M55,130 L60,136 L65,130" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<text x="70" y="123" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">signs</text>
+<line x1="60" y1="196" x2="60" y2="234" stroke="rgba(223,234,242,0.6)"/><path d="M55,228 L60,234 L65,228" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<text x="70" y="221" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">signs</text>
+<g opacity="0.3"><text x="288" y="259" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.266444;0.266667;1.000000" dur="9s" repeatCount="indefinite"/><text x="288" y="259" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066611;0.066667;0.266444;0.266667;0.366667;1.000000" dur="9s" repeatCount="indefinite"/><rect x="20" y="236" width="280" height="58" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.3"><text x="288" y="161" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.399778;0.400000;1.000000" dur="9s" repeatCount="indefinite"/><text x="288" y="161" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066611;0.066667;0.399778;0.400000;0.500000;1.000000" dur="9s" repeatCount="indefinite"/><rect x="20" y="138" width="280" height="58" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.3"><text x="288" y="63" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.533111;0.533333;1.000000" dur="9s" repeatCount="indefinite"/><text x="288" y="63" text-anchor="end" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#9bd89b">✓</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.066611;0.066667;0.533111;0.533333;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><rect x="20" y="40" width="280" height="58" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.3"><path d="M300,167.0 h22 V265.0 h-16 m6,-5 l-6,5 l6,5" fill="none" stroke="#9bd89b" stroke-width="1.5"/></g><g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.210889;0.211111;1.000000" dur="9s" repeatCount="indefinite"/><path d="M300,167.0 h22 V265.0 h-16 m6,-5 l-6,5 l6,5" fill="none" stroke="#9bd89b" stroke-width="1.5"/></g>
+<g opacity="0.3"><text x="330" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">check</text><text x="330" y="231" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">with key</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.210889;0.211111;1.000000" dur="9s" repeatCount="indefinite"/><text x="330" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">check</text><text x="330" y="231" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">with key</text></g>
+<g opacity="0.3"><path d="M300,69.0 h22 V167.0 h-16 m6,-5 l-6,5 l6,5" fill="none" stroke="#9bd89b" stroke-width="1.5"/></g><g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.344222;0.344444;1.000000" dur="9s" repeatCount="indefinite"/><path d="M300,69.0 h22 V167.0 h-16 m6,-5 l-6,5 l6,5" fill="none" stroke="#9bd89b" stroke-width="1.5"/></g>
+<g opacity="0.3"><text x="330" y="116" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">check</text><text x="330" y="133" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">with key</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.344222;0.344444;1.000000" dur="9s" repeatCount="indefinite"/><text x="330" y="116" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">check</text><text x="330" y="133" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">with key</text></g>
+</svg>
+      <p id="ch11-tls-p5" class="diagram-caption">A server sends its own certificate and the intermediate's; the browser checks each signature with the public key of the certificate above it, until it reaches a root it already trusts. Here <code>shop.example</code> is vouched for by R11, and R11 by ISRG Root X1, which ships in the trust store.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>What is checked.</b> On the leaf: the name matches the site, today is within its dates, and it has not been revoked. On every link: the signature verifies with the parent's public key. Any failure ends in a browser warning.</li>
+          <li><b>Why an intermediate.</b> The root's private key stays offline; the intermediate's signs every day and can be replaced without touching anyone's trust store. Let's Encrypt certificates last 90 days.</li>
+          <li><b>Certificate Transparency.</b> Since 2018 Chrome has required every new certificate to be logged publicly, so one issued wrongly, as by the breached Dutch CA DigiNotar in 2011, cannot stay hidden.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Forward secrecy: protecting yesterday's data</h3>
