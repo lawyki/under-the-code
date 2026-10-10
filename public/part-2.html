@@ -578,70 +578,44 @@
       <p id="ch4-scheduling-p10">The average number of items in a queueing system (L) equals the average arrival rate (λ) multiplied by the average time each item spends in the system (W). It holds for any stable queue, regardless of arrival distribution or service distribution. It also explains why a slightly oversubscribed system produces explosive wait times: a queue drains at some service rate μ, and the only slack that absorbs a burst of arrivals is the spare capacity μ − λ. As λ climbs toward μ, each burst takes longer to drain than the quiet spell before the next one arrives, so backlog stops clearing between bursts and starts compounding, with the wait growing like 1/(μ − λ), a hyperbola, not a slope. It is why the difference between 95%-loaded and 99%-loaded servers is not 4%: it is often 10× in latency.</p>
     </div>
 
-    <div class="diagram-card light-diagram" id="fig-4-6">
-      <div class="diagram-label">Fig 4.6 · L = λ · W and the cliff at full utilisation</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-7"><title id="svgt-part2-7">Fig 4.6 · L = λ · W and the cliff at full utilisation</title>
-        <!-- Top: tap + queue + meter -->
-        <text x="80" y="38" font-family="IBM Plex Mono" font-size="10" fill="rgba(62,138,94,0.85)">arrival rate λ</text>
-        <text x="80" y="52" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.65)">requests / sec</text>
-
-        <!-- Tap -->
-        <g transform="translate(60,70)">
-          <rect x="0" y="0" width="40" height="20" fill="rgba(46,96,70,0.85)"/>
-          <rect x="14" y="20" width="12" height="14" fill="rgba(46,96,70,0.85)"/>
-          <!-- drops -->
-          <circle cx="20" cy="48" r="3" fill="rgba(100,150,200,0.85)">
-            <animate attributeName="cy" values="38;78;38" dur="1.4s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="20" cy="58" r="3" fill="rgba(100,150,200,0.85)">
-            <animate attributeName="cy" values="38;78;38" dur="1.4s" begin="0.5s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="1;0;1" dur="1.4s" begin="0.5s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <!-- Queue -->
-        <rect x="160" y="80" width="280" height="50" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.6)"/>
-        <text x="300" y="100" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">queue (avg L items)</text>
-        <text x="300" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,100,60,0.7)">each waits avg W seconds</text>
-
-        <!-- Meter -->
-        <rect x="500" y="80" width="160" height="50" rx="6" fill="#fdfcf9" stroke="rgba(62,138,94,0.7)"/>
-        <text x="580" y="100" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.95)">L = λ · W</text>
-        <text x="580" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(62,138,94,0.7)">true for any stable queue</text>
-
-        <!-- Connecting arrows -->
-        <line x1="100" y1="105" x2="160" y2="105" stroke="rgba(62,138,94,0.5)"/>
-        <polygon points="160,105 154,99 154,111" fill="rgba(62,138,94,0.5)"/>
-        <line x1="440" y1="105" x2="500" y2="105" stroke="rgba(62,138,94,0.5)"/>
-        <polygon points="500,105 494,99 494,111" fill="rgba(62,138,94,0.5)"/>
-
-        <!-- Plot: utilization vs wait time -->
-        <line x1="80" y1="320" x2="660" y2="320" stroke="rgba(62,138,94,0.6)" stroke-width="1.5"/>
-        <line x1="80" y1="170" x2="80"  y2="320" stroke="rgba(62,138,94,0.6)" stroke-width="1.5"/>
-
-        <!-- Curve: W = 1 / (1 - ρ) -->
-        <path d="M 80,300 Q 200,295 320,285 Q 440,270 510,240 Q 560,210 590,180 Q 605,170 615,170"
-              fill="none" stroke="rgba(180,40,40,0.85)" stroke-width="2.5"/>
-        <line x1="615" y1="170" x2="615" y2="320" stroke="rgba(180,40,40,0.55)" stroke-dasharray="3,3"/>
-        <text x="615" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(180,40,40,0.95)">∞</text>
-
-        <!-- Axis labels -->
-        <text x="370" y="346" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.85)">utilisation ρ = λ / capacity</text>
-        <g font-family="IBM Plex Mono" font-size="8" fill="rgba(46,96,70,0.7)" text-anchor="middle">
-          <text x="80"  y="334">0</text>
-          <text x="200" y="334">50%</text>
-          <text x="380" y="334">80%</text>
-          <text x="500" y="334">95%</text>
-          <text x="615" y="334">100%</text>
-        </g>
-        <text x="50" y="245" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.85)" transform="rotate(-90,50,245)" text-anchor="middle">avg wait W</text>
-
-        <!-- Annotation -->
-        <text x="280" y="195" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(46,96,70,0.95)">"95% loaded" ≠ "5% slower"</text>
-        <text x="280" y="213" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">→ wait time grows hyperbolically</text>
-      </svg>
-      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law in two pictures. Top: a queue with arrivals (λ) flowing into a buffer of average length L; each item waits average W. The relationship L = λW is true for <em>any</em> stable queue, regardless of how arrivals are distributed or how long service takes. Bottom: the consequence. Average wait time as utilisation approaches 100% follows W ~ 1/(1−ρ), which is hyperbolic. At 50% utilisation, doubling load barely budges the wait. At 95%, doubling load is catastrophic. This is why operations teams panic when a server crosses about 80% sustained utilisation. They are not panicking about "the server being slow," they are panicking about the math curve they can see coming.</p>
+    <div class="diagram-card fig-v2" id="fig-4-6">
+      <div class="diagram-label">Fig 4.6&nbsp;· Little's Law and the cliff at full utilisation</div>
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-6 svgd-part2-6">
+<title id="svgt-part2-6">Fig 4.6 · L = λ · W and the cliff at full utilisation</title>
+<desc id="svgd-part2-6">A queue in front of one server, at three loads. At 50% utilisation one request waits on average and each spends twice the service time in the system. At 80%, four wait and the time is five times the service time. At 95%, nineteen wait and the time is twenty times. Below, the curve W = 1/(1 − ρ) climbs steeply toward 100%. Little's Law, L = λW, links the three numbers.</desc>
+<text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">QUEUE → SERVER</text>
+<rect x="334" y="36" width="46" height="46" rx="6" fill="#152016" stroke="#84ffb2" stroke-width="1.8"/>
+<circle cx="357" cy="59" r="9" fill="#84ffb2"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.1666;0.1667;0.4997;0.4999;1.0000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 50%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 1</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1666;0.1667;0.4999;0.5000;0.8331;0.8332;1.0000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 80%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 4</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1664;0.1665;0.1666;0.1667;0.8332;0.8333;1.0000" dur="7.8s" repeatCount="indefinite"/><rect x="314" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="74" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="44" y="48" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="314" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="284" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="254" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="224" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="194" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="164" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="134" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="104" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><rect x="74" y="84" width="22" height="22" rx="3" fill="#d4a853" fill-opacity="0.45" stroke="#d4a853"/><text x="20" y="140" font-family="IBM Plex Mono" font-size="15" fill="#fff">ρ = 95%</text><text x="200" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" fill="#d4a853">L = 19</text><text x="380" y="140" text-anchor="end" font-family="IBM Plex Mono" font-size="15" fill="#84ffb2">W = 20</text></g>
+<line x1="64" y1="352" x2="380" y2="352" stroke="rgba(132,255,178,0.35)"/><line x1="64" y1="352" x2="64" y2="170" stroke="rgba(132,255,178,0.35)"/>
+<polyline points="64.0,343.2 67.2,343.1 70.3,343.0 73.5,342.9 76.6,342.8 79.8,342.7 83.0,342.6 86.1,342.5 89.3,342.4 92.4,342.3 95.6,342.2 98.8,342.1 101.9,342.0 105.1,341.9 108.2,341.8 111.4,341.6 114.6,341.5 117.7,341.4 120.9,341.3 124.0,341.1 127.2,341.0 130.4,340.9 133.5,340.7 136.7,340.6 139.8,340.4 143.0,340.3 146.2,340.1 149.3,339.9 152.5,339.8 155.6,339.6 158.8,339.4 162.0,339.2 165.1,339.1 168.3,338.9 171.4,338.7 174.6,338.5 177.8,338.2 180.9,338.0 184.1,337.8 187.2,337.6 190.4,337.3 193.6,337.1 196.7,336.8 199.9,336.6 203.0,336.3 206.2,336.0 209.4,335.7 212.5,335.4 215.7,335.1 218.8,334.7 222.0,334.4 225.2,334.0 228.3,333.7 231.5,333.3 234.6,332.9 237.8,332.4 241.0,332.0 244.1,331.5 247.3,331.0 250.4,330.5 253.6,330.0 256.8,329.4 259.9,328.8 263.1,328.2 266.2,327.6 269.4,326.9 272.6,326.1 275.7,325.3 278.9,324.5 282.0,323.6 285.2,322.7 288.4,321.7 291.5,320.6 294.7,319.4 297.8,318.2 301.0,316.8 304.2,315.3 307.3,313.7 310.5,312.0 313.6,310.1 316.8,308.0 320.0,305.7 323.1,303.1 326.3,300.2 329.4,297.0 332.6,293.3 335.8,289.1 338.9,284.3 342.1,278.7 345.2,272.0 348.4,264.0 351.6,254.2 354.7,242.0 357.9,226.3 361.0,205.3 364.2,176.0" fill="none" stroke="#84ffb2" stroke-width="2.4"/>
+<line x1="380" y1="170" x2="380" y2="352" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="56" y="313" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">5</text>
+<text x="56" y="181" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">20</text>
+<text x="64" y="372" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0</text>
+<text x="222" y="372" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">50%</text>
+<text x="316.8" y="372" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">80%</text>
+<text x="380" y="372" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">100%</text>
+<text x="72" y="184" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">W = 1/(1 − ρ)</text>
+<text x="64" y="394" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">utilisation ρ</text>
+<circle cx="222.0" cy="334.4" r="5" fill="#d4a853" fill-opacity="0.5"/>
+<circle cx="222.0" cy="334.4" r="8" fill="#d4a853" stroke="#0c120e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.0000;0.1666;0.1667;0.4997;0.4999;1.0000" dur="7.8s" repeatCount="indefinite"/></circle>
+<circle cx="316.8" cy="308.0" r="5" fill="#d4a853" fill-opacity="0.5"/>
+<circle cx="316.8" cy="308.0" r="8" fill="#d4a853" stroke="#0c120e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1666;0.1667;0.4999;0.5000;0.8331;0.8332;1.0000" dur="7.8s" repeatCount="indefinite"/></circle>
+<circle cx="364.2" cy="176.0" r="5" fill="#d4a853" fill-opacity="0.5"/>
+<circle cx="364.2" cy="176.0" r="8" fill="#d4a853" stroke="#0c120e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1664;0.1665;0.1666;0.1667;0.8332;0.8333;1.0000" dur="7.8s" repeatCount="indefinite"/></circle>
+</svg>
+      <p id="ch4-scheduling-p11" class="diagram-caption">Little's Law ties a queue's length to its arrival rate and wait: L = λW, for any stable queue. As utilisation nears 100% the wait grows like 1/(1 − ρ): five times the bare service time at 80% load, twenty times at 95%.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The law.</b> Average number in the system = arrival rate × average time in it. It needs no assumption about how arrivals or service times are distributed.</li>
+          <li><b>The curve.</b> For the simplest queue (random arrivals, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
+          <li><b>The cliff.</b> From 50% to 60% load the wait grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Real-time scheduling: when missing a deadline kills</h3>

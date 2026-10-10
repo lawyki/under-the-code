@@ -60,7 +60,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 50 | 2 | `fig-4-3` Fig 4.3 · A kernel module loading at runtime | 2.2 px · cap 120 | done 2026-10-10 |
 | 51 | 2 | `fig-4-4` Fig 4.4 · CFS chooses the leftmost node of a red-black tree | 2.5 px · cap 67 | done 2026-10-10 |
 | 52 | 2 | `fig-4-5` Fig 4.5 · Four schedulers, one workload | 2.5 px · cap 136 | done 2026-10-10 |
-| 53 | 2 | `fig-4-6` Fig 4.6 · L = λ · W and the cliff at full utilisation | 2.5 px · cap 112 | todo |
+| 53 | 2 | `fig-4-6` Fig 4.6 · Little's Law and the cliff at full utilisation | 2.5 px · cap 112 | done 2026-10-10 |
 | 54 | 2 | `fig-4-7` Fig 4.7 · A periodic task and the deadline it must meet | 2.5 px · cap 120 | todo |
 | 55 | 2 | `fig-4-8` Fig 4.8 · x86-64 four-level page table walk | 2.5 px · cap 67 | todo |
 | 56 | 2 | `fig-4-9` Fig 4.9 · A page fault, decision tree | 2.5 px · cap 129 | todo |
