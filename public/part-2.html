@@ -2985,36 +2985,33 @@
       before doing something dangerous:
     </p>
 
-    <div class="diagram-card" id="fig-5-8">
-      <div class="diagram-label">Fig 5.8 · How "trust the programmer" deletes your bug check</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-32"><title id="svgt-part2-32">Fig 5.8 · How &quot;trust the programmer&quot; deletes your bug check</title>
-        <!-- Source -->
-        <rect x="40" y="30" width="640" height="74" rx="6" fill="#0e1510" stroke="rgba(132,255,178,0.5)"/>
-        <text x="60" y="54" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.7)">// the programmer's intent: refuse to operate if overflow has happened</text>
-        <text x="60" y="74" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">int safe_add_check(int i) {</text>
-        <text x="60" y="92" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">  if (i + 1 &lt; i) abort();   // detect overflow</text>
-        <text x="60" y="108" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">  return i + 1;</text>
-        <text x="60" y="124" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">}</text>
-
-        <!-- Compiler reasoning -->
-        <text x="360" y="160" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">the compiler's reasoning, step by step</text>
-        <g transform="translate(40,180)">
-          <rect x="0"   y="0" width="640" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.4)"/>
-          <text x="14"  y="15" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,200,200,0.9)">1. signed overflow is undefined behavior: the standard says it cannot happen</text>
-          <rect x="0"   y="28" width="640" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.4)"/>
-          <text x="14"  y="43" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,200,200,0.9)">2. therefore i + 1 &gt; i for every legal i (since overflow is the only way to violate this)</text>
-          <rect x="0"   y="56" width="640" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.4)"/>
-          <text x="14"  y="71" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,200,200,0.9)">3. therefore the test (i + 1 &lt; i) is always false</text>
-          <rect x="0"   y="84" width="640" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.4)"/>
-          <text x="14"  y="99" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,200,200,0.9)">4. therefore abort() is dead code: delete it</text>
-        </g>
-
-        <!-- Result -->
-        <rect x="40" y="298" width="640" height="40" rx="6" fill="#101a14" stroke="rgba(132,255,178,0.6)"/>
-        <text x="360" y="318" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">generated assembly: just `lea eax, [rdi+1]; ret`</text>
-        <text x="360" y="332" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">the bug check has been silently deleted by the optimiser</text>
-      </svg>
-      <p id="ch5-ub-p4" class="diagram-caption">The programmer wrote a check for signed overflow. The check is correct in principle. But because signed overflow is undefined behavior, the compiler is allowed to assume it never occurs. From that assumption, it can prove the check is always false, and delete it as dead code. The programmer's defensive check has been silently removed. The compiler is not malicious; it is following the standard exactly. This pattern has caused real security bugs in real production code, including in the Linux kernel, which now compiles with explicit flags (<code>-fno-strict-overflow</code>, <code>-fno-delete-null-pointer-checks</code>) to prevent the optimiser from exploiting these particular freedoms.</p>
+    <div class="diagram-card fig-v2" id="fig-5-8">
+      <div class="diagram-label">Fig 5.8&nbsp;· How "trust the programmer" deletes your bug check</div>
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-32 svgd-part2-32">
+<title id="svgt-part2-32">Fig 5.8 · How &quot;trust the programmer&quot; deletes your bug check</title>
+<desc id="svgd-part2-32">A function int next(int i) checks if (i + 1 &lt; i) abort(); and then returns i + 1. The compiler reasons: signed overflow is undefined behaviour, so it never happens; so i + 1 is greater than i for every i; so the test is always false; so the call to abort is dead code. The check is deleted, and gcc at -O2 emits only lea eax,[rdi+1] and ret.</desc>
+<rect x="20" y="12" width="360" height="98" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="32" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">int&#160;next(int&#160;i)&#160;{</text>
+<g><animate attributeName="opacity" values="0.4;0.4;0.4;0.4;1;1;0.4;0.4" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="55" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">&#160;&#160;if&#160;(i&#160;+&#160;1&#160;&lt;&#160;i)&#160;abort();</text></g>
+<line opacity="1" x1="44" y1="51" x2="236" y2="51" stroke="#ec8d8d" stroke-width="2.5"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/></line>
+<text x="32" y="76" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;return&#160;i&#160;+&#160;1;</text>
+<text x="32" y="97" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">}</text>
+<text x="20" y="136" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the compiler, at -O2:</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.199800;0.200000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="162" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">1</text><text x="40" y="162" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">overflow is UB: it never happens</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.289800;0.290000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">2</text><text x="40" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">so i + 1 &gt; i for every i</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.379800;0.380000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">3</text><text x="40" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">so (i + 1 &lt; i) is always false</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.469800;0.470000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">4</text><text x="40" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">so abort() is dead code</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="262" width="360" height="56" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.7"/><text x="32" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">lea eax,[rdi+1]</text><text x="32" y="306" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">ret</text><text x="368" y="284" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no check left</text></g>
+</svg>
+      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is undefined behaviour, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code. At <code>-O2</code> gcc deletes it, leaving only an add and a return.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The safe test.</b> Check before adding, <code>if (i == INT_MAX)</code>, or use <code>__builtin_add_overflow</code> in gcc and clang.</li>
+          <li><b>The kernel's answer.</b> Linux builds with <code>-fno-strict-overflow</code> and <code>-fno-delete-null-pointer-checks</code>, switching these deductions off.</li>
+          <li><b>Not malice.</b> The standard lets the optimiser assume undefined behaviour never occurs; the same freedom is what lets it delete code that truly is dead.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>NULL dereference</h3>
