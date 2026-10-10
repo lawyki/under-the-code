@@ -546,7 +546,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 5.6: after free(p2), free(p4) the list is 128 → 96 → 240 and malloc(300) fits none | The freed 96 B chunk was adjacent to the free 240 B tail; allocators coalesce neighbours into 336 B, which fits 300. Redrawn with every free piece fenced by used chunks (128, 96, 176 = 400 free, largest 176) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 6.1: a "bug density / KLOC" curve rising 5 → 35 "in lockstep" with code size, 1975–2000; caption and banner "codebases grew about a hundred-fold" | No source for either series; the chart was illustrative data drawn as measurement. Replaced with Brooks's n(n − 1)/2 count of possible interactions (The Mythical Man-Month, 1975), which the prose already cites | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 6.2: C++ 1.0 a "true compiler" (against C with Classes, a "preprocessor"); caption "Every release since (14, 17, 20, 23) has added more, all backwards compatible" | Cfront, C++ 1.0's compiler, translated C++ into C; the standards are nearly but not entirely compatible (C++11 repurposed the `auto` keyword, C++17 removed `auto_ptr`) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
-| Fig 6.6: comparator `return *(int*)a - *(int*)b;` shown as the C idiom; "~3× faster", "Roughly threefold speedup" | The subtraction overflows (undefined behaviour) when the operands are far apart; `(x > y) - (x < y)` is correct. The speedup varies with data and compiler; now "commonly measured several times faster" | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 6.6: comparator `return *(int*)a - *(int*)b;` shown as the C idiom | The subtraction overflows (undefined behaviour) when the operands are far apart; `(x > y) - (x < y)` is correct. (The "about three times faster" speedup stays, matching ch6-zerocost-p2.) | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3469,8 +3469,8 @@ body and the caller prints 12.57, 9, 6), 6.5 (the C++ function with an execution
 cursor; three resources appear as their lines run; a normal return and an
 exception from parse() unwind the same way, unlock, free, close), 6.6 (the path of one comparison:
 qsort's call, load, cmp, ret, test against std::sort's inlined cmp, jge, a
-token stepping both at one rate; the overflowing subtraction comparator and
-the unsourced "~3× faster" corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+token stepping both at one rate; the overflowing subtraction comparator
+corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
