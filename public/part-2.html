@@ -4943,38 +4943,51 @@
       and bridge them with a thin wrapper.
     </p>
 
-    <div class="diagram-card" id="fig-7-8">
-      <div class="diagram-label">Fig 7.8 · How NumPy actually does work</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-54"><title id="svgt-part2-54">Fig 7.8 · How NumPy actually does work</title>
-        <!-- Layer 1: Python -->
-        <rect x="120" y="40" width="480" height="56" rx="6" fill="#0e1a13" stroke="rgba(132,255,178,0.7)"/>
-        <text x="360" y="60" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">Python user code</text>
-        <text x="360" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">np.dot(A, B)   # one line of Python</text>
-        <text x="360" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">readable, debuggable, interactive</text>
-
-        <line x1="360" y1="96" x2="360" y2="120" stroke="rgba(132,255,178,0.4)" stroke-dasharray="3,3"/>
-
-        <!-- Layer 2: NumPy wrapper -->
-        <rect x="120" y="120" width="480" height="56" rx="6" fill="#0e1510" stroke="rgba(150,216,150,0.6)"/>
-        <text x="360" y="140" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">NumPy: thin C wrapper</text>
-        <text x="360" y="158" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">type-check, dispatch to BLAS routine, return array</text>
-        <text x="360" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">~20 lines of C per NumPy operation</text>
-
-        <line x1="360" y1="176" x2="360" y2="200" stroke="rgba(132,255,178,0.4)" stroke-dasharray="3,3"/>
-
-        <!-- Layer 3: BLAS -->
-        <rect x="120" y="200" width="480" height="56" rx="6" fill="#0e1510" stroke="rgba(100,150,255,0.6)"/>
-        <text x="360" y="220" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(100,150,255,0.95)">BLAS / LAPACK: Fortran &amp; assembly</text>
-        <text x="360" y="238" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.95)">hand-tuned matmul: SIMD, cache blocking, AVX-512</text>
-        <text x="360" y="252" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">written by numerical analysts since the 1970s</text>
-
-        <line x1="360" y1="256" x2="360" y2="280" stroke="rgba(132,255,178,0.4)" stroke-dasharray="3,3"/>
-
-        <!-- Layer 4: hardware -->
-        <rect x="200" y="280" width="320" height="32" rx="6" fill="#101a14" stroke="rgba(132,255,178,0.7)"/>
-        <text x="360" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">CPU SIMD lanes / GPU cores</text>
-      </svg>
-      <p id="ch7-datasci-p2" class="diagram-caption">A single NumPy call descends through three layers and ends in hand-tuned numerical kernels that have been refined by specialists since the 1970s. The Python programmer never touches Fortran; the BLAS authors never touch Python. The wrapper layer in NumPy is what makes the bridge work: it accepts Python objects, validates types and shapes, calls the right BLAS routine, and returns a Python object pointing into the result buffer. The runtime cost of the Python layer is amortised across the giant compute the BLAS layer performs. For a 1000×1000 matmul, Python's overhead is microseconds; BLAS's compute is milliseconds. The Python layer is invisible.</p>
+    <div class="diagram-card fig-v2" id="fig-7-8">
+      <div class="diagram-label">Fig 7.8&nbsp;· How NumPy actually does work</div>
+      <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-54 svgd-part2-54">
+<title id="svgt-part2-54">Fig 7.8 · How NumPy actually does work</title>
+<desc id="svgd-part2-54">One line of Python, C = np.dot(A, B), descends four layers. NumPy's C code checks the types and shapes and picks a routine. A BLAS routine, dgemm, does the multiplication, blocked to fit the cache and using vector instructions, which the CPU's vector units execute four or eight doubles at a time. The Python and NumPy layers take microseconds; for a 1000 by 1000 matrix the BLAS work takes milliseconds. The result comes back up as one NumPy array.</desc>
+<rect x="20" y="12" width="360" height="52" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="33" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#86a8ff">Python</text>
+<text x="32" y="53" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">C = np.dot(A, B)</text>
+<text x="368" y="33" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">µs</text>
+<rect class="fx" x="20" y="12" width="360" height="52" rx="3" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.566611;0.566667;0.633111;0.633333;0.699111;0.699444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="12" width="360" height="52" rx="3" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.343556;0.343889;0.566611;0.566667;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<line x1="60" y1="64" x2="60" y2="78" stroke="rgba(198,222,206,0.4)"/><polygon points="56,73 64,73 60,78" fill="rgba(198,222,206,0.4)"/>
+<line x1="340" y1="78" x2="340" y2="64" stroke="rgba(132,255,178,0.4)"/><polygon points="336,69 344,69 340,64" fill="rgba(132,255,178,0.4)"/>
+<rect x="20" y="78" width="360" height="52" rx="3" fill="#152016" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="99" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#86a8ff">NumPy, in C</text>
+<text x="32" y="119" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">check types and shapes, pick a routine</text>
+<text x="368" y="99" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">µs</text>
+<rect class="fx" x="20" y="78" width="360" height="52" rx="3" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.566611;0.566667;0.688667;0.688889;0.754667;0.755000;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="78" width="360" height="52" rx="3" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.244222;0.244444;0.299111;0.299444;0.566611;0.566667;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<line x1="60" y1="130" x2="60" y2="144" stroke="rgba(198,222,206,0.4)"/><polygon points="56,139 64,139 60,144" fill="rgba(198,222,206,0.4)"/>
+<line x1="340" y1="144" x2="340" y2="130" stroke="rgba(132,255,178,0.4)"/><polygon points="336,135 344,135 340,130" fill="rgba(132,255,178,0.4)"/>
+<rect x="20" y="144" width="360" height="52" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="32" y="165" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">BLAS: dgemm</text>
+<text x="32" y="185" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">blocked for the cache, vector instructions</text>
+<text x="368" y="165" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">ms</text>
+<rect class="fx" x="20" y="144" width="360" height="52" rx="3" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.566611;0.566667;0.744222;0.744444;0.810222;0.810556;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="144" width="360" height="52" rx="3" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199778;0.200000;0.254667;0.255000;0.566611;0.566667;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<line x1="60" y1="196" x2="60" y2="210" stroke="rgba(198,222,206,0.4)"/><polygon points="56,205 64,205 60,210" fill="rgba(198,222,206,0.4)"/>
+<line x1="340" y1="210" x2="340" y2="196" stroke="rgba(132,255,178,0.4)"/><polygon points="336,201 344,201 340,196" fill="rgba(132,255,178,0.4)"/>
+<rect x="20" y="210" width="360" height="52" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<rect class="fx" x="20" y="210" width="360" height="52" rx="3" fill="#d4a853" fill-opacity="0.22"><animate attributeName="width" values="180;360;360;0;0;0;0;180" keyTimes="0.000000;0.177778;0.333333;0.355556;0.566611;0.566667;0.822222;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="32" y="231" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">CPU vector units</text>
+<text x="32" y="251" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">4 or 8 doubles per instruction</text>
+<rect class="fx" x="20" y="210" width="360" height="52" rx="3" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.566611;0.566667;0.799778;0.800000;0.865778;0.866111;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.532444;0.532778;0.566611;0.566667;1.000000" dur="9s" repeatCount="indefinite"/><text x="20" y="282" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">back in Python: one array</text></g>
+</svg>
+      <p id="ch7-datasci-p2" class="diagram-caption">One line of Python descends through NumPy's C code into a BLAS routine that the CPU's vector units execute, and comes back as a single array. The Python layers cost microseconds; for a 1000 × 1000 multiplication the BLAS work takes milliseconds, so the interpreter all but disappears from the bill.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>BLAS.</b> The Basic Linear Algebra Subprograms were specified in 1979; NumPy's standard builds ship OpenBLAS, written in C and assembly and tuned for each processor.</li>
+          <li><b>Blocking.</b> dgemm multiplies the matrices in tiles small enough to stay in cache, so each number fetched from memory is used many times.</li>
+          <li><b>Vectors.</b> AVX2 instructions work on 4 doubles at once and AVX-512 on 8, and the work is split across every core.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-7-9">

@@ -3493,7 +3493,10 @@ then each resumes), 7.6 (the stack machine run: a + b * c
 with a=2, b=3, c=4, the cursor stepping the bytecode while the value stack goes
 2; 2,3; 2,3,4; 2,12; 14; opcodes updated to 3.11+, §4g), 7.7 (the work behind a + b: C's one add
 against CPython's nine generic steps lit in turn; the cycle bars and "~150×"
-removed, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+removed, §4g), 7.8 (np.dot descends four layers,
+Python, NumPy's C, BLAS dgemm, the CPU's vector units; the work fills at the
+bottom and one array returns; the unsourced "~20 lines of C per operation"
+dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
