@@ -5097,71 +5097,48 @@
       changes.
     </p>
 
-    <div class="diagram-card" id="fig-12-5">
-      <div class="diagram-label">Fig 12.5 · V8 · from source to optimised native code, with a feedback loop</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-60"><title id="svgt-part3-60">Fig 12.5 · V8 · from source to optimised native code, with a feedback loop</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">parse · interpret · profile · optimise · deoptimise on assumption violation</text>
-
-        <!-- Stage 1: Parser -->
-        <g transform="translate(40,80)">
-          <rect x="0" y="0" width="120" height="60" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="60" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">PARSER</text>
-          <text x="60" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">source → AST</text>
-          <text x="60" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">lazy: skip unused fns</text>
-        </g>
-
-        <line x1="160" y1="110" x2="200" y2="110" stroke="rgba(79,196,230,0.6)"/>
-        <polygon points="200,110 192,104 192,116" fill="rgba(79,196,230,0.7)"/>
-
-        <!-- Stage 2: Ignition -->
-        <g transform="translate(200,80)">
-          <rect x="0" y="0" width="120" height="60" rx="6" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="60" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">IGNITION</text>
-          <text x="60" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">AST → bytecode</text>
-          <text x="60" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">interpret + profile</text>
-        </g>
-
-        <line x1="320" y1="110" x2="360" y2="110" stroke="rgba(79,196,230,0.6)"/>
-        <polygon points="360,110 352,104 352,116" fill="rgba(79,196,230,0.7)"/>
-        <text x="340" y="100" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">hot</text>
-
-        <!-- Stage 3: TurboFan -->
-        <g transform="translate(360,80)">
-          <rect x="0" y="0" width="120" height="60" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)" stroke-width="1.5"/>
-          <text x="60" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">TURBOFAN</text>
-          <text x="60" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">JIT compile</text>
-          <text x="60" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">type-speculate, inline</text>
-        </g>
-
-        <line x1="480" y1="110" x2="520" y2="110" stroke="rgba(150,216,150,0.7)"/>
-        <polygon points="520,110 512,104 512,116" fill="rgba(150,216,150,0.85)"/>
-
-        <!-- Native code -->
-        <g transform="translate(520,80)">
-          <rect x="0" y="0" width="160" height="60" rx="6" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.95)" stroke-width="2"/>
-          <text x="80" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,1)">NATIVE x86 / ARM</text>
-          <text x="80" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">AES instructions, SIMD</text>
-          <text x="80" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">close to C performance</text>
-        </g>
-
-        <!-- Deopt feedback -->
-        <path d="M 580 140 C 580 230, 260 230, 260 140" fill="none" stroke="rgba(232,120,120,0.65)" stroke-width="1.5" stroke-dasharray="4,3">
-          <animate attributeName="stroke-dashoffset" values="0;-14" dur="2s" repeatCount="indefinite"/>
-        </path>
-        <polygon points="260,140 254,148 268,150" fill="rgba(232,120,120,0.85)"/>
-        <text x="420" y="226" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">DEOPT: type assumption violated</text>
-        <text x="420" y="240" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">passed a string where an integer was expected? throw away the optimisation, fall back to bytecode</text>
-
-        <!-- Bottom note -->
-        <g transform="translate(40,272)">
-          <rect x="0" y="0" width="640" height="74" rx="4" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">SPECULATIVE OPTIMISATION</text>
-          <text x="320" y="40" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">Ignition watches a function while interpreting bytecode: which types does it actually see?</text>
-          <text x="320" y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">If a function has been called 1000 times always with integers, TurboFan generates code that ASSUMES integers,</text>
-          <text x="320" y="68" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">runs ~10× faster, and falls back the moment that assumption breaks. SpiderMonkey, JavaScriptCore work the same way.</text>
-        </g>
-      </svg>
-      <p id="ch12-node-p2" class="diagram-caption">V8's two-tier core mirrors Java's HotSpot, Lua's LuaJIT, and most modern dynamic-language engines. The bytecode interpreter (Ignition) is fast to start up (code begins running immediately, no compilation pause) but slow per operation. The JIT compiler (TurboFan) is slow to compile but produces machine code competitive with C. The whole pipeline runs <em>concurrently</em> with the program: hot functions get optimised in a background thread, and the running program is patched mid-execution to point at the new optimised version. Speculative type assumptions ("this counter has always been an integer; assume integer") deliver most of the speedup; broken assumptions trigger <em>deoptimisation</em>, which throws the optimised code away and falls back to the bytecode interpreter. The whole machinery is invisible to user code, until you write a function that intermittently violates V8's expectations and notice it suddenly running at 1/10 speed.</p>
+    <div class="diagram-card fig-v2" id="fig-12-5">
+      <div class="diagram-label">Fig 12.5&nbsp;· V8&nbsp;· from source to optimised native code, with a feedback loop</div>
+      <svg viewBox="0 0 400 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-60 svgd-part3-60">
+<title id="svgt-part3-60">Fig 12.5 · V8 · from source to optimised native code, with a feedback loop</title>
+<desc id="svgd-part3-60">V8's tiers, top to bottom: the parser turns source into bytecode; Ignition runs the bytecode at once and notes the types it sees; Sparkplug turns it into plain machine code; Maglev optimises for the types seen; TurboFan optimises hardest. A function called add moves down a tier at a time as it gets hotter, having seen only numbers. Then it is called with a string, the optimised code's assumption fails, and it drops back to Ignition.</desc>
+<rect x="10" y="10" width="290" height="42" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.7"/>
+<text x="20" y="27" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">parser</text>
+<text x="20" y="44" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">source to bytecode</text>
+<rect x="10" y="66" width="290" height="42" rx="5" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="20" y="83" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">Ignition</text>
+<text x="20" y="100" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">runs it, notes types</text>
+<path d="M40,54 V64 m-4,-5 l4,5 l4,-5" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<rect x="10" y="122" width="290" height="42" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.7"/>
+<text x="20" y="139" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">Sparkplug</text>
+<text x="20" y="156" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">plain machine code</text>
+<path d="M40,110 V120 m-4,-5 l4,5 l4,-5" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<rect x="10" y="178" width="290" height="42" rx="5" fill="#0a1c2d" stroke="#d4a853" stroke-opacity="0.7"/>
+<text x="20" y="195" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">Maglev</text>
+<text x="20" y="212" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">optimises for types</text>
+<path d="M40,166 V176 m-4,-5 l4,5 l4,-5" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<rect x="10" y="234" width="290" height="42" rx="5" fill="#0a1c2d" stroke="#e07a3f" stroke-opacity="0.7"/>
+<text x="20" y="251" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">TurboFan</text>
+<text x="20" y="268" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">optimises hardest</text>
+<path d="M40,222 V232 m-4,-5 l4,5 l4,-5" fill="none" stroke="rgba(223,234,242,0.6)"/>
+<text x="52" y="119" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">hotter</text>
+<g opacity="0.3"><path d="M300,255.0 H322 V87.0 H306 m6,-5 l-6,5 l6,5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g><g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.769800;0.770000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M300,255.0 H322 V87.0 H306 m6,-5 l-6,5 l6,5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g>
+<g opacity="0.3"><text x="330" y="167" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">deopt</text><text x="330" y="184" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">back</text></g><g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.769800;0.770000;1.000000" dur="10s" repeatCount="indefinite"/><text x="330" y="167" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">deopt</text><text x="330" y="184" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">back</text></g>
+<text x="10" y="300" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">add has seen:</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.080800;0.081000;0.769200;0.769500;1.000000" dur="10s" repeatCount="indefinite"/><text x="128" y="300" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">only numbers</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.769800;0.770000;1.000000" dur="10s" repeatCount="indefinite"/><text x="128" y="300" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">a string too</text></g>
+<g class="fx"><g><animateTransform attributeName="transform" type="translate" values="0 56.00;0 56.00;0 56.00;0 56.00;0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 112.00;0 112.00;0 168.00;0 168.00;0 224.00;0 224.00;0 56.00;0 56.00" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.110000;0.120000;0.170000;0.260000;0.310000;0.400000;0.450000;0.540000;0.590000;0.770000;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="243.0" y="20.0" width="38" height="22" rx="4" fill="#0a1c2d" stroke="#fff" stroke-width="1.5"/><text x="262" y="36" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">add</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.769800;0.770000;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="234" width="290" height="42" rx="5" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d" stroke-width="2"/></g>
+</svg>
+      <p id="ch12-node-p2" class="diagram-caption">V8 runs every function first in its interpreter, which records the types it sees; as the function gets hotter it moves on to compilers that make ever faster code, betting on those types. Break the bet, a string where only numbers came, and the optimised code is thrown away: back to the interpreter.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The tiers.</b> Each costs more to compile and runs faster: Ignition interprets, Sparkplug (since 2021) translates bytecode straight to machine code, Maglev (since 2023) and TurboFan optimise. Compiling happens on background threads while the program runs.</li>
+          <li><b>The bet.</b> Optimised code is built for the types seen so far, guarded by cheap checks. When a check fails, V8 rebuilds the interpreter's state and carries on there: <span class="key-term">deoptimisation</span>.</li>
+          <li><b>Then and now.</b> The first V8, in 2008, had no interpreter and compiled everything straight to machine code. SpiderMonkey and JavaScriptCore also run tiers of interpreters and compilers today.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Node.js: V8 outside the browser</h3>

@@ -160,7 +160,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 150 | 3 | `fig-12-2` Fig 12.2 · May 1995 to ECMAScript 2026 · the slow legitimisation | 2.5 px · cap 110 | done 2026-10-11 |
 | 151 | 3 | `fig-12-3` Fig 12.3 · The event loop · stack, microtasks, macrotasks, render | 2.5 px · cap 105 | done 2026-10-11 |
 | 152 | 3 | `fig-12-4` Fig 12.4 · The same fetch · three eras of async syntax | 2.9 px · cap 92 | done 2026-10-11 |
-| 153 | 3 | `fig-12-5` Fig 12.5 · V8 · from source to optimised native code, with a feedback loop | 2.2 px · cap 138 | todo |
+| 153 | 3 | `fig-12-5` Fig 12.5 · V8 · from source to optimised native code, with a feedback loop | 2.2 px · cap 138 | done 2026-10-11 |
 | 154 | 3 | `fig-12-6` Fig 12.6 · Node.js · V8 + libuv + a JavaScript stdlib | 2.5 px · cap 124 | todo |
 | 155 | 3 | `fig-12-7` Fig 12.7 · Critical rendering path · five stages, one ~16 ms frame | 2.5 px · cap 100 | todo |
 | 156 | 3 | `fig-12-8` Fig 12.8 · Same-origin policy · scheme + host + port must all match | 2.5 px · cap 99 | todo |
