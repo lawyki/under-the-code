@@ -98,7 +98,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 88 | 2 | `fig-6-8` Fig 6.8 · A move is "I'm done with this, take it" | 2.5 px · cap 98 | done 2026-10-11 |
 | 89 | 2 | `fig-6-9` Fig 6.9 · C++ standards · the language eating its own complexity | 2.5 px · cap 149 | done 2026-10-11 |
 | 90 | 2 | `fig-7-1` Fig 7.1 · The two pipelines, side by side | 2.2 px · cap 84 | done 2026-10-11 |
-| 91 | 2 | `fig-7-2` Fig 7.2 · Python's slow conquest | 2.5 px · cap 93 | todo |
+| 91 | 2 | `fig-7-2` Fig 7.2 · Python's slow conquest | 2.5 px · cap 93 | done 2026-10-11 |
 | 92 | 2 | `fig-7-3` Fig 7.3 · Duck typing: behaviour, not lineage | 2.5 px · cap 128 | todo |
 | 93 | 2 | `fig-7-4` Fig 7.4 · Two Python threads, one GIL | 2.5 px · cap 99 | todo |
 | 94 | 2 | `fig-7-5` Fig 7.5 · asyncio: cooperative scheduling on one thread | 2.5 px · cap 127 | todo |
