@@ -593,7 +593,10 @@
     'ch2-boole-p8': 'ch2-boole-p7',
     'ch3-call-p1': 'ch3-call-p2',
     'ch3-overflow-p2': 'ch3-overflow-p1',
-    'chBridge-synthesis-p8': 'chBridge-synthesis-p7'
+    'chBridge-synthesis-p8': 'chBridge-synthesis-p7',
+    // Part II
+    'ch4-anatomy-p3': 'ch4-anatomy-p4',
+    'ch4-security-p7': 'ch4-security-p6'
   };
   const resolveId = id => (document.getElementById(id) ? id : (ANCHOR_ALIASES[id] || id));
 

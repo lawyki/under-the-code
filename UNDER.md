@@ -3078,6 +3078,39 @@ skip), parity 40/40, marks 106/0, UI 93/0, invariants green after the
 tab-stop check stopped counting plain prose links (the cut removed two
 forward-pointer links by design; nav and UI stops are still compared).
 
+### Part II
+
+**12,124 → 11,119 section-prose words (8.3 %) before the verification's
+trims; the whole part 12,404 → 11,165 (10.0 %) after them.** Per section:
+anatomy 704→631, scheduling 722→615, vm 1065→967, fs 696→671, ipc 820→740,
+security 1317→1233, portability 520→459, bell-labs 448→401, pointers
+535→493, malloc 442→417, ub 408→360, survives 366→340, complexity 384→366,
+stroustrup 419→364, classes 320→304, raii 351→318, zerocost 293→261, modern
+558→540, interpret 392→383, vanrossum 220→204, types 275→262, gil 270→252,
+cpython 173→158, datasci 426→380. Ch7 (the register bar) changed least.
+Removed: the Bridge's material re-taught in Ch4 (cooperative scheduling,
+the MMU walk), the network-is-a-file line said three times, SIGKILL said
+twice, the PDP-8 named once and never used, the book's only "The key
+insight:" label, announcements ("This is what kernel security is about").
+
+**Anchors.** ch4-anatomy-p3→p4, ch4-security-p7→p6; zero pixel delta in
+both engines at 375 and 1440 (`tests/pass25/alias.mjs`, 16/16).
+
+**Verification (Sonnet 5.5).** No H, no fact changed. 4 M and 7 L fixed:
+the TLB motive ("ruinously slow"), "it" that read as DEC, the duck-typing
+list, the Ch7 datasci lead, "one to the other" in the MMU sentence, the
+container sentence's hand-off colon, three echoes, the IPC definition
+sentence. Six of its law-2 misses taken: the Ch4 closing paragraph's
+promises, the Ch4 hero lead's "in the detail it deserves", the 1990/1989
+order in the Ch6 seam, the stacked fortress metaphor, the Part III pointer,
+the seam into Ch6. One old mismatch fixed on the way: Ch4 called the socket
+interface "a four-call API" after naming three calls.
+
+**Glossary:** the extractor skips emphasis that the colon cue turned into
+fake terms ("at runtime", "everything", "read"). 507 entries.
+
+**Tests:** `npm run check:dashes` clean; `tests/pass25`: invariants 812/0, traces 228/0 (+1 skip), parity 40/40, marks 106/0, UI 93/0.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em
