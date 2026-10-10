@@ -3423,7 +3423,9 @@ the viewpoint stepping container A, container B, host: redis is PID 1 to A,
 invisible to B, 8472 to the host), 4.21 (paper card: CPU and memory
 panels with outlined limits; batch wants 12 CPUs and is throttled at 4, then
 outgrows 16 GB and is OOM-killed while web and db hold still; network limits
-removed, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+removed, §4g), 4.22 (two programs through the
+verifier: a packet counter is proven, JIT-compiled and runs per packet; an
+unbounded loop is refused with EINVAL; concept only, no exploit mechanics). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

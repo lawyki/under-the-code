@@ -2086,57 +2086,69 @@
       <em>who</em> may load programs at all.)
     </p>
 
-    <div class="diagram-card" id="fig-4-22">
-      <div class="diagram-label">Fig 4.22 · eBPF: untrusted code in the kernel, made safe by proof</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-23"><title id="svgt-part2-23">Fig 4.22 · eBPF: untrusted code in the kernel, made safe by proof</title>
-        <!-- User space -->
-        <rect x="40" y="40" width="640" height="60" rx="6" fill="rgba(100,150,255,0.12)" stroke="rgba(60,100,180,0.5)"/>
-        <text x="360" y="62" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(100,150,255,0.95)" letter-spacing="0.12em">USER SPACE (Ring 3)</text>
-
-        <g transform="translate(60,68)">
-          <rect x="0" y="0" width="180" height="26" rx="3" fill="#0e1510" stroke="rgba(100,150,255,0.5)"/>
-          <text x="90" y="17" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">user writes BPF C source</text>
-        </g>
-        <g transform="translate(260,68)">
-          <rect x="0" y="0" width="180" height="26" rx="3" fill="#0e1510" stroke="rgba(100,150,255,0.5)"/>
-          <text x="90" y="17" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">clang -target bpf → bytecode</text>
-        </g>
-        <g transform="translate(460,68)">
-          <rect x="0" y="0" width="180" height="26" rx="3" fill="#0e1510" stroke="rgba(100,150,255,0.5)"/>
-          <text x="90" y="17" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">bpf() syscall → submit</text>
-        </g>
-
-        <!-- Down arrow -->
-        <line x1="360" y1="100" x2="360" y2="130" stroke="rgba(132,255,178,0.6)" stroke-width="1.5"/>
-        <polygon points="360,130 354,124 366,124" fill="rgba(132,255,178,0.7)"/>
-
-        <!-- The verifier -->
-        <rect x="200" y="140" width="320" height="60" rx="8" fill="rgba(132,255,178,0.18)" stroke="rgba(132,255,178,0.85)" stroke-width="2"/>
-        <text x="360" y="162" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.95)">eBPF verifier</text>
-        <text x="360" y="180" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">proves: terminates · no OOB reads · no crashes</text>
-        <text x="360" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)">if any check fails → reject, return EINVAL</text>
-
-        <!-- Two outcomes -->
-        <line x1="280" y1="200" x2="200" y2="240" stroke="rgba(232,120,120,0.6)" stroke-width="1.5"/>
-        <line x1="440" y1="200" x2="520" y2="240" stroke="rgba(150,216,150,0.6)" stroke-width="1.5"/>
-
-        <!-- Reject path -->
-        <rect x="60" y="240" width="280" height="60" rx="6" fill="rgba(232,120,120,0.15)" stroke="rgba(180,80,80,0.7)"/>
-        <text x="200" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">REJECTED</text>
-        <text x="200" y="278" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">verifier could not prove safety</text>
-        <text x="200" y="292" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">program never enters the kernel</text>
-
-        <!-- Accept path -->
-        <rect x="380" y="240" width="280" height="60" rx="6" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.7)"/>
-        <text x="520" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">ACCEPTED · JIT-compile to native</text>
-        <text x="520" y="278" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">attach to event hooks</text>
-        <text x="520" y="292" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(150,216,150,0.7)">runs in Ring 0 at native speed</text>
-
-        <!-- Kernel space label -->
-        <rect x="40" y="320" width="640" height="32" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.7)"/>
-        <text x="360" y="340" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">KERNEL (Ring 0): only verified BPF runs here</text>
-      </svg>
-      <p id="ch4-security-p16" class="diagram-caption">eBPF flips a forty-year-old assumption: that any code running in the kernel must be hand-vetted, audited, signed, and trusted. Instead, the kernel ships a <em>verifier</em>, a static analyser that mathematically proves an uploaded program is safe before letting it run. The proof obligations are concrete: every memory access must be in-bounds (so the program cannot read random kernel memory); every loop must be provably bounded (so the program cannot hang the kernel); the program must terminate within a fixed instruction budget. Programs that pass are JIT-compiled to native instructions and attached to hooks (system call entry, packet receive, function entry, scheduler tick), where they run in Ring 0 with no syscall overhead. The pattern of sandboxed verified execution inside a privileged context is one of the most important architectural ideas of the last twenty years.</p>
+    <div class="diagram-card fig-v2" id="fig-4-22">
+      <div class="diagram-label">Fig 4.22&nbsp;· eBPF: untrusted code in the kernel, made safe by proof</div>
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-23 svgd-part2-23">
+<title id="svgt-part2-23">Fig 4.22 · eBPF: untrusted code in the kernel, made safe by proof</title>
+<desc id="svgd-part2-23">Two eBPF programs are submitted from user space with the bpf() system call. The kernel's verifier checks each one. The first, which counts packets, is proven to end and to stay within its memory bounds; it is compiled to native code and attached to the packet-arrival hook, where it runs once per packet. The second, an endless while loop, cannot be proven to end; the verifier refuses it with the error EINVAL and it never runs in the kernel.</desc>
+<text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">USER SPACE</text>
+<rect x="20" y="28" width="170" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="32" y="46" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">prog A</text>
+<text x="32" y="65" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">count packets</text>
+<rect x="210" y="28" width="170" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="222" y="46" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">prog B</text>
+<text x="222" y="65" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">while (1) { }</text>
+<line x1="20" y1="100" x2="380" y2="100" stroke="rgba(198,222,206,0.35)" stroke-dasharray="6 5"/>
+<text x="20" y="95" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">bpf()</text>
+<text x="20" y="118" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">KERNEL</text>
+<rect x="40" y="126" width="320" height="50" rx="3" fill="#0c120e" stroke="#d4a853" stroke-width="1.5"/>
+<text x="200" y="146" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">verifier</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1;0;0;1;1" keyTimes="0.000000;0.145409;0.145455;0.290182;0.290455;0.399818;0.400000;0.744727;0.745000;0.854364;0.854545;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="166" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">proves: it ends, stays in bounds</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.290727;0.290909;0.399273;0.399545;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="166" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A: ends, in bounds: accept</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.745273;0.745455;0.853818;0.854091;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="166" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">B: no proof it ends: refuse</text></g>
+<rect class="fx" x="40" y="126" width="320" height="50" rx="3" fill="#84ffb2" fill-opacity="0.12" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.290727;0.290909;0.399273;0.399545;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="40" y="126" width="320" height="50" rx="3" fill="#ec8d8d" fill-opacity="0.12" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.745273;0.745455;0.853818;0.854091;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<path d="M105 74 L105 126" fill="none" stroke="rgba(198,222,206,0.3)" stroke-width="1.5"/>
+<path class="fx" d="M105 74 L105 126" fill="none" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.236182;0.236364;0.399273;0.399545;1.000000" dur="11s" repeatCount="indefinite"/></path>
+<path d="M295 74 L295 126" fill="none" stroke="rgba(198,222,206,0.3)" stroke-width="1.5"/>
+<path class="fx" d="M295 74 L295 126" fill="none" stroke="#ec8d8d" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.690727;0.690909;0.853818;0.854091;1.000000" dur="11s" repeatCount="indefinite"/></path>
+<path d="M105 176 L105 214" fill="none" stroke="rgba(198,222,206,0.3)" stroke-width="1.5"/>
+<path class="fx" d="M105 176 L105 214" fill="none" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.399818;0.400000;0.472000;0.472273;1.000000" dur="11s" repeatCount="indefinite"/></path>
+<path d="M295 176 L295 214" fill="none" stroke="rgba(198,222,206,0.3)" stroke-width="1.5"/>
+<path class="fx" d="M295 176 L295 214" fill="none" stroke="#ec8d8d" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.854364;0.854545;0.926545;0.926818;1.000000" dur="11s" repeatCount="indefinite"/></path>
+<rect x="20" y="214" width="170" height="46" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.7"/>
+<text x="32" y="233" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">JIT to native</text>
+<text x="32" y="251" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">attached</text>
+<rect x="210" y="214" width="170" height="46" rx="3" fill="#152016" stroke="#ec8d8d" stroke-opacity="0.7"/>
+<text x="222" y="233" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">refused: EINVAL</text>
+<text x="222" y="251" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">never runs</text>
+<rect class="fx" x="20" y="214" width="170" height="46" rx="3" fill="#84ffb2" fill-opacity="0.15" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.399818;0.400000;0.472000;0.472273;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="210" y="214" width="170" height="46" rx="3" fill="#ec8d8d" fill-opacity="0.15" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.854364;0.854545;0.926545;0.926818;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<text x="20" y="294" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">packet in</text>
+<line x1="104" y1="290" x2="380" y2="290" stroke="rgba(198,222,206,0.3)" stroke-width="1.5"/>
+<rect x="120" y="283" width="14" height="14" rx="2" fill="#84ffb2" fill-opacity="0.4" stroke="#84ffb2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.472545;0.472727;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<circle class="fx" cx="127" cy="290" r="12" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.472545;0.472727;0.503818;0.504091;1.000000" dur="11s" repeatCount="indefinite"/></circle>
+<rect x="154" y="283" width="14" height="14" rx="2" fill="#84ffb2" fill-opacity="0.4" stroke="#84ffb2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.527091;0.527273;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<circle class="fx" cx="161" cy="290" r="12" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.527091;0.527273;0.558364;0.558636;1.000000" dur="11s" repeatCount="indefinite"/></circle>
+<rect x="188" y="283" width="14" height="14" rx="2" fill="#84ffb2" fill-opacity="0.4" stroke="#84ffb2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.581636;0.581818;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<circle class="fx" cx="195" cy="290" r="12" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.581636;0.581818;0.612909;0.613182;1.000000" dur="11s" repeatCount="indefinite"/></circle>
+<rect x="222" y="283" width="14" height="14" rx="2" fill="#84ffb2" fill-opacity="0.4" stroke="#84ffb2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.636182;0.636364;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<circle class="fx" cx="229" cy="290" r="12" fill="none" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.636182;0.636364;0.667455;0.667727;1.000000" dur="11s" repeatCount="indefinite"/></circle>
+<g><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.144727;0.145000;0.145455;0.472000;0.472273;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 0×</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.472545;0.472727;0.526545;0.526818;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 1×</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.527091;0.527273;0.581091;0.581364;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 2×</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.581636;0.581818;0.635636;0.635909;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 3×</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.636182;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 4×</text></g>
+</svg>
+      <p id="ch4-security-p16" class="diagram-caption">Before an eBPF program may run in the kernel, the verifier must prove that it ends and never reads outside its bounds: a packet counter passes, is compiled to native code and runs on every packet. A loop the verifier cannot bound is refused with an error, so it never runs at all.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The toolchain.</b> <code>clang</code> compiles restricted C to eBPF bytecode, and the <code>bpf()</code> system call hands it to the kernel.</li>
+          <li><b>The proof.</b> The verifier walks every path through the program, tracking the range of every register. Loops pass only when it can bound them (allowed since Linux 5.3), and its effort is capped.</li>
+          <li><b>A second guard.</b> Most systems also let only privileged users load programs, so the verifier is not the only line of defence.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch4-security-p17">
