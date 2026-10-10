@@ -3402,7 +3402,10 @@ second change cut before its commit is discarded and v2 stands; the old
 "every write twice" corrected, §4g). `figlib` now writes keyTimes to six
 decimals: at four, a 1 ms swap on a 13 s loop rounded onto one instant and
 two labels showed together; every generator re-run, every done figure
-re-swept. The sweep's overlap test now compares ink boxes (font boxes trimmed
+re-swept (10,152 frames, 0 fail). 4.14 (the first paper card in Part II:
+Greenbar ink on the light card; 103′, a new parent and a new root are written
+bottom up, one pointer switch makes them current and the old root becomes the
+snapshot sharing 102; `part-2.css` gives paper cards ink captions and strips). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

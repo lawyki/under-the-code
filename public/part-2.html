@@ -1384,60 +1384,62 @@
       on entire directories, and built-in checksumming to detect silent disk corruption.
     </p>
 
-    <div class="diagram-card light-diagram" id="fig-4-14">
-      <div class="diagram-label">Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-15"><title id="svgt-part2-15">Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point</title>
-        <!-- Header -->
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">file modification on a COW filesystem (btrfs / ZFS / APFS)</text>
-
-        <!-- Before -->
-        <text x="180" y="74" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(46,96,70,0.95)">before</text>
-        <g transform="translate(50,90)">
-          <rect x="0"  y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="40" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.95)">root ptr</text>
-          <line x1="80" y1="16" x2="120" y2="16" stroke="rgba(62,138,94,0.7)"/>
-          <polygon points="118,12 126,16 118,20" fill="rgba(62,138,94,0.7)"/>
-          <rect x="120" y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="160" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.95)">block 102</text>
-          <line x1="200" y1="16" x2="240" y2="16" stroke="rgba(62,138,94,0.7)"/>
-          <polygon points="238,12 246,16 238,20" fill="rgba(62,138,94,0.7)"/>
-          <rect x="240" y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="280" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.95)">block 103</text>
-        </g>
-
-        <!-- After -->
-        <text x="540" y="74" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(46,96,70,0.95)">after modifying byte 12 of block 103</text>
-        <g transform="translate(380,90)">
-          <rect x="0" y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.30)" stroke="rgba(60,120,60,0.95)" stroke-width="1.5"/>
-          <text x="40" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.95)">NEW root</text>
-          <line x1="80" y1="16" x2="120" y2="16" stroke="rgba(62,138,94,0.7)"/>
-          <polygon points="118,12 126,16 118,20" fill="rgba(62,138,94,0.7)"/>
-          <rect x="120" y="0" width="80" height="32" rx="3" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="160" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.95)">block 102</text>
-          <text x="160" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="rgba(46,96,70,0.55)">unchanged · shared</text>
-          <line x1="200" y1="16" x2="240" y2="16" stroke="rgba(62,138,94,0.7)"/>
-          <polygon points="238,12 246,16 238,20" fill="rgba(62,138,94,0.7)"/>
-          <rect x="240" y="0" width="80" height="32" rx="3" fill="rgba(110,220,160,0.30)" stroke="rgba(88,180,128,0.95)" stroke-width="1.5"/>
-          <text x="280" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(66,146,102,0.95)">NEW 103'</text>
-          <text x="280" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="rgba(66,146,102,0.85)">freshly written</text>
-        </g>
-
-        <!-- Old root still alive -->
-        <text x="540" y="170" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(46,96,70,0.7)">old root still points to old block 103: a free snapshot</text>
-        <g transform="translate(380,180)">
-          <rect x="0" y="0" width="80" height="28" rx="3" fill="rgba(180,180,180,0.15)" stroke="rgba(62,138,94,0.4)" stroke-dasharray="3,3"/>
-          <text x="40" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.7)">old root</text>
-          <line x1="80" y1="14" x2="240" y2="14" stroke="rgba(62,138,94,0.4)" stroke-dasharray="2,2"/>
-          <rect x="240" y="0" width="80" height="28" rx="3" fill="rgba(180,180,180,0.15)" stroke="rgba(62,138,94,0.4)" stroke-dasharray="3,3"/>
-          <text x="280" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.7)">old block 103</text>
-        </g>
-
-        <!-- Bottom: properties -->
-        <rect x="60" y="240" width="600" height="60" rx="4" fill="#fdfcf9" stroke="rgba(62,138,94,0.55)"/>
-        <text x="360" y="262" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(46,96,70,0.95)">consequences: snapshots are free · no in-place writes can corrupt · checksums fit naturally</text>
-        <text x="360" y="282" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">cost: every write triggers a chain of new-block writes up to the root (write amplification)</text>
-      </svg>
-      <p id="ch4-fs-p12" class="diagram-caption">A copy-on-write filesystem never modifies a block in place. Updating one byte of block 103 means: allocate a new block (103′), copy 103's contents, apply the change, then re-write the parent that pointed at 103 to point at 103′ instead, and so on, all the way up to the root. The old version of every block remains valid until explicitly freed. A snapshot is just a saved copy of the old root pointer; it costs zero bytes until something diverges. Every block can include a checksum that the filesystem verifies on read, so silent disk corruption (which happens, even on enterprise hardware) gets caught instead of propagating. The trade is <strong>write amplification</strong>: a one-byte change touches a full block at every level of the tree. ZFS, btrfs, and APFS all make this trade and consider it a bargain. WAFL (NetApp) made the trade in the early 1990s and built a multi-billion-dollar storage business on it.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-4-14">
+      <div class="diagram-label">Fig 4.14&nbsp;· Copy-on-write filesystem: never overwrite, just re-point</div>
+      <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-15 svgd-part2-15">
+<title id="svgt-part2-15">Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point</title>
+<desc id="svgd-part2-15">A file's tree: a root points to a node, which points to blocks 102 and 103. To change block 103 the filesystem writes a new block 103′ elsewhere, then a new node pointing at 102 and 103′, then a new root. One pointer switch makes the new root current. Nothing was overwritten: the old root still points at the old node and block 103, so it is a snapshot of the file before the change, and block 102 is shared by both versions.</desc>
+<rect x="45.0" y="48" width="110" height="34" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.45)" stroke-width="1.2"/>
+<text x="100" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">root</text>
+<rect x="45.0" y="124" width="110" height="34" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.45)" stroke-width="1.2"/>
+<text x="100" y="146" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">node</text>
+<rect x="22.0" y="200" width="96" height="34" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.45)" stroke-width="1.2"/>
+<text x="70" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">103</text>
+<rect x="152.0" y="200" width="96" height="34" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.45)" stroke-width="1.2"/>
+<text x="200" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">102</text>
+<line x1="100" y1="82" x2="100" y2="118" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="100.0,124.0 97.0,117.7 103.0,117.7" fill="rgba(29,43,34,0.5)"/>
+<line x1="86" y1="158" x2="74" y2="194" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="74.0,200.0 72.8,193.1 78.7,194.8" fill="rgba(29,43,34,0.5)"/>
+<line x1="114" y1="158" x2="192" y2="194" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="192.0,200.0 185.0,199.7 187.9,194.3" fill="rgba(29,43,34,0.5)"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.099200;0.099500;0.100000;0.199800;0.200000;1.000000" dur="10s" repeatCount="indefinite"/>
+<rect x="282.0" y="200" width="96" height="34" rx="3" fill="rgba(46,111,82,0.14)" stroke="#2e6f52" stroke-width="2"/>
+<text x="330" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">103′</text>
+</g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.099200;0.099500;0.100000;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/>
+<rect x="245.0" y="124" width="110" height="34" rx="3" fill="rgba(46,111,82,0.14)" stroke="#2e6f52" stroke-width="2"/>
+<text x="300" y="146" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">node′</text>
+<line x1="286" y1="158" x2="208" y2="194" stroke="#2e6f52" stroke-width="2"/>
+<polygon points="208.0,200.0 212.1,194.3 215.0,199.7" fill="#2e6f52"/>
+<line x1="314" y1="158" x2="326" y2="194" stroke="#2e6f52" stroke-width="2"/>
+<polygon points="326.0,200.0 321.3,194.8 327.2,193.1" fill="#2e6f52"/>
+</g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.099200;0.099500;0.100000;0.439800;0.440000;1.000000" dur="10s" repeatCount="indefinite"/>
+<rect x="245.0" y="48" width="110" height="34" rx="3" fill="rgba(46,111,82,0.14)" stroke="#2e6f52" stroke-width="2"/>
+<text x="300" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">root′</text>
+<line x1="300" y1="82" x2="300" y2="118" stroke="#2e6f52" stroke-width="2"/>
+<polygon points="300.0,124.0 297.0,117.7 303.0,117.7" fill="#2e6f52"/>
+</g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.099200;0.099500;0.100000;0.559200;0.559500;1.000000" dur="10s" repeatCount="indefinite"/><text x="100" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">current</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.099200;0.099500;0.100000;0.559800;0.560000;1.000000" dur="10s" repeatCount="indefinite"/><text x="300" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">current</text><text x="100" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">snapshot</text></g>
+<rect class="fx" x="241.0" y="44" width="118" height="42" rx="5" fill="none" stroke="#2e6f52" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099950;0.100000;0.559800;0.560000;0.639200;0.639500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="200" y="254" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">shared</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099950;0.100000;0.139800;0.140000;0.199200;0.199500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="276" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">change block 103</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099950;0.100000;0.199800;0.200000;0.319200;0.319500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="276" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">write 103′ somewhere new</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099950;0.100000;0.319800;0.320000;0.439200;0.439500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="276" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">write a new parent</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099950;0.100000;0.439800;0.440000;0.559200;0.559500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="276" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">write a new root</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.059200;0.059500;0.099950;0.100000;0.559800;0.560000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="276" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">switch one pointer: done</text></g>
+</svg>
+      <p id="ch4-fs-p12" class="diagram-caption">A copy-on-write filesystem never overwrites a block: changing 103 writes a new 103′, a new parent and a new root, and one pointer switch makes the change live. The old root still describes the old file, so a snapshot costs nothing until the versions diverge.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Crash safety.</b> Before the switch the old tree is whole; after it the new one is. A crash before the switch loses only the change, never the filesystem.</li>
+          <li><b>Checksums.</b> Every block can carry a checksum checked on each read, so silent disk corruption is caught. ZFS and btrfs cover data too; APFS covers metadata.</li>
+          <li><b>The cost.</b> One changed byte rewrites a block at every level up to the root: write amplification. NetApp's WAFL made this trade in the early 1990s; ZFS, btrfs and APFS make it now.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
