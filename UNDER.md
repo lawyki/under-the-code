@@ -3370,7 +3370,9 @@ printed line by line, then where each design ended up), 4.2 (one file read:
 2 boundary crossings monolithic, 8 microkernel; then one driver bug, the
 whole kernel red against one restarted process), 4.3 (insmod: the module
 snaps into Ring 0, links to the symbol table, module_init(); rmmod undoes it;
-no invented module counts). The sweep's overlap test now compares ink boxes (font boxes trimmed
+no invented module counts), 4.4 (the leftmost process leaves the tree,
+runs while its virtual runtime climbs 3.2 → 13.0, and goes back in on the
+right; the tree drawn balanced, its red-black colouring described). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
