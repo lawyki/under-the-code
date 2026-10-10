@@ -86,7 +86,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 76 | 2 | `fig-5-7` Fig 5.7 · Leak vs use-after-free | 2.5 px · cap 107 | deferred: conceptual pass |
 | 77 | 2 | `fig-5-8` Fig 5.8 · How "trust the programmer" deletes your bug check | 2.9 px · cap 99 | done 2026-10-10 |
 | 78 | 2 | `fig-5-9` Fig 5.9 · A NULL dereference, traced | 2.5 px · cap 96 | done 2026-10-10 |
-| 79 | 2 | `fig-5-10` Fig 5.10 · Where C still runs in 2026 | 2.2 px · cap 121 | todo |
+| 79 | 2 | `fig-5-10` Fig 5.10 · Where C still runs in 2026 | 2.2 px · cap 121 | done 2026-10-10 |
 | 80 | 2 | `fig-5-11` Fig 5.11 · The C family tree · half a century of descendants | 2.2 px · cap 159 | todo |
 | 81 | 2 | `fig-6-1` Fig 6.1 · The 1980s software crisis, in one chart | 2.5 px · cap 89 | todo |
 | 82 | 2 | `fig-6-2` Fig 6.2 · C++, in time | 2.5 px · cap 90 | todo |

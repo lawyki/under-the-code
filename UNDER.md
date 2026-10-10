@@ -3448,7 +3448,11 @@ carries attacker steps and joins the deferred conceptual pass. 5.8 (the source,
 the compiler's four deductions stepping in, the check struck through, and the
 -O2 output lea eax,[rdi+1]; ret), 5.9 (five stages lit in turn from the
 NULL store to the shell's "Segmentation fault (core dumped)"; the unsourced
-"roughly 10 microseconds" round trip dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
+"roughly 10 microseconds" round trip dropped), 5.10 (one Python request lit down
+the layers beneath it, CPython, OpenSSL and SQLite, libc, Linux, firmware,
+each tagged by language; the old "share of C" bars had no numbers behind them
+and are gone; the 70% memory-safety figure is attributed to Microsoft and
+Chromium in "How it works"). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
