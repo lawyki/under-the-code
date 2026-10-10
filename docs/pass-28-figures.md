@@ -4,6 +4,8 @@ Every figure, in book order. One at a time, each finished and tested before the 
 Generator per figure: `scripts/figs/fig_<n>.py`. Gate per figure: `node tests/pass28/figs.mjs --part=<part> --fig=<id> --times=<frames>` (0 fail, Chromium + WebKit, 320 to 1440) and a look at 360/375 and 1440, fullscreen included.
 Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 
+Order (2026-10-10): figures in security, exploit or low-level-trap territory are marked *deferred: conceptual pass* and done together at the end, drawn at the level of concepts (defences and ideas, not attack mechanics). *held: owner decision* waits for the owner.
+
 | # | Part | Figure | Before | Status |
 |---|---|---|---|---|
 | 1 | 1 | `fig-1-1` Fig 1.1 · A Turing machine · adding one | 2.6 px · cap 90 | done 2026-10-10 |
@@ -47,12 +49,12 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 39 | 1 | `fig-br-1` Fig BR.1 · The privilege bit · two worlds, one chip | 2.6 px · cap 95 | done 2026-10-10 |
 | 40 | 1 | `fig-br-2` Fig BR.2 · The trap mechanism · one round trip across the boundary | 2.2 px · cap 124 | done 2026-10-10 |
 | 41 | 1 | `fig-br-3` Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel | 2.2 px · cap 66 | held: owner decision |
-| 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | todo |
-| 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | todo |
-| 44 | 1 | `fig-br-6` Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back | 2.2 px · cap 97 | todo |
-| 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | todo |
-| 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | todo |
-| 47 | 1 | `fig-br-9` Fig BR.9 · Hardware features → kernel → abstractions | 2.2 px · cap 112 | todo |
+| 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | deferred: conceptual pass |
+| 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | deferred: conceptual pass |
+| 44 | 1 | `fig-br-6` Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back | 2.2 px · cap 97 | deferred: conceptual pass |
+| 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | deferred: conceptual pass |
+| 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | deferred: conceptual pass |
+| 47 | 1 | `fig-br-9` Fig BR.9 · Hardware features → kernel → abstractions | 2.2 px · cap 112 | deferred: conceptual pass |
 | 48 | 2 | `fig-4-1` Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992 | 2.5 px · cap 118 | todo |
 | 49 | 2 | `fig-4-2` Fig 4.2 · Monolithic vs microkernel | 2.5 px · cap 57 | todo |
 | 50 | 2 | `fig-4-3` Fig 4.3 · A kernel module loading at runtime | 2.2 px · cap 120 | todo |
@@ -63,7 +65,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 55 | 2 | `fig-4-8` Fig 4.8 · x86-64 four-level page table walk | 2.5 px · cap 67 | todo |
 | 56 | 2 | `fig-4-9` Fig 4.9 · A page fault, decision tree | 2.5 px · cap 129 | todo |
 | 57 | 2 | `fig-4-10` Fig 4.10 · Fork, then write: when shared pages diverge | 2.5 px · cap 123 | todo |
-| 58 | 2 | `fig-4-11` Fig 4.11 · Dirty COW: the race that broke Linux | 2.5 px · cap 163 | todo |
+| 58 | 2 | `fig-4-11` Fig 4.11 · Dirty COW: the race that broke Linux | 2.5 px · cap 163 | deferred: conceptual pass |
 | 59 | 2 | `fig-4-12` Fig 4.12 · Filename → inode → data blocks | 2.5 px · cap 56 | todo |
 | 60 | 2 | `fig-4-13` Fig 4.13 · Journaling: write your intent before doing it | 2.5 px · cap 139 | todo |
 | 61 | 2 | `fig-4-14` Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point | 2.2 px · cap 155 | todo |
@@ -125,7 +127,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 117 | 3 | `fig-9-7` Fig 9.7 · The internet's tier hierarchy | 2.5 px · cap 161 | todo |
 | 118 | 3 | `fig-9-8` Fig 9.8 · IPv4 ran out, then CGNAT papered over it | 2.5 px · cap 125 | todo |
 | 119 | 3 | `fig-9-9` Fig 9.9 · The shape of an IPv4 vs an IPv6 address | 2.5 px · cap 120 | todo |
-| 120 | 3 | `fig-9-10` Fig 9.10 · IP spoofing: a forged source field | 2.5 px · cap 134 | todo |
+| 120 | 3 | `fig-9-10` Fig 9.10 · IP spoofing: a forged source field | 2.5 px · cap 134 | deferred: conceptual pass |
 | 121 | 3 | `fig-9-11` Fig 9.11 · Pakistan/YouTube, 24 February 2008 | 2.2 px · cap 149 | todo |
 | 122 | 3 | `fig-9-12` Fig 9.12 · A route leak: traffic takes the wrong door | 2.5 px · cap 148 | todo |
 | 123 | 3 | `fig-10-1` Fig 10.1 · UDP: eight bytes, no state, no apologies | 2.2 px · cap 100 | todo |
@@ -137,7 +139,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 129 | 3 | `fig-10-7` Fig 10.7 · CUBIC vs Reno: same loss, different recovery | 2.5 px · cap 105 | todo |
 | 130 | 3 | `fig-10-8` Fig 10.8 · BBR aims for the bandwidth-delay product | 2.9 px · cap 140 | todo |
 | 131 | 3 | `fig-10-9` Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks | 2.5 px · cap 146 | todo |
-| 132 | 3 | `fig-10-10` Fig 10.10 · SYN flood: half-open connections fill the table | 2.2 px · cap 129 | todo |
+| 132 | 3 | `fig-10-10` Fig 10.10 · SYN flood: half-open connections fill the table | 2.2 px · cap 129 | deferred: conceptual pass |
 | 133 | 3 | `fig-10-11` Fig 10.11 · SYN cookies: the state goes into the wire | 2.5 px · cap 143 | todo |
 | 134 | 3 | `fig-11-1` Fig 11.1 · March 1989 to August 1991 · a quiet two and a half years | 2.2 px · cap 105 | todo |
 | 135 | 3 | `fig-11-2` Fig 11.2 · A complete HTTP exchange · request and response, byte for byte | 2.5 px · cap 98 | todo |
@@ -145,7 +147,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 137 | 3 | `fig-11-4` Fig 11.4 · HTTP methods · what they promise, what caches and clients assume | 2.5 px · cap 111 | todo |
 | 138 | 3 | `fig-11-5` Fig 11.5 · The DNS namespace · a tree, read right to left | 2.2 px · cap 119 | todo |
 | 139 | 3 | `fig-11-6` Fig 11.6 · Recursive resolution · four servers, four questions, one answer | 2.2 px · cap 74 | todo |
-| 140 | 3 | `fig-11-7` Fig 11.7 · Cache poisoning · the attacker races the real answer | 2.5 px · cap 152 | todo |
+| 140 | 3 | `fig-11-7` Fig 11.7 · Cache poisoning · the attacker races the real answer | 2.5 px · cap 152 | deferred: conceptual pass |
 | 141 | 3 | `fig-11-8` Fig 11.8 · One-way function · easy forward, infeasible backward | 2.9 px · cap 101 | todo |
 | 142 | 3 | `fig-11-9` Fig 11.9 · SHA-256 avalanche · one bit changed, all 256 bits scrambled | 2.5 px · cap 143 | todo |
 | 143 | 3 | `fig-11-10` Fig 11.10 · Symmetric vs asymmetric · the same secret · or two halves of one | 2.5 px · cap 94 | todo |
@@ -162,8 +164,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 154 | 3 | `fig-12-6` Fig 12.6 · Node.js · V8 + libuv + a JavaScript stdlib | 2.5 px · cap 124 | todo |
 | 155 | 3 | `fig-12-7` Fig 12.7 · Critical rendering path · five stages, one ~16 ms frame | 2.5 px · cap 100 | todo |
 | 156 | 3 | `fig-12-8` Fig 12.8 · Same-origin policy · scheme + host + port must all match | 2.5 px · cap 99 | todo |
-| 157 | 3 | `fig-12-9` Fig 12.9 · XSS · three ways for attacker code to run with your origin's privileges | 2.5 px · cap 134 | todo |
-| 158 | 3 | `fig-12-10` Fig 12.10 · CSRF · the cookie attaches to the cross-site request unless we add a token | 2.5 px · cap 137 | todo |
+| 157 | 3 | `fig-12-9` Fig 12.9 · XSS · three ways for attacker code to run with your origin's privileges | 2.5 px · cap 134 | deferred: conceptual pass |
+| 158 | 3 | `fig-12-10` Fig 12.10 · CSRF · the cookie attaches to the cross-site request unless we add a token | 2.5 px · cap 137 | deferred: conceptual pass |
 | 159 | 3 | `fig-12-11` Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest | 2.9 px · cap 133 | todo |
 | 160 | 4 | `fig-13-1` Fig 13.1 · Codd 1970 to PostgreSQL 18 · two lineages, fifty years | 2.5 px · cap 91 | todo |
 | 161 | 4 | `fig-13-2` Fig 13.2 · Three operators · selection, projection, join | 2.5 px · cap 113 | todo |
@@ -174,11 +176,11 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 166 | 4 | `fig-13-7` Fig 13.7 · The four isolation levels · what each one permits | 2.9 px · cap 145 | todo |
 | 167 | 4 | `fig-13-8` Fig 13.8 · A B+ tree · range scan walks the leaves left to right | 2.9 px · cap 145 | todo |
 | 168 | 4 | `fig-13-9` Fig 13.9 · B-tree vs hash index · which one wins which workload | 2.9 px · cap 131 | todo |
-| 169 | 4 | `fig-13-10` Fig 13.10 · SQL injection · a single quote turns a SELECT into a tautology | 2.9 px · cap 162 | todo |
+| 169 | 4 | `fig-13-10` Fig 13.10 · SQL injection · a single quote turns a SELECT into a tautology | 2.9 px · cap 162 | deferred: conceptual pass |
 | 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | todo |
 | 171 | 4 | `fig-14-1` Fig 14.1 · Two thousand years of cryptography in one strip | 2.5 px · cap 117 | todo |
 | 172 | 4 | `fig-14-2` Fig 14.2 · The four one-way functions cryptography is built on | 2.5 px · cap 240 | todo |
-| 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | todo |
+| 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | deferred: conceptual pass |
 | 174 | 4 | `fig-14-4` Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF | 2.9 px · cap 129 | todo |
 | 175 | 4 | `fig-14-5` Fig 14.5 · One AES round · four steps on a 4×4 byte grid | 2.2 px · cap 127 | todo |
 | 176 | 4 | `fig-14-6` Fig 14.6 · ECB's famous failure · structure leaks through | 2.9 px · cap 142 | todo |
@@ -189,15 +191,15 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 181 | 4 | `fig-14-11` Fig 14.11 · TLS 1.3 handshake at cryptographic depth | 2.5 px · cap 141 | todo |
 | 182 | 4 | `fig-14-12` Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest | 2.2 px · cap 137 | todo |
 | 183 | 4 | `fig-14-13` Fig 14.13 · Post-quantum migration · the algorithms that survive Shor | 2.9 px · cap 129 | todo |
-| 184 | 4 | `fig-15-1` Fig 15.1 · STRIDE · the six classes of threat to enumerate | 2.5 px · cap 129 | todo |
+| 184 | 4 | `fig-15-1` Fig 15.1 · STRIDE · the six classes of threat to enumerate | 2.5 px · cap 129 | deferred: conceptual pass |
 | 185 | 4 | `fig-15-2` Fig 15.2 · The arms race continued · Fig 3.11 extended through 2026 | 2.5 px · cap 140 | todo |
-| 186 | 4 | `fig-15-3` Fig 15.3 · Man-in-the-middle · with and without TLS | 2.5 px · cap 132 | todo |
-| 187 | 4 | `fig-15-4` Fig 15.4 · ARP spoofing · poisoning the address-resolution cache | 2.5 px · cap 137 | todo |
-| 188 | 4 | `fig-15-5` Fig 15.5 · SQL injection defence in depth · five layers, each independent | 2.5 px · cap 122 | todo |
-| 189 | 4 | `fig-15-6` Fig 15.6 · SSRF · the server makes the request the attacker can't | 2.5 px · cap 134 | todo |
+| 186 | 4 | `fig-15-3` Fig 15.3 · Man-in-the-middle · with and without TLS | 2.5 px · cap 132 | deferred: conceptual pass |
+| 187 | 4 | `fig-15-4` Fig 15.4 · ARP spoofing · poisoning the address-resolution cache | 2.5 px · cap 137 | deferred: conceptual pass |
+| 188 | 4 | `fig-15-5` Fig 15.5 · SQL injection defence in depth · five layers, each independent | 2.5 px · cap 122 | deferred: conceptual pass |
+| 189 | 4 | `fig-15-6` Fig 15.6 · SSRF · the server makes the request the attacker can't | 2.5 px · cap 134 | deferred: conceptual pass |
 | 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | todo |
-| 191 | 4 | `fig-15-8` Fig 15.8 · Stuxnet · four zero-days, a USB jump, sabotage of physical machines | 2.9 px · cap 158 | todo |
-| 192 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns | 2.5 px · cap 141 | todo |
+| 191 | 4 | `fig-15-8` Fig 15.8 · Stuxnet · four zero-days, a USB jump, sabotage of physical machines | 2.9 px · cap 158 | deferred: conceptual pass |
+| 192 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns | 2.5 px · cap 141 | deferred: conceptual pass |
 | 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | todo |
 | 194 | 5 | `fig-16-1` Fig 16.1 · Threads vs processes · the same parallelism, two isolation models | 2.5 px · cap 150 | todo |
 | 195 | 5 | `fig-16-2` Fig 16.2 · The classic race · two threads, one counter, lost updates | 2.9 px · cap 122 | todo |
