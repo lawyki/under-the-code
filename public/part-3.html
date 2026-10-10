@@ -3540,80 +3540,46 @@
       headers, a blank line, and the body.
     </p>
 
-    <div class="diagram-card" id="fig-11-2">
-      <div class="diagram-label">Fig 11.2 · A complete HTTP exchange · request and response, byte for byte</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-41"><title id="svgt-part3-41">Fig 11.2 · A complete HTTP exchange · request and response, byte for byte</title>
-        <!-- Request side -->
-        <g transform="translate(40,30)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.12em">CLIENT → SERVER</text>
-          <rect x="0" y="10" width="320" height="200" rx="3" fill="#0a1c2d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="11" fill="rgba(79,196,230,1)">GET</text>
-          <text x="50" y="32" font-family="Space Mono" font-size="11" fill="rgba(180,200,220,0.95)">/index.html</text>
-          <text x="180" y="32" font-family="Space Mono" font-size="11" fill="rgba(150,216,150,0.95)">HTTP/1.1</text>
-
-          <text x="14" y="56" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Host: example.com</text>
-          <text x="14" y="72" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">User-Agent: curl/8.4.0</text>
-          <text x="14" y="88" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Accept: text/html, */*;q=0.8</text>
-          <text x="14" y="104" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Accept-Encoding: gzip, br</text>
-          <text x="14" y="120" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Accept-Language: en, fi</text>
-          <text x="14" y="136" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Connection: keep-alive</text>
-          <text x="14" y="156" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">[blank line: header / body separator]</text>
-          <text x="14" y="180" font-family="Playfair Display" font-style="italic" font-size="10" fill="rgba(79,196,230,0.7)">(GET has no body)</text>
-
-          <!-- Annotations -->
-          <text x="0" y="234" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.85)">↑ method · path · version</text>
-          <text x="0" y="248" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">↑ headers · name: value, one per line</text>
-          <text x="0" y="262" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.85)">↑ blank line marks end of headers</text>
-        </g>
-
-        <!-- Arrow -->
-        <line x1="365" y1="120" x2="395" y2="120" stroke="rgba(79,196,230,0.6)" stroke-width="2"/>
-        <polygon points="395,120 387,114 387,126" fill="rgba(79,196,230,0.7)"/>
-        <text x="380" y="108" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.7)">over TCP</text>
-        <text x="380" y="138" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">port 80</text>
-
-        <!-- Response side -->
-        <g transform="translate(400,30)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.12em">SERVER → CLIENT</text>
-          <rect x="0" y="10" width="280" height="200" rx="3" fill="#0a1c2d" stroke="rgba(232,120,120,0.55)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="11" fill="rgba(150,216,150,0.95)">HTTP/1.1</text>
-          <text x="84" y="32" font-family="Space Mono" font-size="11" fill="rgba(150,216,150,1)">200</text>
-          <text x="116" y="32" font-family="Space Mono" font-size="11" fill="rgba(180,200,220,0.95)">OK</text>
-
-          <text x="14" y="56" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Date: Fri, 01 May 2026 10:00:00</text>
-          <text x="14" y="72" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Server: nginx/1.24.0</text>
-          <text x="14" y="88" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Content-Type: text/html</text>
-          <text x="14" y="104" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Content-Length: 1256</text>
-          <text x="14" y="120" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Cache-Control: max-age=3600</text>
-          <text x="14" y="136" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">Connection: keep-alive</text>
-          <text x="14" y="156" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">[blank line]</text>
-          <text x="14" y="178" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">&lt;!DOCTYPE html&gt;</text>
-          <text x="14" y="194" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">&lt;html&gt;…1256 bytes…&lt;/html&gt;</text>
-
-          <!-- Annotations -->
-          <text x="0" y="234" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">↑ version · status code · reason</text>
-          <text x="0" y="248" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">↑ headers describe the body</text>
-          <text x="0" y="262" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.85)">↑ body: the actual document</text>
-        </g>
-
-        <!-- Status code legend -->
-        <g transform="translate(40,310)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">STATUS CODE FAMILIES</text>
-          <rect x="0" y="14" width="640" height="120" rx="4" fill="#0c2438" stroke="rgba(79,196,230,0.4)"/>
-          <text x="14" y="34" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">1xx: informational</text>
-          <text x="180" y="34" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">100 Continue, 101 Switching Protocols</text>
-          <text x="14" y="52" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">2xx: success</text>
-          <text x="180" y="52" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">200 OK, 201 Created, 204 No Content</text>
-          <text x="14" y="70" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">3xx: redirection</text>
-          <text x="180" y="70" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">301 Moved Permanently, 304 Not Modified</text>
-          <text x="14" y="88" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">4xx: client error</text>
-          <text x="180" y="88" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">400 Bad Request, 401, 403, 404, 429 Too Many</text>
-          <text x="14" y="106" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">5xx: server error</text>
-          <text x="180" y="106" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">500 Internal Server Error, 502 Bad Gateway, 503 Unavailable</text>
-          <text x="14" y="124" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.55)" font-style="italic">first digit categorises; the rest just identifies. Three digits, ~70 codes assigned, hundreds reserved.</text>
-        </g>
-      </svg>
-      <p id="ch11-http-p3" class="diagram-caption">The entire HTTP wire format. Three things make a request: a request line (method, path, version), zero-or-more name-value headers, and an optional body, separated from the headers by a single blank line. The response has the same shape with a status line replacing the request line. The 200 above means "the request succeeded and the body is the requested document"; a 404 would mean "the document does not exist"; a 500 would mean "the server crashed trying." Every web request you have ever made has this exact shape underneath, even if a browser is hiding it from you.</p>
+    <div class="diagram-card fig-v2" id="fig-11-2">
+      <div class="diagram-label">Fig 11.2&nbsp;· A complete HTTP exchange&nbsp;· request and response, byte for byte</div>
+      <svg viewBox="0 0 400 362" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-41 svgd-part3-41">
+<title id="svgt-part3-41">Fig 11.2 · A complete HTTP exchange · request and response, byte for byte</title>
+<desc id="svgd-part3-41">An HTTP/1.1 request, line by line, each line ending in carriage return and line feed: GET /index.html HTTP/1.1, then the headers Host: example.com, User-Agent: curl/8.4.0 and Accept: */*, then an empty line. The response: HTTP/1.1 200 OK, the headers Content-Type: text/html and Content-Length: 1256, an empty line, then the body, an HTML document.</desc>
+<text x="20" y="26" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">request · client to server</text>
+<rect x="20" y="36" width="250" height="114" rx="4" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.55"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.129800;0.130000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="58" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="#4fc4e6">GET</tspan><tspan fill="rgba(223,234,242,0.85)"> /index.html </tspan><tspan fill="#9bd89b">HTTP/1.1</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.179800;0.180000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="78" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.85)">Host: </tspan><tspan fill="rgba(223,234,242,0.6)">example.com</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.229800;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.85)">User-Agent: </tspan><tspan fill="rgba(223,234,242,0.6)">curl/8.4.0</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.279800;0.280000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="118" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.85)">Accept: </tspan><tspan fill="rgba(223,234,242,0.6)">*/*</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.329800;0.330000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="138" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.6)">\r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.129800;0.130000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,46 h4 V62 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="59" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">request line</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.179800;0.180000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,66 h4 V122 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="99" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">headers</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.329800;0.330000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,126 h4 V142 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="139" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">blank line</text></g>
+<line x1="60" y1="158" x2="60" y2="188" stroke="rgba(223,234,242,0.6)" stroke-dasharray="3 4"/>
+<text x="74" y="178" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">one TCP connection, port 80</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.369800;0.370000;0.449200;0.449500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 30.00;0 30.00;0 0.00;0 0.00;0 30.00;0 30.00" keyTimes="0.000000;0.049950;0.050000;0.370000;0.450000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="60" cy="158" r="5" fill="#9bd89b"/></g></g>
+<text x="20" y="206" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">response · server to client</text>
+<rect x="20" y="216" width="250" height="134" rx="4" fill="#0a1c2d" stroke="#e07a3f" stroke-opacity="0.55"/>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.489800;0.490000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="238" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="#9bd89b">HTTP/1.1 </tspan><tspan fill="#9bd89b">200</tspan><tspan fill="rgba(223,234,242,0.85)"> OK</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="258" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.85)">Content-Type: </tspan><tspan fill="rgba(223,234,242,0.6)">text/html</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.589800;0.590000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="278" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.85)">Content-Length: </tspan><tspan fill="rgba(223,234,242,0.6)">1256</tspan><tspan fill="rgba(223,234,242,0.6)"> \r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.639800;0.640000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="298" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="rgba(223,234,242,0.6)">\r\n</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.689800;0.690000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="318" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="#4fc4e6">&lt;!doctype html&gt;</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.739800;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="338" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="#4fc4e6">&lt;html&gt;…&lt;/html&gt;</tspan></text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.489800;0.490000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,226 h4 V242 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="239" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">status line</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,246 h4 V282 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="269" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">headers</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.639800;0.640000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,286 h4 V302 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="299" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">blank line</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0.28;0.28;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.689800;0.690000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M278,306 h4 V342 h-4" fill="none" stroke="rgba(223,234,242,0.6)"/><text x="290" y="329" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">body</text></g>
+</svg>
+      <p id="ch11-http-p3" class="diagram-caption">An HTTP/1.1 message is lines of text, each ending in a carriage return and a line feed: a first line, the headers, a blank line, then the body. The response has the same shape, with a status code where the request had its method and path.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Status codes.</b> The first digit is the class: 1xx informational, 2xx success, 3xx redirection, 4xx the client's error (404: no such document), 5xx the server's (500: it failed while answering).</li>
+          <li><b>Where the body ends.</b> The blank line ends the headers; <code>Content-Length</code> says how many bytes of body follow (here 1,256), so the same connection can carry the next request.</li>
+          <li><b>HTTP/2 and HTTP/3.</b> The same methods, headers and status codes, but sent as binary frames with compressed headers instead of these lines of text.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The big idea: stateless</h3>
