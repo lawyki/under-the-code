@@ -4673,53 +4673,55 @@
       targeted for the late 2020s.
     </p>
 
-    <div class="diagram-card" id="fig-7-4">
-      <div class="diagram-label">Fig 7.4 · Two Python threads, one GIL</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-50"><title id="svgt-part2-50">Fig 7.4 · Two Python threads, one GIL</title>
-        <!-- Time axis -->
-        <line x1="80" y1="180" x2="660" y2="180" stroke="rgba(132,255,178,0.5)" stroke-width="1.5"/>
-        <text x="660" y="200" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)" text-anchor="end">time →</text>
-
-        <!-- Thread 1 lane -->
-        <text x="50" y="74" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)" text-anchor="end">Thread 1</text>
-        <line x1="80" y1="74" x2="660" y2="74" stroke="rgba(150,216,150,0.2)" stroke-dasharray="3,3"/>
-        <rect x="80"  y="62" width="100" height="24" rx="2" fill="rgba(150,216,150,0.35)" stroke="rgba(150,216,150,0.7)"/>
-        <text x="130" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs (has GIL)</text>
-        <rect x="280" y="62" width="120" height="24" rx="2" fill="rgba(150,216,150,0.35)" stroke="rgba(150,216,150,0.7)"/>
-        <text x="340" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs (has GIL)</text>
-        <rect x="500" y="62" width="100" height="24" rx="2" fill="rgba(150,216,150,0.35)" stroke="rgba(150,216,150,0.7)"/>
-        <text x="550" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs (has GIL)</text>
-
-        <!-- Thread 2 lane -->
-        <text x="50" y="134" font-family="IBM Plex Mono" font-size="10" fill="rgba(100,150,255,0.95)" text-anchor="end">Thread 2</text>
-        <line x1="80" y1="134" x2="660" y2="134" stroke="rgba(100,150,255,0.2)" stroke-dasharray="3,3"/>
-        <rect x="180" y="122" width="100" height="24" rx="2" fill="rgba(100,150,255,0.35)" stroke="rgba(100,150,255,0.7)"/>
-        <text x="230" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs (has GIL)</text>
-        <rect x="400" y="122" width="100" height="24" rx="2" fill="rgba(100,150,255,0.35)" stroke="rgba(100,150,255,0.7)"/>
-        <text x="450" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs (has GIL)</text>
-        <rect x="600" y="122" width="60"  height="24" rx="2" fill="rgba(100,150,255,0.35)" stroke="rgba(100,150,255,0.7)"/>
-        <text x="630" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">runs</text>
-
-        <!-- GIL handoffs -->
-        <g font-family="IBM Plex Mono" font-size="8" fill="rgba(232,120,120,0.85)" text-anchor="middle">
-          <text x="180" y="106">handoff</text>
-          <text x="280" y="106">handoff</text>
-          <text x="400" y="106">handoff</text>
-          <text x="500" y="106">handoff</text>
-          <text x="600" y="106">handoff</text>
-        </g>
-        <g stroke="rgba(232,120,120,0.5)" stroke-dasharray="2,2">
-          <line x1="180" y1="86"  x2="180" y2="122"/>
-          <line x1="280" y1="146" x2="280" y2="62"/>
-          <line x1="400" y1="86"  x2="400" y2="122"/>
-          <line x1="500" y1="146" x2="500" y2="62"/>
-          <line x1="600" y1="86"  x2="600" y2="122"/>
-        </g>
-
-        <text x="360" y="38" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(132,255,178,0.95)">Two threads. One GIL. They take turns.</text>
-        <text x="360" y="218" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">on an 8-core CPU, threading still occupies one core's worth of time</text>
-      </svg>
-      <p id="ch7-gil-p3" class="diagram-caption">Two Python threads alternate. Only one holds the GIL at any instant; the other waits. The interpreter releases and re-acquires the GIL at intervals (every 5 milliseconds by default), and around any blocking I/O call. So Python threads do help with I/O-bound work: while one thread is waiting on disk or network, another can run. They do not help with CPU-bound work, which has been the source of complaints since the late 1990s. PEP 703's cure, fine-grained per-object locking and biased reference counting, is shipping as opt-in in Python 3.13. The single-lock era is ending, slowly, after thirty years.</p>
+    <div class="diagram-card fig-v2" id="fig-7-4">
+      <div class="diagram-label">Fig 7.4&nbsp;· Two Python threads, one GIL</div>
+      <svg viewBox="0 0 400 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-50 svgd-part2-50">
+<title id="svgt-part2-50">Fig 7.4 · Two Python threads, one GIL</title>
+<desc id="svgd-part2-50">Thirty milliseconds of two Python threads. With the global interpreter lock, only the thread holding it runs: thread 1 runs for 5 ms, then thread 2, then thread 1, the lock passing at the 5 ms switch interval. From 15 ms thread 1 waits on I/O and releases the lock, so thread 2 runs for those 10 ms; at 25 ms thread 1 takes the lock back. In Python 3.13's optional free-threaded build there is no such lock, and both threads run for the whole 30 ms.</desc>
+<text x="20" y="18" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">default build: one lock</text>
+<text x="20" y="44" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
+<rect x="92" y="28" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92.0" y="28" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.276667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="140.0" y="28" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.18)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.276667;0.393333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="188.0" y="28" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.393333;0.510000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="236.0" y="28" width="95.0" height="22" rx="2" fill="#d4a853" fill-opacity="0.55"><animate attributeName="width" values="95;95;95;95;0;0;95;95" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.510000;0.743333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="332.0" y="28" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="20" y="72" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T2</text>
+<rect x="92" y="56" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.18)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.276667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="140.0" y="56" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.276667;0.393333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="188.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.18)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.393333;0.510000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="236.0" y="56" width="95.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="95;95;95;95;0;0;95;95" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.510000;0.743333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="332.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.18)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 28.00;0 28.00;0 0.00;0 0.00;0 28.00;0 28.00;0 0.00;0 0.00" keyTimes="0.000000;0.060000;0.099950;0.100000;0.266667;0.276667;0.383333;0.393333;0.500000;0.510000;0.733333;0.743333;1.000000" dur="10s" repeatCount="indefinite"/><rect x="44" y="28" width="42" height="22" rx="3" fill="#d4a853" fill-opacity="0.25" stroke="#d4a853"/><text x="65" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">GIL</text></g>
+<text x="20" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">3.13 free-threaded build</text>
+<text x="20" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
+<rect x="92" y="142" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92.0" y="142" width="287.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="287;287;287;287;0;0;287;287" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T2</text>
+<rect x="92" y="170" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92.0" y="170" width="287.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="287;287;287;287;0;0;287;287" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="92" y="104" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0</text>
+<text x="188" y="104" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">10</text>
+<text x="284" y="104" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">20</text>
+<text x="380" y="104" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">30 ms</text>
+<rect x="20" y="211" width="12" height="12" rx="2" fill="#84ffb2"/>
+<text x="38" y="222" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">runs</text>
+<rect x="110" y="211" width="12" height="12" rx="2" fill="#d4a853"/>
+<text x="128" y="222" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">waits on I/O</text>
+<rect x="250" y="211" width="12" height="12" rx="2" fill="rgba(198,222,206,0.35)"/>
+<text x="268" y="222" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">waits for GIL</text>
+<line y1="24" y2="198" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.099950;0.100000;0.159000;0.160000;0.860000;0.870000;1.000000" dur="10s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch7-gil-p3" class="diagram-caption">With the GIL, two CPU-bound threads take turns, the lock passing between them every 5 ms, so only one runs at a time; a thread waiting on I/O releases it, and then the other gets real work done. Python 3.13's optional free-threaded build removes the lock, and both threads run at once.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why one lock.</b> CPython's reference counts and internal structures were never safe to update from two threads at once; a single lock made them safe and kept the interpreter simple.</li>
+          <li><b>The interval.</b> <code>sys.getswitchinterval()</code> is 0.005 seconds by default: after that, the running thread is asked to hand the lock over.</li>
+          <li><b>Removing it.</b> PEP 703's free-threaded build uses per-object locks and biased reference counting; in 3.13 it is optional, and single-threaded code runs somewhat slower in it.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-7-5">

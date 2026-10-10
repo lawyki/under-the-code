@@ -3482,7 +3482,10 @@ compiles and links once and every run is native; Python parses and compiles on
 run 1, loads the .pyc cache after, and runs the eval loop every time), 7.2 (vertical timeline with Python 1–2
 and Python 3 as parallel bars, overlapping 2008 to 2020, the split drawn), 7.3 (paper card: announce(thing) called
 with a Duck, a Robot and an int; the lookup at the call answers quack, BEEP,
-then AttributeError). The sweep's overlap test now compares ink boxes (font boxes trimmed
+then AttributeError), 7.4 (one 30 ms axis, two panels: with the
+GIL the threads alternate at the 5 ms switch interval and T2 runs while T1
+waits on I/O, a GIL tag moving at each handoff; the 3.13 free-threaded build
+runs both at once). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
