@@ -3905,72 +3905,60 @@
       <code>example.com</code> servers do. Here are theirs." The resolver
       asks one of <em>those</em>; that server is authoritative for
       <code>example.com</code> and returns the actual IP. The resolver caches the answer for the TTL the authoritative server sets (typically 5 minutes to 24 hours) and returns it to the laptop. Total time:
-      usually under 50 milliseconds the first time; under a millisecond on
-      every later lookup until the TTL expires.
+      usually under 50 milliseconds the first time; until the TTL expires,
+      every later lookup costs one short trip to the resolver, or nothing at
+      all when the laptop's own cache still holds the answer.
     </p>
 
-    <div class="diagram-card" id="fig-11-6">
-      <div class="diagram-label">Fig 11.6 · Recursive resolution · four servers, four questions, one answer</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-45"><title id="svgt-part3-45">Fig 11.6 · Recursive resolution · four servers, four questions, one answer</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">cold cache · about 50 ms · then 0 ms for the next 5 minutes</text>
-
-        <!-- Client -->
-        <rect x="40" y="170" width="100" height="48" rx="6" fill="#0a2033" stroke="rgba(150,216,150,0.85)" stroke-width="2"/>
-        <text x="90" y="192" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">your laptop</text>
-        <text x="90" y="206" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.7)">getaddrinfo()</text>
-
-        <!-- Resolver -->
-        <rect x="220" y="170" width="120" height="48" rx="6" fill="#0a2033" stroke="rgba(79,196,230,0.95)" stroke-width="2"/>
-        <text x="280" y="190" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">recursive resolver</text>
-        <text x="280" y="204" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.7)">1.1.1.1 / 8.8.8.8 / ISP</text>
-        <text x="280" y="218" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.55)">cache: hit? skip ②③④</text>
-
-        <!-- Step 1 -->
-        <line x1="140" y1="190" x2="218" y2="190" stroke="rgba(150,216,150,0.6)"/>
-        <polygon points="218,190 210,184 210,196" fill="rgba(150,216,150,0.7)"/>
-        <text x="178" y="178" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.95)">① "example.com?"</text>
-
-        <!-- Right column: 4 servers -->
-        <g transform="translate(420,40)">
-          <!-- Root -->
-          <rect x="0" y="0" width="260" height="48" rx="5" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">root server (.)</text>
-          <text x="14" y="36" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">"go ask the .com servers: they're at …"</text>
-
-          <!-- com -->
-          <rect x="0" y="80" width="260" height="48" rx="5" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="14" y="100" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">.com TLD server</text>
-          <text x="14" y="116" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">"go ask example.com's NS servers, at …"</text>
-
-          <!-- example.com -->
-          <rect x="0" y="160" width="260" height="48" rx="5" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="14" y="180" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">example.com authoritative NS</text>
-          <text x="14" y="196" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">"example.com is 93.184.216.34, TTL 3600"</text>
-
-          <!-- TTL note -->
-          <rect x="0" y="240" width="260" height="48" rx="5" fill="rgba(100,150,255,0.10)" stroke="rgba(60,100,180,0.45)" stroke-dasharray="3,2"/>
-          <text x="14" y="260" font-family="Space Mono" font-size="9" fill="rgba(100,150,255,0.95)">resolver caches for TTL seconds</text>
-          <text x="14" y="276" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">subsequent users see ~1 ms answer</text>
-        </g>
-
-        <!-- Arrows from resolver to each level -->
-        <line x1="340" y1="180" x2="420" y2="60" stroke="rgba(79,196,230,0.5)"/>
-        <text x="376" y="116" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.95)">②</text>
-        <line x1="340" y1="190" x2="420" y2="100" stroke="rgba(79,196,230,0.5)"/>
-        <text x="382" y="148" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.95)">③</text>
-        <line x1="340" y1="200" x2="420" y2="180" stroke="rgba(150,216,150,0.6)"/>
-        <text x="382" y="196" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.95)">④</text>
-
-        <!-- Final reply down to laptop -->
-        <line x1="220" y1="218" x2="142" y2="218" stroke="rgba(150,216,150,0.7)"/>
-        <polygon points="142,218 150,212 150,224" fill="rgba(150,216,150,0.8)"/>
-        <text x="178" y="232" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.95)">⑤ "93.184.216.34"</text>
-
-        <!-- Bottom annotation -->
-        <text x="40" y="340" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.65)" font-style="italic">UDP packets, 53/udp · falls back to TCP for responses bigger than ~512 bytes</text>
-        <text x="40" y="356" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.5)" font-style="italic">DNS-over-HTTPS (DoH) and DNS-over-TLS (DoT) wrap the same questions in encryption · same protocol underneath</text>
-      </svg>
-      <p id="ch11-dns-p6" class="diagram-caption">The resolver does the recursion; the laptop just asks once and gets the answer. The four-stage walk happens only on a cache miss; with reasonable TTLs and a busy resolver, hit rates are typically 80–99%. The whole protocol fits in tiny UDP datagrams (query and reply are usually under 100 bytes), which is why DNS is fast enough to feel free, and also why it has security problems: UDP makes it cheap to spoof.</p>
+    <div class="diagram-card fig-v2" id="fig-11-6">
+      <div class="diagram-label">Fig 11.6&nbsp;· Recursive resolution&nbsp;· four servers, four questions, one answer</div>
+      <svg viewBox="0 0 400 308" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-45 svgd-part3-45">
+<title id="svgt-part3-45">Fig 11.6 · Recursive resolution · four servers, four questions, one answer</title>
+<desc id="svgd-part3-45">A cold DNS lookup of example.com. The laptop asks its resolver once. The resolver asks a root server, which refers it to the com servers; asks a com server, which refers it to example.com's own servers; and asks one of those, which returns the address. The resolver caches the answer and passes it to the laptop.</desc>
+<line x1="158" y1="138" x2="214" y2="58" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6" stroke-dasharray="3 4"/>
+<line x1="158" y1="138" x2="214" y2="138" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6" stroke-dasharray="3 4"/>
+<line x1="158" y1="138" x2="214" y2="218" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6" stroke-dasharray="3 4"/>
+<line x1="84.0" y1="172" x2="84.0" y2="246" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6" stroke-dasharray="3 4"/>
+<rect x="214" y="33.0" width="176" height="50" rx="5" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="224" y="54" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">root (.)</text>
+<g opacity="0.3"><text x="224" y="73" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ ask com</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.063105;0.063158;0.094737;0.095263;0.273474;0.273684;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="224" y="73" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ ask com</text></g>
+<rect x="214" y="113.0" width="176" height="50" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.7"/>
+<text x="224" y="134" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">com servers</text>
+<g opacity="0.3"><text x="224" y="153" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ ask example.com</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.063105;0.063158;0.094737;0.095263;0.431368;0.431579;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="224" y="153" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ ask example.com</text></g>
+<rect x="214" y="193.0" width="176" height="50" rx="5" fill="#0a1c2d" stroke="#86a8ff" stroke-opacity="0.7"/>
+<text x="224" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">example.com</text>
+<g opacity="0.3"><text x="224" y="233" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ the address</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.063105;0.063158;0.094737;0.095263;0.589263;0.589474;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="224" y="233" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">→ the address</text></g>
+<rect x="10" y="104" width="148" height="68" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="20" y="126" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">resolver</text>
+<text x="20" y="144" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">ISP or 1.1.1.1</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.095579;0.095789;0.662316;0.662632;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="20" y="162" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">cache: empty</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.063105;0.063158;0.094737;0.095263;0.662947;0.663158;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="20" y="162" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">cache: 1 hour</text></g>
+<rect x="10" y="246" width="148" height="44" rx="5" fill="#0a1c2d" stroke="#e07a3f" stroke-opacity="0.7"/>
+<text x="20" y="265" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">laptop</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.095579;0.095789;0.746526;0.746842;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="20" y="282" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">example.com?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.063105;0.063158;0.094737;0.095263;0.747158;0.747368;1.000000" dur="9.5s" repeatCount="indefinite"/><text x="20" y="282" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">has the address</text></g>
+<text x="94" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">asks once</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.126105;0.126316;0.189684;0.190000;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.063105;0.063158;0.126316;0.189474;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -74.00;0 -74.00;0 0.00;0 0.00;0 -74.00;0 -74.00" keyTimes="0.000000;0.063105;0.063158;0.126316;0.189474;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="84.0" cy="246" r="5" fill="#e07a3f"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.210316;0.210526;0.273895;0.274211;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="50.00 0;50.00 0;0.00 0;0.00 0;50.00 0;50.00 0" keyTimes="0.000000;0.063105;0.063158;0.210526;0.273684;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -80.00;0 -80.00;0 0.00;0 0.00;0 -80.00;0 -80.00" keyTimes="0.000000;0.063105;0.063158;0.210526;0.273684;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="158" cy="138" r="5" fill="rgba(223,234,242,0.85)"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.284000;0.284211;0.347579;0.347895;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.063105;0.063158;0.284211;0.347368;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 80.00;0 80.00;0 0.00;0 0.00;0 80.00;0 80.00" keyTimes="0.000000;0.063105;0.063158;0.284211;0.347368;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="208" cy="58" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.368211;0.368421;0.431789;0.432105;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="50.00 0;50.00 0;0.00 0;0.00 0;50.00 0;50.00 0" keyTimes="0.000000;0.063105;0.063158;0.368421;0.431579;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00" keyTimes="0.000000;0.063105;0.063158;0.368421;0.431579;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="158" cy="138" r="5" fill="rgba(223,234,242,0.85)"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.441895;0.442105;0.505474;0.505789;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.063105;0.063158;0.442105;0.505263;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00" keyTimes="0.000000;0.063105;0.063158;0.442105;0.505263;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="208" cy="138" r="5" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.526105;0.526316;0.589684;0.590000;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="50.00 0;50.00 0;0.00 0;0.00 0;50.00 0;50.00 0" keyTimes="0.000000;0.063105;0.063158;0.526316;0.589474;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 80.00;0 80.00;0 0.00;0 0.00;0 80.00;0 80.00" keyTimes="0.000000;0.063105;0.063158;0.526316;0.589474;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="158" cy="138" r="5" fill="rgba(223,234,242,0.85)"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.599789;0.600000;0.663368;0.663684;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.063105;0.063158;0.600000;0.663158;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -80.00;0 -80.00;0 0.00;0 0.00;0 -80.00;0 -80.00" keyTimes="0.000000;0.063105;0.063158;0.600000;0.663158;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="208" cy="218" r="5" fill="#86a8ff"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.063105;0.063158;0.684000;0.684211;0.747579;0.747895;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.063105;0.063158;0.684211;0.747368;1.000000" dur="9.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 74.00;0 74.00;0 0.00;0 0.00;0 74.00;0 74.00" keyTimes="0.000000;0.063105;0.063158;0.684211;0.747368;1.000000" dur="9.5s" repeatCount="indefinite"/><circle cx="84.0" cy="172" r="5" fill="#86a8ff"/></g></g></g>
+</svg>
+      <p id="ch11-dns-p6" class="diagram-caption">The laptop asks its resolver once; on a cold cache the resolver walks the tree, asking the root, then the <code>com</code> servers, then <code>example.com</code>'s own servers, each pointing it one step closer. The resolver caches the answer for its TTL, so the next asker skips the walk.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Referrals.</b> The root and <code>com</code> servers do not know the address; they reply with the names and addresses of the servers one level down.</li>
+          <li><b>On the wire.</b> Queries go over UDP port 53. If an answer is too big for the UDP size the asker offered (512 bytes without EDNS), the server marks it truncated and the asker repeats the query over TCP. DNS over HTTPS and over TLS carry the same messages encrypted.</li>
+          <li><b>The cache.</b> A busy resolver already holds the root and <code>com</code> referrals, so most lookups skip to the last step or need no walk at all.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Where the trust breaks</h3>

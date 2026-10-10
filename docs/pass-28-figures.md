@@ -146,7 +146,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 136 | 3 | `fig-11-3` Fig 11.3 · One curl, fully traced | 2.5 px · cap 96 | done 2026-10-11 |
 | 137 | 3 | `fig-11-4` Fig 11.4 · HTTP methods · what they promise, what caches and clients assume | 2.5 px · cap 111 | done 2026-10-11 |
 | 138 | 3 | `fig-11-5` Fig 11.5 · The DNS namespace · a tree, read right to left | 2.2 px · cap 119 | done 2026-10-11 |
-| 139 | 3 | `fig-11-6` Fig 11.6 · Recursive resolution · four servers, four questions, one answer | 2.2 px · cap 74 | todo |
+| 139 | 3 | `fig-11-6` Fig 11.6 · Recursive resolution · four servers, four questions, one answer | 2.2 px · cap 74 | done 2026-10-11 |
 | 140 | 3 | `fig-11-7` Fig 11.7 · Cache poisoning · the attacker races the real answer | 2.5 px · cap 152 | deferred: conceptual pass |
 | 141 | 3 | `fig-11-8` Fig 11.8 · One-way function · easy forward, infeasible backward | 2.9 px · cap 101 | todo |
 | 142 | 3 | `fig-11-9` Fig 11.9 · SHA-256 avalanche · one bit changed, all 256 bits scrambled | 2.5 px · cap 143 | todo |
