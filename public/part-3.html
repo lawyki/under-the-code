@@ -4952,77 +4952,55 @@
       the microtask queue completely, optionally render, repeat. Forever.
     </p>
 
-    <div class="diagram-card" id="fig-12-3">
-      <div class="diagram-label">Fig 12.3 · The event loop · stack, microtasks, macrotasks, render</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-58"><title id="svgt-part3-58">Fig 12.3 · The event loop · stack, microtasks, macrotasks, render</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">one thread, three queues, ~60 turns per second</text>
-
-        <!-- Call stack -->
-        <g transform="translate(40,72)">
-          <text x="100" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">CALL STACK</text>
-          <rect x="0" y="14" width="200" height="200" rx="4" fill="rgba(79,196,230,0.10)" stroke="rgba(32,116,150,0.65)"/>
-          <rect x="20" y="170" width="160" height="28" rx="2" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="100" y="188" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,1)">main()</text>
-          <rect x="20" y="138" width="160" height="28" rx="2" fill="rgba(79,196,230,0.25)" stroke="rgba(32,116,150,0.75)"/>
-          <text x="100" y="156" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">handleClick()</text>
-          <rect x="20" y="106" width="160" height="28" rx="2" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.65)"/>
-          <text x="100" y="124" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">parseJSON()</text>
-          <text x="100" y="232" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">grows / shrinks</text>
-          <text x="100" y="248" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">on call / return</text>
-        </g>
-
-        <!-- Event loop in middle -->
-        <g transform="translate(280,160)">
-          <circle cx="80" cy="40" r="60" fill="none" stroke="rgba(79,196,230,0.5)" stroke-width="1.5" stroke-dasharray="6,4">
-            <animate attributeName="stroke-dashoffset" values="0;-20" dur="3s" repeatCount="indefinite"/>
-          </circle>
-          <circle cx="80" cy="40" r="40" fill="rgba(79,196,230,0.15)" stroke="rgba(79,196,230,0.85)"/>
-          <text x="80" y="36" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,1)">EVENT</text>
-          <text x="80" y="50" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,1)">LOOP</text>
-        </g>
-
-        <!-- Microtask queue (priority) -->
-        <g transform="translate(440,72)">
-          <text x="120" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">MICROTASKS</text>
-          <text x="120" y="14" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.7)">drained completely between tasks</text>
-          <rect x="0" y="22" width="240" height="80" rx="4" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.65)"/>
-          <rect x="14" y="34" width="210" height="20" rx="2" fill="rgba(150,216,150,0.25)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="48" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,1)">Promise.then(...)</text>
-          <rect x="14" y="60" width="210" height="20" rx="2" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.75)"/>
-          <text x="120" y="74" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.9)">queueMicrotask()</text>
-        </g>
-
-        <!-- Macrotask queue -->
-        <g transform="translate(440,180)">
-          <text x="120" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">MACROTASKS</text>
-          <text x="120" y="14" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.7)">one per loop iteration</text>
-          <rect x="0" y="22" width="240" height="80" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.65)"/>
-          <rect x="14" y="34" width="210" height="20" rx="2" fill="rgba(232,120,120,0.20)" stroke="rgba(180,80,80,0.65)"/>
-          <text x="120" y="48" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">setTimeout(cb, 0)</text>
-          <rect x="14" y="60" width="210" height="20" rx="2" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.55)"/>
-          <text x="120" y="74" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">click event handler</text>
-        </g>
-
-        <!-- Render queue -->
-        <g transform="translate(440,288)">
-          <text x="120" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)" letter-spacing="0.1em">RENDER</text>
-          <text x="120" y="14" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(100,150,255,0.7)">~16 ms cadence (60 fps)</text>
-          <rect x="0" y="22" width="240" height="60" rx="4" fill="rgba(100,150,255,0.10)" stroke="rgba(60,100,180,0.65)"/>
-          <rect x="14" y="34" width="210" height="20" rx="2" fill="rgba(100,150,255,0.20)" stroke="rgba(60,100,180,0.65)"/>
-          <text x="120" y="48" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(100,150,255,0.95)">layout · paint · composite</text>
-          <text x="120" y="70" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">requestAnimationFrame()</text>
-        </g>
-
-        <!-- Bottom: the algorithm -->
-        <g transform="translate(40,392)">
-          <rect x="0" y="0" width="640" height="54" rx="4" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">while (true) {</text>
-          <text x="40" y="34" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">task = macrotaskQueue.shift();   // one per iteration</text>
-          <text x="40" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">run(task);   drainMicrotasks();   maybeRender();</text>
-          <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">}</text>
-        </g>
-      </svg>
-      <p id="ch12-loop-p3" class="diagram-caption">The whole algorithm. Pull one macrotask off the queue (a click handler, a timer, a network response). Run it on the call stack. When it returns, drain the microtask queue completely: every <code>.then</code>, every awaited promise resolution. <em>Then</em> let the browser render if it's been ~16 ms since the last frame. Repeat. The single thread never blocks because nothing on the queues blocks; long-running computation (a heavy <code>JSON.parse</code>, a tight loop) does block the loop, which is why frozen UI in browsers and event-loop lag in Node.js are the same bug. The thread is stuck on the call stack instead of returning to the loop.</p>
+    <div class="diagram-card fig-v2" id="fig-12-3">
+      <div class="diagram-label">Fig 12.3&nbsp;· The event loop&nbsp;· stack, microtasks, macrotasks, render</div>
+      <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-58 svgd-part3-58">
+<title id="svgt-part3-58">Fig 12.3 · The event loop · stack, microtasks, macrotasks, render</title>
+<desc id="svgd-part3-58">Four lines of JavaScript: log 1; a zero-millisecond timer that logs 4; a resolved promise whose callback logs 3; log 2. The script runs to its end on the call stack and prints 1 and 2. The timer callback waits in the task queue and the promise callback in the microtask queue. When the stack is empty every microtask runs, printing 3; the browser may render; then the next task runs, printing 4. The console reads 1 2 3 4.</desc>
+<rect x="10" y="12" width="380" height="88" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.5"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.099833;0.100000;0.166000;0.166250;1.000000" dur="12s" repeatCount="indefinite"/><rect x="12" y="16" width="376" height="19" rx="2" fill="#4fc4e6" fill-opacity="0.16"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.166500;0.166667;0.249333;0.249583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="12" y="36" width="376" height="19" rx="2" fill="#4fc4e6" fill-opacity="0.16"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.249833;0.250000;0.332667;0.332917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="12" y="56" width="376" height="19" rx="2" fill="#4fc4e6" fill-opacity="0.16"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.416000;0.416250;1.000000" dur="12s" repeatCount="indefinite"/><rect x="12" y="76" width="376" height="19" rx="2" fill="#4fc4e6" fill-opacity="0.16"/></g>
+<text x="20" y="30" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">console.log(1);</text>
+<text x="20" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">setTimeout(() => console.log(4), 0);</text>
+<text x="20" y="70" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">Promise.resolve().then(() => console.log(3));</text>
+<text x="20" y="90" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">console.log(2);</text>
+<rect x="10" y="120" width="122" height="96" rx="5" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="18" y="135" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">call stack</text>
+<rect x="142" y="120" width="248" height="44" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.7"/>
+<text x="150" y="135" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">microtasks</text>
+<text x="382" y="135" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">promises</text>
+<rect x="142" y="172" width="248" height="44" rx="5" fill="#0a1c2d" stroke="#d4a853" stroke-opacity="0.7"/>
+<text x="150" y="187" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">tasks</text>
+<text x="382" y="187" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">timers, clicks</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.099833;0.100000;0.416000;0.416250;1.000000" dur="12s" repeatCount="indefinite"/><rect x="40.0" y="188" width="62" height="20" rx="4" fill="#0a1c2d" stroke="#4fc4e6" stroke-width="1.5"/><text x="71" y="203" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">script</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.183167;0.183333;0.241833;0.242083;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-34.00 0;-34.00 0;0.00 0;0.00 0;-34.00 0;-34.00 0" keyTimes="0.000000;0.049958;0.050000;0.183333;0.241667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 157.00;0 157.00;0 0.00;0 0.00;0 157.00;0 157.00" keyTimes="0.000000;0.049958;0.050000;0.183333;0.241667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="273.0" y="36" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#d4a853" stroke-width="1.5"/><text x="300" y="51" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">log 4</text></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.241500;0.241667;0.682667;0.682917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="239.0" y="193" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#d4a853" stroke-width="1.5"/><text x="266" y="208" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">log 4</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.683167;0.683333;0.733500;0.733750;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-195.00 0;-195.00 0;0.00 0;0.00 0;-195.00 0;-195.00 0" keyTimes="0.000000;0.049958;0.050000;0.683333;0.733333;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -5.00;0 -5.00;0 0.00;0 0.00;0 -5.00;0 -5.00" keyTimes="0.000000;0.049958;0.050000;0.683333;0.733333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="239.0" y="193" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#d4a853" stroke-width="1.5"/><text x="266" y="208" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">log 4</text></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.733167;0.733333;0.799333;0.799583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="44.0" y="188" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#d4a853" stroke-width="1.5"/><text x="71" y="203" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">log 4</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.266500;0.266667;0.325167;0.325417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-34.00 0;-34.00 0;0.00 0;0.00 0;-34.00 0;-34.00 0" keyTimes="0.000000;0.049958;0.050000;0.266667;0.325000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 85.00;0 85.00;0 0.00;0 0.00;0 85.00;0 85.00" keyTimes="0.000000;0.049958;0.050000;0.266667;0.325000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="273.0" y="56" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#9bd89b" stroke-width="1.5"/><text x="300" y="71" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">log 3</text></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.324833;0.325000;0.449333;0.449583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="239.0" y="141" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#9bd89b" stroke-width="1.5"/><text x="266" y="156" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">log 3</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.449833;0.450000;0.500167;0.500417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-195.00 0;-195.00 0;0.00 0;0.00 0;-195.00 0;-195.00 0" keyTimes="0.000000;0.049958;0.050000;0.450000;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 47.00;0 47.00;0 0.00;0 0.00;0 47.00;0 47.00" keyTimes="0.000000;0.049958;0.050000;0.450000;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="239.0" y="141" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#9bd89b" stroke-width="1.5"/><text x="266" y="156" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">log 3</text></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.499833;0.500000;0.566000;0.566250;1.000000" dur="12s" repeatCount="indefinite"/><rect x="44.0" y="188" width="54" height="20" rx="4" fill="#0a1c2d" stroke="#9bd89b" stroke-width="1.5"/><text x="71" y="203" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">log 3</text></g>
+<rect x="142" y="224" width="248" height="24" rx="12" fill="none" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<text x="266" y="241" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">render, if a frame is due</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.599833;0.600000;0.657667;0.657917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="142" y="224" width="248" height="24" rx="12" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6" stroke-width="2"/></g>
+<text x="10" y="276" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">console:</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><text x="90" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.366500;0.366667;1.000000" dur="12s" repeatCount="indefinite"/><text x="118" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="146" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.766500;0.766667;1.000000" dur="12s" repeatCount="indefinite"/><text x="174" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">4</text></g>
+</svg>
+      <p id="ch12-loop-p3" class="diagram-caption">The script runs to its end first, printing 1 and 2; its timer callback waits in the task queue and its promise callback in the microtask queue. When the stack empties, every microtask runs (3), the browser may render, and only then does the next task run (4).</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>One turn of the loop.</b> Take one task, run it to the end, run every microtask, render if a frame is due (about every 16 ms on a 60 Hz screen), repeat.</li>
+          <li><b>Why 0 ms still waits.</b> <code>setTimeout(…, 0)</code> only queues a task; it cannot run until the current script and every microtask have finished.</li>
+          <li><b>The catch.</b> Anything long on the stack, a heavy <code>JSON.parse</code> or a tight loop, stops the loop: no clicks, no rendering. A frozen page and Node.js event-loop lag are the same bug.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Three eras of asynchrony</h3>
