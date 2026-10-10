@@ -544,6 +544,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.21: per-cgroup network bandwidth limits ("net: 1 Gbps … enforced by kernel"); caption "enforces these on every syscall" | Cgroups meter CPU, memory, block I/O and process counts; network bandwidth is shaped by traffic control (tc), not a cgroup limit; enforcement happens at scheduling and allocation, not on every syscall | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 5.1: RISC-V `add a0,a0,a1` for an `int` add; caption "three architectures separated by fifty years of CPU design" | gcc for RV64 emits `addw` (the 32-bit add) for `int`; x86 (1978) to RISC-V (2010) is about thirty years, and the phrase is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 5.6: after free(p2), free(p4) the list is 128 → 96 → 240 and malloc(300) fits none | The freed 96 B chunk was adjacent to the free 240 B tail; allocators coalesce neighbours into 336 B, which fits 300. Redrawn with every free piece fenced by used chunks (128, 96, 176 = 400 free, largest 176) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 6.1: a "bug density / KLOC" curve rising 5 → 35 "in lockstep" with code size, 1975–2000; caption and banner "codebases grew about a hundred-fold" | No source for either series; the chart was illustrative data drawn as measurement. Replaced with Brooks's n(n − 1)/2 count of possible interactions (The Mythical Man-Month, 1975), which the prose already cites | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3454,7 +3455,9 @@ each tagged by language; the old "share of C" bars had no numbers behind them
 and are gone; the 70% memory-safety figure is attributed to Microsoft and
 Chromium in "How it works"), 5.11 (C at the root, three waves of
 descendants appearing in their years as a counter sweeps 1972 to 2016; the
-unsourced "C-family syntax runs 80%+ of production code" banner dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
+unsourced "C-family syntax runs 80%+ of production code" banner dropped), 6.1 (Brooks's n(n − 1)/2 drawn: a graph of
+2, 4, 8, 16 parts with every pair, and a bar per stage, 1, 6, 28, 120; the old
+invented bug-density curve and "grew 100×" removed, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
