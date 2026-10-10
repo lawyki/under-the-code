@@ -148,7 +148,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 138 | 3 | `fig-11-5` Fig 11.5 · The DNS namespace · a tree, read right to left | 2.2 px · cap 119 | done 2026-10-11 |
 | 139 | 3 | `fig-11-6` Fig 11.6 · Recursive resolution · four servers, four questions, one answer | 2.2 px · cap 74 | done 2026-10-11 |
 | 140 | 3 | `fig-11-7` Fig 11.7 · Cache poisoning · the attacker races the real answer | 2.5 px · cap 152 | deferred: conceptual pass |
-| 141 | 3 | `fig-11-8` Fig 11.8 · One-way function · easy forward, infeasible backward | 2.9 px · cap 101 | todo |
+| 141 | 3 | `fig-11-8` Fig 11.8 · One-way function · easy forward, infeasible backward | 2.9 px · cap 101 | done 2026-10-11 |
 | 142 | 3 | `fig-11-9` Fig 11.9 · SHA-256 avalanche · one bit changed, all 256 bits scrambled | 2.5 px · cap 143 | todo |
 | 143 | 3 | `fig-11-10` Fig 11.10 · Symmetric vs asymmetric · the same secret · or two halves of one | 2.5 px · cap 94 | todo |
 | 144 | 3 | `fig-11-11` Fig 11.11 · TLS 1.3 · one round trip from "hello" to encrypted data | 2.5 px · cap 142 | todo |
