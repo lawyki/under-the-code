@@ -55,7 +55,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | deferred: conceptual pass |
 | 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | deferred: conceptual pass |
 | 47 | 1 | `fig-br-9` Fig BR.9 · Hardware features → kernel → abstractions | 2.2 px · cap 112 | deferred: conceptual pass |
-| 48 | 2 | `fig-4-1` Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992 | 2.5 px · cap 118 | todo |
+| 48 | 2 | `fig-4-1` Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992 | 2.5 px · cap 118 | done 2026-10-10 |
 | 49 | 2 | `fig-4-2` Fig 4.2 · Monolithic vs microkernel | 2.5 px · cap 57 | todo |
 | 50 | 2 | `fig-4-3` Fig 4.3 · A kernel module loading at runtime | 2.2 px · cap 120 | todo |
 | 51 | 2 | `fig-4-4` Fig 4.4 · CFS chooses the leftmost node of a red-black tree | 2.5 px · cap 67 | todo |

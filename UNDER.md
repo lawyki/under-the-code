@@ -3356,7 +3356,17 @@ Ring 3's privileged ones to the kernel), BR.2 (one write() as a sequence
 across the boundary: RAX 1 → 6, RIP into RCX, RFLAGS into R11; the
 unverified "millions per second" dropped again). The sweep now also fails labels
 crowding each other on one line (gap under 3 px), except pieces composed on
-purpose (`.run`: a line of code, a row of bits). The sweep's overlap test now compares ink boxes (font boxes trimmed
+purpose (`.run`: a line of code, a row of bits).
+
+**Order changed (2026-10-10, bridge's call on the owner's "you decide"):** a
+second redesign (BR.3) was also stopped by the safety filter, so every figure
+in security, exploit or low-level-trap territory (the rest of the Bridge,
+Dirty COW, the attack figures of Parts III and IV) is marked *deferred:
+conceptual pass* and done together at the end, at the level of concepts;
+the loop takes everything else in book order. Part II keeps its Greenbar
+grammar (`figlib.PLEX`, phosphor on plate, stepped motion; `part-2.css`
+re-tints the new captions and strips): 4.1 (the comp.os.minix thread
+printed line by line, then where each design ended up). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

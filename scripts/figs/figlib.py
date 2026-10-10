@@ -50,8 +50,13 @@ class Timeline:
         """opacity points: off, on from t0 to t1, off."""
         return [(t0, lo), (t0 + ramp, hi), (t1 - ramp, hi), (t1, lo)]
 
+# Part II · Greenbar (the printed listing): IBM Plex Mono, phosphor green on a dark green plate.
+PLEX = 'font-family="IBM Plex Mono"'
+PHOS, PHOS_SOFT, LISTING, PLATE, PANEL = '#84ffb2', 'rgba(198,222,206,0.85)', 'rgba(132,255,178,0.55)', '#0c120e', '#152016'
+FONT = MONO                     # the face text() uses; a part's script may set figlib.FONT = PLEX
+
 def text(x, y, s, anchor='start', size=14, fill=MUTED, extra='', ls='0.06em'):
-    return f'<text x="{x:g}" y="{y:g}" text-anchor="{anchor}" {MONO} font-size="{size}" letter-spacing="{ls}" fill="{fill}"{extra}>{s}</text>'
+    return f'<text x="{x:g}" y="{y:g}" text-anchor="{anchor}" {FONT} font-size="{size}" letter-spacing="{ls}" fill="{fill}"{extra}>{s}</text>'
 
 def splice(part, fig_id, caption_id, card):
     """Replace a figure card (label, svg, caption, optional how-it-works) in public/<part>.html."""
