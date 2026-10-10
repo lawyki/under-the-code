@@ -2312,65 +2312,50 @@
       double the lookup's latency to no benefit.
     </p>
 
-    <div class="diagram-card" id="fig-10-1">
-      <div class="diagram-label">Fig 10.1 · UDP: eight bytes, no state, no apologies</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-28"><title id="svgt-part3-28">Fig 10.1 · UDP: eight bytes, no state, no apologies</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">UDP header: RFC 768, August 1980, three pages</text>
-
-        <!-- Bit ruler -->
-        <g font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)" text-anchor="middle">
-          <text x="120" y="60">0</text>
-          <text x="360" y="60">16</text>
-          <text x="600" y="60">31</text>
-        </g>
-
-        <!-- Row 1: source port | dest port -->
-        <g transform="translate(120,64)">
-          <rect x="0"   y="0" width="240" height="40" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">Source Port</text>
-          <text x="120" y="34" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">16 bits · sender's port (0 if unused)</text>
-
-          <rect x="240" y="0" width="240" height="40" fill="rgba(232,120,120,0.20)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="360" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">Destination Port</text>
-          <text x="360" y="34" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)">16 bits · receiving service (e.g. 53 = DNS)</text>
-        </g>
-
-        <!-- Row 2: length | checksum -->
-        <g transform="translate(120,108)">
-          <rect x="0"   y="0" width="240" height="40" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="120" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">Length</text>
-          <text x="120" y="34" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">16 bits · header + data</text>
-
-          <rect x="240" y="0" width="240" height="40" fill="rgba(100,150,255,0.20)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="360" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">Checksum</text>
-          <text x="360" y="34" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(100,150,255,0.7)">16 bits · optional in IPv4, mandatory in IPv6</text>
-        </g>
-
-        <!-- Payload row -->
-        <g transform="translate(120,156)">
-          <rect x="0"   y="0" width="480" height="44" rx="3" fill="#0a1e31" stroke="rgba(180,200,220,0.5)" stroke-dasharray="4,3"/>
-          <text x="240" y="22" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(180,200,220,0.95)">payload: whatever the application wants</text>
-          <text x="240" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">opaque to UDP: DNS query, RTP audio frame, QUIC packet…</text>
-        </g>
-
-        <!-- Properties block -->
-        <g transform="translate(40,224)">
-          <rect x="0"   y="0" width="320" height="76" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.45)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">what UDP does NOT do:</text>
-          <text x="14" y="38" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">no connection setup</text>
-          <text x="14" y="52" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">no retransmission of lost packets</text>
-          <text x="14" y="66" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">no ordering, no flow control, no state</text>
-        </g>
-
-        <g transform="translate(360,224)">
-          <rect x="0"   y="0" width="320" height="76" rx="4" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.45)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">where it wins:</text>
-          <text x="14" y="38" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">DNS (single round trip · 53/udp)</text>
-          <text x="14" y="52" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">voice / video (loss &lt; latency)</text>
-          <text x="14" y="66" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">games · QUIC · NTP · DHCP</text>
-        </g>
-      </svg>
-      <p id="ch10-udp-p3" class="diagram-caption">UDP is essentially "an envelope around your bytes." Eight bytes of header, then your payload. The header holds the source port (where it came from), the destination port (which service to deliver to), the length and an optional checksum. There is no concept of a "connection" between two UDP endpoints; each packet stands alone. There is no notion that a previous packet was sent, or that a future packet will be. For fire-and-forget, real-time, single-shot applications that need exactly that, UDP is the right protocol. For applications that need a reliable byte stream, TCP picks up where UDP refuses to.</p>
+    <div class="diagram-card fig-v2" id="fig-10-1">
+      <div class="diagram-label">Fig 10.1&nbsp;· UDP: eight bytes, no state, no apologies</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-28 svgd-part3-28">
+<title id="svgt-part3-28">Fig 10.1 · UDP: eight bytes, no state, no apologies</title>
+<desc id="svgd-part3-28">A UDP header is eight bytes: source port 51234, destination port 53 (DNS), length 37 bytes including the header, and a checksum. Then a sender sends three datagrams; the second is lost on the way. Nothing in UDP notices or resends it: the receiver simply has datagrams 1 and 3, and if anything is to be retried, the application must do it.</desc>
+<text x="24" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">UDP HEADER · 8 BYTES</text>
+<rect x="24" y="32" width="176" height="46" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="32" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">source port</text>
+<text x="32" y="69" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">51234</text>
+<rect x="200" y="32" width="176" height="46" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="208" y="50" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">destination port</text>
+<text x="208" y="69" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">53 · DNS</text>
+<rect x="24" y="78" width="176" height="46" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="32" y="96" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">length</text>
+<text x="32" y="115" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">37</text>
+<rect x="200" y="78" width="176" height="46" fill="#0d2740" stroke="rgba(79,196,230,0.45)"/>
+<text x="208" y="96" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">checksum</text>
+<text x="208" y="115" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">optional in IPv4</text>
+<rect x="24" y="128" width="352" height="28" fill="#081b2e" stroke="rgba(79,196,230,0.25)" stroke-dasharray="4 3"/>
+<text x="32" y="147" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">payload: the DNS query</text>
+<rect x="24" y="196" width="72" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="60" y="219" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">sender</text>
+<rect x="288" y="196" width="88" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="332" y="219" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">receiver</text>
+<line x1="96" y1="214" x2="288" y2="214" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.349938;0.350000;0.424750;0.425000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="172.00 0;172.00 0;0.00 0;0.00 0;172.00 0;172.00 0" keyTimes="0.000000;0.349938;0.350000;0.425000;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="100" y="204" width="20" height="20" rx="2" fill="#4fc4e6"/><text x="110" y="219" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#081b2e">1</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.349938;0.350000;0.524750;0.525000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="86.00 0;86.00 0;0.00 0;0.00 0;86.00 0;86.00 0" keyTimes="0.000000;0.349938;0.350000;0.525000;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="100" y="204" width="20" height="20" rx="2" fill="#4fc4e6"/><text x="110" y="219" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#081b2e">2</text></g></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><line x1="188.0" y1="206" x2="204.0" y2="222" stroke="#ec6b6b" stroke-width="3"/><line x1="204.0" y1="206" x2="188.0" y2="222" stroke="#ec6b6b" stroke-width="3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.349938;0.350000;0.624750;0.625000;0.824000;0.824375;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="172.00 0;172.00 0;0.00 0;0.00 0;172.00 0;172.00 0" keyTimes="0.000000;0.349938;0.350000;0.625000;0.825000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="100" y="204" width="20" height="20" rx="2" fill="#4fc4e6"/><text x="110" y="219" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#081b2e">3</text></g></g>
+<text x="288" y="254" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">has:</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><text x="332" y="254" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#4fc4e6">1</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.824750;0.825000;1.000000" dur="8s" repeatCount="indefinite"/><text x="350" y="254" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#4fc4e6">3</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.724750;0.725000;1.000000" dur="8s" repeatCount="indefinite"/><text x="24" y="254" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">sender: no idea</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.874750;0.875000;1.000000" dur="8s" repeatCount="indefinite"/><text x="24" y="278" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">no resend: retrying is the application's job</text></g>
+</svg>
+      <p id="ch10-udp-p3" class="diagram-caption">UDP is an envelope around your bytes: eight bytes of header with two ports, a length and a checksum, and nothing else. No connection, no order, no retransmission: a lost datagram is simply missing, and the application decides whether to try again.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The standard.</b> RFC 768, from August 1980, is three pages long. The checksum is optional over IPv4 and required over IPv6.</li>
+          <li><b>Where it wins.</b> DNS fits a question and an answer into one datagram each; voice, video and games would rather lose a packet than wait for it.</li>
+          <li><b>Building on it.</b> QUIC, the transport under HTTP/3, runs on UDP and adds its own reliability and encryption on top.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
