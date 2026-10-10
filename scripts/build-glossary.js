@@ -34,7 +34,7 @@ const PARTS = ['part-1.html', 'part-2.html', 'part-3.html', 'part-4.html', 'part
 // candidates under any circumstances.
 const SKIP_WORDS = new Set([
   // emphasis, not terms (Pass 27 turned some dash cues into colons)
-  'at runtime','is exactly this','everything','read','write',
+  'at runtime','is exactly this','everything','read','write','one round trip',
   'a','an','and','or','but','if','then','else','not','never','always','every','all','any','some',
   'the','very','exactly','just','only','really','actually','simply','clearly','strictly','fully',
   'is','was','are','were','be','been','being','do','does','did','done',

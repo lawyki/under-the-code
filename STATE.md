@@ -98,7 +98,7 @@ in substance throughout.
 4. **Re-tune the Pass 25 thresholds** after the owner's read (`?utc-debug`
    on any part shows the tracker's state; constants in `book.js` `T`).
 5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
-   cut, one part at a time (`docs/pass-27-brief.md`; Parts I–II done, §4aa;
+   cut, one part at a time (`docs/pass-27-brief.md`; Parts I–III done, §4aa;
    after Part V, authored one-line glossary definitions replace the ~100
    fragment definitions);
    28 figures, pilot of three, then every figure one by one, handcrafted and

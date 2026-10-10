@@ -528,6 +528,9 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | System calls dispatched through the IDT; DPL=3 "only on the syscall vector" (chBridge-trap) | `SYSCALL` jumps via MSR_LSTAR, not the IDT; only legacy `int 0x80` uses an IDT gate, and DPL=3 sits on the few vectors user code may raise | Rewritten to match; chBridge-synthesis-p6 now says "an entry point the kernel registered at boot" (Pass 27, 2026-10-10) |
 | "Every modern Mac uses ARM" (ch1-cpu-p4) | Intel Macs are still modern and in use | "Apple Silicon Macs" (Pass 27, 2026-10-10) |
 | Spectre/Meltdown "in nearly every processor made since 1995" (ch1-cpu-p11) | Meltdown was largely Intel; the speculative class spans fast CPUs since the mid-1990s (§4r wording) | "nearly every fast processor made since the mid-1990s" (Pass 27, 2026-10-10) |
+| Fibre light "pulsed at frequencies around 200 THz" (ch8-substrates-p3) | ~193 THz is the optical carrier; the bits are the carrier switched on and off, far slower | "a carrier at around 200 THz switched on and off to carry the bits" (Pass 27, 2026-10-10) |
+| SYN-cookie ACK carries the cookie "as its acknowledgement number" (ch10-attacks-p4) | The ACK acknowledges ISN+1: its number is the cookie plus one (as the figure says) | "its acknowledgement number is the cookie plus one" (Pass 27, 2026-10-10) |
+| "ZIP, JPEG, MP3": every compressor bounded by entropy (ch8-shannon-p6) | The entropy bound is for lossless coding; JPEG and MP3 are lossy | "any lossless compression scheme… from ZIP to PNG" (Pass 27, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3110,6 +3113,41 @@ interface "a four-call API" after naming three calls.
 fake terms ("at runtime", "everything", "read"). 507 entries.
 
 **Tests:** `npm run check:dashes` clean; `tests/pass25`: invariants 812/0, traces 228/0 (+1 skip), parity 40/40, marks 106/0, UI 93/0.
+
+### Part III
+
+**15,740 → 14,270 section-prose words (9.3 %)** before the verification's
+trims. Per section: bridge 268→234, substrates 587→563, shannon 829→704,
+encoding 331→311, ethernet 858→762, layers 417→387, circuits 329→303,
+arpanet 537→496, ip 189→173, routing 182→164, v6 149→136, security 638→545,
+udp 228→195, why 308→295, handshake 171→142, aimd 745→629, modern 359→335,
+attacks 1120→1029, bernerslee 973→917, http 710→618, dns 896→843, crypto
+629→570, tls 537→483, modern 903→833, browser 393→357, eich 502→426, loop
+387→334, node 382→351, dom 291→267, security 892→868. No paragraph removed:
+ids identical (380), no aliases. The advocate kept the hedge on Baran ("in
+some sense"): the ARPANET was a synthesis, not one man's idea going live.
+
+**Facts.** Three corrected, logged in §4g: the fibre carrier, the SYN-cookie
+acknowledgement number, the entropy bound being for lossless compression.
+
+**Verification (Sonnet 5.5).** No H. 4 M and 6 L fixed: the Ethernet
+sketch's colon, the Shannon bound sentence said twice, the httpd paragraph
+losing its author, the TCP/QUIC/UDP double count, "That completes the stack"
+before Ch11, three phrasing slips, the event loop "the same since 1995"
+(its shape is; microtasks came with Promises). Six law-2 trims taken
+(Morris's sentencing detail, a BGP restatement, the Takedown press line
+with the §4g wording kept, two closing kickers, a praise sentence). Kept:
+the Shannon "spare time" list and the stateless-scales-with-money line,
+both voice. Glossary fragments it named (RTT, TLS handshake, Mitnick,
+Metcalfe, CSMA/CD, HTTP) join the end-of-pass authoring list.
+
+**Tests:** `npm run check:dashes` clean; `tests/pass25`: invariants 812/0,
+traces 228/0 (+1 skip), marks 106/0, UI 93/0, parity 39/40. The one parity
+miss (WebKit 1440, y 52487, in the gap under the Fig 10.11 caption: same
+anchor, 1.6 px against the 1.5 px bar) repeats on rerun at that sample; a
+4 px sweep of the whole gap after the offset table settles agrees within
+0.5 px in both engines, so it is the sample landing during the table's
+rebuild after the jump, not a drift a reader meets. The test is unchanged.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
