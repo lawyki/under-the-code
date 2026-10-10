@@ -3596,7 +3596,9 @@ sent, the second lost, the receiver left with 1 and 3 and no one resending), 10.
 numbers, ISNs 4170 and 9012, acks 4171 and 9013, each side's state changing on
 arrival, a bracket marking the round trip before the first data), 10.3 (all eleven states unrolled top to
 bottom; the client's life then the server's walked by a token, each event named;
-CLOSING drawn dim as the simultaneous-close case). The sweep's overlap test now compares ink boxes (font boxes trimmed
+CLOSING drawn dim as the simultaneous-close case), 10.4 (bytes 100 to 113 with a window of 6
+through five phases, each cell coloured acked, in flight, may send or not yet,
+the bracket sliding on ACK 103 and ACK 109; "in flight" kept as a key-term). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

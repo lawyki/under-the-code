@@ -2573,78 +2573,93 @@
       ability to consume.
     </p>
 
-    <div class="diagram-card" id="fig-10-4">
-      <div class="diagram-label">Fig 10.4 · The sliding window</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-31"><title id="svgt-part3-31">Fig 10.4 · The sliding window</title>
-        <!-- Stream of bytes -->
-        <text x="60" y="40" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.85)">sender's view of the byte stream:</text>
-
-        <g transform="translate(60,60)">
-          <!-- 16 byte slots -->
-          <g font-family="Space Mono" font-size="8" text-anchor="middle">
-            <rect x="0"   y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="18" y="20" fill="rgba(60,120,60,0.95)">100</text>
-            <rect x="36"  y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="54" y="20" fill="rgba(60,120,60,0.95)">101</text>
-            <rect x="72"  y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="90" y="20" fill="rgba(60,120,60,0.95)">102</text>
-            <rect x="108" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="126" y="20" fill="rgba(60,120,60,0.95)">103</text>
-            <rect x="144" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/><text x="162" y="20" fill="rgba(32,116,150,0.95)">104</text>
-            <rect x="180" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/><text x="198" y="20" fill="rgba(32,116,150,0.95)">105</text>
-            <rect x="216" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/><text x="234" y="20" fill="rgba(32,116,150,0.95)">106</text>
-            <rect x="252" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/><text x="270" y="20" fill="rgba(32,116,150,0.95)">107</text>
-            <rect x="288" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="306" y="20" fill="rgba(40,80,160,0.95)">108</text>
-            <rect x="324" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="342" y="20" fill="rgba(40,80,160,0.95)">109</text>
-            <rect x="360" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="378" y="20" fill="rgba(40,80,160,0.95)">110</text>
-            <rect x="396" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="414" y="20" fill="rgba(40,80,160,0.95)">111</text>
-            <rect x="432" y="0" width="36" height="32" fill="#123049" stroke="rgba(180,200,220,0.4)" stroke-dasharray="2,2"/><text x="450" y="20" fill="rgba(180,200,220,0.5)">112</text>
-            <rect x="468" y="0" width="36" height="32" fill="#123049" stroke="rgba(180,200,220,0.4)" stroke-dasharray="2,2"/><text x="486" y="20" fill="rgba(180,200,220,0.5)">113</text>
-            <rect x="504" y="0" width="36" height="32" fill="#123049" stroke="rgba(180,200,220,0.4)" stroke-dasharray="2,2"/><text x="522" y="20" fill="rgba(180,200,220,0.5)">114</text>
-            <rect x="540" y="0" width="36" height="32" fill="#123049" stroke="rgba(180,200,220,0.4)" stroke-dasharray="2,2"/><text x="558" y="20" fill="rgba(180,200,220,0.5)">115</text>
-          </g>
-
-          <!-- Region labels -->
-          <text x="72"  y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(60,120,60,0.95)">acknowledged</text>
-          <text x="216" y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(32,116,150,0.95)">in flight (unACKed)</text>
-          <text x="378" y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(40,80,160,0.95)">window space</text>
-          <text x="522" y="56" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">future / can't send yet</text>
-
-          <!-- Window markers -->
-          <line x1="144" y1="-12" x2="144" y2="46" stroke="rgba(79,196,230,0.85)" stroke-width="1" stroke-dasharray="2,2"/>
-          <line x1="432" y1="-12" x2="432" y2="46" stroke="rgba(79,196,230,0.85)" stroke-width="1" stroke-dasharray="2,2"/>
-          <text x="288" y="-16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">← window: 8 bytes →</text>
-        </g>
-
-        <!-- ACK arrives, window slides right -->
-        <g transform="translate(60,156)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.85)">ACK 104 arrives → window slides right by 4:</text>
-        </g>
-
-        <g transform="translate(60,180)">
-          <g font-family="Space Mono" font-size="8" text-anchor="middle">
-            <rect x="0"   y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="18" y="20" fill="rgba(60,120,60,0.95)">100</text>
-            <rect x="36"  y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="54" y="20" fill="rgba(60,120,60,0.95)">101</text>
-            <rect x="72"  y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="90" y="20" fill="rgba(60,120,60,0.95)">102</text>
-            <rect x="108" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="126" y="20" fill="rgba(60,120,60,0.95)">103</text>
-            <rect x="144" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="162" y="20" fill="rgba(60,120,60,0.95)">104</text>
-            <rect x="180" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="198" y="20" fill="rgba(60,120,60,0.95)">105</text>
-            <rect x="216" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="234" y="20" fill="rgba(60,120,60,0.95)">106</text>
-            <rect x="252" y="0" width="36" height="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.7)"/><text x="270" y="20" fill="rgba(60,120,60,0.95)">107</text>
-            <rect x="288" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)"/><text x="306" y="20" fill="rgba(32,116,150,0.95)">108</text>
-            <rect x="324" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)"/><text x="342" y="20" fill="rgba(32,116,150,0.95)">109</text>
-            <rect x="360" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)"/><text x="378" y="20" fill="rgba(32,116,150,0.95)">110</text>
-            <rect x="396" y="0" width="36" height="32" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.85)"/><text x="414" y="20" fill="rgba(32,116,150,0.95)">111</text>
-            <rect x="432" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="450" y="20" fill="rgba(40,80,160,0.95)">112</text>
-            <rect x="468" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="486" y="20" fill="rgba(40,80,160,0.95)">113</text>
-            <rect x="504" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="522" y="20" fill="rgba(40,80,160,0.95)">114</text>
-            <rect x="540" y="0" width="36" height="32" fill="rgba(100,150,255,0.30)" stroke="rgba(60,100,180,0.7)"/><text x="558" y="20" fill="rgba(40,80,160,0.95)">115</text>
-          </g>
-
-          <line x1="288" y1="-10" x2="288" y2="42" stroke="rgba(79,196,230,0.85)" stroke-width="1" stroke-dasharray="2,2"/>
-          <line x1="576" y1="-10" x2="576" y2="42" stroke="rgba(79,196,230,0.85)" stroke-width="1" stroke-dasharray="2,2"/>
-          <text x="432" y="-14" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">← window slides forward 4 bytes →</text>
-        </g>
-
-        <text x="360" y="266" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">RECEIVER ADVERTISES WINDOW IN EVERY ACK · SENDER NEVER EXCEEDS IT · NATURAL FLOW CONTROL</text>
-      </svg>
-      <p id="ch10-aimd-p3" class="diagram-caption">The sender's view of the byte stream is divided into four regions: bytes already <strong>acknowledged</strong> (safe to forget), bytes <strong>in flight</strong> (sent but unconfirmed, kept in retransmit buffer), bytes within the <strong>window</strong> (allowed to send but not yet sent), and the <strong>future</strong> (cannot send yet, outside the window). When ACK 104 arrives, the window's trailing edge advances, freeing the in-flight bytes and creating room at the leading edge for new bytes to enter the window. The window slides through the stream as ACKs arrive. The receiver controls the window size, so a slow consumer naturally throttles a fast producer: flow control with no extra messaging.</p>
+    <div class="diagram-card fig-v2" id="fig-10-4">
+      <div class="diagram-label">Fig 10.4&nbsp;· The sliding window</div>
+      <svg viewBox="0 0 400 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-31 svgd-part3-31">
+<title id="svgt-part3-31">Fig 10.4 · The sliding window</title>
+<desc id="svgd-part3-31">A sender's view of bytes 100 to 113 with a window of six bytes. At first bytes 100 to 103 are in flight and 104 and 105 may still be sent. Then 104 and 105 go out and the window is full. An ACK numbered 103 arrives, meaning 100 to 102 are received: the window slides to cover 103 to 108, and 106 to 108 may be sent. They go, the window is full again, and ACK 109 slides it on to 109 to 114.</desc>
+<text x="25" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">BYTES 100 TO 113 · WINDOW 6</text>
+<rect x="25" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="25" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929200;0.929500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="25" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="36.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">00</text>
+<rect x="50" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="50" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929200;0.929500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="50" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="61.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">01</text>
+<rect x="75" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="75" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929200;0.929500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="75" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.609200;0.609500;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="86.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">02</text>
+<rect x="100" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="100" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.249200;0.249500;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="100" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="111.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">03</text>
+<rect x="125" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="125" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.769200;0.769500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="125" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.249200;0.249500;0.609950;0.610000;0.769800;0.770000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="125" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="136.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">04</text>
+<rect x="150" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="150" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.769200;0.769500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="150" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.249200;0.249500;0.609950;0.610000;0.769800;0.770000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="150" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="161.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">05</text>
+<rect x="175" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="175" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.089200;0.089500;0.609950;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="175" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.089800;0.090000;0.249200;0.249500;0.609950;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="175" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="186.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">06</text>
+<rect x="200" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="200" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.089200;0.089500;0.609950;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="200" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.089800;0.090000;0.249200;0.249500;0.609950;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="200" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="211.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">07</text>
+<rect x="225" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="225" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.089200;0.089500;0.609950;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="225" y="54" width="23" height="34" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.089800;0.090000;0.249200;0.249500;0.609950;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="225" y="54" width="23" height="34" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="236.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">08</text>
+<rect x="250" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="250" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="261.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">09</text>
+<rect x="275" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="275" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="286.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">10</text>
+<rect x="300" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="300" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="311.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">11</text>
+<rect x="325" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="325" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="336.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">12</text>
+<rect x="350" y="54" width="23" height="34" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.15)"/>
+<rect x="350" y="54" width="23" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<text x="361.5" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">13</text>
+<g><animateTransform attributeName="transform" type="translate" values="75.00 0;75.00 0;75.00 0;75.00 0;225.00 0;225.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;75.00 0;75.00 0" keyTimes="0.000000;0.060000;0.090000;0.220000;0.250000;0.580000;0.609950;0.610000;0.740000;0.770000;0.900000;0.930000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="22" y="47" width="154" height="48" rx="3" fill="none" stroke="#fff" stroke-width="2"/><text x="23" y="41" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">window</text></g>
+<g opacity="1"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.769200;0.769500;1.000000" dur="10s" repeatCount="indefinite"/><text x="25" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">4 in flight, 2 more allowed</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609950;0.610000;0.769800;0.770000;0.929200;0.929500;1.000000" dur="10s" repeatCount="indefinite"/><text x="25" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">window full: wait for an ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.089200;0.089500;0.609950;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/><text x="25" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ACK 103: the window slides by 3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.089800;0.090000;0.249200;0.249500;0.609950;0.610000;1.000000" dur="10s" repeatCount="indefinite"/><text x="25" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">sent 106 to 108: full again</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/><text x="25" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ACK 109: it slides on</text></g>
+<rect x="25" y="158" width="16" height="16" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" stroke-opacity="1"/>
+<text x="49" y="171" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">acked</text>
+<rect x="205" y="158" width="16" height="16" rx="2" fill="#e07a3f" fill-opacity="0.55" stroke="#e07a3f" stroke-opacity="1"/>
+<text x="229" y="171" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">in flight</text>
+<rect x="25" y="184" width="16" height="16" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-opacity="1"/>
+<text x="49" y="197" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">may send</text>
+<rect x="205" y="184" width="16" height="16" rx="2" fill="#081b2e" fill-opacity="1" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3"/>
+<text x="229" y="197" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">not yet</text>
+<text x="25" y="226" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">cells show the last two digits</text>
+</svg>
+      <p id="ch10-aimd-p3" class="diagram-caption">The sender may have at most a window's worth of bytes <span class="key-term">in flight</span>, sent but not yet acknowledged; each ACK names the next byte expected, the window's left edge moves up to it, and room opens on the right. The receiver sets the window size in every ACK, so a slow reader throttles a fast writer with no extra messages.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>ACK numbers.</b> "ACK 103" means every byte before 103 arrived; TCP acknowledges the stream, not individual packets.</li>
+          <li><b>Two limits.</b> The receiver's window protects the receiver; the congestion window, in the next figure, protects the network. The sender obeys the smaller.</li>
+          <li><b>Real sizes.</b> Windows run to megabytes on fast long links; the window-scale option lets the 16-bit field describe them.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch10-aimd-p4">
