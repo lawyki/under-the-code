@@ -70,3 +70,9 @@ def splice(part, fig_id, caption_id, card):
     s = s[:m.start()] + card + s[m.end():]
     open(p, 'w').write(s)
     print(fig_id, 'written')
+
+# Part III · Chart Room (the cable chart): Space Mono labels, signal cyan and route orange on Prussian
+# plates; continuous-flow motion. A part's script sets figlib.FONT = SPACE.
+SPACE = 'font-family="Space Mono"'
+CYAN, ROUTE, CPLATE, CDEEP = '#4fc4e6', '#e07a3f', '#0d2740', '#081b2e'
+CSOFT, CMUTED = 'rgba(223,234,242,0.85)', 'rgba(223,234,242,0.6)'
