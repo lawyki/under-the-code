@@ -2834,58 +2834,57 @@
       chunks, each tagged with whether it is in use.
     </p>
 
-    <div class="diagram-card" id="fig-5-6">
-      <div class="diagram-label">Fig 5.6 · The heap, as a free list</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-30"><title id="svgt-part2-30">Fig 5.6 · The heap, as a free list</title>
-        <!-- Heap region label -->
-        <text x="60" y="40" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.85)">heap region (handed by kernel via brk/mmap):</text>
-
-        <!-- State 1: Initial allocations -->
-        <text x="60" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.6)">① after several malloc calls:</text>
-        <g transform="translate(60,86)">
-          <rect x="0"   y="0" width="80"  height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="40"  y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 64B</text>
-          <rect x="80"  y="0" width="120" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="140" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 128B</text>
-          <rect x="200" y="0" width="60"  height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="230" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 32B</text>
-          <rect x="260" y="0" width="100" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="310" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 96B</text>
-          <rect x="360" y="0" width="240" height="36" fill="#0e1510" stroke="rgba(132,255,178,0.35)" stroke-dasharray="4,3"/>
-          <text x="480" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">free 240B</text>
-        </g>
-
-        <!-- State 2: After free of two chunks -->
-        <text x="60" y="158" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.6)">② after free(p2) and free(p4):</text>
-        <g transform="translate(60,170)">
-          <rect x="0"   y="0" width="80"  height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="40"  y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 64B</text>
-          <rect x="80"  y="0" width="120" height="36" fill="#0e1510" stroke="rgba(132,255,178,0.35)" stroke-dasharray="4,3"/>
-          <text x="140" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">free 128B</text>
-          <rect x="200" y="0" width="60"  height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="230" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">used 32B</text>
-          <rect x="260" y="0" width="100" height="36" fill="#0e1510" stroke="rgba(132,255,178,0.35)" stroke-dasharray="4,3"/>
-          <text x="310" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">free 96B</text>
-          <rect x="360" y="0" width="240" height="36" fill="#0e1510" stroke="rgba(132,255,178,0.35)" stroke-dasharray="4,3"/>
-          <text x="480" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">free 240B</text>
-        </g>
-
-        <!-- The free list -->
-        <text x="60" y="240" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">free list now: 128B → 96B → 240B (linked, but fragmented)</text>
-        <g transform="translate(60,250)">
-          <rect x="0"   y="0" width="60" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.6)"/>
-          <text x="30" y="15" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(232,120,120,0.9)">128B</text>
-          <text x="78" y="14" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.6)">→</text>
-          <rect x="96"  y="0" width="60" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.6)"/>
-          <text x="126" y="15" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(232,120,120,0.9)">96B</text>
-          <text x="174" y="14" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.6)">→</text>
-          <rect x="192" y="0" width="60" height="22" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.6)"/>
-          <text x="222" y="15" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(232,120,120,0.9)">240B</text>
-        </g>
-
-        <text x="60" y="306" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">malloc(300) now must search the list: none of these chunks alone fits</text>
-      </svg>
-      <p id="ch5-malloc-p4" class="diagram-caption">The heap is a long ribbon of bytes. The allocator carves chunks out of it and tracks which ones are in use. After repeated allocations and frees, the heap becomes <strong>fragmented</strong>: many small free chunks scattered between in-use chunks, none of them large enough for the next big request, even though the total free space might be huge. This is why long-running C programs can run out of memory while having plenty available, and why allocator design (first-fit vs best-fit, slab allocators, jemalloc, glibc's ptmalloc) is its own dense subfield.</p>
+    <div class="diagram-card fig-v2" id="fig-5-6">
+      <div class="diagram-label">Fig 5.6&nbsp;· The heap, as a free list</div>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-30 svgd-part2-30">
+<title id="svgt-part2-30">Fig 5.6 · The heap, as a free list</title>
+<desc id="svgd-part2-30">A heap of 560 bytes. Five allocations take 64, 128, 32, 96 and 64 bytes, leaving 176 free at the end. p2 and p4 are freed. The free list now links three chunks of 128, 96 and 176 bytes, 400 bytes in all, each separated from the next by memory still in use. A request for 300 bytes is checked against each free chunk in turn and fits none of them, so the allocator must ask the kernel for more.</desc>
+<text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">HEAP · 560 bytes</text>
+<rect x="20" y="64" width="360" height="40" fill="#0c120e" stroke="rgba(132,255,178,0.3)"/>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.283167;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20.0" y="64" width="41.1" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="40.5714" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p1</text></g>
+<text x="40.5714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.316500;0.316667;0.499333;0.499583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="61.1" y="64" width="82.3" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="102.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p2</text></g>
+<text x="102.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">128</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.499833;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="62.1" y="65" width="80.3" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.499833;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><text x="102.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text></g>
+<rect class="fx" x="61.1" y="61" width="82.3" height="46" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.666500;0.666667;0.741000;0.741250;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.349833;0.350000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="143.4" y="64" width="20.6" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="153.714" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p3</text></g>
+<text x="153.714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">32</text>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.383167;0.383333;0.549333;0.549583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="164.0" y="64" width="61.7" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="194.857" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p4</text></g>
+<text x="194.857" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">96</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="165.0" y="65" width="59.7" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><text x="194.857" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text></g>
+<rect class="fx" x="164.0" y="61" width="61.7" height="46" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.749833;0.750000;0.824333;0.824583;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="225.7" y="64" width="41.1" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="246.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p5</text></g>
+<text x="246.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text>
+<text x="323.429" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">176</text>
+<g><animate attributeName="opacity" values="1;1;1;1" keyTimes="0.000000;0.233292;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="267.9" y="65" width="111.1" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
+<text x="323.429" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text>
+<rect class="fx" x="266.9" y="61" width="113.1" height="46" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.833167;0.833333;0.907667;0.907917;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.599833;0.600000;1.000000" dur="12s" repeatCount="indefinite"/>
+<text x="20" y="46" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free list</text>
+<path d="M102.3 62 C102.3 42 194.9 42 194.9 58" fill="none" stroke="#d4a853" stroke-width="1.5"/>
+<polygon points="190.9,53 198.9,53 194.9,60" fill="#d4a853"/>
+<path d="M194.9 62 C194.9 42 323.4 42 323.4 58" fill="none" stroke="#d4a853" stroke-width="1.5"/>
+<polygon points="319.4,53 327.4,53 323.4,60" fill="#d4a853"/>
+</g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.666500;0.666667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="126" width="192.9" height="26" rx="2" fill="#ec8d8d" fill-opacity="0.15" stroke="#ec8d8d"/><text x="30" y="144" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">malloc(300)</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.266500;0.266667;0.499333;0.499583;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">five mallocs</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.499833;0.500000;0.599333;0.599583;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free(p2), free(p4)</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.599833;0.600000;0.666000;0.666250;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">400 bytes free, in three pieces</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.666500;0.666667;0.899333;0.899583;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">checking each free chunk</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199333;0.199583;0.233292;0.233333;0.899833;0.900000;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="182" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">none fits: ask the kernel for more</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.899833;0.900000;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="206" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">largest free piece: 176 B</text></g>
+</svg>
+      <p id="ch5-malloc-p4" class="diagram-caption">After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. That is fragmentation: free memory in pieces too small to use, so the allocator must ask the kernel for more.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The list.</b> Each free chunk stores, inside its own unused bytes, a pointer to the next free chunk; the allocator walks that list to find room.</li>
+          <li><b>Coalescing.</b> Freeing a chunk next to free space merges the two. Here every free piece is fenced by a chunk still in use, so nothing can merge.</li>
+          <li><b>Strategies.</b> First fit, best fit and size-class bins (glibc's ptmalloc, jemalloc) trade speed against fragmentation.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The two failure modes</h3>

@@ -543,6 +543,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.18: "sem_wait()/sem_post() are atomic in the kernel"; "if the value would go negative, the caller blocks"; "every concurrent system rests on this primitive" | On Linux the uncontended path is an atomic instruction in user space, the kernel (futex) is entered only to sleep or wake; a POSIX semaphore blocks at 0 and never goes negative; the "every system" banner is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.21: per-cgroup network bandwidth limits ("net: 1 Gbps … enforced by kernel"); caption "enforces these on every syscall" | Cgroups meter CPU, memory, block I/O and process counts; network bandwidth is shaped by traffic control (tc), not a cgroup limit; enforcement happens at scheduling and allocation, not on every syscall | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 5.1: RISC-V `add a0,a0,a1` for an `int` add; caption "three architectures separated by fifty years of CPU design" | gcc for RV64 emits `addw` (the 32-bit add) for `int`; x86 (1978) to RISC-V (2010) is about thirty years, and the phrase is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 5.6: after free(p2), free(p4) the list is 128 → 96 → 240 and malloc(300) fits none | The freed 96 B chunk was adjacent to the free 240 B tail; allocators coalesce neighbours into 336 B, which fits 300. Redrawn with every free piece fenced by used chunks (128, 96, 176 = 400 free, largest 176) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3439,7 +3440,11 @@ track per pointer: char, int and double pointers start at 0x100 and step
 together, +1, +4, +8, each span the bytes *p reads), 5.5 (a stepped rewrite beside the
 ribbon: a[2] to *(a + 2) to *(0x100 + 2 × 4) to 99, then 2[a] to the same 99;
 `book.css` now keeps code in a label in its own case, `.nocase`, and never
-splits code across caption lines). The sweep's overlap test now compares ink boxes (font boxes trimmed
+splits code across caption lines), 5.6 (five mallocs, two frees, a
+300-byte request checked against each free chunk: 400 bytes free, none fits;
+the old example's freed 96 B chunk sat beside the free 240 B tail and would
+have coalesced, so its "no fit" was false, §4g). 5.7 (leak vs use-after-free)
+carries attacker steps and joins the deferred conceptual pass. The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
