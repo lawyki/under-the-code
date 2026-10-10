@@ -878,74 +878,71 @@
       </details>
     </div>
 
-    <div class="diagram-card" id="fig-8-10">
-      <div class="diagram-label">Fig 8.10 · Hub vs switch: broadcast vs learned</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-11"><title id="svgt-part3-11">Fig 8.10 · Hub vs switch: broadcast vs learned</title>
-        <!-- Left: Hub -->
-        <text x="180" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,140,80,0.95)">hub: every frame to every port</text>
-
-        <g transform="translate(40,50)">
-          <!-- Hub center -->
-          <rect x="100" y="100" width="80" height="40" rx="6" fill="#0a2033" stroke="rgba(232,140,80,0.85)"/>
-          <text x="140" y="124" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,140,80,0.95)">HUB</text>
-
-          <!-- Four hosts -->
-          <g font-family="Space Mono" font-size="9" text-anchor="middle">
-            <rect x="20"  y="40"  width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="50"  y="58" fill="rgba(180,200,220,0.85)">A</text>
-            <rect x="200" y="40"  width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="230" y="58" fill="rgba(180,200,220,0.85)">B</text>
-            <rect x="20"  y="180" width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="50"  y="198" fill="rgba(180,200,220,0.85)">C</text>
-            <rect x="200" y="180" width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="230" y="198" fill="rgba(180,200,220,0.85)">D</text>
-          </g>
-
-          <!-- Lines hub→hosts -->
-          <line x1="100" y1="110" x2="80"  y2="68"  stroke="rgba(232,140,80,0.5)"/>
-          <line x1="180" y1="110" x2="200" y2="68"  stroke="rgba(232,140,80,0.5)"/>
-          <line x1="100" y1="130" x2="80"  y2="180" stroke="rgba(232,140,80,0.5)"/>
-          <line x1="180" y1="130" x2="200" y2="180" stroke="rgba(232,140,80,0.5)"/>
-
-          <!-- A sends to B; everyone receives -->
-          <text x="140" y="240" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,140,80,0.85)">A → B sends; B, C, D all hear it</text>
-        </g>
-
-        <!-- Right: Switch -->
-        <text x="540" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">switch: frame to the right port only</text>
-
-        <g transform="translate(400,50)">
-          <!-- Switch center -->
-          <rect x="100" y="100" width="80" height="40" rx="6" fill="#0a2033" stroke="rgba(150,216,150,0.85)"/>
-          <text x="140" y="124" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">SWITCH</text>
-
-          <!-- Tiny MAC table inside switch -->
-          <text x="140" y="148" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.6)">A→p1, B→p2, C→p3, D→p4</text>
-
-          <!-- Hosts -->
-          <g font-family="Space Mono" font-size="9" text-anchor="middle">
-            <rect x="20"  y="40"  width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="50"  y="58" fill="rgba(180,200,220,0.85)">A</text>
-            <rect x="200" y="40"  width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="230" y="58" fill="rgba(180,200,220,0.85)">B</text>
-            <rect x="20"  y="180" width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="50"  y="198" fill="rgba(180,200,220,0.85)">C</text>
-            <rect x="200" y="180" width="60" height="28" rx="4" fill="#123049" stroke="rgba(180,200,220,0.5)"/>
-            <text x="230" y="198" fill="rgba(180,200,220,0.85)">D</text>
-          </g>
-
-          <!-- Lines switch→hosts (only A↔B highlighted) -->
-          <line x1="100" y1="110" x2="80"  y2="68"  stroke="rgba(150,216,150,0.85)" stroke-width="2"/>
-          <line x1="180" y1="110" x2="200" y2="68"  stroke="rgba(150,216,150,0.85)" stroke-width="2"/>
-          <line x1="100" y1="130" x2="80"  y2="180" stroke="rgba(150,216,150,0.25)"/>
-          <line x1="180" y1="130" x2="200" y2="180" stroke="rgba(150,216,150,0.25)"/>
-
-          <text x="140" y="240" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">A → B sends; only B receives</text>
-        </g>
-
-        <text x="360" y="290" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">SWITCH "LEARNS" WHICH MAC IS ON WHICH PORT BY OBSERVING TRAFFIC: A SELF-CONFIGURING TABLE</text>
-      </svg>
-      <p id="ch8-ethernet-p10" class="diagram-caption">A <strong>hub</strong> is a dumb electrical repeater: every signal that arrives on any port is rebroadcast on every other port. Four hosts on a hub means every frame is heard by all four; collisions are routine; bandwidth is shared. A <strong>switch</strong> is intelligent: it observes the source MAC of every frame that arrives, learns which MAC sits on which port, and forwards each subsequent frame only to the port leading to its destination. Other ports stay quiet. Modern Ethernet is universally switched, with each cable a private link between one device and one port. The collision-detection machinery still exists in every NIC for compatibility, but on switched links it never fires. This single change, from hub to switch in the late 1990s, is what made Ethernet scale from megabits to gigabits to hundreds of gigabits per second.</p>
+    <div class="diagram-card fig-v2" id="fig-8-10">
+      <div class="diagram-label">Fig 8.10&nbsp;· Hub vs switch: broadcast vs learned</div>
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-11 svgd-part3-11">
+<title id="svgt-part3-11">Fig 8.10 · Hub vs switch: broadcast vs learned</title>
+<desc id="svgd-part3-11">Four hosts, A, B, C and D, on one central box. As a hub, it repeats a frame from A to B out of every port, so B, C and D all receive it. As a switch it starts with an empty table: a frame from A to B, whose port it does not know yet, is sent to every port, and the switch notes that A is on port 1. B's reply goes only to port 1, and the switch notes that B is on port 2. The next frame from A to B goes only to port 2.</desc>
+<rect x="20" y="40" width="60" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="50" y="64" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">A</text>
+<line x1="80" y1="58" x2="150" y2="122" stroke="rgba(223,234,242,0.6)" stroke-width="1.5"/>
+<text x="50" y="94" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">port 1</text>
+<rect x="320" y="40" width="60" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="350" y="64" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">B</text>
+<line x1="320" y1="58" x2="250" y2="122" stroke="rgba(223,234,242,0.6)" stroke-width="1.5"/>
+<text x="350" y="94" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">port 2</text>
+<rect x="20" y="186" width="60" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="50" y="210" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">C</text>
+<line x1="80" y1="204" x2="150" y2="150" stroke="rgba(223,234,242,0.6)" stroke-width="1.5"/>
+<text x="50" y="178" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">port 3</text>
+<rect x="320" y="186" width="60" height="36" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="350" y="210" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">D</text>
+<line x1="320" y1="204" x2="250" y2="150" stroke="rgba(223,234,242,0.6)" stroke-width="1.5"/>
+<text x="350" y="178" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">port 4</text>
+<rect x="150" y="112" width="100" height="48" rx="3" fill="#0d2740" stroke="#4fc4e6" stroke-width="1.5"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.242714;0.242857;0.513714;0.513929;1.000000" dur="14s" repeatCount="indefinite"/><text x="200" y="142" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#e07a3f">hub</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.214250;0.214286;0.242286;0.242500;0.514143;0.514286;1.000000" dur="14s" repeatCount="indefinite"/><text x="200" y="142" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#4fc4e6">switch</text></g>
+<line class="fx" x1="80" y1="58" x2="150" y2="122" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.285571;0.285714;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<line class="fx" x1="320" y1="58" x2="250" y2="122" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.285571;0.285714;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="40" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.307000;0.307143;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="80" y1="204" x2="150" y2="150" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.285571;0.285714;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="20" y="186" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.307000;0.307143;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="320" y1="204" x2="250" y2="150" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.285571;0.285714;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="186" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.307000;0.307143;0.399429;0.399643;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="80" y1="58" x2="150" y2="122" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.571286;0.571429;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<line class="fx" x1="320" y1="58" x2="250" y2="122" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.571286;0.571429;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="40" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.592714;0.592857;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="80" y1="204" x2="150" y2="150" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.571286;0.571429;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="20" y="186" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.592714;0.592857;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="320" y1="204" x2="250" y2="150" stroke="#e07a3f" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.571286;0.571429;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="186" width="60" height="36" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.592714;0.592857;0.685143;0.685357;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="320" y1="58" x2="250" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.742714;0.742857;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<line class="fx" x1="80" y1="58" x2="150" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.742714;0.742857;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="20" y="40" width="60" height="36" rx="2" fill="#4fc4e6" fill-opacity="0.25" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.764143;0.764286;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="80" y1="58" x2="150" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.028000;0.028214;0.214250;0.214286;0.914143;0.914286;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<line class="fx" x1="320" y1="58" x2="250" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.028000;0.028214;0.214250;0.214286;0.914143;0.914286;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="40" width="60" height="36" rx="2" fill="#4fc4e6" fill-opacity="0.25" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.028000;0.028214;0.214250;0.214286;0.935571;0.935714;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<line class="fx" x1="80" y1="58" x2="150" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.057000;0.057143;0.170857;0.171071;0.214250;0.214286;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<line class="fx" x1="320" y1="58" x2="250" y2="122" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.057000;0.057143;0.170857;0.171071;0.214250;0.214286;1.000000" dur="14s" repeatCount="indefinite"/></line>
+<rect class="fx" x="320" y="40" width="60" height="36" rx="2" fill="#4fc4e6" fill-opacity="0.25" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.078429;0.078571;0.170857;0.171071;0.214250;0.214286;1.000000" dur="14s" repeatCount="indefinite"/></rect>
+<text x="20" y="252" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">SWITCH TABLE</text>
+<rect x="20" y="262" width="180" height="56" rx="2" fill="#0d2740" stroke="#4fc4e6" stroke-opacity="0.4"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.214250;0.214286;0.242857;0.243214;0.599857;0.600000;1.000000" dur="14s" repeatCount="indefinite"/><text x="32" y="284" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">A → port 1</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.214250;0.214286;0.242857;0.243214;0.771286;0.771429;1.000000" dur="14s" repeatCount="indefinite"/><text x="32" y="306" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">B → port 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.242714;0.242857;0.513714;0.513929;1.000000" dur="14s" repeatCount="indefinite"/><text x="380" y="284" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">hub:</text><text x="380" y="306" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">every port hears it</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.571286;0.571429;0.742286;0.742500;1.000000" dur="14s" repeatCount="indefinite"/><text x="380" y="284" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">B unknown:</text><text x="380" y="306" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">flood, learn A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.214250;0.214286;0.742714;0.742857;0.913714;0.913929;1.000000" dur="14s" repeatCount="indefinite"/><text x="380" y="284" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">B replies:</text><text x="380" y="306" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">only to A; learn B</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199429;0.199643;0.214250;0.214286;0.914143;0.914286;1.000000" dur="14s" repeatCount="indefinite"/><text x="380" y="284" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">A to B:</text><text x="380" y="306" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">only B's port</text></g>
+</svg>
+      <p id="ch8-ethernet-p10" class="diagram-caption">A hub repeats every frame out of every port. A switch learns which address sits behind which port by reading the source of each frame, floods only while a destination is still unknown, and after that sends each frame down the one right cable.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Self-configuring.</b> Nobody fills the table in: it builds itself from traffic, and entries expire when a device stops talking.</li>
+          <li><b>No more collisions.</b> With one device per switch port and both directions on separate wire pairs (full duplex), collision detection never fires.</li>
+          <li><b>Broadcasts.</b> Frames addressed to everyone, such as ARP requests, still go out of every port.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">
