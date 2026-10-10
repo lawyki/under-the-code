@@ -1828,34 +1828,49 @@
       because it left the most room for error before a bit changed its mind.
     </p>
 
-    <div class="diagram-card" id="fig-2-1">
-      <div class="diagram-label">Fig 2.1 · Why binary survives noise</div>
-      <svg viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-18"><title id="svgt-part1-18">Fig 2.1 · Why binary survives noise</title>
-        <text x="80" y="40" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">BINARY: two well-separated levels</text>
-        <line x1="50" y1="120" x2="640" y2="120" stroke="rgba(255,255,255,0.15)"/>
-        <line x1="50" y1="60" x2="640" y2="60" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
-        <line x1="50" y1="90" x2="640" y2="90" stroke="rgba(212,168,83,0.5)" stroke-dasharray="4,3"/>
-        <text x="645" y="93" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.5)">threshold</text>
-        <path d="M 50 110 L 130 110 L 130 70 L 210 70 L 210 110 L 290 110 L 290 70 L 370 70 L 370 110 L 450 110 L 450 70 L 530 70 L 530 110 L 600 110" stroke="#d4a853" fill="none" stroke-width="2"/>
-        <text x="90" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
-        <text x="170" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
-        <text x="250" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
-        <text x="330" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
-        <text x="410" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
-        <text x="490" y="55" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.8)">1</text>
-        <text x="570" y="135" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">0</text>
-        <text x="50" y="160" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.3)">huge noise margin: small drift cannot flip the bit</text>
-
-        <text x="80" y="200" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">TERNARY: three closely-spaced levels</text>
-        <line x1="50" y1="270" x2="640" y2="270" stroke="rgba(255,255,255,0.15)"/>
-        <line x1="50" y1="248" x2="640" y2="248" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
-        <line x1="50" y1="226" x2="640" y2="226" stroke="rgba(255,255,255,0.05)" stroke-dasharray="2,2"/>
-        <line x1="50" y1="237" x2="640" y2="237" stroke="rgba(232,120,120,0.5)" stroke-dasharray="3,2"/>
-        <line x1="50" y1="259" x2="640" y2="259" stroke="rgba(232,120,120,0.5)" stroke-dasharray="3,2"/>
-        <path d="M 50 264 L 130 264 L 130 247 L 210 247 L 210 230 L 290 230 L 290 264 L 370 264 L 370 230 L 450 230 L 450 247 L 530 247 L 530 264 L 600 264" stroke="#e87878" fill="none" stroke-width="2"/>
-        <text x="50" y="298" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.7)">tiny noise margin: small drift can confuse adjacent levels</text>
-      </svg>
-      <p id="ch2-binary-p4" class="diagram-caption">Both panels ride the same voltage span. Binary's single threshold leaves each level a wide noise margin; ternary's two thresholds pinch the middle level from both sides, and a drift binary would absorb becomes a different digit. Engineering, not mathematics, killed it.</p>
+    <div class="diagram-card fig-v2" id="fig-2-1">
+      <div class="diagram-label">Fig 2.1&nbsp;· Why binary survives noise&nbsp;· one threshold against two</div>
+      <svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-17 svgd-part1-17">
+<title id="svgt-part1-17">Fig 2.1 · Why binary survives noise · one threshold against two</title>
+<desc id="svgd-part1-17">Two wires with the same voltage span and the same noise. The binary wire has one threshold and wide bands; its five bits 0 1 1 0 1 are all read correctly. The ternary wire squeezes three levels into the same span with two thresholds; a small drift on its fourth digit crosses a threshold and the 0 is read as +1.</desc>
+<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">BINARY · ONE THRESHOLD</text>
+<rect x="64" y="38" width="315" height="104" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)"/>
+<text x="54" y="57" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0" fill="rgba(255,255,255,0.7)">1</text>
+<text x="54" y="133" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0" fill="rgba(255,255,255,0.7)">0</text>
+<line x1="64" y1="90" x2="379" y2="90" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polyline points="68.0,127.1 74.9,129.1 81.8,135.6 88.6,127.4 95.5,128.1 102.4,129.6 109.2,122.3 116.1,128.2 123.0,130.3 131.0,57.3 137.9,44.7 144.8,48.5 151.6,44.6 158.5,57.6 165.4,55.5 172.2,43.8 179.1,60.7 186.0,60.4 194.0,54.8 200.9,54.1 207.8,45.8 214.6,43.3 221.5,52.5 228.4,44.1 235.2,46.4 242.1,47.4 249.0,43.5 257.0,127.4 263.9,117.0 270.8,115.8 277.6,104.3 284.5,104.5 291.4,104.0 298.2,112.5 305.1,117.3 312.0,124.0 320.0,61.0 326.9,60.9 333.8,58.1 340.6,55.7 347.5,48.7 354.4,47.1 361.2,48.2 368.1,44.3 375.0,56.8" fill="none" stroke="#86a8ff" stroke-width="2" stroke-linejoin="round"/>
+<text x="70" y="84" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#d4a853">threshold</text>
+<text x="95.5" y="172" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">0<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.2286;0.2357;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="158.5" y="172" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.3714;0.3786;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="221.5" y="172" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.5143;0.5214;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="284.5" y="172" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">0<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.6571;0.6643;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="347.5" y="172" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.8000;0.8071;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="20" y="196" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">TERNARY · TWO THRESHOLDS</text>
+<rect x="64" y="208" width="315" height="100" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)"/>
+<text x="54" y="227" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0" fill="rgba(255,255,255,0.7)">+1</text>
+<text x="54" y="263" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0" fill="rgba(255,255,255,0.7)">0</text>
+<text x="54" y="299" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0" fill="rgba(255,255,255,0.7)">−1</text>
+<line x1="64" y1="240" x2="379" y2="240" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="5 4"/>
+<line x1="64" y1="276" x2="379" y2="276" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="5 4"/>
+<polyline points="68.0,256.2 74.9,264.2 81.8,256.0 88.6,266.2 95.5,264.3 102.4,249.0 109.2,252.8 116.1,265.4 123.0,257.5 131.0,230.6 137.9,220.2 144.8,214.3 151.6,224.3 158.5,227.0 165.4,217.9 172.2,214.6 179.1,219.0 186.0,230.4 194.0,298.6 200.9,287.1 207.8,289.4 214.6,286.8 221.5,286.1 228.4,299.3 235.2,288.2 242.1,295.1 249.0,293.1 257.0,252.4 263.9,252.2 270.8,233.0 277.6,236.6 284.5,225.1 291.4,232.6 298.2,234.4 305.1,243.9 312.0,266.5 320.0,227.5 326.9,218.5 333.8,228.9 340.6,216.8 347.5,220.1 354.4,228.4 361.2,224.6 368.1,214.8 375.0,230.8" fill="none" stroke="#86a8ff" stroke-width="2" stroke-linejoin="round"/>
+<text x="95.5" y="338" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">0<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.2286;0.2357;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="158.5" y="338" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">+1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.3714;0.3786;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="221.5" y="338" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">−1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.5143;0.5214;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="284.5" y="338" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#ec8d8d">+1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.6571;0.6643;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<rect x="260.5" y="319" width="48" height="26" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.8"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.6571;0.6643;1.0000" dur="7s" repeatCount="indefinite"/></rect>
+<text x="347.5" y="338" text-anchor="middle" font-family="DM Mono" font-size="17" fill="#fff">+1<animate attributeName="opacity" values="1;1;0.2;0.2;0.2;1;1" keyTimes="0.0000;0.0571;0.0643;0.0714;0.8000;0.8071;1.0000" dur="7s" repeatCount="indefinite"/></text>
+<text x="284.5" y="364" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#ec8d8d">sent 0, read +1</text>
+<line y1="40" y2="345" stroke="#fff" stroke-width="1.5" opacity="0"><animate attributeName="x1" values="169;64;64;379;169" keyTimes="0.0000;0.0714;0.1429;0.8571;1.0000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="169;64;64;379;169" keyTimes="0.0000;0.0714;0.1429;0.8571;1.0000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0.8;0.8;0;0" keyTimes="0.0000;0.0714;0.1357;0.1429;0.8571;0.8714;1.0000" dur="7s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch2-binary-p4" class="diagram-caption">The same wire, the same noise. With one threshold binary leaves each level a wide margin; with two, ternary squeezes its bands until a drift binary would shrug off reads as the wrong digit.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>A threshold.</b> The reader decides a digit by which side of a threshold the voltage is on.</li>
+          <li><b>The margin.</b> Binary's single threshold sits halfway: a level must drift half the span to flip. Ternary's two thresholds leave each level only a sixth of the span on either side.</li>
+          <li><b>The noise.</b> Ageing parts and temperature swings make small drifts constant, so the wider margin won. Engineering, not mathematics, decided it.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch2-binary-p5">
@@ -1943,76 +1958,64 @@
     </p>
 
 
-    <div class="diagram-card" id="fig-2-2">
-      <div class="diagram-label">Fig 2.2 · Boole's algebra · Shannon's gate · the same idea, ninety years apart</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-19"><title id="svgt-part1-19">Fig 2.2 · Boole's algebra · Shannon's gate · the same idea, ninety years apart</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">A · B  =  A ∩ B  =  AN AND GATE</text>
-
-        <!-- LEFT: Boole's Venn -->
-        <g transform="translate(20, 56)">
-          <text x="120" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(255,255,255,0.55)">Boole, 1847</text>
-          <text x="120" y="16" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="rgba(255,255,255,0.4)">propositions as sets</text>
-          <circle cx="84" cy="108" r="50" fill="rgba(100,150,255,0.16)" stroke="rgba(100,150,255,0.6)" stroke-width="1.4"/>
-          <text x="58" y="78" font-family="DM Mono" font-size="13" fill="rgba(100,150,255,0.85)">A</text>
-          <circle cx="156" cy="108" r="50" fill="rgba(150,216,150,0.16)" stroke="rgba(150,216,150,0.6)" stroke-width="1.4"/>
-          <text x="180" y="78" font-family="DM Mono" font-size="13" fill="rgba(150,216,150,0.85)">B</text>
-          <!-- Intersection lens -->
-          <path d="M 120 64 A 50 50 0 0 1 120 152 A 50 50 0 0 1 120 64" fill="rgba(212,168,83,0.55)" stroke="rgba(212,168,83,0.95)" stroke-width="1.6"/>
-          <text x="120" y="113" text-anchor="middle" font-family="serif" font-style="italic" font-size="14" fill="#0a0a0a">A · B</text>
-          <text x="120" y="190" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.6)">true only when both</text>
-          <text x="120" y="202" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.6)">propositions hold</text>
-        </g>
-
-        <!-- MIDDLE: the bridge -->
-        <g transform="translate(270, 130)">
-          <line x1="0" y1="34" x2="160" y2="34" stroke="rgba(212,168,83,0.55)" stroke-width="1.4" stroke-dasharray="6,4" class="flow-dash"/>
-          <polygon points="155,30 165,34 155,38" fill="rgba(212,168,83,0.85)"/>
-          <text x="80" y="14" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)">Shannon, 1937</text>
-          <text x="80" y="56" text-anchor="middle" font-family="serif" font-style="italic" font-size="9.5" fill="rgba(255,255,255,0.5)">"the master's thesis"</text>
-          <circle r="3.5" fill="#d4a853">
-            <animateMotion path="M 0 34 L 160 34" dur="2.6s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="2.6s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <!-- RIGHT: AND gate -->
-        <g transform="translate(440, 56)">
-          <text x="140" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(255,255,255,0.55)">Shannon, 1937</text>
-          <text x="140" y="16" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="rgba(255,255,255,0.4)">propositions as relays</text>
-          <!-- AND gate D-shape -->
-          <path d="M 75 70 L 75 146 L 140 146 A 38 38 0 0 0 140 70 Z" fill="rgba(212,168,83,0.16)" stroke="rgba(212,168,83,0.85)" stroke-width="1.6"/>
-          <text x="111" y="113" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.95)">AND</text>
-          <!-- Input A -->
-          <line x1="30" y1="86" x2="75" y2="86" stroke="rgba(100,150,255,0.8)" stroke-width="1.5"/>
-          <text x="22" y="90" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.9)">A</text>
-          <!-- Input B -->
-          <line x1="30" y1="130" x2="75" y2="130" stroke="rgba(150,216,150,0.8)" stroke-width="1.5"/>
-          <text x="22" y="134" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.9)">B</text>
-          <!-- Output -->
-          <line x1="178" y1="108" x2="240" y2="108" stroke="rgba(212,168,83,0.85)" stroke-width="1.5"/>
-          <text x="248" y="112" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">A · B</text>
-
-          <!-- Pulses on inputs and output -->
-          <circle r="3" fill="rgba(100,150,255,0.95)">
-            <animateMotion path="M 30 86 L 75 86" dur="1.7s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="1.7s" repeatCount="indefinite"/>
-          </circle>
-          <circle r="3" fill="rgba(150,216,150,0.95)" opacity="0">
-            <animateMotion path="M 30 130 L 75 130" dur="1.7s" begin="0.4s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="1.7s" begin="0.4s" repeatCount="indefinite"/>
-          </circle>
-          <circle r="3" fill="rgba(212,168,83,0.95)" opacity="0">
-            <animateMotion path="M 178 108 L 245 108" dur="1.5s" begin="1.1s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="1.5s" begin="1.1s" repeatCount="indefinite"/>
-          </circle>
-
-          <text x="140" y="190" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.6)">current flows only when</text>
-          <text x="140" y="202" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.6)">both relays are closed</text>
-        </g>
-
-        <text x="360" y="258" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Boole's set intersection · Shannon's relay AND · the same algebra, ninety years apart</text>
-      </svg>
-      <p id="ch2-boole-p9" class="diagram-caption">In 1847 George Boole proposed that logical reasoning could be written as algebra over two values, and that the conjunction of two propositions, written <em>A · B</em>, corresponded to the intersection of their truth-sets. In 1937 Claude Shannon, working with electrical relays at MIT, proved that the very same algebra described how series-connected switches behave: current flows through both only when both are closed. The expression Boole drew as overlapping circles, Shannon drew as overlapping currents. Every logic gate in every modern CPU is, in this exact sense, a piece of mathematics from 1847 made physical.</p>
+    <div class="diagram-card fig-v2" id="fig-2-2">
+      <div class="diagram-label">Fig 2.2&nbsp;· Boole's algebra&nbsp;· Shannon's switches&nbsp;· the same AND</div>
+      <svg viewBox="0 0 400 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-18 svgd-part1-18">
+<title id="svgt-part1-18">Fig 2.2 · Boole's algebra · Shannon's switches · the same AND</title>
+<desc id="svgd-part1-18">Above, Boole (1847): two overlapping circles, A and B; A · B is their overlap, true only where both hold. Below, Shannon (1937): a battery, two switches in series and a lamp; current reaches the lamp only when both switches are closed. A and B step through all four cases; the overlap and the lamp light together, only for A = 1 and B = 1.</desc>
+<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">BOOLE · 1847</text>
+<circle cx="160" cy="104" r="58" fill="#86a8ff" fill-opacity="0.04" stroke="#86a8ff" stroke-opacity="0.7" stroke-width="1.5"/>
+<circle cx="160" cy="104" r="58" fill="#86a8ff" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></circle>
+<circle cx="240" cy="104" r="58" fill="#86a8ff" fill-opacity="0.04" stroke="#86a8ff" stroke-opacity="0.7" stroke-width="1.5"/>
+<circle cx="240" cy="104" r="58" fill="#86a8ff" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></circle>
+<path d="M 200 62 A 58 58 0 0 1 200 146 A 58 58 0 0 1 200 62 Z" fill="#d4a853" fill-opacity="0.75" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></path>
+<text x="128" y="110" text-anchor="middle" font-family="DM Mono" font-size="18" letter-spacing="0" fill="#fff">A</text>
+<text x="272" y="110" text-anchor="middle" font-family="DM Mono" font-size="18" letter-spacing="0" fill="#fff">B</text>
+<text x="200" y="182" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">A · B is the overlap</text>
+<text x="20" y="222" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">SHANNON · 1937</text>
+<path d="M 30 262 H 110 M 160 262 H 210 M 260 262 H 316 M 344 262 H 368 V 316 H 30 V 300 M 30 278 V 262" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+<path d="M 30 262 H 110 M 160 262 H 210 M 260 262 H 316 M 344 262 H 368 V 316 H 30 V 300 M 30 278 V 262" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></path>
+<path d="M 18 278 H 42 M 23 290 H 37" stroke="#fff" stroke-width="2.5"/>
+<line x1="30" y1="290" x2="30" y2="300" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+<circle cx="110" cy="262" r="3.5" fill="#fff"/><circle cx="160" cy="262" r="3.5" fill="#fff"/>
+<line x1="110" y1="262" x2="156" y2="240" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></line>
+<line x1="110" y1="262" x2="160" y2="262" stroke="#d4a853" stroke-width="2.8" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></line>
+<text x="135" y="290" text-anchor="middle" font-family="DM Mono" font-size="16" letter-spacing="0" fill="#fff">A</text>
+<circle cx="210" cy="262" r="3.5" fill="#fff"/><circle cx="260" cy="262" r="3.5" fill="#fff"/>
+<line x1="210" y1="262" x2="256" y2="240" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></line>
+<line x1="210" y1="262" x2="260" y2="262" stroke="#d4a853" stroke-width="2.8" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></line>
+<text x="235" y="290" text-anchor="middle" font-family="DM Mono" font-size="16" letter-spacing="0" fill="#fff">B</text>
+<circle cx="330" cy="262" r="14" fill="#151515" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<circle cx="330" cy="262" r="14" fill="#d4a853" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></circle>
+<circle cx="330" cy="262" r="26" fill="#d4a853" opacity="0"><animate attributeName="opacity" values="0.2;0.2;0;0;0.2;0.2" keyTimes="0.0000;0.1247;0.1250;0.8748;0.8750;1.0000" dur="6.4s" repeatCount="indefinite"/></circle>
+<path d="M 324 266 l 3 -8 l 3 8 l 3 -8" fill="none" stroke="#0a0a0a" stroke-width="1.4"/>
+<text x="200" y="342" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">two switches in series</text>
+<rect x="20" y="358" width="84" height="44" rx="5" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<rect x="20" y="358" width="84" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;1;1;0;0" keyTimes="0.0000;0.1249;0.1250;0.1252;0.3747;0.3748;1.0000" dur="6.4s" repeatCount="indefinite"/></rect>
+<text x="62" y="377" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">0 0</text>
+<text x="62" y="395" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">→ 0</text>
+<rect x="112" y="358" width="84" height="44" rx="5" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<rect x="112" y="358" width="84" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1249;0.1250;0.3748;0.3752;0.6247;0.6248;1.0000" dur="6.4s" repeatCount="indefinite"/></rect>
+<text x="154" y="377" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 0</text>
+<text x="154" y="395" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">→ 0</text>
+<rect x="204" y="358" width="84" height="44" rx="5" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<rect x="204" y="358" width="84" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1249;0.1250;0.6248;0.6252;0.8747;0.8748;1.0000" dur="6.4s" repeatCount="indefinite"/></rect>
+<text x="246" y="377" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">0 1</text>
+<text x="246" y="395" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">→ 0</text>
+<rect x="296" y="358" width="84" height="44" rx="5" fill="#141414" stroke="rgba(255,255,255,0.18)"/>
+<rect x="296" y="358" width="84" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1247;0.1248;0.1249;0.1250;0.8748;0.8752;1.0000" dur="6.4s" repeatCount="indefinite"/></rect>
+<text x="338" y="377" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 1</text>
+<text x="338" y="395" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">→ 1</text>
+</svg>
+      <p id="ch2-boole-p9" class="diagram-caption">Boole's A · B, true only where both propositions hold, is the overlap of two circles; Shannon saw that two switches in series pass current only when both are closed. The same algebra, ninety years apart, is the AND gate in every CPU.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Boole, 1847.</b> Propositions as sets of cases: A · B, "A and B", is the set where both hold, the overlap.</li>
+          <li><b>Shannon, 1937.</b> His master's thesis showed relay circuits obey Boole's algebra exactly: closed is 1, open is 0.</li>
+          <li><b>Series and parallel.</b> Switches in series are AND; side by side they would be OR (Fig 2.3).</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">
@@ -2075,40 +2078,99 @@
       <code>and</code>, <code>or</code>, <code>not</code> in Python.
     </p>
 
-    <div class="diagram-card" id="fig-2-3">
-      <div class="diagram-label">Fig 2.3 · The three fundamental gates</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-20"><title id="svgt-part1-20">Fig 2.3 · The three fundamental gates</title>
-        <g transform="translate(60,60)">
-          <text x="60" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">AND</text>
-          <path d="M 20 0 L 60 0 A 60 60 0 0 1 60 120 L 20 120 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
-          <line x1="-10" y1="30" x2="20" y2="30" stroke="rgba(255,255,255,0.5)"/>
-          <line x1="-10" y1="90" x2="20" y2="90" stroke="rgba(255,255,255,0.5)"/>
-          <line x1="120" y1="60" x2="160" y2="60" stroke="rgba(212,168,83,0.7)"/>
-          <text x="-18" y="34" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
-          <text x="-18" y="94" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
-          <text x="170" y="64" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = A·B</text>
-        </g>
-        <g transform="translate(280,60)">
-          <text x="60" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">OR</text>
-          <path d="M 20 0 Q 50 60 20 120 Q 80 120 120 60 Q 80 0 20 0 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
-          <line x1="-10" y1="30" x2="32" y2="30" stroke="rgba(255,255,255,0.5)"/>
-          <line x1="-10" y1="90" x2="32" y2="90" stroke="rgba(255,255,255,0.5)"/>
-          <line x1="120" y1="60" x2="160" y2="60" stroke="rgba(212,168,83,0.7)"/>
-          <text x="-18" y="34" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
-          <text x="-18" y="94" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B</text>
-          <text x="170" y="64" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = A+B</text>
-        </g>
-        <g transform="translate(520,80)">
-          <text x="50" y="-10" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">NOT</text>
-          <path d="M 20 0 L 90 40 L 20 80 Z" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
-          <circle cx="98" cy="40" r="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
-          <line x1="-10" y1="40" x2="20" y2="40" stroke="rgba(255,255,255,0.5)"/>
-          <line x1="106" y1="40" x2="140" y2="40" stroke="rgba(212,168,83,0.7)"/>
-          <text x="-18" y="44" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A</text>
-          <text x="150" y="44" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Q = ¬A</text>
-        </g>
-      </svg>
-      <p id="ch2-gates-p3" class="diagram-caption">The standard symbols for the three foundational logic gates. The shape encodes the operation: AND is a flat-backed shield, OR is a curved-back arrowhead, NOT is a triangle with a small inversion bubble. These shapes have been standard since the 1960s and are recognised by every electrical engineer in the world.</p>
+    <div class="diagram-card fig-v2" id="fig-2-3">
+      <div class="diagram-label">Fig 2.3&nbsp;· The three fundamental gates&nbsp;· AND, OR, NOT</div>
+      <svg viewBox="0 0 400 324" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-19 svgd-part1-19">
+<title id="svgt-part1-19">Fig 2.3 · The three fundamental gates · AND, OR, NOT</title>
+<desc id="svgd-part1-19">AND outputs 1 only when both inputs are 1. OR outputs 1 when at least one input is 1. NOT outputs the opposite of its one input. Each gate is drawn with its standard symbol and its truth table; the inputs step through every case.</desc>
+<text x="20" y="48" text-anchor="start" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#fff">AND</text>
+<text x="20" y="68" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">A · B</text>
+<circle cx="96" cy="36" r="14" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="96" cy="36" r="14" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="96" y="41" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="96" y="41" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<circle cx="96" cy="80" r="14" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="96" cy="80" r="14" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="96" y="85" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="96" y="85" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 110 36 H 156" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 110 36 H 156" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 110 80 H 156" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 110 80 H 156" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 150 18 h 34 a 40 40 0 0 1 0 80 h -34 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 224 58 H 268" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 224 58 H 268" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="284" cy="58" r="16" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="284" cy="58" r="16" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="284" y="63" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="284" y="63" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="334" y="36" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">00 0</text>
+<text x="334" y="52" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">01 0</text>
+<text x="334" y="68" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">10 0</text>
+<text x="334" y="84" font-family="DM Mono" font-size="13" fill="#d4a853">11 1</text>
+<rect x="329" y="24" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="40" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="56" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="72" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<text x="20" y="152" text-anchor="start" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#fff">OR</text>
+<text x="20" y="172" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">A + B</text>
+<circle cx="96" cy="140" r="14" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="96" cy="140" r="14" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="96" y="145" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="96" y="145" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<circle cx="96" cy="184" r="14" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="96" cy="184" r="14" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="96" y="189" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="96" y="189" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 110 140 H 156" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 110 140 H 156" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 110 184 H 156" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 110 184 H 156" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 144 122 Q 166 162 144 202 Q 200 202 228 162 Q 200 122 144 122 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 228 162 H 268" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 228 162 H 268" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="284" cy="162" r="16" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="284" cy="162" r="16" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="284" y="167" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="284" y="167" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="334" y="140" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">00 0</text>
+<text x="334" y="156" font-family="DM Mono" font-size="13" fill="#d4a853">01 1</text>
+<text x="334" y="172" font-family="DM Mono" font-size="13" fill="#d4a853">10 1</text>
+<text x="334" y="188" font-family="DM Mono" font-size="13" fill="#d4a853">11 1</text>
+<rect x="329" y="128" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="144" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="160" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="176" width="42" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<text x="20" y="256" text-anchor="start" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#fff">NOT</text>
+<text x="20" y="276" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">¬A</text>
+<circle cx="96" cy="266" r="14" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="96" cy="266" r="14" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="96" y="271" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="96" y="271" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 110 266 H 156" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 110 266 H 156" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 156 238 L 156 294 L 206 266 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="213" cy="266" r="6" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 219 266 H 268" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 219 266 H 268" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="284" cy="266" r="16" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="284" cy="266" r="16" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="284" y="271" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="284" y="271" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="334" y="260" font-family="DM Mono" font-size="13" fill="#d4a853">0 1</text>
+<text x="334" y="276" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">1 0</text>
+<rect x="329" y="248" width="34" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+<rect x="329" y="264" width="34" height="16" rx="3" fill="none" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></rect>
+</svg>
+      <p id="ch2-gates-p3" class="diagram-caption">The three gates every circuit is built from: AND gives 1 only when both inputs are 1, OR when at least one is, and NOT turns its input over. The shapes are the standard symbols, unchanged since the 1960s.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Reading a gate.</b> Inputs enter on the left, the output leaves on the right; the table beside it lists every case.</li>
+          <li><b>The shapes.</b> AND has a flat back, OR a curved one, NOT is a triangle with a bubble, and the bubble alone means "invert".</li>
+          <li><b>In silicon.</b> Each gate is a few transistors (Fig 1.4), switching in well under a nanosecond.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Universal gates: NAND alone is enough</h3>

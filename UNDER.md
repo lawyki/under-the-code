@@ -3316,7 +3316,11 @@ lanes: your wait, and the machine idle between decks; the old drawing's
 "CPU 100% on your job" contradicted its own caption), 1.14 (rings: a direct
 reach for the disk blocked at the boundary, the system call going through;
 the unverified "millions of these per second" dropped), 1.15. **Chapter 1
-complete.** `figlib.Timeline` fix found on 1.9: a point at the loop's
+complete.** Chapter 2: 2.1 (binary and ternary wires with the same noise
+and the same drift; binary absorbs it, ternary misreads a 0 as +1), 2.2
+(Boole's overlap and Shannon's series switches lighting together, through
+all four cases), 2.3 (AND, OR, NOT live, each with its truth table and
+the current row marked). `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

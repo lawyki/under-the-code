@@ -21,9 +21,9 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 13 | 1 | `fig-1-13` Fig 1.13 · Running a program in 1955 · one job, one user, one machine | 2.2 px · cap 64 | done 2026-10-10 |
 | 14 | 1 | `fig-1-14` Fig 1.14 · Protection rings · user programs, the kernel, the hardware | 3.1 px · cap 99 | done 2026-10-10 |
 | 15 | 1 | `fig-1-15` Fig 1.15 · The hierarchy of forgetting · bigger and slower at every step | 2.6 px · cap 76 | done (pilot, 2026-10-10) |
-| 16 | 1 | `fig-2-1` Fig 2.1 · Why binary survives noise | 3 px · cap 42 | todo |
-| 17 | 1 | `fig-2-2` Fig 2.2 · Boole's algebra · Shannon's gate · the same idea, ninety years apart | 2.6 px · cap 96 | todo |
-| 18 | 1 | `fig-2-3` Fig 2.3 · The three fundamental gates | 3.2 px · cap 51 | todo |
+| 16 | 1 | `fig-2-1` Fig 2.1 · Why binary survives noise · one threshold against two | 3 px · cap 42 | done 2026-10-10 |
+| 17 | 1 | `fig-2-2` Fig 2.2 · Boole's algebra · Shannon's switches · the same AND | 2.6 px · cap 96 | done 2026-10-10 |
+| 18 | 1 | `fig-2-3` Fig 2.3 · The three fundamental gates · AND, OR, NOT | 3.2 px · cap 51 | done 2026-10-10 |
 | 19 | 1 | `fig-2-4` Fig 2.4 · NAND universality · the only gate you actually need | 2.9 px · cap 60 | todo |
 | 20 | 1 | `fig-2-5` Fig 2.5 · Adding 5 + 3 = 8 in binary | 2.6 px · cap 49 | todo |
 | 21 | 1 | `fig-2-6` Fig 2.6 · Inside one full-adder · the half-adder primitive, twice | 2.2 px · cap 78 | todo |
