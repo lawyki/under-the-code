@@ -3550,7 +3550,10 @@ moves; QAM "up to 10 bits" updated: Wi-Fi 6 10, Wi-Fi 7 12), 8.8 (signals travel
 cable: A starts, B starts unaware, the overlap grows red, both jam, each picks 0
 or 1 slot, A resends while B finds the line busy and waits; "k doubles per
 collision" corrected to k counting collisions, and Wi-Fi's avoidance (not
-detection) stated). The sweep's overlap test now compares ink boxes (font boxes trimmed
+detection) stated), 8.9 (paper card: the MAC split into maker
+and card halves, then an ARP exchange: a cache miss, the broadcast, the owner's
+reply, the new cache row; the fixed "~5 min" expiry softened to "seconds to
+minutes, depending on the system"; spoofing left to Chapter 15). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

@@ -827,56 +827,55 @@
       the matching MAC.
     </p>
 
-    <div class="diagram-card light-diagram" id="fig-8-9">
-      <div class="diagram-label">Fig 8.9 · A MAC address, and the ARP cache that resolves it</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-10"><title id="svgt-part3-10">Fig 8.9 · A MAC address, and the ARP cache that resolves it</title>
-        <!-- MAC address breakdown -->
-        <text x="360" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(32,116,150,0.95)">a MAC address: 48 bits in two halves</text>
-
-        <g transform="translate(80,50)">
-          <!-- OUI half -->
-          <rect x="0" y="0" width="280" height="80" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="140" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(60,120,60,0.95)" letter-spacing="0.12em">OUI · MANUFACTURER</text>
-          <text x="140" y="50" text-anchor="middle" font-family="Space Mono" font-size="16" fill="rgba(60,120,60,0.95)" letter-spacing="0.18em">B8:27:EB</text>
-          <text x="140" y="68" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(24,82,108,0.7)">Raspberry Pi Foundation · 24 bits</text>
-
-          <!-- Device half -->
-          <rect x="280" y="0" width="280" height="80" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="420" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(40,80,160,0.95)" letter-spacing="0.12em">DEVICE-SPECIFIC</text>
-          <text x="420" y="50" text-anchor="middle" font-family="Space Mono" font-size="16" fill="rgba(40,80,160,0.95)" letter-spacing="0.18em">9C:DA:C7</text>
-          <text x="420" y="68" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(24,82,108,0.7)">unique per card · 24 bits</text>
-        </g>
-
-        <!-- ARP cache table -->
-        <text x="360" y="170" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(32,116,150,0.95)">a host's ARP cache (after some "who has?" broadcasts)</text>
-
-        <g transform="translate(120,180)">
-          <!-- Header -->
-          <rect x="0" y="0" width="480" height="24" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.5)"/>
-          <text x="80"  y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.95)">IP address</text>
-          <text x="280" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.95)">MAC address</text>
-          <text x="430" y="16" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.95)">expires in</text>
-
-          <!-- Rows -->
-          <rect x="0" y="24" width="480" height="22" fill="#fdfcf9" stroke="rgba(32,116,150,0.3)"/>
-          <text x="80"  y="40" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">192.168.1.1</text>
-          <text x="280" y="40" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">8C:85:90:1F:33:42</text>
-          <text x="430" y="40" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">3m 12s</text>
-
-          <rect x="0" y="46" width="480" height="22" fill="#fdfcf9" stroke="rgba(32,116,150,0.3)"/>
-          <text x="80"  y="62" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">192.168.1.5</text>
-          <text x="280" y="62" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">B8:27:EB:9C:DA:C7</text>
-          <text x="430" y="62" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">4m 47s</text>
-
-          <rect x="0" y="68" width="480" height="22" fill="#fdfcf9" stroke="rgba(32,116,150,0.3)"/>
-          <text x="80"  y="84" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">192.168.1.42</text>
-          <text x="280" y="84" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">A4:83:E7:1C:8B:5E</text>
-          <text x="430" y="84" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)">2m 03s</text>
-        </g>
-
-        <text x="360" y="304" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(32,116,150,0.65)" letter-spacing="0.1em">"WHO HAS 192.168.1.5?" → BROADCAST · OWNER REPLIES · ANSWER CACHED FOR ~5 MIN</text>
-      </svg>
-      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address splits cleanly into manufacturer (OUI) and device-specific halves. The OUI <code>B8:27:EB</code> is owned by the Raspberry Pi Foundation, so this address is on a Pi. ARP keeps a small cache mapping known IP addresses on the local subnet to their MAC addresses. When a host wants to send to an IP not in the cache, it broadcasts an ARP <em>request</em> ("who has 192.168.1.5?"); the owner replies with a unicast ARP <em>response</em>. Entries expire after a few minutes so that disconnected devices don't accumulate. ARP has no authentication: anyone on the link can claim any IP, which is the basis of <strong>ARP spoofing</strong> (<a href="part-4#ch15">Chapter 15</a>). Switching alone does not stop it, because a forged reply is a perfectly ordinary frame. What contains the threat is that the attacker must already be on the local segment, and that hardened switches add guards (port security, dynamic ARP inspection) which check claims against what the network has learned.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-8-9">
+      <div class="diagram-label">Fig 8.9&nbsp;· A MAC address, and the ARP cache that resolves it</div>
+      <svg viewBox="0 0 400 336" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-10 svgd-part3-10">
+<title id="svgt-part3-10">Fig 8.9 · A MAC address, and the ARP cache that resolves it</title>
+<desc id="svgd-part3-10">The MAC address B8:27:EB:9C:DA:C7 is 48 bits in two halves: B8:27:EB names the maker, the Raspberry Pi Foundation, and 9C:DA:C7 names this one card. Below, a host at 192.168.1.10 wants to send to 192.168.1.5, which is not in its ARP cache. It broadcasts "who has 192.168.1.5?" to every host on the network; the owner replies with its MAC address, and the host adds the pair to its cache.</desc>
+<text x="20" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(18,42,63,0.62)">MAC ADDRESS · 48 BITS</text>
+<rect x="20" y="32" width="174" height="48" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="32" y="52" text-anchor="start" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">B8:27:EB</text>
+<text x="32" y="72" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">Raspberry Pi</text>
+<rect x="206" y="32" width="174" height="48" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="218" y="52" text-anchor="start" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">9C:DA:C7</text>
+<text x="218" y="72" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">this card</text>
+<text x="20" y="112" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(18,42,63,0.62)">ARP</text>
+<rect x="20" y="140" width="110" height="40" rx="2" fill="#f4f7f9" stroke="#122a3f" stroke-opacity="0.5"/>
+<text x="75" y="156" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">me</text>
+<text x="75" y="172" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">192.168.1.10</text>
+<rect x="262" y="100" width="118" height="32" rx="2" fill="#f4f7f9" stroke="#122a3f" stroke-opacity="0.4"/>
+<text x="321" y="121" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">192.168.1.1</text>
+<line x1="130" y1="160" x2="262" y2="116" stroke="#122a3f" stroke-opacity="0.15"/>
+<line class="fx" x1="130" y1="160" x2="262" y2="116" stroke="#b4541f" stroke-width="2" stroke-dasharray="5 4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.249750;0.250000;0.499000;0.499375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="262" y="144" width="118" height="32" rx="2" fill="#f4f7f9" stroke="#122a3f" stroke-opacity="0.4"/>
+<text x="321" y="165" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">192.168.1.5</text>
+<line x1="130" y1="160" x2="262" y2="160" stroke="#122a3f" stroke-opacity="0.15"/>
+<line class="fx" x1="130" y1="160" x2="262" y2="160" stroke="#b4541f" stroke-width="2" stroke-dasharray="5 4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.249750;0.250000;0.499000;0.499375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<rect x="262" y="188" width="118" height="32" rx="2" fill="#f4f7f9" stroke="#122a3f" stroke-opacity="0.4"/>
+<text x="321" y="209" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">192.168.1.42</text>
+<line x1="130" y1="160" x2="262" y2="204" stroke="#122a3f" stroke-opacity="0.15"/>
+<line class="fx" x1="130" y1="160" x2="262" y2="204" stroke="#b4541f" stroke-width="2" stroke-dasharray="5 4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.249750;0.250000;0.499000;0.499375;1.000000" dur="8s" repeatCount="indefinite"/></line>
+<path class="fx" d="M262 166 L136 166" stroke="#2e7e4f" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.499750;0.500000;0.774000;0.774375;1.000000" dur="8s" repeatCount="indefinite"/></path>
+<polygon class="fx" points="138,161 130,166 138,171" fill="#2e7e4f" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.499750;0.500000;0.774000;0.774375;1.000000" dur="8s" repeatCount="indefinite"/></polygon>
+<text x="20" y="238" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(18,42,63,0.62)">ARP CACHE ON 192.168.1.10</text>
+<rect x="20" y="248" width="360" height="56" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.5"/>
+<text x="32" y="269" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">192.168.1.1</text>
+<text x="368" y="269" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">8C:85:90:1F:33:42</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.124938;0.125000;0.175000;0.175625;0.699750;0.700000;1.000000" dur="8s" repeatCount="indefinite"/><text x="32" y="292" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#2e7e4f">192.168.1.5</text><text x="368" y="292" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#2e7e4f">B8:27:EB:9C:DA:C7</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.174750;0.175000;0.249000;0.249375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">send to 192.168.1.5: not cached</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.249750;0.250000;0.499000;0.499375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">broadcast: who has 192.168.1.5?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.499750;0.500000;0.699000;0.699375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#2e7e4f">its owner replies with its MAC</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099000;0.099375;0.124938;0.125000;0.699750;0.700000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">cached; the next frame goes direct</text></g>
+</svg>
+      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address is 48 bits: the first half names the maker (<code>B8:27:EB</code> is the Raspberry Pi Foundation), the second the card. To find the MAC behind an IP address, a host broadcasts "who has 192.168.1.5?", the owner replies, and the answer is cached.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The halves.</b> The first 24 bits are an OUI, bought by a manufacturer from the IEEE; the maker numbers its cards with the rest.</li>
+          <li><b>Expiry.</b> Entries age out after seconds to minutes, depending on the system, so a device that leaves or changes card is soon forgotten.</li>
+          <li><b>No proof.</b> ARP checks nothing: any host on the link can answer for any address. <a href="part-4#ch15">Chapter 15</a> returns to what that allows.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-8-10">
