@@ -4110,56 +4110,45 @@
       <code>shared_ptr</code> (which may fail if the object is gone).
     </p>
 
-    <div class="diagram-card" id="fig-6-7">
-      <div class="diagram-label">Fig 6.7 · Three pointer flavours, three ownership semantics</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-43"><title id="svgt-part2-43">Fig 6.7 · Three pointer flavours, three ownership semantics</title>
-        <!-- Three columns -->
-        <!-- unique_ptr -->
-        <text x="120" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">unique_ptr</text>
-        <text x="120" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.7)">exclusive ownership</text>
-        <rect x="60" y="70" width="120" height="50" rx="4" fill="#152016" stroke="rgba(150,216,150,0.55)"/>
-        <text x="120" y="90" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">unique_ptr&lt;T&gt;</text>
-        <text x="120" y="106" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">single owner</text>
-        <line x1="120" y1="120" x2="120" y2="160" stroke="rgba(150,216,150,0.5)" stroke-width="1"/>
-        <polygon points="120,160 114,154 126,154" fill="rgba(150,216,150,0.5)"/>
-        <rect x="80" y="170" width="80" height="40" rx="4" fill="#0e1510" stroke="rgba(150,216,150,0.5)"/>
-        <text x="120" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">heap object</text>
-        <text x="120" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">free when ptr dies</text>
-        <text x="120" y="254" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">cannot copy · can move</text>
+    <div class="diagram-card fig-v2" id="fig-6-7">
+      <div class="diagram-label">Fig 6.7&nbsp;· Three pointer flavours, three ownership semantics</div>
+      <svg viewBox="0 0 400 314" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-43 svgd-part2-43">
+<title id="svgt-part2-43">Fig 6.7 · Three pointer flavours, three ownership semantics</title>
+<desc id="svgd-part2-43">Three lifecycles. unique_ptr: one owner, p; when p goes out of scope the object is freed. shared_ptr: two owners, a and b, and a count of 2; when a goes the count is 1, when b goes it is 0 and the object is freed. weak_ptr: an owner s and a weak observer w; when s goes the object is freed even though w still points at it, and w reports that it has expired.</desc>
+<text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">unique_ptr · one owner</text>
+<rect x="20" y="30" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.199200;0.199500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="30" width="130" height="34" rx="3" fill="#152016" stroke="#84ffb2"/><text x="85" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner p</text><line x1="150" y1="47" x2="256" y2="47" stroke="#84ffb2" stroke-width="1.5"/><polygon points="255,43 262,47 255,51" fill="#84ffb2"/></g>
+<rect x="262" y="30" width="118" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.199200;0.199500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="30" width="118" height="34" rx="3" fill="#84ffb2" fill-opacity="0.15" stroke="#84ffb2"/><text x="321" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">object</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.199800;0.200000;0.959200;0.959500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><text x="321" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">freed</text></g>
+<text x="20" y="102" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">shared_ptr · counted owners</text>
+<rect x="20" y="112" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.359200;0.359500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="112" width="130" height="34" rx="3" fill="#152016" stroke="#d4a853"/><text x="85" y="134" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner a</text><path d="M150 129 L256 144" stroke="#d4a853" stroke-width="1.5"/><polygon points="255,139 262,145 254,148" fill="#d4a853"/></g>
+<rect x="20" y="152" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.519200;0.519500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="152" width="130" height="34" rx="3" fill="#152016" stroke="#d4a853"/><text x="85" y="174" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner b</text><path d="M150 169 L256 154" stroke="#d4a853" stroke-width="1.5"/><polygon points="254,150 262,153 256,159" fill="#d4a853"/></g>
+<rect x="262" y="132" width="118" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.359200;0.359500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="#d4a853" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">count 2</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.359800;0.360000;0.519200;0.519500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="#d4a853" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">count 1</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.519800;0.520000;0.959200;0.959500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">freed</text></g>
+<text x="20" y="218" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">weak_ptr · watches, does not own</text>
+<rect x="20" y="228" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.719200;0.719500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="228" width="130" height="34" rx="3" fill="#152016" stroke="#84ffb2"/><text x="85" y="250" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner s</text><path d="M150 245 L256 260" stroke="#84ffb2" stroke-width="1.5"/><polygon points="255,255 262,261 254,264" fill="#84ffb2"/></g>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.719200;0.719500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="268" width="130" height="34" rx="3" fill="#152016" stroke="#86a8ff" stroke-dasharray="4 3"/><text x="85" y="290" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">weak w</text><path d="M150 285 L256 270" stroke="#86a8ff" stroke-width="1.5" stroke-dasharray="4 3"/><polygon points="254,266 262,269 256,275" fill="#86a8ff"/></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.719800;0.720000;0.959200;0.959500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="268" width="130" height="34" rx="3" fill="#152016" stroke="#ec8d8d" stroke-dasharray="4 3"/><text x="85" y="290" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">w: expired</text></g>
+<rect x="262" y="248" width="118" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"/>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.719200;0.719500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="248" width="118" height="34" rx="3" fill="#84ffb2" fill-opacity="0.15" stroke="#84ffb2"/><text x="321" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">object</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.719800;0.720000;0.959200;0.959500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><text x="321" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">freed</text></g>
 
-        <!-- shared_ptr -->
-        <text x="360" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">shared_ptr</text>
-        <text x="360" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">reference-counted</text>
-        <rect x="260" y="70" width="80" height="44" rx="4" fill="#152016" stroke="rgba(132,255,178,0.55)"/>
-        <text x="300" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">shared_ptr</text>
-        <text x="300" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">owner A</text>
-        <rect x="380" y="70" width="80" height="44" rx="4" fill="#152016" stroke="rgba(132,255,178,0.55)"/>
-        <text x="420" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">shared_ptr</text>
-        <text x="420" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">owner B</text>
-        <line x1="300" y1="114" x2="340" y2="160" stroke="rgba(132,255,178,0.5)"/>
-        <line x1="420" y1="114" x2="380" y2="160" stroke="rgba(132,255,178,0.5)"/>
-        <rect x="320" y="170" width="80" height="40" rx="4" fill="#0e1510" stroke="rgba(132,255,178,0.5)"/>
-        <text x="360" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">heap object</text>
-        <rect x="320" y="220" width="80" height="20" rx="3" fill="#101a14" stroke="rgba(132,255,178,0.5)"/>
-        <text x="360" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.95)">refcount: 2</text>
-        <text x="360" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">free when count → 0</text>
-
-        <!-- weak_ptr -->
-        <text x="600" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">weak_ptr</text>
-        <text x="600" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.7)">observe, don't own</text>
-        <rect x="540" y="70" width="120" height="50" rx="4" fill="#152016" stroke="rgba(232,120,120,0.55)"/>
-        <text x="600" y="90" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.95)">weak_ptr&lt;T&gt;</text>
-        <text x="600" y="106" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">non-owning observer</text>
-        <line x1="600" y1="120" x2="600" y2="160" stroke="rgba(232,120,120,0.5)" stroke-width="1" stroke-dasharray="3,3"/>
-        <polygon points="600,160 594,154 606,154" fill="rgba(232,120,120,0.5)"/>
-        <rect x="560" y="170" width="80" height="40" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.4)" stroke-dasharray="2,2"/>
-        <text x="600" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.7)">heap object</text>
-        <text x="600" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">does not extend life</text>
-        <text x="600" y="254" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">may be expired</text>
-
-        <text x="360" y="304" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">RAW new/delete IS RARE IN MODERN C++: OWNERSHIP IS PART OF THE TYPE</text>
-      </svg>
-      <p id="ch6-modern-p3" class="diagram-caption">The three smart pointers cover almost every dynamic-allocation case. <code>unique_ptr</code> is for "I own this; nobody else does", and costs nothing beyond a raw pointer. <code>shared_ptr</code> is for "this is jointly owned; clean up when nobody needs it", and pays for an atomic reference count in cycles. <code>weak_ptr</code> is for "I want to know when this object is alive but never extend its life", and breaks the cycles that <code>shared_ptr</code> graphs can otherwise leak. The right answer is almost always <code>unique_ptr</code>; <code>shared_ptr</code> is a red flag for "I have not finished thinking about ownership"; <code>weak_ptr</code> is for the cases where ownership genuinely cannot be made acyclic.</p>
+</svg>
+      <p id="ch6-modern-p3" class="diagram-caption">Ownership is part of the type: behind a <code>unique_ptr</code> the object dies with its single owner, behind a <code>shared_ptr</code> when its count of owners reaches zero. A <code>weak_ptr</code> watches without keeping its object alive, and afterwards reports that it has expired.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The costs.</b> A <code>unique_ptr</code> is as cheap as a raw pointer; a <code>shared_ptr</code> pays for an atomic count updated on every copy.</li>
+          <li><b>Moving, not copying.</b> A <code>unique_ptr</code> cannot be copied, only moved, so there is never more than one owner.</li>
+          <li><b>Breaking cycles.</b> Two objects holding <code>shared_ptr</code>s to each other never reach zero; making one link a <code>weak_ptr</code> lets both be freed.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Move semantics</h3>
