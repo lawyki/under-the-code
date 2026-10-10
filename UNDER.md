@@ -3509,7 +3509,9 @@ plates, continuous-flow motion; `figlib` gains SPACE/CYAN/ROUTE/CPLATE/CDEEP,
 wiring unchanged; a light pulse crosses 5,600 km of fibre, fading and restored
 at each repeater; three facts corrected, §4g), 8.2 (one request down three hops, radio,
 copper, glass, each with its card, a packet flowing through; copper loss and the
-radio band corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+radio band corrected, §4g), 8.3 (paper card: H(p) computed exactly, a
+marker sweeping p across the curve, the fair coin and the 90/10 point at 0.47
+marked; paper cards in Part III get an ink-on-paper legend box). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

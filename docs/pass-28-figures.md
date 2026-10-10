@@ -108,7 +108,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 98 | 2 | `fig-7-9` Fig 7.9 · The same matmul, two ways | 2.5 px · cap 100 | done 2026-10-11 |
 | 99 | 3 | `fig-8-1` Fig 8.1 · One signal, two scales | 2.2 px · cap 88 | done 2026-10-11 |
 | 100 | 3 | `fig-8-2` Fig 8.2 · Three substrates, one job | 2.2 px · cap 110 | done 2026-10-11 |
-| 101 | 3 | `fig-8-3` Fig 8.3 · Entropy of a binary source as p varies | 2.5 px · cap 138 | todo |
+| 101 | 3 | `fig-8-3` Fig 8.3 · Entropy of a binary source as p varies | 2.5 px · cap 138 | done 2026-10-11 |
 | 102 | 3 | `fig-8-4` Fig 8.4 · Channel capacity as a function of SNR | 2.5 px · cap 166 | todo |
 | 103 | 3 | `fig-8-5` Fig 8.5 · Manchester: every bit is a transition | 2.5 px · cap 127 | todo |
 | 104 | 3 | `fig-8-6` Fig 8.6 · Same bits, two waveforms | 2.5 px · cap 122 | todo |

@@ -430,51 +430,38 @@
       <p id="ch8-shannon-p6">Measured in bits per symbol. A fair coin (½, ½) has H = 1 bit per flip, the maximum surprise. A coin that always lands heads (1, 0) has H = 0: no information. A biased coin (¾, ¼) has H ≈ 0.81 bits. <em>This number is also the shortest average code length</em> any lossless compression scheme can achieve, asymptotically: a source cannot be compressed below its entropy. Every modern lossless compressor, from ZIP to PNG, sits somewhere on Shannon's curve, fighting for the last bit.</p>
     </div>
 
-    <div class="diagram-card light-diagram" id="fig-8-3">
-      <div class="diagram-label">Fig 8.3 · Entropy of a binary source as p varies</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-4"><title id="svgt-part3-4">Fig 8.3 · Entropy of a binary source as p varies</title>
-        <!-- Axes -->
-        <line x1="80" y1="260" x2="660" y2="260" stroke="rgba(32,116,150,0.6)" stroke-width="1.5"/>
-        <line x1="80" y1="60" x2="80" y2="260" stroke="rgba(32,116,150,0.6)" stroke-width="1.5"/>
-
-        <!-- X axis labels -->
-        <g font-family="Space Mono" font-size="9" fill="rgba(32,116,150,0.85)" text-anchor="middle">
-          <text x="80"  y="280">0</text>
-          <text x="225" y="280">0.25</text>
-          <text x="370" y="280">0.5</text>
-          <text x="515" y="280">0.75</text>
-          <text x="660" y="280">1.0</text>
-          <text x="370" y="306" font-size="10">probability of "1": p</text>
-        </g>
-
-        <!-- Y axis labels -->
-        <g font-family="Space Mono" font-size="9" fill="rgba(32,116,150,0.85)" text-anchor="end">
-          <text x="74" y="264">0</text>
-          <text x="74" y="160">0.5</text>
-          <text x="74" y="64">1.0</text>
-          <text x="46" y="160" transform="rotate(-90,46,160)" text-anchor="middle">H (bits / symbol)</text>
-        </g>
-
-        <!-- Curve: H(p) = -p log2 p - (1-p) log2(1-p) -->
-        <!-- approximate quadratic-like curve, peak at (370, 64), zeros at (80, 260) and (660, 260) -->
-        <path d="M 80,260 Q 130,180 180,140 Q 230,100 280,80 Q 320,68 370,64 Q 420,68 460,80 Q 510,100 540,140 Q 590,180 660,260" fill="none" stroke="rgba(24,82,108,0.95)" stroke-width="2.5"/>
-
-        <!-- Marker at peak -->
-        <circle cx="370" cy="64" r="5" fill="rgba(180,40,40,0.95)"/>
-        <line x1="370" y1="64" x2="370" y2="260" stroke="rgba(180,40,40,0.5)" stroke-dasharray="3,3"/>
-        <text x="380" y="50" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(180,40,40,0.95)">max: fair coin, 1 bit</text>
-
-        <!-- Marker at biased -->
-        <circle cx="225" cy="135" r="4" fill="rgba(24,82,108,0.85)"/>
-        <text x="225" y="125" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(24,82,108,0.85)">¾,¼ → 0.81</text>
-
-        <!-- Markers at extremes -->
-        <circle cx="80"  cy="260" r="4" fill="rgba(24,82,108,0.85)"/>
-        <text x="86" y="252" font-family="Space Mono" font-size="8" fill="rgba(24,82,108,0.85)">always 0 → 0</text>
-        <circle cx="660" cy="260" r="4" fill="rgba(24,82,108,0.85)"/>
-        <text x="654" y="252" text-anchor="end" font-family="Space Mono" font-size="8" fill="rgba(24,82,108,0.85)">always 1 → 0</text>
-      </svg>
-      <p id="ch8-shannon-p7" class="diagram-caption">Entropy of a binary source as the probability of "1" varies from 0 to 1. At the extremes (always 0 or always 1) there is no surprise. Every bit is predictable, so each symbol carries zero information. For a fair coin, at p = ½, every flip is maximally surprising and carries one full bit of information. The curve is symmetric: a 70% / 30% source carries the same entropy as a 30% / 70% source, since "uncertainty" doesn't care which side you bet on. This single curve is the lower bound on lossless compression for any binary source. Compress a fair coin and you cannot do better than one bit per flip. Compress a 90/10 source and the theoretical minimum is about 0.47 bits per flip, and arithmetic coding actually achieves it to within a few percent.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-8-3">
+      <div class="diagram-label">Fig 8.3&nbsp;· Entropy of a binary source as p varies</div>
+      <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-4 svgd-part3-4">
+<title id="svgt-part3-4">Fig 8.3 · Entropy of a binary source as p varies</title>
+<desc id="svgd-part3-4">The entropy of a binary source, in bits per symbol, plotted against the probability p of a 1. It is 0 at p = 0 and p = 1, where every symbol is predictable, rises to 1 bit for a fair coin at p = 0.5, and is symmetric about it. A source that gives 1 nine times in ten carries about 0.47 bits per symbol, the least any lossless code can use for it.</desc>
+<line x1="60" y1="222" x2="372" y2="222" stroke="rgba(18,42,63,0.62)"/>
+<line x1="60" y1="222" x2="60" y2="36" stroke="rgba(18,42,63,0.62)"/>
+<text x="60" y="242" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">0</text>
+<text x="216" y="242" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">0.5</text>
+<text x="372" y="242" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">1</text>
+<text x="372" y="262" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">p, chance of a 1</text>
+<text x="52" y="227" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">0</text>
+<text x="52" y="47" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">1</text>
+<text x="52" y="28" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">bits</text>
+<polyline points="60.0,222.0 61.6,213.8 63.1,207.5 64.7,201.8 66.2,196.5 67.8,191.6 69.4,187.0 70.9,182.6 72.5,178.4 74.0,174.3 75.6,170.4 77.2,166.7 78.7,163.1 80.3,159.5 81.8,156.1 83.4,152.8 85.0,149.6 86.5,146.5 88.1,143.4 89.6,140.5 91.2,137.6 92.8,134.8 94.3,132.0 95.9,129.3 97.4,126.7 99.0,124.2 100.6,121.7 102.1,119.2 103.7,116.8 105.2,114.5 106.8,112.2 108.4,110.0 109.9,107.8 111.5,105.7 113.0,103.6 114.6,101.6 116.2,99.6 117.7,97.6 119.3,95.7 120.8,93.9 122.4,92.1 124.0,90.3 125.5,88.5 127.1,86.8 128.6,85.2 130.2,83.5 131.8,82.0 133.3,80.4 134.9,78.9 136.4,77.4 138.0,76.0 139.6,74.6 141.1,73.2 142.7,71.8 144.2,70.5 145.8,69.3 147.4,68.0 148.9,66.8 150.5,65.6 152.0,64.5 153.6,63.4 155.2,62.3 156.7,61.2 158.3,60.2 159.8,59.2 161.4,58.2 163.0,57.3 164.5,56.4 166.1,55.5 167.6,54.7 169.2,53.9 170.8,53.1 172.3,52.3 173.9,51.6 175.4,50.9 177.0,50.2 178.6,49.6 180.1,48.9 181.7,48.3 183.2,47.8 184.8,47.2 186.4,46.7 187.9,46.2 189.5,45.8 191.0,45.3 192.6,44.9 194.2,44.6 195.7,44.2 197.3,43.9 198.8,43.6 200.4,43.3 202.0,43.1 203.5,42.8 205.1,42.6 206.6,42.5 208.2,42.3 209.8,42.2 211.3,42.1 212.9,42.1 214.4,42.0 216.0,42.0 217.6,42.0 219.1,42.1 220.7,42.1 222.2,42.2 223.8,42.3 225.4,42.5 226.9,42.6 228.5,42.8 230.0,43.1 231.6,43.3 233.2,43.6 234.7,43.9 236.3,44.2 237.8,44.6 239.4,44.9 241.0,45.3 242.5,45.8 244.1,46.2 245.6,46.7 247.2,47.2 248.8,47.8 250.3,48.3 251.9,48.9 253.4,49.6 255.0,50.2 256.6,50.9 258.1,51.6 259.7,52.3 261.2,53.1 262.8,53.9 264.4,54.7 265.9,55.5 267.5,56.4 269.0,57.3 270.6,58.2 272.2,59.2 273.7,60.2 275.3,61.2 276.8,62.3 278.4,63.4 280.0,64.5 281.5,65.6 283.1,66.8 284.6,68.0 286.2,69.3 287.8,70.5 289.3,71.8 290.9,73.2 292.4,74.6 294.0,76.0 295.6,77.4 297.1,78.9 298.7,80.4 300.2,82.0 301.8,83.5 303.4,85.2 304.9,86.8 306.5,88.5 308.0,90.3 309.6,92.1 311.2,93.9 312.7,95.7 314.3,97.6 315.8,99.6 317.4,101.6 319.0,103.6 320.5,105.7 322.1,107.8 323.6,110.0 325.2,112.2 326.8,114.5 328.3,116.8 329.9,119.2 331.4,121.7 333.0,124.2 334.6,126.7 336.1,129.3 337.7,132.0 339.2,134.8 340.8,137.6 342.4,140.5 343.9,143.4 345.5,146.5 347.0,149.6 348.6,152.8 350.2,156.1 351.7,159.5 353.3,163.1 354.8,166.7 356.4,170.4 358.0,174.3 359.5,178.4 361.1,182.6 362.6,187.0 364.2,191.6 365.8,196.5 367.3,201.8 368.9,207.5 370.4,213.8 372.0,222.0" fill="none" stroke="#10719d" stroke-width="2.5"/>
+<circle cx="216.0" cy="42.0" r="4.5" fill="#b4541f"/>
+<text x="216" y="30" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">fair coin: 1 bit</text>
+<circle cx="340.8" cy="137.6" r="4.5" fill="#b4541f"/>
+<text x="324.8" y="125.581" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">90/10: 0.47</text>
+<line x1="340.8" y1="137.6" x2="340.8" y2="222" stroke="#b4541f" stroke-dasharray="3 3"/>
+<text x="340.8" y="242" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">0.9</text>
+<g><animateTransform attributeName="transform" type="translate" values="280.80 0;286.00 0;299.00 0;312.00 0;299.00 0;286.00 0;273.00 0;260.00 0;247.00 0;234.00 0;221.00 0;208.00 0;195.00 0;182.00 0;169.00 0;156.00 0;143.00 0;130.00 0;117.00 0;104.00 0;91.00 0;78.00 0;65.00 0;52.00 0;39.00 0;26.00 0;13.00 0;0.00 0;0.00 0;0.00 0;0.00 0;13.00 0;26.00 0;39.00 0;52.00 0;65.00 0;78.00 0;91.00 0;104.00 0;117.00 0;130.00 0;143.00 0;156.00 0;169.00 0;182.00 0;195.00 0;208.00 0;221.00 0;234.00 0;247.00 0;260.00 0;273.00 0;280.80 0" keyTimes="0.000000;0.007500;0.026250;0.045000;0.063750;0.082500;0.101250;0.120000;0.138750;0.157500;0.176250;0.195000;0.213750;0.232500;0.251250;0.270000;0.288750;0.307500;0.326250;0.345000;0.363750;0.382500;0.401250;0.420000;0.438750;0.457500;0.476250;0.495000;0.544938;0.545000;0.595000;0.613750;0.632500;0.651250;0.670000;0.688750;0.707500;0.726250;0.745000;0.763750;0.782500;0.801250;0.820000;0.838750;0.857500;0.876250;0.895000;0.913750;0.932500;0.951250;0.970000;0.988750;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -83.83;0 -74.49;0 -44.98;0 0.00;0 -44.98;0 -74.49;0 -97.84;0 -117.00;0 -132.89;0 -146.03;0 -156.76;0 -165.29;0 -171.80;0 -176.38;0 -179.10;0 -180.00;0 -179.10;0 -176.38;0 -171.80;0 -165.29;0 -156.76;0 -146.03;0 -132.89;0 -117.00;0 -97.84;0 -74.49;0 -44.98;0 0.00;0 0.00;0 0.00;0 0.00;0 -44.98;0 -74.49;0 -97.84;0 -117.00;0 -132.89;0 -146.03;0 -156.76;0 -165.29;0 -171.80;0 -176.38;0 -179.10;0 -180.00;0 -179.10;0 -176.38;0 -171.80;0 -165.29;0 -156.76;0 -146.03;0 -132.89;0 -117.00;0 -97.84;0 -83.83" keyTimes="0.000000;0.007500;0.026250;0.045000;0.063750;0.082500;0.101250;0.120000;0.138750;0.157500;0.176250;0.195000;0.213750;0.232500;0.251250;0.270000;0.288750;0.307500;0.326250;0.345000;0.363750;0.382500;0.401250;0.420000;0.438750;0.457500;0.476250;0.495000;0.544938;0.545000;0.595000;0.613750;0.632500;0.651250;0.670000;0.688750;0.707500;0.726250;0.745000;0.763750;0.782500;0.801250;0.820000;0.838750;0.857500;0.876250;0.895000;0.913750;0.932500;0.951250;0.970000;0.988750;1.000000" dur="8s" repeatCount="indefinite"/><circle class="fx" cx="60" cy="222" r="7" fill="none" stroke="#122a3f" stroke-width="2"/></g><line class="fx" x1="60" y1="222" x2="60" y2="214" stroke="#122a3f" stroke-width="2"/></g>
+</svg>
+      <p id="ch8-shannon-p7" class="diagram-caption">A source that always sends the same symbol carries no information; a fair coin carries one full bit per flip, and the curve is symmetric between them. The curve is also the floor for lossless compression: a 90/10 source cannot be coded in fewer than about 0.47 bits per symbol.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The formula.</b> H(p) = −p log₂ p − (1 − p) log₂(1 − p): the average surprise, in bits, of one symbol.</li>
+          <li><b>Symmetry.</b> A 30/70 source is exactly as uncertain as a 70/30 one; the curve does not care which side is likelier.</li>
+          <li><b>Reaching the floor.</b> Arithmetic coding comes within a few percent of H for long messages; coding bit by bit cannot go below 1 bit per symbol.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch8-shannon-p8">
