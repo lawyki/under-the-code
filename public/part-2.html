@@ -4005,46 +4005,66 @@
       difference is the dispatch mechanism.
     </p>
 
-    <div class="diagram-card" id="fig-6-6">
-      <div class="diagram-label">Fig 6.6 · qsort vs std::sort, same algorithm, different cost</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-42"><title id="svgt-part2-42">Fig 6.6 · qsort vs std::sort, same algorithm, different cost</title>
-        <!-- Left: qsort -->
-        <text x="180" y="34" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">C: qsort with function-pointer comparator</text>
-        <rect x="40" y="48" width="280" height="100" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.4)"/>
-        <text x="50" y="68" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">int cmp(const void*a,const void*b){</text>
-        <text x="50" y="84" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  return *(int*)a - *(int*)b;</text>
-        <text x="50" y="100" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">}</text>
-        <text x="50" y="120" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">qsort(arr, n, sizeof(int), cmp);</text>
-
-        <!-- Generated assembly -->
-        <rect x="40" y="156" width="280" height="100" rx="4" fill="#101a14" stroke="rgba(232,120,120,0.5)"/>
-        <text x="180" y="174" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.95)">inner loop, asm:</text>
-        <text x="50"  y="194" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">; for each comparison:</text>
-        <text x="50"  y="210" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">call rdx     ; indirect call!</text>
-        <text x="50"  y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">test eax, eax</text>
-        <text x="50"  y="242" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">jne  swap</text>
-
-        <!-- Right: std::sort -->
-        <text x="540" y="34" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C++: std::sort with template lambda</text>
-        <rect x="400" y="48" width="280" height="100" rx="4" fill="#0e1510" stroke="rgba(150,216,150,0.4)"/>
-        <text x="410" y="68"  font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">std::sort(arr.begin(), arr.end(),</text>
-        <text x="410" y="84"  font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  [](int a, int b){</text>
-        <text x="410" y="100" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">    return a &lt; b;</text>
-        <text x="410" y="116" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  });</text>
-        <text x="410" y="138" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">// comparator inlined per type</text>
-
-        <!-- Generated assembly -->
-        <rect x="400" y="156" width="280" height="100" rx="4" fill="#101a14" stroke="rgba(150,216,150,0.5)"/>
-        <text x="540" y="174" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">inner loop, asm:</text>
-        <text x="410" y="194" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">; for each comparison:</text>
-        <text x="410" y="210" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">cmp  eax, ebx   ; direct cmp</text>
-        <text x="410" y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">jge  no_swap</text>
-        <text x="410" y="242" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">; ~3× faster, branch-predicted</text>
-
-        <text x="360" y="290" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">SAME ALGORITHM · TEMPLATE INSTANTIATION REMOVES THE INDIRECT CALL · INLINED INTO THE LOOP</text>
-        <text x="360" y="306" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">cost paid at compile time, not at runtime: that is the trade</text>
-      </svg>
-      <p id="ch6-zerocost-p3" class="diagram-caption">Both versions implement the same comparison-based sort. The C version compiles to a loop where every comparison is an indirect call through a function pointer. The CPU cannot see what code is about to run, cannot prefetch, cannot inline. The C++ version specialises the entire <code>sort</code> at compile time for the specific lambda passed in: the comparison becomes a single <code>cmp</code> instruction in the loop body, no call, no indirection. Roughly threefold speedup on integer sorting. The price is paid in compile time and binary size: every <code>std::sort</code> call site with a different comparator type produces a new copy of <code>std::sort</code> in the binary. C++ trades disk and seconds-of-build for cycles-of-runtime, in volumes that strongly favour the runtime side.</p>
+    <div class="diagram-card fig-v2" id="fig-6-6">
+      <div class="diagram-label">Fig 6.6&nbsp;· qsort vs std::sort, same algorithm, different cost</div>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-42 svgd-part2-42">
+<title id="svgt-part2-42">Fig 6.6 · qsort vs std::sort, same algorithm, different cost</title>
+<desc id="svgd-part2-42">The path of one comparison. C's qsort calls the comparison function through a pointer, so each comparison is five steps: call, load the two values, compare, return, test the result. C++'s std::sort is compiled for the exact comparison, which is inlined into the loop: compare and branch, two steps. A marker stepping through both paths at the same rate completes two comparisons in qsort while std::sort completes five.</desc>
+<text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">C · compiled once, in the library</text>
+<text x="20" y="40" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">qsort(v, n, sizeof(int), cmp);</text>
+<rect x="20" y="54" width="64" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="52" y="75" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">call</text>
+<line x1="84" y1="70" x2="94" y2="70" stroke="#d4a853" stroke-opacity="0.5"/>
+<rect class="fx" x="20" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0.000000;0.098000;0.098750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.499500;0.500000;0.598000;0.598750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect x="94" y="54" width="64" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="126" y="75" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">load</text>
+<line x1="158" y1="70" x2="168" y2="70" stroke="#d4a853" stroke-opacity="0.5"/>
+<rect class="fx" x="94" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.099500;0.100000;0.198000;0.198750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="94" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.599500;0.600000;0.698000;0.698750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect x="168" y="54" width="64" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="200" y="75" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">cmp</text>
+<line x1="232" y1="70" x2="242" y2="70" stroke="#d4a853" stroke-opacity="0.5"/>
+<rect class="fx" x="168" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.199500;0.200000;0.298000;0.298750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="168" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.699500;0.700000;0.798000;0.798750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect x="242" y="54" width="64" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="274" y="75" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">ret</text>
+<line x1="306" y1="70" x2="316" y2="70" stroke="#d4a853" stroke-opacity="0.5"/>
+<rect class="fx" x="242" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299500;0.300000;0.398000;0.398750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="242" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.799500;0.800000;0.898000;0.898750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect x="316" y="54" width="64" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="348" y="75" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">test</text>
+<rect class="fx" x="316" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.399500;0.400000;0.498000;0.498750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="316" y="54" width="64" height="32" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.899500;0.900000;0.998000;0.998750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<text x="20" y="108" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">every comparison is a call</text>
+<text x="20" y="140" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">C++ · compiled for this comparison</text>
+<text x="20" y="160" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">std::sort(v.begin(), v.end());</text>
+<rect x="20" y="174" width="64" height="32" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.6"/>
+<text x="52" y="195" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">cmp</text>
+<line x1="84" y1="190" x2="94" y2="190" stroke="#84ffb2" stroke-opacity="0.5"/>
+<rect class="fx" x="20" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0.000000;0.098000;0.098750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.199500;0.200000;0.298000;0.298750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.399500;0.400000;0.498000;0.498750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.599500;0.600000;0.698000;0.698750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.799500;0.800000;0.898000;0.898750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect x="94" y="174" width="64" height="32" rx="3" fill="#152016" stroke="#84ffb2" stroke-opacity="0.6"/>
+<text x="126" y="195" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">jge</text>
+<rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.099500;0.100000;0.198000;0.198750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299500;0.300000;0.398000;0.398750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.499500;0.500000;0.598000;0.598750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.699500;0.700000;0.798000;0.798750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.899500;0.900000;0.998000;0.998750;0.999875;1.000000" dur="4s" repeatCount="indefinite"/></rect>
+<text x="20" y="228" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">the comparison is inlined</text>
+</svg>
+      <p id="ch6-zerocost-p3" class="diagram-caption"><code>qsort</code> reaches the comparison through a function pointer, so every comparison is a call the compiler cannot see into; <code>std::sort</code> is compiled for the exact comparison, which becomes two instructions in the loop. Same algorithm, a shorter path per comparison, paid for with a separate copy of the sort for each comparison type.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why C cannot inline.</b> <code>qsort</code> was compiled into the C library long before your comparison function existed, so it can only call it.</li>
+          <li><b>Templates.</b> <code>std::sort</code> is compiled at your call site with the comparison's type known, so the optimiser folds it into the loop; for integers this is commonly measured several times faster.</li>
+          <li><b>A trap in C.</b> The usual comparator <code>return *(int*)a - *(int*)b;</code> overflows for large values; <code>(x &gt; y) - (x &lt; y)</code> is safe.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch6-zerocost-p4">

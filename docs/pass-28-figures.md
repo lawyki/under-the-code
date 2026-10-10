@@ -93,7 +93,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 83 | 2 | `fig-6-3` Fig 6.3 · A class, an object, and a vtable | 2.5 px · cap 105 | done 2026-10-10 |
 | 84 | 2 | `fig-6-4` Fig 6.4 · Inheritance: same vptr slot, different function | 2.5 px · cap 94 | done 2026-10-10 |
 | 85 | 2 | `fig-6-5` Fig 6.5 · RAII: scope acquires, scope releases | 2.9 px · cap 125 | done 2026-10-11 |
-| 86 | 2 | `fig-6-6` Fig 6.6 · qsort vs std::sort, same algorithm, different cost | 2.5 px · cap 119 | todo |
+| 86 | 2 | `fig-6-6` Fig 6.6 · qsort vs std::sort, same algorithm, different cost | 2.5 px · cap 119 | done 2026-10-11 |
 | 87 | 2 | `fig-6-7` Fig 6.7 · Three pointer flavours, three ownership semantics | 2.5 px · cap 106 | todo |
 | 88 | 2 | `fig-6-8` Fig 6.8 · A move is "I'm done with this, take it" | 2.5 px · cap 98 | todo |
 | 89 | 2 | `fig-6-9` Fig 6.9 · C++ standards · the language eating its own complexity | 2.5 px · cap 149 | todo |
