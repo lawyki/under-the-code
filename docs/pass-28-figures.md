@@ -124,7 +124,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 114 | 3 | `fig-9-4` Fig 9.4 · The IPv4 header, byte by byte | 2.2 px · cap 153 | done 2026-10-11 |
 | 115 | 3 | `fig-9-5` Fig 9.5 · A 4 KB packet, fragmented onto a 1500-byte link | 2.2 px · cap 149 | done 2026-10-11 |
 | 116 | 3 | `fig-9-6` Fig 9.6 · BGP path-vector announcements | 2.2 px · cap 131 | done 2026-10-11 |
-| 117 | 3 | `fig-9-7` Fig 9.7 · The internet's tier hierarchy | 2.5 px · cap 161 | todo |
+| 117 | 3 | `fig-9-7` Fig 9.7 · The internet's tier hierarchy | 2.5 px · cap 161 | done 2026-10-11 |
 | 118 | 3 | `fig-9-8` Fig 9.8 · IPv4 ran out, then CGNAT papered over it | 2.5 px · cap 125 | todo |
 | 119 | 3 | `fig-9-9` Fig 9.9 · The shape of an IPv4 vs an IPv6 address | 2.5 px · cap 120 | todo |
 | 120 | 3 | `fig-9-10` Fig 9.10 · IP spoofing: a forged source field | 2.5 px · cap 134 | deferred: conceptual pass |
