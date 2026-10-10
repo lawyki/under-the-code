@@ -5023,45 +5023,57 @@
       eras coexist in any modern codebase, because legacy never dies.
     </p>
 
-    <div class="diagram-card" id="fig-12-4">
-      <div class="diagram-label">Fig 12.4 · The same fetch · three eras of async syntax</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-59"><title id="svgt-part3-59">Fig 12.4 · The same fetch · three eras of async syntax</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">underneath, the event loop is identical; only the surface syntax has changed</text>
-
-        <!-- Callbacks -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">ERA 1: CALLBACKS (1995 →)</text>
-          <rect x="0" y="14" width="640" height="76" rx="3" fill="#0a1c2d" stroke="rgba(180,80,80,0.65)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">getUser(id, function (user) {</text>
-          <text x="34" y="46" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">getOrders(user, function (orders) {</text>
-          <text x="54" y="60" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">getInvoice(orders[0], function (invoice) {</text>
-          <text x="74" y="74" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">render(invoice);  // pyramid of doom · errors lost</text>
-          <text x="14" y="86" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">}); }); });</text>
-        </g>
-
-        <!-- Promises -->
-        <g transform="translate(40,168)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">ERA 2: PROMISES (ES6, 2015)</text>
-          <rect x="0" y="14" width="640" height="76" rx="3" fill="#0a1c2d" stroke="rgba(32,116,150,0.65)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">getUser(id)</text>
-          <text x="14" y="46" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">  .then(user =&gt; getOrders(user))</text>
-          <text x="14" y="60" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">  .then(orders =&gt; getInvoice(orders[0]))</text>
-          <text x="14" y="74" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">  .then(render)</text>
-          <text x="14" y="86" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">  .catch(err =&gt; alert(err));   // single shared error path</text>
-        </g>
-
-        <!-- async/await -->
-        <g transform="translate(40,268)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">ERA 3: ASYNC / AWAIT (ES2017)</text>
-          <rect x="0" y="14" width="640" height="76" rx="3" fill="#0a1c2d" stroke="rgba(80,140,80,0.65)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">async function showInvoice(id) {</text>
-          <text x="34" y="46" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">try {</text>
-          <text x="54" y="60" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">const user    = await getUser(id);    const orders  = await getOrders(user);</text>
-          <text x="54" y="74" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">const invoice = await getInvoice(orders[0]);   render(invoice);</text>
-          <text x="34" y="86" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">} catch (err) { alert(err); }   // looks synchronous · isn't</text>
-        </g>
-      </svg>
-      <p id="ch12-loop-p5" class="diagram-caption">Three ways to spell the same thing. All three compile, eventually, to operations on the macrotask and microtask queues from <a href="#fig-12-3">Fig 12.3</a>. Async/await is sugar over Promises, Promises are sugar over callbacks, and callbacks were the bare metal. The underlying mechanism never changed; the language did. Most JavaScript a working developer touches today uses async/await for control flow, Promises for combinators (<code>Promise.all</code>, <code>Promise.race</code>), and old-style callbacks only at the lowest layers (DOM events, Node.js APIs that predate Promises). Reading older code or an Express middleware function still requires fluency in all three.</p>
+    <div class="diagram-card fig-v2" id="fig-12-4">
+      <div class="diagram-label">Fig 12.4&nbsp;· The same fetch&nbsp;· three eras of async syntax</div>
+      <svg viewBox="0 0 400 506" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-59 svgd-part3-59">
+<title id="svgt-part3-59">Fig 12.4 · The same fetch · three eras of async syntax</title>
+<desc id="svgd-part3-59">The same job written three ways: get a user, then their orders, then the first invoice, then render it. With callbacks each step nests inside the previous one, the code stepping further right. With promises the steps form a flat chain of then calls with one catch at the end. With async and await the steps read like ordinary straight-line code inside a try block. The matching lines light together in all three.</desc>
+<text x="10" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">callbacks, from 1995</text>
+<rect x="10" y="32" width="380" height="136" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.177556;0.177778;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="38" width="376" height="17" rx="2" fill="#4fc4e6" fill-opacity="0.16"/><rect x="12" y="38" width="3" height="17" fill="#4fc4e6"/></g>
+<text x="22" y="51" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">getUser(id,&#160;function&#160;(user)&#160;{</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.333111;0.333333;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="56" width="376" height="17" rx="2" fill="#9bd89b" fill-opacity="0.16"/><rect x="12" y="56" width="3" height="17" fill="#9bd89b"/></g>
+<text x="22" y="69" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;getOrders(user,&#160;function&#160;(orders)&#160;{</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.488667;0.488889;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="74" width="376" height="17" rx="2" fill="#d4a853" fill-opacity="0.16"/><rect x="12" y="74" width="3" height="17" fill="#d4a853"/></g>
+<text x="22" y="87" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;getInvoice(orders[0],&#160;function&#160;(inv)&#160;{</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.644222;0.644444;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="92" width="376" height="17" rx="2" fill="#e07a3f" fill-opacity="0.16"/><rect x="12" y="92" width="3" height="17" fill="#e07a3f"/></g>
+<text x="22" y="105" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;&#160;&#160;render(inv);</text>
+<text x="22" y="123" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;});</text>
+<text x="22" y="141" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;});</text>
+<text x="22" y="159" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">});</text>
+<text x="10" y="202" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">promises, ES2015</text>
+<rect x="10" y="212" width="380" height="100" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.177556;0.177778;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="218" width="376" height="17" rx="2" fill="#4fc4e6" fill-opacity="0.16"/><rect x="12" y="218" width="3" height="17" fill="#4fc4e6"/></g>
+<text x="22" y="231" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">getUser(id)</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.333111;0.333333;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="236" width="376" height="17" rx="2" fill="#9bd89b" fill-opacity="0.16"/><rect x="12" y="236" width="3" height="17" fill="#9bd89b"/></g>
+<text x="22" y="249" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;.then(getOrders)</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.488667;0.488889;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="254" width="376" height="17" rx="2" fill="#d4a853" fill-opacity="0.16"/><rect x="12" y="254" width="3" height="17" fill="#d4a853"/></g>
+<text x="22" y="267" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;.then(orders&#160;=&gt;&#160;getInvoice(orders[0]))</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.644222;0.644444;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="272" width="376" height="17" rx="2" fill="#e07a3f" fill-opacity="0.16"/><rect x="12" y="272" width="3" height="17" fill="#e07a3f"/></g>
+<text x="22" y="285" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;.then(render)</text>
+<text x="22" y="303" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;.catch(showError);</text>
+<text x="10" y="346" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">async/await, ES2017</text>
+<rect x="10" y="356" width="380" height="136" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45"/>
+<text x="22" y="375" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">async&#160;function&#160;show(id)&#160;{</text>
+<text x="22" y="393" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;try&#160;{</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.177556;0.177778;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="398" width="376" height="17" rx="2" fill="#4fc4e6" fill-opacity="0.16"/><rect x="12" y="398" width="3" height="17" fill="#4fc4e6"/></g>
+<text x="22" y="411" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;const&#160;user&#160;=&#160;await&#160;getUser(id);</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.333111;0.333333;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="416" width="376" height="17" rx="2" fill="#9bd89b" fill-opacity="0.16"/><rect x="12" y="416" width="3" height="17" fill="#9bd89b"/></g>
+<text x="22" y="429" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;const&#160;orders&#160;=&#160;await&#160;getOrders(user);</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.488667;0.488889;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="434" width="376" height="17" rx="2" fill="#d4a853" fill-opacity="0.16"/><rect x="12" y="434" width="3" height="17" fill="#d4a853"/></g>
+<text x="22" y="447" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;render(await&#160;getInvoice(orders[0]));</text>
+<text x="22" y="465" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;}&#160;catch&#160;(err)&#160;{&#160;showError(err);&#160;}</text>
+<text x="22" y="483" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">}</text>
+</svg>
+      <p id="ch12-loop-p5" class="diagram-caption">The same three steps (the user, then the orders, then the invoice) spelled three ways: callbacks nested inside callbacks, a flat chain of promises, and async/await that reads like straight-line code. The event loop underneath is the same; only the shape on the page changed.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Callbacks.</b> Each step nests inside the last, and every level needs its own error handling; forget one and the error is lost.</li>
+          <li><b>Promises.</b> Each <code>.then</code> returns a new promise, so the chain stays flat and one <code>.catch</code> at the end catches a failure anywhere in it.</li>
+          <li><b>async/await.</b> Each <code>await</code> pauses the function and lets the loop run other work; when the promise settles, the rest of the function continues as a microtask (Fig 12.3).</li>
+        </ol>
+      </details>
     </div>
   </section>
 
