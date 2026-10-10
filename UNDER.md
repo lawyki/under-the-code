@@ -3573,7 +3573,9 @@ asserted, 0 of 8, 8 of 11, 9 of 9; "the internet is a Baran-shaped network"
 softened: it routes around failures but has hubs), 9.4 (one real header, 192.0.2.10 to
 198.51.100.7, TCP, its checksum computed and asserted (0x3231, 0x3331 after the
 hop); a router hop run on it: destination looked up, TTL 64 to 63, checksum
-recomputed; IHL, ToS, Total length and TTL kept as key-terms). The sweep's overlap test now compares ink boxes (font boxes trimmed
+recomputed; IHL, ToS, Total length and TTL kept as key-terms), 9.5 (the split computed and asserted,
+1480 + 1480 + 1040 bytes at offsets 0, 185, 370; run 1 reassembles, run 2 loses
+fragment 2 and the whole packet is discarded). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

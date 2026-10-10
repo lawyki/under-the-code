@@ -1696,44 +1696,38 @@
       entirely.
     </p>
 
-    <div class="diagram-card" id="fig-9-5">
-      <div class="diagram-label">Fig 9.5 · A 4 KB packet, fragmented onto a 1500-byte link</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-19"><title id="svgt-part3-19">Fig 9.5 · A 4 KB packet, fragmented onto a 1500-byte link</title>
-        <!-- Original -->
-        <text x="60" y="40" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.85)">original packet (4000 bytes):</text>
-        <rect x="60" y="50" width="600" height="32" rx="3" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.7)"/>
-        <text x="360" y="70" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">payload (4000 B), ID=42</text>
-
-        <!-- Down arrow -->
-        <line x1="360" y1="100" x2="360" y2="130" stroke="rgba(79,196,230,0.6)"/>
-        <polygon points="360,130 354,124 366,124" fill="rgba(79,196,230,0.7)"/>
-        <text x="380" y="118" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.85)">link MTU = 1500 → split</text>
-
-        <!-- Three fragments -->
-        <g transform="translate(60,150)">
-          <!-- Fragment 1: offset 0, MF=1, 1480 bytes -->
-          <rect x="0"   y="0" width="220" height="32" rx="3" fill="rgba(150,216,150,0.22)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="110" y="14" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">frag 1 · offset 0 · MF=1</text>
-          <text x="110" y="26" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">bytes 0–1479 of payload</text>
-
-          <!-- Fragment 2: offset 1480, MF=1, 1480 bytes -->
-          <rect x="222" y="0" width="220" height="32" rx="3" fill="rgba(100,150,255,0.22)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="332" y="14" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(100,150,255,0.95)">frag 2 · offset 185 · MF=1</text>
-          <text x="332" y="26" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(100,150,255,0.7)">bytes 1480–2959</text>
-
-          <!-- Fragment 3: offset 2960, MF=0, ~1040 bytes -->
-          <rect x="444" y="0" width="156" height="32" rx="3" fill="rgba(232,120,120,0.22)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="522" y="14" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">frag 3 · offset 370 · MF=0</text>
-          <text x="522" y="26" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)">bytes 2960–3999 (last)</text>
-        </g>
-
-        <!-- Reassembly note -->
-        <text x="360" y="220" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">all three carry ID=42 · receiver buffers them, sorts by offset, stops when MF=0 arrives</text>
-        <text x="360" y="238" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.85)">if any fragment is lost, the entire packet is lost: receiver cannot ask for one fragment alone</text>
-
-        <text x="360" y="266" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">IPV6 FORBIDS ROUTER FRAGMENTATION: SENDER MUST DISCOVER THE PATH MTU UPFRONT</text>
-      </svg>
-      <p id="ch9-ip-p4" class="diagram-caption">Fragmentation. A 4000-byte packet enters a link whose MTU is 1500 bytes. The router (or sender) breaks it into three fragments; each is a complete IP packet with the same Identification field (42 here) and a Fragment Offset that says where in the original payload it sits. Offsets are in 8-byte units, so 1480 bytes of payload corresponds to offset 185. The "More Fragments" flag is set on every fragment except the last. The receiver buffers fragments by ID, sorts them by offset, and reassembles when it sees MF=0. If any fragment is lost in flight, the entire packet is lost: IP has no way to ask for just one fragment to be retransmitted. Modern systems avoid fragmentation by discovering the smallest MTU on the path (Path MTU Discovery) and sending packets that fit. IPv6 forbids router-side fragmentation entirely; only the original sender can fragment, and only after probing.</p>
+    <div class="diagram-card fig-v2" id="fig-9-5">
+      <div class="diagram-label">Fig 9.5&nbsp;· A 4 KB packet, fragmented onto a 1500-byte link</div>
+      <svg viewBox="0 0 400 338" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-19 svgd-part3-19">
+<title id="svgt-part3-19">Fig 9.5 · A 4 KB packet, fragmented onto a 1500-byte link</title>
+<desc id="svgd-part3-19">A packet carrying 4000 bytes of data, identification 42, meets a link whose largest packet is 1500 bytes. It is split into three fragments carrying 1480, 1480 and 1040 bytes, with fragment offsets 0, 185 and 370 (counted in 8-byte units) and the more-fragments flag set on all but the last. In a first run all three arrive and the receiver reassembles the packet. In a second run fragment 2 is lost, and since IP cannot ask for one fragment again, the receiver discards the whole packet.</desc>
+<text x="20" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">ORIGINAL · ID 42</text>
+<rect x="20" y="32" width="360" height="36" rx="2" fill="#0d2740" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="200" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">4000 bytes of data</text>
+<text x="20" y="92" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">link MTU 1500 bytes: split</text>
+<text x="20" y="300" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">RECEIVER</text>
+<rect x="20" y="228" width="116" height="52" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.2)" stroke-dasharray="3 3"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.132667;0.132917;0.649958;0.650000;0.666500;0.666667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 120.00;0 120.00;0 0.00;0 0.00;0 120.00;0 120.00" keyTimes="0.000000;0.649958;0.650000;0.700000;0.833333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="78" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1480 B</text><text x="78" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 0 · MF 1</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.149833;0.150000;0.616000;0.616250;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 120.00;0 120.00;0 0.00;0 0.00" keyTimes="0.000000;0.183333;0.316667;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="78" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1480 B</text><text x="78" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 0 · MF 1</text></g></g>
+<rect x="142" y="228" width="116" height="52" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.2)" stroke-dasharray="3 3"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.132667;0.132917;0.649958;0.650000;0.691500;0.691667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 120.00;0 120.00;0 0.00;0 0.00;0 120.00;0 120.00" keyTimes="0.000000;0.649958;0.650000;0.725000;0.858333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="142" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="200" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1480 B</text><text x="200" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 185 · MF 1</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174833;0.175000;0.341000;0.341250;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 54.00;0 54.00;0 0.00;0 0.00" keyTimes="0.000000;0.208333;0.341667;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="142" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="200" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1480 B</text><text x="200" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 185 · MF 1</text></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.341500;0.341667;0.616000;0.616250;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><line x1="178" y1="168.0" x2="222" y2="208.0" stroke="#ec6b6b" stroke-width="4"/><line x1="222" y1="168.0" x2="178" y2="208.0" stroke="#ec6b6b" stroke-width="4"/><text x="200" y="160" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">lost</text></g>
+<rect x="264" y="228" width="116" height="52" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.2)" stroke-dasharray="3 3"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.132667;0.132917;0.649958;0.650000;0.716500;0.716667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 120.00;0 120.00;0 0.00;0 0.00;0 120.00;0 120.00" keyTimes="0.000000;0.649958;0.650000;0.750000;0.883333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="264" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="322" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1040 B</text><text x="322" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 370 · MF 0</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199833;0.200000;0.616000;0.616250;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 120.00;0 120.00;0 0.00;0 0.00" keyTimes="0.000000;0.233333;0.366667;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="264" y="108" width="116" height="52" rx="2" fill="#4fc4e6" fill-opacity="0.2" stroke="#4fc4e6"/><text x="322" y="129" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">1040 B</text><text x="322" y="149" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">off 370 · MF 0</text></g></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.166000;0.166250;0.649958;0.650000;0.916500;0.916667;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="326" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">all three in: packet rebuilt</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.416500;0.416667;0.624333;0.624583;0.649958;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="326" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">one missing: whole packet discarded</text></g>
+</svg>
+      <p id="ch9-ip-p4" class="diagram-caption">A 4000-byte packet meets a link that carries at most 1500, so it is cut into three fragments, each with the same ID, its offset (in 8-byte units) and a more-fragments flag. Lose any one and the receiver must throw the whole packet away, since IP cannot ask for a single fragment again.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The arithmetic.</b> Each fragment needs its own 20-byte header, leaving 1480 bytes of data; 1480 / 8 = 185, so the second fragment starts at offset 185.</li>
+          <li><b>Avoiding it.</b> Path MTU discovery finds the smallest link on the route so the sender can send packets that fit.</li>
+          <li><b>IPv6.</b> Routers never fragment; only the sender may, after learning the path's limit.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
