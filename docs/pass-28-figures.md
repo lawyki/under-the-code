@@ -136,7 +136,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 126 | 3 | `fig-10-4` Fig 10.4 · The sliding window | 2.5 px · cap 105 | done 2026-10-11 |
 | 127 | 3 | `fig-10-5` Fig 10.5 · The TCP sawtooth | 2.5 px · cap 109 | done 2026-10-11 |
 | 128 | 3 | `fig-10-6` Fig 10.6 · AIMD's fairness, in phase space | 2.2 px · cap 135 | done 2026-10-11 |
-| 129 | 3 | `fig-10-7` Fig 10.7 · CUBIC vs Reno: same loss, different recovery | 2.5 px · cap 105 | todo |
+| 129 | 3 | `fig-10-7` Fig 10.7 · CUBIC vs Reno: same loss, different recovery | 2.5 px · cap 105 | done 2026-10-11 |
 | 130 | 3 | `fig-10-8` Fig 10.8 · BBR aims for the bandwidth-delay product | 2.9 px · cap 140 | todo |
 | 131 | 3 | `fig-10-9` Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks | 2.5 px · cap 146 | todo |
 | 132 | 3 | `fig-10-10` Fig 10.10 · SYN flood: half-open connections fill the table | 2.2 px · cap 129 | deferred: conceptual pass |
