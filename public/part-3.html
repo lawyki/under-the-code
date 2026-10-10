@@ -1076,64 +1076,57 @@
       </details>
     </div>
 
-    <div class="diagram-card" id="fig-8-12">
-      <div class="diagram-label">Fig 8.12 · OSI vs TCP/IP, side by side</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-13"><title id="svgt-part3-13">Fig 8.12 · OSI vs TCP/IP, side by side</title>
-        <!-- OSI on left -->
-        <text x="180" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">OSI · the textbook</text>
-        <g font-family="Space Mono" font-size="9">
-          <rect x="80"  y="50" width="200" height="32" rx="4" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="180" y="70" text-anchor="middle" fill="rgba(150,216,150,0.95)">7. Application</text>
-          <rect x="80"  y="86" width="200" height="32" rx="4" fill="rgba(150,216,150,0.14)" stroke="rgba(80,140,80,0.6)"/>
-          <text x="180" y="106" text-anchor="middle" fill="rgba(150,216,150,0.85)">6. Presentation</text>
-          <rect x="80"  y="122" width="200" height="32" rx="4" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.5)"/>
-          <text x="180" y="142" text-anchor="middle" fill="rgba(150,216,150,0.7)">5. Session</text>
-          <rect x="80"  y="158" width="200" height="32" rx="4" fill="rgba(100,150,255,0.20)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="180" y="178" text-anchor="middle" fill="rgba(100,150,255,0.95)">4. Transport</text>
-          <rect x="80"  y="194" width="200" height="32" rx="4" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.7)"/>
-          <text x="180" y="214" text-anchor="middle" fill="rgba(79,196,230,0.95)">3. Network</text>
-          <rect x="80"  y="230" width="200" height="32" rx="4" fill="rgba(232,120,120,0.20)" stroke="rgba(180,80,80,0.6)"/>
-          <text x="180" y="250" text-anchor="middle" fill="rgba(232,120,120,0.95)">2. Data Link</text>
-          <rect x="80"  y="266" width="200" height="32" rx="4" fill="rgba(232,140,80,0.20)" stroke="rgba(180,100,60,0.6)"/>
-          <text x="180" y="286" text-anchor="middle" fill="rgba(232,140,80,0.95)">1. Physical</text>
-        </g>
-
-        <!-- TCP/IP on right -->
-        <text x="540" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">TCP/IP · what actually runs</text>
-        <g font-family="Space Mono" font-size="9">
-          <!-- Application: covers OSI 5-7 -->
-          <rect x="440" y="50" width="200" height="104" rx="4" fill="rgba(150,216,150,0.22)" stroke="rgba(80,140,80,0.85)" stroke-width="1.5"/>
-          <text x="540" y="100" text-anchor="middle" font-size="11" fill="rgba(150,216,150,0.95)">Application</text>
-          <text x="540" y="118" text-anchor="middle" font-size="8" fill="rgba(150,216,150,0.7)">HTTP, DNS, TLS, SSH</text>
-
-          <!-- Transport: maps to OSI 4 -->
-          <rect x="440" y="158" width="200" height="32" rx="4" fill="rgba(100,150,255,0.22)" stroke="rgba(60,100,180,0.85)" stroke-width="1.5"/>
-          <text x="540" y="178" text-anchor="middle" fill="rgba(100,150,255,0.95)">Transport</text>
-
-          <!-- Internet: maps to OSI 3 -->
-          <rect x="440" y="194" width="200" height="32" rx="4" fill="rgba(79,196,230,0.22)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/>
-          <text x="540" y="214" text-anchor="middle" fill="rgba(79,196,230,0.95)">Internet</text>
-
-          <!-- Link: covers OSI 1-2 -->
-          <rect x="440" y="230" width="200" height="68" rx="4" fill="rgba(232,140,80,0.22)" stroke="rgba(180,100,60,0.85)" stroke-width="1.5"/>
-          <text x="540" y="262" text-anchor="middle" font-size="11" fill="rgba(232,140,80,0.95)">Link</text>
-          <text x="540" y="280" text-anchor="middle" font-size="8" fill="rgba(232,140,80,0.7)">Ethernet + physical</text>
-        </g>
-
-        <!-- Connecting brackets -->
-        <g stroke="rgba(79,196,230,0.4)" fill="none" stroke-dasharray="2,2">
-          <line x1="280" y1="66"  x2="440" y2="100"/>
-          <line x1="280" y1="102" x2="440" y2="100"/>
-          <line x1="280" y1="138" x2="440" y2="100"/>
-          <line x1="280" y1="174" x2="440" y2="174"/>
-          <line x1="280" y1="210" x2="440" y2="210"/>
-          <line x1="280" y1="246" x2="440" y2="262"/>
-          <line x1="280" y1="282" x2="440" y2="262"/>
-        </g>
-
-        <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">OSI: PEDAGOGICALLY CLEAN · TCP/IP: HONEST ABOUT WHAT REAL PROTOCOLS ACTUALLY DO</text>
-      </svg>
-      <p id="ch8-layers-p5" class="diagram-caption">The seven OSI layers map to the four TCP/IP layers in a clear way. The bottom two (Physical + Data Link) collapse into TCP/IP's <strong>Link</strong> layer because, from IP's perspective, anything that delivers a frame to the next hop is good enough. The top three (Session + Presentation + Application) collapse into TCP/IP's <strong>Application</strong> layer because in practice every real application protocol handles its own session and formatting. HTTP, for instance, does its own connection management, its own content negotiation, its own compression. Use OSI when you need to be precise about which layer a feature belongs to. Use TCP/IP when you're describing what's actually on the wire.</p>
+    <div class="diagram-card fig-v2" id="fig-8-12">
+      <div class="diagram-label">Fig 8.12&nbsp;· OSI vs TCP/IP, side by side</div>
+      <svg viewBox="0 0 400 284" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-13 svgd-part3-13">
+<title id="svgt-part3-13">Fig 8.12 · OSI vs TCP/IP, side by side</title>
+<desc id="svgd-part3-13">The seven OSI layers beside the four TCP/IP layers. TCP/IP's Application layer, home of HTTP, DNS and SSH, covers OSI's Application, Presentation and Session. Its Transport layer, TCP and UDP, matches OSI Transport; its Internet layer, IP, matches OSI Network; and its Link layer, Ethernet and Wi-Fi, covers OSI's Data link and Physical.</desc>
+<text x="20" y="26" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">OSI</text>
+<text x="204" y="26" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">TCP/IP</text>
+<rect x="20" y="40" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="60" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">7 Application</text>
+<rect x="20" y="74" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="94" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">6 Presentation</text>
+<rect x="20" y="108" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="128" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">5 Session</text>
+<rect x="20" y="142" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="162" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">4 Transport</text>
+<rect x="20" y="176" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="196" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">3 Network</text>
+<rect x="20" y="210" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="230" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">2 Data link</text>
+<rect x="20" y="244" width="172" height="30" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.3)"/>
+<text x="32" y="264" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">1 Physical</text>
+<rect x="204" y="40" width="176" height="98" rx="2" fill="#081b2e" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="216" y="87" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">Application</text>
+<text x="216" y="105" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">HTTP, DNS, SSH</text>
+<rect class="fx" x="204" y="40" width="176" height="98" rx="2" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.074750;0.075000;0.299000;0.299375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="40" width="172" height="98" rx="2" fill="#e07a3f" fill-opacity="0.12" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.074750;0.075000;0.299000;0.299375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="204" y="142" width="176" height="30" rx="2" fill="#081b2e" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="216" y="162" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">Transport</text>
+<text x="368" y="162" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">TCP, UDP</text>
+<rect class="fx" x="204" y="142" width="176" height="30" rx="2" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299750;0.300000;0.524000;0.524375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="142" width="172" height="30" rx="2" fill="#e07a3f" fill-opacity="0.12" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299750;0.300000;0.524000;0.524375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="204" y="176" width="176" height="30" rx="2" fill="#081b2e" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="216" y="196" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">Internet</text>
+<text x="368" y="196" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">IP</text>
+<rect class="fx" x="204" y="176" width="176" height="30" rx="2" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.524750;0.525000;0.749000;0.749375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="176" width="172" height="30" rx="2" fill="#e07a3f" fill-opacity="0.12" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.524750;0.525000;0.749000;0.749375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="204" y="210" width="176" height="64" rx="2" fill="#081b2e" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="216" y="240" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">Link</text>
+<text x="216" y="258" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Ethernet, Wi-Fi</text>
+<rect class="fx" x="204" y="210" width="176" height="64" rx="2" fill="#e07a3f" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.749750;0.750000;0.974000;0.974375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="20" y="210" width="172" height="64" rx="2" fill="#e07a3f" fill-opacity="0.12" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.749750;0.750000;0.974000;0.974375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+</svg>
+      <p id="ch8-layers-p5" class="diagram-caption">TCP/IP folds OSI's top three layers into one Application layer, because protocols such as HTTP manage their own sessions and formats, and its bottom two into one Link layer, because IP only needs a frame delivered to the next hop. OSI says where a feature belongs; TCP/IP describes what is on the wire.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>HTTP as an example.</b> It handles its own connections, content negotiation and compression, the jobs OSI gave to Session and Presentation.</li>
+          <li><b>The names.</b> TCP/IP's layers come from RFC 1122 (1989): link, internet, transport, application.</li>
+          <li><b>Where TLS sits.</b> It encrypts between the application and TCP, which is one reason neither model places it cleanly.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The seam to <a href="#ch9">Chapter 9</a></h3>

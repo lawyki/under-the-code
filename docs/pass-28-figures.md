@@ -117,7 +117,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 107 | 3 | `fig-8-9` Fig 8.9 · A MAC address, and the ARP cache that resolves it | 2.5 px · cap 157 | done 2026-10-11 |
 | 108 | 3 | `fig-8-10` Fig 8.10 · Hub vs switch: broadcast vs learned | 2.2 px · cap 137 | done 2026-10-11 |
 | 109 | 3 | `fig-8-11` Fig 8.11 · The OSI seven-layer cake | 3.2 px · cap 118 | done 2026-10-11 |
-| 110 | 3 | `fig-8-12` Fig 8.12 · OSI vs TCP/IP, side by side | 2.5 px · cap 108 | todo |
+| 110 | 3 | `fig-8-12` Fig 8.12 · OSI vs TCP/IP, side by side | 2.5 px · cap 108 | done 2026-10-11 |
 | 111 | 3 | `fig-9-1` Fig 9.1 · One call, two architectures | 2.5 px · cap 122 | todo |
 | 112 | 3 | `fig-9-2` Fig 9.2 · The first internet | 2.2 px · cap 121 | todo |
 | 113 | 3 | `fig-9-3` Fig 9.3 · Baran 1964: three architectural shapes | 2.5 px · cap 118 | todo |
