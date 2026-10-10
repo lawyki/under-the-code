@@ -426,7 +426,11 @@
 // (the latter only once the server enables it).
 (function () {
   'use strict';
-  if (!('localStorage' in window)) return;
+  // Storage can throw on access (cookies blocked, sandboxed frames): resolve it
+  // once, inside a try, so the rest of book.js (tooltips) still runs.
+  const getStore = name => { try { const st = window[name]; st.getItem('utc'); return st; } catch (e) { return null; } };
+  const LS = getStore('localStorage'), SS = getStore('sessionStorage');
+  if (!LS) return;
 
   const STORAGE_KEY = 'under-the-code:progress';
   const PENDING_KEY = 'under-the-code:pending-offset';
@@ -441,6 +445,8 @@
   // Thresholds — tuned on paper; re-tune after the owner's read (?utc-debug).
   const T = {
     BURST_END_MS: 250,        // a burst ends 250ms after its last scroll event (or on scrollend)
+    BURST_MAX_MS: 3000,       // …or after 3 s of unbroken scrolling (slow continuous reading)
+    BAR_CLOSE_B: 0.5,         // the place bar closes on a scroll longer than this
     IH_IGNORE_MS: 100,        // scrolls this soon after an innerHeight change are the browser's
     SKIP_FRAC: 0.25,          // skipped-text gap, in B
     UNEXPLAINED_B: 1.25,      // a jump this long with no input is find-in-page, a fragment, history
@@ -488,9 +494,11 @@
 
   // -------- STORES ------------------------------------------------------------
   function readJSON(store, key) {
+    if (!store) return null;
     try { return JSON.parse(store.getItem(key) || 'null'); } catch (e) { return null; }
   }
   function writeJSON(store, key, value) {
+    if (!store) return;
     try {
       if (value == null) store.removeItem(key); else store.setItem(key, JSON.stringify(value));
     } catch (e) { /* full or blocked: the book still works */ }
@@ -498,16 +506,16 @@
 
   // v1 records (before Pass 25) carry no `v`; they read as an automatic place.
   function readProgress() {
-    const data = readJSON(localStorage, STORAGE_KEY);
+    const data = readJSON(LS, STORAGE_KEY);
     if (!data || !data.timestamp || !data.part || !(data.section || data.anchor)) return null;
     if ((Date.now() - data.timestamp) / 86400000 > MAX_AGE_DAYS) {
-      writeJSON(localStorage, STORAGE_KEY, null);
+      writeJSON(LS, STORAGE_KEY, null);
       return null;
     }
     if (data.src !== 'set') data.src = 'auto';
     return data;
   }
-  function writeProgress(data) { writeJSON(localStorage, STORAGE_KEY, data); }
+  function writeProgress(data) { writeJSON(LS, STORAGE_KEY, data); }
 
   function formatChapterNum(chapterId) {
     if (chapterId === 'chBridge') return 'Bridge';
@@ -718,11 +726,11 @@
   //   · o the account it belongs to (null = made signed out) · st the server
   //   time of the last synced state (present = the server has seen it).
   function readMarks() {
-    const d = readJSON(localStorage, MARKS_KEY);
+    const d = readJSON(LS, MARKS_KEY);
     if (d && d.v === 1 && d.m && typeof d.m === 'object') return d;
     return { v: 1, owner: null, cursor: 0, m: {} };
   }
-  function writeMarks(d) { writeJSON(localStorage, MARKS_KEY, d); }
+  function writeMarks(d) { writeJSON(LS, MARKS_KEY, d); }
 
   // ==========================================================================
   // PART PAGES
@@ -845,7 +853,7 @@
       let lo = 0, hi = G.order.length - 1, ans = -1;
       while (lo <= hi) {
         const mid = (lo + hi) >> 1;
-        if (G.order[mid].top <= y) { ans = mid; lo = mid + 1; } else hi = mid - 1;
+        if (G.order[mid].top <= y + 0.5) { ans = mid; lo = mid + 1; } else hi = mid - 1;
       }
       return ans < 0 ? null : G.order[ans];
     }
@@ -948,6 +956,7 @@
         sectionLabel: s ? s.meta.label : '',
         sectionTitle: s ? s.meta.title : '',
         k: k ? k.id : anc.anchor,
+        pn: (k && paraOrdinal(k) || { n: 0 }).n,   // ¶ ordinal, so the readout is exact before the table exists
         src: src || 'auto',
         end: s && s.idx === G.sections.length - 1 ? 1 : 0,
         timestamp: Date.now()
@@ -962,8 +971,8 @@
     let R = null, exc = null;          // excursion: where to return to, and its counters
     let pinAway = null;                // PINNED: reading elsewhere (release counters)
     let gate = null;                   // first visit / reading on: commits wait for 8 s past the opener
-    let before = readJSON(localStorage, BEFORE_KEY);   // {rec, at}: back to before the detour
-    if (before && (!before.rec || Date.now() - before.at > T.BEFORE_KEEP_MS)) { before = null; writeJSON(localStorage, BEFORE_KEY, null); }
+    let before = readJSON(LS, BEFORE_KEY);   // {rec, at}: back to before the detour
+    if (before && (!before.rec || Date.now() - before.at > T.BEFORE_KEEP_MS)) { before = null; writeJSON(LS, BEFORE_KEY, null); }
     let undoPrev = null;               // the place before a hand-set place (Undo, until the next commit)
     let budget = 0, cap = T.CAP_FLOOR;
     let writes = 0, posts = 0;
@@ -973,19 +982,20 @@
     let lastW = window.innerWidth, lastH = window.innerHeight, lastDPR = window.devicePixelRatio || 1;
     let viewAnchor = null;             // the line-56 anchor of the last rest position (re-pins on reflow)
     let burst = null;
-    let prevState = null, undoDetourUntil = 0, lost401 = false;
+    let prevState = null, undoDetourUntil = 0, lost401 = false, acctOwner = null;
+    let touched = false, recheckView = null;   // the reader's own input since load; a view to re-check after a reload
     const hover = { open: false, lastX: 0, lastY: 0, lastT: 0, armed: true };
     let drag = null, cancelDrag = null, cueW = window.innerWidth;
 
     const navEntry0 = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
     const detour = (function () {
-      const d = readJSON(sessionStorage, DETOUR_KEY);
-      writeJSON(sessionStorage, DETOUR_KEY, null);
+      const d = readJSON(SS, DETOUR_KEY);
+      writeJSON(SS, DETOUR_KEY, null);
       if (d && Date.now() - d.at < T.DETOUR_FRESH_MS) return d;
       // Middle-click, "open in new tab", cmd-click: no click reached this tab,
       // but the referrer still says a part page or the glossary sent the reader.
       if (navEntry0 && navEntry0.type !== 'navigate') return null;
-      if (readJSON(sessionStorage, PENDING_KEY)) return null;
+      if (readJSON(SS, PENDING_KEY)) return null;
       try {
         const ref = new URL(document.referrer);
         const from = (ref.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '');
@@ -993,9 +1003,10 @@
       } catch (e) { /* no referrer */ }
       return null;
     })();
-    const tabPrev = readJSON(sessionStorage, TAB_KEY);
+    const tabPrev = readJSON(SS, TAB_KEY);
     function saveTab() {
-      writeJSON(sessionStorage, TAB_KEY, exc ? { R, kind: exc.kind, at: Date.now() } : null);
+      writeJSON(SS, TAB_KEY, { R: exc ? R : null, kind: exc ? exc.kind : null,
+        view: viewAnchor ? { anchor: viewAnchor.anchor, fraction: viewAnchor.fraction } : null, at: Date.now() });
     }
 
     // ---- reading time ----------------------------------------------------------
@@ -1040,6 +1051,17 @@
       if (state !== 'SETTLING') return;
       restY = window.scrollY;
       if (!G) return;
+      if (recheckView && !touched) {
+        // WebKit re-applies a stale #fragment after load, after our restore:
+        // if the reader hasn't moved, put this tab's view back, once.
+        const want = recheckView, v = anchorAt(restY + READING_LINE);
+        recheckView = null;
+        if (!v || v.anchor !== want.anchor || Math.abs(v.fraction - want.fraction) > 0.05) {
+          selfScrollToAnchor(want.anchor, want.fraction, false);
+          return;
+        }
+      }
+      recheckView = null;
       freshTable(kAt(restY + READING_LINE));      // a reflow (rotation, fonts) may have outrun the rebuild
       viewAnchor = anchorAt(restY + READING_LINE);
       decideState();
@@ -1096,7 +1118,7 @@
     function promote() {
       if (R) {
         before = { rec: R, at: Date.now() };
-        writeJSON(localStorage, BEFORE_KEY, before);
+        writeJSON(LS, BEFORE_KEY, before);
         undoDetourUntil = now() + T.UNDO_MS;
       }
       state = 'READING'; exc = null; R = null; pinAway = null;
@@ -1107,7 +1129,7 @@
     function restoreBefore() {   // one reading step back at the old place restores it (1 write)
       const rec = before.rec;
       before = null; undoDetourUntil = 0;
-      writeJSON(localStorage, BEFORE_KEY, null);
+      writeJSON(LS, BEFORE_KEY, null);
       state = rec.src === 'set' ? 'PINNED' : 'READING';
       exc = null; R = null; saveTab(); cancelT('check');
       commit(Object.assign({}, rec, { timestamp: Date.now(), sa: undefined }));
@@ -1146,6 +1168,7 @@
     // ---- BURSTS ------------------------------------------------------------------
     function onScroll() {
       const t = now();
+      if (burst && t - burst.t0 > T.BURST_MAX_MS) endBurst();   // a slow, unbroken scroll is read in steps
       if (!burst) {
         burst = { y0: restY, t0: t, self: t < selfUntil, nav: navFlag && t - navFlag.at < 1500 ? navFlag : null,
           input: t - lastInputAt < T.INPUT_WINDOW_MS };
@@ -1180,7 +1203,7 @@
       const d = y1 - y0;
       if (Math.abs(d) < 2) return;
       accrue();
-      if (Math.abs(d) > 0.5 * B) closePlaceBar(false);
+      if (Math.abs(d) > T.BAR_CLOSE_B * B) closePlaceBar(false);
       navFlag = b.nav ? null : navFlag;
       const c = classify(b, y0, y1, d);
       step(c, y0, y1, d);
@@ -1279,7 +1302,8 @@
       const prev = C;
       rec.sb = prev ? (prev.sa || prev.sb || 0) : 0;   // the server time this place builds on
       if (signedIn) rec.acct = 1;                       // made signed in: sign-out forgets it (H12)
-      if (prev && bucket(prev) === bucket(rec)) { C = Object.assign(rec, { sa: prev.sa, acct: rec.acct || prev.acct }); return; }
+      if (signedIn && acctOwner) rec.own = acctOwner;
+      if (prev && bucket(prev) === bucket(rec)) { C = Object.assign(rec, { sa: prev.sa, acct: rec.acct || prev.acct, own: rec.own || prev.own }); return; }
       C = rec;
       writeProgress(rec);
       writes++;
@@ -1341,7 +1365,9 @@
       });
     }
     function flush(viaBeacon) {
+      if (burst) endBurst();
       if (pendingT('commit')) commitNow('auto');
+      saveTab();
       if (pendingT('marks')) pushMarks(true);
       if (!signedIn || !dirty || !C) return;
       if (viaBeacon && navigator.sendBeacon) {
@@ -1389,7 +1415,7 @@
     window.addEventListener('storage', e => {
       if (e.key === STORAGE_KEY) adoptLocal();
       else if (e.key === MARKS_KEY) { marks = readMarks(); paintMarks(); }
-      else if (e.key === BEFORE_KEY) { before = readJSON(localStorage, BEFORE_KEY); paintBar(); }
+      else if (e.key === BEFORE_KEY) { before = readJSON(LS, BEFORE_KEY); paintBar(); }
     });
 
     function fetchRemote() {
@@ -1401,6 +1427,12 @@
       }).then(data => {
         if (!data) return;
         fails = 0;
+        if (data.owner) acctOwner = data.owner;
+        if (C && C.own && data.owner && C.own !== data.owner) {   // left by another account on this device
+          C = null; writeProgress(null); dirty = false; cancelT('commit'); cancelT('post');
+          if (state !== 'SETTLING') reconsider();
+          paintAll();
+        }
         const remote = data.position && data.position.anchor ? data.position : null;
         const remoteTs = data.updated_at || 0;
         if (!remote) { if (C) { markDirty(); schedulePost(0); } return paintSync(); }
@@ -1410,8 +1442,13 @@
         else if (local.v !== 2) adopt = remoteTs > (local.timestamp || 0) + 1500;   // a v1 record: the old rule
         else if (!local.sa) adopt = false;     // never over a place this device has not synced (M4)
         else adopt = remoteTs > local.sa;
+        if (adopt && local && local.src === 'set' && remote.src !== 'set') {
+          // Nothing but the reader moves a pin (spec §5): offer the other device's place.
+          adopt = false;
+          offerRemote(Object.assign({}, remote, { v: 2, src: 'auto', sa: remoteTs, sb: remoteTs, own: data.owner }), true);
+        }
         if (adopt) {
-          C = Object.assign({}, remote, { v: 2, src: remote.src === 'set' ? 'set' : 'auto', sa: remoteTs, sb: remoteTs, acct: 1, timestamp: Date.now() });
+          C = Object.assign({}, remote, { v: 2, src: remote.src === 'set' ? 'set' : 'auto', sa: remoteTs, sb: remoteTs, acct: 1, own: data.owner, timestamp: Date.now() });
           writeProgress(C);
           dirty = false; confirmed = true; cancelT('commit'); cancelT('post');
           if (state !== 'SETTLING') reconsider();
@@ -1434,7 +1471,7 @@
 
     // ---- MARKS ---------------------------------------------------------------------
     let marks = readMarks();
-    let marksServer = signedIn && readJSON(sessionStorage, MARKS_OFF_KEY) !== 1;
+    let marksServer = signedIn && readJSON(SS, MARKS_OFF_KEY) !== 1;
     let marksInflight = false, marksAgain = false, limitShown = false;
     const mkKey = (part, a) => part + '|' + a;
     function markOf(secId) {
@@ -1445,7 +1482,7 @@
       marks = readMarks();
       const key = mkKey(page, secId);
       const e = marks.m[key];
-      const owner = signedIn ? (marks.owner || 'acct') : null;
+      const owner = signedIn && marksServer ? (marks.owner || 'acct') : null;   // flag off: plain device marks
       if (!c) {
         if (!e) return;
         if (e.st) marks.m[key] = { c: e.c, t: Date.now(), s: 0, x: 1, o: e.o || owner, st: e.st };   // H11
@@ -1468,7 +1505,7 @@
       if (!signedIn || !marksServer || !('fetch' in window)) return;
       fetch('/api/marks?since=' + (since || 0), { credentials: 'same-origin' }).then(r => {
         if (r.status === 401) { signedOutDetected(); return null; }
-        if (r.status === 404) { marksServer = false; writeJSON(sessionStorage, MARKS_OFF_KEY, 1); return null; }
+        if (r.status === 404) { marksOff(); return null; }
         if (!r.ok) return null;
         return r.json();
       }).then(data => {
@@ -1495,6 +1532,13 @@
         if (data.more) return pullMarks(marks.cursor);
         if (Object.keys(marks.m).some(k => !marks.m[k].s && (!marks.m[k].o || marks.m[k].o === marks.owner))) pushMarks();
       }).catch(() => {});
+    }
+    function marksOff() {   // the server keeps no marks: anything tagged but never sent is a device mark
+      marksServer = false;
+      writeJSON(SS, MARKS_OFF_KEY, 1);
+      marks = readMarks();
+      Object.keys(marks.m).forEach(k => { const e = marks.m[k]; if (e.o && !e.s && !(e.st > 0)) { e.o = null; if (e.st < 0) delete e.st; } });
+      writeMarks(marks);
     }
     function applyRow(row) {
       const key = mkKey(row.part, row.a);
@@ -1526,7 +1570,7 @@
         keepalive: !!keepalive, body: JSON.stringify({ v: 1, ops })
       }).then(r => {
         if (r.status === 401) { signedOutDetected(); return null; }
-        if (r.status === 404) { marksServer = false; writeJSON(sessionStorage, MARKS_OFF_KEY, 1); return null; }
+        if (r.status === 404) { marksOff(); return null; }
         if (r.status === 409) {
           if (!limitShown) { limitShown = true; announce('Marks are full: ' + T.MARK_LIMIT + ' sections. The newest stay on this device only.'); }
           return null;
@@ -1569,7 +1613,7 @@
     document.body.appendChild(live);
     function announce(text) {   // only ever after the reader's own action
       live.textContent = '';
-      at('live', 60, () => { live.textContent = text; });
+      at('live', 60, () => { live.textContent = text; at('livecl', 4000, () => { live.textContent = ''; }); });
     }
 
     // ---- the cue, the place button, the place bar -----------------------------------
@@ -1619,7 +1663,7 @@
         +   '</span>'
         +   '<button type="button" class="pb-btn pb-set">Set to where I’m reading</button>'
         +   '<button type="button" class="pb-btn pb-go">Go to saved place</button>'
-        +   '<button type="button" class="pb-btn pb-mark" aria-haspopup="menu">Mark this section</button>'
+        +   '<button type="button" class="pb-btn pb-mark" aria-haspopup="menu" aria-expanded="false">Mark this section</button>'
         +   '<button type="button" class="pb-btn pb-back" hidden>Back to before the detour</button>'
         +   '<button type="button" class="pb-btn pb-track" hidden>Let the book track</button>'
         +   '<button type="button" class="pb-btn pb-undo" hidden>Undo</button>'
@@ -1709,12 +1753,18 @@
       if (x > 1) return { x: 1, dock: true };
       return { x, dock: false };
     }
+    let markW = 3;
+    function setMx(el, px) {   // left edge on a whole pixel, the shape kept inside the track
+      const W = cueWidth();
+      const c = Math.max(markW / 2, Math.min(W - markW / 2, px));
+      el.style.setProperty('--mx', Math.round(c - markW / 2) + 'px');
+    }
     function paintMark() {
       if (!mark) return;
       const m = drag ? null : markX(C);
       mark.classList.toggle('is-none', !m && !drag);
       if (m) {
-        mark.style.setProperty('--mx', (m.x * cueWidth()).toFixed(1) + 'px');
+        setMx(mark, m.x * cueWidth());
         mark.classList.toggle('is-docked', m.dock);
       }
       mark.classList.toggle('is-pinned', !!(C && C.src === 'set'));
@@ -1745,7 +1795,7 @@
       const n = sectionNum(rec);
       if (n) parts.push('§' + n);
       const k = G && rec.k ? G.byId[rec.k] : null;
-      const o = k ? paraOrdinal(k) : null;
+      const o = k ? paraOrdinal(k) : (rec.pn ? { n: rec.pn } : null);
       if (o && o.n) parts.push('¶' + o.n);
       return parts.join(' · ');
     }
@@ -1753,7 +1803,7 @@
       if (!rec) return 'No saved place yet.';
       const parts = [rec.chapterNum || ''];
       const n = sectionNum(rec);
-      if (n) parts.push('section ' + n + (rec.sectionTitle ? ' ' + rec.sectionTitle : ''));
+      if (n) parts.push('section ' + n + (rec.sectionTitle ? ' ' + rec.sectionTitle.replace(/[.!?…]+$/, '') : ''));
       const k = G && rec.part === page && rec.k ? G.byId[rec.k] : null;
       const o = k ? paraOrdinal(k) : null;
       if (o && o.n) parts.push('paragraph ' + o.n + ' of ' + o.of);
@@ -1774,6 +1824,13 @@
       readout.textContent = text;
       lastReadout = text;
       if (!preview) { lastReadoutAt = now(); lastReadoutSec = sec; }
+    }
+    // The readout box keeps the width of the part's static line, right-aligned,
+    // so its text can change without moving anything (zero layout shift).
+    function reserveReadout() {
+      if (!readout || readout.style.minWidth) return;
+      const w = readout.offsetWidth;
+      if (w > 0) readout.style.minWidth = Math.ceil(w) + 'px';
     }
     function paintAll() {
       paintMark();
@@ -1927,7 +1984,7 @@
         if (!before) return;
         const rec = before.rec;
         before = null; undoDetourUntil = 0;
-        writeJSON(localStorage, BEFORE_KEY, null);
+        writeJSON(LS, BEFORE_KEY, null);
         commit(Object.assign({}, rec, { timestamp: Date.now(), sa: undefined }), { now: true });
         state = rec.src === 'set' ? 'PINNED' : 'READING';
         exc = null; R = null; saveTab();
@@ -1949,7 +2006,7 @@
       q('.pb-next').addEventListener('click', () => nudge(1, 'para'));
       q('.pb-slider').addEventListener('keydown', e => {
         const map = { ArrowLeft: [-1, 'para'], ArrowDown: [-1, 'para'], ArrowRight: [1, 'para'], ArrowUp: [1, 'para'],
-          PageUp: [-1, 'sec'], PageDown: [1, 'sec'], Home: [-1, 'chap'], End: [1, 'chap'] };
+          PageUp: [-1, 'sec'], PageDown: [1, 'sec'], Home: [-1, 'edge'], End: [1, 'edge'] };
         if (map[e.key]) { e.preventDefault(); e.stopPropagation(); nudge(map[e.key][0], map[e.key][1]); }
         else if (e.key === 'Enter') {
           e.preventDefault();
@@ -1970,9 +2027,17 @@
         const j = i < 0 ? (dir > 0 ? 0 : -1) : i + dir;
         if (j >= 0 && j < list.length) target = list[j];
       } else if (unit === 'sec') {
-        const si = Math.max(0, Math.min(G.sections.length - 1, (cur.sec < 0 ? -1 : cur.sec) + dir));
+        let si;
+        if (cur.sec >= 0) si = Math.max(0, Math.min(G.sections.length - 1, cur.sec + dir));
+        else if (dir > 0) si = G.sections.findIndex(x => x.top > cur.top);
+        else { si = -1; G.sections.forEach((x, n) => { if (x.top < cur.top) si = n; }); }
+        if (si < 0) return;
         const s = G.sections[si];
         target = s.paras.length ? G.anchors[s.paras[0]] : G.byId[s.id];
+      } else if (unit === 'edge') {   // the slider's own range: this section's first / last paragraph
+        const sec = cur.sec >= 0 ? G.sections[cur.sec] : null;
+        const ps = sec ? sec.paras : [];
+        if (ps.length) target = G.anchors[dir < 0 ? ps[0] : ps[ps.length - 1]];
       } else {
         const ch = G.chapters[cur.ch];
         if (ch) {
@@ -2011,12 +2076,13 @@
       const vY = Math.max(0, k.top - Lpx);          // the scroll that puts k on the attention line
       const anc = anchorAt(vY + READING_LINE);
       if (!anc) return;
+      barTarget = null; barOrigin = { y: window.scrollY };   // Esc after Set only closes the bar
       const prev = C;
       const rec = makeRecord(anc, k, 'set');
       if (prev && bucket(prev) === bucket(rec)) { announce('Your place is already here.'); return; }
+      const prevKind = exc ? exc.kind : null;
       exc = null; R = null; pinAway = null; gate = null;
       saveTab();
-      const prevKind = exc ? exc.kind : null;
       commit(rec, { now: true, keepUndo: true });
       undoPrev = { rec: prev || null, kind: prevKind };
       state = 'PINNED';
@@ -2031,10 +2097,17 @@
       if (!undoPrev) return;
       const prev = undoPrev.rec, prevKind = undoPrev.kind;
       undoPrev = null;
+      barTarget = null; barOrigin = { y: window.scrollY };
       cancelT('commit'); cancelT('post');
       hideToast();
       if (prev) commit(Object.assign({}, prev, { timestamp: Date.now(), sa: undefined }), { now: true });
-      else { C = null; writeProgress(null); writes++; }
+      else {
+        C = null; writeProgress(null); writes++; dirty = false;
+        if (signedIn && 'fetch' in window) {
+          fetch('/api/position', { method: 'DELETE', credentials: 'same-origin', keepalive: true })
+            .then(r => { if (r.status === 401) signedOutDetected(); }).catch(() => {});
+        }
+      }
       reconsider(prevKind);
       paintAll();
       keepBarFocus();
@@ -2046,7 +2119,7 @@
         closePlaceBar(!!(bar && bar.contains(document.activeElement)));
         selfScrollToAnchor(rec.anchor, rec.fraction);
       } else {
-        writeJSON(sessionStorage, PENDING_KEY, { anchor: rec.anchor, fraction: rec.fraction, place: 1 });
+        writeJSON(SS, PENDING_KEY, { anchor: rec.anchor, fraction: rec.fraction, place: 1 });
         window.location.href = rec.part + '#' + rec.anchor;
       }
     }
@@ -2068,7 +2141,7 @@
     let toast = null;
     function showToast(rec) {
       hideToast(true);
-      toast = h('div', 'sync-chip place-toast', { role: 'status' });
+      toast = h('div', 'sync-chip place-toast');   // the live region already says it: announce once
       const n = sectionNum(rec);
       const k = G && rec.k ? G.byId[rec.k] : null;
       const o = k ? paraOrdinal(k) : null;
@@ -2122,7 +2195,7 @@
             e.preventDefault();
             selfScrollToAnchor(remote.anchor, remote.fraction, true);
           } else {
-            writeJSON(sessionStorage, PENDING_KEY, { anchor: remote.anchor, fraction: remote.fraction, place: 1 });
+            writeJSON(SS, PENDING_KEY, { anchor: remote.anchor, fraction: remote.fraction, place: 1 });
           }
           hide();
         });
@@ -2148,7 +2221,7 @@
     if (usePopover) menu.setAttribute('popover', 'manual');
     else menu.hidden = true;
     let menuSec = null, menuOpener = null, menuOpen = false, menuKbd = false;
-    function buildMenu(secId) {
+    function buildMenu(secId, fromBar) {
       const c = markOf(secId);
       const meta = secMeta.get(secId) || { num: '', title: '' };
       menu.setAttribute('aria-label', 'Mark section ' + meta.num + ' ' + meta.title);
@@ -2159,7 +2232,7 @@
         html += '<button type="button" role="menuitemradio" class="mm-item" data-c="' + s + '" aria-checked="' + (c === s) + '" tabindex="-1">'
           + '<span class="mm-glyph" data-c="' + s + '" aria-hidden="true">' + glyphSvg(page, s) + '</span><span>' + slotName(page, s) + '</span></button>';
       }
-      html += '<div class="mm-sep" role="separator"></div>'
+      if (!fromBar) html += '<div class="mm-sep" role="separator"></div>'
         + '<button type="button" role="menuitem" class="mm-item mm-place" tabindex="-1">Set my place here</button>';
       menu.innerHTML = html;
     }
@@ -2167,12 +2240,13 @@
     function openMenu(secId, opener, viaKeyboard) {
       if (menuOpen) closeMenu(false);
       menuSec = secId; menuOpener = opener; menuKbd = !!viaKeyboard;
-      buildMenu(secId);
+      buildMenu(secId, !!(bar && bar.contains(opener)));
       if (!menu.isConnected) document.body.appendChild(menu);
       const r = opener.getBoundingClientRect();
       menu.style.left = '0px'; menu.style.top = '0px';
       if (usePopover) { try { menu.showPopover(); } catch (e) { /* already open */ } } else menu.hidden = false;
-      const mw = menu.offsetWidth, mh = menu.offsetHeight;
+      menu.scrollTop = 0;
+      const mw = menu.offsetWidth, mh = Math.min(menu.offsetHeight, window.innerHeight - 64);
       let left = Math.min(window.innerWidth - mw - 12, Math.max(12, r.left - 8));
       let top = r.bottom + 8;
       if (top + mh > window.innerHeight - 8) top = Math.max(56, r.top - mh - 8);
@@ -2194,7 +2268,8 @@
       menu.classList.remove('is-open');
       if (usePopover) { try { menu.hidePopover(); } catch (e) { /* closed */ } } else menu.hidden = true;
       if (menuOpener) {
-        menuOpener.removeAttribute('aria-expanded');
+        if (bar && bar.contains(menuOpener)) menuOpener.setAttribute('aria-expanded', 'false');
+        else menuOpener.removeAttribute('aria-expanded');
         // Opened from the place bar: focus goes back to its button. Opened by
         // pointer from a section dot (hidden from assistive tech): let go.
         if (returnFocus && menuKbd && menuOpener.isConnected) menuOpener.focus({ preventScroll: true });
@@ -2338,7 +2413,7 @@
         }));
         if (!best) return;
         drag.target = best;
-        mark.style.setProperty('--mx', (((best.top - curCh.top) / (curCh.bottom - curCh.top)) * cueWidth()).toFixed(1) + 'px');
+        setMx(mark, ((best.top - curCh.top) / (curCh.bottom - curCh.top)) * cueWidth());
         const s = G.sections[best.sec];
         const o = paraOrdinal(best);
         paintReadout(true, '§' + s.meta.num + ' · ¶' + (o ? o.n : 1) + ' — release to set');
@@ -2381,7 +2456,7 @@
 
     // ---- inputs, navigation, visibility --------------------------------------------------------
     const markInput = () => {
-      input();
+      input(); touched = true;
       if (state === 'SETTLING' && now() > selfUntil) endSettling();
     };
     ['wheel', 'touchstart', 'touchmove', 'pointerdown'].forEach(t => window.addEventListener(t, markInput, { passive: true, capture: true }));
@@ -2403,7 +2478,7 @@
       if (url.origin !== window.location.origin) return;
       const target = (url.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '') || 'index';
       if (target === page && url.hash) navFlag = { at: now(), kind: 'link' };
-      else if (/^part-[1-5]$/.test(target) && target !== page) writeJSON(sessionStorage, DETOUR_KEY, { from: page, at: Date.now() });
+      else if (/^part-[1-5]$/.test(target) && target !== page) writeJSON(SS, DETOUR_KEY, { from: page, at: Date.now() });
     }, true);
     window.addEventListener('scroll', onScroll, { passive: true });
     if ('onscrollend' in window) window.addEventListener('scrollend', () => { if (burst) endBurst(); });
@@ -2472,6 +2547,8 @@
     function onTableBuilt() {
       if (cue) {
         cueW = cue.clientWidth || window.innerWidth;
+        markW = (mark && mark.firstElementChild && mark.firstElementChild.offsetWidth) || markW;
+        reserveReadout();
         cancelT('cueswap');
         cue.classList.remove('is-swapping');
         curCh = chapterAt(window.scrollY + Lpx);
@@ -2483,16 +2560,24 @@
 
     // ---- RESTORE ------------------------------------------------------------------------------
     const hash = (window.location.hash || '').slice(1);
-    let pending = readJSON(sessionStorage, PENDING_KEY);
-    writeJSON(sessionStorage, PENDING_KEY, null);
+    let pending = readJSON(SS, PENDING_KEY);
+    writeJSON(SS, PENDING_KEY, null);
     const navEntry = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
     const navType = navEntry ? navEntry.type : 'navigate';
     paintMarks();
+    reserveReadout();
+    paintReadout(true);   // the saved place's text replaces the static line before first paint
     whenSettled(() => {
       buildTable();
       let target = null;
       if (pending && pending.anchor === hash) target = pending;                         // an explicit hand-off
       else if (navType === 'navigate' && C && C.part === page && (C.anchor === hash || !hash)) target = C;   // G4; reload/history keep their scroll (M5)
+      else if (navType !== 'navigate' && tabPrev && tabPrev.view && (recheckView = tabPrev.view)) {
+        // Reload / history: the browser restores its own scroll — except WebKit,
+        // which jumps back to a stale #fragment. Return to this tab's last view.
+        const v = anchorAt(window.scrollY + READING_LINE);
+        if (!v || v.anchor !== tabPrev.view.anchor || Math.abs(v.fraction - tabPrev.view.fraction) > 0.05) target = tabPrev.view;
+      }
       if (target) selfScrollToAnchor(target.anchor, target.fraction, false);
       else enterSettling(T.SETTLE_QUIET_MS);
       if (signedIn) { fetchRemote(); pullMarks(marks.owner ? marks.cursor || 0 : 0); }
@@ -2563,7 +2648,7 @@
         const url = new URL(a.getAttribute('href'), window.location.href);
         const target = (url.pathname.split('/').pop() || '').toLowerCase().replace(/\.html$/, '');
         if (url.origin === window.location.origin && /^part-[1-5]$/.test(target)) {
-          writeJSON(sessionStorage, DETOUR_KEY, { from: page, at: Date.now() });
+          writeJSON(SS, DETOUR_KEY, { from: page, at: Date.now() });
         }
       }, true);
     }
@@ -2582,7 +2667,7 @@
       card.setAttribute('aria-label', 'Resume reading where you left off');
       if (progress.anchor && typeof progress.fraction === 'number') {
         card.addEventListener('click', () => {
-          writeJSON(sessionStorage, PENDING_KEY, { anchor: progress.anchor, fraction: progress.fraction, place: 1 });
+          writeJSON(SS, PENDING_KEY, { anchor: progress.anchor, fraction: progress.fraction, place: 1 });
         });
       }
 
@@ -2655,7 +2740,7 @@
           const remoteTs = data.updated_at || 0;
           const adopt = !local ? true
             : local.v !== 2 ? remoteTs > (local.timestamp || 0)
-            : !!local.sa && remoteTs > local.sa;
+            : !!local.sa && remoteTs > local.sa && !(local.src === 'set' && data.position.src !== 'set');
           if (adopt) {
             const p = data.position;
             const adopted = Object.assign({}, p, { v: 2, src: p.src === 'set' ? 'set' : 'auto', sa: remoteTs, sb: remoteTs, acct: 1, timestamp: Date.now() });

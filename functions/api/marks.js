@@ -23,11 +23,15 @@
 // version is never handed out twice after the purge below removes a user's
 // newest row.)
 //
-// Every request first purges up to 100 tombstones older than 180 days
-// (Pages has no cron; the privacy notice promises the erasure).
+// Every POST, and a GET at most once an hour, first purges up to 100
+// tombstones older than 180 days (Pages has no cron; the privacy notice
+// promises the erasure). Marks may name only the book's own sections
+// (_sections.js, generated with sections.json), so a reader holds at most
+// 116 rows, live or removed.
 'use strict';
 
 import { json, getSession, sameOrigin, sha256Hex } from './_lib.js';
+import { SECTIONS } from './_sections.js';
 
 const PART_RE = /^part-[1-5]$/;
 const SECTION_RE = /^ch[0-9B][A-Za-z0-9-]{0,95}$/;
@@ -37,6 +41,7 @@ const MARK_LIMIT = 250;                       // live marks per reader (the book
 const TOMBSTONE_TTL_MS = 180 * 24 * 60 * 60 * 1000;  // 180 days
 const PURGE_BATCH = 100;
 const PAGE = 500;                                    // rows per GET
+const PURGE_EVERY_MS = 60 * 60 * 1000;               // GET-side purge cadence
 
 function enabled(env) { return env.MARKS_SYNC === '1'; }
 
@@ -65,13 +70,23 @@ async function list(request, env) {
   if (!Number.isSafeInteger(since)) since = 0;
 
   const uid = session.userId;
-  const [, page, top] = await env.DB.batch([
-    purge(env, Date.now()),
+  // Reads stay reads: a GET purges at most once an hour (POSTs always purge).
+  const now = Date.now();
+  const last = await env.DB.prepare("SELECT value FROM meta WHERE key = 'marks_purge'").first();
+  const due = !last || now - last.value > PURGE_EVERY_MS;
+  const head = due
+    ? [purge(env, now), env.DB.prepare(
+        "INSERT INTO meta (key, value) VALUES ('marks_purge', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value"
+      ).bind(now)]
+    : [];
+  const res = await env.DB.batch([
+    ...head,
     env.DB.prepare(
       `SELECT part, a, c, x, t, v FROM marks WHERE user_id = ? AND v > ? ORDER BY v LIMIT ${PAGE + 1}`
     ).bind(uid, since),
     env.DB.prepare('SELECT MAX(v) AS v FROM marks WHERE user_id = ?').bind(uid),
   ]);
+  const [page, top] = res.slice(head.length);
 
   let rows = page.results || [];
   const more = rows.length > PAGE;
@@ -111,7 +126,8 @@ async function save(request, env) {
     if (!op || typeof op !== 'object'
         || typeof op.part !== 'string' || !PART_RE.test(op.part)
         || typeof op.a !== 'string' || !SECTION_RE.test(op.a)
-        || !Number.isInteger(op.c) || op.c < 0 || op.c > 5) {
+        || !Number.isInteger(op.c) || op.c < 0 || op.c > 5
+        || !SECTIONS.has(op.part + '|' + op.a)) {      // only the book's own sections: at most 116 rows a reader
       return json({ error: 'bad_op' }, 400);
     }
     const key = op.part + '|' + op.a;
@@ -148,7 +164,7 @@ async function save(request, env) {
           // A removal only ever turns an existing row into a tombstone: an id
           // the server never held writes nothing (no unbounded tombstones).
           `UPDATE marks SET x = 1, t = MAX(?5, t + 1), v = ${nextV}
-            WHERE user_id = ?1 AND part = ?2 AND a = ?3
+            WHERE user_id = ?1 AND part = ?2 AND a = ?3 AND x = 0
            RETURNING part, a, c, x, t, v`
         ).bind(uid, op.part, op.a, 0, now));
   }

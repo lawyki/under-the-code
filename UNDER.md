@@ -2619,7 +2619,8 @@ accessibility / engineering) with a skeptic verifying every finding.
 **What the reader gets.**
 
 - **The place is where they were reading.** A steady reading step commits the
-  place 400 ms after the scroll stops. A fling, a jump, a link, find-in-page,
+  place about 650 ms after the last scroll event (250 ms ends the burst, 400 ms
+  more to commit). A fling, a jump, a link, find-in-page,
   Home/End or a scroll that outruns the reading budget starts an *excursion*
   that remembers the place (R): coming back costs nothing (0 writes); only
   sustained reading elsewhere promotes the excursion. Look-ups are hard to
@@ -2630,7 +2631,7 @@ accessibility / engineering) with a skeptic verifying every finding.
   90 s on one spot. For 24 h the place bar offers "Back to before the
   detour"; for 10 min one reading step at the old place restores it.
 - **Labels name the paragraph actually being read** (K, at the attention line
-  a third of the way down the reading area), while the stored anchor and
+  30 % of the way down the reading area), while the stored anchor and
   fraction keep Pass 3's 56 px meaning, so restores stay pixel-exact and old
   clients read the record (review H1).
 - **The cue.** A 2 px line on the bar's bottom edge: chapter progress in the
@@ -2717,7 +2718,12 @@ released by reading on from within 1B; first commit on a first visit after
 8 s of reading past the opener; settle 1.5 s (400 ms after fullscreen);
 position POST 2 s after a change (5 % dedupe, one in flight, latest wins);
 marks POST 1 s; place bar closes on a > 0.5B scroll or 30 s idle (never from
-under the reader's focus).
+under the reader's focus); a burst is also cut after 3 s of unbroken
+scrolling (slow continuous readers commit in steps); scrolls within 100 ms of
+an `innerHeight` change are ignored; an in-book-link arrival counts as a
+look-up for 60 s; sync shows paused after 2 failures and drops solid after a
+10 s backlog; the widened cue closes 300 ms after the pointer leaves; a drag
+starts after 4 px. Every one of these is a constant in `T`.
 
 **One measured deviation from the spec.** The budget charges text that was
 on screen and has left the top of the reading area, not text crossing the
@@ -2730,7 +2736,8 @@ traces all hold.
 "Back to before the detour" 24 h, detour-close-reopen trace (H2); dirty-only
 beacons, `storage` adoption, re-read on `pageshow`/visible (H3); timers
 cancelled by Set/Undo, one POST in flight, `cid`+`seq` with a server-side
-409 for out-of-order writes, solid only on the current write's ack (H4);
+409 for out-of-order writes — the server half dormant until `MARKS_SYNC`
+flips —, solid only on the current write's ack (H4);
 overlays pause only the clock, hover/focus tooltips close on scroll (touch
 tooltips keep Pass 22's rule), place bar and menu close on scroll/idle (H5);
 focusin/selectionchange count as input, the unexplained rule only beyond
@@ -2748,7 +2755,9 @@ attention line; constant navB; hover only on real pointer movement; segments
 only when wide; Part I 3×6 notch; readout contrast; Label in Name;
 Undo kept in the bar; `menuitemradio` committing on Enter; ordinals from the
 table; `anchorAt` with a parity test; menu closes on scroll; one Esc owner;
-401 clears the hint cookie and stops calls; adopted remote pins enter PINNED).
+401 clears the hint cookie and stops calls; adopted remote pins enter PINNED
+— dormant until `MARKS_SYNC` flips, since only then does the server keep
+`src`).
 **Declined, with reasons:** spec §10's reduced-motion `opacity:.35` on idle
 dots (review LOW: it would change how dots look today); `popover="auto"` →
 `manual` with the module's own light dismiss (one Esc owner; an auto popover
@@ -2787,7 +2796,7 @@ server owns `t` (max(now, old+1)) and `v`. `position.js` gains `src`, `k`,
 unconfirmed-account sweep remove marks. **All of it ships behind
 `MARKS_SYNC = "0"`** (wrangler.toml): `/api/marks` answers 404 and
 `/api/position` behaves exactly as before, until the owner approves the
-privacy wording (`docs/pass-25-copy.md` — four replacements in
+privacy wording (`docs/pass-25-copy.md` — five replacements in
 `account.html`, then flip the flag). Meanwhile signed-in readers sync their
 place exactly as today and their marks stay on the device (tagged to the
 account, so sign-out forgets them). `public/sections.json`
@@ -2814,11 +2823,14 @@ under `wrangler pages dev` with a fresh local D1:
   starts, keyboard reader with a focused term, reduced motion identical,
   4× CPU fling 0 rect reads and no long task, CDP flick 0.4B reads / 4B
   seeks).
-- Parity `anchorAt` ↔ `computeAnchor`: **1000 / 1000** (50 positions × 5 parts
-  × 2 engines × 2 widths, after the layout settles); the anchor id is
-  identical at every position; within 250–700 ms of a big jump the table can
-  trail by ≤ 1.5 px (late heading-box collapse, Pass 6) or ≤ 20 px while an
-  entrance transform runs — commits and Set re-check one anchor and rebuild.
+- Parity `anchorAt` ↔ `computeAnchor` (corrected by the verification, below):
+  the anchor id is identical at every one of 1000 positions (50 × 5 parts × 2
+  engines × 2 widths). The position agrees to ≤ 1.2 px; the table can carry
+  that sub-pixel offset until the next commit or Set rebuilds it (late
+  heading-box collapse, Pass 6), and differs by ≤ 21 px only while an insight
+  strip's entrance transform runs (the live rect is the moving one). The
+  "1000/1000" first recorded here came from a script that rebuilt the table
+  before every comparison under reduced motion; it is withdrawn.
 - Marks **106 / 0**, UI **93 / 0** (slow-hover gate, parked pointer,
   drag with 0 rect reads, Esc paths, slider keys, 44 px targets, forced
   colors, print hides the cue, readout unclipped at 621/960/1100/1440, solid
@@ -2840,10 +2852,93 @@ Meltdown insight strip (Part I, Ch1 §04, `ch1-cpu-p11`) renders in the
 browser's default link blue on the dark strip — no `.insight-text a` rule.
 Punch list.
 
-**Deploy.** Migration 0002 applied to production after an export backup
+**Deploy.** No preview run: preview deployments share the one D1 binding
+(there is no `preview_database_id`), so a preview would not have isolated the
+migration; the additive, `IF NOT EXISTS` migration went straight to
+production behind an export backup instead. Migration 0002 applied to production after an export backup
 (`~/under-the-code-backups/pre-0002-20261009T1929.sql`, local only) — required before
 the push because deletion and the account sweep now touch `marks`. Pushed;
 live parity checked. **Sonnet 5.5 verification owed** (BRIDGE §5).
+
+### Verification of Pass 25 (2026-10-10, Sonnet 5.5, BRIDGE §5)
+
+Independent, report-only, licence to override: six Sonnet 5.5 lenses (ledger
+audit, review compliance, reader-adversarial, accessibility, server/privacy,
+design) re-ran every suite and probed beyond them; a second Sonnet 5.5
+skeptic re-checked each finding. **47 findings, 40 held, 7 refuted. Verdict:
+the tracking model holds; the pass holds with fixes.** It overturned one
+clearance and one number of the writer's: the "1000/1000" parity figure
+(withdrawn above) and "Sign-out forgets the account's marks", which with
+`MARKS_SYNC="0"` deleted marks that existed nowhere else. All fixed and
+re-tested by the writer (commit below):
+
+- **HIGH — signed-in marks destroyed at sign-out while marks sync is off**
+  (the live configuration): marks are tagged to the account only when the
+  server holds marks; a 404 turns any tagged-but-unsent mark back into a
+  device mark; sign-out forgets only what the server holds (or its removal)
+  and keeps never-synced marks as this device's own.
+- **HIGH — the place bar and the mark menu clipped** on landscape phones and
+  at 200–400 % zoom with no way to scroll (WCAG 1.4.10): both are capped at
+  the viewport and scroll inside; the menu clamps with its capped height.
+- **MEDIUM:** blocked storage (cookies off, sandboxed frames) threw on access
+  and aborted all of `book.js` — tooltips included — now resolved once inside
+  a try; a pin was replaced by another device's newer *tracked* place — now
+  only the reader moves a pin, the other device is offered as the chip;
+  unbroken slow scrolling starved commits and a hide mid-burst saved nothing
+  — bursts are cut after 3 s and a hide classifies the burst first; Esc after
+  Set threw the page back to where the bar opened — a commit is the new
+  baseline; PgUp/PgDn from a chapter hero jumped to the part's first section;
+  a hard look-up turned soft through Set → Undo (the kind was read after it
+  was cleared); the readout's width change on load was a layout shift
+  (0.001–0.004) — the place's text (with a stored ¶ ordinal) is painted before
+  first paint and the readout keeps the static line's width, right-aligned
+  (CLS 0); forced-colors hid the menu's checked state; the toast text was
+  4.08–4.12:1 — now ≥ 5.1:1; WebKit re-applies a stale `#fragment` ~300 ms
+  after load on reload — the tab now remembers its view and returns to it
+  once settled if the reader hasn't moved; the server accepted any
+  `ch…`-shaped id, so one account could grow unbounded tombstones — marks may
+  name only the book's 116 sections (`functions/api/_sections.js`, generated
+  with `sections.json`); the privacy copy omitted stored fields — revised
+  (`docs/pass-25-copy.md`: every field the server stores once the flag is on,
+  the tombstone's colour, a "what it is for" line).
+- **LOW:** Undo of a first-ever Set now clears the server place (`DELETE
+  /api/position`); a place left by another account (expired session,
+  sign-out elsewhere) is dropped, never uploaded — `GET /api/position` returns
+  an account tag (hash, computed per request) the client keeps beside the
+  place; a removal of a removed mark no longer resets its 180-day clock; a GET
+  purges at most hourly (reads stay reads); "Mark this section" states
+  `aria-expanded`; live-region text clears after 4 s; the toast is not a
+  second live region (announced once); slider Home/End match its range (the
+  section's paragraphs); "Set my place here" appears only on a section dot
+  (where "here" is that heading); the nudge flash uses the paragraph's own
+  ink (≥ 4.5:1); rail ticks and forced-colors cue segments keep the slot
+  textures; the docked mark sits fully inside the track on whole pixels (Part
+  III's "+" no longer smears at 1×); `K` takes half a pixel of tolerance (a
+  restored pin named the previous paragraph); a title ending in a full stop
+  no longer reads "itself., paragraph"; ledger wording (650 ms, 30 %, the
+  full threshold list, H4/M20 dormant until the flag, the no-preview
+  reason, "colour-blind-checked").
+- **Declined:** the phone place button stays the volume's mark with no visible
+  label (bridge resolution 7, no discovery hints — owner's call if the read
+  says otherwise); the palette check keeps its hexes inline (the committed
+  README says to keep them in step with `book.css`).
+- **Coverage, stated plainly:** the behavioural traces start in Part I; Parts
+  II–V are covered by invariants, parity, the design screenshots and a
+  per-volume probe; hover, drag, fullscreen, CDP and CPU-throttle traces are
+  Chromium-only; the forced-colors UI test is a render smoke test, the colour
+  mapping was checked by the verifier's own probe.
+
+**Re-test after fixes:** invariants **812 / 0**, traces **231 / 0** (+1 skip: headless WebKit barely scrolls on ArrowDown from a focused term — the manual Safari check covers it; the WebKit reload trace now passes),
+parity **40 / 40 blocks** (1000 positions) under the pixel rule with no forced rebuild, marks
+**106 / 0**, UI **93 / 0**; the verification-fix checks 14/14 (Chromium +
+WebKit); server 98/98 (adds real-section validation, no tombstone refresh,
+GET without a write, the account tag, `DELETE`); two-device end-to-end 14/14
+plus 5/5 with marks sync off and 5/5 with it on (sign-out keeps / forgets
+marks correctly, Undo clears the server place, a pin survives another
+device's tracked place and is offered as a chip, another account's place is
+never uploaded). The suites are now in the repo, `tests/pass25/` (README
+there). Not exercisable here and still owed to the owner: the manual
+VoiceOver/NVDA trace (`docs/pass-25-sr-trace.md`, ~10 min) and a real iPhone.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

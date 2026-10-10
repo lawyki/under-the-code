@@ -832,7 +832,12 @@
   function forgetAccountHere() {
     const m = readStore(MARKS_KEY);
     if (m && m.m) {
-      Object.keys(m.m).forEach(k => { if (m.m[k].o) delete m.m[k]; });
+      Object.keys(m.m).forEach(k => {
+        const e = m.m[k];
+        if (!e.o) return;                                   // made signed out: the device's own
+        if (e.x || e.s === 1 || e.st > 0) delete m.m[k];    // the server holds it (or its removal)
+        else { e.o = null; delete e.st; }                   // never reached the server: keep it here
+      });
       m.owner = null; m.cursor = 0;
       writeStore(MARKS_KEY, m);
     }
@@ -863,9 +868,15 @@
     const all = {};
     if (store && store.m) Object.keys(store.m).forEach(k => { const e = store.m[k]; if (!e.x && e.c >= 1 && e.c <= 5) all[k] = e.c; });
     if (hint) {
-      const r = await api('/api/marks?since=0');
-      if (r.ok && Array.isArray(r.data.rows)) {
-        r.data.rows.forEach(row => {
+      let since = 0, rows = [], r;
+      do {
+        r = await api('/api/marks?since=' + since);
+        if (!r.ok || !Array.isArray(r.data.rows)) break;
+        rows = rows.concat(r.data.rows);
+        since = r.data.cursor;
+      } while (r.data.more && rows.length < 5000);
+      if (rows.length) {
+        rows.forEach(row => {
           const k = row.part + '|' + row.a;
           const local = store && store.m && store.m[k];
           if (local && !local.s) return;              // a change on this device waits to sync

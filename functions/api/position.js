@@ -1,6 +1,7 @@
 // /api/position — the reader's single stored place in the book.
 //
-// GET  → { position: {…}, updated_at } or { position: null }.
+// GET  → { position: {…}, updated_at, owner } or { position: null, owner }.
+// DELETE → forget the stored place (204).
 // POST → save. The body is a whitelisted snapshot: part + anchor (a stable
 //        element id baked into the HTML) + fractional offset within that
 //        element, plus the human-readable labels the "continue from" offer
@@ -20,7 +21,7 @@
 //        win. A different cid always overwrites (last arrival wins, as before).
 'use strict';
 
-import { json, getSession, sameOrigin } from './_lib.js';
+import { json, getSession, sameOrigin, sha256Hex } from './_lib.js';
 
 const PART_RE = /^part-[1-5]$/;
 const ANCHOR_RE = /^[A-Za-z0-9][A-Za-z0-9_-]{0,127}$/;
@@ -34,11 +35,14 @@ export async function onRequestGet({ request, env }) {
   const row = await env.DB.prepare(
     'SELECT data, updated_at FROM positions WHERE user_id = ?'
   ).bind(session.userId).first();
-  if (!row) return json({ position: null });
+  // owner: the first 16 hex of SHA-256(user id), the same tag /api/marks uses —
+  // lets the client tell a place left by another account on a shared device.
+  const owner = (await sha256Hex(session.userId)).slice(0, 16);
+  if (!row) return json({ position: null, owner });
 
   let position = null;
   try { position = JSON.parse(row.data); } catch { /* corrupt row: report empty */ }
-  return json({ position, updated_at: row.updated_at });
+  return json({ position, updated_at: row.updated_at, owner });
 }
 
 export async function onRequestPost({ request, env }) {
@@ -100,4 +104,14 @@ async function saveVersioned(env, session, body, clean, now) {
     return json({ error: 'stale', updated_at: row ? row.updated_at : null }, 409);
   }
   return json(versioned ? { ok: true, updated_at: now, seq: clean.seq } : { ok: true, updated_at: now });
+}
+
+// DELETE → forget the stored place (Undo of a reader's first-ever "Set my
+// place"; Pass 25). Nothing else is removed.
+export async function onRequestDelete({ request, env }) {
+  if (!sameOrigin(request)) return json({ error: 'bad_origin' }, 403);
+  const session = await getSession(request, env);
+  if (!session) return json({ error: 'signed_out' }, 401);
+  await env.DB.prepare('DELETE FROM positions WHERE user_id = ?').bind(session.userId).run();
+  return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
 }

@@ -51,6 +51,7 @@
   .book-title { font-family: var(--serif); font-size: 14px; letter-spacing: 0.02em; color: inherit; text-decoration: none; white-space: nowrap; }
   .book-title em { color: var(--accent); font-style: italic; }
   .book-progress { font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.1em; white-space: nowrap; }
+  .place-btn .book-progress { text-align: right; }
   /* Progressive trimming keeps the bar one line at every width: drop the
      subtitle first, then the part/chapter readout on phones. */
   @media (max-width: 960px) { .book-title-sub { display: none; } }
@@ -1526,7 +1527,7 @@
   /* the mark at the saved place: shape per volume, hollow → solid when synced */
   .cue-mark, .cue-ghost {
     position: absolute; left: 0; bottom: 0;
-    transform: translateX(calc(var(--mx, 0px) - 50%));
+    transform: translateX(var(--mx, 0px));   /* book.js puts the left edge on a whole pixel */
   }
   .cue-mark.is-none, .cue-ghost { opacity: 0; }
   .cue-mark.is-docked { opacity: 0.6; }
@@ -1582,6 +1583,8 @@
     border-bottom: 1px solid rgba(255,255,255,0.1);
     box-shadow: 0 12px 32px rgba(0,0,0,0.35);
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.04em; line-height: 1.4;
+    max-height: calc(100vh - 48px); max-height: calc(100dvh - 48px);
+    overflow-y: auto; overscroll-behavior: contain;
     opacity: 0; transform: translateY(-8px);
     transition: opacity 120ms ease-in, transform 120ms ease-in;
   }
@@ -1644,13 +1647,17 @@
   .nav-item.is-marked[data-c="3"]::before { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 3px; }
   .nav-item.is-marked[data-c="4"]::before { background: linear-gradient(to bottom, var(--mk-c) 50%, transparent 50%); }
   .nav-item.is-marked[data-c="5"]::before { background: none; box-shadow: inset 0 0 0 1px var(--mk-c); }
-  .rail-tick.is-marked::before { background: var(--mk-c); height: 2px; }
+  .rail-tick.is-marked::before { background: var(--mk-c); height: 3px; }
+  .rail-tick.is-marked[data-c="2"]::before { background: repeating-linear-gradient(135deg, var(--mk-c) 0 2px, transparent 2px 4px); }
+  .rail-tick.is-marked[data-c="3"]::before { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 3px; }
+  .rail-tick.is-marked[data-c="4"]::before { background: linear-gradient(to bottom, var(--mk-c) 50%, transparent 50%); }
+  .rail-tick.is-marked[data-c="5"]::before { background: none; box-shadow: inset 0 0 0 1px var(--mk-c); }
 
   /* hash jumps land below the stuck chapter nav, not under it (G5) */
   section.section, section.section p[id], section.section [id^="fig-"] { scroll-margin-top: 116px; }
 
   /* the paragraph the place bar points at: no layout change */
-  .utc-target { outline: 1px dashed color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 6px; }
+  .utc-target { outline: 2px dashed currentColor; outline-offset: 6px; }
 
   /* --- the mark menu --- */
   .mark-menu {
@@ -1660,6 +1667,8 @@
     border: 1px solid rgba(255,255,255,0.14); border-radius: 6px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.45);
     font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.04em;
+    max-height: calc(100vh - 64px); max-height: calc(100dvh - 64px);
+    overflow-y: auto; overscroll-behavior: contain;
     opacity: 0; transform: translateY(4px);
     transition: opacity 120ms ease-in, transform 120ms ease-in;
   }
@@ -1682,7 +1691,8 @@
 
   /* --- the toast in the chip slot --- */
   .place-toast { align-items: center; }
-  .place-toast-where { font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: var(--accent); white-space: nowrap; }
+  .place-toast .sync-chip-eyebrow { color: rgba(212, 168, 83, 0.85); }
+  .place-toast-where { font-family: var(--serif); font-style: italic; font-size: 0.98rem; color: color-mix(in srgb, var(--accent) 85%, #fff); white-space: nowrap; }
   .place-toast-undo {
     min-height: 44px; margin: -12px -8px -12px auto; padding: 0 10px;
     background: none; border: 0; color: rgba(255,255,255,0.75); cursor: pointer;
@@ -1712,12 +1722,14 @@
     .cue-tick { background: Canvas; }
     .utc-shape { box-shadow: inset 0 0 0 1px CanvasText, 0 0 0 1px Canvas !important; }
     .utc-shape > b { background: CanvasText; }
-    .cue-seg.is-marked { background: CanvasText !important; box-shadow: none !important; }
+    .cue-seg.is-marked[data-c] { --mk-c: CanvasText; }
+    .cue-seg { border-left-color: Canvas; }
+    .mm-item[aria-checked="true"]::after { forced-color-adjust: none; background: CanvasText; }
     .section-number .mark-dot.is-marked { color: CanvasText; }
     .mark-menu, .place-bar { border: 1px solid CanvasText; }
     .nav-item.is-marked::before { forced-color-adjust: none; background-color: CanvasText; }
     .nav-item.is-marked[data-c]::before { --mk-c: CanvasText; }
-    .rail-tick.is-marked::before { background: CanvasText; }
+    .rail-tick.is-marked[data-c]::before { forced-color-adjust: none; --mk-c: CanvasText; }
   }
 
   @media print {
