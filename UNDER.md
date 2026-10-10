@@ -552,6 +552,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 8.1: "~5 nm" transistor scale against "twelve orders of magnitude"; transistor at "3.3 V", "≈ 1 ns per bit"; caption: the transatlantic bit is "a voltage transition propagating along a conductor" | 5 nm to 5,000 km is fifteen orders; twelve fits a micrometre of chip wiring against 5,600 km. Cores run near 1 V (3.3 V is an I/O level). Today's transatlantic cables carry light in glass fibre, not voltage | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.2: copper twisted pair "~30 dB/km"; wireless "2.4-60 GHz" | Cat 6 loses about 20 dB per 100 m at 100 MHz (some 200 dB/km), which is why Ethernet stops at 100 m; cellular uses bands below 1 GHz as well as up to tens of GHz | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.4: fibre marker "~12-14 b/Hz" against the caption's "~15 dB effective SNR" | log₂(1 + 10^1.5) ≈ 5 b/Hz per polarisation, so the marker contradicted its own caption; the fibre point is dropped and the checked pair (phone line 30 dB ≈ 10 b/Hz, V.34 33.6 kbps/4 kHz = 8.4) carries the figure | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 8.5: banner "CONVENTION: HIGH→LOW = 1, LOW→HIGH = 0"; "a 10 Mbps Ethernet stream actually carries 20 million signal transitions per second" | That is the G. E. Thomas convention; Ethernet's IEEE 802.3 uses a rising mid-bit edge for 1. 20 million per second is the maximum (runs of equal bits), so "up to" | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3534,7 +3535,12 @@ unsaid at 1972), 5.5, 6.1, 6.4, 6.7, 7.3, 7.7, 7.8 (BLAS 1979 / dgemm 1990,
 OpenBLAS vs Accelerate, NEON). Glossary: four terms whose only definitional use
 was in rewritten captions (fragmented, polymorphism, write amplification,
 undefined behaviour) are now key-term spans in their figures; the curated key
-moves to the book's British "undefined behaviour"; 462 terms, unchanged. The sweep's overlap test now compares ink boxes (font boxes trimmed
+moves to the book's British "undefined behaviour"; 462 terms, unchanged.
+Suite after the fixes: invariants 812/0, traces 229/0, parity 40/40, marks 106/0,
+UI 93/0.
+
+Part III continued: 8.5 (Manchester for 1011001 in the IEEE 802.3 convention, a
+cursor reading each mid-bit edge into the decoded row; convention corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
