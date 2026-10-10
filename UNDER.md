@@ -3464,7 +3464,9 @@ and "all backwards compatible" corrected, §4g), 6.3 (object, vtable, function a
 two instructions; s->area() lights each hop with its instruction; the unsourced
 "~3 cycles" dropped), 6.4 (paper card: one call site, s moving
 from a Circle to a Square to a Triangle; each column's slot 0 leads to its own
-body and the caller prints 12.57, 9, 6). The sweep's overlap test now compares ink boxes (font boxes trimmed
+body and the caller prints 12.57, 9, 6), 6.5 (the C++ function with an execution
+cursor; three resources appear as their lines run; a normal return and an
+exception from parse() unwind the same way, unlock, free, close). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

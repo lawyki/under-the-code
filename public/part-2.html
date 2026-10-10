@@ -3909,47 +3909,59 @@
       writing it any more.
     </p>
 
-    <div class="diagram-card" id="fig-6-5">
-      <div class="diagram-label">Fig 6.5 · RAII: scope acquires, scope releases</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-41"><title id="svgt-part2-41">Fig 6.5 · RAII: scope acquires, scope releases</title>
-        <!-- C version -->
-        <text x="180" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">C: manual cleanup, error-prone</text>
-        <rect x="40" y="50" width="280" height="232" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.4)"/>
-        <text x="50" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">int do_thing(void) {</text>
-        <text x="50" y="92" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  FILE *f = fopen("x", "r");</text>
-        <text x="50" y="110" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  char *buf = malloc(1024);</text>
-        <text x="50" y="128" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  pthread_mutex_lock(&amp;m);</text>
-        <text x="50" y="150" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">  if (parse(buf, f)) goto err;</text>
-        <text x="50" y="168" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">  if (write(buf))    goto err;</text>
-        <text x="50" y="190" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  pthread_mutex_unlock(&amp;m);</text>
-        <text x="50" y="208" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  free(buf);  fclose(f);</text>
-        <text x="50" y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  return 0;</text>
-        <text x="50" y="244" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">err:</text>
-        <text x="50" y="258" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">  pthread_mutex_unlock(&amp;m); free(buf);</text>
-        <text x="50" y="272" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">  fclose(f); return 1;</text>
-
-        <!-- C++ version -->
-        <text x="540" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">C++: RAII, automatic cleanup</text>
-        <rect x="400" y="50" width="280" height="232" rx="4" fill="#0e1510" stroke="rgba(150,216,150,0.4)"/>
-        <text x="410" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">int do_thing() {</text>
-        <text x="410" y="92" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  std::ifstream f{"x"};</text>
-        <text x="410" y="110" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  std::vector&lt;char&gt; buf(1024);</text>
-        <text x="410" y="128" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  std::lock_guard lock{m};</text>
-        <text x="410" y="150" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  parse(buf, f);</text>
-        <text x="410" y="168" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  write(buf);</text>
-        <text x="410" y="190" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">  return 0;</text>
-        <text x="410" y="208" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  // ifstream::~ifstream() closes file</text>
-        <text x="410" y="222" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  // vector::~vector() frees buf</text>
-        <text x="410" y="236" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  // lock_guard::~lock_guard() unlocks</text>
-        <text x="410" y="252" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">  // all automatic, exception-safe</text>
-        <text x="410" y="266" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">}</text>
-
-        <!-- Bottom annotation -->
-        <text x="360" y="304" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(132,255,178,0.95)">Same effect. Half the code. Cannot be skipped.</text>
-        <text x="360" y="328" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">The compiler emits destructor calls in reverse order of construction,</text>
-        <text x="360" y="344" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">on every exit path, including exception unwind.</text>
-      </svg>
-      <p id="ch6-raii-p4" class="diagram-caption">In the C version, every error path must remember to unlock the mutex, free the buffer, and close the file. Add a fourth resource and the ledger of who-frees-what on which path grows again; miss one pairing on one path and you leak. In the C++ version, the resources <em>are</em> stack objects. Their destructors run automatically when the function exits, in reverse construction order, on every exit path: return, break, exception, anything. The "cleanup" code does not exist because it does not need to be written. RAII is the single feature that lets C++ scale to large codebases without leaking; it is the reason exception safety is even possible; it is what the smart pointers and containers of modern C++ are built on top of.</p>
+    <div class="diagram-card fig-v2" id="fig-6-5">
+      <div class="diagram-label">Fig 6.5&nbsp;· RAII: scope acquires, scope releases</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-41 svgd-part2-41">
+<title id="svgt-part2-41">Fig 6.5 · RAII: scope acquires, scope releases</title>
+<desc id="svgd-part2-41">A C++ function opens a file with std::ifstream, allocates a buffer with std::vector and locks a mutex with std::lock_guard, then calls parse and write and returns. Each object acquires its resource as its line runs. On return, the destructors run in reverse order: the lock is released, the buffer freed, the file closed. In a second run parse throws an exception, and the same three destructors run in the same reverse order as the exception leaves the function. No cleanup code is written.</desc>
+<rect x="20" y="14" width="360" height="172" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<rect class="fx" x="24" y="40" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.798292;0.798333;0.869000;0.869167;0.906000;0.906250;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="60" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.798292;0.798333;0.906500;0.906667;0.943500;0.943750;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="80" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.798292;0.798333;0.944000;0.944167;0.981000;0.981250;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="100" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.018500;0.018750;0.798292;0.798333;0.981500;0.981667;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="120" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.019000;0.019167;0.056000;0.056250;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="140" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.056500;0.056667;0.222667;0.222917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="40" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.348167;0.348333;0.385167;0.385417;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="60" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.385667;0.385833;0.422667;0.422917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="80" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.423167;0.423333;0.460167;0.460417;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="24" y="100" width="352" height="19" rx="2" fill="#ec8d8d" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.460667;0.460833;0.643500;0.643750;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="32" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">int&#160;do_thing()&#160;{</text>
+<text x="32" y="54" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::ifstream&#160;f{"x"};</text>
+<text x="32" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::vector&lt;char&gt;&#160;buf(1024);</text>
+<text x="32" y="94" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::lock_guard&#160;lock{m};</text>
+<text x="32" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;parse(buf,&#160;f);</text>
+<text x="32" y="134" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;write(buf);</text>
+<text x="32" y="154" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;return&#160;0;</text>
+<text x="32" y="174" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">}</text>
+<rect x="20" y="212" width="112" height="44" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.2)" stroke-dasharray="3 3"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.189333;0.189583;0.798292;0.798333;0.869000;0.869167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="76" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">ifstream f</text><text x="76" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">file open</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.348167;0.348333;0.610167;0.610417;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="76" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">ifstream f</text><text x="76" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">file open</text></g>
+<rect x="144" y="212" width="112" height="44" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.2)" stroke-dasharray="3 3"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.147667;0.147917;0.798292;0.798333;0.906500;0.906667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="144" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="200" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">vector buf</text><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">1024 bytes</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.385667;0.385833;0.568500;0.568750;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="144" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="200" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">vector buf</text><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">1024 bytes</text></g>
+<rect x="268" y="212" width="112" height="44" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.2)" stroke-dasharray="3 3"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.106000;0.106250;0.798292;0.798333;0.944000;0.944167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="324" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">lock_guard</text><text x="324" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">m locked</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.423167;0.423333;0.526833;0.527083;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="212" width="112" height="44" rx="3" fill="#d4a853" fill-opacity="0.2" stroke="#d4a853"/><text x="324" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">lock_guard</text><text x="324" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">m locked</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.060667;0.060833;0.106000;0.106250;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">return 0: leaving scope</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.460667;0.460833;0.526833;0.527083;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">parse() throws</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.106500;0.106667;0.147667;0.147917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~lock_guard: unlock</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.527333;0.527500;0.568500;0.568750;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~lock_guard: unlock</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.148167;0.148333;0.189333;0.189583;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~vector: free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.569000;0.569167;0.610167;0.610417;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~vector: free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.189833;0.190000;0.231000;0.231250;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~ifstream: close</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.610667;0.610833;0.651833;0.652083;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">~ifstream: close</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.231500;0.231667;0.347667;0.347917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">all released, in reverse</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.652333;0.652500;0.781000;0.781250;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">released the same way</text></g>
+</svg>
+      <p id="ch6-raii-p4" class="diagram-caption">Each resource is an object on the stack, acquired as its line runs and released by its destructor when the function exits, in reverse order. A normal return and an exception thrown by <code>parse()</code> unwind the same way, so no cleanup code is written and none can be forgotten.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The C version.</b> Every early return or error path must unlock, free and close by hand, usually through a shared <code>goto</code> label; one missed line leaks.</li>
+          <li><b>Why reverse.</b> Later resources may depend on earlier ones, so the compiler destroys them in the opposite order to construction.</li>
+          <li><b>What builds on it.</b> Containers, smart pointers and lock guards are all RAII types; it is also what makes exceptions safe to use.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch6-raii-p5">
