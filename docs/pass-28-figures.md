@@ -134,7 +134,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 124 | 3 | `fig-10-2` Fig 10.2 · The three-way handshake, in time | 2.5 px · cap 116 | done 2026-10-11 |
 | 125 | 3 | `fig-10-3` Fig 10.3 · TCP's state machine | 2.2 px · cap 112 | done 2026-10-11 |
 | 126 | 3 | `fig-10-4` Fig 10.4 · The sliding window | 2.5 px · cap 105 | done 2026-10-11 |
-| 127 | 3 | `fig-10-5` Fig 10.5 · The TCP sawtooth | 2.5 px · cap 109 | todo |
+| 127 | 3 | `fig-10-5` Fig 10.5 · The TCP sawtooth | 2.5 px · cap 109 | done 2026-10-11 |
 | 128 | 3 | `fig-10-6` Fig 10.6 · AIMD's fairness, in phase space | 2.2 px · cap 135 | todo |
 | 129 | 3 | `fig-10-7` Fig 10.7 · CUBIC vs Reno: same loss, different recovery | 2.5 px · cap 105 | todo |
 | 130 | 3 | `fig-10-8` Fig 10.8 · BBR aims for the bandwidth-delay product | 2.9 px · cap 140 | todo |

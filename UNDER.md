@@ -3598,7 +3598,7 @@ arrival, a bracket marking the round trip before the first data), 10.3 (all elev
 bottom; the client's life then the server's walked by a token, each event named;
 CLOSING drawn dim as the simultaneous-close case), 10.4 (bytes 100 to 113 with a window of 6
 through five phases, each cell coloured acked, in flight, may send or not yet,
-the bracket sliding on ACK 103 and ACK 109; "in flight" kept as a key-term). The sweep's overlap test now compares ink boxes (font boxes trimmed
+the bracket sliding on ACK 103 and ACK 109; "in flight" kept as a key-term), 10.5 (Reno simulated over 40 round trips against a capacity of 24: slow start 1 to 32, loss, halve, +1 per round trip, losses at 5, 15 and 29; the curve draws itself and each loss is marked as it lands). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
