@@ -46,7 +46,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 38 | 1 | `fig-3-11` Fig 3.11 · The arms race, in one diagram | 2.6 px · cap 53 | held: owner decision |
 | 39 | 1 | `fig-br-1` Fig BR.1 · The privilege bit · two worlds, one chip | 2.6 px · cap 95 | done 2026-10-10 |
 | 40 | 1 | `fig-br-2` Fig BR.2 · The trap mechanism · one round trip across the boundary | 2.2 px · cap 124 | done 2026-10-10 |
-| 41 | 1 | `fig-br-3` Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel | 2.2 px · cap 66 | todo |
+| 41 | 1 | `fig-br-3` Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel | 2.2 px · cap 66 | held: owner decision |
 | 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | todo |
 | 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | todo |
 | 44 | 1 | `fig-br-6` Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back | 2.2 px · cap 97 | todo |
