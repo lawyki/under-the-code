@@ -2312,55 +2312,57 @@
       Each generation of hardware was an island.
     </p>
 
-    <div class="diagram-card" id="fig-5-1">
-      <div class="diagram-label">Fig 5.1 · One C source, many targets</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-25"><title id="svgt-part2-25">Fig 5.1 · One C source, many targets</title>
-        <!-- Source -->
-        <rect x="290" y="30" width="140" height="64" rx="6" fill="#0e1a13" stroke="rgba(132,255,178,0.7)"/>
-        <text x="360" y="56" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,1)">main.c</text>
-        <text x="360" y="74" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">int add(int a, int b)</text>
-        <text x="360" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">{ return a + b; }</text>
-
-        <!-- Compiler arrows -->
-        <line x1="320" y1="100" x2="160" y2="170" stroke="rgba(132,255,178,0.4)" stroke-width="1"/>
-        <line x1="360" y1="100" x2="360" y2="170" stroke="rgba(132,255,178,0.4)" stroke-width="1"/>
-        <line x1="400" y1="100" x2="560" y2="170" stroke="rgba(132,255,178,0.4)" stroke-width="1"/>
-
-        <text x="225" y="138" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.65)">gcc -m64</text>
-        <text x="370" y="138" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.65)">aarch64-gcc</text>
-        <text x="510" y="138" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.65)">riscv64-gcc</text>
-
-        <!-- x86-64 target -->
-        <rect x="60" y="170" width="200" height="160" rx="6" fill="#0f1418" stroke="rgba(100,150,255,0.55)"/>
-        <text x="160" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(100,150,255,0.95)" letter-spacing="0.1em">x86-64</text>
-        <line x1="80" y1="206" x2="240" y2="206" stroke="rgba(100,150,255,0.25)"/>
-        <text x="80" y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">add:</text>
-        <text x="92" y="244" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">lea  eax,[rdi+rsi]</text>
-        <text x="92" y="262" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">ret</text>
-        <text x="80" y="294" font-family="IBM Plex Mono" font-size="7" fill="rgba(198,222,206,0.5)">4 bytes · variable-length encoding</text>
-
-        <!-- ARM64 target -->
-        <rect x="280" y="170" width="160" height="160" rx="6" fill="#0f1814" stroke="rgba(150,216,150,0.55)"/>
-        <text x="360" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">ARM64</text>
-        <line x1="296" y1="206" x2="424" y2="206" stroke="rgba(150,216,150,0.25)"/>
-        <text x="296" y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(180,220,180,0.85)">add:</text>
-        <text x="308" y="244" font-family="IBM Plex Mono" font-size="9" fill="rgba(180,220,180,0.85)">add  w0,w0,w1</text>
-        <text x="308" y="262" font-family="IBM Plex Mono" font-size="9" fill="rgba(180,220,180,0.85)">ret</text>
-        <text x="296" y="294" font-family="IBM Plex Mono" font-size="7" fill="rgba(180,220,180,0.5)">8 bytes · fixed 4-byte encoding</text>
-
-        <!-- RISC-V target -->
-        <rect x="460" y="170" width="200" height="160" rx="6" fill="#141f17" stroke="rgba(232,120,120,0.55)"/>
-        <text x="560" y="194" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">RISC-V</text>
-        <line x1="480" y1="206" x2="640" y2="206" stroke="rgba(232,120,120,0.25)"/>
-        <text x="480" y="226" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,180,180,0.85)">add:</text>
-        <text x="492" y="244" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,180,180,0.85)">add  a0,a0,a1</text>
-        <text x="492" y="262" font-family="IBM Plex Mono" font-size="9" fill="rgba(220,180,180,0.85)">ret</text>
-        <text x="480" y="294" font-family="IBM Plex Mono" font-size="7" fill="rgba(220,180,180,0.5)">8 bytes · open ISA · 2010</text>
-
-        <!-- Footer -->
-        <text x="360" y="358" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.45)" letter-spacing="0.1em">SAME C · DIFFERENT INSTRUCTIONS · DIFFERENT REGISTERS · IDENTICAL BEHAVIOR</text>
-      </svg>
-      <p id="ch5-portability-p4" class="diagram-caption">A single C function, compiled for three architectures separated by fifty years of CPU design. The output is unrecognisably different: different mnemonics, different registers (<code>eax</code> vs <code>w0</code> vs <code>a0</code>), different encodings (variable-length on x86, fixed 4-byte on ARM and RISC-V). Yet the program behaves identically. This is what "portable" actually means: not "binary works everywhere" but "source compiles cleanly to whatever the target needs." Before C, this property did not exist for systems software.</p>
+    <div class="diagram-card fig-v2" id="fig-5-1">
+      <div class="diagram-label">Fig 5.1&nbsp;· One C source, many targets</div>
+      <svg viewBox="0 0 400 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-25 svgd-part2-25">
+<title id="svgt-part2-25">Fig 5.1 · One C source, many targets</title>
+<desc id="svgd-part2-25">The C function int add(int a, int b) { return a + b; } compiled for three processors. x86-64: lea eax,[rdi+rsi] then ret, encoded as the 3 bytes 8D 04 37 and the 1 byte C3. ARM64: add w0,w0,w1 then ret, two fixed 4-byte words, 0B010000 and D65F03C0. RISC-V: addw a0,a0,a1 then ret, two 4-byte words, 00B5053B and 00008067. Different instructions, registers and encodings; identical behaviour.</desc>
+<rect x="20" y="12" width="360" height="52" rx="3" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="32" y="31" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">main.c</text>
+<text x="32" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">int add(int a, int b) { return a + b; }</text>
+<rect x="20" y="84" width="360" height="92" rx="3" fill="#0c120e" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="32" y="105" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">x86-64</text>
+<text x="368" y="105" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">gcc -O2</text>
+<text x="32" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">lea eax,[rdi+rsi]</text>
+<rect x="196" y="116" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.174750;0.175000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="116" width="72" height="22" rx="2" fill="#d4a853" fill-opacity="0.22" stroke="#d4a853"/><text x="232" y="132" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">8D 04 37</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.174750;0.175000;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">3 B</text></g>
+<text x="32" y="160" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">ret</text>
+<rect x="196" y="144" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.212250;0.212500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="144" width="24" height="22" rx="2" fill="#d4a853" fill-opacity="0.22" stroke="#d4a853"/><text x="208" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">C3</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.212250;0.212500;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="160" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 B</text></g>
+<rect x="20" y="186" width="360" height="92" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.6"/>
+<text x="32" y="207" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">ARM64</text>
+<text x="368" y="207" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">gcc -O2</text>
+<text x="32" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">add w0,w0,w1</text>
+<rect x="196" y="218" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.324750;0.325000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="218" width="96" height="22" rx="2" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2"/><text x="244" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">0B010000</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.324750;0.325000;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 B</text></g>
+<text x="32" y="262" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">ret</text>
+<rect x="196" y="246" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.362250;0.362500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="246" width="96" height="22" rx="2" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2"/><text x="244" y="262" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">D65F03C0</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.362250;0.362500;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="262" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 B</text></g>
+<rect x="20" y="288" width="360" height="92" rx="3" fill="#0c120e" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="309" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#86a8ff">RISC-V · RV64G</text>
+<text x="368" y="309" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">gcc -O2</text>
+<text x="32" y="336" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">addw a0,a0,a1</text>
+<rect x="196" y="320" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.474750;0.475000;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="320" width="96" height="22" rx="2" fill="#86a8ff" fill-opacity="0.22" stroke="#86a8ff"/><text x="244" y="336" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">00B5053B</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.474750;0.475000;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="336" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 B</text></g>
+<text x="32" y="364" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">ret</text>
+<rect x="196" y="348" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.12)" stroke-dasharray="2 3"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="348" width="96" height="22" rx="2" fill="#86a8ff" fill-opacity="0.22" stroke="#86a8ff"/><text x="244" y="364" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">00008067</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="364" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 B</text></g>
+</svg>
+      <p id="ch5-portability-p4" class="diagram-caption">One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the fixed 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: not one binary everywhere, but one source that compiles to each.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Calling conventions.</b> Each platform's ABI says where arguments arrive (<code>edi</code>/<code>esi</code>, <code>w0</code>/<code>w1</code>, <code>a0</code>/<code>a1</code>) and where the result goes back.</li>
+          <li><b>The <code>lea</code> trick.</b> x86 compilers borrow <code>lea</code>, an address-arithmetic instruction, to add two registers into a third in one step.</li>
+          <li><b>The <code>w</code> in <code>addw</code>.</b> On 64-bit RISC-V it adds 32-bit <code>int</code>s. With the compressed extension both instructions shrink to 2 bytes each.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>What makes a language portable</h3>

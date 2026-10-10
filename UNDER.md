@@ -542,6 +542,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.13 caption: "A journaling filesystem does every write twice" | ext4 by default (data=ordered) and NTFS journal metadata only; file contents are written twice only in full data journaling (ext4 data=journal) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.18: "sem_wait()/sem_post() are atomic in the kernel"; "if the value would go negative, the caller blocks"; "every concurrent system rests on this primitive" | On Linux the uncontended path is an atomic instruction in user space, the kernel (futex) is entered only to sleep or wake; a POSIX semaphore blocks at 0 and never goes negative; the "every system" banner is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.21: per-cgroup network bandwidth limits ("net: 1 Gbps … enforced by kernel"); caption "enforces these on every syscall" | Cgroups meter CPU, memory, block I/O and process counts; network bandwidth is shaped by traffic control (tc), not a cgroup limit; enforcement happens at scheduling and allocation, not on every syscall | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 5.1: RISC-V `add a0,a0,a1` for an `int` add; caption "three architectures separated by fifty years of CPU design" | gcc for RV64 emits `addw` (the 32-bit add) for `int`; x86 (1978) to RISC-V (2010) is about thirty years, and the phrase is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3425,7 +3426,9 @@ panels with outlined limits; batch wants 12 CPUs and is throttled at 4, then
 outgrows 16 GB and is OOM-killed while web and db hold still; network limits
 removed, §4g), 4.22 (two programs through the
 verifier: a packet counter is proven, JIT-compiled and runs per packet; an
-unbounded loop is refused with EINVAL; concept only, no exploit mechanics). The sweep's overlap test now compares ink boxes (font boxes trimmed
+unbounded loop is refused with EINVAL; concept only, no exploit mechanics), 5.1 (three target cards with their real
+encodings as cells sized by byte count: 8D 04 37 + C3, 0B010000 + D65F03C0,
+00B5053B + 00008067; RISC-V corrected to addw, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
