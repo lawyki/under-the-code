@@ -1954,62 +1954,57 @@
       deployments use plain containers because they're far cheaper.
     </p>
 
-    <div class="diagram-card" id="fig-4-20">
-      <div class="diagram-label">Fig 4.20 · Namespaces: each container sees its own world</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-21"><title id="svgt-part2-21">Fig 4.20 · Namespaces: each container sees its own world</title>
-        <!-- The host -->
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">one shared kernel · three different "views"</text>
-
-        <!-- Container A -->
-        <g transform="translate(40,60)">
-          <rect x="0" y="0" width="200" height="200" rx="8" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="100" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.12em">CONTAINER A</text>
-          <line x1="14" y1="32" x2="186" y2="32" stroke="rgba(80,140,80,0.4)"/>
-          <text x="14" y="52" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">PID namespace:</text>
-          <text x="100" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">PID 1 = redis</text>
-          <text x="100" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">(the only PID 1 it sees)</text>
-          <text x="14" y="108" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">network ns:</text>
-          <text x="100" y="124" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">eth0 = 10.0.0.2</text>
-          <text x="14" y="148" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">mount ns:</text>
-          <text x="100" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">/ = redis image</text>
-          <text x="14" y="188" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">UTS ns: redis-host</text>
-        </g>
-
-        <!-- Container B -->
-        <g transform="translate(260,60)">
-          <rect x="0" y="0" width="200" height="200" rx="8" fill="rgba(100,150,255,0.12)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="100" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(100,150,255,0.95)" letter-spacing="0.12em">CONTAINER B</text>
-          <line x1="14" y1="32" x2="186" y2="32" stroke="rgba(60,100,180,0.4)"/>
-          <text x="14" y="52" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">PID namespace:</text>
-          <text x="100" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(100,150,255,0.95)">PID 1 = nginx</text>
-          <text x="100" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">(also believes it's PID 1)</text>
-          <text x="14" y="108" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">network ns:</text>
-          <text x="100" y="124" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.95)">eth0 = 10.0.0.3</text>
-          <text x="14" y="148" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">mount ns:</text>
-          <text x="100" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.95)">/ = nginx image</text>
-          <text x="14" y="188" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">UTS ns: web-host</text>
-        </g>
-
-        <!-- Host view -->
-        <g transform="translate(480,60)">
-          <rect x="0" y="0" width="200" height="200" rx="8" fill="rgba(132,255,178,0.12)" stroke="rgba(62,138,94,0.7)"/>
-          <text x="100" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)" letter-spacing="0.12em">HOST VIEW (real)</text>
-          <line x1="14" y1="32" x2="186" y2="32" stroke="rgba(62,138,94,0.4)"/>
-          <text x="14" y="52" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">actual PIDs:</text>
-          <text x="100" y="70" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">8472, 8481, …</text>
-          <text x="14" y="94" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">net interfaces:</text>
-          <text x="100" y="110" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">eth0 (real)</text>
-          <text x="100" y="124" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">veth0a · veth0b</text>
-          <text x="14" y="148" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">filesystem:</text>
-          <text x="100" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">full host tree</text>
-          <text x="14" y="188" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">hostname: prod-01</text>
-        </g>
-
-        <!-- Bottom: kernel layer -->
-        <rect x="40" y="280" width="640" height="32" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.7)" stroke-width="1.5"/>
-        <text x="360" y="300" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">SHARED KERNEL: same code, different views per process group</text>
-      </svg>
-      <p id="ch4-security-p12" class="diagram-caption">Namespaces are how the kernel lies to a process about the world. There are eight kinds: PID, network, mount, IPC, UTS (hostname), user, cgroup, and (since Linux 5.6) time. Each can be independently configured per process. Container A's <code>ps</code> shows only the processes inside its PID namespace; its <code>ifconfig</code> shows only its virtual interfaces; its <code>/</code> is the rootfs of its container image. Container B sees a completely different version of all of those, even though both processes are running under the same kernel, on the same machine, accessing the same physical RAM. From the host's perspective, both containers' PIDs are just numbers in the global PID table; namespaces are translation layers between the global state and what each container sees.</p>
+    <div class="diagram-card fig-v2" id="fig-4-20">
+      <div class="diagram-label">Fig 4.20&nbsp;· Namespaces: each container sees its own world</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-21 svgd-part2-21">
+<title id="svgt-part2-21">Fig 4.20 · Namespaces: each container sees its own world</title>
+<desc id="svgd-part2-21">Five questions asked from three places on one machine. From container A: PID 1 is redis, redis is PID 1, the hostname is redis-host, eth0 is 10.0.0.2 and the root filesystem is the redis image. From container B: PID 1 is nginx, redis is not visible at all, the hostname is web-host, eth0 is 10.0.0.3 and the root is the nginx image. From the host: PID 1 is systemd, redis is process 8472, the hostname is prod-01, eth0 is 192.168.1.10 and the root is the host disk. One kernel gives all three answers.</desc>
+<rect x="20" y="14" width="116" height="34" rx="3" fill="#152016" stroke="rgba(132,255,178,0.3)"/>
+<text x="78" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">container A</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><rect x="20" y="14" width="116" height="34" rx="3" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2" stroke-width="2"/><text x="78" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">container A</text></g>
+<rect x="142" y="14" width="116" height="34" rx="3" fill="#152016" stroke="rgba(132,255,178,0.3)"/>
+<text x="200" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">container B</text>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><rect x="142" y="14" width="116" height="34" rx="3" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2" stroke-width="2"/><text x="200" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">container B</text></g>
+<rect x="264" y="14" width="116" height="34" rx="3" fill="#152016" stroke="rgba(132,255,178,0.3)"/>
+<text x="322" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">host</text>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><rect x="264" y="14" width="116" height="34" rx="3" fill="#84ffb2" fill-opacity="0.22" stroke="#84ffb2" stroke-width="2"/><text x="322" y="36" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">host</text></g>
+<rect x="20" y="58" width="360" height="178" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.25)"/>
+<text x="34" y="87" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">PID 1 is</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="87" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">redis</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="87" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">nginx</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="87" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">systemd</text></g>
+<line x1="30" y1="98" x2="370" y2="98" stroke="rgba(132,255,178,0.1)"/>
+<text x="34" y="121" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">redis is PID</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="121" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">1</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="121" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">not visible</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="121" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">8472</text></g>
+<line x1="30" y1="132" x2="370" y2="132" stroke="rgba(132,255,178,0.1)"/>
+<text x="34" y="155" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">hostname</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="155" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">redis-host</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="155" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">web-host</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="155" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">prod-01</text></g>
+<line x1="30" y1="166" x2="370" y2="166" stroke="rgba(132,255,178,0.1)"/>
+<text x="34" y="189" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">eth0</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="189" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">10.0.0.2</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="189" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">10.0.0.3</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="189" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">192.168.1.10</text></g>
+<line x1="30" y1="200" x2="370" y2="200" stroke="rgba(132,255,178,0.1)"/>
+<text x="34" y="223" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">/ is</text>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="223" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">redis image</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="223" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">nginx image</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/><text x="176" y="223" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">host disk</text></g>
+<rect x="20" y="252" width="360" height="32" rx="3" fill="#152016" stroke="#d4a853" stroke-opacity="0.7"/>
+<text x="200" y="273" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">one kernel answers all three</text>
+</svg>
+      <p id="ch4-security-p12" class="diagram-caption">Ask the same five questions from inside container A, inside B and on the host, and one kernel gives three sets of answers: each container sees its own PID 1, hostname, network and root filesystem. Namespaces are translation tables, not copies: to the host, A's PID 1 is just process 8472.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Eight kinds.</b> Mount, UTS (hostname), IPC, PID, network, user, cgroup and, since Linux 5.6, time. Each can be set separately.</li>
+          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> puts a process in a fresh namespace; its children inherit it.</li>
+          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, which routes between them.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card light-diagram" id="fig-4-21">

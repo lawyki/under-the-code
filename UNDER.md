@@ -3417,7 +3417,9 @@ empty), 4.18 (A and B map page 0x4000; tokens step
 through a semaphore gate: A takes the 1, B sleeps at 0, A posts, B enters; two
 facts corrected, §4g), 4.19 (two stacks at phone width;
 pulses show whose kernel answers each app: a guest kernel each for VMs, the one
-host kernel for every container). The sweep's overlap test now compares ink boxes (font boxes trimmed
+host kernel for every container), 4.20 (one panel of five questions,
+the viewpoint stepping container A, container B, host: redis is PID 1 to A,
+invisible to B, 8472 to the host). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
