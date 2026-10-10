@@ -662,73 +662,51 @@
       simultaneously, packing multiple bits per symbol.
     </p>
 
-    <div class="diagram-card" id="fig-8-7">
-      <div class="diagram-label">Fig 8.7 · Three ways to ride bits on a carrier</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-8"><title id="svgt-part3-8">Fig 8.7 · Three ways to ride bits on a carrier</title>
-        <!-- Bits row -->
-        <text x="60" y="32" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.85)">bits:</text>
-        <g font-family="Space Mono" font-size="11" fill="rgba(255,255,255,0.95)" text-anchor="middle">
-          <text x="160" y="32">1</text>
-          <text x="280" y="32">0</text>
-          <text x="400" y="32">1</text>
-          <text x="520" y="32">0</text>
-        </g>
-
-        <!-- AM (amplitude) -->
-        <text x="60" y="90" font-family="Space Mono" font-size="10" fill="rgba(232,140,80,0.95)">AM</text>
-        <text x="60" y="104" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.55)">amplitude</text>
-        <g transform="translate(100,80)">
-          <line x1="0" y1="20" x2="540" y2="20" stroke="rgba(255,255,255,0.15)"/>
-          <!-- bit 1: large amplitude sine -->
-          <path d="M 0,20 q 15,-18 30,0 q 15,18 30,0 q 15,-18 30,0 q 15,18 30,0" fill="none" stroke="rgba(232,140,80,0.95)" stroke-width="1.8"/>
-          <!-- bit 0: small amplitude sine -->
-          <path d="M 120,20 q 15,-6 30,0 q 15,6 30,0 q 15,-6 30,0 q 15,6 30,0" fill="none" stroke="rgba(232,140,80,0.95)" stroke-width="1.8"/>
-          <!-- bit 1 again -->
-          <path d="M 240,20 q 15,-18 30,0 q 15,18 30,0 q 15,-18 30,0 q 15,18 30,0" fill="none" stroke="rgba(232,140,80,0.95)" stroke-width="1.8"/>
-          <!-- bit 0 again -->
-          <path d="M 360,20 q 15,-6 30,0 q 15,6 30,0 q 15,-6 30,0 q 15,6 30,0" fill="none" stroke="rgba(232,140,80,0.95)" stroke-width="1.8"/>
-        </g>
-
-        <!-- FM (frequency) -->
-        <text x="60" y="180" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">FM</text>
-        <text x="60" y="194" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.55)">frequency</text>
-        <g transform="translate(100,170)">
-          <line x1="0" y1="20" x2="540" y2="20" stroke="rgba(255,255,255,0.15)"/>
-          <!-- bit 1: high frequency -->
-          <path d="M 0,20 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="1.8"/>
-          <!-- bit 0: low frequency -->
-          <path d="M 120,20 q 30,-15 60,0 q 30,15 60,0" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="1.8"/>
-          <!-- bit 1 again -->
-          <path d="M 240,20 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0 q 7.5,-15 15,0 q 7.5,15 15,0" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="1.8"/>
-          <!-- bit 0 again -->
-          <path d="M 360,20 q 30,-15 60,0 q 30,15 60,0" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="1.8"/>
-        </g>
-
-        <!-- PSK (phase) -->
-        <text x="60" y="270" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">PSK</text>
-        <text x="60" y="284" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.55)">phase shift</text>
-        <g transform="translate(100,260)">
-          <line x1="0" y1="20" x2="540" y2="20" stroke="rgba(255,255,255,0.15)"/>
-          <!-- bit 1: starts at +sin (going up) -->
-          <path d="M 0,20 q 15,-15 30,0 q 15,15 30,0 q 15,-15 30,0 q 15,15 30,0" fill="none" stroke="rgba(100,150,255,0.95)" stroke-width="1.8"/>
-          <!-- bit 0: phase reversed (starts going down) -->
-          <path d="M 120,20 q 15,15 30,0 q 15,-15 30,0 q 15,15 30,0 q 15,-15 30,0" fill="none" stroke="rgba(100,150,255,0.95)" stroke-width="1.8"/>
-          <!-- bit 1 again -->
-          <path d="M 240,20 q 15,-15 30,0 q 15,15 30,0 q 15,-15 30,0 q 15,15 30,0" fill="none" stroke="rgba(100,150,255,0.95)" stroke-width="1.8"/>
-          <!-- bit 0 again -->
-          <path d="M 360,20 q 15,15 30,0 q 15,-15 30,0 q 15,15 30,0 q 15,-15 30,0" fill="none" stroke="rgba(100,150,255,0.95)" stroke-width="1.8"/>
-        </g>
-
-        <!-- Bit boundary markers -->
-        <g stroke="rgba(255,255,255,0.12)" stroke-dasharray="2,3">
-          <line x1="220" y1="50" x2="220" y2="300"/>
-          <line x1="340" y1="50" x2="340" y2="300"/>
-          <line x1="460" y1="50" x2="460" y2="300"/>
-        </g>
-
-        <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">QAM (USED IN WI-FI, CABLE, LTE) COMBINES AMPLITUDE + PHASE: 6, 8, 10 BITS PER SYMBOL</text>
-      </svg>
-      <p id="ch8-encoding-p7" class="diagram-caption">Three ways to map digital bits onto a sinusoidal carrier. <strong>AM</strong> changes the amplitude: easy to see on an oscilloscope, vulnerable to noise (which mostly affects amplitude). <strong>FM</strong> changes the frequency. Edwin Armstrong invented it in 1933 specifically because it tolerates amplitude noise; this is why FM radio sounds clean during thunderstorms while AM does not. <strong>PSK</strong> changes the phase. It is robust, efficient, and the basis of every modern digital radio. Real-world systems compose these: <strong>QAM</strong> changes amplitude and phase together to pack 4, 6, 8, even 10 bits into a single symbol. Wi-Fi 6 uses 1024-QAM (10 bits per symbol) under good conditions, falling back to 64-QAM or QPSK as the channel degrades.</p>
+    <div class="diagram-card fig-v2" id="fig-8-7">
+      <div class="diagram-label">Fig 8.7&nbsp;· Three ways to ride bits on a carrier</div>
+      <svg viewBox="0 0 400 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-8 svgd-part3-8">
+<title id="svgt-part3-8">Fig 8.7 · Three ways to ride bits on a carrier</title>
+<desc id="svgd-part3-8">The bits 1 0 1 0 carried on a sine wave three ways. Amplitude modulation makes the wave big for 1 and small for 0. Frequency modulation makes it faster for 1 and slower for 0. Phase shift keying keeps size and speed but flips the wave, starting each 1 rising and each 0 falling. A receiver reads each bit from whichever property the scheme changes.</desc>
+<text x="20" y="24" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">bits</text>
+<text x="138" y="24" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">1</text>
+<text x="206" y="24" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">0</text>
+<text x="274" y="24" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">1</text>
+<text x="342" y="24" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#fff">0</text>
+<line x1="172" y1="34" x2="172" y2="276" stroke="rgba(223,234,242,0.12)" stroke-dasharray="2 3"/>
+<line x1="240" y1="34" x2="240" y2="276" stroke="rgba(223,234,242,0.12)" stroke-dasharray="2 3"/>
+<line x1="308" y1="34" x2="308" y2="276" stroke="rgba(223,234,242,0.12)" stroke-dasharray="2 3"/>
+<text x="20" y="66" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">AM</text>
+<text x="20" y="84" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">amplitude</text>
+<polyline points="104,70.0 105,65.1 106,60.5 107,56.7 108,53.9 109,52.3 110,52.1 111,53.2 112,55.6 113,59.2 114,63.5 115,68.3 116,73.3 117,78.0 118,82.1 119,85.3 120,87.3 121,88.0 122,87.3 123,85.3 124,82.1 125,78.0 126,73.3 127,68.3 128,63.5 129,59.2 130,55.6 131,53.2 132,52.1 133,52.3 134,53.9 135,56.7 136,60.5 137,65.1 138,70.0 139,74.9 140,79.5 141,83.3 142,86.1 143,87.7 144,87.9 145,86.8 146,84.4 147,80.8 148,76.5 149,71.7 150,66.7 151,62.0 152,57.9 153,54.7 154,52.7 155,52.0 156,52.7 157,54.7 158,57.9 159,62.0 160,66.7 161,71.7 162,76.5 163,80.8 164,84.4 165,86.8 166,87.9 167,87.7 168,86.1 169,83.3 170,79.5 171,74.9 172,70.0 173,68.4 174,66.8 175,65.6 176,64.6 177,64.1 178,64.0 179,64.4 180,65.2 181,66.4 182,67.8 183,69.4 184,71.1 185,72.7 186,74.0 187,75.1 188,75.8 189,76.0 190,75.8 191,75.1 192,74.0 193,72.7 194,71.1 195,69.4 196,67.8 197,66.4 198,65.2 199,64.4 200,64.0 201,64.1 202,64.6 203,65.6 204,66.8 205,68.4 206,70.0 207,71.6 208,73.2 209,74.4 210,75.4 211,75.9 212,76.0 213,75.6 214,74.8 215,73.6 216,72.2 217,70.6 218,68.9 219,67.3 220,66.0 221,64.9 222,64.2 223,64.0 224,64.2 225,64.9 226,66.0 227,67.3 228,68.9 229,70.6 230,72.2 231,73.6 232,74.8 233,75.6 234,76.0 235,75.9 236,75.4 237,74.4 238,73.2 239,71.6 240,70.0 241,65.1 242,60.5 243,56.7 244,53.9 245,52.3 246,52.1 247,53.2 248,55.6 249,59.2 250,63.5 251,68.3 252,73.3 253,78.0 254,82.1 255,85.3 256,87.3 257,88.0 258,87.3 259,85.3 260,82.1 261,78.0 262,73.3 263,68.3 264,63.5 265,59.2 266,55.6 267,53.2 268,52.1 269,52.3 270,53.9 271,56.7 272,60.5 273,65.1 274,70.0 275,74.9 276,79.5 277,83.3 278,86.1 279,87.7 280,87.9 281,86.8 282,84.4 283,80.8 284,76.5 285,71.7 286,66.7 287,62.0 288,57.9 289,54.7 290,52.7 291,52.0 292,52.7 293,54.7 294,57.9 295,62.0 296,66.7 297,71.7 298,76.5 299,80.8 300,84.4 301,86.8 302,87.9 303,87.7 304,86.1 305,83.3 306,79.5 307,74.9 308,70.0 309,68.4 310,66.8 311,65.6 312,64.6 313,64.1 314,64.0 315,64.4 316,65.2 317,66.4 318,67.8 319,69.4 320,71.1 321,72.7 322,74.0 323,75.1 324,75.8 325,76.0 326,75.8 327,75.1 328,74.0 329,72.7 330,71.1 331,69.4 332,67.8 333,66.4 334,65.2 335,64.4 336,64.0 337,64.1 338,64.6 339,65.6 340,66.8 341,68.4 342,70.0 343,71.6 344,73.2 345,74.4 346,75.4 347,75.9 348,76.0 349,75.6 350,74.8 351,73.6 352,72.2 353,70.6 354,68.9 355,67.3 356,66.0 357,64.9 358,64.2 359,64.0 360,64.2 361,64.9 362,66.0 363,67.3 364,68.9 365,70.6 366,72.2 367,73.6 368,74.8 369,75.6 370,76.0 371,75.9 372,75.4 373,74.4 374,73.2 375,71.6 376,70.0" fill="none" stroke="#4fc4e6" stroke-width="2"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.335429;0.335714;1.000000" dur="7s" repeatCount="indefinite"/><text x="138" y="108" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">big</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.535429;0.535714;1.000000" dur="7s" repeatCount="indefinite"/><text x="206" y="108" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">small</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.735429;0.735714;1.000000" dur="7s" repeatCount="indefinite"/><text x="274" y="108" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">big</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.935429;0.935714;1.000000" dur="7s" repeatCount="indefinite"/><text x="342" y="108" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">small</text></g>
+<text x="20" y="146" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">FM</text>
+<text x="20" y="164" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">frequency</text>
+<polyline points="104,150.0 105,144.2 106,139.2 107,135.7 108,134.1 109,134.6 110,137.2 111,141.6 112,147.1 113,152.9 114,158.4 115,162.8 116,165.4 117,165.9 118,164.3 119,160.8 120,155.8 121,150.0 122,144.2 123,139.2 124,135.7 125,134.1 126,134.6 127,137.2 128,141.6 129,147.1 130,152.9 131,158.4 132,162.8 133,165.4 134,165.9 135,164.3 136,160.8 137,155.8 138,150.0 139,144.2 140,139.2 141,135.7 142,134.1 143,134.6 144,137.2 145,141.6 146,147.1 147,152.9 148,158.4 149,162.8 150,165.4 151,165.9 152,164.3 153,160.8 154,155.8 155,150.0 156,144.2 157,139.2 158,135.7 159,134.1 160,134.6 161,137.2 162,141.6 163,147.1 164,152.9 165,158.4 166,162.8 167,165.4 168,165.9 169,164.3 170,160.8 171,155.8 172,150.0 173,147.1 174,144.2 175,141.6 176,139.2 177,137.2 178,135.7 179,134.6 180,134.1 181,134.1 182,134.6 183,135.7 184,137.2 185,139.2 186,141.6 187,144.2 188,147.1 189,150.0 190,152.9 191,155.8 192,158.4 193,160.8 194,162.8 195,164.3 196,165.4 197,165.9 198,165.9 199,165.4 200,164.3 201,162.8 202,160.8 203,158.4 204,155.8 205,152.9 206,150.0 207,147.1 208,144.2 209,141.6 210,139.2 211,137.2 212,135.7 213,134.6 214,134.1 215,134.1 216,134.6 217,135.7 218,137.2 219,139.2 220,141.6 221,144.2 222,147.1 223,150.0 224,152.9 225,155.8 226,158.4 227,160.8 228,162.8 229,164.3 230,165.4 231,165.9 232,165.9 233,165.4 234,164.3 235,162.8 236,160.8 237,158.4 238,155.8 239,152.9 240,150.0 241,144.2 242,139.2 243,135.7 244,134.1 245,134.6 246,137.2 247,141.6 248,147.1 249,152.9 250,158.4 251,162.8 252,165.4 253,165.9 254,164.3 255,160.8 256,155.8 257,150.0 258,144.2 259,139.2 260,135.7 261,134.1 262,134.6 263,137.2 264,141.6 265,147.1 266,152.9 267,158.4 268,162.8 269,165.4 270,165.9 271,164.3 272,160.8 273,155.8 274,150.0 275,144.2 276,139.2 277,135.7 278,134.1 279,134.6 280,137.2 281,141.6 282,147.1 283,152.9 284,158.4 285,162.8 286,165.4 287,165.9 288,164.3 289,160.8 290,155.8 291,150.0 292,144.2 293,139.2 294,135.7 295,134.1 296,134.6 297,137.2 298,141.6 299,147.1 300,152.9 301,158.4 302,162.8 303,165.4 304,165.9 305,164.3 306,160.8 307,155.8 308,150.0 309,147.1 310,144.2 311,141.6 312,139.2 313,137.2 314,135.7 315,134.6 316,134.1 317,134.1 318,134.6 319,135.7 320,137.2 321,139.2 322,141.6 323,144.2 324,147.1 325,150.0 326,152.9 327,155.8 328,158.4 329,160.8 330,162.8 331,164.3 332,165.4 333,165.9 334,165.9 335,165.4 336,164.3 337,162.8 338,160.8 339,158.4 340,155.8 341,152.9 342,150.0 343,147.1 344,144.2 345,141.6 346,139.2 347,137.2 348,135.7 349,134.6 350,134.1 351,134.1 352,134.6 353,135.7 354,137.2 355,139.2 356,141.6 357,144.2 358,147.1 359,150.0 360,152.9 361,155.8 362,158.4 363,160.8 364,162.8 365,164.3 366,165.4 367,165.9 368,165.9 369,165.4 370,164.3 371,162.8 372,160.8 373,158.4 374,155.8 375,152.9 376,150.0" fill="none" stroke="#4fc4e6" stroke-width="2"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.335429;0.335714;1.000000" dur="7s" repeatCount="indefinite"/><text x="138" y="188" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">fast</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.535429;0.535714;1.000000" dur="7s" repeatCount="indefinite"/><text x="206" y="188" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">slow</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.735429;0.735714;1.000000" dur="7s" repeatCount="indefinite"/><text x="274" y="188" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">fast</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.935429;0.935714;1.000000" dur="7s" repeatCount="indefinite"/><text x="342" y="188" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">slow</text></g>
+<text x="20" y="226" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">PSK</text>
+<text x="20" y="244" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">phase</text>
+<polyline points="104,230.0 105,225.6 106,221.6 107,218.2 108,215.7 109,214.3 110,214.1 111,215.1 112,217.2 113,220.4 114,224.2 115,228.5 116,232.9 117,237.1 118,240.8 119,243.6 120,245.4 121,246.0 122,245.4 123,243.6 124,240.8 125,237.1 126,232.9 127,228.5 128,224.2 129,220.4 130,217.2 131,215.1 132,214.1 133,214.3 134,215.7 135,218.2 136,221.6 137,225.6 138,230.0 139,234.4 140,238.4 141,241.8 142,244.3 143,245.7 144,245.9 145,244.9 146,242.8 147,239.6 148,235.8 149,231.5 150,227.1 151,222.9 152,219.2 153,216.4 154,214.6 155,214.0 156,214.6 157,216.4 158,219.2 159,222.9 160,227.1 161,231.5 162,235.8 163,239.6 164,242.8 165,244.9 166,245.9 167,245.7 168,244.3 169,241.8 170,238.4 171,234.4 172,230.0 173,234.4 174,238.4 175,241.8 176,244.3 177,245.7 178,245.9 179,244.9 180,242.8 181,239.6 182,235.8 183,231.5 184,227.1 185,222.9 186,219.2 187,216.4 188,214.6 189,214.0 190,214.6 191,216.4 192,219.2 193,222.9 194,227.1 195,231.5 196,235.8 197,239.6 198,242.8 199,244.9 200,245.9 201,245.7 202,244.3 203,241.8 204,238.4 205,234.4 206,230.0 207,225.6 208,221.6 209,218.2 210,215.7 211,214.3 212,214.1 213,215.1 214,217.2 215,220.4 216,224.2 217,228.5 218,232.9 219,237.1 220,240.8 221,243.6 222,245.4 223,246.0 224,245.4 225,243.6 226,240.8 227,237.1 228,232.9 229,228.5 230,224.2 231,220.4 232,217.2 233,215.1 234,214.1 235,214.3 236,215.7 237,218.2 238,221.6 239,225.6 240,230.0 241,225.6 242,221.6 243,218.2 244,215.7 245,214.3 246,214.1 247,215.1 248,217.2 249,220.4 250,224.2 251,228.5 252,232.9 253,237.1 254,240.8 255,243.6 256,245.4 257,246.0 258,245.4 259,243.6 260,240.8 261,237.1 262,232.9 263,228.5 264,224.2 265,220.4 266,217.2 267,215.1 268,214.1 269,214.3 270,215.7 271,218.2 272,221.6 273,225.6 274,230.0 275,234.4 276,238.4 277,241.8 278,244.3 279,245.7 280,245.9 281,244.9 282,242.8 283,239.6 284,235.8 285,231.5 286,227.1 287,222.9 288,219.2 289,216.4 290,214.6 291,214.0 292,214.6 293,216.4 294,219.2 295,222.9 296,227.1 297,231.5 298,235.8 299,239.6 300,242.8 301,244.9 302,245.9 303,245.7 304,244.3 305,241.8 306,238.4 307,234.4 308,230.0 309,234.4 310,238.4 311,241.8 312,244.3 313,245.7 314,245.9 315,244.9 316,242.8 317,239.6 318,235.8 319,231.5 320,227.1 321,222.9 322,219.2 323,216.4 324,214.6 325,214.0 326,214.6 327,216.4 328,219.2 329,222.9 330,227.1 331,231.5 332,235.8 333,239.6 334,242.8 335,244.9 336,245.9 337,245.7 338,244.3 339,241.8 340,238.4 341,234.4 342,230.0 343,225.6 344,221.6 345,218.2 346,215.7 347,214.3 348,214.1 349,215.1 350,217.2 351,220.4 352,224.2 353,228.5 354,232.9 355,237.1 356,240.8 357,243.6 358,245.4 359,246.0 360,245.4 361,243.6 362,240.8 363,237.1 364,232.9 365,228.5 366,224.2 367,220.4 368,217.2 369,215.1 370,214.1 371,214.3 372,215.7 373,218.2 374,221.6 375,225.6 376,230.0" fill="none" stroke="#4fc4e6" stroke-width="2"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.335429;0.335714;1.000000" dur="7s" repeatCount="indefinite"/><text x="138" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">rises</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.535429;0.535714;1.000000" dur="7s" repeatCount="indefinite"/><text x="206" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">falls</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.735429;0.735714;1.000000" dur="7s" repeatCount="indefinite"/><text x="274" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">rises</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.935429;0.935714;1.000000" dur="7s" repeatCount="indefinite"/><text x="342" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">falls</text></g>
+<line y1="34" y2="276" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.085643;0.085714;0.141429;0.142857;0.942857;0.957143;1.000000" dur="7s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch8-encoding-p7" class="diagram-caption">A carrier wave has three things a transmitter can change: its size (AM), its speed (FM) or its phase (PSK), and the receiver reads each bit from whichever one moves. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: 10 in Wi-Fi 6.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Noise.</b> Interference mostly disturbs amplitude, so FM and PSK resist it better; Edwin Armstrong patented FM in 1933 for exactly that reason.</li>
+          <li><b>QAM.</b> 16 combinations of size and phase carry 4 bits per symbol; Wi-Fi 6 uses 1024, 10 bits, and Wi-Fi 7 4096, 12 bits, when the signal is clean, dropping to fewer as it degrades.</li>
+          <li><b>The carrier.</b> It moves the signal to a frequency band the medium carries well, such as 2.4 or 5 GHz for Wi-Fi.</li>
+        </ol>
+      </details>
     </div>
   </section>
 

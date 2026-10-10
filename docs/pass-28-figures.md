@@ -112,7 +112,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 102 | 3 | `fig-8-4` Fig 8.4 · Channel capacity as a function of SNR | 2.5 px · cap 166 | done 2026-10-11 |
 | 103 | 3 | `fig-8-5` Fig 8.5 · Manchester: every bit is a transition | 2.5 px · cap 127 | done 2026-10-11 |
 | 104 | 3 | `fig-8-6` Fig 8.6 · Same bits, two waveforms | 2.5 px · cap 122 | done 2026-10-11 |
-| 105 | 3 | `fig-8-7` Fig 8.7 · Three ways to ride bits on a carrier | 2.5 px · cap 115 | todo |
+| 105 | 3 | `fig-8-7` Fig 8.7 · Three ways to ride bits on a carrier | 2.5 px · cap 115 | done 2026-10-11 |
 | 106 | 3 | `fig-8-8` Fig 8.8 · Two stations collide; both back off | 2.5 px · cap 139 | todo |
 | 107 | 3 | `fig-8-9` Fig 8.9 · A MAC address, and the ARP cache that resolves it | 2.5 px · cap 157 | todo |
 | 108 | 3 | `fig-8-10` Fig 8.10 · Hub vs switch: broadcast vs learned | 2.2 px · cap 137 | todo |
