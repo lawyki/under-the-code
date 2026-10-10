@@ -3409,7 +3409,10 @@ snapshot sharing 102; `part-2.css` gives paper cards ink captions and strips), 4
 eight-cell ring, simulated: write and read pointers step round it, cat fills it
 and blocks on full, grep drains it and blocks on empty), 4.16 (the pipeline vertical, with
 five real log lines: cat and grep stream, sort waits for the end of input and
-then prints all three, uniq drops the repeat, wc prints 2). The sweep's overlap test now compares ink boxes (font boxes trimmed
+then prints all three, uniq drops the repeat, wc prints 2), 4.17 (three lanes and a time
+cursor: SIGINT marked pending, delivered at the next kernel return, handler,
+sigreturn, resume; then SIGKILL ends the process with the handler lane
+empty). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

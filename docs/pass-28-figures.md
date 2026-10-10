@@ -71,7 +71,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 61 | 2 | `fig-4-14` Fig 4.14 · Copy-on-write filesystem: never overwrite, just re-point | 2.2 px · cap 155 | done 2026-10-10 |
 | 62 | 2 | `fig-4-15` Fig 4.15 · A pipe is a kernel ring buffer with two ends | 2.5 px · cap 89 | done 2026-10-10 |
 | 63 | 2 | `fig-4-16` Fig 4.16 · The UNIX philosophy, in five processes | 2.2 px · cap 111 | done 2026-10-10 |
-| 64 | 2 | `fig-4-17` Fig 4.17 · A signal arrives mid-execution | 2.9 px · cap 148 | todo |
+| 64 | 2 | `fig-4-17` Fig 4.17 · A signal arrives mid-execution | 2.9 px · cap 148 | done 2026-10-10 |
 | 65 | 2 | `fig-4-18` Fig 4.18 · Two processes, one region, one gate | 2.2 px · cap 126 | todo |
 | 66 | 2 | `fig-4-19` Fig 4.19 · VMs vs containers | 2.5 px · cap 60 | todo |
 | 67 | 2 | `fig-4-20` Fig 4.20 · Namespaces: each container sees its own world | 2.5 px · cap 121 | todo |
