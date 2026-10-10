@@ -3338,7 +3338,11 @@ Patriot clock: drift climbing to 0.34 s over 100 hours, the radar window
 570 m from the Scud; fixed-point, not floating-point, §4g). Found on the
 way: the Timeline "drop the loop-end point" fix broke holds (a value meant
 to hold to the loop's end drifted back); end points now move a hair early
-instead. The sweep's overlap test now compares ink boxes (font boxes trimmed
+instead. Chapter 3: 3.1 (add 5 as real bits in three ISAs, checked
+by assertion: 48 83 C0 05, 0x91001400, 0x00550513; the old x86 row used a
+legal but unusual 7-byte form), 3.2 (Rosetta: three x86 lines become six
+ARM lines because ARM cannot add to memory; the old "output" did not
+translate its input). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

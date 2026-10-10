@@ -3188,117 +3188,170 @@
       embedded systems, and increasingly in industry.
     </p>
 
-    <div class="diagram-card" id="fig-3-1">
-      <div class="diagram-label">Fig 3.1 · Same operation · three ISAs · three encodings</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31"><title id="svgt-part1-31">Fig 3.1 · Same operation · three ISAs · three encodings</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">"ADD 5 TO A REGISTER": DIFFERENT BITS, SAME EFFECT</text>
-
-        <!-- x86-64 row -->
-        <g transform="translate(40, 70)">
-          <text x="0" y="0" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)" letter-spacing="0.15em">x86-64</text>
-          <text x="0" y="14" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">Intel · 1978 → present</text>
-          <text x="0" y="32" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.85)">add rax, 5</text>
-          <text x="0" y="48" font-family="DM Mono" font-size="8.5" fill="rgba(255,255,255,0.4)">7 bytes · variable length</text>
-          <!-- byte boxes -->
-          <g font-family="DM Mono" font-size="11">
-            <rect x="180" y="-10" width="48" height="44" rx="3" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.7)"/>
-            <text x="204" y="10" text-anchor="middle" font-size="8" fill="rgba(212,168,83,0.7)">REX.W</text>
-            <text x="204" y="26" text-anchor="middle" fill="rgba(255,255,255,0.85)">48</text>
-            <rect x="232" y="-10" width="48" height="44" rx="3" fill="rgba(212,168,83,0.28)" stroke="rgba(212,168,83,0.85)"/>
-            <text x="256" y="10" text-anchor="middle" font-size="8" fill="rgba(212,168,83,0.7)">opcode</text>
-            <text x="256" y="26" text-anchor="middle" fill="rgba(255,255,255,0.85)">81</text>
-            <rect x="284" y="-10" width="48" height="44" rx="3" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.7)"/>
-            <text x="308" y="10" text-anchor="middle" font-size="8" fill="rgba(100,150,255,0.7)">ModR/M</text>
-            <text x="308" y="26" text-anchor="middle" fill="rgba(255,255,255,0.85)">C0</text>
-            <rect x="336" y="-10" width="48" height="44" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.7)"/>
-            <text x="360" y="10" text-anchor="middle" font-size="8" fill="rgba(150,216,150,0.7)">imm32</text>
-            <text x="360" y="26" text-anchor="middle" fill="rgba(255,255,255,0.85)">05</text>
-            <rect x="388" y="-10" width="36" height="44" rx="3" fill="rgba(150,216,150,0.12)" stroke="rgba(150,216,150,0.5)"/>
-            <text x="406" y="26" text-anchor="middle" fill="rgba(255,255,255,0.7)">00</text>
-            <rect x="428" y="-10" width="36" height="44" rx="3" fill="rgba(150,216,150,0.12)" stroke="rgba(150,216,150,0.5)"/>
-            <text x="446" y="26" text-anchor="middle" fill="rgba(255,255,255,0.7)">00</text>
-            <rect x="468" y="-10" width="36" height="44" rx="3" fill="rgba(150,216,150,0.12)" stroke="rgba(150,216,150,0.5)"/>
-            <text x="486" y="26" text-anchor="middle" fill="rgba(255,255,255,0.7)">00</text>
-          </g>
-          <text x="350" y="56" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">prefix · opcode · operand byte · 4-byte little-endian immediate</text>
-        </g>
-
-        <!-- ARM64 row -->
-        <g transform="translate(40, 160)">
-          <text x="0" y="0" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.15em">ARM64 (AArch64)</text>
-          <text x="0" y="14" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">Acorn 1985 · phones, M-series Macs</text>
-          <text x="0" y="32" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.85)">add x0, x0, #5</text>
-          <text x="0" y="48" font-family="DM Mono" font-size="8.5" fill="rgba(255,255,255,0.4)">4 bytes · always</text>
-          <!-- 32-bit field decomposition -->
-          <g font-family="DM Mono" font-size="9">
-            <rect x="180" y="-10" width="60" height="44" rx="3" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.7)"/>
-            <text x="210" y="6" text-anchor="middle" font-size="7" fill="rgba(212,168,83,0.7)">opcode</text>
-            <text x="210" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">10010001</text>
-            <text x="210" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">8 bits</text>
-            <rect x="244" y="-10" width="60" height="44" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.25)"/>
-            <text x="274" y="6" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">shift</text>
-            <text x="274" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">00</text>
-            <text x="274" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">2 bits</text>
-            <rect x="308" y="-10" width="100" height="44" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.7)"/>
-            <text x="358" y="6" text-anchor="middle" font-size="7" fill="rgba(150,216,150,0.7)">imm12</text>
-            <text x="358" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">000000000101</text>
-            <text x="358" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">12 bits = 5</text>
-            <rect x="412" y="-10" width="60" height="44" rx="3" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.7)"/>
-            <text x="442" y="6" text-anchor="middle" font-size="7" fill="rgba(100,150,255,0.7)">Rn (src)</text>
-            <text x="442" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">00000</text>
-            <text x="442" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">5 bits = x0</text>
-            <rect x="476" y="-10" width="60" height="44" rx="3" fill="rgba(100,150,255,0.28)" stroke="rgba(100,150,255,0.85)"/>
-            <text x="506" y="6" text-anchor="middle" font-size="7" fill="rgba(100,150,255,0.85)">Rd (dst)</text>
-            <text x="506" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">00000</text>
-            <text x="506" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">5 bits = x0</text>
-          </g>
-          <text x="358" y="56" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">fixed 32-bit format · always opcode | shift | immediate | source | destination</text>
-        </g>
-
-        <!-- RISC-V row -->
-        <g transform="translate(40, 250)">
-          <text x="0" y="0" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.95)" letter-spacing="0.15em">RISC-V (RV64I)</text>
-          <text x="0" y="14" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">Berkeley 2010 · open standard</text>
-          <text x="0" y="32" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.85)">addi a0, a0, 5</text>
-          <text x="0" y="48" font-family="DM Mono" font-size="8.5" fill="rgba(255,255,255,0.4)">4 bytes · always · ~50 instructions in base ISA</text>
-          <g font-family="DM Mono" font-size="9">
-            <rect x="180" y="-10" width="100" height="44" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.7)"/>
-            <text x="230" y="6" text-anchor="middle" font-size="7" fill="rgba(150,216,150,0.7)">imm12</text>
-            <text x="230" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">000000000101</text>
-            <text x="230" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">12 bits = 5</text>
-            <rect x="284" y="-10" width="60" height="44" rx="3" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.7)"/>
-            <text x="314" y="6" text-anchor="middle" font-size="7" fill="rgba(100,150,255,0.7)">rs1 (src)</text>
-            <text x="314" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">01010</text>
-            <text x="314" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">5 bits = a0</text>
-            <rect x="348" y="-10" width="46" height="44" rx="3" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.25)"/>
-            <text x="371" y="6" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">funct3</text>
-            <text x="371" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">000</text>
-            <text x="371" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">3 bits</text>
-            <rect x="398" y="-10" width="60" height="44" rx="3" fill="rgba(100,150,255,0.28)" stroke="rgba(100,150,255,0.85)"/>
-            <text x="428" y="6" text-anchor="middle" font-size="7" fill="rgba(100,150,255,0.85)">rd (dst)</text>
-            <text x="428" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">01010</text>
-            <text x="428" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">5 bits = a0</text>
-            <rect x="462" y="-10" width="74" height="44" rx="3" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.7)"/>
-            <text x="499" y="6" text-anchor="middle" font-size="7" fill="rgba(212,168,83,0.7)">opcode</text>
-            <text x="499" y="22" text-anchor="middle" fill="rgba(255,255,255,0.85)">0010011</text>
-            <text x="499" y="32" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.4)">7 bits</text>
-          </g>
-          <text x="358" y="56" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">"I-type" format · immediate | rs1 | funct3 | rd | opcode</text>
-        </g>
-
-        <!-- Bottom legend -->
-        <g transform="translate(40, 326)" font-family="DM Mono" font-size="8.5">
-          <rect x="0" y="-9" width="14" height="14" fill="rgba(212,168,83,0.5)" rx="2"/>
-          <text x="22" y="2" fill="rgba(255,255,255,0.7)">opcode</text>
-          <rect x="100" y="-9" width="14" height="14" fill="rgba(100,150,255,0.5)" rx="2"/>
-          <text x="122" y="2" fill="rgba(255,255,255,0.7)">register field</text>
-          <rect x="240" y="-9" width="14" height="14" fill="rgba(150,216,150,0.5)" rx="2"/>
-          <text x="262" y="2" fill="rgba(255,255,255,0.7)">immediate value</text>
-          <rect x="400" y="-9" width="14" height="14" fill="rgba(255,255,255,0.15)" rx="2"/>
-          <text x="422" y="2" fill="rgba(255,255,255,0.7)">misc / format-specific</text>
-        </g>
-      </svg>
-      <p id="ch3-isa-p3" class="diagram-caption">The same logical operation (add 5 to a register) encoded three different ways. x86-64 uses a variable-length instruction with a one-byte opcode-prefix (REX.W marks 64-bit), a one-byte main opcode, an operand byte, and a four-byte little-endian immediate value. ARM64 packs everything into a fixed 32-bit word with carefully laid-out fields. RISC-V also uses a fixed 32-bit word, but its field layout is different again, and there are only six instruction <em>formats</em> total in the entire base ISA. Three architectures, three philosophies; each set of bits is meaningless on the other two CPUs. The contract between hardware and software is exactly which patterns of bits mean what.</p>
+    <div class="diagram-card fig-v2" id="fig-3-1">
+      <div class="diagram-label">Fig 3.1&nbsp;· Same operation&nbsp;· three ISAs&nbsp;· three encodings</div>
+      <svg viewBox="0 0 400 376" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29">
+<title id="svgt-part1-29">Fig 3.1 · Same operation · three ISAs · three encodings</title>
+<desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, as the 32 bits each one uses. x86-64 add rax, 5 is the bytes 48 83 C0 05: a prefix, the opcode, a byte naming rax, and 5. ARM64 add x0, x0, #5 is 0x91001400: the opcode first, then 5, then the two register numbers. RISC-V addi a0, a0, 5 is 0x00550513: 5 first and the opcode last. The same three ingredients sit in different places, so each pattern means nothing to the other two chips.</desc>
+<text x="20" y="34" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">x86-64</text>
+<text x="380" y="34" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.8)">add rax, 5</text>
+<rect x="24" y="46" width="86" height="30" rx="3" fill="#9a9a9a" fill-opacity="0.18" stroke="#9a9a9a" stroke-opacity="0.75"/>
+<text x="28.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="39.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="50.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="61.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="72.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="83.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="94.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="105.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="67" y="96" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9a9a9a">prefix</text>
+<rect x="112" y="46" width="86" height="30" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.75"/>
+<rect class="fx" x="110" y="44" width="90" height="34" rx="4" fill="#d4a853" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.6777;0.6778;0.9442;0.9443;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="116.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="127.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="138.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="149.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="160.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="171.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="182.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="193.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="155" y="96" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">opcode</text>
+<rect x="200" y="46" width="86" height="30" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.75"/>
+<rect class="fx" x="198" y="44" width="90" height="34" rx="4" fill="#86a8ff" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3666;0.3667;0.6331;0.6332;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="204.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="215.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="226.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="237.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="248.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="259.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="270.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="281.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="243" y="96" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">rax</text>
+<rect x="288" y="46" width="86" height="30" rx="3" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-opacity="0.75"/>
+<rect class="fx" x="286" y="44" width="90" height="34" rx="4" fill="#9bd89b" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0554;0.0556;0.3220;0.3221;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="292.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="303.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="314.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="325.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="336.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="347.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="358.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="369.5" y="66" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="331" y="96" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">5</text>
+<text x="380" y="118" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">48 83 C0 05</text>
+<text x="20" y="146" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">ARM64</text>
+<text x="380" y="146" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.8)">add x0, x0, #5</text>
+<rect x="24" y="158" width="97" height="30" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.75"/>
+<rect class="fx" x="22" y="156" width="101" height="34" rx="4" fill="#d4a853" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.6777;0.6778;0.9442;0.9443;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="28.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="39.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="50.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="61.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="72.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="83.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="94.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="105.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="116.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="72.5" y="208" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">opcode</text>
+<rect x="123" y="158" width="9" height="30" rx="3" fill="#9a9a9a" fill-opacity="0.18" stroke="#9a9a9a" stroke-opacity="0.75"/>
+<text x="127.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<rect x="134" y="158" width="130" height="30" rx="3" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-opacity="0.75"/>
+<rect class="fx" x="132" y="156" width="134" height="34" rx="4" fill="#9bd89b" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0554;0.0556;0.3220;0.3221;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="138.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="149.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="160.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="171.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="182.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="193.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="204.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="215.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="226.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="237.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="248.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="259.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="199" y="208" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">5</text>
+<rect x="266" y="158" width="53" height="30" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.75"/>
+<rect class="fx" x="264" y="156" width="57" height="34" rx="4" fill="#86a8ff" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3666;0.3667;0.6331;0.6332;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="270.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="281.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="292.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="303.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="314.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="292.5" y="208" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">x0</text>
+<rect x="321" y="158" width="53" height="30" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.75"/>
+<rect class="fx" x="319" y="156" width="57" height="34" rx="4" fill="#86a8ff" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3666;0.3667;0.6331;0.6332;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="325.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="336.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="347.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="358.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="369.5" y="178" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="347.5" y="208" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">x0</text>
+<text x="380" y="230" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x91001400</text>
+<text x="20" y="258" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">RISC-V</text>
+<text x="380" y="258" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.8)">addi a0, a0, 5</text>
+<rect x="24" y="270" width="130" height="30" rx="3" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-opacity="0.75"/>
+<rect class="fx" x="22" y="268" width="134" height="34" rx="4" fill="#9bd89b" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0554;0.0556;0.3220;0.3221;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="28.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="39.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="50.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="61.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="72.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="83.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="94.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="105.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="116.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="127.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="138.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="149.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="89" y="320" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">5</text>
+<rect x="156" y="270" width="53" height="30" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.75"/>
+<rect class="fx" x="154" y="268" width="57" height="34" rx="4" fill="#86a8ff" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3666;0.3667;0.6331;0.6332;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="160.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="171.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="182.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="193.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="204.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="182.5" y="320" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">a0</text>
+<rect x="211" y="270" width="31" height="30" rx="3" fill="#9a9a9a" fill-opacity="0.18" stroke="#9a9a9a" stroke-opacity="0.75"/>
+<text x="215.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="226.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="237.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<rect x="244" y="270" width="53" height="30" rx="3" fill="#86a8ff" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.75"/>
+<rect class="fx" x="242" y="268" width="57" height="34" rx="4" fill="#86a8ff" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3666;0.3667;0.6331;0.6332;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="248.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="259.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="270.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="281.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="292.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="270.5" y="320" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">a0</text>
+<rect x="299" y="270" width="75" height="30" rx="3" fill="#d4a853" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.75"/>
+<rect class="fx" x="297" y="268" width="79" height="34" rx="4" fill="#d4a853" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.6777;0.6778;0.9442;0.9443;0.9999;1.0000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="303.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="314.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="325.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="336.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="347.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">0</text>
+<text x="358.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="369.5" y="290" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#fff">1</text>
+<text x="336.5" y="320" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">opcode</text>
+<text x="380" y="342" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x00550513</text>
+<rect x="20" y="354" width="14" height="14" rx="2" fill="#d4a853" fill-opacity="0.5" stroke="#d4a853"/>
+<text x="40" y="366" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">opcode</text>
+<rect x="140" y="354" width="14" height="14" rx="2" fill="#86a8ff" fill-opacity="0.5" stroke="#86a8ff"/>
+<text x="160" y="366" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">register</text>
+<rect x="260" y="354" width="14" height="14" rx="2" fill="#9bd89b" fill-opacity="0.5" stroke="#9bd89b"/>
+<text x="280" y="366" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">the 5</text>
+</svg>
+      <p id="ch3-isa-p3" class="diagram-caption">"Add 5 to a register" in the three instruction sets that run the world: the same three ingredients, an opcode, a register and the number 5, packed into 32 bits in three different orders. Each pattern is meaningless to the other two chips.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>x86-64.</b> Variable length, 1 to 15 bytes. Here a prefix (64-bit), the opcode, a byte naming rax, and the 5 in one byte. With a 32-bit immediate it would be 7 bytes.</li>
+          <li><b>ARM64.</b> Every instruction is exactly 32 bits; this one is opcode, a shift bit, the 12-bit immediate, then source and destination registers.</li>
+          <li><b>RISC-V.</b> Also 32 bits, in another order: immediate first, opcode last. The base ISA has only six formats.</li>
+          <li><b>The order of the bits.</b> x86 is shown byte by byte as stored; ARM64 and RISC-V as 32-bit words, high bit on the left.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch3-isa-p4">
@@ -3308,91 +3361,60 @@
       before they run.
     </p>
 
-    <div class="diagram-card" id="fig-3-2">
-      <div class="diagram-label">Fig 3.2 · Rosetta 2 · how a chip pretends to be a different chip</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32"><title id="svgt-part1-32">Fig 3.2 · Rosetta 2 · how a chip pretends to be a different chip</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">x86 BINARY → AHEAD-OF-TIME TRANSLATION → ARM BINARY → CACHE</text>
-
-        <!-- LEFT: x86 binary stream -->
-        <g transform="translate(40, 70)">
-          <text x="80" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" letter-spacing="0.15em">x86-64 INPUT</text>
-          <text x="80" y="14" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">a Mac App built for Intel</text>
-          <rect x="0" y="28" width="160" height="170" rx="6" fill="#0d0d0d" stroke="rgba(212,168,83,0.4)"/>
-          <g font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.7)">
-            <text x="14" y="50">push rbp</text>
-            <text x="14" y="68">mov rbp, rsp</text>
-            <text x="14" y="86">sub rsp, 32</text>
-            <text x="14" y="104">mov [rbp-4], 5</text>
-            <text x="14" y="122">add [rbp-4], 3</text>
-            <text x="14" y="140">mov rax, [rbp-4]</text>
-            <text x="14" y="158">leave</text>
-            <text x="14" y="176">ret</text>
-          </g>
-          <text x="80" y="216" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">variable-length · 8 instructions</text>
-        </g>
-
-        <!-- MIDDLE: Rosetta 2 -->
-        <g transform="translate(240, 70)">
-          <text x="120" y="0" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.95)" letter-spacing="0.15em">ROSETTA 2</text>
-          <text x="120" y="14" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">macOS, 2020 · translation engine</text>
-
-          <rect x="0" y="28" width="240" height="170" rx="8" fill="#1a1200" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
-
-          <!-- Steps inside -->
-          <rect x="20" y="48" width="200" height="32" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.45)"/>
-          <text x="120" y="60" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">decode x86 instructions</text>
-          <text x="120" y="73" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">parse REX, ModR/M, immediates</text>
-
-          <line x1="120" y1="80" x2="120" y2="92" stroke="rgba(212,168,83,0.5)" stroke-width="1.2"/>
-          <polygon points="116,89 120,95 124,89" fill="rgba(212,168,83,0.7)"/>
-
-          <rect x="20" y="94" width="200" height="32" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.45)"/>
-          <text x="120" y="106" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">map x86 semantics → ARM</text>
-          <text x="120" y="119" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">model RFLAGS, segment regs in software</text>
-
-          <line x1="120" y1="126" x2="120" y2="138" stroke="rgba(212,168,83,0.5)" stroke-width="1.2"/>
-          <polygon points="116,135 120,141 124,135" fill="rgba(212,168,83,0.7)"/>
-
-          <rect x="20" y="140" width="200" height="32" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.45)"/>
-          <text x="120" y="152" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">emit ARM64 native code</text>
-          <text x="120" y="165" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">store in /var/db/oah cache</text>
-
-          <text x="120" y="190" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(150,216,150,0.85)">runs once per binary on first launch</text>
-
-          <!-- Animated translation pulse -->
-          <circle r="3" fill="#d4a853">
-            <animateMotion path="M 0 110 L 240 110" dur="2.4s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="2.4s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <!-- RIGHT: ARM binary -->
-        <g transform="translate(520, 70)">
-          <text x="80" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)" letter-spacing="0.15em">ARM64 OUTPUT</text>
-          <text x="80" y="14" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">native on Apple Silicon</text>
-          <rect x="0" y="28" width="160" height="170" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.4)"/>
-          <g font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.7)">
-            <text x="14" y="50">stp x29, x30</text>
-            <text x="14" y="68">mov x29, sp</text>
-            <text x="14" y="86">sub sp, sp, #32</text>
-            <text x="14" y="104">mov w8, #5</text>
-            <text x="14" y="122">str w8, [...]</text>
-            <text x="14" y="140">ldr w8, [...]</text>
-            <text x="14" y="158">add w8, w8, #3</text>
-            <text x="14" y="176">ret</text>
-          </g>
-          <text x="80" y="216" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">fixed 32-bit · runs at near-native speed</text>
-        </g>
-
-        <!-- Connecting arrows between panels -->
-        <line x1="200" y1="155" x2="240" y2="155" stroke="rgba(212,168,83,0.6)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-        <polygon points="234,151 244,155 234,159" fill="rgba(212,168,83,0.85)"/>
-        <line x1="480" y1="155" x2="520" y2="155" stroke="rgba(150,216,150,0.6)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-        <polygon points="514,151 524,155 514,159" fill="rgba(150,216,150,0.85)"/>
-
-        <text x="360" y="296" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">x86 binary in · ARM binary out · same program · ~80% native performance</text>
-      </svg>
-      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 is what made the 2020 Intel-to-Apple-Silicon transition feel painless. When a Mac launches an x86 binary on an ARM-based M-series chip, Rosetta 2 reads the entire executable once, on first launch, translates each x86-64 instruction into a sequence of ARM64 instructions that produces the same observable result, and saves the translated binary to a cache. Subsequent launches skip the translation step. The translated code runs at roughly 80% the speed of native ARM, sometimes faster than the original on the original Intel hardware. Rosetta 2 works because any sequence of x86 instructions can be reproduced by some sequence of ARM ones, and a careful translator can find that sequence ahead of time. The one genuine hazard is memory ordering, because x86 guarantees a stricter order for memory operations than ARM does by default. Apple solved it in silicon: the M-series chips carry a mode that makes the ARM core enforce x86's stronger ordering while translated code runs, so even a multithreaded x86 program keeps behaving exactly as it did on Intel.</p>
+    <div class="diagram-card fig-v2" id="fig-3-2">
+      <div class="diagram-label">Fig 3.2&nbsp;· Rosetta 2&nbsp;· an Intel app, translated once for an ARM chip</div>
+      <svg viewBox="0 0 400 446" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-30 svgd-part1-30">
+<title id="svgt-part1-30">Fig 3.2 · Rosetta 2 · an Intel app, translated once for an ARM chip</title>
+<desc id="svgd-part1-30">Three x86-64 instructions from an Intel app: store 5 in memory, add 3 to it in place, load it into eax. Rosetta 2 translates them once, on first launch, into six ARM64 instructions that do the same work: ARM cannot add to memory directly, so the middle step becomes load, add, store. The translation is cached and runs natively.</desc>
+<text x="20" y="22" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">x86-64 · AN INTEL APP</text>
+<rect x="20" y="34" width="360" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<rect x="20" y="34" width="5" height="26" rx="1" fill="#d4a853"/>
+<rect class="fx" x="18" y="32" width="364" height="30" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.1465;0.1467;0.3064;0.3065;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<text x="36" y="52" font-family="DM Mono" font-size="14" fill="#fff">mov dword [rbp-4], 5</text>
+<rect x="20" y="64" width="360" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<rect x="20" y="64" width="5" height="26" rx="1" fill="#86a8ff"/>
+<rect class="fx" x="18" y="62" width="364" height="30" rx="5" fill="none" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.3865;0.3867;0.5464;0.5465;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<text x="36" y="82" font-family="DM Mono" font-size="14" fill="#fff">add dword [rbp-4], 3</text>
+<rect x="20" y="94" width="360" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<rect x="20" y="94" width="5" height="26" rx="1" fill="#9bd89b"/>
+<rect class="fx" x="18" y="92" width="364" height="30" rx="5" fill="none" stroke="#9bd89b" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.6265;0.6267;0.7864;0.7865;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<text x="36" y="112" font-family="DM Mono" font-size="14" fill="#fff">mov eax, [rbp-4]</text>
+<path d="M 200 126 V 140" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+<rect x="60" y="140" width="280" height="44" rx="8" fill="#1d1810" stroke="#d4a853" stroke-opacity="0.7"/>
+<rect class="fx" x="60" y="140" width="280" height="44" rx="8" fill="#d4a853" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.1733;0.1867;0.8400;0.8667;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<text x="200" y="160" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">Rosetta 2</text>
+<text x="200" y="177" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">translates once, on first launch</text>
+<path d="M 200 184 V 198" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/><polygon points="195,196 200,204 205,196" fill="rgba(255,255,255,0.5)"/>
+<text x="20" y="222" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">ARM64 · CACHED, RUNS NATIVELY</text>
+<rect x="30" y="232" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.2265;0.2267;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="250" font-family="DM Mono" font-size="14" fill="#fff">mov  w8, #5</text></g>
+<rect x="30" y="262" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.2265;0.2267;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="280" font-family="DM Mono" font-size="14" fill="#fff">stur w8, [x29, #-4]</text></g>
+<rect x="20" y="232" width="5" height="56" rx="1" fill="#d4a853"/>
+<rect class="fx" x="28" y="230" width="354" height="60" rx="5" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.2265;0.2267;0.3864;0.3865;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<rect x="30" y="292" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.4665;0.4667;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="310" font-family="DM Mono" font-size="14" fill="#fff">ldur w8, [x29, #-4]</text></g>
+<rect x="30" y="322" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.4665;0.4667;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="340" font-family="DM Mono" font-size="14" fill="#fff">add  w8, w8, #3</text></g>
+<rect x="30" y="352" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.4665;0.4667;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="370" font-family="DM Mono" font-size="14" fill="#fff">stur w8, [x29, #-4]</text></g>
+<rect x="20" y="292" width="5" height="86" rx="1" fill="#86a8ff"/>
+<rect class="fx" x="28" y="290" width="354" height="90" rx="5" fill="none" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.4665;0.4667;0.6264;0.6265;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<rect x="30" y="382" width="350" height="26" rx="4" fill="#151515" stroke="rgba(255,255,255,0.18)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0667;0.0668;0.0933;0.0933;0.7065;0.7067;1.0000" dur="7.5s" repeatCount="indefinite"/><text x="44" y="400" font-family="DM Mono" font-size="14" fill="#fff">ldur w0, [x29, #-4]</text></g>
+<rect x="20" y="382" width="5" height="26" rx="1" fill="#9bd89b"/>
+<rect class="fx" x="28" y="380" width="354" height="30" rx="5" fill="none" stroke="#9bd89b" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0933;0.0933;0.7065;0.7067;0.8664;0.8665;1.0000" dur="7.5s" repeatCount="indefinite"/></rect>
+<text x="20" y="436" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.5)">3 instructions in, 6 out</text>
+</svg>
+      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 let Intel apps run on Apple Silicon by translating their x86 code into ARM code once, on first launch, and caching it. Where x86 adds to memory in one instruction, ARM must load, add and store, so one line can become three.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Ahead of time.</b> Rosetta reads the whole executable on first launch, writes an ARM version, and caches it; later launches skip the translation. Translated code runs at roughly 80% of native speed.</li>
+          <li><b>One for many.</b> Any x86 sequence has some ARM sequence with the same observable result; the translator's job is to find it. The ARM shown here is a faithful translation, not Rosetta's literal output.</li>
+          <li><b>The hard part.</b> x86 promises a stricter order for memory operations than ARM. Apple's chips have a mode that enforces x86's order while translated code runs, so multithreaded programs behave as they did on Intel.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>RISC vs CISC, and why the war ended in a draw</h3>
