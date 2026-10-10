@@ -4557,53 +4557,51 @@
       carries roughly a third of web traffic by volume (nearly all of Google's own, and a large and growing share of Cloudflare's and Meta's) and is climbing toward HTTP/2's share everywhere else.
     </p>
 
-    <div class="diagram-card" id="fig-11-15">
-      <div class="diagram-label">Fig 11.15 · HTTP/3 over QUIC · escaping TCP at the protocol layer</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-54"><title id="svgt-part3-54">Fig 11.15 · HTTP/3 over QUIC · escaping TCP at the protocol layer</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">three layers of the legacy stack collapse into one, built on UDP</text>
-
-        <!-- HTTP/2 stack on left -->
-        <g transform="translate(40,68)">
-          <text x="120" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">HTTP/2: three protocols stacked</text>
-          <rect x="40"  y="14" width="160" height="40" rx="4" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="120" y="38" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">HTTP/2 (binary, mux)</text>
-          <rect x="40"  y="58" width="160" height="40" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="82" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">TLS 1.3 (encrypt)</text>
-          <rect x="40"  y="102" width="160" height="40" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="120" y="126" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">TCP (reliable byte stream)</text>
-          <rect x="40"  y="146" width="160" height="40" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="120" y="170" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">IP (best-effort packets)</text>
-
-          <text x="120" y="216" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">3 round trips: TCP + TLS + first request</text>
-          <text x="120" y="228" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.85)">⚠ TCP holds back streams on packet loss</text>
-        </g>
-
-        <!-- HTTP/3 stack on right -->
-        <g transform="translate(440,68)">
-          <text x="120" y="0" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">HTTP/3: TCP+TLS fused into QUIC</text>
-          <rect x="40"  y="14" width="160" height="40" rx="4" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="120" y="38" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">HTTP/3 (binary, mux)</text>
-          <rect x="40"  y="58" width="160" height="84" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.95)" stroke-width="1.5"/>
-          <text x="120" y="86" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">QUIC</text>
-          <text x="120" y="100" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">streams + reliable +</text>
-          <text x="120" y="114" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">encrypted + handshake</text>
-          <text x="120" y="128" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">all in one protocol</text>
-          <rect x="40"  y="146" width="160" height="40" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="120" y="170" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">UDP (datagrams)</text>
-
-          <text x="120" y="216" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">1 round trip · 0-RTT for resumed sessions</text>
-          <text x="120" y="228" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">✓ each stream independently ordered</text>
-        </g>
-
-        <!-- Bottom comparison -->
-        <g transform="translate(40,290)">
-          <rect x="0" y="0" width="640" height="60" rx="4" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">WHY UDP? TCP'S ASSUMPTIONS ARE THE PROBLEM</text>
-          <text x="320" y="40" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">TCP is implemented in OS kernels and treats its byte stream as monolithic.</text>
-          <text x="320" y="54" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">QUIC moves transport into user space, ships in the application, can iterate per-release. UDP is just the chassis.</text>
-        </g>
-      </svg>
-      <p id="ch11-modern-p6" class="diagram-caption">HTTP/3 is what you get when you take HTTP/2's good ideas and refuse to inherit TCP's bad ones. The three independent layers of HTTP/2 (HTTP, TLS, TCP) collapse into one (HTTP/3 over QUIC), which itself runs on UDP because UDP, in §01 of <a href="#ch10">Chapter 10</a>, was the protocol that didn't get in the way. The handshake is one round trip in the cold case, zero in the resumed case. Each stream has its own ordering, so packet loss on one image's bytes doesn't stall a different image's bytes. The catch, and the reason this transition has taken a decade, is that QUIC is implemented in user space rather than the kernel, every server and CDN had to rewrite its transport layer, and corporate firewalls had to learn to allow UDP/443. The transition is happening, slowly, the way the IPv6 migration in <a href="#ch9">Chapter 9</a> happens: not with a flag day, but with a steady year-on-year shift of the largest operators dragging the rest of the network behind them.</p>
+    <div class="diagram-card fig-v2" id="fig-11-15">
+      <div class="diagram-label">Fig 11.15&nbsp;· HTTP/3 over QUIC&nbsp;· escaping TCP at the protocol layer</div>
+      <svg viewBox="0 0 400 284" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-54 svgd-part3-54">
+<title id="svgt-part3-54">Fig 11.15 · HTTP/3 over QUIC · escaping TCP at the protocol layer</title>
+<desc id="svgd-part3-54">Nine packets from three streams, A, B and C, arrive in turn; the fourth, part of stream A, is lost and resent as the tenth. Over TCP every packet after the loss, from all three streams, is held until the resend arrives. Over QUIC the packets of B and C are delivered as they arrive, and only stream A waits.</desc>
+<text x="10" y="24" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">HTTP/2 over TCP: B and C wait for A</text>
+<text x="30" y="51" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">A</text>
+<line x1="48" y1="46" x2="382" y2="46" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<text x="30" y="75" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">B</text>
+<line x1="48" y1="70" x2="382" y2="70" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<text x="30" y="99" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">C</text>
+<line x1="48" y1="94" x2="382" y2="94" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<text x="10" y="140" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">HTTP/3 over QUIC: only A waits</text>
+<text x="30" y="167" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">A</text>
+<line x1="48" y1="162" x2="382" y2="162" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<text x="30" y="191" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">B</text>
+<line x1="48" y1="186" x2="382" y2="186" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<text x="30" y="215" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">C</text>
+<line x1="48" y1="210" x2="382" y2="210" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.25"/>
+<defs><clipPath id="clip-fig-11-15"><rect class="fx" x="44" y="0" width="346" height="400"><animate attributeName="width" values="346;346;346;346;0;0;346;346" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.110000;0.810000;1.000000" dur="10s" repeatCount="indefinite"/></rect></clipPath></defs>
+<g clip-path="url(#clip-fig-11-15)"><rect x="69.0" y="39.0" width="14" height="14" rx="2" fill="#e07a3f"/><rect x="101.0" y="63.0" width="14" height="14" rx="2" fill="#4fc4e6"/><rect x="133.0" y="87.0" width="14" height="14" rx="2" fill="#9bd89b"/><path d="M166.0,40 l12,12 M178.0,40 l-12,12" stroke="#ec8d8d" stroke-width="2.5"/><line x1="211.0" y1="70" x2="360.0" y2="70" stroke="#4fc4e6" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="197.0" y="63.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#4fc4e6" stroke-width="2"/><circle cx="364.0" cy="70" r="3.5" fill="#4fc4e6"/><line x1="243.0" y1="94" x2="360.0" y2="94" stroke="#9bd89b" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="229.0" y="87.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#9bd89b" stroke-width="2"/><circle cx="364.0" cy="94" r="3.5" fill="#9bd89b"/><line x1="275.0" y1="46" x2="360.0" y2="46" stroke="#e07a3f" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="261.0" y="39.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#e07a3f" stroke-width="2"/><circle cx="364.0" cy="46" r="3.5" fill="#e07a3f"/><line x1="307.0" y1="70" x2="360.0" y2="70" stroke="#4fc4e6" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="293.0" y="63.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#4fc4e6" stroke-width="2"/><circle cx="364.0" cy="70" r="3.5" fill="#4fc4e6"/><line x1="339.0" y1="94" x2="360.0" y2="94" stroke="#9bd89b" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="325.0" y="87.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#9bd89b" stroke-width="2"/><circle cx="364.0" cy="94" r="3.5" fill="#9bd89b"/><rect x="357.0" y="39.0" width="14" height="14" rx="2" fill="#e07a3f" stroke="#fff" stroke-width="1.5"/><rect x="69.0" y="155.0" width="14" height="14" rx="2" fill="#e07a3f"/><rect x="101.0" y="179.0" width="14" height="14" rx="2" fill="#4fc4e6"/><rect x="133.0" y="203.0" width="14" height="14" rx="2" fill="#9bd89b"/><path d="M166.0,156 l12,12 M178.0,156 l-12,12" stroke="#ec8d8d" stroke-width="2.5"/><rect x="197.0" y="179.0" width="14" height="14" rx="2" fill="#4fc4e6"/><rect x="229.0" y="203.0" width="14" height="14" rx="2" fill="#9bd89b"/><line x1="275.0" y1="162" x2="360.0" y2="162" stroke="#e07a3f" stroke-dasharray="3 3" stroke-opacity="0.8"/><rect x="261.0" y="155.0" width="14" height="14" rx="2" fill="#0a1c2d" stroke="#e07a3f" stroke-width="2"/><circle cx="364.0" cy="162" r="3.5" fill="#e07a3f"/><rect x="293.0" y="179.0" width="14" height="14" rx="2" fill="#4fc4e6"/><rect x="325.0" y="203.0" width="14" height="14" rx="2" fill="#9bd89b"/><rect x="357.0" y="155.0" width="14" height="14" rx="2" fill="#e07a3f" stroke="#fff" stroke-width="1.5"/></g>
+<line x1="48" y1="234" x2="382" y2="234" stroke="rgba(223,234,242,0.6)"/>
+<line x1="76.0" y1="231" x2="76.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="108.0" y1="231" x2="108.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="140.0" y1="231" x2="140.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="172.0" y1="231" x2="172.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="204.0" y1="231" x2="204.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="236.0" y1="231" x2="236.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="268.0" y1="231" x2="268.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="300.0" y1="231" x2="300.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="332.0" y1="231" x2="332.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<line x1="364.0" y1="231" x2="364.0" y2="237" stroke="rgba(223,234,242,0.6)"/>
+<text x="172" y="254" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">A2 lost</text>
+<text x="374" y="254" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">A2 resent</text>
+<text x="48" y="274" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">packets in arrival order</text>
+</svg>
+      <p id="ch11-modern-p6" class="diagram-caption">TCP hands the application one ordered byte stream, so when a packet of stream A is lost, the packets of B and C that arrive after it wait too. QUIC orders each stream on its own: B and C are delivered as they arrive, and only A waits for the resent packet.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The packets.</b> Three streams take turns; the fourth packet, part of A, is lost and resent at the end. A filled square is handed to the application on arrival; a hollow one waits along its dashed line.</li>
+          <li><b>Why TCP cannot help.</b> It numbers bytes, not streams (Fig 10.4), so it cannot know that B's bytes do not depend on A's.</li>
+          <li><b>The price of the fix.</b> QUIC runs over UDP and ships in the application, so every server, CDN and firewall had to learn it; the handshake folds in TLS 1.3 (Fig 10.9).</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">
