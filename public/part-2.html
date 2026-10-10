@@ -4990,24 +4990,45 @@
       </details>
     </div>
 
-    <div class="diagram-card" id="fig-7-9">
-      <div class="diagram-label">Fig 7.9 · The same matmul, two ways</div>
-      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-55"><title id="svgt-part2-55">Fig 7.9 · The same matmul, two ways</title>
-        <!-- Pure Python bar -->
-        <rect x="60" y="60" width="540" height="40" rx="4" fill="rgba(232,120,120,0.4)" stroke="rgba(232,120,120,0.8)"/>
-        <text x="40"  y="78" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">pure</text>
-        <text x="40"  y="90" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">Python</text>
-        <text x="330" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">~2 minutes</text>
-
-        <!-- NumPy bar -->
-        <rect x="60" y="120" width="6"   height="40" rx="2" fill="rgba(150,216,150,0.6)" stroke="rgba(150,216,150,0.9)"/>
-        <text x="40"  y="144" text-anchor="end" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">np.dot</text>
-        <text x="80"  y="144" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">0.012 s · ~10,000× faster</text>
-
-        <text x="360" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">1000 × 1000 matrix multiplication</text>
-        <text x="360" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">PURE-PYTHON NUMERICS IS NOT REALLY A THING ANYONE DOES</text>
-      </svg>
-      <p id="ch7-datasci-p3" class="diagram-caption">A 1000 × 1000 matrix multiplication in pure Python takes about two minutes: three nested loops, a billion multiply-adds, each paying the interpreter tax. The same multiplication in NumPy takes a hundredth of a second. Four orders of magnitude. The difference is not Python improving; the difference is that <code>np.dot</code> never executes Python in its inner loop. Once the BLAS call returns, you are back in Python, plotting or printing or storing, work where the human's time matters more than the CPU's. This is the deal: humans use Python. The machine uses C and Fortran. They meet at the wrapper.</p>
+    <div class="diagram-card fig-v2" id="fig-7-9">
+      <div class="diagram-label">Fig 7.9&nbsp;· The same matmul, two ways</div>
+      <svg viewBox="0 0 400 196" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-55 svgd-part2-55">
+<title id="svgt-part2-55">Fig 7.9 · The same matmul, two ways</title>
+<desc id="svgd-part2-55">Multiplying two 1000 by 1000 matrices, timed on a logarithmic axis from one millisecond to a thousand seconds. np.dot finishes in about 0.012 seconds. Pure Python, with three nested loops, finishes in about two minutes, roughly ten thousand times later.</desc>
+<text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1000 × 1000 matrix multiply, time to finish</text>
+<text x="20" y="58" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">np.dot</text>
+<rect x="92" y="40" width="288" height="26" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92" y="40" width="51.8" height="26" rx="2" fill="#84ffb2" fill-opacity="0.5"><animate attributeName="width" values="51.801;51.801;51.801;51.801;0;0;51.801;51.801" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.285904;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.285704;0.285904;1.000000" dur="10s" repeatCount="indefinite"/><text x="149.801" y="58" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">≈ 0.012 s</text></g>
+<text x="20" y="108" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">pure</text>
+<text x="20" y="124" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">Python</text>
+<rect x="92" y="90" width="288" height="26" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.12)"/>
+<rect x="92" y="90" width="243.8" height="26" rx="2" fill="#d4a853" fill-opacity="0.5"><animate attributeName="width" values="243.801;243.801;243.801;243.801;0;0;243.801;243.801" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.752571;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.752371;0.752571;1.000000" dur="10s" repeatCount="indefinite"/><text x="329.801" y="108" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">≈ 2 min</text></g>
+<line x1="92" y1="140" x2="380" y2="140" stroke="rgba(198,222,206,0.3)"/>
+<line x1="92.0" y1="136" x2="92.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<text x="92" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 ms</text>
+<line x1="140.0" y1="136" x2="140.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<line x1="188.0" y1="136" x2="188.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<text x="188" y="158" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0.1 s</text>
+<line x1="236.0" y1="136" x2="236.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<line x1="284.0" y1="136" x2="284.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<text x="284" y="158" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">10 s</text>
+<line x1="332.0" y1="136" x2="332.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<line x1="380.0" y1="136" x2="380.0" y2="144" stroke="rgba(198,222,206,0.4)"/>
+<text x="380" y="158" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1000 s</text>
+<text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">log scale: each tick is ×10</text>
+<line y1="34" y2="140" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.099950;0.100000;0.159000;0.160000;0.860000;0.870000;1.000000" dur="10s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch7-datasci-p3" class="diagram-caption">Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter's toll, and about a hundredth of a second with <code>np.dot</code>. On this logarithmic axis that is four steps of ten: none of the gap is Python getting faster.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The count.</b> Three nested loops over 1000 make 10<sup>9</sup> multiply-adds, and in pure Python each one runs the steps of Fig 7.7.</li>
+          <li><b>The other side.</b> <code>np.dot</code> hands the whole job to BLAS (Fig 7.8). Exact times vary with the machine; the ratio stays in the thousands.</li>
+          <li><b>The rule.</b> Keep Python out of the inner loop: let it call code that loops in C.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The verdict</h3>

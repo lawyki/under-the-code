@@ -3496,7 +3496,10 @@ against CPython's nine generic steps lit in turn; the cycle bars and "~150×"
 removed, §4g), 7.8 (np.dot descends four layers,
 Python, NumPy's C, BLAS dgemm, the CPU's vector units; the work fills at the
 bottom and one array returns; the unsourced "~20 lines of C per operation"
-dropped). The sweep's overlap test now compares ink boxes (font boxes trimmed
+dropped), 7.9 (a race on a log-time axis, 1 ms to
+1000 s, the cursor at constant speed per decade: np.dot done near 0.012 s, pure
+Python near 2 minutes, four decades apart; "exact times vary" stated). Part II's
+todo figures are all done (4.11 and 5.7 deferred to the conceptual pass). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
