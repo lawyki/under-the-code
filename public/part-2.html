@@ -4724,51 +4724,59 @@
       </details>
     </div>
 
-    <div class="diagram-card" id="fig-7-5">
-      <div class="diagram-label">Fig 7.5 · asyncio: cooperative scheduling on one thread</div>
-      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-51"><title id="svgt-part2-51">Fig 7.5 · asyncio: cooperative scheduling on one thread</title>
-        <!-- Single thread lane -->
-        <line x1="80" y1="120" x2="660" y2="120" stroke="rgba(132,255,178,0.5)" stroke-width="1.5"/>
-
-        <!-- Task slices -->
-        <g font-family="IBM Plex Mono" font-size="9" text-anchor="middle">
-          <rect x="80"  y="100" width="80" height="40" rx="3" fill="rgba(150,216,150,0.3)" stroke="rgba(150,216,150,0.7)"/>
-          <text x="120" y="124" fill="rgba(255,255,255,0.95)">Task A</text>
-
-          <rect x="170" y="100" width="60" height="40" rx="3" fill="rgba(100,150,255,0.3)" stroke="rgba(100,150,255,0.7)"/>
-          <text x="200" y="124" fill="rgba(255,255,255,0.95)">Task B</text>
-
-          <rect x="240" y="100" width="80" height="40" rx="3" fill="rgba(150,216,150,0.3)" stroke="rgba(150,216,150,0.7)"/>
-          <text x="280" y="124" fill="rgba(255,255,255,0.95)">Task A</text>
-
-          <rect x="330" y="100" width="60" height="40" rx="3" fill="rgba(232,120,120,0.3)" stroke="rgba(232,120,120,0.7)"/>
-          <text x="360" y="124" fill="rgba(255,255,255,0.95)">Task C</text>
-
-          <rect x="400" y="100" width="80" height="40" rx="3" fill="rgba(100,150,255,0.3)" stroke="rgba(100,150,255,0.7)"/>
-          <text x="440" y="124" fill="rgba(255,255,255,0.95)">Task B</text>
-
-          <rect x="490" y="100" width="60" height="40" rx="3" fill="rgba(232,120,120,0.3)" stroke="rgba(232,120,120,0.7)"/>
-          <text x="520" y="124" fill="rgba(255,255,255,0.95)">Task C</text>
-
-          <rect x="560" y="100" width="80" height="40" rx="3" fill="rgba(150,216,150,0.3)" stroke="rgba(150,216,150,0.7)"/>
-          <text x="600" y="124" fill="rgba(255,255,255,0.95)">Task A</text>
-        </g>
-
-        <!-- Awaits between tasks -->
-        <g font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.85)" text-anchor="middle">
-          <text x="165" y="92">await</text>
-          <text x="235" y="92">await</text>
-          <text x="325" y="92">await</text>
-          <text x="395" y="92">await</text>
-          <text x="485" y="92">await</text>
-          <text x="555" y="92">await</text>
-        </g>
-
-        <text x="360" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">One thread. Many tasks. Each yields at every I/O.</text>
-        <text x="360" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">cooperative scheduling: no GIL contention because there is only one thread</text>
-        <text x="360" y="180" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">THE PYTHON ANSWER TO MASSIVE I/O CONCURRENCY: BYPASS THREADS ENTIRELY</text>
-      </svg>
-      <p id="ch7-gil-p4" class="diagram-caption"><code>asyncio</code>, introduced in Python 3.4, sidesteps the GIL by sidestepping threads. A single thread runs an event loop. Functions marked <code>async def</code> are <em>coroutines</em>; when they hit <code>await</code> on an I/O operation, they suspend and the event loop runs a different ready coroutine. The thread is never blocked. A single Python process can handle tens of thousands of simultaneous network connections this way, far more than a thread per connection could carry. Nothing tears mid-operation, because nothing runs in parallel. The trade is that <code>async</code> is contagious (it propagates through every function that calls an async function) and integrating async with synchronous libraries is famously awkward. JavaScript made the same trade in <a href="part-3#ch12">Chapter 12</a>; the event loop is one of the great twentieth-century compromises in software design.</p>
+    <div class="diagram-card fig-v2" id="fig-7-5">
+      <div class="diagram-label">Fig 7.5&nbsp;· asyncio: cooperative scheduling on one thread</div>
+      <svg viewBox="0 0 400 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-51 svgd-part2-51">
+<title id="svgt-part2-51">Fig 7.5 · asyncio: cooperative scheduling on one thread</title>
+<desc id="svgd-part2-51">One thread runs an event loop with three tasks. Task A runs until it awaits a network reply; the loop switches to task B, which runs until it awaits; then task C. While all three wait, their waits overlap and the loop sleeps until the operating system reports a reply. Then A resumes, then B, then C, each finishing. Only one task ever runs at a time, but the three waits happen together.</desc>
+<text x="20" y="40" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">thread</text>
+<rect x="92" y="24" width="288" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect x="92.0" y="24" width="35.0" height="24" rx="2" fill="#84ffb2" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.247500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.247300;0.247500;1.000000" dur="10s" repeatCount="indefinite"/><text x="110" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">A</text></g>
+<rect x="248.0" y="24" width="35.0" height="24" rx="2" fill="#84ffb2" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.539167;0.626667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.626467;0.626667;1.000000" dur="10s" repeatCount="indefinite"/><text x="266" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">A</text></g>
+<rect x="128.0" y="24" width="35.0" height="24" rx="2" fill="#86a8ff" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.247500;0.335000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.334800;0.335000;1.000000" dur="10s" repeatCount="indefinite"/><text x="146" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">B</text></g>
+<rect x="284.0" y="24" width="35.0" height="24" rx="2" fill="#86a8ff" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.626667;0.714167;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.713967;0.714167;1.000000" dur="10s" repeatCount="indefinite"/><text x="302" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">B</text></g>
+<rect x="164.0" y="24" width="35.0" height="24" rx="2" fill="#d4a853" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.335000;0.422500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.422300;0.422500;1.000000" dur="10s" repeatCount="indefinite"/><text x="182" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">C</text></g>
+<rect x="320.0" y="24" width="35.0" height="24" rx="2" fill="#d4a853" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.714167;0.801667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.801467;0.801667;1.000000" dur="10s" repeatCount="indefinite"/><text x="338" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">C</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.538967;0.539167;1.000000" dur="10s" repeatCount="indefinite"/><text x="224" y="41" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">idle</text></g>
+<text x="20" y="90" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">task A</text>
+<rect x="92" y="74" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.1)"/>
+<rect x="92.0" y="74" width="35.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.247500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="128.0" y="76" width="119.0" height="18" rx="2" stroke-dasharray="3 3" fill="none" stroke="#84ffb2"><animate attributeName="width" values="119;119;119;119;0;0;119;119" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.247500;0.539167;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="248.0" y="74" width="35.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.539167;0.626667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.538967;0.539167;1.000000" dur="10s" repeatCount="indefinite"/><text x="136" y="90" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">await</text></g>
+<text x="20" y="124" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">task B</text>
+<rect x="92" y="108" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.1)"/>
+<rect x="128.0" y="108" width="35.0" height="22" rx="2" fill="#86a8ff" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.247500;0.335000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="164.0" y="110" width="119.0" height="18" rx="2" stroke-dasharray="3 3" fill="none" stroke="#86a8ff"><animate attributeName="width" values="119;119;119;119;0;0;119;119" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.335000;0.626667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="284.0" y="108" width="35.0" height="22" rx="2" fill="#86a8ff" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.626667;0.714167;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.626467;0.626667;1.000000" dur="10s" repeatCount="indefinite"/><text x="172" y="124" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">await</text></g>
+<text x="20" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">task C</text>
+<rect x="92" y="142" width="288" height="22" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.1)"/>
+<rect x="164.0" y="142" width="35.0" height="22" rx="2" fill="#d4a853" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.335000;0.422500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="200.0" y="144" width="119.0" height="18" rx="2" stroke-dasharray="3 3" fill="none" stroke="#d4a853"><animate attributeName="width" values="119;119;119;119;0;0;119;119" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.422500;0.714167;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="320.0" y="142" width="35.0" height="22" rx="2" fill="#d4a853" fill-opacity="0.6"><animate attributeName="width" values="35;35;35;35;0;0;35;35" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.714167;0.801667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.713967;0.714167;1.000000" dur="10s" repeatCount="indefinite"/><text x="208" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">await</text></g>
+<rect x="20" y="185" width="18" height="12" rx="2" fill="#84ffb2" fill-opacity="0.6"/>
+<text x="44" y="196" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">runs on the thread</text>
+<rect x="210" y="185" width="18" height="12" rx="2" fill="none" stroke="#84ffb2" stroke-dasharray="3 3"/>
+<text x="234" y="196" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">awaits a reply</text>
+<line y1="20" y2="168" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;92;92;380;380" keyTimes="0.000000;0.099950;0.100000;0.160000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.099950;0.100000;0.159000;0.160000;0.860000;0.870000;1.000000" dur="10s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch7-gil-p4" class="diagram-caption">One thread runs an event loop: each task runs until it awaits a network reply, and the loop switches to another that is ready, so the waits overlap although only one task runs at a time. No locks are needed, because a task can be interrupted only where it says <code>await</code>.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The history.</b> <code>asyncio</code> arrived in Python 3.4 (2014); the <code>async def</code> and <code>await</code> keywords followed in 3.5.</li>
+          <li><b>The idle gap.</b> When every task is waiting, the loop asks the operating system (<code>epoll</code>, <code>kqueue</code>) which sockets are ready, so one thread can watch thousands of connections.</li>
+          <li><b>The catch.</b> A task that computes without awaiting holds up every other task, and <code>async</code> spreads to every function that calls an async one.</li>
+        </ol>
+      </details>
     </div>
 
   </section>

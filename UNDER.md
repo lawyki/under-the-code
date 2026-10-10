@@ -3485,7 +3485,9 @@ with a Duck, a Robot and an int; the lookup at the call answers quack, BEEP,
 then AttributeError), 7.4 (one 30 ms axis, two panels: with the
 GIL the threads alternate at the 5 ms switch interval and T2 runs while T1
 waits on I/O, a GIL tag moving at each handoff; the 3.13 free-threaded build
-runs both at once). The sweep's overlap test now compares ink boxes (font boxes trimmed
+runs both at once), 7.5 (one thread lane over three task
+lanes: each runs until it awaits, the waits overlap, the loop idles on epoll,
+then each resumes). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
