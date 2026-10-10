@@ -4806,49 +4806,57 @@
       is recompiled each run.
     </p>
 
-    <div class="diagram-card" id="fig-7-6">
-      <div class="diagram-label">Fig 7.6 · CPython's pipeline, in detail</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-52"><title id="svgt-part2-52">Fig 7.6 · CPython's pipeline, in detail</title>
-        <!-- Source -->
-        <rect x="40" y="60" width="120" height="60" rx="6" fill="#0e1510" stroke="rgba(132,255,178,0.5)"/>
-        <text x="100" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">a + b * c</text>
-        <text x="100" y="102" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">source line</text>
-
-        <text x="180" y="94" font-family="IBM Plex Mono" font-size="14" fill="rgba(132,255,178,0.6)">→</text>
-
-        <!-- Tokenizer -->
-        <rect x="200" y="60" width="120" height="60" rx="6" fill="#0e1510" stroke="rgba(150,216,150,0.5)"/>
-        <text x="260" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">tokens</text>
-        <text x="260" y="96" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">[NAME a, +, NAME b,</text>
-        <text x="260" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">  *, NAME c]</text>
-
-        <text x="340" y="94" font-family="IBM Plex Mono" font-size="14" fill="rgba(132,255,178,0.6)">→</text>
-
-        <!-- AST -->
-        <rect x="360" y="60" width="120" height="60" rx="6" fill="#0e1510" stroke="rgba(100,150,255,0.5)"/>
-        <text x="420" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.95)">AST</text>
-        <text x="420" y="96" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">BinOp(Add,</text>
-        <text x="420" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)"> a, BinOp(Mul, b, c))</text>
-
-        <text x="500" y="94" font-family="IBM Plex Mono" font-size="14" fill="rgba(132,255,178,0.6)">→</text>
-
-        <!-- Bytecode -->
-        <rect x="520" y="60" width="186" height="60" rx="6" fill="#101a14" stroke="rgba(132,255,178,0.7)"/>
-        <text x="613" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">bytecode (.pyc)</text>
-        <text x="613" y="96" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">LOAD_NAME a · LOAD_NAME b</text>
-        <text x="613" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="rgba(198,222,206,0.85)">LOAD_NAME c · BINARY_MULTIPLY · BINARY_ADD</text>
-
-        <!-- Eval loop -->
-        <rect x="200" y="170" width="320" height="60" rx="6" fill="#0f1418" stroke="rgba(132,255,178,0.7)" stroke-width="1.5"/>
-        <text x="360" y="194" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">ceval.c: the eval loop</text>
-        <text x="360" y="212" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">while (true) { switch(opcode) { case LOAD_NAME: ...; case BINARY_ADD: ...; } }</text>
-
-        <line x1="360" y1="120" x2="360" y2="170" stroke="rgba(132,255,178,0.5)" stroke-dasharray="3,3"/>
-        <polygon points="360,170 354,164 366,164" fill="rgba(132,255,178,0.6)"/>
-
-        <text x="360" y="258" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">EVERY PYTHON STATEMENT IS A STREAM OF BYTECODES DISPATCHED THROUGH A SWITCH IN C</text>
-      </svg>
-      <p id="ch7-cpython-p3" class="diagram-caption">CPython compiles your source into a stream of stack-based bytecodes, the same idea Java's JVM later made famous, and one both inherited from older stack machines. The eval loop reads bytecodes one at a time and dispatches to a C handler. Each handler manipulates a stack of Python objects, performs the operation, and returns to the dispatch. This is the "switch on opcode" pattern at scale: a giant <code>switch</code> with about 120 cases, hand-tuned for branch prediction, with the most common opcodes (load/store local, binary add, function call) inlined for speed.</p>
+    <div class="diagram-card fig-v2" id="fig-7-6">
+      <div class="diagram-label">Fig 7.6&nbsp;· CPython's pipeline, in detail</div>
+      <svg viewBox="0 0 400 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-52 svgd-part2-52">
+<title id="svgt-part2-52">Fig 7.6 · CPython's pipeline, in detail</title>
+<desc id="svgd-part2-52">The line a + b * c, with a = 2, b = 3 and c = 4, goes through CPython's front end: tokens, a syntax tree, bytecode, then the eval loop. The bytecode is LOAD_NAME a, LOAD_NAME b, LOAD_NAME c, BINARY_OP *, BINARY_OP +. Running it, the loads push 2, 3 and 4 onto the value stack; BINARY_OP * pops 3 and 4 and pushes 12; BINARY_OP + pops 2 and 12 and pushes 14.</desc>
+<text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">a + b * c</text>
+<text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">a=2, b=3, c=4</text>
+<rect x="20" y="34" width="84" height="28" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<text x="62" y="53" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">tokens</text>
+<polygon points="106,44 110,48 106,52" fill="rgba(132,255,178,0.5)"/>
+<rect x="112" y="34" width="84" height="28" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<text x="154" y="53" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">AST</text>
+<polygon points="198,44 202,48 198,52" fill="rgba(132,255,178,0.5)"/>
+<rect x="204" y="34" width="84" height="28" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<text x="246" y="53" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">bytecode</text>
+<polygon points="290,44 294,48 290,52" fill="rgba(132,255,178,0.5)"/>
+<rect x="296" y="34" width="84" height="28" rx="3" fill="#152016" stroke="#84ffb2"/>
+<text x="338" y="53" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">eval loop</text>
+<text x="20" y="92" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">bytecode</text>
+<rect x="20" y="100" width="200" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect class="fx" x="20" y="100" width="200" height="24" rx="2" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.555500;0.555556;0.644222;0.644444;0.788000;0.788333;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="30" y="117" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">LOAD_NAME a</text>
+<rect x="20" y="128" width="200" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect class="fx" x="20" y="128" width="200" height="24" rx="2" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.555500;0.555556;0.788667;0.788889;0.932444;0.932778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">LOAD_NAME b</text>
+<rect x="20" y="156" width="200" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect class="fx" x="20" y="156" width="200" height="24" rx="2" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.076889;0.077222;0.555500;0.555556;0.933111;0.933333;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="30" y="173" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">LOAD_NAME c</text>
+<rect x="20" y="184" width="200" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect class="fx" x="20" y="184" width="200" height="24" rx="2" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.077556;0.077778;0.221333;0.221667;0.555500;0.555556;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="30" y="201" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">BINARY_OP *</text>
+<rect x="20" y="212" width="200" height="24" rx="2" fill="#0c120e" stroke="rgba(198,222,206,0.15)"/>
+<rect class="fx" x="20" y="212" width="200" height="24" rx="2" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.222000;0.222222;0.399111;0.399444;0.555500;0.555556;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="30" y="229" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">BINARY_OP +</text>
+<text x="252" y="92" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">value stack</text>
+<line x1="252" y1="234" x2="380" y2="234" stroke="rgba(198,222,206,0.5)" stroke-width="1.5"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.555500;0.555556;0.677556;0.677778;0.821333;0.821667;1.000000" dur="9s" repeatCount="indefinite"/><rect x="262" y="202" width="108" height="26" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853"/><text x="316" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.555500;0.555556;0.822000;0.822222;0.965778;0.966111;1.000000" dur="9s" repeatCount="indefinite"/><rect x="262" y="202" width="108" height="26" rx="3" fill="#152016" fill-opacity="1" stroke="rgba(198,222,206,0.4)"/><text x="316" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">2</text><rect x="262" y="172" width="108" height="26" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853"/><text x="316" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.110222;0.110556;0.555500;0.555556;0.966444;0.966667;1.000000" dur="9s" repeatCount="indefinite"/><rect x="262" y="202" width="108" height="26" rx="3" fill="#152016" fill-opacity="1" stroke="rgba(198,222,206,0.4)"/><text x="316" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">2</text><rect x="262" y="172" width="108" height="26" rx="3" fill="#152016" fill-opacity="1" stroke="rgba(198,222,206,0.4)"/><text x="316" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">3</text><rect x="262" y="142" width="108" height="26" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853"/><text x="316" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">4</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.110889;0.111111;0.254667;0.255000;0.555500;0.555556;1.000000" dur="9s" repeatCount="indefinite"/><rect x="262" y="202" width="108" height="26" rx="3" fill="#152016" fill-opacity="1" stroke="rgba(198,222,206,0.4)"/><text x="316" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">2</text><rect x="262" y="172" width="108" height="26" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853"/><text x="316" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">12</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.255333;0.255556;0.399111;0.399444;0.555500;0.555556;1.000000" dur="9s" repeatCount="indefinite"/><rect x="262" y="202" width="108" height="26" rx="3" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853"/><text x="316" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">14</text></g>
+</svg>
+      <p id="ch7-cpython-p3" class="diagram-caption">CPython turns <code>a + b * c</code> into bytecode for a stack machine: three loads push 2, 3 and 4; <code>BINARY_OP&nbsp;*</code> pops 3 and 4 and pushes 12; <code>BINARY_OP&nbsp;+</code> pops 2 and 12 and pushes 14. The eval loop does exactly this, one instruction at a time, for every line of Python.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>See it yourself.</b> <code>import dis; dis.dis("a + b * c")</code> prints this bytecode.</li>
+          <li><b>Since 3.11.</b> One <code>BINARY_OP</code> with an argument replaced <code>BINARY_ADD</code>, <code>BINARY_MULTIPLY</code> and the rest, and the interpreter specialises hot instructions once it has seen their types, such as <code>BINARY_OP_ADD_INT</code>.</li>
+          <li><b>The loop.</b> <code>ceval.c</code> jumps from each instruction to its C handler, using computed gotos where the compiler supports them.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-7-7">

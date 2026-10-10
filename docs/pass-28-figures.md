@@ -102,7 +102,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 92 | 2 | `fig-7-3` Fig 7.3 · Duck typing: behaviour, not lineage | 2.5 px · cap 128 | done 2026-10-11 |
 | 93 | 2 | `fig-7-4` Fig 7.4 · Two Python threads, one GIL | 2.5 px · cap 99 | done 2026-10-11 |
 | 94 | 2 | `fig-7-5` Fig 7.5 · asyncio: cooperative scheduling on one thread | 2.5 px · cap 127 | done 2026-10-11 |
-| 95 | 2 | `fig-7-6` Fig 7.6 · CPython's pipeline, in detail | 2.2 px · cap 91 | todo |
+| 95 | 2 | `fig-7-6` Fig 7.6 · CPython's pipeline, in detail | 2.2 px · cap 91 | done 2026-10-11 |
 | 96 | 2 | `fig-7-7` Fig 7.7 · Why Python is slow (and why nobody minds) | 2.9 px · cap 142 | todo |
 | 97 | 2 | `fig-7-8` Fig 7.8 · How NumPy actually does work | 2.5 px · cap 103 | todo |
 | 98 | 2 | `fig-7-9` Fig 7.9 · The same matmul, two ways | 2.5 px · cap 100 | todo |

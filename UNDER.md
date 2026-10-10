@@ -547,6 +547,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 6.1: a "bug density / KLOC" curve rising 5 → 35 "in lockstep" with code size, 1975–2000; caption and banner "codebases grew about a hundred-fold" | No source for either series; the chart was illustrative data drawn as measurement. Replaced with Brooks's n(n − 1)/2 count of possible interactions (The Mythical Man-Month, 1975), which the prose already cites | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 6.2: C++ 1.0 a "true compiler" (against C with Classes, a "preprocessor"); caption "Every release since (14, 17, 20, 23) has added more, all backwards compatible" | Cfront, C++ 1.0's compiler, translated C++ into C; the standards are nearly but not entirely compatible (C++11 repurposed the `auto` keyword, C++17 removed `auto_ptr`) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 6.6: comparator `return *(int*)a - *(int*)b;` shown as the C idiom | The subtraction overflows (undefined behaviour) when the operands are far apart; `(x > y) - (x < y)` is correct. (The "about three times faster" speedup stays, matching ch6-zerocost-p2.) | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 7.6: bytecode `BINARY_MULTIPLY · BINARY_ADD` (sanctioned in Pass 7 over "BINARY_MUL"); caption "a giant switch with about 120 cases, hand-tuned" | Correct before Python 3.11; since 3.11 `dis` shows `BINARY_OP *` and `BINARY_OP +` (one opcode with an argument), specialised at run time (PEP 659), and the case count and hand-tuning claim are dated | Updated in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3487,7 +3488,9 @@ GIL the threads alternate at the 5 ms switch interval and T2 runs while T1
 waits on I/O, a GIL tag moving at each handoff; the 3.13 free-threaded build
 runs both at once), 7.5 (one thread lane over three task
 lanes: each runs until it awaits, the waits overlap, the loop idles on epoll,
-then each resumes). The sweep's overlap test now compares ink boxes (font boxes trimmed
+then each resumes), 7.6 (the stack machine run: a + b * c
+with a=2, b=3, c=4, the cursor stepping the bytecode while the value stack goes
+2; 2,3; 2,3,4; 2,12; 14; opcodes updated to 3.11+, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
