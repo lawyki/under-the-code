@@ -4164,42 +4164,50 @@
       million-element vector in three pointer assignments.
     </p>
 
-    <div class="diagram-card light-diagram" id="fig-6-8">
-      <div class="diagram-label">Fig 6.8 · A move is "I'm done with this, take it"</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-44"><title id="svgt-part2-44">Fig 6.8 · A move is &quot;I'm done with this, take it&quot;</title>
-        <!-- Before -->
-        <text x="180" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">before: auto v2 = std::move(v1);</text>
-
-        <rect x="60"  y="50" width="100" height="44" rx="4" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-        <text x="110" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">v1</text>
-        <text x="110" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(60,100,60,0.7)">size=1M, ptr=0xA</text>
-
-        <rect x="200" y="50" width="100" height="44" rx="4" fill="rgba(180,180,180,0.1)" stroke="rgba(62,138,94,0.4)" stroke-dasharray="3,3"/>
-        <text x="250" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(62,138,94,0.7)">v2</text>
-        <text x="250" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(62,138,94,0.5)">empty</text>
-
-        <rect x="80"  y="120" width="200" height="32" rx="4" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.5)"/>
-        <text x="180" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">heap buffer (1M ints)</text>
-        <line x1="100" y1="94" x2="120" y2="120" stroke="rgba(80,140,80,0.6)" stroke-dasharray="2,2"/>
-
-        <!-- After -->
-        <text x="540" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">after: three pointer copies, no allocation</text>
-
-        <rect x="420" y="50" width="100" height="44" rx="4" fill="rgba(180,180,180,0.1)" stroke="rgba(62,138,94,0.4)" stroke-dasharray="3,3"/>
-        <text x="470" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(62,138,94,0.7)">v1</text>
-        <text x="470" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(62,138,94,0.5)">size=0, ptr=null</text>
-
-        <rect x="560" y="50" width="100" height="44" rx="4" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-        <text x="610" y="72" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">v2</text>
-        <text x="610" y="86" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(60,100,60,0.7)">size=1M, ptr=0xA</text>
-
-        <rect x="500" y="120" width="200" height="32" rx="4" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.5)"/>
-        <text x="600" y="140" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">heap buffer (same one)</text>
-        <line x1="620" y1="94" x2="600" y2="120" stroke="rgba(80,140,80,0.6)" stroke-dasharray="2,2"/>
-
-        <text x="360" y="200" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">No copying. The buffer's address is reassigned. v1 is now empty but valid.</text>
-      </svg>
-      <p id="ch6-modern-p5" class="diagram-caption">A move transfers ownership of a heap buffer by reassigning pointers. No copying. No allocation. A vector of one million elements moves in three pointer assignments, regardless of size. The source is left in a valid-but-empty state: destructible, assignable, but no longer holding the data. Move semantics are why "return by value" is the right default in modern C++ for large containers: the compiler proves the local is going out of scope, marks the return as an rvalue, and the receiver moves rather than copies. The performance trick that used to require careful manual code is now automatic.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-6-8">
+      <div class="diagram-label">Fig 6.8&nbsp;· A move is "I'm done with this, take it"</div>
+      <svg viewBox="0 0 400 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-44 svgd-part2-44">
+<title id="svgt-part2-44">Fig 6.8 · A move is &quot;I'm done with this, take it&quot;</title>
+<desc id="svgd-part2-44">auto v2 = std::move(v1); Two vector objects, each three pointers: begin, end and capacity. Before the move, v1's pointers lead to a heap buffer of one million ints, 4 MB, and v2 is empty. The move copies v1's three pointers into v2 one by one, so v2 now leads to the same buffer, then sets v1's pointers to null. No int is copied and nothing is allocated; v1 is left empty but valid.</desc>
+<text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">auto v2 = std::move(v1);</text>
+<text x="20" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">v1</text>
+<rect x="20" y="60" width="160" height="96" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.4)"/>
+<line x1="20" y1="92" x2="180" y2="92" stroke="rgba(29,43,34,0.15)"/>
+<line x1="20" y1="124" x2="180" y2="124" stroke="rgba(29,43,34,0.15)"/>
+<text x="220" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">v2</text>
+<rect x="220" y="60" width="160" height="96" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.4)"/>
+<line x1="220" y1="92" x2="380" y2="92" stroke="rgba(29,43,34,0.15)"/>
+<line x1="220" y1="124" x2="380" y2="124" stroke="rgba(29,43,34,0.15)"/>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">begin = 0xA000</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">begin = null</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.349000;0.349375;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">begin = null</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.349750;0.350000;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="81" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">begin = 0xA000</text></g>
+<rect class="fx" x="220" y="60" width="160" height="32" fill="#2e6f52" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.249938;0.250000;0.349750;0.350000;0.411500;0.411875;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">end = begin+1M</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">end = null</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.411500;0.411875;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">end = null</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.412250;0.412500;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">end = begin+1M</text></g>
+<rect class="fx" x="220" y="92" width="160" height="32" fill="#2e6f52" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.249938;0.250000;0.412250;0.412500;0.474000;0.474375;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">cap = begin+1M</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">cap = null</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.474000;0.474375;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">cap = null</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.474750;0.475000;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">cap = begin+1M</text></g>
+<rect class="fx" x="220" y="124" width="160" height="32" fill="#2e6f52" fill-opacity="0.18" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.249938;0.250000;0.474750;0.475000;0.536500;0.536875;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="20" y="206" width="360" height="40" rx="3" fill="rgba(46,111,82,0.12)" stroke="#2e6f52"/>
+<text x="200" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">heap: 1,000,000 ints, 4 MB</text>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><line x1="100" y1="156" x2="150" y2="198" stroke="#1d2b22" stroke-width="2"/><polygon points="145,196 155,196 150,205" fill="#1d2b22"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.549750;0.550000;1.000000" dur="8s" repeatCount="indefinite"/><line x1="300" y1="156" x2="250" y2="198" stroke="#2e6f52" stroke-width="2"/><polygon points="245,196 255,196 250,205" fill="#2e6f52"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.674750;0.675000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="276" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">3 pointers copied, 3 nulled, 0 ints moved</text></g>
+</svg>
+      <p id="ch6-modern-p5" class="diagram-caption">Moving a vector copies its three pointers into the new owner and nulls the old ones; the million ints stay exactly where they are. The cost is the same for ten elements or ten million, and <code>v1</code> is left empty but still valid.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>A copy instead.</b> <code>auto v2 = v1;</code> would allocate another 4 MB and copy every int into it.</li>
+          <li><b><code>std::move</code> moves nothing.</b> It only marks <code>v1</code> as finished with, so the compiler picks the moving constructor over the copying one.</li>
+          <li><b>Returning by value.</b> A local vector returned from a function is moved out, or built in place, so returning large containers is cheap.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-6-9">

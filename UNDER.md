@@ -3472,7 +3472,9 @@ qsort's call, load, cmp, ret, test against std::sort's inlined cmp, jge, a
 token stepping both at one rate; the overflowing subtraction comparator
 corrected, §4g), 6.7 (three lifecycles: the unique_ptr
 object freed with its owner, the shared_ptr count 2, 1, 0, the weak_ptr
-watcher left reading expired). The sweep's overlap test now compares ink boxes (font boxes trimmed
+watcher left reading expired), 6.8 (paper card: two vector headers
+over one 4 MB buffer; the move copies three pointers into v2, nulls v1, and
+the million ints stay put). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
