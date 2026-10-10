@@ -538,6 +538,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Patriot: "a floating-point timing error" (ch2-float-p11), "the on-board floating-point format truncated it to 24 bits" (fig 2.12), "≈ 600 m" | GAO/IMTEC-92-26: time counted in tenths, 1/10 held in a 24-bit fixed-point register, chopped; 0.34 s × 1,676 m/s ≈ 570 m | "a timing error, 0.1 rounded in binary"; fig 2.12 says fixed-point and ≈ 570 m (Pass 28, 2026-10-10) |
 | Fig 4.6 caption: "At 50% utilisation, doubling load barely budges the wait" | Doubling 50% load is 100%, where the wait is unbounded; with W ∝ 1/(1 − ρ), 50% → 60% adds a quarter, 90% → 95% doubles it | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.10 drawing: after the child's write, the parent's page is "RW restored" | The copy changes only the writer's entry; the parent's stays read-only until it writes, and Linux then makes it writable without a copy because no one else maps it | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 4.12 drawing: inode of 24,873 bytes listing five blocks (102–104, 500, 501) | 24,873 bytes needs seven 4 KB blocks; the redrawn inode is 18,400 bytes in five blocks, with an assert in the generator | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3391,7 +3392,10 @@ three exits in turn; the old banner "99% of faults are minor" had no source
 and is gone), 4.10 (parent table, RAM, child table side by side; the child's
 write to B faults, B is copied and only the child's entry turns RW; the old
 drawing's "RW restored" on the parent at copy time corrected: the parent's
-entry stays read-only until its own write, which then needs no copy). The sweep's overlap test now compares ink boxes (font boxes trimmed
+entry stays read-only until its own write, which then needs no copy), 4.12 (directory rows, inode, disk strip
+stacked; opening notes.txt and then backup.txt lights the same inode and the
+same scattered blocks; the old inode's size, 24,873 bytes, needed seven 4 KB
+blocks against the five it listed: now 18,400 bytes, five blocks, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
