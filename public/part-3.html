@@ -2745,47 +2745,56 @@
 
     <div class="math-callout">
       <div class="math-label">Why AIMD: Chiu &amp; Jain, 1989</div>
-      <p id="ch10-aimd-p8">AIMD (Additive Increase, Multiplicative Decrease) is not merely a combination that works; <em>it is the only one that does</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). MIMD oscillates without converging. AIAD reduces too slowly under congestion. MIAD diverges. Theirs is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
+      <p id="ch10-aimd-p8">AIMD (Additive Increase, Multiplicative Decrease) is not merely a combination that works; <em>it is the only one that does</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). MIMD keeps the ratio between the flows and AIAD keeps the gap, so neither ever gets fairer; MIAD widens the gap. Theirs is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
     </div>
 
-    <div class="diagram-card light-diagram" id="fig-10-6">
-      <div class="diagram-label">Fig 10.6 · AIMD's fairness, in phase space</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-33"><title id="svgt-part3-33">Fig 10.6 · AIMD's fairness, in phase space</title>
-        <!-- Axes -->
-        <line x1="80" y1="320" x2="660" y2="320" stroke="rgba(32,116,150,0.6)" stroke-width="1.5"/>
-        <line x1="80" y1="40" x2="80" y2="320" stroke="rgba(32,116,150,0.6)" stroke-width="1.5"/>
-
-        <text x="370" y="346" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)" text-anchor="middle">flow A's allocated bandwidth →</text>
-        <text x="40" y="180" font-family="Space Mono" font-size="9" fill="rgba(24,82,108,0.85)" transform="rotate(-90,40,180)" text-anchor="middle">flow B's bandwidth →</text>
-
-        <!-- Capacity line (A + B = C) -->
-        <line x1="80" y1="80" x2="600" y2="320" stroke="rgba(180,80,80,0.85)" stroke-width="2" stroke-dasharray="6,3"/>
-        <text x="610" y="320" font-family="Space Mono" font-size="9" fill="rgba(180,80,80,0.95)">A + B = C</text>
-        <text x="610" y="332" font-family="Space Mono" font-size="7" fill="rgba(180,80,80,0.7)">capacity</text>
-
-        <!-- Fairness line (A = B) -->
-        <line x1="80" y1="320" x2="600" y2="40" stroke="rgba(80,140,80,0.85)" stroke-width="2" stroke-dasharray="6,3"/>
-        <text x="600" y="36" font-family="Space Mono" font-size="9" fill="rgba(60,120,60,0.95)">A = B (fair)</text>
-
-        <!-- Optimal point: intersection -->
-        <circle cx="340" cy="200" r="5" fill="rgba(32,116,150,0.95)"/>
-        <text x="350" y="196" font-family="Playfair Display" font-style="italic" font-size="11" fill="rgba(32,116,150,0.95)">optimal: efficient AND fair</text>
-
-        <!-- AIMD trajectory (zigzag converging to fair-efficient point) -->
-        <!-- Start at unfair point: A=high, B=low -->
-        <path d="M 540,260 L 540,128 L 460,90 L 460,196 L 400,176 L 400,170 L 360,200 L 360,182 L 350,205 L 340,200"
-              fill="none" stroke="rgba(60,80,180,0.9)" stroke-width="2"/>
-        <circle cx="540" cy="260" r="5" fill="rgba(60,80,180,0.95)"/>
-        <text x="552" y="264" font-family="Space Mono" font-size="9" fill="rgba(60,80,180,0.95)">start: A &gt; B</text>
-
-        <!-- Annotations: increase along the diagonal, decrease toward origin proportionally -->
-        <text x="440" y="80" font-family="Space Mono" font-size="8" fill="rgba(60,80,180,0.85)">add → up the 45° diagonal</text>
-        <text x="240" y="128" font-family="Space Mono" font-size="8" fill="rgba(60,80,180,0.85)">multiplicative ½ → toward origin</text>
-        <text x="240" y="142" font-family="Space Mono" font-size="8" fill="rgba(60,80,180,0.85)">moves closer to fairness line</text>
-
-        <text x="370" y="14" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(32,116,150,0.95)" text-anchor="middle">why AIMD converges: Chiu &amp; Jain 1989</text>
-      </svg>
-      <p id="ch10-aimd-p9" class="diagram-caption">A two-flow phase plane (also called the Chiu–Jain plot). The horizontal axis is flow A's bandwidth allocation; the vertical, flow B's. Points above the red line exceed total capacity (someone loses). Points on the green line are fair (A = B). The optimal target is the intersection: full capacity, equal share. AIMD's geometry forces convergence: <em>additive increase</em> moves both flows up the 45° diagonal (so the relative gap stays the same in absolute terms but shrinks as a proportion). <em>Multiplicative decrease</em> on loss moves both flows toward the origin along a ray (preserving the ratio A:B, which means the absolute gap shrinks). Each cycle moves the system closer to the fair-and-efficient point. No central coordination. Just two flows, both running AIMD locally, both converging to fairness automatically. Among the most elegant distributed-systems results in computing.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-10-6">
+      <div class="diagram-label">Fig 10.6&nbsp;· AIMD's fairness, in phase space</div>
+      <svg viewBox="0 0 400 303" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-33 svgd-part3-33">
+<title id="svgt-part3-33">Fig 10.6 · AIMD's fairness, in phase space</title>
+<desc id="svgd-part3-33">Flow A's share across, flow B's share up, on a link of capacity 32. A dashed line marks the link full (A plus B equals 32), another marks A equals B. Starting at A 22, B 4, both flows add one per round trip, moving diagonally until the link is full, then both halve, moving toward the origin. The gap between them goes 18, 9, 4.5, 2.3, 1.1: the walk settles onto the fair line, each peak touching the point where the link is full and the shares are equal.</desc>
+<line x1="54" y1="267.0" x2="373.0" y2="267.0" stroke="rgba(18,42,63,0.62)"/><line x1="54" y1="267.0" x2="54" y2="58.0" stroke="rgba(18,42,63,0.62)"/>
+<text x="46" y="272" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">0</text>
+<text x="373" y="289" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">flow A</text>
+<text x="46" y="48" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">flow B</text>
+<line x1="197.0" y1="58.0" x2="373.0" y2="234.0" stroke="#10719d" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="373" y="129.5" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#10719d">link full</text>
+<line x1="54.0" y1="267.0" x2="263.0" y2="58.0" stroke="#2e7e4f" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="167.3" y="146" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#2e7e4f">A = B: fair</text>
+<circle cx="230.0" cy="91.0" r="6" fill="none" stroke="#122a3f" stroke-width="1.5"/>
+<text x="203.6" y="86.6" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">full and fair</text>
+<polyline points="296.0,223.0 329.0,190.0 191.5,228.5 279.5,140.5 166.8,203.8 254.8,115.8 154.4,191.4 242.4,103.4 148.2,185.2 236.2,97.2 145.1,182.1" fill="none" stroke="#b4541f" stroke-width="2.2" stroke-linejoin="round"/>
+<circle cx="296.0" cy="223.0" r="4" fill="#b4541f"/>
+<text x="304" y="228" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">start</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.053808;0.053846;0.192154;0.192308;0.291692;0.291923;1.000000" dur="13s" repeatCount="indefinite"/><line x1="54.0" y1="267.0" x2="329.0" y2="190.0" stroke="#b4541f" stroke-width="1" stroke-dasharray="2 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.053808;0.053846;0.361385;0.361538;0.460923;0.461154;1.000000" dur="13s" repeatCount="indefinite"/><line x1="54.0" y1="267.0" x2="279.5" y2="140.5" stroke="#b4541f" stroke-width="1" stroke-dasharray="2 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.053808;0.053846;0.530615;0.530769;0.630154;0.630385;1.000000" dur="13s" repeatCount="indefinite"/><line x1="54.0" y1="267.0" x2="254.8" y2="115.8" stroke="#b4541f" stroke-width="1" stroke-dasharray="2 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.053808;0.053846;0.699846;0.700000;0.799385;0.799615;1.000000" dur="13s" repeatCount="indefinite"/><line x1="54.0" y1="267.0" x2="242.4" y2="103.4" stroke="#b4541f" stroke-width="1" stroke-dasharray="2 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.053808;0.053846;0.869077;0.869231;0.968615;0.968846;1.000000" dur="13s" repeatCount="indefinite"/><line x1="54.0" y1="267.0" x2="236.2" y2="97.2" stroke="#b4541f" stroke-width="1" stroke-dasharray="2 3"/></g>
+<g><animateTransform attributeName="transform" type="translate" values="-150.91 0;-150.91 0;-150.91 0;-150.91 0;0.00 0;0.00 0;33.00 0;-104.50 0;-16.50 0;-129.25 0;-41.25 0;-141.62 0;-53.62 0;-147.81 0;-59.81 0;-150.91 0;-150.91 0" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.092308;0.192308;0.261538;0.361538;0.430769;0.530769;0.600000;0.700000;0.769231;0.869231;0.938462;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -40.91;0 -40.91;0 -40.91;0 -40.91;0 0.00;0 0.00;0 -33.00;0 5.50;0 -82.50;0 -19.25;0 -107.25;0 -31.62;0 -119.62;0 -37.81;0 -125.81;0 -40.91;0 -40.91" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.092308;0.192308;0.261538;0.361538;0.430769;0.530769;0.600000;0.700000;0.769231;0.869231;0.938462;1.000000" dur="13s" repeatCount="indefinite"/><circle class="fx" cx="296.0" cy="223.0" r="7" fill="#b3261e" stroke="#fff" stroke-width="1.5"/></g></g>
+<text x="332.3" y="172.4" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">+1 each</text>
+<text x="252" y="242.8" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">both ×½</text>
+<text x="46" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">gap A − B:</text>
+<text x="134" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">18</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.092154;0.092308;1.000000" dur="13s" repeatCount="indefinite"/><text x="134" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b3261e" font-weight="700">18</text></g>
+<text x="166" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">9</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.261385;0.261538;1.000000" dur="13s" repeatCount="indefinite"/><text x="166" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b3261e" font-weight="700">9</text></g>
+<text x="190" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">4.5</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.430615;0.430769;1.000000" dur="13s" repeatCount="indefinite"/><text x="190" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b3261e" font-weight="700">4.5</text></g>
+<text x="230" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">2.3</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.599846;0.600000;1.000000" dur="13s" repeatCount="indefinite"/><text x="230" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b3261e" font-weight="700">2.3</text></g>
+<text x="270" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">1.1</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.053808;0.053846;0.076923;0.077308;0.769077;0.769231;1.000000" dur="13s" repeatCount="indefinite"/><text x="270" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b3261e" font-weight="700">1.1</text></g>
+</svg>
+      <p id="ch10-aimd-p9" class="diagram-caption">Adding one segment to each flow per round trip keeps the gap between them; halving both on a loss halves it. Every loss brings the pair closer to equal shares while each peak still fills the link, though neither flow knows the other exists.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The plane.</b> Flow A's window across, flow B's up. On the blue line the link is exactly full; on the green line the two are equal. The target is where they cross: AIMD ends up oscillating along the green line, its peaks at the target.</li>
+          <li><b>The two moves.</b> <em>Additive increase</em> adds the same amount to both, so the point moves at 45° and the gap stays. <em>Multiplicative decrease</em> halves both, so the point slides toward the origin along its own ray and the gap halves.</li>
+          <li><b>This run.</b> Capacity 32, start A 22 and B 4, both flows losing at the same moment, as in Chiu and Jain's model. Real flows with different round-trip times converge less neatly.</li>
+        </ol>
+      </details>
     </div>
   </section>
 

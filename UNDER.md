@@ -557,6 +557,8 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 9.2: growth list "1981 · ~300 hosts" | The ARPANET host table counted 213 hosts in August 1981 | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 9.7: Tier 1 list "Cogent, Lumen, NTT, Telia, Tata" (SVG and caption) | Telia Carrier has traded as Arelion since 2022 | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 9.9: banner "2¹²⁸ ≈ 3.4 × 10³⁸ · enough for every atom in the Earth's crust" | The crust holds on the order of 10⁴⁸ atoms, ten orders more than there are IPv6 addresses; the comparison is dropped and the scale given plainly (every /64 subnet holds 1.8 × 10¹⁹ addresses) | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Ch10 Chiu–Jain callout: "MIMD oscillates without converging. AIAD reduces too slowly under congestion. MIAD diverges." | In Chiu and Jain (1989) MIMD keeps the ratio between the flows and AIAD keeps their difference, so neither converges to fairness; MIAD drives them apart. The callout now says so | Corrected in prose with fig 10.6 (Pass 28, 2026-10-11) |
+| Fig 10.6 caption (old): AIMD "converg[es] to the fair-and-efficient point" | With synchronised loss AIMD converges to an oscillation along the fairness line whose peaks touch the capacity line, not to the point itself; the caption and strip say this | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3598,7 +3600,7 @@ arrival, a bracket marking the round trip before the first data), 10.3 (all elev
 bottom; the client's life then the server's walked by a token, each event named;
 CLOSING drawn dim as the simultaneous-close case), 10.4 (bytes 100 to 113 with a window of 6
 through five phases, each cell coloured acked, in flight, may send or not yet,
-the bracket sliding on ACK 103 and ACK 109; "in flight" kept as a key-term), 10.5 (Reno simulated over 40 round trips against a capacity of 24: slow start 1 to 32, loss, halve, +1 per round trip, losses at 5, 15 and 29; the curve draws itself and each loss is marked as it lands). The sweep's overlap test now compares ink boxes (font boxes trimmed
+the bracket sliding on ACK 103 and ACK 109; "in flight" kept as a key-term), 10.5 (Reno simulated over 40 round trips against a capacity of 24: slow start 1 to 32, loss, halve, +1 per round trip, losses at 5, 15 and 29; the curve draws itself and each loss is marked as it lands), 10.6 (two flows in the Chiu–Jain plane, capacity 32, start 22 and 4, synchronised loss: a dot climbs at 45° and halves along its ray to the origin, the ray flashing; the gap row 18, 9, 4.5, 2.3, 1.1 lights cycle by cycle; the walk settles onto the fair line with its peaks on the capacity line). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
