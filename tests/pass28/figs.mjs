@@ -35,7 +35,7 @@ function measureFigs(only) {
     // what the reader sees now (the reduced-motion still): skip text faded out by an ancestor
     const shown = el => { let o = 1; for (let e = el; e && e !== svg.parentElement; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden') return false; o *= parseFloat(cs.opacity); const a = e.getAttribute && e.getAttribute('opacity'); if (a !== null && e.tagName !== 'svg') o *= 1; } return o > 0.05; };
     const texts = [...svg.querySelectorAll('text')].filter(t => t.textContent.trim() && shown(t));
-    const boxes = texts.map(t => { const b = t.getBoundingClientRect(); return { t: t.textContent.trim().slice(0, 40), x: b.left, y: b.top, w: b.width, h: b.height, fs: parseFloat(getComputedStyle(t).fontSize) }; });
+    const boxes = texts.map(t => { const b = t.getBoundingClientRect(); return { t: t.textContent.trim().slice(0, 40), x: b.left, y: b.top, w: b.width, h: b.height, fs: parseFloat(getComputedStyle(t).fontSize), fx: !!t.closest('.fx') }; });
     // rendered font size: CSS font-size of an SVG <text> is in user units; scale to screen
     const sizes = boxes.map(b => b.fs * scale);
     const minPx = sizes.length ? Math.min(...sizes) : null;
@@ -56,6 +56,7 @@ function measureFigs(only) {
       && !/^(0|0\.0+)$/.test(r.getAttribute('fill-opacity') || '1')).map(r => r.getBoundingClientRect()).filter(b => b.width > 4 && b.height > 4 && b.width < sr.width * 0.9);
     const spill = [];
     boxes.forEach(b => {
+      if (b.fx) return;   // a moving token is not contained by what it flies over
       const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
       const hold = shapes.filter(r => cx > r.left && cx < r.right && cy > r.top && cy < r.bottom).sort((p, q) => p.width * p.height - q.width * q.height)[0];
       if (hold && (b.x < hold.left - 1 || b.x + b.w > hold.right + 1 || b.y < hold.top - 1.5 || b.y + b.h > hold.bottom + 1.5)) spill.push(b.t);

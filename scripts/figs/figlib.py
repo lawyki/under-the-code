@@ -31,6 +31,21 @@ class Timeline:
         kt = ';'.join(f'{t / D:.4f}' for t in ts)
         vs = ';'.join(f'{at(t):.3f}'.rstrip('0').rstrip('.') for t in ts)
         return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"{extra}/>'
+    def translate(self, pts, axis='y'):
+        """animateTransform translate along one axis from [(tau, offset)] keyframes."""
+        D = self.dur
+        pts = [(min(t, D - 0.0005), v) for t, v in pts]
+        ev = sorted(((self.t(t), v) for t, v in pts), key=lambda p: p[0])
+        def at(t):
+            seq = [(ev[-1][0] - D, ev[-1][1])] + ev + [(ev[0][0] + D, ev[0][1])]
+            for a, b in zip(seq, seq[1:]):
+                if a[0] <= t <= b[0]:
+                    return a[1] if b[0] == a[0] else a[1] + (t - a[0]) / (b[0] - a[0]) * (b[1] - a[1])
+            return ev[-1][1]
+        ts = sorted(set([0.0, D] + [p[0] for p in ev]))
+        vals = ';'.join((f'0 {at(t):.2f}' if axis == 'y' else f'{at(t):.2f} 0') for t in ts)
+        kt = ';'.join(f'{t / D:.4f}' for t in ts)
+        return f'<animateTransform attributeName="transform" type="translate" values="{vals}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"/>'
     def pulse(self, t0, t1, ramp=0.2, lo=0.0, hi=1.0):
         """opacity points: off, on from t0 to t1, off."""
         return [(t0, lo), (t0 + ramp, hi), (t1 - ramp, hi), (t1, lo)]

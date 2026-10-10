@@ -3345,7 +3345,9 @@ ARM lines because ARM cannot add to memory; the old "output" did not
 translate its input), 3.3 (RAX's bytes with EAX, AX, AH, AL nested; mov al
 changes one byte, mov eax clears the upper half), 3.4 (seven arguments
 flying to RDI to R9 and the stack along clear routes; the result back in
-RAX). The sweep's overlap test now compares ink boxes (font boxes trimmed
+RAX), 3.5 (the address space as one column: frames pushed and popped,
+heap blocks rising), 3.6 (one call round trip on one stack: RSP tracking
+the top, the return address flying back into RIP on ret). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
