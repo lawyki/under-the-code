@@ -99,7 +99,8 @@ in substance throughout.
    on any part shows the tracker's state; constants in `book.js` `T`).
 5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
    cut, DONE (§4aa: 11.2 % shorter, glossary authored);
-   28 figures, pilot of three, then every figure one by one, handcrafted and
+   28 figures IN PROGRESS (§4ab; ledger `docs/pass-28-figures.md`, 9 of 222
+   done, pilot published for the owner), every figure one by one, handcrafted and
    tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
    fig 1.2 note: the image explains itself, text goes into explainers).
 6. **The punch-list pass**, after Tiger's read: the read's findings, the
@@ -126,6 +127,10 @@ the live database is empty and ready for fresh sign-ups.
 Owner decisions and actions live here and nowhere else. If it is not on
 this list, it is not blocking.
 
+- **Look at the figure pilot** (https://claude.ai/artifact/ADZTGFP5QqDEqq62E9Ebhn,
+  three figures redrawn, before/after and live). One question: is this the
+  direction for every figure? The work continues meanwhile; a change you ask
+  for is applied to every figure already done.
 - **Read the book.** The punch list waits on the complete read. Read-along
   notes: end of `UNDER.md` §4s.
 - **Create your new account** at /account ("New here? Create an account")

@@ -135,7 +135,8 @@ async function run() {
               // Tab stops
               // Glossary terms and index entries are tab stops that follow the glossary (Pass 26 changed it by design).
               // Plain prose links (bare `a`, outside the nav) follow the text, which Pass 27 cuts by design.
-              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a';
+              // Pass 28's "How it works" toggles (a <summary> per redesigned figure) are new stops by design.
+              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a' || d === 'summary';
               const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)));
               const detail = `live ${data.tabbable.length} vs baseline@${BASELINE_REV} ${bd.tabbable.length}; +[${diff.added.join(', ')}] -[${diff.removed.join(', ')}]`;
               const isPart = PARTS.includes(name);

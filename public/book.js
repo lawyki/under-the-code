@@ -452,6 +452,7 @@
     UNEXPLAINED_B: 1.25,      // a jump this long with no input is find-in-page, a fragment, history
     INPUT_WINDOW_MS: 300,
     CPS: 60,                  // reading budget: characters per second of reading time
+    FIG_CPPX: 1.2,            // a figure's drawing counts as reading: characters' worth per pixel of its height (Pass 28)
     CAP_FLOOR: 600,
     OVERSPEND: 0.25,          // below −cap/4 the reader is outrunning their eyes
     BACK_B: 0.5,              // going back up to 0.5B is a re-read; more is seeking
@@ -854,7 +855,15 @@
       // Sorted by top (ties keep document order) for the binary searches.
       const order = anchors.filter(a => !a.hidden).sort((p, q) => (p.top - q.top) || (p.i - q.i));
       const paras = order.filter(a => a.isPara);
-      G = { anchors, byId, chapters, sections, secById, order, paras,
+      // Figures are read too (Pass 28: the picture carries it). Their drawings join
+      // the character count by height; captions are paragraphs already.
+      const figs = order.filter(a => /^fig-/.test(a.id)).map(a => {
+        const svg = a.el.querySelector(':scope > svg');
+        if (!svg) return null;
+        const r = svg.getBoundingClientRect(), top = a.top + (r.top - a.el.getBoundingClientRect().top);
+        return { top, bottom: top + r.height, h: r.height, chars: r.height * T.FIG_CPPX };
+      }).filter(Boolean);
+      G = { anchors, byId, chapters, sections, secById, order, paras, figs,
         docH: document.documentElement.scrollHeight };
       onTableBuilt();
     }
@@ -893,7 +902,7 @@
     function charsBetween(y0, y1) {
       if (!G || y1 <= y0) return 0;
       let sum = 0;
-      for (const p of G.paras) {
+      for (const list of [G.paras, G.figs]) for (const p of list) {
         if (p.bottom <= y0) continue;
         if (p.top >= y1) break;
         const ov = Math.min(p.bottom, y1) - Math.max(p.top, y0);

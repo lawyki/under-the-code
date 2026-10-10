@@ -1737,6 +1737,49 @@
     .rail-tick.is-marked[data-c]::before { forced-color-adjust: none; --mk-c: CanvasText; }
   }
 
+  /* ---- Pass 28 figures (law 3: the picture carries it) ----------------------
+     .fig-v2 marks a redesigned figure: drawn phone-first (viewBox about 400
+     wide, no label under 14 units, so none renders under 11 CSS px from 360 px up), held to a
+     readable width on desktop, its explanation folded into "How it works". */
+  .diagram-label { font-size: 11px; }
+  .diagram-card.fig-v2 svg, .light-diagram.fig-v2 svg { display: block; max-width: 460px; margin: 0 auto; }
+  .fig-v2 .diagram-caption { font-size: 13px; color: rgba(255,255,255,0.62); max-width: 60ch; }
+  .fig-how { position: relative; z-index: 1; margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .fig-how > summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
+    min-height: 44px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: rgba(212,168,83,0.9); -webkit-tap-highlight-color: transparent;
+  }
+  .fig-how > summary::-webkit-details-marker { display: none; }
+  .fig-how > summary::before {
+    content: ''; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: rotate(-45deg); transition: transform 0.2s ease-out; margin-left: 2px;
+  }
+  .fig-how[open] > summary::before { transform: rotate(45deg); }
+  .fig-how > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+  .fig-how ol { margin: 4px 0 8px; padding-left: 1.4em; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.78); max-width: 62ch; }
+  .fig-how li { margin: 6px 0; }
+  .fig-how li b { color: #fff; font-weight: 500; }
+  .light-diagram .fig-how { border-top-color: rgba(0,0,0,0.1); }
+  .light-diagram .fig-how > summary { color: var(--accent-dim); }
+  .light-diagram .fig-how ol { color: var(--text-muted); }
+  .light-diagram .fig-how li b { color: var(--text-dark); }
+  .is-fullscreen .fig-how { display: none; }
+  .diagram-card.fig-v2.is-fullscreen svg, .light-diagram.fig-v2.is-fullscreen svg { max-width: 86%; }
+  @media (prefers-reduced-motion: reduce) { .fig-how > summary::before { transition: none; } }
+  /* Phones: figures run edge to edge, so the drawing gets the screen's width
+     (359 px of 375, not 231). */
+  @media (max-width: 620px) {
+    .diagram-card, .light-diagram { margin-left: -24px; margin-right: -24px; border-radius: 0; padding: 28px 8px 20px; }
+    .diagram-label { margin-bottom: 20px; padding: 0 56px 0 8px; }   /* clear of the fullscreen button */
+    .fs-button { width: 40px; height: 40px; top: 10px; right: 10px; }
+    /* fullscreen on a phone is the whole screen, so the figure is bigger than in the page, never smaller */
+    .diagram-card.is-fullscreen, .light-diagram.is-fullscreen { inset: 0; max-height: none; margin: 0; border-radius: 0; padding: 60px 8px 16px; }
+    .diagram-card.is-fullscreen svg, .light-diagram.is-fullscreen svg, .diagram-card.fig-v2.is-fullscreen svg, .light-diagram.fig-v2.is-fullscreen svg { max-width: 100%; max-height: 100%; }
+    .diagram-caption, .fig-how { padding: 0 8px; }
+  }
+  @media print { .fig-how { display: none; } }
+
   @media print {
     .reading-cue, .cue-hit, .place-bar, .mark-menu, .place-toast, .utc-debug { display: none !important; }
     .mark-dot { animation: none !important; }
