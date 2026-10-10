@@ -4496,72 +4496,40 @@
       the HTTP layer.
     </p>
 
-    <div class="diagram-card" id="fig-11-14">
-      <div class="diagram-label">Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-53"><title id="svgt-part3-53">Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">six requests, one connection: two ways to schedule them</text>
-
-        <!-- HTTP/1.1 -->
-        <g transform="translate(40,70)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">HTTP/1.1: strictly serial</text>
-          <text x="0" y="14" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">slow response → everything behind it waits</text>
-
-          <line x1="0" y1="60" x2="640" y2="60" stroke="rgba(180,200,220,0.4)"/>
-          <text x="-6" y="64" text-anchor="end" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.6)">t=0</text>
-          <text x="646" y="64" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.6)">t=600ms</text>
-
-          <!-- 6 boxes laid out serially, fast/slow -->
-          <rect x="0"   y="50" width="60"  height="20" rx="2" fill="rgba(79,196,230,0.55)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="30"  y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">html</text>
-
-          <rect x="60"  y="50" width="60"  height="20" rx="2" fill="rgba(150,216,150,0.55)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="90"  y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">css</text>
-
-          <rect x="120" y="50" width="200" height="20" rx="2" fill="rgba(232,120,120,0.55)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="220" y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">slow.js (200 ms)</text>
-
-          <rect x="320" y="50" width="60"  height="20" rx="2" fill="rgba(150,216,150,0.55)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="350" y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">app.js</text>
-
-          <rect x="380" y="50" width="80"  height="20" rx="2" fill="rgba(100,150,255,0.55)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="420" y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">img1</text>
-
-          <rect x="460" y="50" width="80"  height="20" rx="2" fill="rgba(100,150,255,0.55)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="500" y="64" text-anchor="middle" font-family="Space Mono" font-size="8" fill="#0a0a0a">img2</text>
-
-          <line x1="540" y1="60" x2="540" y2="60" stroke="none"/>
-          <text x="540" y="86" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.85)">page renders ~540 ms</text>
-        </g>
-
-        <!-- HTTP/2 -->
-        <g transform="translate(40,210)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">HTTP/2: multiplexed streams, frames interleaved on the same TCP connection</text>
-          <text x="0" y="14" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">slow stream is just bytes; everything else proceeds in parallel</text>
-
-          <line x1="0" y1="80" x2="640" y2="80" stroke="rgba(180,200,220,0.4)"/>
-          <text x="-6" y="84" text-anchor="end" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.6)">t=0</text>
-
-          <!-- 4 stream rows -->
-          <rect x="0" y="40" width="60"  height="10" rx="1.5" fill="rgba(79,196,230,0.55)"/><text x="30" y="48" text-anchor="middle" font-family="Space Mono" font-size="6" fill="#0a0a0a">html</text>
-          <rect x="0" y="52" width="60"  height="10" rx="1.5" fill="rgba(150,216,150,0.55)"/><text x="30" y="60" text-anchor="middle" font-family="Space Mono" font-size="6" fill="#0a0a0a">css</text>
-
-          <!-- slow.js spread over 200ms -->
-          <rect x="0" y="64" width="14" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <rect x="40" y="64" width="14" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <rect x="80" y="64" width="14" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <rect x="120" y="64" width="14" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <rect x="160" y="64" width="14" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <rect x="200" y="64" width="40" height="10" rx="1.5" fill="rgba(232,120,120,0.55)"/>
-          <text x="120" y="72" text-anchor="middle" font-family="Space Mono" font-size="6" fill="rgba(232,120,120,0.95)">slow.js: frames interleaved, no blocking</text>
-
-          <rect x="60"  y="40" width="60" height="10" rx="1.5" fill="rgba(150,216,150,0.55)"/><text x="90"  y="48" text-anchor="middle" font-family="Space Mono" font-size="6" fill="#0a0a0a">app.js</text>
-          <rect x="120" y="40" width="60" height="10" rx="1.5" fill="rgba(100,150,255,0.55)"/><text x="150" y="48" text-anchor="middle" font-family="Space Mono" font-size="6" fill="#0a0a0a">img1</text>
-          <rect x="180" y="40" width="60" height="10" rx="1.5" fill="rgba(100,150,255,0.55)"/><text x="210" y="48" text-anchor="middle" font-family="Space Mono" font-size="6" fill="#0a0a0a">img2</text>
-
-          <text x="240" y="100" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">page renders ~240 ms</text>
-        </g>
-      </svg>
-      <p id="ch11-modern-p3" class="diagram-caption">The same six resources, fetched two different ways. HTTP/1.1 sends one request, waits for the full response, then sends the next; a slow resource holds up everything queued behind it. HTTP/2 chops every request and response into binary frames tagged with a stream ID and interleaves them on a single TCP connection. Small responses can fly past slow ones, and the browser reassembles each stream as its frames arrive. Same TCP, same TLS, same HTTP semantics, but a different wire format. Real-world page-load improvements range from 10% to 50% depending on resource shape. Server push (the protocol's other headline feature) was added, then quietly abandoned: browsers dropped support once it failed to deliver the predicted benefits, though it survives in the spec as a cautionary tale.</p>
+    <div class="diagram-card fig-v2" id="fig-11-14">
+      <div class="diagram-label">Fig 11.14&nbsp;· HTTP/1.1 vs HTTP/2&nbsp;· serial vs multiplexed on the same TCP connection</div>
+      <svg viewBox="0 0 400 254" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-53 svgd-part3-53">
+<title id="svgt-part3-53">Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection</title>
+<desc id="svgd-part3-53">Six files over one connection. With HTTP/1.1 they go one after another: html, css, then a 200 millisecond wait while the server prepares slow.js, then slow.js, app, and two images, finishing at 560 milliseconds. With HTTP/2 every response is cut into small frames and the frames of all the files are interleaved; the other files use the wait, slow.js slips in when it is ready, and everything finishes at 360 milliseconds.</desc>
+<text x="20" y="24" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">HTTP/1.1: one response at a time</text>
+<text x="20" y="120" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">HTTP/2: frames from every stream</text>
+<rect x="20" y="36" width="360" height="28" rx="3" fill="none" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.4"/>
+<rect x="20" y="132" width="360" height="28" rx="3" fill="none" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.4"/>
+<defs><clipPath id="clip-fig-11-14"><rect class="fx" x="20" y="0" width="360" height="400"><animate attributeName="width" values="360;360;360;360;0;0;360;360" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.110000;0.810000;1.000000" dur="10s" repeatCount="indefinite"/></rect></clipPath></defs>
+<g clip-path="url(#clip-fig-11-14)"><rect x="20.5" y="36" width="37.6" height="28" rx="2" fill="#4fc4e6" fill-opacity="0.85"/><rect x="59.1" y="36" width="37.6" height="28" rx="2" fill="#9bd89b" fill-opacity="0.85"/><rect x="97.1" y="36" width="128.6" height="28" fill="none" stroke="#ec8d8d" stroke-dasharray="3 3"/><rect x="226.2" y="36" width="11.9" height="28" rx="2" fill="#ec8d8d" fill-opacity="0.85"/><rect x="239.1" y="36" width="37.6" height="28" rx="2" fill="#d4a853" fill-opacity="0.85"/><rect x="277.6" y="36" width="50.4" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="329.1" y="36" width="50.4" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="20.5" y="132" width="11.9" height="28" rx="2" fill="#4fc4e6" fill-opacity="0.85"/><rect x="33.4" y="132" width="11.9" height="28" rx="2" fill="#9bd89b" fill-opacity="0.85"/><rect x="46.2" y="132" width="11.9" height="28" rx="2" fill="#d4a853" fill-opacity="0.85"/><rect x="59.1" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="71.9" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="84.8" y="132" width="11.9" height="28" rx="2" fill="#4fc4e6" fill-opacity="0.85"/><rect x="97.6" y="132" width="11.9" height="28" rx="2" fill="#9bd89b" fill-opacity="0.85"/><rect x="110.5" y="132" width="11.9" height="28" rx="2" fill="#d4a853" fill-opacity="0.85"/><rect x="123.4" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="136.2" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="149.1" y="132" width="11.9" height="28" rx="2" fill="#4fc4e6" fill-opacity="0.85"/><rect x="161.9" y="132" width="11.9" height="28" rx="2" fill="#9bd89b" fill-opacity="0.85"/><rect x="174.8" y="132" width="11.9" height="28" rx="2" fill="#ec8d8d" fill-opacity="0.85"/><rect x="187.6" y="132" width="11.9" height="28" rx="2" fill="#d4a853" fill-opacity="0.85"/><rect x="200.5" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="213.4" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="226.2" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><rect x="239.1" y="132" width="11.9" height="28" rx="2" fill="#86a8ff" fill-opacity="0.85"/><text x="39.2857" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">html</text><text x="77.8571" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">css</text><text x="161.429" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">slow.js wait</text><text x="257.857" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">app</text><text x="302.857" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">img1</text><text x="354.286" y="55" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">img2</text></g>
+<text x="175.286" y="178" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">↑ slow.js, when ready</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.809800;0.810000;1.000000" dur="10s" repeatCount="indefinite"/><text x="380" y="24" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">done 560 ms</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.559800;0.560000;1.000000" dur="10s" repeatCount="indefinite"/><text x="261.429" y="151" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">done 360 ms</text></g>
+<line x1="20" y1="204" x2="380" y2="204" stroke="rgba(223,234,242,0.6)"/>
+<line x1="20.0" y1="200" x2="20.0" y2="208" stroke="rgba(223,234,242,0.6)"/>
+<text x="20" y="224" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">0</text>
+<line x1="148.6" y1="200" x2="148.6" y2="208" stroke="rgba(223,234,242,0.6)"/>
+<text x="148.571" y="224" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">200</text>
+<line x1="251.4" y1="200" x2="251.4" y2="208" stroke="rgba(223,234,242,0.6)"/>
+<text x="251.429" y="224" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">360</text>
+<line x1="380.0" y1="200" x2="380.0" y2="208" stroke="rgba(223,234,242,0.6)"/>
+<text x="380" y="224" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">560</text>
+<text x="380" y="244" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">milliseconds</text>
+</svg>
+      <p id="ch11-modern-p3" class="diagram-caption">On one HTTP/1.1 connection each response must finish before the next starts, so while the server prepares <code>slow.js</code> the wire sits idle. HTTP/2 cuts every response into frames tagged with a stream ID and interleaves them, so the other files use that time and the page is done at 360 ms, not 560.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The setting.</b> Six files on one connection, widths drawn as wire time; <code>slow.js</code> needs 200 ms of server work before its 20 ms of bytes. Round trips are left out.</li>
+          <li><b>The workaround.</b> Browsers opened up to six HTTP/1.1 connections per host to get some parallelism; HTTP/2 needs only one.</li>
+          <li><b>The limit.</b> HTTP/2 makes no byte faster, it only fills idle time. And all its frames ride one TCP byte stream, so a lost packet still stalls every stream behind it (Fig 11.15).</li>
+        </ol>
+      </details>
     </div>
 
     <h3>HTTP/3: still TCP's fault</h3>

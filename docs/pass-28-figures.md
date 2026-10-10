@@ -154,7 +154,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 144 | 3 | `fig-11-11` Fig 11.11 · TLS 1.3 · one round trip from "hello" to encrypted data | 2.5 px · cap 142 | done 2026-10-11 |
 | 145 | 3 | `fig-11-12` Fig 11.12 · The certificate chain · why your browser trusts a stranger | 2.5 px · cap 152 | done 2026-10-11 |
 | 146 | 3 | `fig-11-13` Fig 11.13 · Forward secrecy · stealing the long-term key tomorrow does not unlock yesterday | 2.2 px · cap 162 | done 2026-10-11 |
-| 147 | 3 | `fig-11-14` Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection | 1.9 px · cap 126 | todo |
+| 147 | 3 | `fig-11-14` Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection | 1.9 px · cap 126 | done 2026-10-11 |
 | 148 | 3 | `fig-11-15` Fig 11.15 · HTTP/3 over QUIC · escaping TCP at the protocol layer | 2.5 px · cap 167 | todo |
 | 149 | 3 | `fig-12-1` Fig 12.1 · The web of 1994–95 · static documents and a tab-out to Java | 2.5 px · cap 97 | todo |
 | 150 | 3 | `fig-12-2` Fig 12.2 · May 1995 to ECMAScript 2026 · the slow legitimisation | 2.5 px · cap 110 | todo |
