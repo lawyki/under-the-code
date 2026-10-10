@@ -3796,39 +3796,72 @@
 
     <h3>Inheritance is layout</h3>
 
-    <div class="diagram-card light-diagram" id="fig-6-4">
-      <div class="diagram-label">Fig 6.4 · Inheritance: same vptr slot, different function</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-40"><title id="svgt-part2-40">Fig 6.4 · Inheritance: same vptr slot, different function</title>
-        <!-- Tree -->
-        <rect x="280" y="20" width="160" height="50" rx="6" fill="#fdfcf9" stroke="rgba(62,138,94,0.7)"/>
-        <text x="360" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">Shape</text>
-        <text x="360" y="58" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(46,96,70,0.75)">virtual area() = 0</text>
-
-        <line x1="320" y1="70" x2="160" y2="120" stroke="rgba(62,138,94,0.5)" stroke-dasharray="3,3"/>
-        <line x1="360" y1="70" x2="360" y2="120" stroke="rgba(62,138,94,0.5)" stroke-dasharray="3,3"/>
-        <line x1="400" y1="70" x2="560" y2="120" stroke="rgba(62,138,94,0.5)" stroke-dasharray="3,3"/>
-
-        <rect x="60"  y="120" width="200" height="64" rx="6" fill="rgba(150,216,150,0.15)" stroke="rgba(80,140,80,0.6)"/>
-        <text x="160" y="142" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(60,120,60,0.95)">Circle</text>
-        <text x="160" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,100,60,0.85)">area() { return π·r·r; }</text>
-        <text x="160" y="176" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(60,100,60,0.6)">vtable[0] → Circle::area</text>
-
-        <rect x="280" y="120" width="160" height="64" rx="6" fill="rgba(100,150,255,0.15)" stroke="rgba(60,100,180,0.6)"/>
-        <text x="360" y="142" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(40,80,160,0.95)">Square</text>
-        <text x="360" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(40,70,140,0.85)">area() { return s·s; }</text>
-        <text x="360" y="176" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(40,70,140,0.6)">vtable[0] → Square::area</text>
-
-        <rect x="460" y="120" width="200" height="64" rx="6" fill="rgba(232,120,120,0.15)" stroke="rgba(180,80,80,0.6)"/>
-        <text x="560" y="142" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(160,60,60,0.95)">Triangle</text>
-        <text x="560" y="160" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(140,40,40,0.85)">area() { return ½·b·h; }</text>
-        <text x="560" y="176" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(140,40,40,0.6)">vtable[0] → Triangle::area</text>
-
-        <!-- Caller -->
-        <rect x="200" y="220" width="320" height="40" rx="4" fill="#fdfcf9" stroke="rgba(62,138,94,0.5)"/>
-        <text x="360" y="240" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.95)">void print(Shape* s) { cout &lt;&lt; s-&gt;area(); }</text>
-        <text x="360" y="252" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(62,138,94,0.6)">caller knows nothing about the actual class</text>
-      </svg>
-      <p id="ch6-classes-p5" class="diagram-caption">Three classes inherit from <code>Shape</code>. Each overrides <code>area()</code> with a different body. At runtime, slot 0 of each subclass's vtable points to its own implementation. A function that takes <code>Shape*</code> can call <code>s-&gt;area()</code> without knowing, or caring, what concrete type <code>s</code> actually is. This is <strong>polymorphism</strong>: one call site, three possible callees, dispatched by the object itself. The caller is decoupled from the implementations. New shape types can be added without changing <code>print()</code>. This is the central organisational tool C lacked: a way to write code against an interface rather than a specific implementation.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-6-4">
+      <div class="diagram-label">Fig 6.4&nbsp;· Inheritance: same vptr slot, different function</div>
+      <svg viewBox="0 0 400 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-40 svgd-part2-40">
+<title id="svgt-part2-40">Fig 6.4 · Inheritance: same vptr slot, different function</title>
+<desc id="svgd-part2-40">A function print(Shape* s) calls s-&gt;area(). The pointer s is given a Circle with r = 2, then a Square with s = 3, then a Triangle with base 4 and height 3. Each object's vptr leads to its own class's vtable, where slot 0 holds that class's area: Circle::area computes π·r·r and prints 12.57, Square::area s·s and prints 9, Triangle::area ½·b·h and prints 6. The caller never changes.</desc>
+<rect x="20" y="12" width="360" height="40" rx="3" fill="#f5f8f3" stroke="#1d2b22" stroke-opacity="0.5"/>
+<text x="32" y="37" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">print(Shape* s): s-&gt;area()</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.154667;0.155000;0.777722;0.777778;0.977556;0.977778;1.000000" dur="9s" repeatCount="indefinite"/><text x="368" y="37" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">prints 12.57</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.288667;0.288889;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><text x="368" y="37" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">prints 9</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.599778;0.600000;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><text x="368" y="37" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">prints 6</text></g>
+<rect x="20" y="86" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="20" y="86" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.154667;0.155000;0.777722;0.777778;0.844222;0.844444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="78" y="103" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">Circle</text>
+<text x="78" y="119" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">r = 2</text>
+<line x1="78.0" y1="126" x2="78.0" y2="140" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="74.0,138 82.0,138 78.0,145" fill="rgba(29,43,34,0.5)"/>
+<rect x="20" y="146" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="20" y="146" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.154667;0.155000;0.777722;0.777778;0.888667;0.888889;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="78" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">vtable slot 0</text>
+<text x="78" y="179" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">Circle::area</text>
+<line x1="78.0" y1="186" x2="78.0" y2="200" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="74.0,198 82.0,198 78.0,205" fill="rgba(29,43,34,0.5)"/>
+<rect x="20" y="206" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="20" y="206" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.154667;0.155000;0.777722;0.777778;0.933111;0.933333;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="78" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">π·r·r</text>
+<rect x="142" y="86" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="142" y="86" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.155333;0.155556;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="200" y="103" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">Square</text>
+<text x="200" y="119" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">s = 3</text>
+<line x1="200.0" y1="126" x2="200.0" y2="140" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="196.0,138 204.0,138 200.0,145" fill="rgba(29,43,34,0.5)"/>
+<rect x="142" y="146" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="142" y="146" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199778;0.200000;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="200" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">vtable slot 0</text>
+<text x="200" y="179" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">Square::area</text>
+<line x1="200.0" y1="186" x2="200.0" y2="200" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="196.0,198 204.0,198 200.0,205" fill="rgba(29,43,34,0.5)"/>
+<rect x="142" y="206" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="142" y="206" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.244222;0.244444;0.465778;0.466111;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="200" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">s·s</text>
+<rect x="264" y="86" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="264" y="86" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.466444;0.466667;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="322" y="103" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">Triangle</text>
+<text x="322" y="119" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">b = 4, h = 3</text>
+<line x1="322.0" y1="126" x2="322.0" y2="140" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="318.0,138 326.0,138 322.0,145" fill="rgba(29,43,34,0.5)"/>
+<rect x="264" y="146" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="264" y="146" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.510889;0.511111;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="322" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.62)">vtable slot 0</text>
+<text x="322" y="179" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">Triangle::area</text>
+<line x1="322.0" y1="186" x2="322.0" y2="200" stroke="rgba(29,43,34,0.5)" stroke-width="1.4"/>
+<polygon points="318.0,198 326.0,198 322.0,205" fill="rgba(29,43,34,0.5)"/>
+<rect x="264" y="206" width="116" height="40" rx="3" fill="#f5f8f3" stroke="rgba(29,43,34,0.35)"/>
+<rect class="fx" x="264" y="206" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.555333;0.555556;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<text x="322" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">½·b·h</text>
+<g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;122.00 0;122.00 0;244.00 0;244.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.122222;0.155556;0.433333;0.466667;0.733333;0.766667;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><line x1="78.0" y1="52" x2="78.0" y2="78" stroke="#8a5a00" stroke-width="2"/><polygon points="73.0,76 83.0,76 78.0,85" fill="#8a5a00"/><text x="86" y="72" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">s</text></g>
+</svg>
+      <p id="ch6-classes-p5" class="diagram-caption">One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class's vtable leads to that class's own <code>area()</code>. The caller never changes; that is polymorphism, code written against an interface rather than an implementation.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Same layout.</b> Every class derived from <code>Shape</code> puts <code>area()</code> in the same slot of its vtable, so the call compiles to the same two instructions.</li>
+          <li><b>New shapes for free.</b> A <code>Hexagon</code> added next year works with <code>print()</code> unchanged and uncompiled.</li>
+          <li><b>The rule.</b> <code>= 0</code> makes <code>Shape::area</code> pure virtual: <code>Shape</code> itself cannot be created, only its subclasses.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Encapsulation as a tool</h3>
