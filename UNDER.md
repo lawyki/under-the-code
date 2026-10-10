@@ -3379,7 +3379,10 @@ sequences; each row now also shows time to first run, the number round
 robin and MLFQ buy with their higher average wait: 12.75 and 13 against
 SJF's 7.75, but 2 and 1.5 before a job first runs), 4.6 (the queue and the
 curve together at 50%, 80%, 95%: L 1, 4, 19 and W 2, 5, 20 for M/M/1; a wrong
-"doubling load at 50%" claim corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+"doubling load at 50%" claim corrected, §4g), 4.7 (a 100 Hz task: each
+bar grows as the cursor runs it; three 5 ms jobs finish early, the 12 ms
+job turns red at its 40 ms deadline, missed by 2 ms; the RM 69% and EDF 100%
+bounds moved to "How it works"). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

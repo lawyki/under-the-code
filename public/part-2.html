@@ -631,68 +631,49 @@
       analysed by Liu and Layland in a 1973 paper.
     </p>
 
-    <div class="diagram-card" id="fig-4-7">
-      <div class="diagram-label">Fig 4.7 · A periodic task and the deadline it must meet</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-8"><title id="svgt-part2-8">Fig 4.7 · A periodic task and the deadline it must meet</title>
-        <!-- Title -->
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(132,255,178,0.95)">a 100Hz brake-pulse controller: task period 10ms, deadline 10ms</text>
-
-        <!-- Time axis -->
-        <line x1="60" y1="200" x2="660" y2="200" stroke="rgba(132,255,178,0.5)" stroke-width="1.5"/>
-        <g font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)" text-anchor="middle">
-          <text x="60"  y="222">0</text>
-          <text x="180" y="222">10ms</text>
-          <text x="300" y="222">20ms</text>
-          <text x="420" y="222">30ms</text>
-          <text x="540" y="222">40ms</text>
-          <text x="660" y="222">→</text>
-        </g>
-
-        <!-- Period markers (deadlines) -->
-        <g stroke="rgba(232,120,120,0.5)" stroke-dasharray="3,3">
-          <line x1="180" y1="80" x2="180" y2="200"/>
-          <line x1="300" y1="80" x2="300" y2="200"/>
-          <line x1="420" y1="80" x2="420" y2="200"/>
-          <line x1="540" y1="80" x2="540" y2="200"/>
-        </g>
-        <g font-family="IBM Plex Mono" font-size="8" fill="rgba(232,120,120,0.85)" text-anchor="middle">
-          <text x="180" y="74">deadline</text>
-          <text x="300" y="74">deadline</text>
-          <text x="420" y="74">deadline</text>
-          <text x="540" y="74">deadline</text>
-        </g>
-
-        <!-- Job runs (good case) -->
-        <g>
-          <rect x="60"  y="170" width="60"  height="24" rx="3" fill="rgba(150,216,150,0.45)" stroke="rgba(150,216,150,0.85)"/>
-          <text x="90"  y="186" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">run · 5ms</text>
-
-          <rect x="180" y="170" width="60"  height="24" rx="3" fill="rgba(150,216,150,0.45)" stroke="rgba(150,216,150,0.85)"/>
-          <text x="210" y="186" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">run · 5ms</text>
-
-          <rect x="300" y="170" width="60"  height="24" rx="3" fill="rgba(150,216,150,0.45)" stroke="rgba(150,216,150,0.85)"/>
-          <text x="330" y="186" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">run · 5ms</text>
-        </g>
-
-        <!-- Job runs (the catastrophic miss) -->
-        <g>
-          <rect x="420" y="170" width="140" height="24" rx="3" fill="rgba(232,120,120,0.55)" stroke="rgba(232,120,120,0.95)" stroke-width="1.5"/>
-          <text x="490" y="186" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.95)">run · 12ms, overruns deadline!</text>
-        </g>
-
-        <!-- Failure callout -->
-        <g>
-          <line x1="540" y1="200" x2="540" y2="240" stroke="rgba(232,120,120,0.85)" stroke-width="2"/>
-          <polygon points="540,240 532,232 548,232" fill="rgba(232,120,120,0.95)"/>
-        </g>
-        <text x="540" y="262" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">deadline missed = brake pulse late = real-world consequence</text>
-
-        <!-- Caption text -->
-        <text x="60" y="100" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">in a real-time system, a missed deadline is a system failure,</text>
-        <text x="60" y="116" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">not a slow-running app. EDF and rate-monotonic scheduling</text>
-        <text x="60" y="132" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.7)">guarantee bounded response provided utilisation &lt; a known limit.</text>
-      </svg>
-      <p id="ch4-scheduling-p13" class="diagram-caption">A real-time task that runs at 100Hz must complete its work within each 10ms window. The first three deadlines are met (5ms work, 10ms window: half the budget). The fourth job runs longer than expected (12ms) and overruns its deadline. In a non-real-time system this would be a slow frame or a stutter; in an anti-lock braking controller, a pacemaker, or a flight control loop, it is a system failure with physical consequences. Real-time kernels use schedulers (rate-monotonic, earliest-deadline-first) that mathematically guarantee deadlines provided the total task utilisation stays below a known bound: about 69% for rate-monotonic, 100% for EDF. Going above that bound, missed deadlines become possible, and in a hard real-time system that is the same as broken.</p>
+    <div class="diagram-card fig-v2" id="fig-4-7">
+      <div class="diagram-label">Fig 4.7&nbsp;· A periodic task and the deadline it must meet</div>
+      <svg viewBox="0 0 400 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-7 svgd-part2-7">
+<title id="svgt-part2-7">Fig 4.7 · A periodic task and the deadline it must meet</title>
+<desc id="svgd-part2-7">A brake controller that runs at 100 Hz: every 10 milliseconds a new job starts and must finish before the next one. The first three jobs take 5 milliseconds and finish with time to spare. The fourth takes 12 milliseconds and is still running at its 40 millisecond deadline: a missed deadline, which in a brake controller is a failure, not a slowdown.</desc>
+<text x="30" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">100 Hz BRAKE CONTROLLER · 10 ms PERIOD</text>
+<rect x="30" y="80" width="350" height="44" rx="3" fill="#0c120e" stroke="rgba(132,255,178,0.25)"/>
+<line x1="109.5" y1="54" x2="109.5" y2="136" stroke="rgba(198,222,206,0.85)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polygon points="103.5,48 115.5,48 109.5,56" fill="rgba(198,222,206,0.85)"/>
+<line x1="189.1" y1="54" x2="189.1" y2="136" stroke="rgba(198,222,206,0.85)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polygon points="183.1,48 195.1,48 189.1,56" fill="rgba(198,222,206,0.85)"/>
+<line x1="268.6" y1="54" x2="268.6" y2="136" stroke="rgba(198,222,206,0.85)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polygon points="262.6,48 274.6,48 268.6,56" fill="rgba(198,222,206,0.85)"/>
+<line x1="348.2" y1="54" x2="348.2" y2="136" stroke="rgba(198,222,206,0.85)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<polygon points="342.2,48 354.2,48 348.2,56" fill="rgba(198,222,206,0.85)"/>
+<text x="99.5455" y="52" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">deadline</text>
+<rect x="30.0" y="86" width="38.8" height="32" rx="2" fill="#84ffb2" fill-opacity="0.35" stroke="#84ffb2"><animate attributeName="width" values="38.773;38.773;38.773;38.773;0;38.773;38.773" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.2295;1.0000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.2294;0.2295;1.0000" dur="8s" repeatCount="indefinite"/><text x="49.8864" y="107" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">5 ms</text></g>
+<rect x="109.5" y="86" width="38.8" height="32" rx="2" fill="#84ffb2" fill-opacity="0.35" stroke="#84ffb2"><animate attributeName="width" values="38.773;38.773;38.773;38.773;0;0;38.773;38.773" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.3091;0.3886;1.0000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.3885;0.3886;1.0000" dur="8s" repeatCount="indefinite"/><text x="129.432" y="107" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">5 ms</text></g>
+<rect x="189.1" y="86" width="38.8" height="32" rx="2" fill="#84ffb2" fill-opacity="0.35" stroke="#84ffb2"><animate attributeName="width" values="38.773;38.773;38.773;38.773;0;0;38.773;38.773" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.4682;0.5477;1.0000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.5476;0.5477;1.0000" dur="8s" repeatCount="indefinite"/><text x="208.977" y="107" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">5 ms</text></g>
+<rect x="268.6" y="86" width="78.5" height="32" rx="2" fill="#84ffb2" fill-opacity="0.35" stroke="#84ffb2"><animate attributeName="width" values="78.545;78.545;78.545;78.545;0;0;78.545;78.545" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.6273;0.7864;1.0000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="348.2" y="86" width="15.9" height="32" rx="2" fill="#ec8d8d" fill-opacity="0.5" stroke="#ec8d8d" stroke-width="2"><animate attributeName="width" values="15.909;15.909;15.909;15.909;0;0;15.909;15.909" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.7864;0.8182;1.0000" dur="8s" repeatCount="indefinite"/></rect>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.7862;0.7864;1.0000" dur="8s" repeatCount="indefinite"/><text x="380" y="160" text-anchor="end" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">missed by 2 ms</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.0000;0.0999;0.1000;0.1500;0.1501;0.8181;0.8182;1.0000" dur="8s" repeatCount="indefinite"/><text x="274.636" y="107" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">12 ms</text></g>
+<text x="30" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0</text>
+<text x="109.545" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">10</text>
+<text x="189.091" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">20</text>
+<text x="268.636" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">30</text>
+<text x="348.182" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">40</text>
+<text x="380" y="190" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">ms</text>
+<line y1="64" y2="136" stroke="#fff" stroke-width="1.5" opacity="0"><animate attributeName="x1" values="380;380;30;30;380;380" keyTimes="0.0000;0.0999;0.1000;0.1500;0.8500;1.0000" dur="8s" repeatCount="indefinite"/><animate attributeName="x2" values="380;380;30;30;380;380" keyTimes="0.0000;0.0999;0.1000;0.1500;0.8500;1.0000" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0;0" keyTimes="0.0000;0.0999;0.1000;0.1487;0.1500;0.8500;0.8562;1.0000" dur="8s" repeatCount="indefinite"/></line>
+</svg>
+      <p id="ch4-scheduling-p13" class="diagram-caption">A real-time task must finish each job inside its period: here every 10 ms. Three jobs fit with room to spare; the fourth runs 12 ms and is still going at its deadline, which in a brake controller is a failure, not a stutter.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Hard real time.</b> Real-time kernels (PREEMPT_RT Linux, VxWorks, QNX, FreeRTOS) guarantee a ready task runs within a bounded time, even under load.</li>
+          <li><b>The guarantee.</b> Rate-monotonic scheduling meets every deadline if total utilisation stays under about 69%; earliest-deadline-first, up to 100% (Liu and Layland, 1973).</li>
+          <li><b>The overrun.</b> A job that takes longer than its budget breaks the arithmetic, which is why real-time code is written to bounded, measured worst cases.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
