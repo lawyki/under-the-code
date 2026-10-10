@@ -540,6 +540,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.10 drawing: after the child's write, the parent's page is "RW restored" | The copy changes only the writer's entry; the parent's stays read-only until it writes, and Linux then makes it writable without a copy because no one else maps it | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.12 drawing: inode of 24,873 bytes listing five blocks (102–104, 500, 501) | 24,873 bytes needs seven 4 KB blocks; the redrawn inode is 18,400 bytes in five blocks, with an assert in the generator | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.13 caption: "A journaling filesystem does every write twice" | ext4 by default (data=ordered) and NTFS journal metadata only; file contents are written twice only in full data journaling (ext4 data=journal) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 4.18: "sem_wait()/sem_post() are atomic in the kernel"; "if the value would go negative, the caller blocks"; "every concurrent system rests on this primitive" | On Linux the uncontended path is an atomic instruction in user space, the kernel (futex) is entered only to sleep or wake; a POSIX semaphore blocks at 0 and never goes negative; the "every system" banner is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3412,7 +3413,9 @@ five real log lines: cat and grep stream, sort waits for the end of input and
 then prints all three, uniq drops the repeat, wc prints 2), 4.17 (three lanes and a time
 cursor: SIGINT marked pending, delivered at the next kernel return, handler,
 sigreturn, resume; then SIGKILL ends the process with the handler lane
-empty). The sweep's overlap test now compares ink boxes (font boxes trimmed
+empty), 4.18 (A and B map page 0x4000; tokens step
+through a semaphore gate: A takes the 1, B sleeps at 0, A posts, B enters; two
+facts corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

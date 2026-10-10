@@ -1752,54 +1752,47 @@
       "Cooperating Sequential Processes," and underlies every modern concurrent system.
     </p>
 
-    <div class="diagram-card" id="fig-4-18">
-      <div class="diagram-label">Fig 4.18 · Two processes, one region, one gate</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-19"><title id="svgt-part2-19">Fig 4.18 · Two processes, one region, one gate</title>
-        <!-- Process A -->
-        <rect x="40" y="60" width="140" height="80" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-        <text x="110" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">process A</text>
-        <text x="110" y="102" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">virtual addr X</text>
-        <text x="110" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">maps physical 0x4000</text>
-
-        <!-- Process B -->
-        <rect x="540" y="60" width="140" height="80" rx="6" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.7)"/>
-        <text x="610" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(100,150,255,0.95)">process B</text>
-        <text x="610" y="102" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">virtual addr Y</text>
-        <text x="610" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">also maps 0x4000</text>
-
-        <!-- Shared physical page -->
-        <rect x="270" y="50" width="180" height="100" rx="8" fill="#0e1a13" stroke="rgba(132,255,178,0.85)" stroke-width="2"/>
-        <text x="360" y="74" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">physical RAM</text>
-        <text x="360" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.7)">page 0x4000</text>
-        <text x="360" y="116" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">[shared region]</text>
-        <text x="360" y="134" text-anchor="middle" font-family="IBM Plex Mono" font-size="7" fill="rgba(255,255,255,0.5)">no copy on access · plain load/store</text>
-
-        <!-- Connecting lines -->
-        <line x1="180" y1="100" x2="270" y2="100" stroke="rgba(150,216,150,0.6)"/>
-        <polygon points="270,100 264,94 264,106" fill="rgba(150,216,150,0.6)"/>
-        <line x1="450" y1="100" x2="540" y2="100" stroke="rgba(100,150,255,0.6)"/>
-        <polygon points="540,100 534,94 534,106" fill="rgba(100,150,255,0.6)"/>
-
-        <!-- Semaphore as gate -->
-        <rect x="290" y="180" width="140" height="50" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)" stroke-width="1.5"/>
-        <text x="360" y="200" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">semaphore</text>
-        <text x="360" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(255,255,255,0.95)">value: 1</text>
-
-        <!-- Operations -->
-        <text x="110" y="200" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)" text-anchor="middle">A: sem_wait()</text>
-        <text x="110" y="214" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle">decrement &amp; pass if &gt; 0</text>
-        <line x1="180" y1="206" x2="290" y2="206" stroke="rgba(150,216,150,0.5)" stroke-dasharray="3,3"/>
-
-        <text x="610" y="200" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.85)" text-anchor="middle">B: sem_wait()</text>
-        <text x="610" y="214" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)" text-anchor="middle">blocks until A signals</text>
-        <line x1="540" y1="206" x2="430" y2="206" stroke="rgba(100,150,255,0.5)" stroke-dasharray="3,3"/>
-
-        <!-- Bottom -->
-        <rect x="60" y="260" width="600" height="42" rx="4" fill="#101a14" stroke="rgba(132,255,178,0.45)"/>
-        <text x="360" y="280" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">Dijkstra 1965 · "Cooperating Sequential Processes"</text>
-        <text x="360" y="296" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">sem_wait()/sem_post() are atomic in the kernel. Every concurrent system rests on this primitive</text>
-      </svg>
-      <p id="ch4-ipc-p13" class="diagram-caption">Two processes share a physical page by mapping it at (potentially different) virtual addresses. Reads and writes against that region are ordinary CPU loads and stores: no kernel involvement, no copying, no system calls in the fast path. The cost is coordination: if both processes write at the same time, the result is undefined. A semaphore, initialised to 1, lets exactly one of them through at a time. <code>sem_wait()</code> atomically decrements; if the value would go negative, the caller blocks until <code>sem_post()</code> elsewhere releases the gate. This is shared memory + semaphore: the IPC of choice for performance-sensitive systems where the cost of even one extra copy per byte is unacceptable. Database engines, video pipelines, audio mixers, and high-frequency trading systems are all built on it.</p>
+    <div class="diagram-card fig-v2" id="fig-4-18">
+      <div class="diagram-label">Fig 4.18&nbsp;· Two processes, one region, one gate</div>
+      <svg viewBox="0 0 400 304" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-19 svgd-part2-19">
+<title id="svgt-part2-19">Fig 4.18 · Two processes, one region, one gate</title>
+<desc id="svgd-part2-19">Process A maps physical page 0x4000 at its virtual address 0x7f2a1000; process B maps the same page at 0x55e0c000. Between them and the page stands a semaphore holding 1. A calls sem_wait, takes the 1 (the value drops to 0) and writes to the page. B calls sem_wait, finds 0 and sleeps. A calls sem_post, the value returns to 1, B wakes, takes it and writes. When B calls sem_post the gate is open again.</desc>
+<rect x="20" y="14" width="160" height="50" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="32" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">process A</text>
+<text x="32" y="53" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">at 0x7f2a1000</text>
+<rect x="220" y="14" width="160" height="50" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="232" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">process B</text>
+<text x="232" y="53" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">at 0x55e0c000</text>
+<path d="M40 64 L118 196" stroke="rgba(198,222,206,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<path d="M360 64 L282 196" stroke="rgba(198,222,206,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="200" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">semaphore</text>
+<rect x="140" y="106" width="120" height="44" rx="3" fill="#0c120e" stroke="#d4a853" stroke-opacity="0.7"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.749333;0.749583;0.750000;0.832667;0.832917;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" letter-spacing="0" fill="#d4a853">1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.049333;0.049583;0.749958;0.750000;0.833167;0.833333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" letter-spacing="0" fill="#d4a853">0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.049833;0.050000;0.082667;0.082917;0.749958;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" letter-spacing="0" fill="#d4a853">1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.083167;0.083333;0.249333;0.249583;0.749958;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" letter-spacing="0" fill="#d4a853">0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249833;0.250000;0.749333;0.749583;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="135" text-anchor="middle" font-family="IBM Plex Mono" font-size="18" letter-spacing="0" fill="#d4a853">1</text></g>
+<rect x="110" y="196" width="180" height="54" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.7"/>
+<text x="200" y="270" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">shared page 0x4000</text>
+<circle class="fx" cx="230" cy="128" r="17" fill="none" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.082667;0.082917;0.749958;0.750000;0.937333;0.937500;1.000000" dur="12s" repeatCount="indefinite"/></circle>
+<g class="fx"><animateTransform attributeName="transform" type="translate" values="168.00 0;168.00 0;100.00 0;100.00 0;100.00 0;100.00 0;168.00 0;168.00 0;168.00 0;168.00 0" keyTimes="0.000000;0.050000;0.070833;0.749958;0.750000;0.800000;0.820833;0.866667;0.887500;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 223.00;0 223.00;0 82.00;0 82.00;0 82.00;0 82.00;0 128.00;0 128.00;0 223.00;0 223.00" keyTimes="0.000000;0.050000;0.070833;0.749958;0.750000;0.800000;0.820833;0.866667;0.887500;1.000000" dur="12s" repeatCount="indefinite"/><circle r="13" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="1.5"/><text x="0" y="5" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">A</text></g></g>
+<g class="fx"><animateTransform attributeName="transform" type="translate" values="230.00 0;230.00 0;232.00 0;232.00 0;300.00 0;300.00 0;300.00 0;300.00 0;230.00 0;230.00 0" keyTimes="0.000000;0.100000;0.120833;0.250000;0.270833;0.749958;0.750000;0.916667;0.937500;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 128.00;0 128.00;0 223.00;0 223.00;0 82.00;0 82.00;0 82.00;0 82.00;0 128.00;0 128.00" keyTimes="0.000000;0.100000;0.120833;0.250000;0.270833;0.749958;0.750000;0.916667;0.937500;1.000000" dur="12s" repeatCount="indefinite"/><circle r="13" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="1.5"/><text x="0" y="5" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">B</text></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.749958;0.750000;0.783167;0.783333;0.866000;0.866250;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">A: sem_wait() takes the 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.749958;0.750000;0.866500;0.866667;0.916000;0.916250;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">A writes the shared page</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.049333;0.049583;0.749958;0.750000;0.916500;0.916667;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">B: sem_wait() finds 0, sleeps</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.049833;0.050000;0.099333;0.099583;0.749958;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">A: sem_post(); B wakes</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099833;0.100000;0.249333;0.249583;0.749958;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">B writes the shared page</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.249833;0.250000;0.716000;0.716250;0.749958;0.750000;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="294" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">B: sem_post(); the gate is open</text></g>
+</svg>
+      <p id="ch4-ipc-p13" class="diagram-caption">Both processes map the same physical page at different virtual addresses, so what one stores the other can load, with no copy and no system call. A semaphore holding 1 lets one in at a time: A takes the 1, B finds 0 and sleeps, and A's <code>sem_post()</code> wakes it.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The mapping.</b> <code>shm_open()</code> and <code>mmap()</code> put the same physical pages into both address spaces; after that the region is ordinary memory.</li>
+          <li><b>The fast path.</b> On Linux, <code>sem_wait()</code> and <code>sem_post()</code> are atomic instructions on a counter in shared memory; the kernel is called only when someone must sleep or be woken.</li>
+          <li><b>Counting.</b> A semaphore started at N admits N at once, a pool rather than a lock. The idea is Dijkstra's, from 1965.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Sockets: when the other process is on another machine</h3>
