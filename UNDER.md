@@ -535,6 +535,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | "Every chapter in this book has had attacks woven into it" (ch15-hero-lead) | Several chapters (e.g. Ch2, Ch6–7) carry no attack | "Attacks have run through this whole book." (Pass 27, 2026-10-10) |
 | ENIAC → M4 "roughly twelve million times as many switches" (fig 1.7 caption) | 28 billion ÷ 17,468 tubes ≈ 1.6 million; twelve million is 4004 → M4 (2,300 → 28 B) | "about 1.6 million times as many switches" (Pass 28, 2026-10-10) |
 | Fig 2.9: int −1 as size_t = "4,294,967,295" / "4 billion" (bottom panel, caption) beside "18 446 744 073 709 551 615" (step 2) | On a 64-bit machine the 32-bit −1 is widened to 64 one-bits: 2^64 − 1; 4,294,967,295 is the 32-bit size_t case | The figure now follows the 64-bit case throughout (Pass 28, 2026-10-10) |
+| Patriot: "a floating-point timing error" (ch2-float-p11), "the on-board floating-point format truncated it to 24 bits" (fig 2.12), "≈ 600 m" | GAO/IMTEC-92-26: time counted in tenths, 1/10 held in a 24-bit fixed-point register, chopped; 0.34 s × 1,676 m/s ≈ 570 m | "a timing error, 0.1 rounded in binary"; fig 2.12 says fixed-point and ≈ 570 m (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3332,7 +3333,14 @@ across the bottom seam into overflow and across the top into a correct 0), 2.9 (
 running red over the buffer's neighbours; one machine width, 64-bit, §4g),
 2.10 (6.5 and −0.75 decoded from their real bits, field by field), 2.11
 (the doubles near 0.3 to scale: stored 0.3 below the true value, the sum
-one double above it; positions computed, not drawn by eye). `figlib.Timeline` fix found on 1.9: a point at the loop's
+one double above it; positions computed, not drawn by eye), 2.12 (the
+Patriot clock: drift climbing to 0.34 s over 100 hours, the radar window
+570 m from the Scud; fixed-point, not floating-point, §4g). Found on the
+way: the Timeline "drop the loop-end point" fix broke holds (a value meant
+to hold to the loop's end drifted back); end points now move a hair early
+instead. The sweep's overlap test now compares ink boxes (font boxes trimmed
+10% top and bottom) at a 3% threshold, after it let a 2-px label collision
+through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

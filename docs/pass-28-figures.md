@@ -32,7 +32,7 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 24 | 1 | `fig-2-9` Fig 2.9 · How a signed overflow becomes a buffer overflow | 2.9 px · cap 126 | done 2026-10-10 |
 | 25 | 1 | `fig-2-10` Fig 2.10 · IEEE 754 double precision · sign, exponent, mantissa | 2.6 px · cap 63 | done 2026-10-10 |
 | 26 | 1 | `fig-2-11` Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives | 2.9 px · cap 122 | done 2026-10-10 |
-| 27 | 1 | `fig-2-12` Fig 2.12 · The Patriot missile · 0.0000000953 s × 100 hours = 28 lives | 2.6 px · cap 135 | todo |
+| 27 | 1 | `fig-2-12` Fig 2.12 · The Patriot missile · a clock that lost a third of a second | 2.6 px · cap 135 | done 2026-10-10 |
 | 28 | 1 | `fig-3-1` Fig 3.1 · Same operation · three ISAs · three encodings | 2.2 px · cap 106 | todo |
 | 29 | 1 | `fig-3-2` Fig 3.2 · Rosetta 2 · how a chip pretends to be a different chip | 2.2 px · cap 173 | todo |
 | 30 | 1 | `fig-3-3` Fig 3.3 · The x86-64 register file · 16 + 2 + 45 years of names | 2.1 px · cap 122 | todo |

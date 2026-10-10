@@ -44,8 +44,10 @@ function measureFigs(only) {
     for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
       const a = boxes[i], b = boxes[j];
       if (a.t === b.t && Math.abs(a.x - b.x) < 2 && Math.abs(a.y - b.y) < 2) continue;   // the same label lit over itself
-      const ix = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), iy = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
-      if (ix > 1 && iy > 1 && ix * iy > 0.15 * Math.min(a.w * a.h, b.w * b.h)) overlaps.push(a.t + ' × ' + b.t);
+      // ink boxes: a font box carries ascent/descent padding, so trim 10% top and bottom (stacked lines of one label may touch boxes, never ink)
+      const ay = a.y + a.h * 0.1, ah = a.h * 0.8, by_ = b.y + b.h * 0.1, bh = b.h * 0.8;
+      const ix = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), iy = Math.min(ay + ah, by_ + bh) - Math.max(ay, by_);
+      if (ix > 1 && iy > 1 && ix * iy > 0.03 * Math.min(a.w * a.h, b.w * b.h)) overlaps.push(a.t + ' × ' + b.t);
     }
     const outside = boxes.filter(b => b.x < sr.left - 1 || b.y < sr.top - 1 || b.x + b.w > sr.right + 1 || b.y + b.h > sr.bottom + 1).map(b => b.t);
     // spill: a label whose centre sits in a shape must fit inside that shape (the smallest one holding its centre)
