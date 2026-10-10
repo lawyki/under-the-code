@@ -3557,7 +3557,10 @@ minutes, depending on the system"; spoofing left to Chapter 15), 8.10 (one star 
 every port hears A's frame; as a switch it floods an unknown destination, learns
 A and then B from source addresses, and forwards only to the right port while
 its table fills; the unsupported "what made Ethernet scale to hundreds of
-gigabits" claim dropped). Each figure's commit now also checks the glossary. The sweep's overlap test now compares ink boxes (font boxes trimmed
+gigabits" claim dropped). Each figure's commit now also checks the glossary. 8.11 (the seven
+layers with encapsulation drawn: GET / wrapped by TLS, then TCP, IP, and an
+Ethernet header and FCS, sent as bits; the descent lit row by row; BGP/OSPF
+and other debatable layer placements moved out of the drawing). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

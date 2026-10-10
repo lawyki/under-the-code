@@ -1004,51 +1004,76 @@
       teaching reference because its separations are pedagogically cleaner.
     </p>
 
-    <div class="diagram-card" id="fig-8-11">
-      <div class="diagram-label">Fig 8.11 · The OSI seven-layer cake</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-12"><title id="svgt-part3-12">Fig 8.11 · The OSI seven-layer cake</title>
-        <!-- Layers stacked -->
-        <g font-family="Space Mono" font-size="10">
-          <!-- Layer 7 -->
-          <rect x="120" y="40" width="480" height="40" rx="4" fill="rgba(150,216,150,0.30)" stroke="rgba(150,216,150,0.85)"/>
-          <text x="140" y="64" fill="rgba(150,216,150,0.95)">7. Application</text>
-          <text x="600" y="64" text-anchor="end" fill="rgba(180,200,220,0.85)">HTTP · DNS · SSH · SMTP</text>
-
-          <!-- Layer 6 -->
-          <rect x="120" y="84" width="480" height="40" rx="4" fill="rgba(150,216,150,0.22)" stroke="rgba(150,216,150,0.7)"/>
-          <text x="140" y="108" fill="rgba(150,216,150,0.85)">6. Presentation</text>
-          <text x="600" y="108" text-anchor="end" fill="rgba(180,200,220,0.85)">TLS · gzip · MIME · UTF-8</text>
-
-          <!-- Layer 5 -->
-          <rect x="120" y="128" width="480" height="40" rx="4" fill="rgba(150,216,150,0.14)" stroke="rgba(150,216,150,0.55)"/>
-          <text x="140" y="152" fill="rgba(150,216,150,0.85)">5. Session</text>
-          <text x="600" y="152" text-anchor="end" fill="rgba(180,200,220,0.85)">RPC · NetBIOS · SOCKS</text>
-
-          <!-- Layer 4 -->
-          <rect x="120" y="172" width="480" height="40" rx="4" fill="rgba(100,150,255,0.30)" stroke="rgba(100,150,255,0.85)"/>
-          <text x="140" y="196" fill="rgba(100,150,255,0.95)">4. Transport</text>
-          <text x="600" y="196" text-anchor="end" fill="rgba(180,200,220,0.85)">TCP · UDP · QUIC</text>
-
-          <!-- Layer 3 -->
-          <rect x="120" y="216" width="480" height="40" rx="4" fill="rgba(79,196,230,0.30)" stroke="rgba(79,196,230,0.85)"/>
-          <text x="140" y="240" fill="rgba(79,196,230,0.95)">3. Network</text>
-          <text x="600" y="240" text-anchor="end" fill="rgba(180,200,220,0.85)">IP · ICMP · BGP · OSPF</text>
-
-          <!-- Layer 2 -->
-          <rect x="120" y="260" width="480" height="40" rx="4" fill="rgba(232,120,120,0.30)" stroke="rgba(232,120,120,0.85)"/>
-          <text x="140" y="284" fill="rgba(232,120,120,0.95)">2. Data Link</text>
-          <text x="600" y="284" text-anchor="end" fill="rgba(180,200,220,0.85)">Ethernet · Wi-Fi · ARP · MAC</text>
-
-          <!-- Layer 1 -->
-          <rect x="120" y="304" width="480" height="40" rx="4" fill="rgba(232,140,80,0.30)" stroke="rgba(232,140,80,0.85)"/>
-          <text x="140" y="328" fill="rgba(232,140,80,0.95)">1. Physical</text>
-          <text x="600" y="328" text-anchor="end" fill="rgba(180,200,220,0.85)">copper · fibre · radio · NRZ</text>
-        </g>
-
-        <!-- Header -->
-        <text x="360" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">OSI 7-layer reference model · ISO 1984</text>
-      </svg>
-      <p id="ch8-layers-p4" class="diagram-caption">Each OSI layer is named after the abstraction it provides to the layer above. <strong>Physical</strong> turns bits into voltage / light / radio. <strong>Data Link</strong> bundles bits into frames addressed by MAC and shipped across a single hop. <strong>Network</strong> bundles frames into packets that find their way across the global graph by IP address. <strong>Transport</strong> turns packets into reliable byte streams (TCP) or messages (UDP). <strong>Session</strong> manages connection setup and teardown. <strong>Presentation</strong> handles data formatting, encryption, compression. <strong>Application</strong> is where the real protocol lives: HTTP, SSH, DNS. In practice the top three layers blur together, because most application protocols handle their own session and presentation logic. That is why the simpler TCP/IP four-layer model is what's actually deployed.</p>
+    <div class="diagram-card fig-v2" id="fig-8-11">
+      <div class="diagram-label">Fig 8.11&nbsp;· The OSI seven-layer cake</div>
+      <svg viewBox="0 0 400 286" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-12 svgd-part3-12">
+<title id="svgt-part3-12">Fig 8.11 · The OSI seven-layer cake</title>
+<desc id="svgd-part3-12">The seven layers of the OSI model, from Application at the top to Physical at the bottom, and a request passing down through them. At the application layer it is GET /. Presentation encrypts it with TLS. Transport adds a TCP header, Network an IP header, and Data link an Ethernet header in front and a checksum, FCS, behind. The physical layer sends the whole frame as a stream of bits on the wire.</desc>
+<rect x="20" y="16" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="16" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.074750;0.075000;0.174000;0.174375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="37" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">7</text>
+<text x="50" y="37" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Application</text>
+<rect x="160" y="21" width="58" height="22" rx="2" fill="#4fc4e6" fill-opacity="0.25" stroke="#4fc4e6"/>
+<text x="189" y="37" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">GET /</text>
+<rect x="20" y="54" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="54" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.274000;0.274375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="75" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">6</text>
+<text x="50" y="75" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Presentation</text>
+<rect x="160" y="59" width="102" height="22" rx="2" fill="#c8a6ff" fill-opacity="0.25" stroke="#c8a6ff"/>
+<text x="211" y="75" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TLS · GET /</text>
+<rect x="20" y="92" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="92" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.274750;0.275000;0.374000;0.374375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="113" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">5</text>
+<text x="50" y="113" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Session</text>
+<rect x="160" y="97" width="102" height="22" rx="2" fill="#c8a6ff" fill-opacity="0.25" stroke="#c8a6ff"/>
+<text x="211" y="113" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TLS · GET /</text>
+<rect x="20" y="130" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="130" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.374750;0.375000;0.474000;0.474375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="151" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">4</text>
+<text x="50" y="151" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Transport</text>
+<rect x="160" y="135" width="38" height="22" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f"/>
+<text x="179" y="151" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TCP</text>
+<rect x="200" y="135" width="50" height="22" rx="2" fill="#c8a6ff" fill-opacity="0.25" stroke="#c8a6ff"/>
+<text x="225" y="151" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TLS</text>
+<rect x="20" y="168" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="168" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.474750;0.475000;0.574000;0.574375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="189" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">3</text>
+<text x="50" y="189" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Network</text>
+<rect x="160" y="173" width="30" height="22" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b"/>
+<text x="175" y="189" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">IP</text>
+<rect x="192" y="173" width="38" height="22" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f"/>
+<text x="211" y="189" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TCP</text>
+<rect x="232" y="173" width="50" height="22" rx="2" fill="#c8a6ff" fill-opacity="0.25" stroke="#c8a6ff"/>
+<text x="257" y="189" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TLS</text>
+<rect x="20" y="206" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="206" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.574750;0.575000;0.674000;0.674375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="227" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">2</text>
+<text x="50" y="227" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Data link</text>
+<rect x="160" y="211" width="36" height="22" rx="2" fill="#d4a853" fill-opacity="0.25" stroke="#d4a853"/>
+<text x="178" y="227" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Eth</text>
+<rect x="198" y="211" width="30" height="22" rx="2" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b"/>
+<text x="213" y="227" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">IP</text>
+<rect x="230" y="211" width="38" height="22" rx="2" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f"/>
+<text x="249" y="227" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TCP</text>
+<rect x="270" y="211" width="50" height="22" rx="2" fill="#c8a6ff" fill-opacity="0.25" stroke="#c8a6ff"/>
+<text x="295" y="227" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TLS</text>
+<rect x="322" y="211" width="36" height="22" rx="2" fill="#d4a853" fill-opacity="0.25" stroke="#d4a853"/>
+<text x="340" y="227" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">FCS</text>
+<rect x="20" y="244" width="360" height="32" rx="2" fill="#0d2740" stroke="rgba(79,196,230,0.2)"/>
+<rect class="fx" x="20" y="244" width="360" height="32" rx="2" fill="#4fc4e6" fill-opacity="0.12" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.674750;0.675000;0.774000;0.774375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="30" y="265" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">1</text>
+<text x="50" y="265" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Physical</text>
+<text x="164" y="265" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">0110 1001 0011…</text>
+</svg>
+      <p id="ch8-layers-p4" class="diagram-caption">Each layer serves the one above and adds its own wrapping on the way down: TLS around the request, then a TCP header, an IP header, and an Ethernet header and checksum, until layer 1 sends it as signals. In practice the top three blur into the application, which is why the internet runs on the four layers of TCP/IP.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Examples.</b> 7: HTTP, DNS, SSH. 6: TLS, compression. 5: session handling. 4: TCP, UDP. 3: IP, ICMP. 2: Ethernet, Wi-Fi. 1: copper, fibre, radio.</li>
+          <li><b>On arrival.</b> The receiver works upward, each layer removing its own header and handing the rest up, in the reverse order.</li>
+          <li><b>The standard.</b> ISO published the model in 1984 as ISO 7498; its protocols lost to TCP/IP, but its layer numbers stayed in engineers' vocabulary.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-8-12">
