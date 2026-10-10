@@ -73,7 +73,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 63 | 2 | `fig-4-16` Fig 4.16 · The UNIX philosophy, in five processes | 2.2 px · cap 111 | done 2026-10-10 |
 | 64 | 2 | `fig-4-17` Fig 4.17 · A signal arrives mid-execution | 2.9 px · cap 148 | done 2026-10-10 |
 | 65 | 2 | `fig-4-18` Fig 4.18 · Two processes, one region, one gate | 2.2 px · cap 126 | done 2026-10-10 |
-| 66 | 2 | `fig-4-19` Fig 4.19 · VMs vs containers | 2.5 px · cap 60 | todo |
+| 66 | 2 | `fig-4-19` Fig 4.19 · VMs vs containers | 2.5 px · cap 60 | done 2026-10-10 |
 | 67 | 2 | `fig-4-20` Fig 4.20 · Namespaces: each container sees its own world | 2.5 px · cap 121 | todo |
 | 68 | 2 | `fig-4-21` Fig 4.21 · Cgroups: quotas as taps on the resource flow | 2.5 px · cap 132 | todo |
 | 69 | 2 | `fig-4-22` Fig 4.22 · eBPF: untrusted code in the kernel, made safe by proof | 2.5 px · cap 135 | todo |

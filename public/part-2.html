@@ -1884,44 +1884,64 @@
       that doesn't require a hypervisor.
     </p>
 
-    <div class="diagram-card" id="fig-4-19">
-      <div class="diagram-label">Fig 4.19 · VMs vs containers</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-20"><title id="svgt-part2-20">Fig 4.19 · VMs vs containers</title>
-        <g transform="translate(20,20)">
-          <text x="160" y="0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(100,150,255,0.85)" letter-spacing="0.15em">VIRTUAL MACHINES</text>
-          <rect x="0" y="20" width="320" height="40" rx="4" fill="#152016" stroke="rgba(100,150,255,0.4)"/>
-          <text x="80" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.7)">App + Libs</text>
-          <text x="240" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.7)">App + Libs</text>
-          <line x1="160" y1="20" x2="160" y2="60" stroke="rgba(255,255,255,0.15)"/>
-          <rect x="0" y="60" width="320" height="40" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.5)"/>
-          <text x="80" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">Guest kernel</text>
-          <text x="240" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">Guest kernel</text>
-          <line x1="160" y1="60" x2="160" y2="100" stroke="rgba(255,255,255,0.15)"/>
-          <rect x="0" y="100" width="320" height="36" rx="4" fill="#0f1a0f" stroke="rgba(150,216,150,0.5)"/>
-          <text x="160" y="123" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.85)">Hypervisor (KVM, VMware, etc.)</text>
-          <rect x="0" y="136" width="320" height="36" rx="4" fill="#0a0a0a" stroke="rgba(255,255,255,0.2)"/>
-          <text x="160" y="159" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(255,255,255,0.5)">Host hardware</text>
-          <text x="160" y="195" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.4)">strong isolation, gigabytes per VM, slow boot</text>
-        </g>
-
-        <g transform="translate(380,20)">
-          <text x="160" y="0" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(150,216,150,0.85)" letter-spacing="0.15em">CONTAINERS</text>
-          <rect x="0" y="20" width="100" height="40" rx="4" fill="#152016" stroke="rgba(100,150,255,0.4)"/>
-          <text x="50" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.7)">App+Libs</text>
-          <rect x="110" y="20" width="100" height="40" rx="4" fill="#152016" stroke="rgba(100,150,255,0.4)"/>
-          <text x="160" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.7)">App+Libs</text>
-          <rect x="220" y="20" width="100" height="40" rx="4" fill="#152016" stroke="rgba(100,150,255,0.4)"/>
-          <text x="270" y="45" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(100,150,255,0.7)">App+Libs</text>
-          <text x="160" y="78" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(150,216,150,0.7)">↑ namespaces + cgroups ↑</text>
-          <rect x="0" y="84" width="320" height="52" rx="4" fill="#0e1a13" stroke="rgba(132,255,178,0.7)" stroke-width="1.5"/>
-          <text x="160" y="107" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,0.9)">SHARED HOST KERNEL</text>
-          <text x="160" y="124" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.5)">one kernel for all containers</text>
-          <rect x="0" y="136" width="320" height="36" rx="4" fill="#0a0a0a" stroke="rgba(255,255,255,0.2)"/>
-          <text x="160" y="159" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(255,255,255,0.5)">Host hardware</text>
-          <text x="160" y="195" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.4)">weaker isolation, megabytes per container, instant boot</text>
-        </g>
-      </svg>
-      <p id="ch4-security-p10" class="diagram-caption">A virtual machine runs a complete guest kernel on emulated hardware: strong isolation, but heavy. A container is just a process the host kernel has restricted with namespaces (what it can see) and cgroups (what it can use). One shared kernel, much less overhead. But a kernel bug in that shared kernel can break out of <em>every</em> container at once.</p>
+    <div class="diagram-card fig-v2" id="fig-4-19">
+      <div class="diagram-label">Fig 4.19&nbsp;· VMs vs containers</div>
+      <svg viewBox="0 0 400 296" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-20 svgd-part2-20">
+<title id="svgt-part2-20">Fig 4.19 · VMs vs containers</title>
+<desc id="svgd-part2-20">Left, virtual machines: on the hardware runs a hypervisor; on it, each virtual machine runs its own guest kernel with its app above it, so each app's system calls go to its own kernel. Right, containers: on the hardware runs one host kernel; three apps sit on it, each fenced by namespaces and cgroups, and all of their system calls go to that one shared kernel. Virtual machines cost a kernel and gigabytes each and boot in seconds; containers share one kernel, cost megabytes and start like a process.</desc>
+<text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">VIRTUAL MACHINES</text>
+<rect x="20" y="40" width="84" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="62" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">app</text>
+<rect x="20" y="92" width="84" height="30" rx="3" fill="#152016" stroke="#d4a853"/>
+<text x="62" y="112" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel</text>
+<line x1="62" y1="70" x2="62" y2="92" stroke="rgba(198,222,206,0.3)" stroke-width="1.2"/>
+<line class="fx" x1="62" y1="70" x2="62" y2="92" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.083000;0.083333;0.198667;0.199167;0.999917;1.000000" dur="6s" repeatCount="indefinite"/></line>
+<rect x="112" y="40" width="84" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="154" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">app</text>
+<rect x="112" y="92" width="84" height="30" rx="3" fill="#152016" stroke="#d4a853"/>
+<text x="154" y="112" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel</text>
+<line x1="154" y1="70" x2="154" y2="92" stroke="rgba(198,222,206,0.3)" stroke-width="1.2"/>
+<line class="fx" x1="154" y1="70" x2="154" y2="92" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.166333;0.166667;0.282000;0.282500;0.999917;1.000000" dur="6s" repeatCount="indefinite"/></line>
+<rect x="20" y="144" width="176" height="30" rx="3" fill="#152016" stroke="rgba(198,222,206,0.5)"/>
+<text x="108" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">hypervisor</text>
+<text x="208" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">CONTAINERS</text>
+<rect x="208" y="40" width="56" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="236" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">app</text>
+<rect x="206" y="37" width="60" height="36" rx="4" fill="none" stroke="rgba(132,255,178,0.35)" stroke-dasharray="3 3"/>
+<line x1="236" y1="73" x2="266.0" y2="144" stroke="rgba(198,222,206,0.3)" stroke-width="1.2"/>
+<line class="fx" x1="236" y1="73" x2="266.0" y2="144" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299667;0.300000;0.415333;0.415833;0.999917;1.000000" dur="6s" repeatCount="indefinite"/></line>
+<rect x="268" y="40" width="56" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="296" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">app</text>
+<rect x="266" y="37" width="60" height="36" rx="4" fill="none" stroke="rgba(132,255,178,0.35)" stroke-dasharray="3 3"/>
+<line x1="296" y1="73" x2="296.0" y2="144" stroke="rgba(198,222,206,0.3)" stroke-width="1.2"/>
+<line class="fx" x1="296" y1="73" x2="296.0" y2="144" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.383000;0.383333;0.498667;0.499167;0.999917;1.000000" dur="6s" repeatCount="indefinite"/></line>
+<rect x="328" y="40" width="56" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.4)"/>
+<text x="356" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">app</text>
+<rect x="326" y="37" width="60" height="36" rx="4" fill="none" stroke="rgba(132,255,178,0.35)" stroke-dasharray="3 3"/>
+<line x1="356" y1="73" x2="326.0" y2="144" stroke="rgba(198,222,206,0.3)" stroke-width="1.2"/>
+<line class="fx" x1="356" y1="73" x2="326.0" y2="144" stroke="#84ffb2" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.466333;0.466667;0.582000;0.582500;0.999917;1.000000" dur="6s" repeatCount="indefinite"/></line>
+<rect x="208" y="144" width="176" height="30" rx="3" fill="#152016" stroke="#d4a853"/>
+<text x="296" y="164" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">one host kernel</text>
+<rect x="20" y="182" width="176" height="30" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.3)"/>
+<text x="108" y="202" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">hardware</text>
+<rect x="208" y="182" width="176" height="30" rx="3" fill="#0c120e" stroke="rgba(198,222,206,0.3)"/>
+<text x="296" y="202" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">hardware</text>
+<text x="20" y="238" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">a kernel per VM</text>
+<text x="20" y="258" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">gigabytes each</text>
+<text x="20" y="278" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">boots in seconds</text>
+<text x="208" y="238" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">one kernel, fenced</text>
+<text x="208" y="258" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">megabytes each</text>
+<text x="208" y="278" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">starts like a process</text>
+</svg>
+      <p id="ch4-security-p10" class="diagram-caption">A virtual machine runs its own guest kernel on a hypervisor; a container is an ordinary process whose system calls go to the one host kernel, fenced by namespaces (what it can see) and cgroups (what it can use). That shared kernel is why containers are light, and why one kernel bug can reach every container on the host.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Hypervisors.</b> KVM turns Linux into one; VMware ESXi, Xen and Hyper-V are others. CPU extensions (Intel VT-x, AMD-V) let guest kernels run directly on the processor.</li>
+          <li><b>The fences.</b> Namespaces and cgroups are ordinary kernel features; the next two figures show each.</li>
+          <li><b>The middle ground.</b> MicroVMs such as AWS Firecracker boot a minimal guest kernel in about 125 ms, giving each container its own kernel at nearly container cost.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch4-security-p11">
