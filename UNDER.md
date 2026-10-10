@@ -3324,7 +3324,10 @@ the current row marked), 2.4 (NOT, AND and OR as live NAND networks; the
 old caption's "fields of NAND-style transistor pairs" dropped), 2.5 (the
 ripple-carry adder, carries rippling left as 5 + 3 settles to 1000), 2.6
 (inside one full adder, live through all eight cases; the ripple chain it
-used to repeat is Fig 2.5). `figlib.Timeline` fix found on 1.9: a point at the loop's
+used to repeat is Fig 2.5), 2.7 (7 + (−5) in a drawn 8-bit register, the
+ninth bit falling off), 2.8 (the two's-complement wheel at true angles:
+the old dial put +127 at three o'clock and +64 at 45°; a pointer steps
+across the bottom seam into overflow and across the top into a correct 0). `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

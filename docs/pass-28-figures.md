@@ -27,8 +27,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 19 | 1 | `fig-2-4` Fig 2.4 · Everything from NAND · NOT, AND and OR built from one gate | 2.9 px · cap 60 | done 2026-10-10 |
 | 20 | 1 | `fig-2-5` Fig 2.5 · Adding 5 + 3 in binary · a ripple-carry adder | 2.6 px · cap 49 | done 2026-10-10 |
 | 21 | 1 | `fig-2-6` Fig 2.6 · Inside a full adder · two half adders and an OR | 2.2 px · cap 78 | done 2026-10-10 |
-| 22 | 1 | `fig-2-7` Fig 2.7 · Computing 7 − 5 = 2 with two's complement | 3.5 px · cap 51 | todo |
-| 23 | 1 | `fig-2-8` Fig 2.8 · The two's-complement wheel · where addition wraps | 2.6 px · cap 122 | todo |
+| 22 | 1 | `fig-2-7` Fig 2.7 · Computing 7 − 5 = 2 with two's complement | 3.5 px · cap 51 | done 2026-10-10 |
+| 23 | 1 | `fig-2-8` Fig 2.8 · The two's-complement wheel · where addition wraps | 2.6 px · cap 122 | done 2026-10-10 |
 | 24 | 1 | `fig-2-9` Fig 2.9 · How a signed overflow becomes a buffer overflow | 2.9 px · cap 126 | todo |
 | 25 | 1 | `fig-2-10` Fig 2.10 · IEEE 754 double-precision layout | 2.6 px · cap 63 | todo |
 | 26 | 1 | `fig-2-11` Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives | 2.9 px · cap 122 | todo |
