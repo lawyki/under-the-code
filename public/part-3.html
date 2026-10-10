@@ -4292,69 +4292,46 @@
 
     <h3>The TLS 1.3 handshake</h3>
 
-    <div class="diagram-card" id="fig-11-11">
-      <div class="diagram-label">Fig 11.11 · TLS 1.3 · one round trip from "hello" to encrypted data</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-50"><title id="svgt-part3-50">Fig 11.11 · TLS 1.3 · one round trip from &quot;hello&quot; to encrypted data</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">RFC 8446 · the version your browser actually uses</text>
-
-        <!-- Client column -->
-        <g transform="translate(60,60)">
-          <rect x="0" y="0" width="120" height="40" rx="6" fill="#0a2033" stroke="rgba(150,216,150,0.85)" stroke-width="2"/>
-          <text x="60" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">CLIENT</text>
-          <text x="60" y="34" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.7)">browser / curl</text>
-          <line x1="60" y1="40" x2="60" y2="400" stroke="rgba(150,216,150,0.4)"/>
-        </g>
-
-        <!-- Server column -->
-        <g transform="translate(540,60)">
-          <rect x="0" y="0" width="120" height="40" rx="6" fill="#0a2033" stroke="rgba(232,120,120,0.85)" stroke-width="2"/>
-          <text x="60" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">SERVER</text>
-          <text x="60" y="34" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.7)">example.com:443</text>
-          <line x1="60" y1="40" x2="60" y2="400" stroke="rgba(232,120,120,0.4)"/>
-        </g>
-
-        <!-- Step 1: ClientHello -->
-        <g>
-          <line x1="120" y1="130" x2="600" y2="170" stroke="rgba(150,216,150,0.7)" stroke-width="1.5"/>
-          <polygon points="600,170 590,166 593,178" fill="rgba(150,216,150,0.85)"/>
-          <text x="360" y="120" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">① ClientHello</text>
-          <text x="360" y="138" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">supported ciphers · supported groups · client_random · key_share (X25519 ephemeral pubkey)</text>
-          <text x="360" y="154" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">"Here is half of a Diffie–Hellman, plus what I can do."</text>
-        </g>
-
-        <!-- Step 2: ServerHello + ... -->
-        <g>
-          <line x1="600" y1="190" x2="120" y2="240" stroke="rgba(232,120,120,0.7)" stroke-width="1.5"/>
-          <polygon points="120,240 130,236 127,248" fill="rgba(232,120,120,0.85)"/>
-          <text x="360" y="190" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">② ServerHello + {EncryptedExtensions, Certificate, CertificateVerify, Finished}</text>
-          <text x="360" y="208" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">server_random · key_share (server's ephemeral X25519) · cipher_suite chosen</text>
-          <text x="360" y="224" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">+ X.509 certificate chain · + signature over the handshake transcript with private key</text>
-          <text x="360" y="240" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">"Here is my half. Verify my certificate chain. The rest is encrypted."</text>
-        </g>
-
-        <!-- Compute keys -->
-        <g transform="translate(180,270)">
-          <rect x="0" y="0" width="360" height="44" rx="4" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="180" y="20" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">both sides now compute the SAME shared key</text>
-          <text x="180" y="36" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">ECDH(client_priv, server_pub) = ECDH(server_priv, client_pub) · derive AES + IV via HKDF</text>
-        </g>
-
-        <!-- Step 3: Client Finished -->
-        <g>
-          <line x1="120" y1="350" x2="600" y2="370" stroke="rgba(150,216,150,0.7)" stroke-width="1.5"/>
-          <polygon points="600,370 590,365 591,377" fill="rgba(150,216,150,0.85)"/>
-          <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">③ {Finished}: proves client also derived the keys</text>
-          <text x="360" y="356" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">MAC over the entire handshake transcript, encrypted with the new keys</text>
-        </g>
-
-        <!-- Encrypted data flowing -->
-        <g transform="translate(180,400)">
-          <rect x="0" y="0" width="360" height="40" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="180" y="18" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">④ HTTP/1.1 GET / and the rest of the conversation</text>
-          <text x="180" y="32" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">AES-GCM, ChaCha20-Poly1305, etc. · encrypted + authenticated</text>
-        </g>
-      </svg>
-      <p id="ch11-tls-p3" class="diagram-caption">The whole TLS 1.3 handshake: one round trip. The client sends a hello with half of an ephemeral Diffie–Hellman key exchange (an X25519 public key) plus the list of cipher suites it supports. The server replies with the other half plus its X.509 certificate plus a signature, with most of that already encrypted under the freshly derived shared key. This works because both sides can compute the shared key as soon as they see each other's public halves. The client verifies the certificate against its trusted root store (<a href="#fig-11-12">Fig 11.12</a>), checks the signature, and replies Finished. From this moment forward, every byte is encrypted with AES-GCM (or ChaCha20 on phones without AES hardware) and authenticated against the agreed key. TLS 1.2 needed two round trips to do the same job; TLS 1.3 saved one round trip by being smarter about message ordering.</p>
+    <div class="diagram-card fig-v2" id="fig-11-11">
+      <div class="diagram-label">Fig 11.11&nbsp;· TLS 1.3&nbsp;· one round trip from "hello" to encrypted data</div>
+      <svg viewBox="0 0 400 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-50 svgd-part3-50">
+<title id="svgt-part3-50">Fig 11.11 · TLS 1.3 · one round trip from &quot;hello&quot; to encrypted data</title>
+<desc id="svgd-part3-50">The TLS 1.3 handshake as a ladder, client on the left, server on the right, time running down. The client sends ClientHello with its key share, its half of a Diffie–Hellman exchange; from that moment the server can derive the keys. The server replies with ServerHello and its key share in the clear, then its certificate, signature and Finished, encrypted. One round trip after its hello the client holds the same keys; it sends Finished and its GET request, encrypted, and the server answers with the page, encrypted.</desc>
+<text x="76" y="22" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">client</text>
+<text x="372" y="22" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">server</text>
+<line x1="76" y1="32" x2="76" y2="380" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.389800;0.390000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="76" y1="206" x2="76" y2="380" stroke="#d4a853" stroke-width="3"/></g>
+<line x1="372" y1="32" x2="372" y2="380" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.229800;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="372" y1="118" x2="372" y2="380" stroke="#d4a853" stroke-width="3"/></g>
+<path d="M62,84 h-6 V206 h6" fill="none" stroke="#4fc4e6" stroke-width="1.5"/>
+<text x="50" y="141" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">1</text>
+<text x="50" y="158" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">RTT</text>
+<g opacity="0.4"><text x="224" y="57" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ClientHello + key share</text><text x="224" y="74" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">my half of a Diffie–Hellman</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.109800;0.110000;1.000000" dur="10s" repeatCount="indefinite"/><text x="224" y="57" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ClientHello + key share</text><text x="224" y="74" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">my half of a Diffie–Hellman</text></g>
+<line x1="76" y1="84" x2="372" y2="118" stroke="rgba(223,234,242,0.85)" stroke-width="1.5"/><path d="M362,112 L372,118 L362,123" fill="none" stroke="rgba(223,234,242,0.85)" stroke-width="1.5"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.109800;0.110000;0.230200;0.230500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="296.00 0;296.00 0;0.00 0;0.00 0;296.00 0;296.00 0" keyTimes="0.000000;0.049950;0.050000;0.110000;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 34.00;0 34.00;0 0.00;0 0.00;0 34.00;0 34.00" keyTimes="0.000000;0.049950;0.050000;0.110000;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="76" cy="84" r="5" fill="rgba(223,234,242,0.85)"/></g></g></g>
+<g opacity="0.4"><text x="224" y="145" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ServerHello + key share</text><text x="224" y="162" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{certificate, signature, Finished}</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.269800;0.270000;1.000000" dur="10s" repeatCount="indefinite"/><text x="224" y="145" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ServerHello + key share</text><text x="224" y="162" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{certificate, signature, Finished}</text></g>
+<line x1="372" y1="172" x2="76" y2="206" stroke="rgba(223,234,242,0.85)" stroke-width="1.5"/><path d="M86,200 L76,206 L86,211" fill="none" stroke="rgba(223,234,242,0.85)" stroke-width="1.5"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.269800;0.270000;0.390200;0.390500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-296.00 0;-296.00 0;0.00 0;0.00 0;-296.00 0;-296.00 0" keyTimes="0.000000;0.049950;0.050000;0.270000;0.390000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 34.00;0 34.00;0 0.00;0 0.00;0 34.00;0 34.00" keyTimes="0.000000;0.049950;0.050000;0.270000;0.390000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="372" cy="172" r="5" fill="rgba(223,234,242,0.85)"/></g></g></g>
+<g opacity="0.4"><text x="224" y="233" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{Finished} {GET /}</text><text x="224" y="250" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">the request, already encrypted</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.429800;0.430000;1.000000" dur="10s" repeatCount="indefinite"/><text x="224" y="233" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{Finished} {GET /}</text><text x="224" y="250" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">the request, already encrypted</text></g>
+<line x1="76" y1="260" x2="372" y2="294" stroke="#d4a853" stroke-width="1.5"/><path d="M362,288 L372,294 L362,299" fill="none" stroke="#d4a853" stroke-width="1.5"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.429800;0.430000;0.550200;0.550500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="296.00 0;296.00 0;0.00 0;0.00 0;296.00 0;296.00 0" keyTimes="0.000000;0.049950;0.050000;0.430000;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 34.00;0 34.00;0 0.00;0 0.00;0 34.00;0 34.00" keyTimes="0.000000;0.049950;0.050000;0.430000;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="76" cy="260" r="5" fill="#d4a853"/></g></g></g>
+<g opacity="0.4"><text x="224" y="312" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{200 OK and the page}</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.589800;0.590000;1.000000" dur="10s" repeatCount="indefinite"/><text x="224" y="312" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">{200 OK and the page}</text></g>
+<line x1="372" y1="322" x2="76" y2="356" stroke="#d4a853" stroke-width="1.5"/><path d="M86,350 L76,356 L86,361" fill="none" stroke="#d4a853" stroke-width="1.5"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.589800;0.590000;0.710200;0.710500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-296.00 0;-296.00 0;0.00 0;0.00 0;-296.00 0;-296.00 0" keyTimes="0.000000;0.049950;0.050000;0.590000;0.710000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 34.00;0 34.00;0 0.00;0 0.00;0 34.00;0 34.00" keyTimes="0.000000;0.049950;0.050000;0.590000;0.710000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="372" cy="322" r="5" fill="#d4a853"/></g></g></g>
+</svg>
+      <p id="ch11-tls-p3" class="diagram-caption">The client's hello already carries its half of a Diffie–Hellman exchange, so the server can derive the keys at once and encrypt everything after its own hello, certificate included. One round trip after its hello the client holds the same keys, checks the certificate and signature, and sends its request encrypted.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Plain and braced.</b> Only the two hellos cross in the clear; everything in braces is encrypted under keys derived (with HKDF) from the shared Diffie–Hellman secret. The gold lane marks when each side holds them.</li>
+          <li><b>Proof of identity.</b> The certificate binds the server's public key to its name (Fig 11.12); the signature, over the handshake so far, proves the server holds the matching private key. Each Finished is a MAC over the whole transcript, so tampering shows.</li>
+          <li><b>The cost.</b> One round trip before data, against two in TLS 1.2. A client returning to a server it has met can even send early data with its hello (0-RTT).</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The certificate chain</h3>
