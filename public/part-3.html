@@ -2418,52 +2418,42 @@
       starting counter. Four would be redundant.
     </p>
 
-    <div class="diagram-card" id="fig-10-2">
-      <div class="diagram-label">Fig 10.2 · The three-way handshake, in time</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-29"><title id="svgt-part3-29">Fig 10.2 · The three-way handshake, in time</title>
-        <!-- Time axis flowing down -->
-        <text x="180" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(150,216,150,0.95)">CLIENT</text>
-        <text x="540" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(232,120,120,0.95)">SERVER</text>
-
-        <line x1="180" y1="50" x2="180" y2="320" stroke="rgba(150,216,150,0.5)" stroke-width="1.5"/>
-        <line x1="540" y1="50" x2="540" y2="320" stroke="rgba(232,120,120,0.5)" stroke-width="1.5"/>
-
-        <!-- States -->
-        <text x="120" y="64" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.65)" text-anchor="end">CLOSED</text>
-        <text x="600" y="64" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.65)">LISTEN</text>
-
-        <!-- SYN -->
-        <g>
-          <line x1="190" y1="100" x2="530" y2="140" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <polygon points="530,140 522,134 525,144" fill="rgba(79,196,230,0.95)"/>
-          <text x="356" y="116" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">SYN, seq=X</text>
-          <text x="356" y="130" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">"I want to talk; my ISN is X"</text>
-        </g>
-        <text x="120" y="116" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.65)" text-anchor="end">SYN_SENT</text>
-        <text x="600" y="146" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.65)">SYN_RCVD</text>
-
-        <!-- SYN-ACK -->
-        <g>
-          <line x1="530" y1="180" x2="190" y2="220" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <polygon points="190,220 198,214 195,224" fill="rgba(79,196,230,0.95)"/>
-          <text x="356" y="196" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">SYN-ACK, seq=Y, ack=X+1</text>
-          <text x="356" y="210" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">"my ISN is Y; I got yours"</text>
-        </g>
-
-        <!-- ACK -->
-        <g>
-          <line x1="190" y1="260" x2="530" y2="300" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <polygon points="530,300 522,294 525,304" fill="rgba(79,196,230,0.95)"/>
-          <text x="356" y="276" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">ACK, seq=X+1, ack=Y+1</text>
-          <text x="356" y="290" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">"got yours; counters synced"</text>
-        </g>
-
-        <text x="120" y="266" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.95)" text-anchor="end" font-weight="700">ESTABLISHED</text>
-        <text x="600" y="306" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.95)" font-weight="700">ESTABLISHED</text>
-
-        <text x="360" y="346" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">ONE FULL RTT BEFORE THE CLIENT'S FIRST APPLICATION BYTE, A PERMANENT TAX TCP CHARGES PER CONNECTION</text>
-      </svg>
-      <p id="ch10-handshake-p2" class="diagram-caption">Three segments cross the network. The <strong>SYN</strong> carries the client's chosen Initial Sequence Number (ISN), randomly selected for security. The <strong>SYN-ACK</strong> carries the server's ISN and acknowledges the client's SYN by answering with ISN+1. The <strong>ACK</strong> closes the loop by answering with the server's ISN+1. After this, both sides know both sequence numbers and the connection is ESTABLISHED. The setup costs one full round trip before the client's first byte of application data can leave. The third ACK may carry data with it, but nothing can be sent before it. This permanent tax motivated TFO (TCP Fast Open) and, eventually, the design of QUIC, which folds connection setup into the encryption handshake to save round trips.</p>
+    <div class="diagram-card fig-v2" id="fig-10-2">
+      <div class="diagram-label">Fig 10.2&nbsp;· The three-way handshake, in time</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-29 svgd-part3-29">
+<title id="svgt-part3-29">Fig 10.2 · The three-way handshake, in time</title>
+<desc id="svgd-part3-29">Time runs downward between a client and a server. The client sends SYN with its initial sequence number, 4170, and moves from CLOSED to SYN_SENT. The server, listening, replies SYN-ACK with its own number, 9012, acknowledging 4171, and moves to SYN_RCVD. The client replies ACK, acknowledging 9013; both sides are ESTABLISHED. One full round trip passes before the client's first byte of data can leave.</desc>
+<text x="70" y="22" text-anchor="middle" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">client</text>
+<line x1="70" y1="68" x2="70" y2="276" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5" stroke-width="2"/>
+<text x="330" y="22" text-anchor="middle" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#fff">server</text>
+<line x1="330" y1="68" x2="330" y2="276" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5" stroke-width="2"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.277556;0.278000;0.321333;0.321667;1.000000" dur="9s" repeatCount="indefinite"/><text x="70" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">CLOSED</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.322000;0.322222;0.632444;0.632778;1.000000" dur="9s" repeatCount="indefinite"/><text x="70" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">SYN_SENT</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.633111;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><text x="70" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">ESTABLISHED</text></g>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.277556;0.278000;0.454667;0.455000;1.000000" dur="9s" repeatCount="indefinite"/><text x="330" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">LISTEN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.455333;0.455556;0.810222;0.810556;1.000000" dur="9s" repeatCount="indefinite"/><text x="330" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">SYN_RCVD</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.810889;0.811111;1.000000" dur="9s" repeatCount="indefinite"/><text x="330" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">ESTABLISHED</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.455333;0.455556;1.000000" dur="9s" repeatCount="indefinite"/><line x1="70" y1="90" x2="330" y2="106" stroke="#4fc4e6" stroke-width="2"/><polygon points="322,99 322,109 330,106" fill="#4fc4e6"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.322000;0.322222;0.454667;0.455000;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="260.00 0;260.00 0;0.00 0;0.00 0;260.00 0;260.00 0" keyTimes="0.000000;0.233278;0.233333;0.322222;0.455556;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 16.00;0 16.00;0 0.00;0 0.00;0 16.00;0 16.00" keyTimes="0.000000;0.233278;0.233333;0.322222;0.455556;1.000000" dur="9s" repeatCount="indefinite"/><circle cx="70" cy="90" r="6" fill="#4fc4e6"/></g></g></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.322000;0.322222;1.000000" dur="9s" repeatCount="indefinite"/><text x="200" y="88" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">SYN · seq 4170</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.633111;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><line x1="330" y1="150" x2="70" y2="166" stroke="#4fc4e6" stroke-width="2"/><polygon points="78,159 78,169 70,166" fill="#4fc4e6"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.499778;0.500000;0.632444;0.632778;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-260.00 0;-260.00 0;0.00 0;0.00 0;-260.00 0;-260.00 0" keyTimes="0.000000;0.233278;0.233333;0.500000;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 16.00;0 16.00;0 0.00;0 0.00;0 16.00;0 16.00" keyTimes="0.000000;0.233278;0.233333;0.500000;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><circle cx="330" cy="150" r="6" fill="#4fc4e6"/></g></g></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.499778;0.500000;1.000000" dur="9s" repeatCount="indefinite"/><text x="200" y="148" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">SYN-ACK · seq 9012 · ack 4171</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.810889;0.811111;1.000000" dur="9s" repeatCount="indefinite"/><line x1="70" y1="210" x2="330" y2="226" stroke="#4fc4e6" stroke-width="2"/><polygon points="322,219 322,229 330,226" fill="#4fc4e6"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233278;0.233333;0.677556;0.677778;0.810222;0.810556;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="260.00 0;260.00 0;0.00 0;0.00 0;260.00 0;260.00 0" keyTimes="0.000000;0.233278;0.233333;0.677778;0.811111;1.000000" dur="9s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 16.00;0 16.00;0 0.00;0 0.00;0 16.00;0 16.00" keyTimes="0.000000;0.233278;0.233333;0.677778;0.811111;1.000000" dur="9s" repeatCount="indefinite"/><circle cx="70" cy="210" r="6" fill="#4fc4e6"/></g></g></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.677556;0.677778;1.000000" dur="9s" repeatCount="indefinite"/><text x="200" y="208" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ACK · ack 9013</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.822000;0.822222;1.000000" dur="9s" repeatCount="indefinite"/><line x1="70" y1="250" x2="330" y2="266" stroke="#e07a3f" stroke-width="2" stroke-dasharray="6 4"/><text x="200" y="248" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">first data</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.633111;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><path d="M56 90 H48 V166 H56" fill="none" stroke="#e07a3f" stroke-width="1.5"/><text x="42" y="133" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">1 RTT</text></g>
+</svg>
+      <p id="ch10-handshake-p2" class="diagram-caption">The client sends SYN with its starting sequence number; the server answers with its own and acknowledges the client's plus one; the client acknowledges the server's plus one, and both now know both counters. That costs one full round trip before the first byte of data, the tax TCP Fast Open and QUIC set out to cut.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Random starts.</b> Each side picks its initial sequence number unpredictably, so an outsider cannot guess the numbers needed to inject into the connection.</li>
+          <li><b>Plus one.</b> SYN counts as one byte of sequence space, which is why the acknowledgements are 4171 and 9013.</li>
+          <li><b>Data early.</b> The third segment may already carry data, but nothing can leave before it.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch10-handshake-p3">
