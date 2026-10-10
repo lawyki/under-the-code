@@ -99,7 +99,7 @@ in substance throughout.
    on any part shows the tracker's state; constants in `book.js` `T`).
 5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
    cut, DONE (§4aa: 11.2 % shorter, glossary authored);
-   28 figures IN PROGRESS (§4ab; ledger `docs/pass-28-figures.md`, 13 of 222
+   28 figures IN PROGRESS (§4ab; ledger `docs/pass-28-figures.md`, 15 of 222
    done, pilot published for the owner), every figure one by one, handcrafted and
    tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
    fig 1.2 note: the image explains itself, text goes into explainers).

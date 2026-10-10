@@ -18,8 +18,8 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 10 | 1 | `fig-1-10` Fig 1.10 · From assembly to binary · one instruction decoded | 2.6 px · cap 97 | done (pilot, 2026-10-10) |
 | 11 | 1 | `fig-1-11` Fig 1.11 · Pipelined execution · five instructions, five stages | 2.9 px · cap 93 | done 2026-10-10 |
 | 12 | 1 | `fig-1-12` Fig 1.12 · Speculative execution · the CPU guesses, then checks | 2.6 px · cap 107 | done 2026-10-10 |
-| 13 | 1 | `fig-1-13` Fig 1.13 · Running a program in 1955 · one job, one user, one machine | 2.2 px · cap 64 | todo |
-| 14 | 1 | `fig-1-14` Fig 1.14 · Privilege rings · syscalls cross the boundary | 3.1 px · cap 99 | todo |
+| 13 | 1 | `fig-1-13` Fig 1.13 · Running a program in 1955 · one job, one user, one machine | 2.2 px · cap 64 | done 2026-10-10 |
+| 14 | 1 | `fig-1-14` Fig 1.14 · Protection rings · user programs, the kernel, the hardware | 3.1 px · cap 99 | done 2026-10-10 |
 | 15 | 1 | `fig-1-15` Fig 1.15 · The hierarchy of forgetting · bigger and slower at every step | 2.6 px · cap 76 | done (pilot, 2026-10-10) |
 | 16 | 1 | `fig-2-1` Fig 2.1 · Why binary survives noise | 3 px · cap 42 | todo |
 | 17 | 1 | `fig-2-2` Fig 2.2 · Boole's algebra · Shannon's gate · the same idea, ninety years apart | 2.6 px · cap 96 | todo |

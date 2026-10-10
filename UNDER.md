@@ -3311,7 +3311,12 @@ and its data in one memory, code and data taking turns on one bus), 1.9 (the
 cycle as a ring; the PC advances by 5 bytes, then 3, and a jmp sends it
 back), 1.10, 1.11 (the pipeline grid filled by a cursor; 25 against 9
 cycles as two bars), 1.12 (one branch played twice: kept, then thrown away
-with its cache line "still there"), 1.15. `figlib.Timeline` fix found on 1.9: a point at the loop's
+with its cache line "still there"), 1.13 (one illustrative hour on two
+lanes: your wait, and the machine idle between decks; the old drawing's
+"CPU 100% on your job" contradicted its own caption), 1.14 (rings: a direct
+reach for the disk blocked at the boundary, the system call going through;
+the unverified "millions of these per second" dropped), 1.15. **Chapter 1
+complete.** `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 
