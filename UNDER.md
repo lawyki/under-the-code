@@ -3320,7 +3320,11 @@ complete.** Chapter 2: 2.1 (binary and ternary wires with the same noise
 and the same drift; binary absorbs it, ternary misreads a 0 as +1), 2.2
 (Boole's overlap and Shannon's series switches lighting together, through
 all four cases), 2.3 (AND, OR, NOT live, each with its truth table and
-the current row marked). `figlib.Timeline` fix found on 1.9: a point at the loop's
+the current row marked), 2.4 (NOT, AND and OR as live NAND networks; the
+old caption's "fields of NAND-style transistor pairs" dropped), 2.5 (the
+ripple-carry adder, carries rippling left as 5 + 3 settles to 1000), 2.6
+(inside one full adder, live through all eight cases; the ripple chain it
+used to repeat is Fig 2.5). `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 

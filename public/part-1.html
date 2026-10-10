@@ -2197,109 +2197,99 @@
       to compute anything computable.</strong>
     </p>
 
-    <div class="diagram-card" id="fig-2-4">
-      <div class="diagram-label">Fig 2.4 · NAND universality · the only gate you actually need</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-21"><title id="svgt-part1-21">Fig 2.4 · NAND universality · the only gate you actually need</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">NOT, AND, AND OR: ALL FROM A SINGLE NAND</text>
-
-        <!-- Panel 1: NOT from NAND -->
-        <g transform="translate(20, 60)">
-          <text x="100" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">NOT</text>
-          <text x="100" y="16" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">one NAND, inputs tied</text>
-          <!-- NAND gate body (D-shape with bubble) -->
-          <path d="M 70 60 L 70 116 L 118 116 A 28 28 0 0 0 118 60 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.85)" stroke-width="1.4"/>
-          <circle cx="152" cy="88" r="4" fill="none" stroke="rgba(212,168,83,0.85)" stroke-width="1.4"/>
-          <text x="98" y="92" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="rgba(212,168,83,0.95)">NAND</text>
-          <!-- input wire (split) -->
-          <line x1="20" y1="88" x2="40" y2="88" stroke="rgba(100,150,255,0.8)" stroke-width="1.4"/>
-          <line x1="40" y1="88" x2="40" y2="72" stroke="rgba(100,150,255,0.8)" stroke-width="1.4"/>
-          <line x1="40" y1="88" x2="40" y2="104" stroke="rgba(100,150,255,0.8)" stroke-width="1.4"/>
-          <line x1="40" y1="72" x2="70" y2="72" stroke="rgba(100,150,255,0.8)" stroke-width="1.4"/>
-          <line x1="40" y1="104" x2="70" y2="104" stroke="rgba(100,150,255,0.8)" stroke-width="1.4"/>
-          <circle cx="40" cy="88" r="2.5" fill="rgba(100,150,255,0.9)"/>
-          <text x="14" y="92" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.9)">A</text>
-          <!-- output -->
-          <line x1="156" y1="88" x2="190" y2="88" stroke="rgba(212,168,83,0.85)" stroke-width="1.4"/>
-          <text x="198" y="92" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">¬A</text>
-          <!-- truth table -->
-          <g font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">
-            <rect x="40" y="148" width="120" height="80" fill="rgba(255,255,255,0.04)" stroke="rgba(212,168,83,0.25)" rx="4"/>
-            <text x="60" y="166">A</text><text x="120" y="166" fill="rgba(212,168,83,0.7)">¬A</text>
-            <line x1="48" y1="172" x2="152" y2="172" stroke="rgba(255,255,255,0.15)"/>
-            <text x="60" y="188">0</text><text x="120" y="188" fill="rgba(212,168,83,0.85)">1</text>
-            <text x="60" y="208">1</text><text x="120" y="208" fill="rgba(212,168,83,0.85)">0</text>
-          </g>
-        </g>
-
-        <!-- Panel 2: AND from NAND -->
-        <g transform="translate(250, 60)">
-          <text x="120" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">AND</text>
-          <text x="120" y="16" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">two NANDs · output inverted</text>
-          <!-- NAND 1 -->
-          <path d="M 50 60 L 50 116 L 92 116 A 24 24 0 0 0 92 60 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <circle cx="120" cy="88" r="3" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <line x1="14" y1="76" x2="50" y2="76" stroke="rgba(100,150,255,0.8)" stroke-width="1.3"/>
-          <line x1="14" y1="100" x2="50" y2="100" stroke="rgba(150,216,150,0.8)" stroke-width="1.3"/>
-          <text x="8" y="80" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.9)">A</text>
-          <text x="8" y="104" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.9)">B</text>
-          <!-- wire to NAND 2 -->
-          <line x1="123" y1="88" x2="155" y2="88" stroke="rgba(255,255,255,0.5)" stroke-width="1.2"/>
-          <!-- NAND 2 (acts as NOT) -->
-          <path d="M 155 70 L 155 106 L 185 106 A 18 18 0 0 0 185 70 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <circle cx="208" cy="88" r="3" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <line x1="155" y1="78" x2="151" y2="78" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="155" y1="98" x2="151" y2="98" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="151" y1="78" x2="151" y2="98" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="211" y1="88" x2="240" y2="88" stroke="rgba(212,168,83,0.85)" stroke-width="1.3"/>
-          <text x="248" y="92" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">A · B</text>
-          <!-- truth table -->
-          <g font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">
-            <rect x="60" y="148" width="160" height="92" fill="rgba(255,255,255,0.04)" stroke="rgba(212,168,83,0.25)" rx="4"/>
-            <text x="76" y="166">A</text><text x="116" y="166">B</text><text x="170" y="166" fill="rgba(212,168,83,0.7)">A·B</text>
-            <line x1="68" y1="172" x2="212" y2="172" stroke="rgba(255,255,255,0.15)"/>
-            <text x="76" y="188">0</text><text x="116" y="188">0</text><text x="174" y="188" fill="rgba(212,168,83,0.85)">0</text>
-            <text x="76" y="204">0</text><text x="116" y="204">1</text><text x="174" y="204" fill="rgba(212,168,83,0.85)">0</text>
-            <text x="76" y="220">1</text><text x="116" y="220">0</text><text x="174" y="220" fill="rgba(212,168,83,0.85)">0</text>
-            <text x="76" y="236">1</text><text x="116" y="236">1</text><text x="174" y="236" fill="rgba(212,168,83,0.85)">1</text>
-          </g>
-        </g>
-
-        <!-- Panel 3: OR from NAND -->
-        <g transform="translate(490, 60)">
-          <text x="110" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">OR</text>
-          <text x="110" y="16" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">DeMorgan: ¬(¬A · ¬B)</text>
-          <!-- NAND-as-NOT for A -->
-          <path d="M 30 50 L 30 78 L 50 78 A 14 14 0 0 0 50 50 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.6)" stroke-width="1.2"/>
-          <circle cx="68" cy="64" r="2.5" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="1.2"/>
-          <line x1="6" y1="64" x2="30" y2="64" stroke="rgba(100,150,255,0.8)" stroke-width="1.2"/>
-          <text x="0" y="68" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.9)">A</text>
-          <!-- NAND-as-NOT for B -->
-          <path d="M 30 100 L 30 128 L 50 128 A 14 14 0 0 0 50 100 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.6)" stroke-width="1.2"/>
-          <circle cx="68" cy="114" r="2.5" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="1.2"/>
-          <line x1="6" y1="114" x2="30" y2="114" stroke="rgba(150,216,150,0.8)" stroke-width="1.2"/>
-          <text x="0" y="118" text-anchor="end" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.9)">B</text>
-          <!-- Final NAND -->
-          <line x1="71" y1="64" x2="100" y2="76" stroke="rgba(255,255,255,0.45)" stroke-width="1.1"/>
-          <line x1="71" y1="114" x2="100" y2="102" stroke="rgba(255,255,255,0.45)" stroke-width="1.1"/>
-          <path d="M 100 70 L 100 110 L 130 110 A 20 20 0 0 0 130 70 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <circle cx="155" cy="90" r="3" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <line x1="158" y1="90" x2="195" y2="90" stroke="rgba(212,168,83,0.85)" stroke-width="1.3"/>
-          <text x="203" y="94" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">A+B</text>
-          <!-- truth table -->
-          <g font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.7)">
-            <rect x="40" y="148" width="160" height="92" fill="rgba(255,255,255,0.04)" stroke="rgba(212,168,83,0.25)" rx="4"/>
-            <text x="56" y="166">A</text><text x="96" y="166">B</text><text x="148" y="166" fill="rgba(212,168,83,0.7)">A+B</text>
-            <line x1="48" y1="172" x2="192" y2="172" stroke="rgba(255,255,255,0.15)"/>
-            <text x="56" y="188">0</text><text x="96" y="188">0</text><text x="154" y="188" fill="rgba(212,168,83,0.85)">0</text>
-            <text x="56" y="204">0</text><text x="96" y="204">1</text><text x="154" y="204" fill="rgba(212,168,83,0.85)">1</text>
-            <text x="56" y="220">1</text><text x="96" y="220">0</text><text x="154" y="220" fill="rgba(212,168,83,0.85)">1</text>
-            <text x="56" y="236">1</text><text x="96" y="236">1</text><text x="154" y="236" fill="rgba(212,168,83,0.85)">1</text>
-          </g>
-        </g>
-
-        <text x="360" y="314" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Sheffer 1913 · functional completeness · one gate, anything computable</text>
-      </svg>
-      <p id="ch2-gates-p6" class="diagram-caption">Three foundational gates (NOT, AND, OR), each rebuilt from the single NAND primitive, one panel per construction the text just walked. Read the truth tables: every panel's output matches the conventional gate it replaces. From this single primitive, every computation any computer has ever performed can be assembled. Silicon really is, in its bottom layers, fields of NAND-style transistor pairs.</p>
+    <div class="diagram-card fig-v2" id="fig-2-4">
+      <div class="diagram-label">Fig 2.4&nbsp;· Everything from NAND&nbsp;· NOT, AND and OR built from one gate</div>
+      <svg viewBox="0 0 400 424" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-20 svgd-part1-20">
+<title id="svgt-part1-20">Fig 2.4 · Everything from NAND · NOT, AND and OR built from one gate</title>
+<desc id="svgd-part1-20">Three circuits built only of NAND gates. One NAND with its inputs tied together is NOT. A NAND followed by that NOT is AND. Inverting both inputs and then taking their NAND is OR, by De Morgan's law. The inputs step through every case and each output matches the ordinary gate.</desc>
+<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#fff">NOT</text>
+<text x="64" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">one NAND, inputs tied</text>
+<circle cx="34" cy="64" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="34" cy="64" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="34" y="69" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="34" y="69" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 47 64 H 70 M 70 56 V 72 M 70 56 H 100 M 70 72 H 100" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 47 64 H 70 M 70 56 V 72 M 70 56 H 100 M 70 72 H 100" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 100 44 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="148" cy="64" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 153 64 H 330" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 153 64 H 330" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="346" cy="64" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="346" cy="64" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="346" y="69" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="346" y="69" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="20" y="124" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#fff">AND</text>
+<text x="64" y="124" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">NAND, then NOT</text>
+<circle cx="34" cy="150" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="34" cy="150" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="34" y="155" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="34" y="155" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<circle cx="34" cy="190" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="34" cy="190" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="34" y="195" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="34" y="195" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 47 150 H 74 V 160 H 100" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 47 150 H 74 V 160 H 100" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 47 190 H 74 V 180 H 100" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 47 190 H 74 V 180 H 100" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 100 150 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="148" cy="170" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 153 170 H 182 M 182 162 V 178 M 182 162 H 206 M 182 178 H 206" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 153 170 H 182 M 182 162 V 178 M 182 162 H 206 M 182 178 H 206" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 206 150 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="254" cy="170" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 259 170 H 330" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 259 170 H 330" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="346" cy="170" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="346" cy="170" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="346" y="175" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="346" y="175" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="20" y="240" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#fff">OR</text>
+<text x="64" y="240" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">NOT both, then NAND</text>
+<circle cx="34" cy="278" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="34" cy="278" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="34" y="283" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="34" y="283" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<circle cx="34" cy="362" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="34" cy="362" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="34" y="367" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="34" y="367" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<path d="M 47 278 H 70 M 70 270 V 286 M 70 270 H 100 M 70 286 H 100" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 47 278 H 70 M 70 270 V 286 M 70 270 H 100 M 70 286 H 100" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 47 362 H 70 M 70 354 V 370 M 70 354 H 100 M 70 370 H 100" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 47 362 H 70 M 70 354 V 370 M 70 354 H 100 M 70 370 H 100" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 100 258 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="148" cy="278" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 100 342 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="148" cy="362" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 153 278 H 184 V 310 H 206" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 153 278 H 184 V 310 H 206" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 153 362 H 184 V 330 H 206" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 153 362 H 184 V 330 H 206" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<path d="M 206 300 h 22 a 20 20 0 0 1 0 40 h -22 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<circle cx="254" cy="320" r="5" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 259 320 H 330" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 259 320 H 330" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></path>
+<circle cx="346" cy="320" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="346" cy="320" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></circle>
+<text x="346" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0;0" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<text x="346" y="325" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;1;1;0;0;1;1;1;1" keyTimes="0.0000;0.1248;0.1250;0.3748;0.3750;0.6248;0.6250;0.8748;0.8750;1.0000" dur="4.8s" repeatCount="indefinite"/></text>
+<circle cx="70" cy="64" r="3.5" fill="#e8e8e8"/>
+<circle cx="182" cy="170" r="3.5" fill="#e8e8e8"/>
+<circle cx="70" cy="278" r="3.5" fill="#e8e8e8"/>
+<circle cx="70" cy="362" r="3.5" fill="#e8e8e8"/>
+<text x="20" y="412" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.45)">every gate drawn here is a NAND</text>
+</svg>
+      <p id="ch2-gates-p6" class="diagram-caption">NAND alone is enough: tie its inputs together and it is NOT, follow it with that NOT and it is AND, invert both inputs first and it is OR. From this one gate any circuit can be built, as Henry Sheffer showed in 1913.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>NAND.</b> AND with its output inverted: 0 only when both inputs are 1. The bubble on the symbol is the inversion.</li>
+          <li><b>NOT.</b> With both inputs on A, NAND gives ¬(A · A), which is ¬A.</li>
+          <li><b>AND.</b> Invert a NAND once more: ¬(¬(A · B)) = A · B.</li>
+          <li><b>OR.</b> De Morgan's law: A + B = ¬(¬A · ¬B), a NAND of the two inverted inputs.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="math-callout">
@@ -2373,168 +2363,153 @@
       expression.</strong>
     </p>
 
-    <div class="diagram-card" id="fig-2-5">
-      <div class="diagram-label">Fig 2.5 · Adding 5 + 3 = 8 in binary</div>
-      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-22"><title id="svgt-part1-22">Fig 2.5 · Adding 5 + 3 = 8 in binary</title>
-        <text x="40" y="40" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">A = 5</text>
-        <g transform="translate(120,28)">
-          <rect x="0" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="32" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/><text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
-          <rect x="64" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="96" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/><text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
-        </g>
-        <text x="40" y="80" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.5)">B = 3</text>
-        <g transform="translate(120,68)">
-          <rect x="0" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="32" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="64" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/><text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
-          <rect x="96" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.5)"/><text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
-        </g>
-        <line x1="280" y1="60" x2="340" y2="60" stroke="rgba(212,168,83,0.5)"/>
-        <g transform="translate(360,30)">
-          <rect x="0" y="0" width="60" height="60" rx="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.5)"/>
-          <text x="30" y="36" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)">FA</text>
-          <text x="30" y="76" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">×4</text>
-        </g>
-        <text x="540" y="40" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">SUM = 8</text>
-        <g transform="translate(540,55)">
-          <rect x="0" y="0" width="24" height="24" rx="3" fill="#d4a853" stroke="rgba(212,168,83,0.6)"/><text x="12" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#0a0a0a" font-weight="500">1</text>
-          <rect x="32" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="44" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="64" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="76" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-          <rect x="96" y="0" width="24" height="24" rx="3" fill="#1e1e1e" stroke="rgba(255,255,255,0.1)"/><text x="108" y="17" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">0</text>
-        </g>
-        <g transform="translate(40,150)">
-          <text x="0" y="20" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">  0101  </text><text x="120" y="20" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">(5)</text>
-          <text x="0" y="40" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">+ 0011  </text><text x="120" y="40" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.4)">(3)</text>
-          <line x1="0" y1="48" x2="100" y2="48" stroke="rgba(255,255,255,0.3)"/>
-          <text x="0" y="65" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.8)">  1000  </text><text x="120" y="65" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,0.7)">(8)</text>
-        </g>
-      </svg>
-      <p id="ch2-arithmetic-p8" class="diagram-caption">Adding 5 + 3 in binary. The four-bit numbers 0101 and 0011 are summed bit by bit, with each full adder handling one bit position and passing carries forward. The result is 1000, eight in decimal. The same principle scales to 64-bit numbers; you just need 64 full adders.</p>
+    <div class="diagram-card fig-v2" id="fig-2-5">
+      <div class="diagram-label">Fig 2.5&nbsp;· Adding 5 + 3 in binary&nbsp;· a ripple-carry adder</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-21 svgd-part1-21">
+<title id="svgt-part1-21">Fig 2.5 · Adding 5 + 3 in binary · a ripple-carry adder</title>
+<desc id="svgd-part1-21">Four full adders side by side, the least significant bit on the right. A is 0101 (5), B is 0011 (3). Bit 0: 1 + 1 gives 0, carry 1. Bit 1: 0 + 1 + carry gives 0, carry 1. Bit 2: 1 + 0 + carry gives 0, carry 1. Bit 3: 0 + 0 + carry gives 1. The sum is 1000, which is 8.</desc>
+<text x="20" y="42" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">A</text>
+<text x="380" y="42" text-anchor="end" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#86a8ff">5</text>
+<text x="20" y="74" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">B</text>
+<text x="380" y="74" text-anchor="end" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#86a8ff">3</text>
+<text x="58" y="42" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">0</text>
+<text x="82" y="74" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">0</text>
+<path d="M 58 50 V 116 M 82 82 V 116" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<rect x="38" y="116" width="64" height="60" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+<text x="70" y="154" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.75)">+</text>
+<rect x="38" y="116" width="64" height="60" rx="6" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1665;0.1667;0.6000;0.6167;0.7000;0.7167;1.0000" dur="6s" repeatCount="indefinite"/></rect>
+<path d="M 70 176 V 212" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<text x="70" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.25)">?<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.6665;0.6667;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="70" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="#d4a853" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.6665;0.6667;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="148" y="42" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">1</text>
+<text x="172" y="74" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">0</text>
+<path d="M 148 50 V 116 M 172 82 V 116" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<rect x="128" y="116" width="64" height="60" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+<text x="160" y="154" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.75)">+</text>
+<rect x="128" y="116" width="64" height="60" rx="6" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1665;0.1667;0.4667;0.4833;0.5667;0.5833;1.0000" dur="6s" repeatCount="indefinite"/></rect>
+<path d="M 160 176 V 212" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<text x="160" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.25)">?<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.5332;0.5333;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="160" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="#fff" opacity="0">0<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.5332;0.5333;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<path d="M 128 146 H 108" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="108,140 102,146 108,152" fill="rgba(255,255,255,0.3)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.5332;0.5333;1.0000" dur="6s" repeatCount="indefinite"/><path d="M 128 146 H 108" stroke="#d4a853" stroke-width="2.6"/><polygon points="108,140 102,146 108,152" fill="#d4a853"/><text x="115.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">1</text></g>
+<text x="238" y="42" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">0</text>
+<text x="262" y="74" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">1</text>
+<path d="M 238 50 V 116 M 262 82 V 116" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<rect x="218" y="116" width="64" height="60" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+<text x="250" y="154" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.75)">+</text>
+<rect x="218" y="116" width="64" height="60" rx="6" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1665;0.1667;0.3333;0.3500;0.4333;0.4500;1.0000" dur="6s" repeatCount="indefinite"/></rect>
+<path d="M 250 176 V 212" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<text x="250" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.25)">?<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.3998;0.4000;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="250" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="#fff" opacity="0">0<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.3998;0.4000;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<path d="M 218 146 H 198" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="198,140 192,146 198,152" fill="rgba(255,255,255,0.3)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.3998;0.4000;1.0000" dur="6s" repeatCount="indefinite"/><path d="M 218 146 H 198" stroke="#d4a853" stroke-width="2.6"/><polygon points="198,140 192,146 198,152" fill="#d4a853"/><text x="205.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">1</text></g>
+<text x="328" y="42" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">1</text>
+<text x="352" y="74" text-anchor="middle" font-family="DM Mono" font-size="20" fill="#fff">1</text>
+<path d="M 328 50 V 116 M 352 82 V 116" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<rect x="308" y="116" width="64" height="60" rx="6" fill="#1a1a1a" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
+<text x="340" y="154" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.75)">+</text>
+<rect x="308" y="116" width="64" height="60" rx="6" fill="none" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.1665;0.1667;0.2000;0.2167;0.3000;0.3167;1.0000" dur="6s" repeatCount="indefinite"/></rect>
+<path d="M 340 176 V 212" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<text x="340" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="rgba(255,255,255,0.25)">?<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.2665;0.2667;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="340" y="238" text-anchor="middle" font-family="DM Mono" font-size="22" fill="#fff" opacity="0">0<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.2665;0.2667;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<path d="M 308 146 H 288" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/><polygon points="288,140 282,146 288,152" fill="rgba(255,255,255,0.3)"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.2665;0.2667;1.0000" dur="6s" repeatCount="indefinite"/><path d="M 308 146 H 288" stroke="#d4a853" stroke-width="2.6"/><polygon points="288,140 282,146 288,152" fill="#d4a853"/><text x="295.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">1</text></g>
+<text x="20" y="238" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">SUM</text>
+<text x="380" y="238" text-anchor="end" font-family="DM Mono" font-size="16" fill="#d4a853" opacity="0">8<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.1333;0.1335;0.1665;0.1667;0.6665;0.6667;1.0000" dur="6s" repeatCount="indefinite"/></text>
+<text x="200" y="278" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">carries ripple right to left</text>
+</svg>
+      <p id="ch2-arithmetic-p8" class="diagram-caption">Adding 5 + 3: four full adders, one per bit, the least significant on the right. Each must wait for the carry from its neighbour, so the carry ripples left and the answer, 1000, settles one bit at a time.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>A full adder.</b> Adds two bits and a carry-in, and gives one sum bit and a carry-out (Fig 2.6 opens one).</li>
+          <li><b>The ripple.</b> Bit 0: 1 + 1 = 0, carry 1. Bits 1 and 2: the carry makes 0 again, carry 1. Bit 3: the carry alone gives 1.</li>
+          <li><b>Wider numbers.</b> A 64-bit add is 64 of these in a row. Real CPUs use carry-lookahead designs so they need not wait for the ripple.</li>
+        </ol>
+      </details>
     </div>
 
-    <div class="diagram-card" id="fig-2-6">
-      <div class="diagram-label">Fig 2.6 · Inside one full-adder · the half-adder primitive, twice</div>
-      <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-23"><title id="svgt-part1-23">Fig 2.6 · Inside one full-adder · the half-adder primitive, twice</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">XOR + AND  →  HALF-ADDER  →  FULL-ADDER  →  RIPPLE CHAIN</text>
-
-        <!-- LEFT: Half-adder -->
-        <g transform="translate(20, 60)">
-          <text x="120" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">Half-adder</text>
-          <text x="120" y="16" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">two inputs, no carry-in</text>
-          <!-- Inputs A, B -->
-          <line x1="0" y1="60" x2="50" y2="60" stroke="rgba(100,150,255,0.85)" stroke-width="1.4"/>
-          <text x="-6" y="64" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.9)">A</text>
-          <line x1="0" y1="100" x2="50" y2="100" stroke="rgba(150,216,150,0.85)" stroke-width="1.4"/>
-          <text x="-6" y="104" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.9)">B</text>
-          <!-- A taps to AND too -->
-          <line x1="30" y1="60" x2="30" y2="130" stroke="rgba(100,150,255,0.5)" stroke-width="1"/>
-          <line x1="30" y1="130" x2="60" y2="130" stroke="rgba(100,150,255,0.5)" stroke-width="1"/>
-          <line x1="30" y1="100" x2="30" y2="148" stroke="rgba(150,216,150,0.5)" stroke-width="1"/>
-          <line x1="30" y1="148" x2="60" y2="148" stroke="rgba(150,216,150,0.5)" stroke-width="1"/>
-          <circle cx="30" cy="60" r="2" fill="rgba(100,150,255,0.85)"/>
-          <circle cx="30" cy="100" r="2" fill="rgba(150,216,150,0.85)"/>
-          <!-- XOR gate -->
-          <path d="M 50 50 Q 70 80 50 110 L 80 110 A 28 28 0 0 0 80 50 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <path d="M 44 50 Q 64 80 44 110" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.3"/>
-          <text x="78" y="84" text-anchor="middle" font-family="serif" font-style="italic" font-size="9" fill="rgba(212,168,83,0.9)">XOR</text>
-          <line x1="113" y1="80" x2="200" y2="80" stroke="rgba(212,168,83,0.85)" stroke-width="1.3"/>
-          <text x="208" y="84" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">Sum</text>
-          <!-- AND gate -->
-          <path d="M 60 124 L 60 160 L 86 160 A 18 18 0 0 0 86 124 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(150,216,150,0.7)" stroke-width="1.3"/>
-          <text x="80" y="146" text-anchor="middle" font-family="serif" font-style="italic" font-size="9" fill="rgba(150,216,150,0.9)">AND</text>
-          <line x1="105" y1="142" x2="200" y2="142" stroke="rgba(150,216,150,0.85)" stroke-width="1.3"/>
-          <text x="208" y="146" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.95)">Carry</text>
-
-          <!-- Animated input pulses -->
-          <circle r="2.5" fill="rgba(100,150,255,0.95)">
-            <animateMotion path="M 0 60 L 50 60" dur="2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
-          </circle>
-          <circle r="2.5" fill="rgba(150,216,150,0.95)" opacity="0">
-            <animateMotion path="M 0 100 L 50 100" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-            <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="0.2s" repeatCount="indefinite"/>
-          </circle>
-        </g>
-
-        <!-- MIDDLE: zoom arrow -->
-        <g transform="translate(250, 130)">
-          <line x1="0" y1="20" x2="80" y2="20" stroke="rgba(212,168,83,0.6)" stroke-dasharray="6,4" class="flow-dash"/>
-          <polygon points="76,16 86,20 76,24" fill="rgba(212,168,83,0.85)"/>
-          <text x="40" y="6" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">add carry-in</text>
-          <text x="40" y="40" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.65)">cascade twice</text>
-        </g>
-
-        <!-- RIGHT: Full-adder -->
-        <g transform="translate(360, 60)">
-          <text x="160" y="0" text-anchor="middle" font-family="serif" font-style="italic" font-size="13" fill="rgba(212,168,83,0.85)">Full-adder</text>
-          <text x="160" y="16" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.45)">two half-adders + an OR</text>
-          <!-- inputs -->
-          <line x1="0" y1="50" x2="40" y2="50" stroke="rgba(100,150,255,0.85)" stroke-width="1.3"/>
-          <text x="-6" y="54" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.9)">A</text>
-          <line x1="0" y1="80" x2="40" y2="80" stroke="rgba(150,216,150,0.85)" stroke-width="1.3"/>
-          <text x="-6" y="84" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.9)">B</text>
-          <line x1="0" y1="140" x2="100" y2="140" stroke="rgba(212,168,83,0.6)" stroke-width="1.3"/>
-          <text x="-6" y="144" text-anchor="end" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.7)">Cin</text>
-          <!-- HA1 box -->
-          <rect x="40" y="40" width="60" height="50" rx="5" fill="rgba(212,168,83,0.1)" stroke="rgba(212,168,83,0.55)" stroke-dasharray="4,2"/>
-          <text x="70" y="60" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(212,168,83,0.9)">HA₁</text>
-          <text x="70" y="78" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.5)">A ⊕ B</text>
-          <!-- HA1 → HA2 -->
-          <line x1="100" y1="55" x2="120" y2="55" stroke="rgba(255,255,255,0.5)" stroke-width="1.1"/>
-          <line x1="100" y1="75" x2="180" y2="75" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <text x="140" y="68" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">A·B</text>
-          <!-- HA2 box (combines with Cin) -->
-          <rect x="120" y="40" width="60" height="50" rx="5" fill="rgba(212,168,83,0.1)" stroke="rgba(212,168,83,0.55)" stroke-dasharray="4,2"/>
-          <text x="150" y="60" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(212,168,83,0.9)">HA₂</text>
-          <text x="150" y="78" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.5)">+ Cin</text>
-          <line x1="100" y1="140" x2="100" y2="80" stroke="rgba(212,168,83,0.5)" stroke-width="1"/>
-          <line x1="100" y1="80" x2="120" y2="80" stroke="rgba(212,168,83,0.5)" stroke-width="1"/>
-          <!-- HA2 outputs -->
-          <line x1="180" y1="55" x2="280" y2="55" stroke="rgba(212,168,83,0.85)" stroke-width="1.3"/>
-          <text x="288" y="59" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)">Sum</text>
-          <!-- OR gate combining carries -->
-          <path d="M 200 110 Q 215 130 200 150 L 230 150 A 18 18 0 0 0 230 110 Z" fill="rgba(212,168,83,0.14)" stroke="rgba(150,216,150,0.7)" stroke-width="1.3"/>
-          <text x="226" y="134" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(150,216,150,0.9)">OR</text>
-          <line x1="180" y1="80" x2="190" y2="80" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="190" y1="80" x2="190" y2="120" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="190" y1="120" x2="200" y2="120" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
-          <line x1="100" y1="140" x2="200" y2="140" stroke="rgba(212,168,83,0.5)" stroke-width="1"/>
-          <line x1="248" y1="130" x2="280" y2="130" stroke="rgba(150,216,150,0.85)" stroke-width="1.3"/>
-          <text x="288" y="134" font-family="DM Mono" font-size="11" fill="rgba(150,216,150,0.95)">Cout</text>
-        </g>
-
-        <!-- BOTTOM: ripple-carry chain -->
-        <g transform="translate(40, 240)">
-          <text x="320" y="-6" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">RIPPLE-CARRY ADDER · CHAIN OF FULL-ADDERS</text>
-          <!-- 4 full-adder boxes -->
-          <g font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">
-            <rect x="20" y="0" width="120" height="44" rx="5" fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.45)"/>
-            <text x="80" y="20" text-anchor="middle">FA₀</text>
-            <text x="80" y="34" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">bit 0</text>
-            <rect x="170" y="0" width="120" height="44" rx="5" fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.45)"/>
-            <text x="230" y="20" text-anchor="middle">FA₁</text>
-            <text x="230" y="34" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">bit 1</text>
-            <rect x="320" y="0" width="120" height="44" rx="5" fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.45)"/>
-            <text x="380" y="20" text-anchor="middle">FA₂</text>
-            <text x="380" y="34" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">bit 2</text>
-            <rect x="470" y="0" width="120" height="44" rx="5" fill="rgba(212,168,83,0.08)" stroke="rgba(212,168,83,0.45)"/>
-            <text x="530" y="20" text-anchor="middle">FA₃</text>
-            <text x="530" y="34" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">bit 3</text>
-          </g>
-          <!-- Carry chain arrows -->
-          <line x1="140" y1="22" x2="170" y2="22" stroke="rgba(150,216,150,0.85)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="166,18 174,22 166,26" fill="rgba(150,216,150,0.85)"/>
-          <line x1="290" y1="22" x2="320" y2="22" stroke="rgba(150,216,150,0.85)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="316,18 324,22 316,26" fill="rgba(150,216,150,0.85)"/>
-          <line x1="440" y1="22" x2="470" y2="22" stroke="rgba(150,216,150,0.85)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="466,18 474,22 466,26" fill="rgba(150,216,150,0.85)"/>
-          <line x1="590" y1="22" x2="620" y2="22" stroke="rgba(150,216,150,0.85)" stroke-width="1.4"/>
-          <text x="640" y="26" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">Cout</text>
-          <text x="0" y="26" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">0</text>
-        </g>
-      </svg>
-      <p id="ch2-arithmetic-p9" class="diagram-caption">A full-adder isn't a new primitive. Trace the wiring: A and B meet in the first half-adder, its sum meets the incoming carry in the second, and either intermediate carry lights the OR gate to become the carry-out. The four-stage chain at the bottom is exactly what produced the 5 + 3 = 8 result above. Modern CPUs use carry-lookahead and carry-select adders that compute carries in parallel rather than rippling them, but the gate-level primitives are unchanged.</p>
+    <div class="diagram-card fig-v2" id="fig-2-6">
+      <div class="diagram-label">Fig 2.6&nbsp;· Inside a full adder&nbsp;· two half adders and an OR</div>
+      <svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-22 svgd-part1-22">
+<title id="svgt-part1-22">Fig 2.6 · Inside a full adder · two half adders and an OR</title>
+<desc id="svgd-part1-22">A full adder built from gates. A and B meet in an XOR and an AND: the first half adder. The XOR's output meets the carry-in in a second XOR and AND: the second half adder; its XOR gives the sum bit. Either AND's carry, through an OR, gives the carry-out. The inputs step through all eight cases.</desc>
+<path d="M 57 50 H 80 V 260 H 110 M 80 60 H 110" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 57 50 H 80 V 260 H 110 M 80 60 H 110" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 57 92 H 70 M 70 80 V 280 H 110 M 70 80 H 110" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 57 92 H 70 M 70 80 V 280 H 110 M 70 80 H 110" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1;1;1;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 164 70 H 186 V 180 H 222 M 186 100 H 222" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 164 70 H 186 V 180 H 222 M 186 100 H 222" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;0;1;1;1;1;1;1;1;1;0;0;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 200 33 V 120 H 222 M 200 120 V 200 H 222" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 200 33 V 120 H 222 M 200 120 V 200 H 222" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 276 110 H 358" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 276 110 H 358" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1;0;0;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 276 190 H 290 V 222 H 302" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 276 190 H 290 V 222 H 302" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;0;0;0;0;0;0;1;1;0;0;1;1;0;0;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 164 270 H 290 V 238 H 302" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 164 270 H 290 V 238 H 302" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;0;0;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<path d="M 356 230 H 358" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+<path d="M 356 230 H 358" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></path>
+<circle cx="80" cy="60" r="3.5" fill="#e8e8e8"/>
+<circle cx="70" cy="80" r="3.5" fill="#e8e8e8"/>
+<circle cx="186" cy="100" r="3.5" fill="#e8e8e8"/>
+<circle cx="200" cy="120" r="3.5" fill="#e8e8e8"/>
+<path d="M 110 50 Q 124 70 110 90 Q 146 90 164 70 Q 146 50 110 50 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 103 50 Q 117 70 103 90" fill="none" stroke="#e8e8e8" stroke-width="2"/>
+<text x="134" y="75" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.75)">XOR</text>
+<path d="M 110 250 h 32 a 20 20 0 0 1 0 40 h -32 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<text x="134" y="275" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.75)">AND</text>
+<path d="M 222 90 Q 236 110 222 130 Q 258 130 276 110 Q 258 90 222 90 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<path d="M 215 90 Q 229 110 215 130" fill="none" stroke="#e8e8e8" stroke-width="2"/>
+<text x="246" y="115" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.75)">XOR</text>
+<path d="M 222 170 h 32 a 20 20 0 0 1 0 40 h -32 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<text x="246" y="195" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.75)">AND</text>
+<path d="M 302 210 Q 316 230 302 250 Q 338 250 356 230 Q 338 210 302 210 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>
+<text x="326" y="235" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.75)">OR</text>
+<circle cx="44" cy="50" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="44" cy="50" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></circle>
+<text x="44" y="55" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;1;1;1;1;1;1;0;0;0;0;0;0;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="44" y="55" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;0;0;0;0;0;0;1;1;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="14" y="55" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">A</text>
+<circle cx="44" cy="92" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="44" cy="92" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1;1;1;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></circle>
+<text x="44" y="97" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;1;1;0;0;0;0;1;1;1;1;0;0;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="44" y="97" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;0;0;1;1;1;1;0;0;0;0;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="14" y="97" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">B</text>
+<circle cx="200" cy="20" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="200" cy="20" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></circle>
+<text x="200" y="25" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0;1;1;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="25" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;1;1;0;0;1;1;0;0;1;1;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="220" y="25" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">carry in</text>
+<circle cx="372" cy="110" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="372" cy="110" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1;0;0;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></circle>
+<text x="372" y="115" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;0;0;0;0;1;1;0;0;1;1;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="372" y="115" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;1;1;1;1;0;0;1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="386" y="88" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">sum</text>
+<circle cx="372" cy="230" r="13" fill="#141414" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+<circle cx="372" cy="230" r="13" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></circle>
+<text x="372" y="235" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.7)">0<animate attributeName="opacity" values="0;0;1;1;1;1;1;1;0;0;1;1;0;0;0;0;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="372" y="235" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#fff" opacity="0">1<animate attributeName="opacity" values="1;1;0;0;0;0;0;0;1;1;0;0;1;1;1;1;1;1" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1875;0.3124;0.3125;0.4374;0.4375;0.5624;0.5625;0.6874;0.6875;0.8124;0.8125;0.9374;0.9375;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="386" y="208" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">carry out</text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">0 + 0 + 0 = <tspan fill="#d4a853">00</tspan><animate attributeName="opacity" values="0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.0626;0.1872;0.1874;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">0 + 0 + 1 = <tspan fill="#d4a853">01</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.1874;0.1876;0.3122;0.3124;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">0 + 1 + 0 = <tspan fill="#d4a853">01</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.3124;0.3126;0.4372;0.4374;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">0 + 1 + 1 = <tspan fill="#d4a853">10</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.4374;0.4376;0.5622;0.5624;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">1 + 0 + 0 = <tspan fill="#d4a853">01</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.5624;0.5626;0.6872;0.6874;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">1 + 0 + 1 = <tspan fill="#d4a853">10</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.6874;0.6876;0.8122;0.8124;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">1 + 1 + 0 = <tspan fill="#d4a853">10</tspan><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.0000;0.0624;0.0625;0.8124;0.8126;0.9372;0.9374;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="330" text-anchor="middle" font-family="DM Mono" font-size="18" fill="#fff" opacity="0">1 + 1 + 1 = <tspan fill="#d4a853">11</tspan><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.0000;0.0622;0.0624;0.0624;0.0625;0.9374;0.9376;1.0000" dur="7.2s" repeatCount="indefinite"/></text>
+<text x="200" y="348" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.45)">carry out, then sum</text>
+</svg>
+      <p id="ch2-arithmetic-p9" class="diagram-caption">A full adder is two half adders and an OR. A and B meet in the first; its sum meets the carry-in in the second, which gives the sum bit; either half adder's carry becomes the carry-out.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Half adder.</b> XOR gives the sum of two bits, AND their carry: 1 + 1 is 0, carry 1.</li>
+          <li><b>Adding the carry.</b> The second half adder adds the incoming carry to the first sum.</li>
+          <li><b>One carry out.</b> The two half adders can never both carry, so an OR is enough. Chain four of these and you have Fig 2.5.</li>
+        </ol>
+      </details>
     </div>
   </section>
 

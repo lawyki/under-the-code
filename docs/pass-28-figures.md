@@ -24,9 +24,9 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 16 | 1 | `fig-2-1` Fig 2.1 · Why binary survives noise · one threshold against two | 3 px · cap 42 | done 2026-10-10 |
 | 17 | 1 | `fig-2-2` Fig 2.2 · Boole's algebra · Shannon's switches · the same AND | 2.6 px · cap 96 | done 2026-10-10 |
 | 18 | 1 | `fig-2-3` Fig 2.3 · The three fundamental gates · AND, OR, NOT | 3.2 px · cap 51 | done 2026-10-10 |
-| 19 | 1 | `fig-2-4` Fig 2.4 · NAND universality · the only gate you actually need | 2.9 px · cap 60 | todo |
-| 20 | 1 | `fig-2-5` Fig 2.5 · Adding 5 + 3 = 8 in binary | 2.6 px · cap 49 | todo |
-| 21 | 1 | `fig-2-6` Fig 2.6 · Inside one full-adder · the half-adder primitive, twice | 2.2 px · cap 78 | todo |
+| 19 | 1 | `fig-2-4` Fig 2.4 · Everything from NAND · NOT, AND and OR built from one gate | 2.9 px · cap 60 | done 2026-10-10 |
+| 20 | 1 | `fig-2-5` Fig 2.5 · Adding 5 + 3 in binary · a ripple-carry adder | 2.6 px · cap 49 | done 2026-10-10 |
+| 21 | 1 | `fig-2-6` Fig 2.6 · Inside a full adder · two half adders and an OR | 2.2 px · cap 78 | done 2026-10-10 |
 | 22 | 1 | `fig-2-7` Fig 2.7 · Computing 7 − 5 = 2 with two's complement | 3.5 px · cap 51 | todo |
 | 23 | 1 | `fig-2-8` Fig 2.8 · The two's-complement wheel · where addition wraps | 2.6 px · cap 122 | todo |
 | 24 | 1 | `fig-2-9` Fig 2.9 · How a signed overflow becomes a buffer overflow | 2.9 px · cap 126 | todo |
