@@ -2723,35 +2723,51 @@
       <code>*a</code> is <code>a[0]</code>.
     </p>
 
-    <div class="diagram-card" id="fig-5-5">
-      <div class="diagram-label">Fig 5.5 · a[i] ≡ *(a + i)</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-29"><title id="svgt-part2-29">Fig 5.5 · a[i] ≡ *(a + i)</title>
-        <!-- Left side: a[i] -->
-        <g>
-          <text x="180" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(132,255,178,0.9)">array notation</text>
-          <rect x="80" y="60" width="200" height="50" rx="6" fill="#0e1510" stroke="rgba(150,216,150,0.5)"/>
-          <text x="180" y="90" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="rgba(150,216,150,0.95)">a[i]</text>
-          <text x="180" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">"the i-th element of a"</text>
-        </g>
-
-        <!-- Equivalence symbol -->
-        <text x="360" y="92" text-anchor="middle" font-family="Playfair Display" font-size="32" fill="rgba(132,255,178,0.85)">≡</text>
-        <text x="360" y="118" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.7)">defined as</text>
-
-        <!-- Right side: *(a+i) -->
-        <g>
-          <text x="540" y="40" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(132,255,178,0.9)">pointer notation</text>
-          <rect x="440" y="60" width="200" height="50" rx="6" fill="#0e1510" stroke="rgba(100,150,255,0.5)"/>
-          <text x="540" y="90" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="rgba(100,150,255,0.95)">*(a + i)</text>
-          <text x="540" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">"deref a-plus-i bytes-scaled"</text>
-        </g>
-
-        <!-- C standard quote -->
-        <rect x="120" y="170" width="480" height="42" rx="4" fill="#101a14" stroke="rgba(132,255,178,0.45)"/>
-        <text x="360" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">C99 §6.5.2.1: "The definition of the subscript operator [] is that</text>
-        <text x="360" y="204" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.95)">E1[E2] is identical to (*((E1)+(E2)))."</text>
-      </svg>
-      <p id="ch5-pointers-p6" class="diagram-caption">The C standard does not say <code>a[i]</code> behaves like <code>*(a + i)</code>. It says they are the same expression. A consequence: <code>i[a]</code> is also legal (addition commutes) and means the same thing as <code>a[i]</code>. Nobody writes <code>3[arr]</code> in production, but the standard permits it. Arrays in C are not really first-class data structures; they are a thin convention layered over pointer arithmetic. Most languages that came after C decided this was a mistake. C survived anyway.</p>
+    <div class="diagram-card fig-v2" id="fig-5-5">
+      <div class="diagram-label">Fig 5.5 · <span class="nocase">a[i] ≡ *(a + i)</span></div>
+      <svg viewBox="0 0 400 268" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-29 svgd-part2-29">
+<title id="svgt-part2-29">Fig 5.5 · a[i] ≡ *(a + i)</title>
+<desc id="svgd-part2-29">An int array a at address 0x100 holding 17, 42, 99, −7, 23, 8. The expression a[2] is rewritten step by step: by definition it is *(a + 2); the addition is scaled by the size of an int, so it is *(0x100 + 2 × 4), which is *(0x108), and the value there is 99. Then 2[a] is rewritten the same way: *(2 + a), and since addition commutes, *(a + 2), which is again 99.</desc>
+<rect x="32" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="60" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">17</text>
+<text x="60" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x100</text>
+<rect x="88" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="116" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">42</text>
+<text x="116" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x104</text>
+<rect x="144" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="172" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">99</text>
+<text x="172" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x108</text>
+<rect x="200" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="228" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">−7</text>
+<text x="228" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x10C</text>
+<rect x="256" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="284" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">23</text>
+<text x="284" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x110</text>
+<rect x="312" y="28" width="56" height="34" fill="#152016" stroke="rgba(132,255,178,0.45)"/>
+<text x="340" y="50" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">8</text>
+<text x="340" y="80" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x114</text>
+<text x="32" y="18" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">int a[6]</text>
+<rect class="fx" x="144" y="28" width="56" height="34" fill="#d4a853" fill-opacity="0.25" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.783167;0.783333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="144" y="28" width="56" height="34" fill="#d4a853" fill-opacity="0.25" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.266500;0.266667;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.583167;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="120" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#fff">a[2]</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.649833;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="150" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(a + 2)</text><text x="380" y="150" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the definition</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.716500;0.716667;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="180" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(0x100 + 2 × 4)</text><text x="380" y="180" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">scaled by sizeof</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.783167;0.783333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(0x108)</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.533292;0.533333;0.849833;0.850000;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="240" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#d4a853">= 99</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.066500;0.066667;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="120" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#fff">2[a]</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.133167;0.133333;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="150" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(2 + a)</text><text x="380" y="150" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">same definition</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199833;0.200000;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="180" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(a + 2)</text><text x="380" y="180" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">addition commutes</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.266500;0.266667;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#d4a853">= 99</text><text x="380" y="210" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">legal, never written</text></g>
+</svg>
+      <p id="ch5-pointers-p6" class="diagram-caption">The C standard defines <code>a[i]</code> as <code>*(a&nbsp;+&nbsp;i)</code>: add <code>i</code> elements to the address, then read what is there. Because addition commutes, <code>2[a]</code> is the same expression and reads the same 99; arrays in C are a notation over pointer arithmetic.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The rule.</b> C99 §6.5.2.1: "<code>E1[E2]</code> is identical to <code>(*((E1)+(E2)))</code>."</li>
+          <li><b>The decay.</b> In most expressions an array's name turns into a pointer to its first element, which is why <code>a + 2</code> means an address at all.</li>
+          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array reads whatever lies beyond it.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>What this lets you do</h3>

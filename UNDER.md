@@ -3436,7 +3436,10 @@ shaped C, drawn: "UNIX" in PDP-7 words, two characters per 18-bit word, against
 PDP-11 bytes with their own addresses; char * steps by 1, int * by 2; the
 "portable PDP-11 assembler" banner dropped), 5.4 (one ribbon of eight ints and a
 track per pointer: char, int and double pointers start at 0x100 and step
-together, +1, +4, +8, each span the bytes *p reads). The sweep's overlap test now compares ink boxes (font boxes trimmed
+together, +1, +4, +8, each span the bytes *p reads), 5.5 (a stepped rewrite beside the
+ribbon: a[2] to *(a + 2) to *(0x100 + 2 × 4) to 99, then 2[a] to the same 99;
+`book.css` now keeps code in a label in its own case, `.nocase`, and never
+splits code across caption lines). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
