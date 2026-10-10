@@ -3594,7 +3594,9 @@ route and traffic squeezes through C; "route leak" kept as a key-term).
 10.1 (a real UDP header, a DNS query from port 51234 to 53; three datagrams
 sent, the second lost, the receiver left with 1 and 3 and no one resending), 10.2 (the handshake in time with real
 numbers, ISNs 4170 and 9012, acks 4171 and 9013, each side's state changing on
-arrival, a bracket marking the round trip before the first data). The sweep's overlap test now compares ink boxes (font boxes trimmed
+arrival, a bracket marking the round trip before the first data), 10.3 (all eleven states unrolled top to
+bottom; the client's life then the server's walked by a token, each event named;
+CLOSING drawn dim as the simultaneous-close case). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

@@ -2465,116 +2465,85 @@
       partial-failure modes the protocol was designed to survive.
     </p>
 
-    <div class="diagram-card" id="fig-10-3">
-      <div class="diagram-label">Fig 10.3 · TCP's state machine</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-30"><title id="svgt-part3-30">Fig 10.3 · TCP's state machine</title>
-        <!-- States as nodes -->
-        <g font-family="Space Mono" font-size="9" text-anchor="middle">
-          <!-- CLOSED (top center) -->
-          <rect x="320" y="20" width="80" height="32" rx="6" fill="#0a2033" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <text x="360" y="40" fill="rgba(79,196,230,0.95)">CLOSED</text>
-
-          <!-- LISTEN (left) -->
-          <rect x="60" y="80" width="80" height="32" rx="6" fill="#123049" stroke="rgba(232,120,120,0.7)"/>
-          <text x="100" y="100" fill="rgba(232,120,120,0.95)">LISTEN</text>
-
-          <!-- SYN_SENT (right) -->
-          <rect x="580" y="80" width="100" height="32" rx="6" fill="#123049" stroke="rgba(150,216,150,0.7)"/>
-          <text x="630" y="100" fill="rgba(150,216,150,0.95)">SYN_SENT</text>
-
-          <!-- SYN_RCVD -->
-          <rect x="180" y="160" width="100" height="32" rx="6" fill="#123049" stroke="rgba(232,120,120,0.7)"/>
-          <text x="230" y="180" fill="rgba(232,120,120,0.95)">SYN_RCVD</text>
-
-          <!-- ESTABLISHED -->
-          <rect x="320" y="160" width="100" height="32" rx="6" fill="rgba(79,196,230,0.20)" stroke="rgba(79,196,230,0.95)" stroke-width="1.5"/>
-          <text x="370" y="180" fill="rgba(79,196,230,0.95)">ESTABLISHED</text>
-
-          <!-- FIN_WAIT_1 (right side, going down) -->
-          <rect x="540" y="160" width="100" height="32" rx="6" fill="#123049" stroke="rgba(150,216,150,0.6)"/>
-          <text x="590" y="180" fill="rgba(150,216,150,0.85)">FIN_WAIT_1</text>
-
-          <!-- CLOSE_WAIT -->
-          <rect x="180" y="230" width="100" height="32" rx="6" fill="#123049" stroke="rgba(232,120,120,0.6)"/>
-          <text x="230" y="250" fill="rgba(232,120,120,0.85)">CLOSE_WAIT</text>
-
-          <!-- FIN_WAIT_2 -->
-          <rect x="540" y="230" width="100" height="32" rx="6" fill="#123049" stroke="rgba(150,216,150,0.6)"/>
-          <text x="590" y="250" fill="rgba(150,216,150,0.85)">FIN_WAIT_2</text>
-
-          <!-- LAST_ACK -->
-          <rect x="180" y="300" width="100" height="32" rx="6" fill="#123049" stroke="rgba(232,120,120,0.6)"/>
-          <text x="230" y="320" fill="rgba(232,120,120,0.85)">LAST_ACK</text>
-
-          <!-- TIME_WAIT -->
-          <rect x="540" y="300" width="100" height="32" rx="6" fill="#123049" stroke="rgba(150,216,150,0.6)"/>
-          <text x="590" y="320" fill="rgba(150,216,150,0.85)">TIME_WAIT</text>
-
-          <!-- CLOSING (middle bottom) -->
-          <rect x="380" y="270" width="80" height="28" rx="6" fill="#123049" stroke="rgba(79,196,230,0.5)"/>
-          <text x="420" y="288" fill="rgba(79,196,230,0.85)" font-size="8">CLOSING</text>
-        </g>
-
-        <!-- Transitions (passive open path: server) -->
-        <g stroke="rgba(232,120,120,0.55)" fill="none" stroke-width="1">
-          <!-- CLOSED → LISTEN -->
-          <line x1="320" y1="40" x2="140" y2="92"/>
-          <polygon points="140,92 148,86 145,96" fill="rgba(232,120,120,0.7)"/>
-          <text x="195" y="58" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)">listen()</text>
-          <!-- LISTEN → SYN_RCVD -->
-          <line x1="120" y1="112" x2="200" y2="160"/>
-          <polygon points="200,160 192,156 196,166" fill="rgba(232,120,120,0.7)"/>
-          <text x="135" y="148" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)">recv SYN</text>
-          <!-- SYN_RCVD → ESTABLISHED -->
-          <line x1="280" y1="176" x2="320" y2="176"/>
-          <polygon points="320,176 312,172 312,180" fill="rgba(232,120,120,0.7)"/>
-          <text x="280" y="172" font-family="Space Mono" font-size="7" fill="rgba(232,120,120,0.7)" text-anchor="start" dx="2" dy="-2">recv ACK</text>
-        </g>
-
-        <!-- Active open path: client -->
-        <g stroke="rgba(150,216,150,0.55)" fill="none" stroke-width="1">
-          <!-- CLOSED → SYN_SENT -->
-          <line x1="400" y1="40" x2="600" y2="92"/>
-          <polygon points="600,92 591,90 596,96" fill="rgba(150,216,150,0.7)"/>
-          <text x="540" y="58" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">connect()</text>
-          <!-- SYN_SENT → ESTABLISHED -->
-          <line x1="600" y1="112" x2="440" y2="160"/>
-          <polygon points="440,160 448,158 446,168" fill="rgba(150,216,150,0.7)"/>
-          <text x="540" y="146" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">recv SYN-ACK / send ACK</text>
-        </g>
-
-        <!-- Close path -->
-        <g stroke="rgba(79,196,230,0.6)" fill="none" stroke-width="1">
-          <!-- ESTABLISHED → FIN_WAIT_1 -->
-          <line x1="420" y1="176" x2="540" y2="176"/>
-          <polygon points="540,176 532,172 532,180" fill="rgba(79,196,230,0.75)"/>
-          <text x="478" y="170" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.75)" text-anchor="middle">close()</text>
-          <!-- ESTABLISHED → CLOSE_WAIT -->
-          <line x1="320" y1="180" x2="280" y2="232"/>
-          <polygon points="280,232 282,224 288,228" fill="rgba(79,196,230,0.75)"/>
-          <text x="280" y="218" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.75)" text-anchor="middle">recv FIN</text>
-          <!-- FIN_WAIT_1 → FIN_WAIT_2 -->
-          <line x1="590" y1="192" x2="590" y2="230"/>
-          <polygon points="590,230 586,222 594,222" fill="rgba(79,196,230,0.75)"/>
-          <!-- FIN_WAIT_2 → TIME_WAIT -->
-          <line x1="590" y1="262" x2="590" y2="300"/>
-          <polygon points="590,300 586,292 594,292" fill="rgba(79,196,230,0.75)"/>
-          <text x="600" y="284" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.75)">recv FIN</text>
-          <!-- CLOSE_WAIT → LAST_ACK -->
-          <line x1="230" y1="262" x2="230" y2="300"/>
-          <polygon points="230,300 226,292 234,292" fill="rgba(79,196,230,0.75)"/>
-          <text x="240" y="284" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.75)">close()</text>
-          <!-- LAST_ACK → CLOSED (back to top) -->
-          <path d="M 230,300 Q 80,300 80,40 L 320,40" stroke-dasharray="3,3"/>
-          <text x="76" y="180" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.6)" transform="rotate(-90,76,180)" text-anchor="middle">recv ACK</text>
-          <!-- TIME_WAIT → CLOSED -->
-          <path d="M 590,332 Q 590,360 360,360 L 360,52" stroke-dasharray="3,3"/>
-          <text x="640" y="350" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.6)">2·MSL timeout</text>
-        </g>
-
-        <text x="360" y="376" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.08em">SERVER PATH (RED) · CLIENT PATH (GREEN) · CLOSE PATH (GOLD) · 11 STATES, 1981 RFC 793</text>
-      </svg>
-      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven-state finite state machine, the canonical version from RFC 793 (1981). The active opener (client) goes CLOSED → SYN_SENT → ESTABLISHED. The passive opener (server) goes CLOSED → LISTEN → SYN_RCVD → ESTABLISHED. Connection teardown is the four-state dance on the right and bottom: the side that closes first sends a FIN, waits for the peer's ACK, waits for the peer's FIN, then sits a final 2·MSL (twice the Maximum Segment Lifetime, about 60 seconds on Linux) in TIME_WAIT before fully closing, so that any straggler packets from the previous incarnation of this connection have died out before the four-tuple (src IP, src port, dst IP, dst port) can be reused.</p>
+    <div class="diagram-card fig-v2" id="fig-10-3">
+      <div class="diagram-label">Fig 10.3&nbsp;· TCP's state machine</div>
+      <svg viewBox="0 0 400 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-30 svgd-part3-30">
+<title id="svgt-part3-30">Fig 10.3 · TCP's state machine</title>
+<desc id="svgd-part3-30">TCP's eleven connection states. A client goes from CLOSED to SYN_SENT when it connects, to ESTABLISHED when the SYN-ACK arrives, to FIN_WAIT_1 when it closes, FIN_WAIT_2 when its FIN is acknowledged, TIME_WAIT when the other side's FIN arrives, and back to CLOSED after waiting twice the maximum segment lifetime. A server goes from CLOSED to LISTEN, to SYN_RCVD when a SYN arrives, to ESTABLISHED on the ACK, to CLOSE_WAIT when the client's FIN arrives, to LAST_ACK when it closes too, and to CLOSED when its FIN is acknowledged. CLOSING is reached only when both sides close at once.</desc>
+<line x1="200.0" y1="46.0" x2="71.0" y2="70.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="200.0" y1="214.0" x2="71.0" y2="238.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="71.0" y1="270.0" x2="71.0" y2="294.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="71.0" y1="326.0" x2="71.0" y2="350.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="200.0" y1="46.0" x2="329.0" y2="70.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="329.0" y1="158.0" x2="200.0" y2="182.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="200.0" y1="214.0" x2="329.0" y2="238.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="329.0" y1="270.0" x2="329.0" y2="294.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3" stroke-width="1.5"/>
+<line x1="71.0" y1="270.0" x2="200.0" y2="294.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="3 3"/>
+<line x1="200.0" y1="326.0" x2="71.0" y2="350.0" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="3 3"/>
+<rect x="141" y="14" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="200" y="35" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">CLOSED</text>
+<rect x="12" y="70" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="71" y="91" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">SYN_SENT</text>
+<rect x="270" y="70" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="329" y="91" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">LISTEN</text>
+<rect x="270" y="126" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="329" y="147" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">SYN_RCVD</text>
+<rect x="141" y="182" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="200" y="203" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">ESTABLISHED</text>
+<rect x="12" y="238" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="71" y="259" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">FIN_WAIT_1</text>
+<rect x="270" y="238" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="329" y="259" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">CLOSE_WAIT</text>
+<rect x="12" y="294" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="71" y="315" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">FIN_WAIT_2</text>
+<rect x="141" y="294" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.3"/>
+<text x="200" y="315" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">CLOSING</text>
+<rect x="270" y="294" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="329" y="315" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">LAST_ACK</text>
+<rect x="12" y="350" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="71" y="371" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TIME_WAIT</text>
+<rect x="141" y="404" width="118" height="32" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
+<text x="200" y="425" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">CLOSED</text>
+<line class="fx" x1="200.0" y1="46.0" x2="71.0" y2="70.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.690500;0.690625;0.743250;0.743437;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.756125;0.756250;0.808875;0.809063;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="200.0" y1="214.0" x2="71.0" y2="238.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.821750;0.821875;0.874500;0.874688;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="270.0" x2="71.0" y2="294.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.887375;0.887500;0.940125;0.940312;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="326.0" x2="71.0" y2="350.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.005750;0.005937;0.609344;0.609375;0.953000;0.953125;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.018625;0.018750;0.071375;0.071563;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.077625;0.077813;0.609344;0.609375;0.634250;0.634375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-129.00 0;-129.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0" keyTimes="0.000000;0.018750;0.040625;0.609344;0.609375;0.646875;0.690625;0.712500;0.756250;0.778125;0.821875;0.843750;0.887500;0.909375;0.953125;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 336.00;0 336.00;0 390.00;0 390.00;0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 336.00;0 336.00" keyTimes="0.000000;0.018750;0.040625;0.609344;0.609375;0.646875;0.690625;0.712500;0.756250;0.778125;0.821875;0.843750;0.887500;0.909375;0.953125;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#e07a3f" stroke-width="2.5"/></g></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.646750;0.646875;0.712000;0.712187;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: connect(): send SYN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.712375;0.712500;0.777625;0.777813;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: SYN-ACK in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.778000;0.778125;0.843250;0.843438;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: close(): send FIN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.843625;0.843750;0.908875;0.909063;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: ACK in</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.909250;0.909375;0.974500;0.974687;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: FIN in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.040125;0.040312;0.609344;0.609375;0.974875;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: wait 2 × MSL</text></g>
+<line class="fx" x1="200.0" y1="46.0" x2="329.0" y2="70.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.178000;0.178125;0.230750;0.230938;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.243625;0.243750;0.296375;0.296562;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="158.0" x2="200.0" y2="182.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.309250;0.309375;0.362000;0.362187;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="200.0" y1="214.0" x2="329.0" y2="238.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.374875;0.375000;0.427625;0.427813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="270.0" x2="329.0" y2="294.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.440500;0.440625;0.493250;0.493437;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.506125;0.506250;0.558875;0.559063;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.121750;0.121875;0.565125;0.565312;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.134375;0.178125;0.200000;0.243750;0.265625;0.309375;0.331250;0.375000;0.396875;0.440625;0.462500;0.506250;0.528125;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 112.00;0 112.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 390.00;0 390.00;0 0.00;0 0.00" keyTimes="0.000000;0.134375;0.178125;0.200000;0.243750;0.265625;0.309375;0.331250;0.375000;0.396875;0.440625;0.462500;0.506250;0.528125;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#4fc4e6" stroke-width="2.5"/></g></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.134250;0.134375;0.199500;0.199688;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: listen()</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199875;0.200000;0.265125;0.265313;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: SYN in: send SYN-ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.265500;0.265625;0.330750;0.330937;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.331125;0.331250;0.396375;0.396563;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: FIN in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.396750;0.396875;0.462000;0.462188;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: close(): send FIN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.462375;0.462500;0.527625;0.527813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
+</svg>
+      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven states, as RFC 793 defined them in 1981: the client connects and later closes first, the server listens and closes second, each move triggered by a segment arriving or a call from the program. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>TIME_WAIT.</b> It lasts twice the maximum segment lifetime; Linux uses 60 seconds.</li>
+          <li><b>CLOSING.</b> Reached only when both sides send FIN at the same moment; most connections never see it.</li>
+          <li><b>Seeing it live.</b> <code>ss -tan</code> on Linux lists every connection with its current state.</li>
+        </ol>
+      </details>
     </div>
   </section>
 

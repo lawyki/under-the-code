@@ -132,7 +132,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 122 | 3 | `fig-9-12` Fig 9.12 · A route leak: traffic takes the wrong door | 2.5 px · cap 148 | done 2026-10-11 |
 | 123 | 3 | `fig-10-1` Fig 10.1 · UDP: eight bytes, no state, no apologies | 2.2 px · cap 100 | done 2026-10-11 |
 | 124 | 3 | `fig-10-2` Fig 10.2 · The three-way handshake, in time | 2.5 px · cap 116 | done 2026-10-11 |
-| 125 | 3 | `fig-10-3` Fig 10.3 · TCP's state machine | 2.2 px · cap 112 | todo |
+| 125 | 3 | `fig-10-3` Fig 10.3 · TCP's state machine | 2.2 px · cap 112 | done 2026-10-11 |
 | 126 | 3 | `fig-10-4` Fig 10.4 · The sliding window | 2.5 px · cap 105 | todo |
 | 127 | 3 | `fig-10-5` Fig 10.5 · The TCP sawtooth | 2.5 px · cap 109 | todo |
 | 128 | 3 | `fig-10-6` Fig 10.6 · AIMD's fairness, in phase space | 2.2 px · cap 135 | todo |
