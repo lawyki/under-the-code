@@ -1920,30 +1920,50 @@
       </details>
     </div>
 
-    <div class="diagram-card light-diagram" id="fig-9-9">
-      <div class="diagram-label">Fig 9.9 · The shape of an IPv4 vs an IPv6 address</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-23"><title id="svgt-part3-23">Fig 9.9 · The shape of an IPv4 vs an IPv6 address</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(32,116,150,0.95)">128 bits is enough to assign every grain of sand on Earth its own address</text>
-
-        <!-- IPv4 -->
-        <text x="80" y="80" font-family="Space Mono" font-size="11" fill="rgba(180,80,80,0.95)" letter-spacing="0.12em">IPv4 · 32 BITS · 4.3 billion</text>
-        <g transform="translate(80,90)">
-          <rect x="0"   y="0" width="120" height="36" fill="rgba(232,120,120,0.20)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="60"  y="22" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(140,40,40,0.95)">192.0.2.42</text>
-        </g>
-        <text x="80" y="148" font-family="Space Mono" font-size="9" fill="rgba(140,40,40,0.85)">a 32-bit number, written as four decimal octets</text>
-
-        <!-- IPv6 -->
-        <text x="80" y="200" font-family="Space Mono" font-size="11" fill="rgba(60,120,60,0.95)" letter-spacing="0.12em">IPv6 · 128 BITS · 3.4 × 10³⁸</text>
-        <g transform="translate(80,210)">
-          <rect x="0"   y="0" width="560" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="280" y="22" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(40,100,40,0.95)">2001:0db8:85a3:0000:0000:8a2e:0370:7334</text>
-        </g>
-        <text x="80" y="268" font-family="Space Mono" font-size="9" fill="rgba(60,100,60,0.85)">eight 16-bit groups in hex, often abbreviated (consecutive zero groups → "::")</text>
-
-        <text x="360" y="304" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(32,116,150,0.65)" letter-spacing="0.1em">2¹²⁸ ≈ 3.4 × 10³⁸ · ENOUGH FOR EVERY ATOM IN THE EARTH'S CRUST IF YOU WERE GENEROUS</text>
-      </svg>
-      <p id="ch9-v6-p3" class="diagram-caption">An IPv4 address is 32 bits, conventionally written as four decimal octets like <code>192.0.2.42</code>. An IPv6 address is 128 bits, conventionally written as eight 16-bit groups in hexadecimal, separated by colons. IPv6's address space is so large (2<sup>128</sup> ≈ 3.4 × 10<sup>38</sup>) that the engineering trade-off completely flips: addresses are no longer scarce, so the protocol can spend them lavishly. Every device gets a public address. Subnets are 64 bits wide on every link. Stateless autoconfiguration lets a device pick a globally unique address automatically. The price for the abundance is that every router, every operating system, every firewall, every networking library on Earth had to be modified, which is why, thirty years in, the migration is still not done.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-9-9">
+      <div class="diagram-label">Fig 9.9&nbsp;· The shape of an IPv4 vs an IPv6 address</div>
+      <svg viewBox="0 0 400 312" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-23 svgd-part3-23">
+<title id="svgt-part3-23">Fig 9.9 · The shape of an IPv4 vs an IPv6 address</title>
+<desc id="svgd-part3-23">An IPv4 address, 192.0.2.42, is 32 bits written as four decimal octets; there are about 4.3 billion. An IPv6 address is 128 bits written as eight groups of four hexadecimal digits, 2001:0db8:85a3:0000:0000:8a2e:0370:7334; there are about 3.4 × 10^38. It may be shortened in two steps: drop each group's leading zeros, giving 2001:db8:85a3:0:0:8a2e:370:7334, then replace one run of zero groups with a double colon, giving 2001:db8:85a3::8a2e:370:7334. The first 64 bits name the network, the last 64 the device.</desc>
+<text x="20" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(18,42,63,0.62)">IPv4 · 32 bits · about 4.3 billion</text>
+<rect x="20" y="32" width="86" height="34" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="63" y="54" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">192</text>
+<text x="63" y="84" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">8 bits</text>
+<rect x="112" y="32" width="86" height="34" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="155" y="54" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">0</text>
+<text x="155" y="84" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">8 bits</text>
+<rect x="204" y="32" width="86" height="34" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="247" y="54" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">2</text>
+<text x="247" y="84" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">8 bits</text>
+<rect x="296" y="32" width="86" height="34" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.6"/>
+<text x="339" y="54" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#122a3f">42</text>
+<text x="339" y="84" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">8 bits</text>
+<text x="20" y="120" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(18,42,63,0.62)">IPv6 · 128 bits · about 3.4 × 10³⁸</text>
+<rect x="12" y="140" width="376" height="40" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.5"/>
+<text x="20" y="157" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">2001:0db8:85a3:0000:0000:8a2e:0370:7334</text>
+<text x="20" y="174" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">1 · eight 16-bit groups, in hex</text>
+<rect class="fx" x="12" y="140" width="376" height="40" rx="2" fill="#b4541f" fill-opacity="0.12" stroke="#b4541f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.074750;0.075000;0.299000;0.299375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="12" y="186" width="376" height="40" rx="2" fill="#f4f7f9" stroke="#10719d" stroke-opacity="0.5"/>
+<text x="20" y="203" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">2001:db8:85a3:0:0:8a2e:370:7334</text>
+<text x="20" y="220" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">2 · drop leading zeros</text>
+<rect class="fx" x="12" y="186" width="376" height="40" rx="2" fill="#b4541f" fill-opacity="0.12" stroke="#b4541f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.299750;0.300000;0.524000;0.524375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="12" y="232" width="376" height="40" rx="2" fill="#f4f7f9" stroke="#2e7e4f" stroke-opacity="0.5"/>
+<text x="20" y="249" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#2e7e4f">2001:db8:85a3::8a2e:370:7334</text>
+<text x="20" y="266" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(18,42,63,0.62)">3 · one run of zeros becomes ::</text>
+<rect class="fx" x="12" y="232" width="376" height="40" rx="2" fill="#b4541f" fill-opacity="0.12" stroke="#b4541f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.524750;0.525000;0.749000;0.749375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<line x1="20" y1="282" x2="170.0" y2="282" stroke="#10719d" stroke-width="2"/><line x1="182.0" y1="282" x2="372" y2="282" stroke="#b4541f" stroke-width="2"/>
+<text x="20" y="300" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#10719d">network · 64 bits</text>
+<text x="372" y="300" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#b4541f">device · 64 bits</text>
+</svg>
+      <p id="ch9-v6-p3" class="diagram-caption">IPv4 writes its 32 bits as four decimal octets; IPv6 writes 128 bits as eight hexadecimal groups, shortened by dropping leading zeros and collapsing one run of zero groups into <code>::</code>. The first 64 bits name the network and the last 64 the device, a split the abundance makes affordable.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Scale.</b> 2<sup>32</sup> is about 4.3 billion, fewer than the people alive; 2<sup>128</sup> is about 3.4 × 10<sup>38</sup>, so even every 64-bit subnet has room for 1.8 × 10<sup>19</sup> devices.</li>
+          <li><b>One :: only.</b> It may appear once per address, or a reader could not tell how many zero groups each stood for.</li>
+          <li><b>The price.</b> Every router, operating system, firewall and networking library had to change, which is why, nearly thirty years on, the move is still unfinished.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
