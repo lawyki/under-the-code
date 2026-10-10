@@ -64,7 +64,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 54 | 2 | `fig-4-7` Fig 4.7 · A periodic task and the deadline it must meet | 2.5 px · cap 120 | done 2026-10-10 |
 | 55 | 2 | `fig-4-8` Fig 4.8 · x86-64 four-level page table walk | 2.5 px · cap 67 | done 2026-10-10 |
 | 56 | 2 | `fig-4-9` Fig 4.9 · A page fault, decision tree | 2.5 px · cap 129 | done 2026-10-10 |
-| 57 | 2 | `fig-4-10` Fig 4.10 · Fork, then write: when shared pages diverge | 2.5 px · cap 123 | todo |
+| 57 | 2 | `fig-4-10` Fig 4.10 · Fork, then write: when shared pages diverge | 2.5 px · cap 123 | done 2026-10-10 |
 | 58 | 2 | `fig-4-11` Fig 4.11 · Dirty COW: the race that broke Linux | 2.5 px · cap 163 | deferred: conceptual pass |
 | 59 | 2 | `fig-4-12` Fig 4.12 · Filename → inode → data blocks | 2.5 px · cap 56 | todo |
 | 60 | 2 | `fig-4-13` Fig 4.13 · Journaling: write your intent before doing it | 2.5 px · cap 139 | todo |
