@@ -3477,7 +3477,9 @@ over one 4 MB buffer; the move copies three pointers into v2, nulls v1, and
 the million ints stay put), 6.9 (one task, summing a vector, in
 three eras: a C++98 iterator loop, a C++11 range-for, a C++23 fold_left with no
 loop; the standards strip lights each era; the "nine-year rewrite" banners
-dropped as footer prose). The sweep's overlap test now compares ink boxes (font boxes trimmed
+dropped as footer prose), 7.1 (two lanes over three runs: C
+compiles and links once and every run is native; Python parses and compiles on
+run 1, loads the .pyc cache after, and runs the eval loop every time). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
