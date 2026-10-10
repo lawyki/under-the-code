@@ -3561,7 +3561,10 @@ gigabits" claim dropped). Each figure's commit now also checks the glossary. 8.1
 layers with encapsulation drawn: GET / wrapped by TLS, then TCP, IP, and an
 Ethernet header and FCS, sent as bits; the descent lit row by row; BGP/OSPF
 and other debatable layer placements moved out of the drawing), 8.12 (OSI rows beside the TCP/IP boxes that
-span them, each pairing lit in turn; RFC 1122 named as the source of the four). The sweep's overlap test now compares ink boxes (font boxes trimmed
+span them, each pairing lit in turn; RFC 1122 named as the source of the four), 9.1 (a circuit reserved end to end, the
+voice flowing and stopping for a silence while the path stays held; three
+packets crossing a mesh by three paths, arriving 2, 1, 3, reordered at B;
+"circuit switching" kept as a key-term for the glossary). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
