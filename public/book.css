@@ -1558,7 +1558,12 @@
   .reading-cue.is-wide .cue-mark.is-docked { cursor: pointer; }
   .reading-cue.is-dragging .cue-mark { cursor: grabbing; }
   .reading-cue.is-dragging .cue-ghost { opacity: 0.3; }
-  .cue-hit { position: absolute; left: 0; right: 0; bottom: 0; height: 12px; z-index: 0; }
+  .cue-hit { position: absolute; left: 0; right: 0; bottom: 0; height: 10px; z-index: 0; }
+  /* With a mouse, the place button stops above the cue's hover strip (its
+     width is reserved for zero layout shift, so it spans part of the line). */
+  @media (hover: hover) and (pointer: fine) and (min-width: 621px) {
+    .place-btn { height: 30px; align-self: flex-start; margin-top: 7px; }
+  }
   body.has-fullscreen .reading-cue, body.has-fullscreen .place-bar { opacity: 0; pointer-events: none; }
 
   /* --- the place button: the readout itself above 620px, a mark glyph on phones --- */

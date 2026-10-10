@@ -253,14 +253,14 @@ export async function sendMail(env, { to, subject, text, html }) {
 // button-link, a footnote.
 export function mailBody({ lead, linkText, link, note }) {
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const text = [lead, link ? '\n' + link + '\n' : '', note, '\n— under.atheric.eu'].filter(Boolean).join('\n');
+  const text = [lead, link ? '\n' + link + '\n' : '', note, '\nunder.atheric.eu'].filter(Boolean).join('\n');
   const html =
 `<div style="font-family:Georgia,serif;max-width:34em;margin:0 auto;padding:24px;color:#1a1614">
   <p style="font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:#8a6a2a;font-family:monospace">Under the Code</p>
   <p>${esc(lead)}</p>
   ${link ? `<p><a href="${esc(link)}" style="color:#8a6a2a">${esc(linkText)}</a></p>` : ''}
   <p style="color:#7a7570;font-size:14px">${esc(note)}</p>
-  <p style="color:#7a7570;font-size:14px">— under.atheric.eu</p>
+  <p style="color:#7a7570;font-size:14px">under.atheric.eu</p>
 </div>`;
   return { text, html };
 }

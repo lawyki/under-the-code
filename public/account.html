@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account — Under the Code</title>
+<title>Account · Under the Code</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <meta name="description" content="Keep your place in Under the Code across devices. Sign in with a password.">
 <!-- Passkeys stay off until the domain move (they are bound to the domain).
@@ -192,7 +192,7 @@
     <p class="glossary-intro">
       Signed in, the book remembers the exact paragraph you stopped at and offers it
       back on any device. Sign in with a password; your email is only for confirming
-      the account and for getting back in. Signed out, nothing changes —
+      the account and for getting back in. Signed out, nothing changes:
       your place still lives in this browser alone, as it always has.
     </p>
 
@@ -279,7 +279,7 @@
           <button type="button" class="acct-btn" id="setup-passkey" hidden>Create a passkey</button>
           <button type="button" class="acct-btn" id="setup-password">Set a password</button>
         </div>
-        <p class="acct-help" id="setup-passkey-help" hidden>A passkey uses Face ID, Touch ID or your device&rsquo;s PIN &mdash; nothing to remember.</p>
+        <p class="acct-help" id="setup-passkey-help" hidden>A passkey uses Face ID, Touch ID or your device&rsquo;s PIN, so there is nothing to remember.</p>
       </div>
 
       <!-- Sign-in methods -->
@@ -341,11 +341,11 @@
     </section>
 
     <section class="acct-privacy" id="privacy">
-      <h2>What this stores — a <em>privacy</em> notice.</h2>
+      <h2>What this stores: a <em>privacy</em> notice.</h2>
       <p>
         The book itself collects nothing: no analytics, no trackers, no third-party
         requests. Reading progress for signed-out readers lives in your browser's
-        localStorage and never leaves your device. An account adds exactly one thing —
+        localStorage and never leaves your device. An account adds exactly one thing:
         the same reading position, stored server-side so it can follow you between
         devices. In detail:
       </p>
@@ -354,28 +354,28 @@
           it; if you set a password, a salted, peppered PBKDF2 hash of it (never the
           password itself); for each passkey, its public key, a label, and when it was
           added and last used (the private key never leaves your device); a session
-          identifier (only its hash is kept); and one reading position — which part of
+          identifier (only its hash is kept); and one reading position: which part of
           the book, a paragraph anchor, an offset within it, chapter and section titles,
           and when it was last updated. Briefly, the database also holds hashed one-time
-          sign-in links and passkey challenges until they are used or expire, and — to
-          slow down password guessing and mail abuse — counters keyed by a keyed hash of
+          sign-in links and passkey challenges until they are used or expire, and, to
+          slow down password guessing and mail abuse, counters keyed by a keyed hash of
           the address or network, never the address itself, cleared after about a day.
           Nothing else.</li>
         <li><strong>What it is for:</strong> signing you in and putting you back at your
           paragraph. Nothing else. Your address receives only the links you yourself
-          request and a short notice whenever your sign-in settings change — no
-          announcements, no marketing — and is never shared or sold.</li>
+          request and a short notice whenever your sign-in settings change: no
+          announcements, no marketing. It is never shared or sold.</li>
         <li><strong>Where it lives:</strong> a Cloudflare D1 database in the European
           Union, the same infrastructure that already serves the book. Mail is delivered
-          by Cloudflare Email Sending — our host's own service, no third-party mail
+          by Cloudflare Email Sending, our host's own service rather than a third-party mail
           provider.</li>
-        <li><strong>Retention:</strong> emailed links work once — confirmation links
+        <li><strong>Retention:</strong> emailed links work once. Confirmation links
           expire after 24 hours, sign-in links after 30 minutes; an account whose email
           is never confirmed is removed after 14 days; sessions expire after 180 days;
           the reading position is overwritten in place as you read and exists only while
           your account does. Expired records are swept automatically every few hours.</li>
         <li><strong>Deletion:</strong> the button above removes your email, password,
-          passkeys, sessions and position immediately and completely — or write to
+          passkeys, sessions and position immediately and completely. Or write to
           <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
       </ul>
       <p>
@@ -471,7 +471,7 @@
     if (!opt.ok) { say(statusEl, 'Passkeys are unavailable right now.'); return null; }
     let cred;
     try { cred = await navigator.credentials.get({ publicKey: requestFromJSON(opt.data) }); }
-    catch (e) { return null; }   // cancelled — say nothing
+    catch (e) { return null; }   // cancelled: say nothing
     if (!cred) return null;
     return api('/api/auth/passkey/login-verify', Object.assign({ response: credToJSON(cred) }, extra));
   }
@@ -528,8 +528,8 @@
     if (res.ok) return afterSignIn(res.data);
     const err = res.data.error;
     if (err === 'slow_down') say('si-status', 'Too many tries. Wait a few minutes, or use “Email me a sign-in link” below.');
-    else if (err === 'network') say('si-status', 'Network error — please try again.');
-    else if (err === 'unavailable') say('si-status', 'Sign-in is temporarily unavailable — please try again shortly.');
+    else if (err === 'network') say('si-status', 'Network error. Please try again.');
+    else if (err === 'unavailable') say('si-status', 'Sign-in is temporarily unavailable. Please try again shortly.');
     else say('si-status', 'That email and password don’t match. Used email links before, or forgot your password? Choose “Email me a sign-in link” below.');
     $('si-pass').focus();
   });
@@ -557,7 +557,7 @@
       } else if (res.ok) say(statusId, okText);
       else if (res.data.error === 'slow_down') say(statusId, 'Too many requests from this network. Try again in a few minutes.');
       else if (res.data.error === 'bad_email') say(statusId, 'That doesn’t look like an email address.');
-      else say(statusId, 'That didn’t work — please try again.');
+      else say(statusId, 'That didn’t work. Please try again.');
     });
   }
   mailForm('create-form', 'cr-email', 'cr-submit', 'cr-status', '/api/auth/signup',
@@ -569,15 +569,15 @@
   let me = null;
 
   function describePlace(data) {
-    if (!data || !data.position) return 'No position synced yet — open a part and start reading.';
+    if (!data || !data.position) return 'No position synced yet. Open a part and start reading.';
     const p = data.position;
     const parts = [];
     if (p.chapterNum) parts.push(p.chapterNum);
     if (p.sectionLabel) {
-      const num = p.sectionLabel.split('—')[0].trim();
+      const num = p.sectionLabel.split(/\s[\u2014·]\s/)[0].trim();
       if (num) parts.push('§' + num);
     }
-    const label = (parts.length ? parts.join(' · ') + ' — ' : '') + (p.sectionTitle || p.chapterTitle || 'your place');
+    const label = (parts.length ? parts.join(' · ') + ': ' : '') + (p.sectionTitle || p.chapterTitle || 'your place');
     const href = p.part + '#' + (p.anchor || p.section || '');
     return 'Your place: <a href="' + href + '"><em>' + label.replace(/[<>&]/g, '') + '</em> →</a>';
   }
@@ -675,7 +675,7 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const res = await api('/api/auth/passkey/rename', { id: k.id, name: input.value });
-      if (!res.ok) say('methods-status', 'Couldn’t rename it — use 1 to 60 characters.');
+      if (!res.ok) say('methods-status', 'Couldn’t rename it. Use 1 to 60 characters.');
       renderPasskeys();
     });
   }
@@ -699,8 +699,8 @@
       err === 'weak_password' ? 'Use at least 8 characters (at most 128).' :
       err === 'wrong_password' ? 'That current password isn’t right.' :
       err === 'slow_down' ? 'Too many tries. Wait a few minutes.' :
-      err === 'network' ? 'Network error — please try again.' :
-      'That didn’t work — please try again.');
+      err === 'network' ? 'Network error. Please try again.' :
+      'That didn’t work. Please try again.');
     return res;
   }
 
@@ -712,7 +712,7 @@
     say('ra-status', '');
     $('reauth-why').textContent = me.hasPassword || me.passkeyCount
       ? 'This change needs a fresh sign-in.'
-      : 'This change needs a fresh sign-in. You haven’t set a password or passkey yet, so we’ll email you a link — after you click it, come back and try again.';
+      : 'This change needs a fresh sign-in. You haven’t set a password or passkey yet, so we’ll email you a link. After you click it, come back and try again.';
     (me.hasPassword ? $('ra-pass') : $('ra-mail')).focus();
   }
   function closeReauth() { $('reauth').hidden = true; $('ra-pass').value = ''; pending = null; }
@@ -727,7 +727,7 @@
     } else if (res && res.data.error === 'different_account') {
       say('ra-status', 'That signed in as a different account. Use this account’s password or passkey.');
     } else if (res) {
-      say('ra-status', res.data.error === 'slow_down' ? 'Too many tries. Wait a few minutes.' : 'That didn’t work — try again.');
+      say('ra-status', res.data.error === 'slow_down' ? 'Too many tries. Wait a few minutes.' : 'That didn’t work. Try again.');
     }
   }
   $('reauth-form').addEventListener('submit', async e => {
@@ -738,7 +738,7 @@
   $('ra-mail').addEventListener('click', async () => {
     const res = await api('/api/auth/recover', { email: me.email, next: '/account' });
     if (res.ok && res.data.devLink) $('ra-status').innerHTML = 'Dev link: <a href="' + res.data.devLink + '">open →</a>';
-    else say('ra-status', res.ok ? 'Sent — open the link in your email, then try again here.' : 'That didn’t work — please try again.');
+    else say('ra-status', res.ok ? 'Sent. Open the link in your email, then try again here.' : 'That didn’t work. Please try again.');
   });
   $('ra-cancel').addEventListener('click', closeReauth);
 
@@ -773,7 +773,7 @@
       try { cred = await navigator.credentials.create({ publicKey: creationFromJSON(opt.data) }); }
       catch (e) { return { ok: false, data: { error: e && e.name === 'InvalidStateError' ? 'already' : 'cancelled' } }; }
       return api('/api/auth/passkey/register-verify', { response: credToJSON(cred) });
-    }, 'Passkey created. Next time, sign in with it — no password needed.');
+    }, 'Passkey created. Next time, sign in with it: no password needed.');
   }
   $('pk-add').addEventListener('click', addPasskey);
   $('setup-passkey').addEventListener('click', async () => {
@@ -789,7 +789,7 @@
     const res = await api('/api/auth/signout-others', {});
     say('acct-in-status', res.ok
       ? (res.data.ended ? 'Signed out on ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.')
-      : 'That didn’t work — please try again.');
+      : 'That didn’t work. Please try again.');
   });
 
   let armed = false;
@@ -910,7 +910,7 @@
       pt.className = 'am-part'; pt.textContent = 'Part ' + ROMAN[part];
       const st = document.createElement('span');
       st.className = 'am-sec';
-      st.textContent = sec ? ('§' + (sec.label || '').split('—')[0].trim() + ' ' + (sec.title || '')) : a;
+      st.textContent = sec ? ('§' + (sec.label || '').split(/\s[\u2014·]\s/)[0].trim() + ' ' + (sec.title || '')) : a;
       const col = document.createElement('span');
       col.className = 'am-col'; col.textContent = SLOT_NAMES[part][c - 1];
       link.append(sw, pt, st, col);

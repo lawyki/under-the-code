@@ -106,7 +106,7 @@
   const a = document.createElement('a');
   a.className = 'book-account' + (signedIn ? ' is-signed-in' : '');
   a.href = '/account';
-  const label = signedIn ? 'Your account — your place is kept across devices' : 'Account — keep your place across devices';
+  const label = signedIn ? 'Your account: your place is kept across devices' : 'Account: keep your place across devices';
   a.setAttribute('aria-label', label);
   a.title = label;
   a.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 2.5h8v11l-4-3-4 3z"/></svg>'
@@ -116,7 +116,7 @@
   // A 401 seen by the place module is more truthful than the hint cookie.
   document.addEventListener('utc:signedout', () => {
     a.classList.remove('is-signed-in');
-    const out = 'Account — keep your place across devices';
+    const out = 'Account: keep your place across devices';
     a.setAttribute('aria-label', out);
     a.title = out;
     const l = a.querySelector('.book-account-label');
@@ -522,8 +522,10 @@
     const n = String(chapterId || '').replace(/^ch/, '');
     return /^\d+$/.test(n) ? 'Chapter ' + n : chapterId;
   }
+  // "03 · The Architecture" (and older stored "03 — …" labels) → "03"
+  function labelNum(label) { return String(label || '').split(/\s[\u2014·]\s/)[0].trim(); }
   function sectionNum(rec) {
-    return rec && rec.sectionLabel ? rec.sectionLabel.split('—')[0].trim() : '';
+    return rec && rec.sectionLabel ? labelNum(rec.sectionLabel) : '';
   }
 
   // -------- ANCHOR MODEL --------------------------------------------------------
@@ -822,7 +824,7 @@
           const sn = el.querySelector('.section-number');
           const h2 = el.querySelector('h2');
           const label = sn ? sn.textContent.replace(/\s+/g, ' ').trim() : '';
-          secMeta.set(el.id, { label, title: h2 ? headingText(h2) : '', num: label.split('—')[0].trim() });
+          secMeta.set(el.id, { label, title: h2 ? headingText(h2) : '', num: labelNum(label) });
         }
         const s = { id: el.id, el, idx: sections.length, top: a.top, bottom: a.bottom, ch: chId,
           chIdx: ch ? ch.idx : -1, paras: [], meta: secMeta.get(el.id) };
@@ -2184,7 +2186,7 @@
         if (remote.chapterNum) metaParts.push(remote.chapterNum);
         const num = sectionNum(remote);
         if (num) metaParts.push('§' + num);
-        link.textContent = (metaParts.length ? metaParts.join(' · ') + ' — ' : '')
+        link.textContent = (metaParts.length ? metaParts.join(' · ') + ': ' : '')
           + (remote.sectionTitle || remote.chapterTitle || 'Continue reading') + ' →';
         link.href = remote.part + '#' + remote.anchor;
         link.addEventListener('click', e => {
@@ -2361,12 +2363,15 @@
         cancelT('hoverclose');
         if (!hover.open) {
           if (speed > T.HOVER_SPEED) cancelT('hoveropen');
-          else if (!pendingT('hoveropen')) at('hoveropen', T.HOVER_DWELL_MS, () => { if (hover.armed) openWide(); });
+          else if (!pendingT('hoveropen')) at('hoveropen', T.HOVER_DWELL_MS, () => {
+            // still moving, slowly: a pointer parked after a sweep does not open it (review M8)
+            if (hover.armed && hover.lastT && now() - hover.lastT < 80) openWide();
+          });
           return;
         }
         if (drag) return;
         const s = segAt(e.clientX);
-        if (s) paintReadout(true, '§' + s.meta.label.replace(/\s*—\s*/, ' · '));
+        if (s) paintReadout(true, '§' + s.meta.label.replace(/\s[\u2014·]\s/, ' · '));
       });
       hit.addEventListener('pointerleave', () => {
         hover.lastT = 0;
@@ -2416,7 +2421,7 @@
         setMx(mark, ((best.top - curCh.top) / (curCh.bottom - curCh.top)) * cueWidth());
         const s = G.sections[best.sec];
         const o = paraOrdinal(best);
-        paintReadout(true, '§' + s.meta.num + ' · ¶' + (o ? o.n : 1) + ' — release to set');
+        paintReadout(true, '§' + s.meta.num + ' · ¶' + (o ? o.n : 1) + ', release to set');
       });
       const endDrag = commitIt => {
         if (!drag) return;
@@ -2611,8 +2616,8 @@
       }
       const s = snapshotState();
       dbg.textContent = s.state + (s.paused ? ' (paused)' : '') + '  sync:' + s.sync
-        + '\nK ' + s.K + '\nC ' + (s.C ? s.C.anchor + ' @' + s.C.fraction + ' k=' + s.C.k + ' ' + s.C.src : '—')
-        + '\nR ' + (s.R ? s.R.anchor : '—') + '   before ' + (s.Rprev ? s.Rprev.anchor : '—')
+        + '\nK ' + s.K + '\nC ' + (s.C ? s.C.anchor + ' @' + s.C.fraction + ' k=' + s.C.k + ' ' + s.C.src : 'none')
+        + '\nR ' + (s.R ? s.R.anchor : 'none') + '   before ' + (s.Rprev ? s.Rprev.anchor : 'none')
         + '\nbudget ' + s.budget + ' / ' + s.cap
         + (s.excursion ? '\nexc ' + s.excursion.kind + '/' + s.excursion.reason + ' ' + (s.excursion.readMs / 1000).toFixed(1) + 's ' + s.excursion.chars + 'ch ' + s.excursion.paras + '¶' + (s.excursion.pastEnd ? ' past-end' : '') : '')
         + (s.pinAway ? '\npin-away ' + (s.pinAway.readMs / 1000).toFixed(1) + 's ' + s.pinAway.paras + '¶' : '')
@@ -2836,7 +2841,7 @@
     const here = entryPart === currentPart;
     const href = (here ? '' : entryPart) + '#' + entry.section;
     const sectionLabel = entry.section_label
-      ? entry.section_label.split('—')[0].trim()
+      ? entry.section_label.split(/\s[\u2014·]\s/)[0].trim()
       : '';
     const meta = [entry.chapter_num, sectionLabel ? '§' + sectionLabel : '']
       .filter(Boolean).join(' · ');
@@ -3046,7 +3051,7 @@
       html += '<div class="glossary-letter">' + L + '</div>';
       html += '<div class="glossary-list">';
       groups.get(L).forEach(e => {
-        const sLabel = e.section_label ? e.section_label.split('—')[0].trim() : '';
+        const sLabel = e.section_label ? e.section_label.split(/\s[\u2014·]\s/)[0].trim() : '';
         const meta = [e.chapter_num, sLabel ? '§' + sLabel : ''].filter(Boolean).join(' · ');
         const href = (e.part || '').replace(/\.html$/, '') + '#' + e.section;
         html += '<article class="glossary-entry">'

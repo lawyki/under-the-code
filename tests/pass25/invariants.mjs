@@ -128,11 +128,14 @@ async function run() {
               await bp.close();
               // runtime ids: new ones (vs source and vs baseline runtime) carry utc-
               const srcAll = new Set(data.srcAllIds), baseAll = new Set(bd.allIds);
-              const newIds = data.allIds.filter(id => !srcAll.has(id) && !baseAll.has(id));
+              // glossary first-use anchors (term-*) follow the glossary, which later passes change by design
+              const newIds = data.allIds.filter(id => !srcAll.has(id) && !baseAll.has(id) && !id.startsWith('term-'));
               t.check(newIds.every(id => id.startsWith('utc-')), 'injected ids use the utc- prefix only', newIds.filter(id => !id.startsWith('utc-')).slice(0, 5).join(','));
               t.check(!newIds.some(id => ANCHOR_RE.test(id)), 'no injected id matches the anchor regex');
               // Tab stops
-              const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d));
+              // Glossary terms and index entries are tab stops that follow the glossary (Pass 26 changed it by design).
+              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d);
+              const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)));
               const detail = `live ${data.tabbable.length} vs baseline@${BASELINE_REV} ${bd.tabbable.length}; +[${diff.added.join(', ')}] -[${diff.removed.join(', ')}]`;
               const isPart = PARTS.includes(name);
               if (isPart && !data.newDom.pb) {

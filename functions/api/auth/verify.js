@@ -20,7 +20,7 @@ function page(inner) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
 <meta name="referrer" content="same-origin">
-<title>Sign in — Under the Code</title>
+<title>Sign in · Under the Code</title>
 <style>
   body { background:#0a0a0a; color:rgba(245,240,230,0.9); font-family:Georgia,serif;
          display:flex; min-height:100vh; align-items:center; justify-content:center; margin:0; }
@@ -53,7 +53,7 @@ function page(inner) {
 const TOKEN_RE = /^[A-Za-z0-9_-]{20,128}$/;
 
 const EXPIRED = `<h1>This link has expired.</h1>
-  <p>Emailed links work once and expire — confirm links after 24 hours,
+  <p>Emailed links work once and expire: confirm links after 24 hours,
   sign-in links after 30 minutes. Get a fresh one from
   <a href="/account">your account page</a>.</p>`;
 

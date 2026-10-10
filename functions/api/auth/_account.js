@@ -39,20 +39,20 @@ export async function signupMail(env, request, email, nextPath) {
       return issueToken(env, request, user.id, 'verify', nextPath);
     };
     return mailJob(make, link => ({
-      to: email, subject: 'Confirm your email — Under the Code',
+      to: email, subject: 'Confirm your email · Under the Code',
       ...mailBody({
         lead: 'Confirm your email to finish creating your Under the Code account.',
         linkText: 'Confirm my email →', link,
-        note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it — an unconfirmed account is removed after 14 days.',
+        note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it: an unconfirmed account is removed after 14 days.',
       }),
     }), env);
   }
   const { text, html } = mailBody({
-    lead: 'Someone (hopefully you) tried to create an Under the Code account with this address — you already have one.',
+    lead: 'Someone (hopefully you) tried to create an Under the Code account with this address. You already have one.',
     linkText: 'Sign in →', link: `${siteOrigin(env, request)}/account`,
     note: 'Forgot how you sign in? On that page choose “Email me a sign-in link”. If this wasn’t you, nothing has changed.',
   });
-  return { link: null, make: null, send: () => sendMail(env, { to: email, subject: 'You already have an account — Under the Code', text, html }) };
+  return { link: null, make: null, send: () => sendMail(env, { to: email, subject: 'You already have an account · Under the Code', text, html }) };
 }
 
 // A mail job whose token is created inside send(). For local development the
@@ -75,11 +75,11 @@ export async function recoverMail(env, request, email, nextPath) {
   const user = await findUser(env, email);
   if (!user || !budget) return null;
   return mailJob(() => issueToken(env, request, user.id, 'recover', nextPath), link => ({
-    to: email, subject: 'Your sign-in link — Under the Code',
+    to: email, subject: 'Your sign-in link · Under the Code',
     ...mailBody({
       lead: 'Your sign-in link for Under the Code.',
       linkText: 'Sign in →', link,
-      note: 'It works once and expires in 30 minutes. Once in, you can set a password. If you didn’t ask for this, ignore it — nothing happens without the link.',
+      note: 'It works once and expires in 30 minutes. Once in, you can set a password. If you didn’t ask for this, ignore it. Nothing happens without the link.',
     }),
   }), env);
 }
@@ -91,5 +91,5 @@ export function changeNotice(env, request, email, what) {
     linkText: 'Review your account →', link: `${siteOrigin(env, request)}/account`,
     note: 'If this was you, there’s nothing to do. If it wasn’t, open the account page, choose “Email me a sign-in link”, and change how you sign in.',
   });
-  return sendMail(env, { to: email, subject: 'Your sign-in settings changed — Under the Code', text, html });
+  return sendMail(env, { to: email, subject: 'Your sign-in settings changed · Under the Code', text, html });
 }

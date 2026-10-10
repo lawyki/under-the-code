@@ -19,10 +19,10 @@ the wording now names every field the server stores once the flag is on.
 
 **Now:**
 > Reading progress for signed-out readers lives in your browser's localStorage
-> and never leaves your device. An account adds exactly one thing — the same
+> and never leaves your device. An account adds exactly one thing: the same
 > reading position, stored server-side so it can follow you between devices.
 
-**Proposed:**
+**Proposed** (the replacement text follows the dash law, `CLAUDE.md`):
 > Reading progress **and section marks** for signed-out readers live in your
 > browser's localStorage and never leave your device. An account adds **two
 > things: the same reading position, and any sections you mark**, stored
@@ -31,15 +31,15 @@ the wording now names every field the server stores once the flag is on.
 ## 2 · "What is stored" (the reading-position clause)
 
 **Now:**
-> …and one reading position — which part of the book, a paragraph anchor, an
+> …and one reading position: which part of the book, a paragraph anchor, an
 > offset within it, chapter and section titles, and when it was last updated.
 
 **Proposed:**
-> …and one reading position — which part of the book, a paragraph anchor, an
+> …and one reading position: which part of the book, a paragraph anchor, an
 > offset within it, chapter and section titles, **the paragraph you were
 > reading, whether you set the place yourself, whether it is in the part's last
-> section, and — so a slow connection can't save an older place over a newer
-> one — a random tag for the open page and a save counter;** and when it was
+> section, a random tag for the open page and a save counter (so a slow
+> connection can't save an older place over a newer one),** and when it was
 > last updated. **The sections you mark: which section, the colour you chose,
 > and when you last changed it.**
 
@@ -60,8 +60,8 @@ your section marks the same on every device.** Nothing else."
 
 ## 5 · Deletion (the bullet, and the button's status text)
 
-**Bullet:** "…removes your email, password, passkeys, sessions and position
-**and marks** immediately and completely…"
+**Bullet:** "…removes your email, password, passkeys, sessions, position
+**and marks** immediately and completely. Or write to…"
 
 **Button status** ("This removes your email, password, passkeys, sessions and
 reading position immediately.") → "…sessions, reading position **and marks**

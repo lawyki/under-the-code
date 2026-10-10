@@ -60,6 +60,8 @@ const SKIP_WORDS = new Set([
   // an entry whose definition is the appositive fragment ("the 2007 Amazon design ... —
   // is AP because ..."). The AP-systems entry already covers the Dynamo lineage.
   'dynamo',
+  // Pass 26: after the dash rewrite these surfaced as fragments, not terms.
+  'descriptor', 'protocol',
 ]);
 
 // Curated canonical terms that should always appear in the glossary even if
@@ -71,6 +73,12 @@ const SKIP_WORDS = new Set([
 // about that — it just searches every part top-to-bottom and uses whichever
 // match comes first.
 const CURATED_TERMS = [
+  // Pass 26 (the dash law): terms the extractor used to find through a
+  // "term — definition" cue, kept by name now that the cue is gone.
+  'a-machine', 'half adder', 'signed magnitude', 'infinity', 'everything is a file', 'UEFI',
+  'CAM-table overflow', 'fragments', 'On Distributed Communications', 'Congestion Avoidance and Control',
+  'resolver', 'headers', 'WorldWideWeb', 'AddRoundKey', 'Ed25519', 'secp256k1', 'P vs NP',
+  'Capital One 2019 breach', 'livelock', 'CP systems', 'split brain', 'Docker',
   // Hardware (Part I)
   'transistor', 'MOSFET', 'logic gate', 'NAND', 'NOR', 'XOR', 'half-adder', 'full-adder',
   'two\'s complement', 'IEEE 754', 'mantissa', 'buffer overflow',
@@ -430,7 +438,7 @@ function recordTerm(term, html, termStart, termEnd, part) {
     if (ackey && !(ackey in glossary)) {
       glossary[ackey] = {
         term: acronym,
-        definition: term + ' — ' + definition.replace(/^,\s+or\s+[A-Z][A-Za-z0-9-]+\.?\s*/, ''),
+        definition: term + ': ' + definition.replace(/^,\s+or\s+[A-Z][A-Za-z0-9-]+\.?\s*/, ''),
         part,
         section: sectionId,
         chapter: chapterId,
@@ -770,6 +778,14 @@ const out = {
 };
 
 const outPath = path.join(BOOK_DIR, 'glossary.json');
+// Definitions the extractor cannot pick out of the surrounding sentence on its
+// own: the book's own defining sentence, verbatim. Keep these in step with the
+// prose if it changes (Pass 26).
+const DEFINITION_OVERRIDES = {
+  'livelock': 'The same shape with spinning threads (each repeatedly trying and failing rather than blocking) is called livelock.',
+  'split brain': 'Any two quorums must intersect in at least one node, so two leaders elected in different terms cannot both have a majority without sharing a witness who would force one to step down. This intersection property is what prevents split brain.',
+};
+for (const [k, d] of Object.entries(DEFINITION_OVERRIDES)) if (out.entries && out.entries[k]) out.entries[k].definition = d;
 fs.writeFileSync(outPath, JSON.stringify(out, null, 2));
 console.log(`Scanned ${scanned} candidates across <span class="key-term">, <em>, <strong>.`);
 console.log(`Kept ${kept} glossary entries (${curatedAdded} added by curated backfill).`);

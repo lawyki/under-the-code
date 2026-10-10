@@ -17,6 +17,27 @@ what you read next, nothing more.
    before doing anything.
 4. `STATE.md` — where we are · what's next · blocked on Tiger.
 
+## The three laws (owner, 2026-10-10)
+
+Binding on every pass, every file a reader can see, every future edit.
+
+1. **No em dashes, ever.** Not in prose, figures, captions, labels, tabs, UI
+   strings, page titles, meta, the glossary or the mails. Rewrite the sentence
+   with better language (a full stop, a colon, a comma, parentheses, a
+   restructured clause); never swap in a look-alike. Section labels read
+   "01 · Context". The en dash keeps its two jobs only: ranges (1950–1960) and
+   name pairs (Diffie–Hellman). `npm run check:dashes` must pass.
+2. **Every paragraph does a job.** It teaches, shows, or moves the reader to
+   the next idea, once, in its strongest place. Restating, announcing ("it is
+   important to note"), summarising what was just said, three examples where
+   one works, and transitions that only fill space are cut or merged. Length
+   costs an AI nothing and costs the reader everything.
+3. **The picture carries it.** A figure shows the mechanism, it does not hold
+   a text column. Readable at 375 px (no label below 11 CSS px rendered),
+   nothing overlapping or clipped, as few words as the idea allows, motion
+   where motion is the mechanism (reduced motion respected), a caption of at
+   most two sentences. The explanation lives in the prose.
+
 ## Before you touch anything
 
 - **The gate rhythm is law** (as amended 2026-08-06, `BRIDGE.md` §1): proposal

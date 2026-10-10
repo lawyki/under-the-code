@@ -71,6 +71,12 @@ tracking model holds; 40 findings held — two HIGH (marks lost at sign-out
 while sync is off; the place bar and menu clipped on short screens) — all
 fixed and re-tested.
 
+**Pass 26 — the dash law — landed 2026-10-10** (ledger `UNDER.md` §4z):
+no em dash anywhere a reader sees (~2,860 rewritten, not swapped; enforced
+by `npm run check:dashes`), verified by Sonnet 5.5 (20 findings fixed, one
+old ARPANET fact corrected). Glossary 519 → 509 (eleven junk entries gone).
+The three laws are in `CLAUDE.md`.
+
 The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
 242 figures, glossary at **519** terms (the Diffie–Hellman duplicate row
 merged in Pass 19 — see §4s item 3). Five volume identities live; magic-link
@@ -91,7 +97,12 @@ in substance throughout.
 3. **Retire `/api/auth/request`** after 2026-11-15 (replace with a 410).
 4. **Re-tune the Pass 25 thresholds** after the owner's read (`?utc-debug`
    on any part shows the tracker's state; constants in `book.js` `T`).
-5. **The punch-list pass**, after Tiger's read: the read's findings, the
+5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
+   cut, one part at a time, I first (`docs/pass-27-brief.md`);
+   28 figures, pilot of three, then every figure one by one, handcrafted and
+   tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
+   fig 1.2 note: the image explains itself, text goes into explainers).
+6. **The punch-list pass**, after Tiger's read: the read's findings, the
    §4w arc dossier's seven ranked findings (Ch16 §03 scaffolding, the
    locality thread, the coda instrument, the integer-overflow and De Morgan
    promises, the Ch14 primer callback, the Ch17 §02 revisit gloss), fig
@@ -122,6 +133,9 @@ this list, it is not blocking.
   doesn't arrive.
 - **Run the ten-minute screen-reader check** — `docs/pass-25-sr-trace.md`
   (VoiceOver on Mac/iPhone; NVDA if you have Windows). Report what differs.
+- **Sign off the Pass 26 wording choices** (§4z "Owner sign-off list": the Zen
+  of Python's own punctuation, the shortened Berners-Lee pull-quote, the
+  epilogue ornament, quote attributions). Silence keeps them.
 - **Approve the Pass 25 privacy wording** — `docs/pass-25-copy.md` (five
   short replacements on the account page). Until then marks stay on each
   device.

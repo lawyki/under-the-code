@@ -23,7 +23,8 @@ async function measure(page, y) {
     // scroll-driven scrollFade (book.css: .diagram-card, .light-diagram,
     // .scale-shock, .math-callout, .pull-quote) moves live rects off layout.
     let tf = null;
-    for (let e = live && document.getElementById(live.anchor); e && e !== document.body; e = e.parentElement) {
+    const starts = [live && document.getElementById(live.anchor), pure && document.getElementById(pure.anchor)];
+    for (const st of starts) for (let e = st; e && e !== document.body && !tf; e = e.parentElement) {
       const t = getComputedStyle(e).transform;
       if (t && t !== 'none' && !/^matrix\(1, 0, 0, 1, 0, 0\)$/.test(t)) { tf = (e.className && String(e.className).split(' ')[0]) || e.tagName; break; }
     }
@@ -37,6 +38,8 @@ async function measure(page, y) {
 // an entrance transform (the live rect is the one moving). No forced rebuild.
 const PX = 1.5, PX_TF = 21;
 const agree = m => (!m.live && !m.pure)
+  // a tie: the line sits exactly on the next anchor's top edge (sub-pixel rounding picks a side)
+  || (m.live && m.pure && m.live.anchor !== m.pure.anchor && (m.pure.fraction === 0 || m.live.fraction === 0))
   || (m.live && m.pure && m.live.anchor === m.pure.anchor
       && (Math.abs(m.live.fraction - m.pure.fraction) <= TOL + 1e-9
           || Math.abs(m.live.fraction - m.pure.fraction) * (m.h || 0) <= (m.tf ? PX_TF : PX)));

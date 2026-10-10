@@ -523,6 +523,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Cover "A visual theory" vs mastheads "A unified theory" | All five mastheads + README + package.json say "unified"; only the index `<title>` said "visual" | Unified to **"A unified theory"** (majority). **Flag:** owner may prefer "visual" — one-line change in index.html if so |
 | "Less than 150 years" (1854→2026) | 2026 − 1854 = 172 | Fixed fig 18.2 line: "172 years from beginning to here" |
 | Part III position-fix arithmetic | Haversine great-circle legs between the five stated fixes: cumulative 1,183 / 1,819 / 2,480 / 3,129 nm | All four runs replaced (were 870/1,730/2,590/3,459); each leg now computes from the printed coordinates. part-3.css comment + §4d updated |
+| ARPANET December 1969 "four nodes, three states" (fig 9.2 heading) | UCLA, SRI (Menlo Park) and UCSB are in California, Utah the fourth: two states | Fixed to "four nodes, two states" (Pass 26, 2026-10-10, found by its Sonnet 5.5 verification) |
 
 ### Side effects & verification
 
@@ -2940,7 +2941,90 @@ never uploaded). The suites are now in the repo, `tests/pass25/` (README
 there). Not exercisable here and still owed to the owner: the manual
 VoiceOver/NVDA trace (`docs/pass-25-sr-trace.md`, ~10 min) and a real iPhone.
 
+## 4z. Pass 26 (2026-10-10): the dash law (law 1)
+
+Owner's law, 2026-10-10: "No em dashes used ever, no human uses them. Use
+better language." Written into `CLAUDE.md` ("The three laws") with laws 2
+(every paragraph does a job, Pass 27) and 3 (the picture carries it, Pass 28),
+and enforced by `npm run check:dashes` (`scripts/check-dashes.mjs`: everything
+that ships in `public/` and `functions/`, comments removed, fails on U+2014 or
+its entities). Model: Opus 5.5. Zero anchor change.
+
+**What changed.** About 2,860 em dashes in the five parts plus the index,
+account, glossary and 404 pages, the UI strings in `book.js` and the account
+page's script, the og image title, and the mails and confirm page in
+`functions/`:
+- **~2,165 in sentences, rewritten by 27 editors** (one batch of ~80 dashes
+  each), every batch then checked by a skeptic who rejected and corrected 40
+  rewrites (colon pile-ups, comma splices, choppy splits, a misattached
+  clause). Not a swap: two thoughts became two sentences, asides became
+  commas or parentheses, explanations took a colon, dramatic pauses were
+  rephrased. Meaning, facts, numbers and terms unchanged; figure `<text>`
+  labels never longer than before (checked by script on all 429).
+- **~545 label separators by rule**: section labels and chapter tabs read
+  "01 · Context", figure labels "FIG 1.10 · From assembly…", page titles
+  "Under the Code · Part I: The Physical World", "Continue to Part II: The
+  Software Layer". Ranges keep the en dash (law 1 allows it) or read "1 TO 3".
+- **Code that split on the dash** (`book.js` section numbers, the chip,
+  tooltips, glossary index; `account.html`; both build scripts) now accepts
+  " · " and older stored labels alike, so saved places from before the pass
+  still read correctly.
+- **Quotations stay verbatim.** The Zen of Python appears in its own
+  punctuation, "one-- and preferably only one --obvious", exactly as
+  `import this` prints it (the book had silently typeset it with em dashes);
+  the Berners-Lee pull-quote is now his complete first sentence, "The Web is
+  more a social creation than a technical one." (the second sentence carries
+  dashes in the original). Owner's call, below.
+
+**Glossary.** The extractor found many terms through a "**term** — definition"
+cue. Real terms that lost that cue (half adder, livelock, split brain, UEFI,
+Docker, Ed25519, secp256k1, P vs NP, WorldWideWeb… 22 in all) are kept by name
+in its curated list; eleven junk entries the old cue produced ("a b", "art",
+"at runtime", "downward", "extended", "governance", "kg", "no integer type at
+all", "physics", "reversible", "work") are gone, and ECB is new. **519 → 509.**
+Two definitions that would have quoted the wrong sentence use the book's own
+defining sentence (`DEFINITION_OVERRIDES`). `sections.json` regenerated.
+
+**Owner sign-off list** (text the owner may want worded differently): the
+Zen of Python punctuation; the Berners-Lee pull-quote trimmed to one
+sentence; pull-quote attributions without their leading dash ("Alan Turing,
+1950" on its own line); the epilogue's closing ornament, a lone dash, now
+"* * *"; Part V's closing four-move tagline reordered; the account page's
+privacy notice and the mails repunctuated (copy approved in Pass 24; no
+wording change beyond the dashes).
+
+**Verification (Sonnet 5.5, BRIDGE §5).** Seven verifiers read all 1,803
+before/after pairs in full and rendered every changed figure label in
+Chromium (1440, 375) and WebKit (375) against HEAD; a skeptic re-checked each
+finding. 71 findings, 20 held, all fixed: the Bridge figures' "Fig BR.N:"
+labels to the book's "Fig BR.N ·"; ranges in Bridge figure labels back to
+the en dash ("vectors 0–31", "100–1000 Hz"); a "×" that had replaced a table's
+empty-cell dash in Fig 14.13 (it read as "broken") to "none"; the MESI legend's
+odd separator; a comma splice in ch12; the backoff formula's ambiguous "·";
+parallel smart-pointer sentences; serial commas; two choppy splits; an
+unclear "it"; and **one pre-existing factual error**: ARPANET's four December
+1969 nodes sat in two states, not three (logged in §4g). No fact, number or
+§4g correction was changed by the rewrite; no figure label overflows or
+collides that didn't before.
+
+**Found while testing, fixed:** the Pass 25 verification's zero-layout-shift
+fix reserves the readout's width, which made the place button cover the
+cue's hover strip; on mouse-and-trackpad screens the button is now 30 px tall
+so the strip below it stays live, and the cue widens only while the pointer is
+still moving (a pointer parked after a fast sweep no longer opens it).
+
+**Tests:** `npm run check:dashes` clean; anchor sets byte-identical in all
+five parts (288/286/307/188/153); `tests/pass25`: invariants 812/0, traces
+229/0 (+1 headless-WebKit skip), parity 40/40, marks 106/0, UI 93/0, the
+verification-fix checks 14/14.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
+
+- **The three laws (owner, 2026-10-10) override older entries here.** No em
+  dashes anywhere a reader sees; every paragraph does a job; the picture
+  carries it. Full text in `CLAUDE.md`. Where this section or a ledger names an
+  em-dash convention (section labels, the glossary extractor's dash splits),
+  the law wins and the code follows it.
 
 - `404.html` is intentionally self-contained (own CSS, reduced font set).
 - The h2 "glass reveal" leaves a faint chromatic text-shadow at rest — intentional.
