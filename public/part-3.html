@@ -5364,46 +5364,80 @@
       DOM of any other tab, including your bank's.
     </p>
 
-    <div class="diagram-card" id="fig-12-8">
-      <div class="diagram-label">Fig 12.8 · Same-origin policy · scheme + host + port must all match</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-63"><title id="svgt-part3-63">Fig 12.8 · Same-origin policy · scheme + host + port must all match</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">three components, all-or-nothing match</text>
-
-        <!-- Reference origin -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">REFERENCE ORIGIN</text>
-          <rect x="0" y="14" width="640" height="40" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="320" y="38" text-anchor="middle" font-family="Space Mono" font-size="13" fill="rgba(180,200,220,0.95)">https : //  www.example.com  : 443</text>
-          <text x="170" y="68" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">↑ scheme</text>
-          <text x="320" y="68" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">↑ host</text>
-          <text x="500" y="68" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.85)">↑ port</text>
-        </g>
-
-        <!-- Comparison rows -->
-        <g transform="translate(40,160)" font-family="Space Mono" font-size="10">
-          <rect x="0" y="0" width="640" height="24" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.4)"/>
-          <text x="14" y="16" fill="rgba(180,200,220,0.95)">https://www.example.com:443/page</text>
-          <text x="540" y="16" fill="rgba(150,216,150,1)">✓ same origin</text>
-
-          <rect x="0" y="28" width="640" height="24" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="44" fill="rgba(180,200,220,0.95)">http://www.example.com:443/page</text>
-          <text x="540" y="44" fill="rgba(232,120,120,1)">✗ scheme differs</text>
-
-          <rect x="0" y="56" width="640" height="24" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="72" fill="rgba(180,200,220,0.95)">https://api.example.com:443/page</text>
-          <text x="540" y="72" fill="rgba(232,120,120,1)">✗ host differs</text>
-
-          <rect x="0" y="84" width="640" height="24" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="100" fill="rgba(180,200,220,0.95)">https://www.example.com:8443/page</text>
-          <text x="540" y="100" fill="rgba(232,120,120,1)">✗ port differs</text>
-        </g>
-
-        <!-- Bottom CORS note -->
-        <g transform="translate(40,290)">
-          <text x="0" y="0" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)" font-style="italic">CORS (Cross-Origin Resource Sharing) is the explicit opt-in mechanism for cross-origin requests when both sides agree.</text>
-        </g>
-      </svg>
-      <p id="ch12-security-p3" class="diagram-caption">The same-origin policy is the boundary every other browser security mechanism builds on top of. JavaScript on <code>https://news.com</code> cannot make an XHR/fetch to <code>https://bank.com</code> and read the response. It cannot read the DOM of an iframe pointing at <code>https://bank.com</code>. It cannot read cookies set by <code>https://bank.com</code>. There are explicit, opt-in escape hatches: <strong>CORS</strong> for cross-origin XHRs (the server can send <code>Access-Control-Allow-Origin</code> headers), <code>postMessage</code> for cross-origin iframe messaging, JSONP (deprecated) for cross-origin script loading. Everything else is firmly fenced off. This is the rule that makes it safe to have multiple tabs open on different sites at the same time.</p>
+    <div class="diagram-card fig-v2" id="fig-12-8">
+      <div class="diagram-label">Fig 12.8&nbsp;· Same-origin policy&nbsp;· scheme + host + port must all match</div>
+      <svg viewBox="0 0 400 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-63 svgd-part3-63">
+<title id="svgt-part3-63">Fig 12.8 · Same-origin policy · scheme + host + port must all match</title>
+<desc id="svgd-part3-63">The origin https://www.example.com splits into scheme https, host www.example.com and port 443, the default for https. https://www.example.com/page matches in all three: the same origin. http://www.example.com differs in scheme and in port, 80 by default. https://api.example.com differs in host. https://www.example.com:8443 differs in port. Each of the last three is another origin.</desc>
+<text x="44" y="16" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">scheme</text>
+<text x="178" y="16" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">host</text>
+<text x="307" y="16" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">port</text>
+<rect x="10" y="26" width="68" height="22" rx="4" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="44" y="42" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">https</text>
+<rect x="86" y="26" width="184" height="22" rx="4" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="178" y="42" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">www.example.com</text>
+<rect x="278" y="26" width="58" height="22" rx="4" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="307" y="42" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">443</text>
+<text x="390" y="42" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">origin</text>
+<line x1="10" y1="62" x2="390" y2="62" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.4"/>
+<text x="10" y="92" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https://www.example.com/page</text>
+<rect x="10" y="104" width="68" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="44" y="120" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127091;0.127273;1.000000" dur="11s" repeatCount="indefinite"/><rect x="10" y="104" width="68" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="86" y="104" width="184" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="178" y="120" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">www.example.com</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.158909;0.159091;1.000000" dur="11s" repeatCount="indefinite"/><rect x="86" y="104" width="184" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="278" y="104" width="58" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="307" y="120" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">443</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.190727;0.190909;1.000000" dur="11s" repeatCount="indefinite"/><rect x="278" y="104" width="58" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.235636;0.235909;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="120" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.236182;0.236364;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="120" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">same</text></g>
+<text x="10" y="152" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">http://www.example.com/</text>
+<rect x="10" y="164" width="68" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="44" y="180" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">http</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.336182;0.336364;1.000000" dur="11s" repeatCount="indefinite"/><rect x="10" y="164" width="68" height="22" rx="4" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<rect x="86" y="164" width="184" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="178" y="180" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">www.example.com</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.368000;0.368182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="86" y="164" width="184" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="278" y="164" width="58" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="307" y="180" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">80</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.399818;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="278" y="164" width="58" height="22" rx="4" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.444727;0.445000;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="180" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="180" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">other</text></g>
+<text x="10" y="212" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https://api.example.com/</text>
+<rect x="10" y="224" width="68" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="44" y="240" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="10" y="224" width="68" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="86" y="224" width="184" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="178" y="240" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">api.example.com</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.577091;0.577273;1.000000" dur="11s" repeatCount="indefinite"/><rect x="86" y="224" width="184" height="22" rx="4" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<rect x="278" y="224" width="58" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="307" y="240" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">443</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.608909;0.609091;1.000000" dur="11s" repeatCount="indefinite"/><rect x="278" y="224" width="58" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.653818;0.654091;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="240" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.654364;0.654545;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="240" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">other</text></g>
+<text x="10" y="272" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https://www.example.com:8443/</text>
+<rect x="10" y="284" width="68" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="44" y="300" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">https</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.754364;0.754545;1.000000" dur="11s" repeatCount="indefinite"/><rect x="10" y="284" width="68" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="86" y="284" width="184" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="178" y="300" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">www.example.com</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.786182;0.786364;1.000000" dur="11s" repeatCount="indefinite"/><rect x="86" y="284" width="184" height="22" rx="4" fill="#9bd89b" fill-opacity="0.18" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="278" y="284" width="58" height="22" rx="4" fill="#0a1c2d" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
+<text x="307" y="300" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">8443</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.818000;0.818182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="278" y="284" width="58" height="22" rx="4" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.862909;0.863182;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="300" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.863455;0.863636;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="300" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">other</text></g>
+</svg>
+      <p id="ch12-security-p3" class="diagram-caption">An origin is a scheme, a host and a port, and two URLs share one only if all three match; the path never counts. Change any one, <code>http</code> for <code>https</code>, <code>api</code> for <code>www</code>, 8443 for 443, and the browser treats the page as a stranger whose responses and DOM it may not read.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Default ports.</b> A URL without a port uses its scheme's default, 443 for https and 80 for http, so <code>http://www.example.com</code> differs in two places.</li>
+          <li><b>The opt-ins.</b> A server can let named origins read its responses with CORS headers (<code>Access-Control-Allow-Origin</code>); two pages can agree to talk with <code>postMessage</code>.</li>
+          <li><b>History.</b> The policy arrived with JavaScript itself, in Netscape 2.0 (1996). Cookies follow older, looser rules: they ignore the port, for one.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Cross-site scripting (XSS): when the page itself is the attack</h3>

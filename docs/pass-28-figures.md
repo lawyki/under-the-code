@@ -163,7 +163,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 153 | 3 | `fig-12-5` Fig 12.5 · V8 · from source to optimised native code, with a feedback loop | 2.2 px · cap 138 | done 2026-10-11 |
 | 154 | 3 | `fig-12-6` Fig 12.6 · Node.js · V8 + libuv + a JavaScript stdlib | 2.5 px · cap 124 | done 2026-10-11 |
 | 155 | 3 | `fig-12-7` Fig 12.7 · Critical rendering path · five stages, one ~16 ms frame | 2.5 px · cap 100 | done 2026-10-11 |
-| 156 | 3 | `fig-12-8` Fig 12.8 · Same-origin policy · scheme + host + port must all match | 2.5 px · cap 99 | todo |
+| 156 | 3 | `fig-12-8` Fig 12.8 · Same-origin policy · scheme + host + port must all match | 2.5 px · cap 99 | done 2026-10-11 |
 | 157 | 3 | `fig-12-9` Fig 12.9 · XSS · three ways for attacker code to run with your origin's privileges | 2.5 px · cap 134 | deferred: conceptual pass |
 | 158 | 3 | `fig-12-10` Fig 12.10 · CSRF · the cookie attaches to the cross-site request unless we add a token | 2.5 px · cap 137 | deferred: conceptual pass |
 | 159 | 3 | `fig-12-11` Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest | 2.9 px · cap 133 | todo |
