@@ -166,7 +166,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 156 | 3 | `fig-12-8` Fig 12.8 · Same-origin policy · scheme + host + port must all match | 2.5 px · cap 99 | done 2026-10-11 |
 | 157 | 3 | `fig-12-9` Fig 12.9 · XSS · three ways for attacker code to run with your origin's privileges | 2.5 px · cap 134 | deferred: conceptual pass |
 | 158 | 3 | `fig-12-10` Fig 12.10 · CSRF · the cookie attaches to the cross-site request unless we add a token | 2.5 px · cap 137 | deferred: conceptual pass |
-| 159 | 3 | `fig-12-11` Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest | 2.9 px · cap 133 | todo |
+| 159 | 3 | `fig-12-11` Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest | 2.9 px · cap 133 | deferred: conceptual pass |
 | 160 | 4 | `fig-13-1` Fig 13.1 · Codd 1970 to PostgreSQL 18 · two lineages, fifty years | 2.5 px · cap 91 | todo |
 | 161 | 4 | `fig-13-2` Fig 13.2 · Three operators · selection, projection, join | 2.5 px · cap 113 | todo |
 | 162 | 4 | `fig-13-3` Fig 13.3 · Same query, three forms · SQL → relational algebra → execution plan | 2.5 px · cap 121 | todo |
