@@ -892,62 +892,89 @@
       "segmentation fault" message.
     </p>
 
-    <div class="diagram-card" id="fig-4-9">
-      <div class="diagram-label">Fig 4.9 · A page fault, decision tree</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-10"><title id="svgt-part2-10">Fig 4.9 · A page fault, decision tree</title>
-        <!-- Trigger -->
-        <rect x="280" y="20" width="160" height="40" rx="6" fill="#0e1a13" stroke="rgba(132,255,178,0.85)" stroke-width="1.5"/>
-        <text x="360" y="38" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">CPU access raises #PF</text>
-        <text x="360" y="52" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">MMU couldn't translate</text>
-
-        <line x1="360" y1="60" x2="360" y2="90" stroke="rgba(132,255,178,0.6)"/>
-
-        <!-- Kernel handler -->
-        <rect x="220" y="90" width="280" height="40" rx="6" fill="#0e1510" stroke="rgba(132,255,178,0.6)"/>
-        <text x="360" y="108" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">kernel page-fault handler</text>
-        <text x="360" y="122" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.55)">examines the faulting address</text>
-
-        <!-- Three branches -->
-        <line x1="280" y1="130" x2="120" y2="180" stroke="rgba(150,216,150,0.55)"/>
-        <line x1="360" y1="130" x2="360" y2="180" stroke="rgba(132,255,178,0.55)"/>
-        <line x1="440" y1="130" x2="600" y2="180" stroke="rgba(232,120,120,0.55)"/>
-
-        <!-- Branch 1: minor -->
-        <rect x="40"  y="180" width="160" height="60" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-        <text x="120" y="200" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(150,216,150,0.95)">minor fault</text>
-        <text x="120" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">page is in RAM,</text>
-        <text x="120" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">just not mapped yet</text>
-
-        <rect x="40"  y="250" width="160" height="60" rx="4" fill="#0e1510" stroke="rgba(150,216,150,0.4)"/>
-        <text x="120" y="268" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.85)">action:</text>
-        <text x="120" y="284" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">add page-table entry,</text>
-        <text x="120" y="298" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">resume · ~µs</text>
-
-        <!-- Branch 2: major -->
-        <rect x="280" y="180" width="160" height="60" rx="6" fill="rgba(132,255,178,0.18)" stroke="rgba(62,138,94,0.7)"/>
-        <text x="360" y="200" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">major fault</text>
-        <text x="360" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">page must be fetched</text>
-        <text x="360" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">from disk / mmap'd file</text>
-
-        <rect x="280" y="250" width="160" height="60" rx="4" fill="#0e1510" stroke="rgba(132,255,178,0.4)"/>
-        <text x="360" y="268" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">action:</text>
-        <text x="360" y="284" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">issue disk I/O, suspend,</text>
-        <text x="360" y="298" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">resume · ~ms (1000× slower)</text>
-
-        <!-- Branch 3: invalid -->
-        <rect x="520" y="180" width="160" height="60" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.7)"/>
-        <text x="600" y="200" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(232,120,120,0.95)">invalid fault</text>
-        <text x="600" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">access genuinely illegal:</text>
-        <text x="600" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(255,255,255,0.7)">NULL deref, RO write, etc.</text>
-
-        <rect x="520" y="250" width="160" height="60" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.4)"/>
-        <text x="600" y="268" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">action:</text>
-        <text x="600" y="284" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">queue SIGSEGV,</text>
-        <text x="600" y="298" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(198,222,206,0.85)">process dies + core dump</text>
-
-        <text x="360" y="346" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">99% OF FAULTS ARE MINOR: THE KERNEL'S "EXCEPTIONS" ARE MOSTLY ROUTINE BOOKKEEPING</text>
-      </svg>
-      <p id="ch4-vm-p13" class="diagram-caption">A "page fault" is a CPU exception, but most faults are not errors. They are how the kernel implements memory management on demand. <strong>Minor faults</strong> are pure bookkeeping: the page is in RAM (perhaps already in another process's mapping or in the kernel's page cache), it just hasn't been wired into <em>this</em> process's page tables yet. <strong>Major faults</strong> involve disk I/O (the page must be paged in from swap, or read from a memory-mapped file for the first time) and are about a thousand times slower. <strong>Invalid faults</strong> are the real errors: the dereference of a NULL pointer, the write to a read-only page, the jump into non-executable data. Only invalid faults trigger SIGSEGV. On a typical Linux desktop, the kernel handles thousands of minor faults per second invisibly.</p>
+    <div class="diagram-card fig-v2" id="fig-4-9">
+      <div class="diagram-label">Fig 4.9&nbsp;· A page fault, decision tree</div>
+      <svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-10 svgd-part2-10">
+<title id="svgt-part2-10">Fig 4.9 · A page fault, decision tree</title>
+<desc id="svgd-part2-10">Three memory accesses fault and reach the kernel handler, which asks two questions. Is the address mapped and the access allowed? If not, the fault is invalid: the process gets SIGSEGV, as a write through a NULL pointer does. If it is legal, is the data already in RAM? If yes, a minor fault: the kernel only fills in the page-table entry and resumes the process in microseconds, as for a shared-library page already cached. If no, a major fault: the kernel reads the page from disk, which takes milliseconds, as the first read of a memory-mapped file does.</desc>
+<rect x="14.0" y="8" width="116" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="14.0" y="8" width="116" height="30" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0499;0.0500;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="72" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">cached page</text>
+<path d="M72 38 L72 48 L200 58 L200 64" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M72 38 L72 48 L200 58 L200 64" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0707;0.0708;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<rect x="142.0" y="8" width="116" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="142.0" y="8" width="116" height="30" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3582;0.3583;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="200" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">mmap read</text>
+<path d="M200 38 L200 48 L200 58 L200 64" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M200 38 L200 48 L200 58 L200 64" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3791;0.3792;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<rect x="270.0" y="8" width="116" height="30" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="270.0" y="8" width="116" height="30" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.6666;0.6667;0.9499;0.9500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="328" y="28" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">*NULL = 1</text>
+<path d="M328 38 L328 48 L200 58 L200 64" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M328 38 L328 48 L200 58 L200 64" fill="none" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.6874;0.6875;0.9499;0.9500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="195,57 205,57 200,64" fill="rgba(132,255,178,0.35)"/>
+<rect x="80.0" y="64" width="240" height="32" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="80.0" y="64" width="240" height="32" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.0916;0.0917;0.1333;0.1333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="80.0" y="64" width="240" height="32" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.3999;0.4000;0.4416;0.4417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="80.0" y="64" width="240" height="32" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.7083;0.7083;0.7499;0.7500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="200" y="85" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">#PF · kernel handler</text>
+<path d="M200 96 V122" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M200 96 V122" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.1124;0.1125;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<path class="fx" d="M200 96 V122" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.4207;0.4208;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<path class="fx" d="M200 96 V122" fill="none" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.7291;0.7292;0.9499;0.9500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="195,115 205,115 200,122" fill="rgba(132,255,178,0.35)"/>
+<rect x="122.0" y="122" width="156" height="46" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="122.0" y="122" width="156" height="46" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.1333;0.1333;0.1749;0.1750;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="122.0" y="122" width="156" height="46" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.4416;0.4417;0.4832;0.4833;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="122.0" y="122" width="156" height="46" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.7499;0.7500;0.7916;0.7917;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="200" y="141" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">mapped address,</text>
+<text x="200" y="159" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">access allowed?</text>
+<path d="M278 145 H328 V270" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M278 145 H328 V270" fill="none" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.7708;0.7708;0.9499;0.9500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="323,263 333,263 328,270" fill="rgba(132,255,178,0.35)"/>
+<text x="310" y="138" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">no</text>
+<path d="M200 168 V198" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M200 168 V198" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.1541;0.1542;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<path class="fx" d="M200 168 V198" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.4624;0.4625;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="195,191 205,191 200,198" fill="rgba(132,255,178,0.35)"/>
+<text x="208" y="188" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">yes</text>
+<rect x="134.0" y="198" width="132" height="32" rx="3" fill="#152016" stroke="rgba(132,255,178,0.35)"/>
+<rect class="fx" x="134.0" y="198" width="132" height="32" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.1749;0.1750;0.2166;0.2167;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="134.0" y="198" width="132" height="32" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.4832;0.4833;0.5249;0.5250;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="200" y="219" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">page in RAM?</text>
+<path d="M134 214 H72 V270" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M134 214 H72 V270" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.1958;0.1958;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="67,263 77,263 72,270" fill="rgba(132,255,178,0.35)"/>
+<text x="100" y="207" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">yes</text>
+<path d="M200 230 V270" fill="none" stroke="rgba(132,255,178,0.35)" stroke-width="1.5"/>
+<path class="fx" d="M200 230 V270" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.5041;0.5042;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></path>
+<polygon points="195,263 205,263 200,270" fill="rgba(132,255,178,0.35)"/>
+<text x="208" y="256" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">no</text>
+<rect x="14.0" y="270" width="116" height="74" rx="3" fill="#0c120e" stroke="#84ffb2"/>
+<rect class="fx" x="14.0" y="270" width="116" height="74" rx="3" fill="#84ffb2" fill-opacity="0.16" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.2166;0.2167;0.3332;0.3333;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="72" y="292" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">minor</text>
+<text x="72" y="313" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">map it</text>
+<text x="72" y="333" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">~µs</text>
+<rect x="142.0" y="270" width="116" height="74" rx="3" fill="#0c120e" stroke="#d4a853"/>
+<rect class="fx" x="142.0" y="270" width="116" height="74" rx="3" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.5249;0.5250;0.6416;0.6417;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="200" y="292" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#d4a853">major</text>
+<text x="200" y="313" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">read disk</text>
+<text x="200" y="333" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">~ms</text>
+<rect x="270.0" y="270" width="116" height="74" rx="3" fill="#0c120e" stroke="#ec8d8d"/>
+<rect class="fx" x="270.0" y="270" width="116" height="74" rx="3" fill="#ec8d8d" fill-opacity="0.16" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.0000;0.7916;0.7917;0.9499;0.9500;1.0000;1.0000" dur="12s" repeatCount="indefinite"/></rect>
+<text x="328" y="292" text-anchor="middle" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">invalid</text>
+<text x="328" y="313" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">SIGSEGV</text>
+<text x="328" y="333" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">dies</text>
+</svg>
+      <p id="ch4-vm-p13" class="diagram-caption">Most page faults are not errors. The kernel asks two questions, and three accesses take the three exits: a cached page is mapped in microseconds, a first read of a mapped file waits milliseconds for the disk, and a write through NULL ends in SIGSEGV.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Minor.</b> The data is already in RAM (a page another process has loaded, the page cache, or a fresh zero-filled page), so the kernel only writes the page-table entry.</li>
+          <li><b>Major.</b> The kernel starts the disk read, runs other processes while it waits, then maps the page and resumes: about a thousand times slower than a minor fault.</li>
+          <li><b>Invalid.</b> The address is unmapped or the access breaks the mapping's permissions; unless the process catches SIGSEGV, it dies with "segmentation fault".</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Two beautiful uses of page faults</h3>

@@ -3384,7 +3384,10 @@ bar grows as the cursor runs it; three 5 ms jobs finish early, the 12 ms
 job turns red at its 40 ms deadline, missed by 2 ms; the RM 69% and EDF 100%
 bounds moved to "How it works"), 4.8 (one real address, 0x7FFA_0A32_C5E8,
 split into indices 255, 488, 81, 300 and offset 1512; CR3 and each chosen
-entry step down to the next table while a counter fills to five reads). The sweep's overlap test now compares ink boxes (font boxes trimmed
+entry step down to the next table while a counter fills to five reads), 4.9 (redrawn as the real two-question tree, legal access? then data in
+RAM?; a cached page, a first mmap read and a write through NULL take the
+three exits in turn; the old banner "99% of faults are minor" had no source
+and is gone). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
