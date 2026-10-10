@@ -3818,89 +3818,75 @@
       operators. The root is run jointly by twelve organisations
       (<em>VeriSign, ICANN, university and government bodies</em>) operating
       thirteen logically named servers (<code>a.root-servers.net</code>
-      through <code>m.root-servers.net</code>) replicated across hundreds of
-      physical locations worldwide via <em>anycast</em>. The
+      through <code>m.root-servers.net</code>) replicated across well over a
+      thousand sites worldwide via <em>anycast</em>. The
       <code>com</code> servers are run by VeriSign on contract with ICANN.
       The <code>example.com</code> servers are run by whoever owns
       <code>example.com</code>: a hosting company, a corporate IT department,
       a CDN.
     </p>
 
-    <div class="diagram-card" id="fig-11-5">
-      <div class="diagram-label">Fig 11.5 · The DNS namespace · a tree, read right to left</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-44"><title id="svgt-part3-44">Fig 11.5 · The DNS namespace · a tree, read right to left</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">every dot in a domain name is a hand-off to a different operator</text>
-
-        <!-- Root -->
-        <rect x="320" y="60" width="80" height="40" rx="6" fill="#0a2033" stroke="rgba(79,196,230,0.95)" stroke-width="2"/>
-        <text x="360" y="80" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(79,196,230,0.95)">.  (root)</text>
-        <text x="360" y="94" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(79,196,230,0.7)">12 orgs · 13 logical · ~1500 anycast</text>
-
-        <!-- TLDs -->
-        <line x1="340" y1="100" x2="120" y2="140" stroke="rgba(79,196,230,0.5)"/>
-        <line x1="360" y1="100" x2="240" y2="140" stroke="rgba(79,196,230,0.5)"/>
-        <line x1="360" y1="100" x2="360" y2="140" stroke="rgba(79,196,230,0.5)"/>
-        <line x1="380" y1="100" x2="480" y2="140" stroke="rgba(79,196,230,0.5)"/>
-        <line x1="380" y1="100" x2="600" y2="140" stroke="rgba(79,196,230,0.5)"/>
-
-        <rect x="60"  y="140" width="120" height="36" rx="5" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-        <text x="120" y="158" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">com</text>
-        <text x="120" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">VeriSign · ~160M</text>
-
-        <rect x="180" y="140" width="120" height="36" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.65)"/>
-        <text x="240" y="158" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">org</text>
-        <text x="240" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">PIR · ~10M</text>
-
-        <rect x="300" y="140" width="120" height="36" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.65)"/>
-        <text x="360" y="158" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">net</text>
-        <text x="360" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">VeriSign · ~13M</text>
-
-        <rect x="420" y="140" width="120" height="36" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.65)"/>
-        <text x="480" y="158" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">fi</text>
-        <text x="480" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">Traficom · ~570K</text>
-
-        <rect x="540" y="140" width="120" height="36" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(80,140,80,0.65)"/>
-        <text x="600" y="158" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">…~1,591 total</text>
-        <text x="600" y="170" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(150,216,150,0.7)">edu, gov, app, ai, …</text>
-
-        <!-- Second level under com -->
-        <line x1="100" y1="176" x2="60"  y2="220" stroke="rgba(150,216,150,0.5)"/>
-        <line x1="120" y1="176" x2="180" y2="220" stroke="rgba(150,216,150,0.5)"/>
-        <line x1="140" y1="176" x2="300" y2="220" stroke="rgba(150,216,150,0.5)"/>
-
-        <rect x="20"  y="220" width="80" height="32" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)"/>
-        <text x="60"  y="240" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">example</text>
-
-        <rect x="140" y="220" width="80" height="32" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.65)"/>
-        <text x="180" y="240" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">google</text>
-
-        <rect x="260" y="220" width="80" height="32" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.65)"/>
-        <text x="300" y="240" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(100,150,255,0.95)">…200M</text>
-
-        <!-- Third level under example.com -->
-        <line x1="60" y1="252" x2="40" y2="290" stroke="rgba(100,150,255,0.5)"/>
-        <line x1="60" y1="252" x2="80" y2="290" stroke="rgba(100,150,255,0.5)"/>
-        <line x1="60" y1="252" x2="120" y2="290" stroke="rgba(100,150,255,0.5)"/>
-
-        <rect x="10"  y="290" width="60" height="28" rx="3" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.65)"/>
-        <text x="40"  y="308" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">www</text>
-
-        <rect x="74"  y="290" width="60" height="28" rx="3" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.65)"/>
-        <text x="104" y="308" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">mail</text>
-
-        <rect x="138" y="290" width="60" height="28" rx="3" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.65)"/>
-        <text x="168" y="308" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">api</text>
-
-        <!-- Reading direction annotation -->
-        <g transform="translate(420,250)">
-          <rect x="0" y="0" width="260" height="80" rx="4" fill="#0c2438" stroke="rgba(79,196,230,0.45)"/>
-          <text x="14" y="20" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">www . example . com .</text>
-          <text x="14" y="36" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)"> ↑       ↑       ↑    ↑</text>
-          <text x="14" y="50" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)">leaf  registered  TLD  root</text>
-          <text x="14" y="68" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.55)" font-style="italic">read RIGHT TO LEFT to walk the tree</text>
-        </g>
-      </svg>
-      <p id="ch11-dns-p4" class="diagram-caption">The whole DNS namespace is one tree: only a handful of levels deep, but ~360 million registered names wide. The root is run by twelve organisations cooperatively. Each top-level domain is run by an operator chosen by ICANN: VeriSign for <code>.com</code> and <code>.net</code>, Public Interest Registry for <code>.org</code>, a national authority for each country code. Each registered domain is run by whoever bought it. Each subdomain is run by them too, or by a CDN they delegated to. There is no single point of authority below the root. There is also no consensus mechanism. Each operator is trusted to answer correctly for their own subtree. The system works only because each operator wants their own subtree to keep working.</p>
+    <div class="diagram-card fig-v2" id="fig-11-5">
+      <div class="diagram-label">Fig 11.5&nbsp;· The DNS namespace&nbsp;· a tree, read right to left</div>
+      <svg viewBox="0 0 400 322" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-44 svgd-part3-44">
+<title id="svgt-part3-44">Fig 11.5 · The DNS namespace · a tree, read right to left</title>
+<desc id="svgd-part3-44">The name www.example.com. above a slice of the DNS tree. At the top the root, run by 12 operators; below it top-level domains such as com, org and fi; under com, names such as example and google; under example.com, hosts such as www and mail. Reading the name from the right walks the tree from the top: the final dot is the root, then com, run by VeriSign, then example, run by whoever registered it, then www, one host in that zone.</desc>
+<text x="200" y="30" text-anchor="middle" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)"><tspan fill="#e07a3f" fill-opacity="1"><animate attributeName="fill-opacity" values="1;1;1;1;0.35;0.35;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.555333;0.555556;1.000000" dur="9s" repeatCount="indefinite"/>www</tspan><tspan fill="rgba(223,234,242,0.6)">.</tspan><tspan fill="#86a8ff" fill-opacity="1"><animate attributeName="fill-opacity" values="1;1;1;1;0.35;0.35;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.422000;0.422222;1.000000" dur="9s" repeatCount="indefinite"/>example</tspan><tspan fill="rgba(223,234,242,0.6)">.</tspan><tspan fill="#9bd89b" fill-opacity="1"><animate attributeName="fill-opacity" values="1;1;1;1;0.35;0.35;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.288667;0.288889;1.000000" dur="9s" repeatCount="indefinite"/>com</tspan><tspan fill="#4fc4e6" fill-opacity="1"><animate attributeName="fill-opacity" values="1;1;1;1;0.35;0.35;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.155333;0.155556;1.000000" dur="9s" repeatCount="indefinite"/>.</tspan></text>
+<text x="200" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">read from the right</text>
+<line x1="110" y1="98.0" x2="50" y2="138.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="110" y1="98.0" x2="112" y2="138.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="110" y1="98.0" x2="168" y2="138.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="110" y1="98.0" x2="220" y2="138.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="50" y1="166.0" x2="52" y2="206.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="50" y1="166.0" x2="140" y2="206.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="50" y1="166.0" x2="210" y2="206.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="52" y1="234.0" x2="34" y2="274.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<line x1="52" y1="234.0" x2="98" y2="274.0" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.288667;0.288889;1.000000" dur="9s" repeatCount="indefinite"/><line x1="110" y1="98.0" x2="50" y2="138.0" stroke="#fff" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.422000;0.422222;1.000000" dur="9s" repeatCount="indefinite"/><line x1="50" y1="166.0" x2="52" y2="206.0" stroke="#fff" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.555333;0.555556;1.000000" dur="9s" repeatCount="indefinite"/><line x1="52" y1="234.0" x2="34" y2="274.0" stroke="#fff" stroke-width="2.5"/></g>
+<rect x="93.0" y="70.0" width="34" height="28" rx="5" fill="#0a1c2d" stroke="#4fc4e6" stroke-opacity="0.6"/>
+<text x="110" y="89" text-anchor="middle" font-family="Space Mono" font-size="16" letter-spacing="0" fill="#4fc4e6">.</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.155333;0.155556;1.000000" dur="9s" repeatCount="indefinite"/><rect x="93.0" y="70.0" width="34" height="28" rx="5" fill="#4fc4e6" fill-opacity="0.25" stroke="#4fc4e6" stroke-width="2"/></g>
+<rect x="28.0" y="138.0" width="44" height="28" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="50" y="157" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">com</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.288667;0.288889;1.000000" dur="9s" repeatCount="indefinite"/><rect x="28.0" y="138.0" width="44" height="28" rx="5" fill="#9bd89b" fill-opacity="0.25" stroke="#9bd89b" stroke-width="2"/></g>
+<rect x="90.0" y="138.0" width="44" height="28" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="112" y="157" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">org</text>
+<rect x="150.0" y="138.0" width="36" height="28" rx="5" fill="#0a1c2d" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="168" y="157" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">fi</text>
+<rect x="203.0" y="138.0" width="34" height="28" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<text x="220" y="157" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">…</text>
+<rect x="14.0" y="206.0" width="76" height="28" rx="5" fill="#0a1c2d" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="52" y="225" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">example</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.422000;0.422222;1.000000" dur="9s" repeatCount="indefinite"/><rect x="14.0" y="206.0" width="76" height="28" rx="5" fill="#86a8ff" fill-opacity="0.25" stroke="#86a8ff" stroke-width="2"/></g>
+<rect x="106.0" y="206.0" width="68" height="28" rx="5" fill="#0a1c2d" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="140" y="225" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#86a8ff">google</text>
+<rect x="193.0" y="206.0" width="34" height="28" rx="5" fill="#0a1c2d" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.6"/>
+<text x="210" y="225" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">…</text>
+<rect x="12.0" y="274.0" width="44" height="28" rx="5" fill="#0a1c2d" stroke="#e07a3f" stroke-opacity="0.6"/>
+<text x="34" y="293" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">www</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.555333;0.555556;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12.0" y="274.0" width="44" height="28" rx="5" fill="#e07a3f" fill-opacity="0.25" stroke="#e07a3f" stroke-width="2"/></g>
+<rect x="72.0" y="274.0" width="52" height="28" rx="5" fill="#0a1c2d" stroke="#e07a3f" stroke-opacity="0.6"/>
+<text x="98" y="293" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">mail</text>
+<g opacity="0.45"><text x="254" y="81" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">root zone:</text><text x="254" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">12 operators</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.155333;0.155556;1.000000" dur="9s" repeatCount="indefinite"/><text x="254" y="81" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">root zone:</text><text x="254" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">12 operators</text></g>
+<g opacity="0.45"><text x="254" y="149" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">com: VeriSign</text><text x="254" y="166" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">fi: Traficom</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.288667;0.288889;1.000000" dur="9s" repeatCount="indefinite"/><text x="254" y="149" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">com: VeriSign</text><text x="254" y="166" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">fi: Traficom</text></g>
+<g opacity="0.45"><text x="254" y="217" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">example.com:</text><text x="254" y="234" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">its registrant</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.422000;0.422222;1.000000" dur="9s" repeatCount="indefinite"/><text x="254" y="217" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">example.com:</text><text x="254" y="234" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">its registrant</text></g>
+<g opacity="0.45"><text x="254" y="285" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">www: one host</text><text x="254" y="302" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">in that zone</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.555333;0.555556;1.000000" dur="9s" repeatCount="indefinite"/><text x="254" y="285" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">www: one host</text><text x="254" y="302" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">in that zone</text></g>
+</svg>
+      <p id="ch11-dns-p4" class="diagram-caption">A domain name is a path through one tree, written leaf first: read <code>www.example.com.</code> from the right and each label is a step down, from the root to <code>com</code> to <code>example</code> to <code>www</code>. Each step hands authority to a different operator.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The root.</b> Twelve organisations run it as thirteen named servers, <code>a.root-servers.net</code> to <code>m.root-servers.net</code>, each copied to many sites by anycast: well over a thousand instances.</li>
+          <li><b>The levels.</b> <code>com</code> and <code>net</code> are run by VeriSign, <code>org</code> by Public Interest Registry, each country code by a national registry (<code>fi</code> by Traficom). Below that, the registrant runs its own zone or hands it to a host or CDN.</li>
+          <li><b>The trust.</b> About 360 million registered names, and nobody below the root checks anyone else's answers: each operator is trusted for its own subtree, unless DNSSEC signatures are added.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>How a name becomes an address</h3>
