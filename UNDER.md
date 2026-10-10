@@ -541,6 +541,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 4.12 drawing: inode of 24,873 bytes listing five blocks (102–104, 500, 501) | 24,873 bytes needs seven 4 KB blocks; the redrawn inode is 18,400 bytes in five blocks, with an assert in the generator | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.13 caption: "A journaling filesystem does every write twice" | ext4 by default (data=ordered) and NTFS journal metadata only; file contents are written twice only in full data journaling (ext4 data=journal) | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 | Fig 4.18: "sem_wait()/sem_post() are atomic in the kernel"; "if the value would go negative, the caller blocks"; "every concurrent system rests on this primitive" | On Linux the uncontended path is an atomic instruction in user space, the kernel (futex) is entered only to sleep or wake; a POSIX semaphore blocks at 0 and never goes negative; the "every system" banner is dropped | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
+| Fig 4.21: per-cgroup network bandwidth limits ("net: 1 Gbps … enforced by kernel"); caption "enforces these on every syscall" | Cgroups meter CPU, memory, block I/O and process counts; network bandwidth is shaped by traffic control (tc), not a cgroup limit; enforcement happens at scheduling and allocation, not on every syscall | Corrected in the redrawn figure (Pass 28, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3419,7 +3420,10 @@ facts corrected, §4g), 4.19 (two stacks at phone width;
 pulses show whose kernel answers each app: a guest kernel each for VMs, the one
 host kernel for every container), 4.20 (one panel of five questions,
 the viewpoint stepping container A, container B, host: redis is PID 1 to A,
-invisible to B, 8472 to the host). The sweep's overlap test now compares ink boxes (font boxes trimmed
+invisible to B, 8472 to the host), 4.21 (paper card: CPU and memory
+panels with outlined limits; batch wants 12 CPUs and is throttled at 4, then
+outgrows 16 GB and is OOM-killed while web and db hold still; network limits
+removed, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

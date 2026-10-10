@@ -2007,73 +2007,63 @@
       </details>
     </div>
 
-    <div class="diagram-card light-diagram" id="fig-4-21">
-      <div class="diagram-label">Fig 4.21 · Cgroups: quotas as taps on the resource flow</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-22"><title id="svgt-part2-22">Fig 4.21 · Cgroups: quotas as taps on the resource flow</title>
-        <!-- Header -->
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(62,138,94,0.95)">control groups (cgroups): limit, account, isolate</text>
-
-        <!-- Resources from host -->
-        <text x="80"  y="72" font-family="IBM Plex Mono" font-size="10" fill="rgba(46,96,70,0.85)">host resources</text>
-        <g font-family="IBM Plex Mono" font-size="9" text-anchor="middle">
-          <rect x="40"  y="86"  width="100" height="28" rx="3" fill="rgba(110,220,160,0.20)" stroke="rgba(88,180,128,0.7)"/>
-          <text x="90"  y="104" fill="rgba(66,146,102,0.95)">CPU: 16 cores</text>
-          <rect x="40"  y="124" width="100" height="28" rx="3" fill="rgba(110,220,160,0.20)" stroke="rgba(88,180,128,0.7)"/>
-          <text x="90"  y="142" fill="rgba(66,146,102,0.95)">RAM: 64 GB</text>
-          <rect x="40"  y="162" width="100" height="28" rx="3" fill="rgba(110,220,160,0.20)" stroke="rgba(88,180,128,0.7)"/>
-          <text x="90"  y="180" fill="rgba(66,146,102,0.95)">disk I/O: 2 GB/s</text>
-          <rect x="40"  y="200" width="100" height="28" rx="3" fill="rgba(110,220,160,0.20)" stroke="rgba(88,180,128,0.7)"/>
-          <text x="90"  y="218" fill="rgba(66,146,102,0.95)">net: 10 Gbps</text>
-        </g>
-
-        <!-- Cgroup taps -->
-        <g transform="translate(220,86)">
-          <rect x="0" y="0" width="120" height="142" rx="8" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.7)"/>
-          <text x="60" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(60,120,60,0.95)">cgroup: web</text>
-          <line x1="10" y1="30" x2="110" y2="30" stroke="rgba(80,140,80,0.4)"/>
-          <text x="14" y="48" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.85)">CPU: 4 cores</text>
-          <text x="14" y="66" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.85)">RAM: 16 GB</text>
-          <text x="14" y="84" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.85)">I/O: 200 MB/s</text>
-          <text x="14" y="102" font-family="IBM Plex Mono" font-size="9" fill="rgba(60,120,60,0.85)">net: 1 Gbps</text>
-          <text x="60" y="128" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(60,120,60,0.7)">enforced by kernel</text>
-        </g>
-
-        <g transform="translate(360,86)">
-          <rect x="0" y="0" width="120" height="142" rx="8" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.7)"/>
-          <text x="60" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(40,80,160,0.95)">cgroup: db</text>
-          <line x1="10" y1="30" x2="110" y2="30" stroke="rgba(60,100,180,0.4)"/>
-          <text x="14" y="48" font-family="IBM Plex Mono" font-size="9" fill="rgba(40,80,160,0.85)">CPU: 8 cores</text>
-          <text x="14" y="66" font-family="IBM Plex Mono" font-size="9" fill="rgba(40,80,160,0.85)">RAM: 32 GB</text>
-          <text x="14" y="84" font-family="IBM Plex Mono" font-size="9" fill="rgba(40,80,160,0.85)">I/O: 1.5 GB/s</text>
-          <text x="14" y="102" font-family="IBM Plex Mono" font-size="9" fill="rgba(40,80,160,0.85)">net: 5 Gbps</text>
-          <text x="60" y="128" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(40,80,160,0.7)">enforced by kernel</text>
-        </g>
-
-        <g transform="translate(500,86)">
-          <rect x="0" y="0" width="120" height="142" rx="8" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.7)"/>
-          <text x="60" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(160,60,60,0.95)">cgroup: batch</text>
-          <line x1="10" y1="30" x2="110" y2="30" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="48" font-family="IBM Plex Mono" font-size="9" fill="rgba(140,40,40,0.85)">CPU: 4 cores</text>
-          <text x="14" y="66" font-family="IBM Plex Mono" font-size="9" fill="rgba(140,40,40,0.85)">RAM: 16 GB</text>
-          <text x="14" y="84" font-family="IBM Plex Mono" font-size="9" fill="rgba(140,40,40,0.85)">I/O: 300 MB/s</text>
-          <text x="14" y="102" font-family="IBM Plex Mono" font-size="9" fill="rgba(140,40,40,0.85)">net: 4 Gbps</text>
-          <text x="60" y="128" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(140,40,40,0.7)">enforced by kernel</text>
-        </g>
-
-        <!-- Resource flow arrows -->
-        <g stroke="rgba(62,138,94,0.5)" fill="none">
-          <line x1="140" y1="100" x2="220" y2="100"/>
-          <line x1="140" y1="138" x2="220" y2="138"/>
-          <line x1="140" y1="176" x2="220" y2="176"/>
-          <line x1="140" y1="214" x2="220" y2="214"/>
-        </g>
-
-        <!-- Bottom: total accounting -->
-        <rect x="40" y="252" width="640" height="48" rx="4" fill="#fdfcf9" stroke="rgba(62,138,94,0.55)"/>
-        <text x="360" y="272" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="12" fill="rgba(46,96,70,0.95)">total: 16 cores · 64 GB · 2 GB/s · 10 Gbps, fully accounted, no overcommit</text>
-        <text x="360" y="290" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(62,138,94,0.85)">a runaway "batch" job cannot drain the "db" cgroup's CPU: kernel enforces the cap</text>
-      </svg>
-      <p id="ch4-security-p13" class="diagram-caption">If namespaces decide what a process can <em>see</em>, cgroups decide what it can <em>use</em>. Each cgroup is a node in a hierarchy, with explicit limits on every resource the kernel can meter: CPU shares, memory bytes, block-device IOPS, network bandwidth, even the number of processes a group may spawn. The kernel enforces these on every syscall and every scheduling decision: a process in the "batch" cgroup that tries to exceed its memory limit gets killed by the OOM killer; a process that exhausts its CPU quota is descheduled until the next period refills it. Cgroups are how Kubernetes packs ten workloads onto one machine without any of them noticing the others, how Docker's <code>--cpus=2</code> flag works, and how systemd ensures a misbehaving service does not bring down the rest of the host.</p>
+    <div class="diagram-card light-diagram fig-v2" id="fig-4-21">
+      <div class="diagram-label">Fig 4.21&nbsp;· Cgroups: quotas as taps on the resource flow</div>
+      <svg viewBox="0 0 400 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-22 svgd-part2-22">
+<title id="svgt-part2-22">Fig 4.21 · Cgroups: quotas as taps on the resource flow</title>
+<desc id="svgd-part2-22">A host with 16 CPUs and 64 GB of memory runs three cgroups. web is limited to 4 CPUs and 16 GB, db to 8 CPUs and 32 GB, batch to 4 CPUs and 16 GB. web and db use part of their share. The batch job asks for 12 CPUs; the kernel throttles it at its 4. Its memory then grows to its 16 GB limit and the kernel kills it; web and db carry on untouched.</desc>
+<text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(29,43,34,0.62)">CPU · host has 16 · limit outlined</text>
+<text x="20" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(29,43,34,0.62)">MEMORY · host has 64 GB</text>
+<text x="20" y="48" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">web</text>
+<rect x="84" y="34" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="34" width="60.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="48" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">4</text>
+<text x="20" y="160" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">web</text>
+<rect x="84" y="146" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="146" width="60.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="160" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">16</text>
+<rect x="84" y="37" width="30.0" height="12" fill="#2e6f52" fill-opacity="0.75"/>
+<rect x="84" y="149" width="22.5" height="12" fill="#2e6f52" fill-opacity="0.75"/>
+<text x="20" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">db</text>
+<rect x="84" y="60" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="60" width="120.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">8</text>
+<text x="20" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">db</text>
+<rect x="84" y="172" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="172" width="120.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="186" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">32</text>
+<rect x="84" y="63" width="90.0" height="12" fill="#2e6f52" fill-opacity="0.75"/>
+<rect x="84" y="175" width="90.0" height="12" fill="#2e6f52" fill-opacity="0.75"/>
+<text x="20" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">batch</text>
+<rect x="84" y="86" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="86" width="60.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">4</text>
+<text x="20" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">batch</text>
+<rect x="84" y="198" width="240" height="18" rx="2" fill="rgba(29,43,34,0.05)" stroke="rgba(29,43,34,0.15)"/>
+<rect x="84" y="198" width="60.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
+<text x="332" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">16</text>
+<rect x="84" y="87" width="15.0" height="16" fill="none" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="width" values="180;180;0;15;15;15;15;180;180" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.900000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="84" y="89" width="15.0" height="12" fill="#2e6f52" fill-opacity="0.75"><animate attributeName="width" values="60;60;0;15;15;15;15;60;60" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.827000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="84" y="89" width="60.0" height="12" fill="#8a5a00" fill-opacity="0.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><text x="154" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">wants 12</text></g>
+<rect x="84" y="201" width="15.0" height="12" fill="#2e6f52" fill-opacity="0.75"><animate attributeName="width" values="15;15;60;60;0;0;7.5;7.5;15;15" keyTimes="0.000000;0.100000;0.340000;0.360000;0.361000;0.440000;0.540000;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="82" y="196" width="64.0" height="22" rx="3" fill="#b3261e" fill-opacity="0.25" stroke="#b3261e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339800;0.340000;0.399200;0.399500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.359800;0.360000;0.459200;0.459500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="152" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">killed</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.699950;0.700000;0.729800;0.730000;0.829200;0.829500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">batch asks for more CPU</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099200;0.099500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">wants 12 CPUs, gets 4: throttled</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099800;0.100000;0.339200;0.339500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">batch memory grows toward 16 GB</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339800;0.340000;0.459200;0.459500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">over its limit: OOM-killed</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.459800;0.460000;0.669200;0.669500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">web and db never noticed</text></g>
+</svg>
+      <p id="ch4-security-p13" class="diagram-caption">Namespaces decide what a process can see; cgroups decide what it can use, with a CPU and a memory limit per group that the kernel enforces. A runaway batch job wanting 12 CPUs is held to its 4, and when it outgrows its 16 GB the kernel kills it, while web and db never notice.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The interface.</b> Cgroup v2 is a filesystem at <code>/sys/fs/cgroup</code>. Writing <code>400000 100000</code> to <code>cpu.max</code> allows 4 CPUs' worth of time in every 100 ms period.</li>
+          <li><b>Memory.</b> Past <code>memory.max</code> the kernel first reclaims the group's own pages; if that fails, the OOM killer picks a process inside the group.</li>
+          <li><b>Who writes them.</b> Docker's <code>--cpus</code> and <code>--memory</code>, Kubernetes resource limits and systemd's services all set these files, as do <code>io.max</code> and <code>pids.max</code> for disk and process counts.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>eBPF: safe code inside the kernel</h3>

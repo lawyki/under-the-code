@@ -75,7 +75,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 65 | 2 | `fig-4-18` Fig 4.18 · Two processes, one region, one gate | 2.2 px · cap 126 | done 2026-10-10 |
 | 66 | 2 | `fig-4-19` Fig 4.19 · VMs vs containers | 2.5 px · cap 60 | done 2026-10-10 |
 | 67 | 2 | `fig-4-20` Fig 4.20 · Namespaces: each container sees its own world | 2.5 px · cap 121 | done 2026-10-10 |
-| 68 | 2 | `fig-4-21` Fig 4.21 · Cgroups: quotas as taps on the resource flow | 2.5 px · cap 132 | todo |
+| 68 | 2 | `fig-4-21` Fig 4.21 · Cgroups: quotas as taps on the resource flow | 2.5 px · cap 132 | done 2026-10-10 |
 | 69 | 2 | `fig-4-22` Fig 4.22 · eBPF: untrusted code in the kernel, made safe by proof | 2.5 px · cap 135 | todo |
 | 70 | 2 | `fig-5-1` Fig 5.1 · One C source, many targets | 2.2 px · cap 74 | todo |
 | 71 | 2 | `fig-5-2` Fig 5.2 · UNIX's rewrite, in time | 2.2 px · cap 75 | todo |
