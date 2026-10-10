@@ -550,6 +550,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 7.6: bytecode `BINARY_MULTIPLY · BINARY_ADD` (sanctioned in an earlier pass over "BINARY_MUL"); caption "a giant switch with about 120 cases, hand-tuned" | Correct before Python 3.11; since 3.11 `dis` shows `BINARY_OP *` and `BINARY_OP +` (one opcode with an argument), specialised at run time (PEP 659), and the case count and hand-tuning claim are dated | Updated in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 7.7: "cycles per arithmetic operation": C ~1, Java JIT ~1.2, V8 ~1.5, PyPy ~3, CPython ~150; caption "roughly 150 instructions of work" | No source for any of the numbers, and CPython 3.11+ specialises int addition; redrawn as the list of steps the generic path takes, without counts | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.1: "~5 nm" transistor scale against "twelve orders of magnitude"; transistor at "3.3 V", "≈ 1 ns per bit"; caption: the transatlantic bit is "a voltage transition propagating along a conductor" | 5 nm to 5,000 km is fifteen orders; twelve fits a micrometre of chip wiring against 5,600 km. Cores run near 1 V (3.3 V is an I/O level). Today's transatlantic cables carry light in glass fibre, not voltage | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 8.2: copper twisted pair "~30 dB/km"; wireless "2.4-60 GHz" | Cat 6 loses about 20 dB per 100 m at 100 MHz (some 200 dB/km), which is why Ethernet stops at 100 m; cellular uses bands below 1 GHz as well as up to tens of GHz | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3506,7 +3507,9 @@ Part III (Chart Room: Space Mono, signal cyan and route orange on Prussian
 plates, continuous-flow motion; `figlib` gains SPACE/CYAN/ROUTE/CPLATE/CDEEP,
 `part-3.css` gives the strips cyan): 8.1 (a pulse crosses a micrometre of chip
 wiring unchanged; a light pulse crosses 5,600 km of fibre, fading and restored
-at each repeater; three facts corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
+at each repeater; three facts corrected, §4g), 8.2 (one request down three hops, radio,
+copper, glass, each with its card, a packet flowing through; copper loss and the
+radio band corrected, §4g). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
