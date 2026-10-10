@@ -3405,7 +3405,9 @@ two labels showed together; every generator re-run, every done figure
 re-swept (10,152 frames, 0 fail). 4.14 (the first paper card in Part II:
 Greenbar ink on the light card; 103′, a new parent and a new root are written
 bottom up, one pointer switch makes them current and the old root becomes the
-snapshot sharing 102; `part-2.css` gives paper cards ink captions and strips). The sweep's overlap test now compares ink boxes (font boxes trimmed
+snapshot sharing 102; `part-2.css` gives paper cards ink captions and strips), 4.15 (the pipe drawn as an
+eight-cell ring, simulated: write and read pointers step round it, cat fills it
+and blocks on full, grep drains it and blocks on empty). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
