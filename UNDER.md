@@ -3347,7 +3347,14 @@ changes one byte, mov eax clears the upper half), 3.4 (seven arguments
 flying to RDI to R9 and the stack along clear routes; the result back in
 RAX), 3.5 (the address space as one column: frames pushed and popped,
 heap blocks rising), 3.6 (one call round trip on one stack: RSP tracking
-the top, the return address flying back into RIP on ret). The sweep's overlap test now compares ink boxes (font boxes trimmed
+the top, the return address flying back into RIP on ret). **Held for the
+owner:** 3.7 to 3.11 (the attack-and-defence figures; a redesign of 3.7 was
+stopped by a safety filter, so these wait for the owner's call: redraw
+conceptually, defences without exploit mechanics, or keep as they are).
+Bridge: BR.1 (the same three instructions in Ring 0 and Ring 3; #GP hands
+Ring 3's privileged ones to the kernel). The sweep now also fails labels
+crowding each other on one line (gap under 3 px), except pieces composed on
+purpose (`.run`: a line of code, a row of bits). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one

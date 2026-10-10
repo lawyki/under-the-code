@@ -19,9 +19,9 @@ x = 20; argx = {}
 for p in pieces:
     if p in ARGS:
         argx[p] = x
-        a(f'<text x="{x}" y="48" {MONO} font-size="15" fill="{GOLD if p != "g" else GREEN}">{p}</text>')
+        a(f'<text class="run" x="{x}" y="48" {MONO} font-size="15" fill="{GOLD if p != "g" else GREEN}">{p}</text>')
     else:
-        a(f'<text x="{x}" y="48" {MONO} font-size="15" fill="rgba(255,255,255,0.85)">{p}</text>')
+        a(f'<text class="run" x="{x}" y="48" {MONO} font-size="15" fill="rgba(255,255,255,0.85)">{p}</text>')
     x += len(p) * CH
 slots = {}
 for i, r in enumerate(REGS):

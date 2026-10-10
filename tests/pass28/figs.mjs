@@ -35,7 +35,7 @@ function measureFigs(only) {
     // what the reader sees now (the reduced-motion still): skip text faded out by an ancestor
     const shown = el => { let o = 1; for (let e = el; e && e !== svg.parentElement; e = e.parentElement) { const cs = getComputedStyle(e); if (cs.display === 'none' || cs.visibility === 'hidden') return false; o *= parseFloat(cs.opacity); const a = e.getAttribute && e.getAttribute('opacity'); if (a !== null && e.tagName !== 'svg') o *= 1; } return o > 0.05; };
     const texts = [...svg.querySelectorAll('text')].filter(t => t.textContent.trim() && shown(t));
-    const boxes = texts.map(t => { const b = t.getBoundingClientRect(); return { t: t.textContent.trim().slice(0, 40), x: b.left, y: b.top, w: b.width, h: b.height, fs: parseFloat(getComputedStyle(t).fontSize), fx: !!t.closest('.fx') }; });
+    const boxes = texts.map(t => { const b = t.getBoundingClientRect(); return { t: t.textContent.trim().slice(0, 40), x: b.left, y: b.top, w: b.width, h: b.height, fs: parseFloat(getComputedStyle(t).fontSize), fx: !!t.closest('.fx'), run: !!t.closest('.run') }; });
     // rendered font size: CSS font-size of an SVG <text> is in user units; scale to screen
     const sizes = boxes.map(b => b.fs * scale);
     const minPx = sizes.length ? Math.min(...sizes) : null;
@@ -48,6 +48,9 @@ function measureFigs(only) {
       const ay = a.y + a.h * 0.1, ah = a.h * 0.8, by_ = b.y + b.h * 0.1, bh = b.h * 0.8;
       const ix = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x), iy = Math.min(ay + ah, by_ + bh) - Math.max(ay, by_);
       if (ix > 1 && iy > 1 && ix * iy > 0.03 * Math.min(a.w * a.h, b.w * b.h)) overlaps.push(a.t + ' × ' + b.t);
+      // crowded: two labels on one line with almost no space between them read as one word
+      // (.run marks pieces composed into one word or number on purpose: a line of code, a row of bits)
+      else if (!a.fx && !b.fx && !(a.run && b.run) && iy > 0.5 * Math.min(ah, bh) && ix > -3 && ix <= 1) overlaps.push(a.t + ' ~ ' + b.t + ' (crowded)');
     }
     const outside = boxes.filter(b => b.x < sr.left - 1 || b.y < sr.top - 1 || b.x + b.w > sr.right + 1 || b.y + b.h > sr.bottom + 1).map(b => b.t);
     // spill: a label whose centre sits in a shape must fit inside that shape (the smallest one holding its centre)

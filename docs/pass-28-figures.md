@@ -39,12 +39,12 @@ Before = the 2026-10-10 baseline at 375 px (smallest label, caption words).
 | 31 | 1 | `fig-3-4` Fig 3.4 · System V calling convention · which register holds which argument | 2.4 px · cap 103 | done 2026-10-10 |
 | 32 | 1 | `fig-3-5` Fig 3.5 · A process's virtual address space | 2.6 px · cap 50 | done 2026-10-10 |
 | 33 | 1 | `fig-3-6` Fig 3.6 · The stack during a function call | 2.9 px · cap 58 | done 2026-10-10 |
-| 34 | 1 | `fig-3-7` Fig 3.7 · Stack frame of greet(): normal vs overflow | 2.6 px · cap 57 | todo |
-| 35 | 1 | `fig-3-8` Fig 3.8 · The stack canary · a tripwire between buffer and return address | 2.2 px · cap 110 | todo |
-| 36 | 1 | `fig-3-9` Fig 3.9 · ASLR · the same binary, three random load layouts | 2.6 px · cap 122 | todo |
-| 37 | 1 | `fig-3-10` Fig 3.10 · Return-Oriented Programming · arbitrary computation from existing code | 2.2 px · cap 137 | todo |
-| 38 | 1 | `fig-3-11` Fig 3.11 · The arms race, in one diagram | 2.6 px · cap 53 | todo |
-| 39 | 1 | `fig-br-1` Fig BR.1 · The privilege bit · two worlds, one chip | 2.6 px · cap 95 | todo |
+| 34 | 1 | `fig-3-7` Fig 3.7 · Stack frame of greet(): normal vs overflow | 2.6 px · cap 57 | held: owner decision |
+| 35 | 1 | `fig-3-8` Fig 3.8 · The stack canary · a tripwire between buffer and return address | 2.2 px · cap 110 | held: owner decision |
+| 36 | 1 | `fig-3-9` Fig 3.9 · ASLR · the same binary, three random load layouts | 2.6 px · cap 122 | held: owner decision |
+| 37 | 1 | `fig-3-10` Fig 3.10 · Return-Oriented Programming · arbitrary computation from existing code | 2.2 px · cap 137 | held: owner decision |
+| 38 | 1 | `fig-3-11` Fig 3.11 · The arms race, in one diagram | 2.6 px · cap 53 | held: owner decision |
+| 39 | 1 | `fig-br-1` Fig BR.1 · The privilege bit · two worlds, one chip | 2.6 px · cap 95 | done 2026-10-10 |
 | 40 | 1 | `fig-br-2` Fig BR.2 · The trap mechanism · one round trip across the boundary | 2.2 px · cap 124 | todo |
 | 41 | 1 | `fig-br-3` Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel | 2.2 px · cap 66 | todo |
 | 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | todo |

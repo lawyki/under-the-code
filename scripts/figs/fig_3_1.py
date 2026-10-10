@@ -43,7 +43,7 @@ for r, (name, asm, hx, fields) in enumerate(ROWS):
         if role in ORDER:
             a(f'<rect class="fx" x="{x - 2}" y="{y + 24}" width="{w + 2}" height="34" rx="4" fill="{col}" fill-opacity="0.35" stroke="#fff" stroke-width="2" opacity="0">{role_hi(role)}</rect>')
         for k, b in enumerate(bits):
-            a(f'<text x="{x + k * PITCH + PITCH / 2 - 1}" y="{y + 46}" text-anchor="middle" {MONO} font-size="13" fill="#fff">{b}</text>')
+            a(f'<text class="run" x="{x + k * PITCH + PITCH / 2 - 1}" y="{y + 46}" text-anchor="middle" {MONO} font-size="13" fill="#fff">{b}</text>')
         if lab and w >= 40:
             a(text(x + w / 2 - 1, y + 76, lab, anchor='middle', size=13, fill=col, ls='0'))
         x += w
