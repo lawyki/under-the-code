@@ -553,6 +553,7 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | Fig 8.2: copper twisted pair "~30 dB/km"; wireless "2.4-60 GHz" | Cat 6 loses about 20 dB per 100 m at 100 MHz (some 200 dB/km), which is why Ethernet stops at 100 m; cellular uses bands below 1 GHz as well as up to tens of GHz | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.4: fibre marker "~12-14 b/Hz" against the caption's "~15 dB effective SNR" | log₂(1 + 10^1.5) ≈ 5 b/Hz per polarisation, so the marker contradicted its own caption; the fibre point is dropped and the checked pair (phone line 30 dB ≈ 10 b/Hz, V.34 33.6 kbps/4 kHz = 8.4) carries the figure | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 | Fig 8.5: banner "CONVENTION: HIGH→LOW = 1, LOW→HIGH = 0"; "a 10 Mbps Ethernet stream actually carries 20 million signal transitions per second" | That is the G. E. Thomas convention; Ethernet's IEEE 802.3 uses a rising mid-bit edge for 1. 20 million per second is the maximum (runs of equal bits), so "up to" | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
+| Fig 8.8: "k doubles per collision, capped at 10"; caption: the backoff machinery "is what makes Wi-Fi (which still has shared-medium collisions) work" | k counts consecutive collisions (the range 0 to 2^k − 1 doubles), capped at 10, with up to 16 attempts; Wi-Fi uses random backoff but avoids collisions (CSMA/CA) rather than detecting them | Corrected in the redrawn figure (Pass 28, 2026-10-11) |
 
 ### Side effects & verification
 
@@ -3545,7 +3546,11 @@ receiver clock 20% fast, exaggerated; NRZ samples the four-zero run five times
 and reads an extra 0, Manchester resyncs on every mid-bit edge and reads all
 seven; the sampling is simulated and asserted), 8.7 (1010 on exact sine carriers by
 amplitude, frequency and phase, a cursor reading each bit from the property that
-moves; QAM "up to 10 bits" updated: Wi-Fi 6 10, Wi-Fi 7 12). The sweep's overlap test now compares ink boxes (font boxes trimmed
+moves; QAM "up to 10 bits" updated: Wi-Fi 6 10, Wi-Fi 7 12), 8.8 (signals travelling the shared
+cable: A starts, B starts unaware, the overlap grows red, both jam, each picks 0
+or 1 slot, A resends while B finds the line busy and waits; "k doubles per
+collision" corrected to k counting collisions, and Wi-Fi's avoidance (not
+detection) stated). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
