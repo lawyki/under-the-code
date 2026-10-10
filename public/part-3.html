@@ -2950,59 +2950,71 @@
       well over a quarter of web traffic by volume, and the share is growing.
     </p>
 
-    <div class="diagram-card" id="fig-10-9">
-      <div class="diagram-label">Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-36"><title id="svgt-part3-36">Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks</title>
-        <!-- Old stack: TCP+TLS+HTTP -->
-        <text x="180" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,140,80,0.95)">classic: three layers, three handshakes</text>
-
-        <g transform="translate(60,50)" font-family="Space Mono" font-size="10">
-          <rect x="0" y="0"   width="240" height="48" rx="6" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="20" text-anchor="middle" fill="rgba(150,216,150,0.95)">HTTP/1.1 or HTTP/2</text>
-          <text x="120" y="36" text-anchor="middle" font-size="8" fill="rgba(150,216,150,0.7)">request multiplexing in HTTP/2</text>
-
-          <rect x="0" y="52"  width="240" height="48" rx="6" fill="rgba(180,140,200,0.20)" stroke="rgba(120,80,160,0.85)"/>
-          <text x="120" y="72" text-anchor="middle" fill="rgba(200,160,220,0.95)">TLS 1.2 / 1.3</text>
-          <text x="120" y="88" text-anchor="middle" font-size="8" fill="rgba(200,160,220,0.7)">encryption · auth · 1–2 RTT setup</text>
-
-          <rect x="0" y="104" width="240" height="48" rx="6" fill="rgba(100,150,255,0.20)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="120" y="124" text-anchor="middle" fill="rgba(100,150,255,0.95)">TCP</text>
-          <text x="120" y="140" text-anchor="middle" font-size="8" fill="rgba(100,150,255,0.7)">reliability · ordering · congestion · 1 RTT setup</text>
-
-          <rect x="0" y="156" width="240" height="48" rx="6" fill="rgba(79,196,230,0.20)" stroke="rgba(32,116,150,0.85)"/>
-          <text x="120" y="176" text-anchor="middle" fill="rgba(79,196,230,0.95)">IP</text>
-          <text x="120" y="192" text-anchor="middle" font-size="8" fill="rgba(79,196,230,0.7)">routing · best-effort delivery</text>
-
-          <text x="120" y="234" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,140,80,0.95)">TCP setup + TLS setup = 2–3 RTTs before first byte</text>
-        </g>
-
-        <!-- New stack: HTTP/3 over QUIC -->
-        <text x="540" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(150,216,150,0.95)">QUIC: TLS, multiplexing, transport in one</text>
-
-        <g transform="translate(420,50)" font-family="Space Mono" font-size="10">
-          <rect x="0" y="0"   width="240" height="48" rx="6" fill="rgba(150,216,150,0.20)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="20" text-anchor="middle" fill="rgba(150,216,150,0.95)">HTTP/3</text>
-          <text x="120" y="36" text-anchor="middle" font-size="8" fill="rgba(150,216,150,0.7)">stream API on top of QUIC</text>
-
-          <!-- Big QUIC block -->
-          <rect x="0" y="52"  width="240" height="100" rx="6" fill="rgba(79,196,230,0.30)" stroke="rgba(32,116,150,0.95)" stroke-width="2"/>
-          <text x="120" y="76" text-anchor="middle" fill="rgba(79,196,230,1)">QUIC</text>
-          <text x="120" y="94" text-anchor="middle" font-size="8" fill="rgba(79,196,230,0.85)">reliability + ordering + congestion control</text>
-          <text x="120" y="108" text-anchor="middle" font-size="8" fill="rgba(79,196,230,0.85)">+ TLS 1.3 + multiplexed streams</text>
-          <text x="120" y="124" text-anchor="middle" font-size="8" fill="rgba(79,196,230,0.85)">+ 0-RTT resumption · in user space</text>
-          <text x="120" y="142" text-anchor="middle" font-size="8" fill="rgba(79,196,230,0.85)">connection ID survives IP changes</text>
-
-          <rect x="0" y="156" width="240" height="48" rx="6" fill="rgba(100,150,255,0.20)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="120" y="176" text-anchor="middle" fill="rgba(100,150,255,0.95)">UDP</text>
-          <text x="120" y="192" text-anchor="middle" font-size="8" fill="rgba(100,150,255,0.7)">just packets · no state · no setup</text>
-
-          <text x="120" y="234" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">first request can ship in 1 RTT, or 0-RTT on resume</text>
-        </g>
-
-        <text x="360" y="318" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">QUIC moves transport into user space, where it can iterate as fast as the application</text>
-        <text x="360" y="336" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">HTTP/3 = HTTP/2 SEMANTICS · QUIC TRANSPORT · UDP PACKETS · HARDWIRED TLS</text>
-      </svg>
-      <p id="ch10-modern-p7" class="diagram-caption">QUIC collapses three classical layers (TCP, TLS, HTTP/2) into one user-space protocol over UDP. The benefits are concrete: <strong>0-RTT resumption</strong> (a returning client can ship its first request alongside the handshake), <strong>per-stream multiplexing</strong> (loss in one HTTP request doesn't block the others, fixing HTTP/2-over-TCP head-of-line blocking), <strong>connection migration</strong> (the connection ID is application-level, so a phone switching from Wi-Fi to cellular keeps its QUIC connection alive; TCP, tied to the four-tuple of IP addresses and ports, could not), and <strong>iterability</strong> (because QUIC is in user space, both endpoints can deploy new versions without needing OS kernel updates). The trade is that QUIC reimplements all of TCP's reliability machinery in user space, including congestion control. Linux kernel TCP is still faster per packet because it's been hand-optimised for thirty-five years. As of 2025, all major browsers, all major CDNs, and Google's whole edge run HTTP/3 over QUIC.</p>
+    <div class="diagram-card fig-v2" id="fig-10-9">
+      <div class="diagram-label">Fig 10.9&nbsp;· TCP+TLS+HTTP vs QUIC: the same job, two stacks</div>
+      <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-36 svgd-part3-36">
+<title id="svgt-part3-36">Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks</title>
+<desc id="svgd-part3-36">Two protocol stacks side by side. On the left HTTP/2 sits on TLS 1.3, which sits on TCP in the kernel, on IP. On the right HTTP/3 sits on QUIC, which carries TLS 1.3 inside it, on UDP, on IP. Below, the round trips before a page arrives: over TCP and TLS 1.3, one for the TCP handshake, one for TLS and one for the request, three in all; over QUIC, one combined handshake and the request, two; a resumed QUIC connection sends the request in its first packet and has the page after one.</desc>
+<text x="20" y="20" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">HTTP/2 stack</text>
+<text x="210" y="20" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">HTTP/3 stack</text>
+<rect x="20" y="30" width="170" height="22" rx="4" fill="#9bd89b" fill-opacity="0.16" stroke="#9bd89b" stroke-opacity="0.8"/>
+<text x="105" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">HTTP/2</text>
+<rect x="20" y="56" width="170" height="22" rx="4" fill="#d4a853" fill-opacity="0.16" stroke="#d4a853" stroke-opacity="0.8"/>
+<text x="105" y="72" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#d4a853">TLS 1.3</text>
+<rect x="20" y="82" width="170" height="48" rx="4" fill="#4fc4e6" fill-opacity="0.16" stroke="#4fc4e6" stroke-opacity="0.8"/>
+<text x="105" y="103" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">TCP</text>
+<text x="105" y="119" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">in the kernel</text>
+<rect x="20" y="134" width="170" height="22" rx="4" fill="rgba(223,234,242,0.6)" fill-opacity="0.16" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.8"/>
+<text x="105" y="150" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">IP</text>
+<rect x="210" y="30" width="170" height="22" rx="4" fill="#9bd89b" fill-opacity="0.16" stroke="#9bd89b" stroke-opacity="0.8"/>
+<text x="295" y="46" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">HTTP/3</text>
+<rect x="210" y="56" width="170" height="48" rx="4" fill="#4fc4e6" fill-opacity="0.16" stroke="#4fc4e6" stroke-opacity="0.8"/>
+<text x="295" y="77" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">QUIC</text>
+<text x="295" y="93" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">TLS 1.3 inside</text>
+<rect x="210" y="108" width="170" height="22" rx="4" fill="rgba(223,234,242,0.6)" fill-opacity="0.16" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.8"/>
+<text x="295" y="124" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">UDP</text>
+<rect x="210" y="134" width="170" height="22" rx="4" fill="rgba(223,234,242,0.6)" fill-opacity="0.16" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.8"/>
+<text x="295" y="150" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">IP</text>
+<text x="20" y="188" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">TCP + TLS 1.3</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.788667;0.788889;1.000000" dur="9s" repeatCount="indefinite"/><text x="380" y="188" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">page after 3</text></g>
+<rect x="22.0" y="196" width="116.0" height="28" rx="4" fill="none" stroke="#4fc4e6" stroke-opacity="0.45"/>
+<rect x="142.0" y="196" width="116.0" height="28" rx="4" fill="none" stroke="#d4a853" stroke-opacity="0.45"/>
+<rect x="262.0" y="196" width="116.0" height="28" rx="4" fill="none" stroke="#9bd89b" stroke-opacity="0.45"/>
+<text x="20" y="248" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">QUIC (TLS 1.3 inside)</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.566444;0.566667;1.000000" dur="9s" repeatCount="indefinite"/><text x="380" y="248" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">page after 2</text></g>
+<rect x="22.0" y="256" width="116.0" height="28" rx="4" fill="none" stroke="#4fc4e6" stroke-opacity="0.45"/>
+<rect x="142.0" y="256" width="116.0" height="28" rx="4" fill="none" stroke="#9bd89b" stroke-opacity="0.45"/>
+<text x="20" y="308" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">QUIC, resumed (0-RTT)</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.344222;0.344444;1.000000" dur="9s" repeatCount="indefinite"/><text x="380" y="308" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">page after 1</text></g>
+<rect x="22.0" y="316" width="116.0" height="28" rx="4" fill="none" stroke="#9bd89b" stroke-opacity="0.45"/>
+<defs><clipPath id="clip-fig-10-9"><rect class="fx" x="20" y="0" width="360" height="404"><animate attributeName="width" values="360;360;360;360;0;0;360;360" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.122222;0.788889;1.000000" dur="9s" repeatCount="indefinite"/></rect></clipPath></defs>
+<g clip-path="url(#clip-fig-10-9)"><rect x="22.0" y="196" width="116.0" height="28" rx="4" fill="#4fc4e6" fill-opacity="0.3" stroke="#4fc4e6" stroke-width="1.5"/><rect x="142.0" y="196" width="116.0" height="28" rx="4" fill="#d4a853" fill-opacity="0.3" stroke="#d4a853" stroke-width="1.5"/><rect x="262.0" y="196" width="116.0" height="28" rx="4" fill="#9bd89b" fill-opacity="0.3" stroke="#9bd89b" stroke-width="1.5"/><rect x="22.0" y="256" width="116.0" height="28" rx="4" fill="#4fc4e6" fill-opacity="0.3" stroke="#4fc4e6" stroke-width="1.5"/><rect x="142.0" y="256" width="116.0" height="28" rx="4" fill="#9bd89b" fill-opacity="0.3" stroke="#9bd89b" stroke-width="1.5"/><rect x="22.0" y="316" width="116.0" height="28" rx="4" fill="#9bd89b" fill-opacity="0.3" stroke="#9bd89b" stroke-width="1.5"/></g>
+<text x="80" y="215" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">TCP handshake</text>
+<text x="200" y="215" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">TLS 1.3</text>
+<text x="320" y="215" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">GET → page</text>
+<text x="80" y="275" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">handshake</text>
+<text x="200" y="275" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">GET → page</text>
+<text x="80" y="335" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">GET → page</text>
+<line x1="20" y1="350" x2="380" y2="350" stroke="rgba(223,234,242,0.6)"/>
+<line x1="20.0" y1="346" x2="20.0" y2="354" stroke="rgba(223,234,242,0.6)"/>
+<text x="20" y="370" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">0</text>
+<line x1="140.0" y1="346" x2="140.0" y2="354" stroke="rgba(223,234,242,0.6)"/>
+<text x="140" y="370" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">1</text>
+<line x1="260.0" y1="346" x2="260.0" y2="354" stroke="rgba(223,234,242,0.6)"/>
+<text x="260" y="370" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">2</text>
+<line x1="380.0" y1="346" x2="380.0" y2="354" stroke="rgba(223,234,242,0.6)"/>
+<text x="380" y="370" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">3</text>
+<text x="380" y="390" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">round trips</text>
+</svg>
+      <p id="ch10-modern-p7" class="diagram-caption">Over TCP a browser spends one round trip on TCP's handshake and another on TLS's before it can ask for the page; QUIC does both in one, and a returning client can send its request in its very first packet. QUIC carries TLS 1.3 inside it and runs over UDP, in the application rather than the kernel.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The stacks.</b> HTTP/3 runs on QUIC, which builds reliability, ordering, congestion control and TLS 1.3 into one protocol over UDP. Because it ships with the browser or server, not the operating system, it can change as fast as they do: its <strong>iterability</strong>.</li>
+          <li><b>The round trips.</b> TCP with TLS 1.3 gets the page after three (four with TLS 1.2); QUIC after two. <span class="key-term">0-RTT resumption</span> sends the request with the first packet to a server the client has met before, so one.</li>
+          <li><b>Beyond the handshake.</b> <strong>Per-stream multiplexing</strong>: a lost packet stalls only its own stream, not every request behind it as on TCP. <strong>Connection migration</strong>: a connection ID, not the address pair, names the connection, so a phone moving from Wi-Fi to mobile data keeps it.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
