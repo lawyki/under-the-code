@@ -3309,7 +3309,9 @@ own marked scale; the caption's "twelve million times as many switches" was
 4004 → M4: ENIAC → M4 is 1.6 million, §4g), 1.8 (a three-line program
 and its data in one memory, code and data taking turns on one bus), 1.9 (the
 cycle as a ring; the PC advances by 5 bytes, then 3, and a jmp sends it
-back), 1.10, 1.15. `figlib.Timeline` fix found on 1.9: a point at the loop's
+back), 1.10, 1.11 (the pipeline grid filled by a cursor; 25 against 9
+cycles as two bars), 1.12 (one branch played twice: kept, then thrown away
+with its cache line "still there"), 1.15. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
 instant made a label stay lit); all done figures regenerated and re-swept.
 
