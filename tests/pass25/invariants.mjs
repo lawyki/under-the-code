@@ -134,7 +134,8 @@ async function run() {
               t.check(!newIds.some(id => ANCHOR_RE.test(id)), 'no injected id matches the anchor regex');
               // Tab stops
               // Glossary terms and index entries are tab stops that follow the glossary (Pass 26 changed it by design).
-              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d);
+              // Plain prose links (bare `a`, outside the nav) follow the text, which Pass 27 cuts by design.
+              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a';
               const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)));
               const detail = `live ${data.tabbable.length} vs baseline@${BASELINE_REV} ${bd.tabbable.length}; +[${diff.added.join(', ')}] -[${diff.removed.join(', ')}]`;
               const isPart = PARTS.includes(name);

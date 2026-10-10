@@ -207,6 +207,9 @@ function isLikelyTerm(rawTerm, strictWords, strictLen) {
   if (cleaned.endsWith('.') && words.length > 1) return false;
   if (cleaned.endsWith(',')) return false;
 
+  // Reject contractions (an emphasised "isn't" is stress, not a term).
+  if (/[a-z]['\u2019]t\b/i.test(cleaned)) return false;
+
   // Reject pronoun-led "terms" — almost certainly a sentence fragment.
   if (/^(it|he|she|they|we|you|i|its|this|that|these|those|there|here)\b/i.test(cleaned)) return false;
 
@@ -655,7 +658,8 @@ function buildTermPattern(term) {
   // excluded — compounds like "fork-and-exec" should still let "exec" match,
   // and "Mitnick-Shimomura" should still let "Mitnick" match. Trailing "s"
   // allowed for plurals (MOSFETs → MOSFET).
-  return '(?:^|[^A-Za-z0-9/])(' + body + ')(?:s)?(?![A-Za-z0-9/])';
+  // Not before a contraction's 't ("isn't" is not ISN).
+  return '(?:^|[^A-Za-z0-9/])(' + body + ')(?:s)?(?![A-Za-z0-9/]|[\'\u2019]t\\b)';
 }
 
 let curatedAdded = 0;
@@ -669,7 +673,8 @@ for (const term of CURATED_TERMS) {
   // Skip matches that fall inside chapter-heroes, SVGs, or part-tocs — those
   // produce garbage definitions like "CUBIC · BBR · QUIC · SYN flood" pulled
   // from chapter-hero metadata.
-  const re = new RegExp(buildTermPattern(term), 'gi');
+  // Acronyms match case-sensitively (ISN, not "isn").
+  const re = new RegExp(buildTermPattern(term), /^[A-Z0-9]{2,}$/.test(term) ? 'g' : 'gi');
 
   // Iterate ALL matches across ALL parts, score each one, and take the best.
   // Score signals (highest first):
@@ -783,6 +788,7 @@ const outPath = path.join(BOOK_DIR, 'glossary.json');
 // prose if it changes (Pass 26).
 const DEFINITION_OVERRIDES = {
   'livelock': 'The same shape with spinning threads (each repeatedly trying and failing rather than blocking) is called livelock.',
+  'boole': 'George Boole, a self-taught English mathematician, published The Mathematical Analysis of Logic in 1847: an algebra whose variables are not numbers but truth values, true or false.',
   'split brain': 'Any two quorums must intersect in at least one node, so two leaders elected in different terms cannot both have a majority without sharing a witness who would force one to step down. This intersection property is what prevents split brain.',
 };
 for (const [k, d] of Object.entries(DEFINITION_OVERRIDES)) if (out.entries && out.entries[k]) out.entries[k].definition = d;

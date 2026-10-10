@@ -524,6 +524,10 @@ HEAD in all five parts. Ledger (item → verified-how → outcome):
 | "Less than 150 years" (1854→2026) | 2026 − 1854 = 172 | Fixed fig 18.2 line: "172 years from beginning to here" |
 | Part III position-fix arithmetic | Haversine great-circle legs between the five stated fixes: cumulative 1,183 / 1,819 / 2,480 / 3,129 nm | All four runs replaced (were 870/1,730/2,590/3,459); each leg now computes from the printed coordinates. part-3.css comment + §4d updated |
 | ARPANET December 1969 "four nodes, three states" (fig 9.2 heading) | UCLA, SRI (Menlo Park) and UCSB are in California, Utah the fourth: two states | Fixed to "four nodes, two states" (Pass 26, 2026-10-10, found by its Sonnet 5.5 verification) |
+| `push` "writes the value, then decrements RSP" (ch3-stack-p3) | x86 `push` decrements RSP first, then writes to the new top | "decrements RSP by 8, then writes the value to the address RSP now points to" (Pass 27, 2026-10-10) |
+| System calls dispatched through the IDT; DPL=3 "only on the syscall vector" (chBridge-trap) | `SYSCALL` jumps via MSR_LSTAR, not the IDT; only legacy `int 0x80` uses an IDT gate, and DPL=3 sits on the few vectors user code may raise | Rewritten to match; chBridge-synthesis-p6 now says "an entry point the kernel registered at boot" (Pass 27, 2026-10-10) |
+| "Every modern Mac uses ARM" (ch1-cpu-p4) | Intel Macs are still modern and in use | "Apple Silicon Macs" (Pass 27, 2026-10-10) |
+| Spectre/Meltdown "in nearly every processor made since 1995" (ch1-cpu-p11) | Meltdown was largely Intel; the speculative class spans fast CPUs since the mid-1990s (§4r wording) | "nearly every fast processor made since the mid-1990s" (Pass 27, 2026-10-10) |
 
 ### Side effects & verification
 
@@ -3017,6 +3021,62 @@ still moving (a pointer parked after a fast sweep no longer opens it).
 five parts (288/286/307/188/153); `tests/pass25`: invariants 812/0, traces
 229/0 (+1 headless-WebKit skip), parity 40/40, marks 106/0, UI 93/0, the
 verification-fix checks 14/14.
+
+## 4aa. Pass 27 (2026-10-10): the cut (law 2), one part at a time
+
+Brief: `docs/pass-27-brief.md`. Per section: an editor marks every paragraph
+earns / restates / announces / pads / merge and proposes the cut text; an
+independent student advocate restores any cut that loses mechanism; a fact
+and voice gate checks the result. Captions are left to Pass 28 (they are
+rewritten there). Model: Opus 5.5; verification Sonnet 5.5 (BRIDGE §5).
+Scripts: scratchpad `p27/extract.py`, `p27/apply.py` (applies by exact unique
+unit HTML, emits aliases, refuses on any problem).
+
+### Part I
+
+**13,483 → 12,277 prose words (8.9 %).** Per section, before → after:
+context 741→683, transistor 700→646, vonneumann 420→368, cpu 548→505,
+kernel 673→632, memory 982→933, boole 704→638, gates 417→369, binary
+491→467, arithmetic 347→280, twos 571→508, float 937→894, isa 519→490,
+registers 199→191, stack 191→185, call 337→256, overflow 718→650, defenses
+1020→931, Bridge mode 723→683, trap 517→460, mmu 495→456, io 387→367, timer
+389→326, synthesis 457→359. Mostly sentence-level: announcements, restated
+points, hedges, praise, forward pointers that only promised ("we will see
+this again in Part II"). Already-lean sections (registers, stack, binary)
+changed least.
+
+**Anchors.** Six paragraphs merged away, aliased in `ANCHOR_ALIASES`:
+ch2-arithmetic-p2→p1, ch2-binary-p7→p6, ch2-boole-p8→p7, ch3-call-p1→p2,
+ch3-overflow-p2→p1, chBridge-synthesis-p8→p7. A stored place on each (and on
+the older ch1-kernel-p9) restores to the same pixel as its target in
+Chromium and WebKit at 375 and 1440 (`tests/pass25/alias.mjs`, 56/56). No
+other file links a removed id.
+
+**Facts.** Four errors corrected while cutting, logged in §4g: `push` order,
+syscall dispatch vs the IDT, "every modern Mac", the Spectre date.
+
+**Verification (Sonnet 5.5).** No H. 8 M and 5 L, fixed: a dangling "the
+program" in the Bridge opener; ch3-call-p3 tied back to `add(5, 3)` (EDI,
+ESI, EAX); synthesis-p6 contradicting the trap section; a false "so" in
+ch2-float-p6 (finite precision does not make 0.1 inexact; its binary
+expansion never ends); the speculative-execution sentence; the synthesis-p8
+alias (p7, not p6); the Boole glossary entry; "behaviour"; the "school
+algebra" contrast; mode-p3/p4 phrasing; ch3-isa-p4 opener. Ten further
+restatements it named are figure captions, handed to Pass 28.
+
+**Glossary.** Regenerated. The curated backfill now matches acronyms
+case-sensitively and never before a contraction's 't (the "ISN" entry had
+been quoting "isn't purpose-built"; it now quotes the TCP sentence in Part
+III), and `boole` uses the book's own facts (`DEFINITION_OVERRIDES`). IDS and
+IPS had been quoting "user IDs" and an unrelated sentence; they are dropped
+until the end-of-pass glossary fix. 509 → 507. **Known and queued:** about a
+hundred definitions are fragments (pre-existing); they get authored
+one-line definitions once Part V is cut, so the work is not redone per part.
+
+**Tests:** `npm run check:dashes` clean; `tests/pass25`: traces 228/0 (+1
+skip), parity 40/40, marks 106/0, UI 93/0, invariants green after the
+tab-stop check stopped counting plain prose links (the cut removed two
+forward-pointer links by design; nav and UI stops are still compared).
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

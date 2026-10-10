@@ -586,7 +586,14 @@
   // localStorage) may still carry them; resolve to the surviving paragraph
   // so no reader loses their place.
   const ANCHOR_ALIASES = {
-    'ch1-kernel-p9': 'ch1-kernel-p8'
+    'ch1-kernel-p9': 'ch1-kernel-p8',
+    // Pass 27 (the cut), Part I
+    'ch2-arithmetic-p2': 'ch2-arithmetic-p1',
+    'ch2-binary-p7': 'ch2-binary-p6',
+    'ch2-boole-p8': 'ch2-boole-p7',
+    'ch3-call-p1': 'ch3-call-p2',
+    'ch3-overflow-p2': 'ch3-overflow-p1',
+    'chBridge-synthesis-p8': 'chBridge-synthesis-p7'
   };
   const resolveId = id => (document.getElementById(id) ? id : (ANCHOR_ALIASES[id] || id));
 
