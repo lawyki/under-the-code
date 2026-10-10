@@ -157,7 +157,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 147 | 3 | `fig-11-14` Fig 11.14 · HTTP/1.1 vs HTTP/2 · serial vs multiplexed on the same TCP connection | 1.9 px · cap 126 | done 2026-10-11 |
 | 148 | 3 | `fig-11-15` Fig 11.15 · HTTP/3 over QUIC · escaping TCP at the protocol layer | 2.5 px · cap 167 | done 2026-10-11 |
 | 149 | 3 | `fig-12-1` Fig 12.1 · The web of 1994–95 · static documents and a tab-out to Java | 2.5 px · cap 97 | done 2026-10-11 |
-| 150 | 3 | `fig-12-2` Fig 12.2 · May 1995 to ECMAScript 2026 · the slow legitimisation | 2.5 px · cap 110 | todo |
+| 150 | 3 | `fig-12-2` Fig 12.2 · May 1995 to ECMAScript 2026 · the slow legitimisation | 2.5 px · cap 110 | done 2026-10-11 |
 | 151 | 3 | `fig-12-3` Fig 12.3 · The event loop · stack, microtasks, macrotasks, render | 2.5 px · cap 105 | todo |
 | 152 | 3 | `fig-12-4` Fig 12.4 · The same fetch · three eras of async syntax | 2.9 px · cap 92 | todo |
 | 153 | 3 | `fig-12-5` Fig 12.5 · V8 · from source to optimised native code, with a feedback loop | 2.2 px · cap 138 | todo |
