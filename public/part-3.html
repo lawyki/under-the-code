@@ -1756,71 +1756,50 @@
       the route across the whole graph.
     </p>
 
-    <div class="diagram-card" id="fig-9-6">
-      <div class="diagram-label">Fig 9.6 · BGP path-vector announcements</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-20"><title id="svgt-part3-20">Fig 9.6 · BGP path-vector announcements</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">how a route propagates across the AS graph</text>
-
-        <!-- Origin AS -->
-        <g transform="translate(80,200)">
-          <circle r="32" fill="rgba(150,216,150,0.30)" stroke="rgba(80,140,80,0.95)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(150,216,150,0.95)">AS 65001</text>
-          <text x="0" y="14" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.7)">198.51.0.0/16</text>
-        </g>
-
-        <!-- Mid ASes -->
-        <g transform="translate(280,120)">
-          <circle r="28" fill="#123049" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <text x="0" y="-2" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">AS 65010</text>
-          <text x="0" y="12" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(255,255,255,0.55)">transit</text>
-        </g>
-
-        <g transform="translate(280,280)">
-          <circle r="28" fill="#123049" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <text x="0" y="-2" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">AS 65020</text>
-          <text x="0" y="12" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(255,255,255,0.55)">transit</text>
-        </g>
-
-        <g transform="translate(480,200)">
-          <circle r="28" fill="#123049" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-          <text x="0" y="-2" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">AS 65030</text>
-          <text x="0" y="12" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(255,255,255,0.55)">transit</text>
-        </g>
-
-        <!-- Destination AS -->
-        <g transform="translate(640,200)">
-          <circle r="32" fill="rgba(232,120,120,0.30)" stroke="rgba(180,80,80,0.95)" stroke-width="2"/>
-          <text x="0" y="-2" text-anchor="middle" font-family="Space Mono" font-size="11" fill="rgba(232,120,120,0.95)">AS 65099</text>
-          <text x="0" y="14" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.7)">listener</text>
-        </g>
-
-        <!-- Edges -->
-        <g stroke="rgba(79,196,230,0.55)" stroke-width="1.5">
-          <line x1="112" y1="200" x2="252" y2="120"/>
-          <line x1="112" y1="200" x2="252" y2="280"/>
-          <line x1="308" y1="120" x2="452" y2="200"/>
-          <line x1="308" y1="280" x2="452" y2="200"/>
-          <line x1="508" y1="200" x2="608" y2="200"/>
-        </g>
-
-        <!-- Path-vector annotations -->
-        <g font-family="Space Mono" font-size="8">
-          <rect x="180" y="80" width="180" height="20" rx="3" fill="#0c2438" stroke="rgba(150,216,150,0.4)"/>
-          <text x="270" y="94" text-anchor="middle" fill="rgba(150,216,150,0.95)">advert: 198.51.0.0/16, [65001]</text>
-
-          <rect x="180" y="290" width="180" height="20" rx="3" fill="#0c2438" stroke="rgba(150,216,150,0.4)"/>
-          <text x="270" y="304" text-anchor="middle" fill="rgba(150,216,150,0.95)">advert: 198.51.0.0/16, [65001]</text>
-
-          <rect x="380" y="160" width="200" height="20" rx="3" fill="#0c2438" stroke="rgba(79,196,230,0.55)"/>
-          <text x="480" y="174" text-anchor="middle" fill="rgba(79,196,230,0.95)">[65010, 65001] OR [65020, 65001]</text>
-
-          <rect x="540" y="160" width="160" height="20" rx="3" fill="#0c2438" stroke="rgba(232,120,120,0.55)"/>
-          <text x="620" y="174" text-anchor="middle" fill="rgba(232,120,120,0.95)">[65030, 65010, 65001]</text>
-        </g>
-
-        <text x="360" y="338" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">EACH AS PREPENDS ITSELF TO THE PATH · SHORTER PATHS WIN BY DEFAULT · LOOPS ARE DETECTED IN THE LIST</text>
-      </svg>
-      <p id="ch9-routing-p3" class="diagram-caption">AS 65001 announces the prefix <code>198.51.0.0/16</code> with path <code>[65001]</code>: "I am the origin." Two transit ASes hear the announcement and prepend themselves: AS 65010 announces <code>[65010, 65001]</code>, AS 65020 announces <code>[65020, 65001]</code>. Both reach AS 65030, which now sees two paths to the same destination, both the same length here, and picks one by local policy (most BGP routing decisions are policy; path length is only the default tie-breaker). AS 65030 prepends itself and announces <code>[65030, 65010, 65001]</code> onward to AS 65099, which now knows it can reach the prefix in three AS hops. Loop detection is automatic: an AS that sees its own number in the path drops the announcement. This is BGP at its simplest. The protocol has a few hundred more pages, but the path-vector core is this.</p>
+    <div class="diagram-card fig-v2" id="fig-9-6">
+      <div class="diagram-label">Fig 9.6&nbsp;· BGP path-vector announcements</div>
+      <svg viewBox="0 0 400 346" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-20 svgd-part3-20">
+<title id="svgt-part3-20">Fig 9.6 · BGP path-vector announcements</title>
+<desc id="svgd-part3-20">Five autonomous systems. AS 65001 announces the prefix 198.51.0.0/16 with the path 65001. AS 65010 and AS 65020 each add their own number and pass it on, as 65010 65001 and 65020 65001. AS 65030 hears both equal-length paths, picks one by local policy, adds itself and announces 65030 65010 65001 to AS 65099. A copy announced back to AS 65001 carries its own number, so it is dropped as a loop.</desc>
+<line x1="43.0" y1="124.0" x2="147.0" y2="46.0" stroke="#4fc4e6" stroke-opacity="0.3" stroke-width="2"/>
+<line x1="43.0" y1="124.0" x2="147.0" y2="202.0" stroke="#4fc4e6" stroke-opacity="0.3" stroke-width="2"/>
+<line x1="147.0" y1="46.0" x2="251.0" y2="124.0" stroke="#4fc4e6" stroke-opacity="0.3" stroke-width="2"/>
+<line x1="147.0" y1="202.0" x2="251.0" y2="124.0" stroke="#4fc4e6" stroke-opacity="0.3" stroke-width="2"/>
+<line x1="251.0" y1="124.0" x2="357.0" y2="124.0" stroke="#4fc4e6" stroke-opacity="0.3" stroke-width="2"/>
+<line class="fx" x1="43.0" y1="124.0" x2="147.0" y2="46.0" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.199818;0.200000;0.326545;0.326818;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<line class="fx" x1="43.0" y1="124.0" x2="147.0" y2="202.0" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.199818;0.200000;0.326545;0.326818;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<line class="fx" x1="147.0" y1="46.0" x2="251.0" y2="124.0" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.345273;0.345455;0.472000;0.472273;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<line class="fx" x1="147.0" y1="202.0" x2="251.0" y2="124.0" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.345273;0.345455;0.472000;0.472273;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<line class="fx" x1="251.0" y1="124.0" x2="357.0" y2="124.0" stroke="#4fc4e6" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.490727;0.490909;0.617455;0.617727;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<line class="fx" x1="147.0" y1="46.0" x2="43.0" y2="124.0" stroke="#ec6b6b" stroke-width="4" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.127227;0.127273;0.636182;0.636364;0.762909;0.763182;1.000000" dur="11s" repeatCount="indefinite"/></line>
+<rect x="12" y="104" width="62" height="40" rx="2" fill="#081b2e" stroke="#e07a3f" stroke-opacity="0.8"/>
+<text x="43" y="130" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">65001</text>
+<rect x="116" y="26" width="62" height="40" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="147" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">65010</text>
+<rect x="116" y="182" width="62" height="40" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="147" y="208" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">65020</text>
+<rect x="220" y="104" width="62" height="40" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="251" y="130" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">65030</text>
+<rect x="326" y="104" width="62" height="40" rx="2" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="357" y="130" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">65099</text>
+<text x="12" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">origin</text>
+<text x="326" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">hears it</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.127227;0.127273;0.163636;0.164091;0.563455;0.563636;1.000000" dur="11s" repeatCount="indefinite"/><text x="388" y="166" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">65030 65010 65001</text></g>
+<text x="12" y="240" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0.06em" fill="rgba(223,234,242,0.6)">AS NUMBERS · EACH ADDS ITSELF</text>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.127227;0.127273;0.163636;0.164091;0.199818;0.200000;1.000000" dur="11s" repeatCount="indefinite"/><text x="12" y="260" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">1</text><text x="32" y="260" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">65001 announces 198.51.0.0/16</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.127227;0.127273;0.163636;0.164091;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/><text x="12" y="282" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">2</text><text x="32" y="282" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">path grows: 65010 65001, 65020 65001</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.127227;0.127273;0.163636;0.164091;0.490727;0.490909;1.000000" dur="11s" repeatCount="indefinite"/><text x="12" y="304" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">3</text><text x="32" y="304" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">65030 picks one by policy, adds itself</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.127227;0.127273;0.163636;0.164091;0.636182;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><text x="12" y="326" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">4</text><text x="32" y="326" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">back at 65001: its own number, dropped</text></g>
+</svg>
+      <p id="ch9-routing-p3" class="diagram-caption">BGP routes by passing announcements: the origin announces its prefix, and each network adds its own AS number before passing the route on, so every route carries the list of networks it crossed. Seeing its own number in that list is how an AS spots a loop and drops it.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Choosing.</b> Given several paths, an AS applies its own policy first, often business relationships; path length only breaks ties by default.</li>
+          <li><b>AS numbers.</b> 65001 to 65099 here are from the private range; real networks use public numbers, such as 15169 for Google.</li>
+          <li><b>Scale.</b> Every router at the internet's core holds a route to roughly a million IPv4 prefixes, learned this way.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card" id="fig-9-7">

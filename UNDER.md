@@ -3575,7 +3575,9 @@ softened: it routes around failures but has hubs), 9.4 (one real header, 192.0.2
 hop); a router hop run on it: destination looked up, TTL 64 to 63, checksum
 recomputed; IHL, ToS, Total length and TTL kept as key-terms), 9.5 (the split computed and asserted,
 1480 + 1480 + 1040 bytes at offsets 0, 185, 370; run 1 reassembles, run 2 loses
-fragment 2 and the whole packet is discarded). The sweep's overlap test now compares ink boxes (font boxes trimmed
+fragment 2 and the whole packet is discarded), 9.6 (an announcement spreading across five
+ASes, each adding its number, edges lit as it crosses; 65030 picks by policy;
+the copy back at the origin dropped as a loop; the steps listed). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
