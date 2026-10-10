@@ -3372,7 +3372,11 @@ whole kernel red against one restarted process), 4.3 (insmod: the module
 snaps into Ring 0, links to the symbol table, module_init(); rmmod undoes it;
 no invented module counts), 4.4 (the leftmost process leaves the tree,
 runs while its virtual runtime climbs 3.2 → 13.0, and goes back in on the
-right; the tree drawn balanced, its red-black colouring described). The sweep's overlap test now compares ink boxes (font boxes trimmed
+right; the tree drawn balanced, its red-black colouring described), 4.5
+(four schedulers simulated by `sched_model.py`, matching the old drawing's
+sequences; each row now also shows time to first run, the number round
+robin and MLFQ buy with their higher average wait: 12.75 and 13 against
+SJF's 7.75, but 2 and 1.5 before a job first runs). The sweep's overlap test now compares ink boxes (font boxes trimmed
 10% top and bottom) at a 3% threshold, after it let a 2-px label collision
 through. `figlib.Timeline` fix found on 1.9: a point at the loop's
 end is the same instant as its start and is dropped (two values at one
