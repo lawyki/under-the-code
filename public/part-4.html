@@ -532,78 +532,134 @@
       the optimiser's job is to pick the cheapest for the tables in front of it.
     </p>
 
-    <div class="diagram-card" id="fig-13-4">
-      <div class="diagram-label">Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-5"><title id="svgt-part4-5">Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">same JOIN keyword · three radically different executions</text>
-
-        <!-- Nested loop -->
-        <g transform="translate(40,68)">
-          <rect x="0" y="0" width="200" height="280" rx="6" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="100" y="20" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">NESTED-LOOP</text>
-          <text x="100" y="38" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">for each r in R: for each s in S</text>
-
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">complexity:</text>
-          <text x="100" y="82" text-anchor="middle" font-family="Courier Prime" font-size="13" fill="rgba(232,120,120,0.95)">O(|R| × |S|)</text>
-
-          <text x="14" y="120" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">good when:</text>
-          <text x="14" y="136" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • one side small</text>
-          <text x="14" y="150" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • inner side has index</text>
-          <text x="14" y="164" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • LIMIT clause</text>
-
-          <text x="14" y="196" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">bad when:</text>
-          <text x="14" y="212" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • both sides large</text>
-          <text x="14" y="226" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • no useful index</text>
-
-          <text x="100" y="256" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">naive 1970s default</text>
-          <text x="100" y="270" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">avoid for big × big</text>
-        </g>
-
-        <!-- Hash -->
-        <g transform="translate(260,68)">
-          <rect x="0" y="0" width="200" height="280" rx="6" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.85)"/>
-          <text x="100" y="20" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">HASH JOIN</text>
-          <text x="100" y="38" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">build hash table on smaller side</text>
-
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">complexity:</text>
-          <text x="100" y="82" text-anchor="middle" font-family="Courier Prime" font-size="13" fill="rgba(207,141,120,0.95)">O(|R| + |S|)</text>
-
-          <text x="14" y="120" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">good when:</text>
-          <text x="14" y="136" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • equality join</text>
-          <text x="14" y="150" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • smaller side fits in RAM</text>
-          <text x="14" y="164" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • no useful indexes</text>
-
-          <text x="14" y="196" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">bad when:</text>
-          <text x="14" y="212" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • smaller side too big to hash</text>
-          <text x="14" y="226" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • range or inequality joins</text>
-
-          <text x="100" y="256" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">workhorse of OLAP</text>
-          <text x="100" y="270" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">PostgreSQL default for big joins</text>
-        </g>
-
-        <!-- Merge -->
-        <g transform="translate(480,68)">
-          <rect x="0" y="0" width="200" height="280" rx="6" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="100" y="20" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">MERGE JOIN</text>
-          <text x="100" y="38" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">walk both sides in sorted order</text>
-
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">complexity:</text>
-          <text x="100" y="82" text-anchor="middle" font-family="Courier Prime" font-size="13" fill="rgba(150,216,150,0.95)">O(|R| + |S|)</text>
-          <text x="100" y="96" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)">+ sort cost if not already sorted</text>
-
-          <text x="14" y="120" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">good when:</text>
-          <text x="14" y="136" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • inputs already sorted</text>
-          <text x="14" y="150" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • huge tables, no RAM for hash</text>
-          <text x="14" y="164" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • range joins (a.id BETWEEN b.lo AND b.hi)</text>
-
-          <text x="14" y="196" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">bad when:</text>
-          <text x="14" y="212" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">  • inputs unsorted and small enough to hash</text>
-
-          <text x="100" y="256" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">classical sort-merge</text>
-          <text x="100" y="270" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">columnar engines lean on this</text>
-        </g>
-      </svg>
-      <p id="ch13-sql-p5" class="diagram-caption">Same SQL <code>JOIN</code>, three execution strategies. <strong>Nested-loop</strong> is naive but optimal when one side is tiny or has a useful index: every row of the smaller side does an indexed lookup against the larger. <strong>Hash join</strong> builds an in-memory hash table on the smaller side keyed by the join column, then streams the larger side and probes the hash; linear in both sides, fast on equality joins, requires the small side to fit in memory. <strong>Merge join</strong> sorts both sides on the join column and then walks them in lockstep; linear once sorted, indispensable for column-store OLAP engines and for range joins. The optimiser picks based on table sizes, indexes available, and the join condition.</p>
+    <div class="diagram-card fig-v2" id="fig-13-4">
+      <div class="diagram-label">Fig 13.4&nbsp;· Nested-loop&nbsp;· hash&nbsp;· merge: three ways to do the same join</div>
+      <svg viewBox="0 0 400 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-5 svgd-part4-5">
+<title id="svgt-part4-5">Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join</title>
+<desc id="svgd-part4-5">One join of keys 3, 7, 1, 9, 4 against 4, 1, 8, 3, 6, which match on 1, 3 and 4, done three ways. Nested loop compares every pair: 25 comparisons in a five by five grid. Hash join drops the first list into four buckets by key mod 4, then each key of the second list looks in one bucket: five inserts and five probes. Merge join sorts both lists and walks them with two pointers, advancing the smaller: six comparisons once sorted.</desc>
+<text x="10" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">nested loop: every pair</text>
+<text x="61" y="46" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">4</text>
+<text x="81" y="46" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">1</text>
+<text x="101" y="46" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">8</text>
+<text x="121" y="46" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">3</text>
+<text x="141" y="46" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">6</text>
+<text x="40" y="66" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">3</text>
+<rect x="52" y="52" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.074875;0.075000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="58" y="58" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="72" y="52" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.082375;0.082500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="78" y="58" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="92" y="52" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.089875;0.090000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="98" y="58" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="112" y="52" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.097375;0.097500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="112" y="52" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/></g>
+<rect x="132" y="52" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.104875;0.105000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138" y="58" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<text x="40" y="86" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">7</text>
+<rect x="52" y="72" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.112375;0.112500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="58" y="78" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="72" y="72" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.119875;0.120000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="78" y="78" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="92" y="72" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.127375;0.127500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="98" y="78" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="112" y="72" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.134875;0.135000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="118" y="78" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="132" y="72" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.142375;0.142500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138" y="78" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<text x="40" y="106" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">1</text>
+<rect x="52" y="92" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.149875;0.150000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="58" y="98" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="72" y="92" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.157375;0.157500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="72" y="92" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/></g>
+<rect x="92" y="92" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.164875;0.165000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="98" y="98" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="112" y="92" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.172375;0.172500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="118" y="98" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="132" y="92" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.179875;0.180000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138" y="98" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<text x="40" y="126" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">9</text>
+<rect x="52" y="112" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.187375;0.187500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="58" y="118" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="72" y="112" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.194875;0.195000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="78" y="118" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="92" y="112" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.202375;0.202500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="98" y="118" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="112" y="112" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.209875;0.210000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="118" y="118" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="132" y="112" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.217375;0.217500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138" y="118" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<text x="40" y="146" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">4</text>
+<rect x="52" y="132" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.224875;0.225000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="52" y="132" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/></g>
+<rect x="72" y="132" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.232375;0.232500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="78" y="138" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="92" y="132" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.239875;0.240000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="98" y="138" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="112" y="132" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.247375;0.247500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="118" y="138" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<rect x="132" y="132" width="18" height="18" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.254875;0.255000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138" y="138" width="6" height="6" rx="1" fill="rgba(230,217,189,0.6)" fill-opacity="0.45"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.262375;0.262500;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="92" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">25 comparisons</text><text x="200" y="110" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">one for every pair</text></g>
+<text x="10" y="188" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">hash join: build, then probe</text>
+<rect x="10" y="200" width="92" height="42" rx="3" fill="none" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="16" y="215" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">mod 4 = 0</text>
+<rect x="106" y="200" width="92" height="42" rx="3" fill="none" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="112" y="215" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">mod 4 = 1</text>
+<rect x="202" y="200" width="92" height="42" rx="3" fill="none" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="208" y="215" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">mod 4 = 2</text>
+<rect x="298" y="200" width="92" height="42" rx="3" fill="none" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="304" y="215" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">mod 4 = 3</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.299875;0.300000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="304" y="220" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="313" y="234" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.318625;0.318750;1.000000" dur="16s" repeatCount="indefinite"/><rect x="324" y="220" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="333" y="234" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">7</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.337375;0.337500;1.000000" dur="16s" repeatCount="indefinite"/><rect x="112" y="220" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="121" y="234" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.356125;0.356250;1.000000" dur="16s" repeatCount="indefinite"/><rect x="132" y="220" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="141" y="234" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">9</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.374875;0.375000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="16" y="220" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="25" y="234" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">4</text></g>
+<rect x="30" y="254" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="39" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">4</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.418625;0.418750;0.443250;0.443438;1.000000" dur="16s" repeatCount="indefinite"/><rect x="10" y="200" width="92" height="42" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.418625;0.418750;1.000000" dur="16s" repeatCount="indefinite"/><rect x="30" y="254" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/><text x="39" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">4</text></g>
+<rect x="82" y="254" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="91" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">1</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.446750;0.446875;0.471375;0.471563;1.000000" dur="16s" repeatCount="indefinite"/><rect x="106" y="200" width="92" height="42" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.446750;0.446875;1.000000" dur="16s" repeatCount="indefinite"/><rect x="82" y="254" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/><text x="91" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">1</text></g>
+<rect x="134" y="254" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="143" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">8</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.474875;0.475000;0.499500;0.499688;1.000000" dur="16s" repeatCount="indefinite"/><rect x="10" y="200" width="92" height="42" rx="3" fill="none" stroke="#c05a48" stroke-width="2.5"/></g>
+<rect x="186" y="254" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="195" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">3</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.503000;0.503125;0.527625;0.527813;1.000000" dur="16s" repeatCount="indefinite"/><rect x="298" y="200" width="92" height="42" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.503000;0.503125;1.000000" dur="16s" repeatCount="indefinite"/><rect x="186" y="254" width="18" height="18" rx="2" fill="#a9bf8e" fill-opacity="0.8"/><text x="195" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">3</text></g>
+<rect x="238" y="254" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="247" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">6</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.531125;0.531250;0.555750;0.555937;1.000000" dur="16s" repeatCount="indefinite"/><rect x="202" y="200" width="92" height="42" rx="3" fill="none" stroke="#c05a48" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.559250;0.559375;1.000000" dur="16s" repeatCount="indefinite"/><text x="270" y="260" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">5 + 5</text><text x="270" y="278" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">inserts, probes</text></g>
+<text x="10" y="314" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">merge join: walk two sorted lists</text>
+<text x="46" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">R</text>
+<text x="46" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">S</text>
+<rect x="60" y="326" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="69" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">1</text>
+<rect x="60" y="360" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="69" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">1</text>
+<rect x="88" y="326" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="97" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">3</text>
+<rect x="88" y="360" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="97" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">3</text>
+<rect x="116" y="326" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="125" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">4</text>
+<rect x="116" y="360" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="125" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">4</text>
+<rect x="144" y="326" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="153" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">7</text>
+<rect x="144" y="360" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="153" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">6</text>
+<rect x="172" y="326" width="18" height="18" rx="2" fill="#241a10" stroke="#cf8d78" stroke-opacity="0.7"/><text x="181" y="340" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">9</text>
+<rect x="172" y="360" width="18" height="18" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/><text x="181" y="374" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">8</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.596750;0.596875;0.633875;0.634062;1.000000" dur="16s" repeatCount="indefinite"/><path d="M69,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M69,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="69" y1="344" x2="69" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.596750;0.596875;1.000000" dur="16s" repeatCount="indefinite"/><line x1="69" y1="344" x2="69" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.634250;0.634375;0.671375;0.671562;1.000000" dur="16s" repeatCount="indefinite"/><path d="M97,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M97,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="97" y1="344" x2="97" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.634250;0.634375;1.000000" dur="16s" repeatCount="indefinite"/><line x1="97" y1="344" x2="97" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.671750;0.671875;0.708875;0.709062;1.000000" dur="16s" repeatCount="indefinite"/><path d="M125,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M125,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="125" y1="344" x2="125" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.671750;0.671875;1.000000" dur="16s" repeatCount="indefinite"/><line x1="125" y1="344" x2="125" y2="360" stroke="#a9bf8e" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.709250;0.709375;0.746375;0.746562;1.000000" dur="16s" repeatCount="indefinite"/><path d="M153,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M153,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="153" y1="344" x2="153" y2="360" stroke="rgba(230,217,189,0.6)" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.746750;0.746875;0.783875;0.784062;1.000000" dur="16s" repeatCount="indefinite"/><path d="M153,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M181,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="153" y1="344" x2="181" y2="360" stroke="rgba(230,217,189,0.6)" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.037469;0.037500;0.784250;0.784375;0.821375;0.821562;1.000000" dur="16s" repeatCount="indefinite"/><path d="M181,324 l-5,-7 h10 Z" fill="#e6d9bd"/><path d="M181,380 l-5,7 h10 Z" fill="#e6d9bd"/><line x1="181" y1="344" x2="181" y2="360" stroke="rgba(230,217,189,0.6)" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.037469;0.037500;0.056250;0.056562;0.821750;0.821875;1.000000" dur="16s" repeatCount="indefinite"/><text x="220" y="342" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">6 steps</text><text x="220" y="360" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">once sorted</text></g>
+</svg>
+      <p id="ch13-sql-p5" class="diagram-caption">The same equality join, three ways: a nested loop compares every pair, a hash join buckets one side and looks each key of the other up once, and a merge join walks two sorted lists together. Five rows a side: 25 comparisons against about ten; a million a side: a trillion against a few million.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Nested loop.</b> O(|R| × |S|), yet the right choice when one side is tiny or the inner side has an index on the join key, so each outer row costs one index lookup.</li>
+          <li><b>Hash join.</b> O(|R| + |S|) for equality joins, if the smaller side's hash table fits in memory; otherwise it is split into partitions on disk.</li>
+          <li><b>Merge join.</b> O(|R| + |S|) after sorting, so it wins when the inputs already arrive sorted, for example from an index. The optimiser picks among the three from table sizes, indexes and the join condition.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">

@@ -170,7 +170,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 160 | 4 | `fig-13-1` Fig 13.1 · Codd 1970 to PostgreSQL 18 · two lineages, fifty years | 2.5 px · cap 91 | done 2026-10-11 |
 | 161 | 4 | `fig-13-2` Fig 13.2 · Three operators · selection, projection, join | 2.5 px · cap 113 | done 2026-10-11 |
 | 162 | 4 | `fig-13-3` Fig 13.3 · Same query, three forms · SQL → relational algebra → execution plan | 2.5 px · cap 121 | done 2026-10-11 |
-| 163 | 4 | `fig-13-4` Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join | 2.5 px · cap 115 | todo |
+| 163 | 4 | `fig-13-4` Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join | 2.5 px · cap 115 | done 2026-10-11 |
 | 164 | 4 | `fig-13-5` Fig 13.5 · A bank transfer · what each ACID letter actually guarantees | 2.5 px · cap 102 | todo |
 | 165 | 4 | `fig-13-6` Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash | 2.5 px · cap 126 | todo |
 | 166 | 4 | `fig-13-7` Fig 13.7 · The four isolation levels · what each one permits | 2.9 px · cap 145 | todo |
