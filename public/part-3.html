@@ -5564,50 +5564,50 @@
       the injection succeeded.
     </p>
 
-    <div class="diagram-card" id="fig-12-11">
-      <div class="diagram-label">Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-66"><title id="svgt-part3-66">Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">a short header that defangs most XSS even after injection succeeds</text>
-
-        <!-- Header -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">SERVER RESPONSE HEADER</text>
-          <rect x="0" y="14" width="640" height="44" rx="3" fill="#0a1c2d" stroke="rgba(32,116,150,0.85)"/>
-          <text x="14" y="32" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">Content-Security-Policy:</text>
-          <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.95)">  default-src 'self'; script-src 'self' https://cdn.example.com; style-src 'self' 'unsafe-inline';</text>
-        </g>
-
-        <!-- Browser decisions -->
-        <g transform="translate(40,140)" font-family="Space Mono" font-size="9">
-          <text x="0" y="0" fill="rgba(79,196,230,0.95)" letter-spacing="0.1em">BROWSER ENFORCES: every resource load checked against policy</text>
-
-          <rect x="0" y="14" width="640" height="22" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.4)"/>
-          <text x="14" y="30" fill="rgba(180,200,220,0.95)">&lt;script src="/app.js"&gt;</text>
-          <text x="626" text-anchor="end" y="30" fill="rgba(150,216,150,1)">✓ self origin</text>
-
-          <rect x="0" y="40" width="640" height="22" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.4)"/>
-          <text x="14" y="56" fill="rgba(180,200,220,0.95)">&lt;script src="https://cdn.example.com/lib.js"&gt;</text>
-          <text x="626" text-anchor="end" y="56" fill="rgba(150,216,150,1)">✓ allow-listed</text>
-
-          <rect x="0" y="66" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="82" fill="rgba(180,200,220,0.95)">&lt;script src="https://evil.com/x.js"&gt;</text>
-          <text x="626" text-anchor="end" y="82" fill="rgba(232,120,120,1)">✗ not in policy</text>
-
-          <rect x="0" y="92" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="108" fill="rgba(180,200,220,0.95)">&lt;script&gt;steal()&lt;/script&gt;  (inline)</text>
-          <text x="626" text-anchor="end" y="108" fill="rgba(232,120,120,1)">✗ no 'unsafe-inline'</text>
-
-          <rect x="0" y="118" width="640" height="22" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="14" y="134" fill="rgba(180,200,220,0.95)">eval("…")</text>
-          <text x="626" text-anchor="end" y="134" fill="rgba(232,120,120,1)">✗ no 'unsafe-eval'</text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,290)">
-          <text x="0" y="0" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.65)" font-style="italic">CSP also reports violations to a configurable URL. XSS attempts become alerts in your monitoring system.</text>
-        </g>
-      </svg>
-      <p id="ch12-security-p9" class="diagram-caption">CSP is unique among the defences in this section: it makes the browser an active enforcer of an application-level policy. Even if attacker code is injected into the page (a server bug let it through; a third-party script was compromised; a stored-XSS payload made it past sanitisation), the browser refuses to execute anything not on the allow-list. Strict CSP (<code>script-src 'self'</code> with <em>no</em> <code>'unsafe-inline'</code>, all scripts in external files) eliminates entire classes of XSS. The cost is real: legacy code that uses inline event handlers (<code>onclick="…"</code>) breaks; fast-loading inline scripts have to be moved out; third-party widgets need their origins enumerated. But the security gain is real enough that every security-serious site now ships some CSP, and the strict form is the goal the whole industry has been walking toward for a decade.</p>
+    <div class="diagram-card fig-v2" id="fig-12-11">
+      <div class="diagram-label">Fig 12.11&nbsp;· CSP&nbsp;· the server tells the browser which scripts to trust, the browser refuses the rest</div>
+      <svg viewBox="0 0 400 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-66 svgd-part3-66">
+<title id="svgt-part3-66">Fig 12.11 · CSP · the server tells the browser which scripts to trust, the browser refuses the rest</title>
+<desc id="svgd-part3-66">The server's response carries the header Content-Security-Policy: script-src 'self' https://cdn.example.com. The page then asks the browser to run four scripts, one at a time, and the browser checks each against the policy. The site's own /app.js runs, being from the same origin; cdn.example.com/lib.js runs, being listed; a script injected from other.example is refused, not being listed; and an injected inline script is refused, since the policy does not allow inline code. The injections landed in the page, yet neither runs.</desc>
+<rect x="20" y="12" width="360" height="74" rx="3" fill="#081b2e" stroke="#e07a3f" stroke-opacity="0.7"/>
+<text x="32" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">Content-Security-Policy:</text>
+<text x="32" y="54" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">script-src 'self'</text>
+<text x="48" y="74" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">https://cdn.example.com</text>
+<text x="20" y="114" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">the page asks to run</text>
+<line x1="222" y1="122" x2="222" y2="320" stroke="#e07a3f" stroke-width="3" stroke-opacity="0.8"/>
+<text x="380" y="114" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">policy check</text>
+<text x="20" y="142" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">/app.js</text>
+<line x1="20" y1="160" x2="380" y2="160" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="2"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.199810;0.200000;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="380" y="142" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">runs: own origin</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.123619;0.123810;0.304000;0.304286;1.000000" dur="10.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="344.00 0;344.00 0;0.00 0;0.00 0;186.00 0;344.00 0;344.00 0" keyTimes="0.000000;0.047571;0.047619;0.123810;0.200000;0.247619;1.000000" dur="10.5s" repeatCount="indefinite"/><circle cx="28" cy="160" r="6" fill="#4fc4e6"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.199810;0.200000;0.257143;1.000000" dur="10.5s" repeatCount="indefinite"/><rect x="217" y="148" width="10" height="24" rx="2" fill="#4fc4e6"/></g>
+<text x="20" y="192" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">cdn.example.com/lib.js</text>
+<line x1="20" y1="210" x2="380" y2="210" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="2"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.409333;0.409524;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="380" y="192" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">runs: listed</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.333143;0.333333;0.513524;0.513810;1.000000" dur="10.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="344.00 0;344.00 0;0.00 0;0.00 0;186.00 0;344.00 0;344.00 0" keyTimes="0.000000;0.047571;0.047619;0.333333;0.409524;0.457143;1.000000" dur="10.5s" repeatCount="indefinite"/><circle cx="28" cy="210" r="6" fill="#4fc4e6"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.409333;0.409524;0.466667;1.000000" dur="10.5s" repeatCount="indefinite"/><rect x="217" y="198" width="10" height="24" rx="2" fill="#4fc4e6"/></g>
+<text x="20" y="242" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">other.example/x.js</text>
+<line x1="20" y1="260" x2="380" y2="260" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="2"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.618857;0.619048;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="380" y="242" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">refused: unlisted</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.542667;0.542857;0.675429;0.675714;1.000000" dur="10.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="186.00 0;186.00 0;0.00 0;0.00 0;186.00 0;186.00 0" keyTimes="0.000000;0.047571;0.047619;0.542857;0.619048;1.000000" dur="10.5s" repeatCount="indefinite"/><circle cx="28" cy="260" r="6" fill="#ec6b6b"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.618857;0.619048;0.676190;1.000000" dur="10.5s" repeatCount="indefinite"/><rect x="217" y="248" width="10" height="24" rx="2" fill="#ec6b6b"/></g>
+<text x="20" y="292" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">inline &lt;script&gt;</text>
+<line x1="20" y1="310" x2="380" y2="310" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.25" stroke-width="2"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.828381;0.828571;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="380" y="292" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">refused: inline</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.752190;0.752381;0.884952;0.885238;1.000000" dur="10.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="186.00 0;186.00 0;0.00 0;0.00 0;186.00 0;186.00 0" keyTimes="0.000000;0.047571;0.047619;0.752381;0.828571;1.000000" dur="10.5s" repeatCount="indefinite"/><circle cx="28" cy="310" r="6" fill="#ec6b6b"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.828381;0.828571;0.885714;1.000000" dur="10.5s" repeatCount="indefinite"/><rect x="217" y="298" width="10" height="24" rx="2" fill="#ec6b6b"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.618286;0.618571;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="20" y="344" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">the page's own and a listed origin run</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.618857;0.619048;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="20" y="344" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">injected, yet refused</text></g>
+</svg>
+      <p id="ch12-security-p9" class="diagram-caption">A Content-Security-Policy header tells the browser which origins may supply scripts, and the browser checks every script against it before running anything. A script that is not on the list is refused even when an <span class="key-term">XSS</span> injection has already put it in the page, and so is inline code unless the policy allows it.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Nonces and hashes.</b> A strict policy can admit one inline script by a random nonce issued with each response, or by the script's hash, without allowing inline code in general.</li>
+          <li><b>Reports.</b> The <code>report-to</code> directive has the browser report each refused load, so a blocked injection shows up in the site's monitoring.</li>
+          <li><b>Rolling it out.</b> <code>Content-Security-Policy-Report-Only</code> applies a policy without enforcing it, so a site can see what would break before switching it on.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Closing the chapter, closing the part</h3>
