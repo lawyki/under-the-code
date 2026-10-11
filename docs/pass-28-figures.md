@@ -177,13 +177,13 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 167 | 4 | `fig-13-8` Fig 13.8 · A B+ tree · range scan walks the leaves left to right | 2.9 px · cap 145 | done 2026-10-11 |
 | 168 | 4 | `fig-13-9` Fig 13.9 · B-tree vs hash index · which one wins which workload | 2.9 px · cap 131 | done 2026-10-11 |
 | 169 | 4 | `fig-13-10` Fig 13.10 · SQL injection · a single quote turns a SELECT into a tautology | 2.9 px · cap 162 | deferred: conceptual pass |
-| 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | todo |
+| 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | deferred: conceptual pass |
 | 171 | 4 | `fig-14-1` Fig 14.1 · Two thousand years of cryptography in one strip | 2.5 px · cap 117 | todo |
 | 172 | 4 | `fig-14-2` Fig 14.2 · The four one-way functions cryptography is built on | 2.5 px · cap 240 | todo |
 | 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | deferred: conceptual pass |
-| 174 | 4 | `fig-14-4` Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF | 2.9 px · cap 129 | todo |
+| 174 | 4 | `fig-14-4` Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF | 2.9 px · cap 129 | deferred: conceptual pass |
 | 175 | 4 | `fig-14-5` Fig 14.5 · One AES round · four steps on a 4×4 byte grid | 2.2 px · cap 127 | todo |
-| 176 | 4 | `fig-14-6` Fig 14.6 · ECB's famous failure · structure leaks through | 2.9 px · cap 142 | todo |
+| 176 | 4 | `fig-14-6` Fig 14.6 · ECB's famous failure · structure leaks through | 2.9 px · cap 142 | deferred: conceptual pass |
 | 177 | 4 | `fig-14-7` Fig 14.7 · Diffie–Hellman with actual numbers · g=5, p=23 | 2.5 px · cap 129 | todo |
 | 178 | 4 | `fig-14-8` Fig 14.8 · RSA worked through · p=17, q=23 | 2.5 px · cap 139 | todo |
 | 179 | 4 | `fig-14-9` Fig 14.9 · Point addition on an elliptic curve · geometric picture | 2.9 px · cap 120 | todo |
@@ -192,12 +192,12 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 182 | 4 | `fig-14-12` Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest | 2.2 px · cap 137 | todo |
 | 183 | 4 | `fig-14-13` Fig 14.13 · Post-quantum migration · the algorithms that survive Shor | 2.9 px · cap 129 | todo |
 | 184 | 4 | `fig-15-1` Fig 15.1 · STRIDE · the six classes of threat to enumerate | 2.5 px · cap 129 | deferred: conceptual pass |
-| 185 | 4 | `fig-15-2` Fig 15.2 · The arms race continued · Fig 3.11 extended through 2026 | 2.5 px · cap 140 | todo |
+| 185 | 4 | `fig-15-2` Fig 15.2 · The arms race continued · Fig 3.11 extended through 2026 | 2.5 px · cap 140 | deferred: conceptual pass |
 | 186 | 4 | `fig-15-3` Fig 15.3 · Man-in-the-middle · with and without TLS | 2.5 px · cap 132 | deferred: conceptual pass |
 | 187 | 4 | `fig-15-4` Fig 15.4 · ARP spoofing · poisoning the address-resolution cache | 2.5 px · cap 137 | deferred: conceptual pass |
 | 188 | 4 | `fig-15-5` Fig 15.5 · SQL injection defence in depth · five layers, each independent | 2.5 px · cap 122 | deferred: conceptual pass |
 | 189 | 4 | `fig-15-6` Fig 15.6 · SSRF · the server makes the request the attacker can't | 2.5 px · cap 134 | deferred: conceptual pass |
-| 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | todo |
+| 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | deferred: conceptual pass |
 | 191 | 4 | `fig-15-8` Fig 15.8 · Stuxnet · four zero-days, a USB jump, sabotage of physical machines | 2.9 px · cap 158 | deferred: conceptual pass |
 | 192 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns | 2.5 px · cap 141 | deferred: conceptual pass |
 | 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | todo |
