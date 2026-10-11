@@ -52,8 +52,8 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | done 2026-10-11 |
 | 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | done 2026-10-11 |
 | 44 | 1 | `fig-br-6` Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back | 2.2 px · cap 97 | done 2026-10-11 |
-| 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | deferred: conceptual pass |
-| 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | deferred: conceptual pass |
+| 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | done 2026-10-11 |
+| 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | done 2026-10-11 |
 | 47 | 1 | `fig-br-9` Fig BR.9 · Hardware features → kernel → abstractions | 2.2 px · cap 112 | deferred: conceptual pass |
 | 48 | 2 | `fig-4-1` Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992 | 2.5 px · cap 118 | done 2026-10-10 |
 | 49 | 2 | `fig-4-2` Fig 4.2 · Monolithic vs microkernel · speed against safety | 2.5 px · cap 57 | done 2026-10-10 |

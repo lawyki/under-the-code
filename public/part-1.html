@@ -5188,85 +5188,58 @@ main:
 
     <h3>Memory-mapped I/O: devices live at memory addresses</h3>
 
-    <div class="diagram-card" id="fig-br-7">
-      <div class="diagram-label">Fig BR.7 · The physical address space · devices among the RAM</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49"><title id="svgt-part1-49">Fig BR.7 · The physical address space · devices among the RAM</title>
-        <text x="360" y="28" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">PHYSICAL ADDRESS SPACE: A SINGLE FLAT 64-BIT MAP</text>
-
-        <!-- The vertical address space -->
-        <rect x="180" y="60" width="180" height="280" fill="#1a1a1a" stroke="rgba(212,168,83,0.4)"/>
-
-        <!-- Bottom: RAM -->
-        <rect x="180" y="240" width="180" height="100" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.5)"/>
-        <text x="270" y="285" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(100,150,255,0.95)">DRAM</text>
-        <text x="270" y="302" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">your program's memory</text>
-        <text x="270" y="316" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.4)">page tables, kernel, all processes</text>
-
-        <!-- Frame buffer -->
-        <rect x="180" y="200" width="180" height="40" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.45)"/>
-        <text x="270" y="225" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.95)">FRAME BUFFER · GPU</text>
-
-        <!-- PCIe MMIO -->
-        <rect x="180" y="160" width="180" height="40" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.5)"/>
-        <text x="270" y="178" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.95)">PCIe MMIO</text>
-        <text x="270" y="192" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">NIC, NVMe, USB controllers</text>
-
-        <!-- LAPIC -->
-        <rect x="180" y="120" width="180" height="40" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.45)"/>
-        <text x="270" y="138" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">LAPIC · TIMER · IO-APIC</text>
-        <text x="270" y="152" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">interrupt controllers</text>
-
-        <!-- BIOS -->
-        <rect x="180" y="80" width="180" height="40" fill="#1a1200" stroke="rgba(212,168,83,0.4)"/>
-        <text x="270" y="98" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">BIOS / UEFI</text>
-        <text x="270" y="112" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.55)">firmware ROM</text>
-
-        <!-- Address labels on left -->
-        <g font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">
-          <text x="170" y="88" text-anchor="end">0xFFFE_0000</text>
-          <text x="170" y="128" text-anchor="end">0xFEC0_0000</text>
-          <text x="170" y="168" text-anchor="end">0xFE00_0000</text>
-          <text x="170" y="208" text-anchor="middle">…</text>
-          <text x="170" y="248" text-anchor="end">0xA000_0000</text>
-          <text x="170" y="288" text-anchor="middle">…</text>
-          <text x="170" y="338" text-anchor="end">0x0000_0000</text>
-        </g>
-
-        <!-- CPU on left -->
-        <g transform="translate(40,180)">
-          <rect x="0" y="0" width="80" height="80" rx="6" fill="#1a1a1a" stroke="rgba(212,168,83,0.55)"/>
-          <text x="40" y="24" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">CPU</text>
-          <text x="40" y="42" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.5)">issues</text>
-          <text x="40" y="56" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(212,168,83,0.85)">MOV [addr]</text>
-          <text x="40" y="70" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.5)">read/write</text>
-        </g>
-
-        <!-- arrows from CPU to all regions -->
-        <line x1="120" y1="200" x2="180" y2="100" stroke="rgba(212,168,83,0.3)" stroke-dasharray="3,3"/>
-        <line x1="120" y1="200" x2="180" y2="140" stroke="rgba(232,120,120,0.4)" stroke-dasharray="3,3"/>
-        <line x1="120" y1="200" x2="180" y2="180" stroke="rgba(212,168,83,0.5)" stroke-dasharray="3,3"/>
-        <line x1="120" y1="200" x2="180" y2="220" stroke="rgba(150,216,150,0.45)" stroke-dasharray="3,3"/>
-        <line x1="120" y1="220" x2="180" y2="290" stroke="rgba(100,150,255,0.5)" stroke-dasharray="3,3"/>
-
-        <!-- Annotation right: device side -->
-        <text x="380" y="76" font-family="DM Mono" font-size="8.5" fill="rgba(212,168,83,0.85)">writing to 0xFFFE_xxxx →</text>
-        <text x="380" y="88" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.55)">hits firmware ROM (read-only at runtime)</text>
-
-        <text x="380" y="118" font-family="DM Mono" font-size="8.5" fill="rgba(232,120,120,0.85)">writing to 0xFEC0_xxxx →</text>
-        <text x="380" y="130" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.55)">programs the IO-APIC (interrupt routing)</text>
-
-        <text x="380" y="158" font-family="DM Mono" font-size="8.5" fill="rgba(212,168,83,0.85)">writing to PCIe MMIO →</text>
-        <text x="380" y="170" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.55)">device register write: NIC sends a packet, NVMe queues an op</text>
-
-        <text x="380" y="200" font-family="DM Mono" font-size="8.5" fill="rgba(150,216,150,0.95)">writing to frame buffer →</text>
-        <text x="380" y="212" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.55)">pixels appear on screen at the next refresh</text>
-
-        <text x="380" y="248" font-family="DM Mono" font-size="8.5" fill="rgba(100,150,255,0.95)">writing to DRAM →</text>
-        <text x="380" y="260" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.55)">ordinary memory store; nothing is sent anywhere</text>
-
-        <text x="380" y="300" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.6)" font-style="italic">Same instruction. Different effect entirely. Determined by the address.</text>
-      </svg>
-      <p id="chBridge-io-p3" class="diagram-caption">The CPU sees one flat physical address space. Some of those addresses are RAM; some are a video framebuffer; some are device registers on PCIe controllers; some are interrupt-routing chips; some are firmware ROM. The CPU doesn't know which is which. It just issues a load or a store. The chipset routes the access to the right place. To send a packet, the kernel writes to the NIC's MMIO region. To draw a pixel, the kernel writes to the framebuffer. To program the timer's tick rate, the kernel writes to the LAPIC's MMIO region. The same <code>MOV</code> instruction does all of these. Only the address differs. And only the kernel can map any of these regions into a process's address space (Section 03), so only the kernel can reach them.</p>
+    <div class="diagram-card fig-v2" id="fig-br-7">
+      <div class="diagram-label">Fig BR.7&nbsp;· The physical address space&nbsp;· devices among the RAM</div>
+      <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49 svgd-part1-49">
+<title id="svgt-part1-49">Fig BR.7 · The physical address space · devices among the RAM</title>
+<desc id="svgd-part1-49">The lowest 4 GiB of a typical PC's physical address map, top to bottom: firmware ROM just below 4 GiB, the local APIC at 0xFEE0_0000, the IO-APIC at 0xFEC0_0000, a network card's registers and the GPU's frame buffer in a PCIe window, and RAM from address zero. The CPU runs the same store instruction four times with four addresses: into RAM, where the value is simply stored; into the frame buffer, where a pixel changes; into the network card's registers, which sends a packet; and into the local APIC, which sets the timer's rate.</desc>
+<rect x="20" y="12" width="360" height="40" rx="6" fill="#86a8ff" fill-opacity="0.08" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="37" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">CPU:</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.332667;0.332917;1.000000" dur="12s" repeatCount="indefinite"/><text x="80" y="37" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">mov [0x0040_1000], x</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.532667;0.532917;1.000000" dur="12s" repeatCount="indefinite"/><text x="80" y="37" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">mov [0xC000_0400], x</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.533167;0.533333;0.732667;0.732917;1.000000" dur="12s" repeatCount="indefinite"/><text x="80" y="37" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">mov [0xC010_0018], x</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.733167;0.733333;1.000000" dur="12s" repeatCount="indefinite"/><text x="80" y="37" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">mov [0xFEE0_0380], x</text></g>
+<rect x="20" y="76" width="196" height="42" rx="4" fill="rgba(255,255,255,0.6)" fill-opacity="0.12" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
+<text x="30" y="94" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">firmware ROM</text>
+<text x="30" y="111" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFF00_0000</text>
+<rect x="20" y="122" width="196" height="42" rx="4" fill="#d4a853" fill-opacity="0.12" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="30" y="140" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">local APIC</text>
+<text x="30" y="157" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFEE0_0000</text>
+<rect x="20" y="168" width="196" height="42" rx="4" fill="#d4a853" fill-opacity="0.12" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="30" y="186" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">IO-APIC</text>
+<text x="30" y="203" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFEC0_0000</text>
+<rect x="20" y="214" width="196" height="42" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="30" y="232" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">network card</text>
+<text x="30" y="249" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xC010_0000</text>
+<rect x="20" y="260" width="196" height="42" rx="4" fill="#86a8ff" fill-opacity="0.12" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="30" y="278" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">GPU frame buffer</text>
+<text x="30" y="295" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xC000_0000</text>
+<rect x="20" y="306" width="196" height="66" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="30" y="336" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">RAM</text>
+<text x="30" y="353" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0x0000_0000</text>
+<text x="20" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">low addresses at the bottom</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="344" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">stored, nothing else</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.199833;0.200000;0.250000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="304.0" width="200" height="70" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.200167;0.200417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 287.00;0 287.00;0 0.00;0 0.00;0 287.00;0 287.00" keyTimes="0.000000;0.049958;0.050000;0.133333;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.399833;0.400000;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="286" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">a pixel changes</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.399833;0.400000;0.450000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="258.0" width="200" height="46" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.400167;0.400417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 229.00;0 229.00;0 0.00;0 0.00;0 229.00;0 229.00" keyTimes="0.000000;0.049958;0.050000;0.333333;0.400000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.599833;0.600000;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="240" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">a packet is sent</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.599833;0.600000;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="212.0" width="200" height="46" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.533167;0.533333;0.600167;0.600417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 183.00;0 183.00;0 0.00;0 0.00;0 183.00;0 183.00" keyTimes="0.000000;0.049958;0.050000;0.533333;0.600000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.799833;0.800000;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="148" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">timer rate set</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.799833;0.800000;0.850000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="120.0" width="200" height="46" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.733167;0.733333;0.800167;0.800417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 91.00;0 91.00;0 0.00;0 0.00;0 91.00;0 91.00" keyTimes="0.000000;0.049958;0.050000;0.733333;0.800000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
+</svg>
+      <p id="chBridge-io-p3" class="diagram-caption">To the CPU, physical memory is one flat range of addresses, but only some of it is RAM: other ranges belong to devices. The same store instruction saves a value, changes a pixel, sends a packet or sets the timer, depending only on the address.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Who routes it.</b> The memory controller and PCIe root complex send each access to RAM or to the device that claimed that range at boot; the addresses shown are typical, and every machine's map differs.</li>
+          <li><b>Who may touch it.</b> Only the kernel maps device ranges into an address space (Fig BR.4), so a user program cannot reach a device's registers directly.</li>
+          <li><b>Not cached.</b> Device ranges are marked uncacheable, so every store really reaches the device instead of waiting in a cache.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>DMA: when the device copies on its own</h3>
@@ -5282,56 +5255,64 @@ main:
       and the kernel takes over to clean up.
     </p>
 
-    <div class="light-diagram" id="fig-br-8">
-      <div class="diagram-label">Fig BR.8 · Direct memory access · the device writes RAM by itself</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50"><title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>
-        <!-- CPU -->
-        <g transform="translate(40,90)">
-          <rect x="0" y="0" width="110" height="100" rx="8" fill="#fff" stroke="rgba(140,98,30,0.5)"/>
-          <text x="55" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#8a6a2a">CPU</text>
-          <text x="55" y="42" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">programs DMA:</text>
-          <text x="55" y="56" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#1a1614">src · dst · count</text>
-          <text x="55" y="80" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">then runs</text>
-          <text x="55" y="92" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#5fa05f">other code</text>
-        </g>
-
-        <!-- Disk -->
-        <g transform="translate(560,90)">
-          <rect x="0" y="0" width="110" height="100" rx="8" fill="#fff" stroke="rgba(0,0,0,0.18)"/>
-          <text x="55" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#1a1614">NVMe SSD</text>
-          <text x="55" y="42" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">reads sector</text>
-          <text x="55" y="56" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">streams bytes</text>
-          <text x="55" y="80" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">via PCIe DMA</text>
-        </g>
-
-        <!-- RAM -->
-        <g transform="translate(290,90)">
-          <rect x="0" y="0" width="140" height="100" rx="8" fill="#fff" stroke="rgba(0,0,0,0.2)"/>
-          <text x="70" y="22" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#1a1614">DRAM</text>
-          <text x="70" y="38" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">buffer at</text>
-          <text x="70" y="50" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#1a1614">0x4a20_0000</text>
-          <rect x="20" y="64" width="100" height="22" fill="rgba(150,216,150,0.2)" stroke="rgba(95,160,95,0.5)"/>
-          <text x="70" y="79" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#5fa05f">filled by DMA</text>
-        </g>
-
-        <!-- Step 1: CPU programs DMA -->
-        <line x1="150" y1="120" x2="556" y2="120" stroke="rgba(140,98,30,0.6)" stroke-width="1.2" stroke-dasharray="4,3"/>
-        <polygon points="551,116 559,120 551,124" fill="rgba(140,98,30,0.7)"/>
-        <text x="350" y="113" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#8a6a2a">① small MMIO write: "send sector 4096 to buf 0x4a20_0000"</text>
-
-        <!-- Step 2: SSD writes to RAM bypassing CPU -->
-        <path d="M 559 168 Q 480 230 430 168" fill="none" stroke="#5fa05f" stroke-width="1.5" stroke-dasharray="6 4" class="flow-dash"/>
-        <polygon points="430,164 425,170 432,172" fill="#5fa05f"/>
-        <text x="490" y="218" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#5fa05f">② SSD writes RAM directly · CPU does other work</text>
-
-        <!-- Step 3: SSD raises IRQ -->
-        <path d="M 559 100 Q 350 40 150 100" fill="none" stroke="#b85050" stroke-width="1.4" stroke-dasharray="4,3"/>
-        <polygon points="155,96 147,100 155,104" fill="#b85050"/>
-        <text x="350" y="36" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#b85050">③ "done": IRQ → kernel handler (vector ≥ 32, see Fig BR.3)</text>
-
-        <text x="360" y="262" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#7a7570" font-style="italic">The CPU touches the data zero times. It only touches the command and the completion.</text>
-      </svg>
-      <p id="chBridge-io-p5" class="diagram-caption">A typical disk read with DMA. Step 1: the kernel does a small MMIO write to the SSD's command register, telling it where to put the result. Step 2: the SSD reads its sectors and writes them straight into RAM, on the memory bus, without involving the CPU. The CPU is free to run other processes during this transfer. Step 3: when the SSD is done, it raises an IRQ; the trap machinery from Section 02 dispatches the kernel's interrupt handler; the kernel marks the I/O complete and wakes whichever process was waiting. For a multi-megabyte read this is the difference between using one core's full attention and using essentially none of it.</p>
+    <div class="diagram-card fig-v2" id="fig-br-8">
+      <div class="diagram-label">Fig BR.8&nbsp;· Direct memory access&nbsp;· the device writes RAM by itself</div>
+      <svg viewBox="0 0 400 304" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">
+<title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>
+<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data and the kernel writes a small command into the SSD's registers: read these blocks into the buffer at 0x4a20_0000. The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never touches the data itself.</desc>
+<rect x="20" y="14" width="170" height="70" rx="6" fill="#86a8ff" fill-opacity="0.08" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="36" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">CPU</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.126545;0.126818;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">process A asks</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.253818;0.254091;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel: command</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.254364;0.254545;0.744727;0.745000;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">runs process B</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.745273;0.745455;0.853818;0.854091;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">IRQ: kernel done</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.854364;0.854545;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">A woken</text></g>
+<rect x="210" y="14" width="170" height="70" rx="6" fill="#d4a853" fill-opacity="0.08" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="222" y="36" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">NVMe SSD</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.181636;0.181818;0.744727;0.745000;1.000000" dur="11s" repeatCount="indefinite"/><text x="222" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">reading blocks</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.745273;0.745455;1.000000" dur="11s" repeatCount="indefinite"/><text x="222" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">done</text></g>
+<rect x="20" y="120" width="360" height="74" rx="6" fill="#9bd89b" fill-opacity="0.08" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="32" y="142" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">RAM: buffer at 0x4a20_0000</text>
+<rect x="32.0" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.308909;0.309091;1.000000" dur="11s" repeatCount="indefinite"/><rect x="32.0" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="74.5" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.363455;0.363636;1.000000" dur="11s" repeatCount="indefinite"/><rect x="74.5" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="117.0" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.418000;0.418182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="117.0" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="159.5" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.472545;0.472727;1.000000" dur="11s" repeatCount="indefinite"/><rect x="159.5" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="202.0" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.527091;0.527273;1.000000" dur="11s" repeatCount="indefinite"/><rect x="202.0" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="244.5" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.581636;0.581818;1.000000" dur="11s" repeatCount="indefinite"/><rect x="244.5" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="287.0" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.636182;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><rect x="287.0" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<rect x="329.5" y="154" width="38.5" height="28" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.5"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.690727;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><rect x="329.5" y="154" width="38.5" height="28" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.182000;0.182273;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="20.00 0;20.00 0;0.00 0;0.00 0;20.00 0;20.00 0" keyTimes="0.000000;0.054500;0.054545;0.127273;0.181818;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00" keyTimes="0.000000;0.054500;0.054545;0.127273;0.181818;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="190" cy="49" r="6" fill="#d4a853"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.254364;0.254545;0.309273;0.309545;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-243.75 0;-243.75 0;0.00 0;0.00 0;-243.75 0;-243.75 0" keyTimes="0.000000;0.054500;0.054545;0.254545;0.309091;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.254545;0.309091;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.308909;0.309091;0.363818;0.364091;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-201.25 0;-201.25 0;0.00 0;0.00 0;-201.25 0;-201.25 0" keyTimes="0.000000;0.054500;0.054545;0.309091;0.363636;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.309091;0.363636;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.363455;0.363636;0.418364;0.418636;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-158.75 0;-158.75 0;0.00 0;0.00 0;-158.75 0;-158.75 0" keyTimes="0.000000;0.054500;0.054545;0.363636;0.418182;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.363636;0.418182;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.418000;0.418182;0.472909;0.473182;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-116.25 0;-116.25 0;0.00 0;0.00 0;-116.25 0;-116.25 0" keyTimes="0.000000;0.054500;0.054545;0.418182;0.472727;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.418182;0.472727;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.472545;0.472727;0.527455;0.527727;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-73.75 0;-73.75 0;0.00 0;0.00 0;-73.75 0;-73.75 0" keyTimes="0.000000;0.054500;0.054545;0.472727;0.527273;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.472727;0.527273;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.527091;0.527273;0.582000;0.582273;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-31.25 0;-31.25 0;0.00 0;0.00 0;-31.25 0;-31.25 0" keyTimes="0.000000;0.054500;0.054545;0.527273;0.581818;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.527273;0.581818;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.581636;0.581818;0.636545;0.636818;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="11.25 0;11.25 0;0.00 0;0.00 0;11.25 0;11.25 0" keyTimes="0.000000;0.054500;0.054545;0.581818;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.581818;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.636182;0.636364;0.691091;0.691364;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="53.75 0;53.75 0;0.00 0;0.00 0;53.75 0;53.75 0" keyTimes="0.000000;0.054500;0.054545;0.636364;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.636364;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.745273;0.745455;0.800182;0.800455;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-20.00 0;-20.00 0;0.00 0;0.00 0;-20.00 0;-20.00 0" keyTimes="0.000000;0.054500;0.054545;0.745455;0.800000;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00" keyTimes="0.000000;0.054500;0.054545;0.745455;0.800000;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="210" cy="70" r="6" fill="#ec8d8d"/></g></g></g>
+<g opacity="0.3"><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel writes a small command</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127091;0.127273;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel writes a small command</text></g>
+<g opacity="0.3"><text x="20" y="242" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">2  the SSD fills RAM on its own</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.254364;0.254545;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="242" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">2  the SSD fills RAM on its own</text></g>
+<g opacity="0.3"><text x="20" y="264" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">3  an interrupt says done</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.745273;0.745455;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="264" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">3  an interrupt says done</text></g>
+<text x="20" y="292" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the CPU never touches the data</text>
+</svg>
+      <p id="chBridge-io-p5" class="diagram-caption">With direct memory access the kernel only writes a small command telling the device where to put the data; the device then copies it into RAM on its own while the CPU runs something else. An interrupt says when it is done, so the CPU handles the command and the completion but never the data.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Queues.</b> An NVMe drive takes its commands from queues in RAM that the kernel fills; one register write (a doorbell) tells it new work is waiting.</li>
+          <li><b>The IOMMU.</b> A second address-translation unit, for devices: the kernel decides which parts of RAM each device may reach, so a faulty or untrusted device cannot write anywhere it likes.</li>
+          <li><b>Why it pays.</b> Copying gigabytes a second through the CPU would take a core's whole attention; with DMA it takes almost none.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="chBridge-io-p6">
