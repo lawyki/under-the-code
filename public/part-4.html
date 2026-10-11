@@ -1619,75 +1619,91 @@
       and breaking one is easier than breaking another.
     </p>
 
-    <div class="diagram-card" id="fig-14-3">
-      <div class="diagram-label">Fig 14.3 · Three hash properties · three different attacks</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-16"><title id="svgt-part4-16">Fig 14.3 · Three hash properties · three different attacks</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">hashing breaks three different ways · in increasing order of difficulty for the defender</text>
-
-        <!-- Preimage -->
-        <g transform="translate(40,68)">
-          <text x="100" y="0" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">PREIMAGE</text>
-          <text x="100" y="18" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">given hash, find any input</text>
-
-          <rect x="0" y="32" width="200" height="60" rx="3" fill="#14100b" stroke="rgba(180,80,80,0.65)"/>
-          <text x="14" y="50" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">given:</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  H(?) = e3b0c44…</text>
-          <text x="14" y="78" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">find: any x s.t. H(x) = …</text>
-
-          <text x="100" y="120" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">cost ≈ 2<tspan font-size="8" baseline-shift="super">n</tspan></text>
-          <text x="100" y="138" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">brute force the space</text>
-
-          <text x="100" y="170" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">hardest</text>
-          <text x="100" y="184" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">password reversal</text>
-          <text x="100" y="198" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">SHA-256: 2<tspan font-size="6" baseline-shift="super">256</tspan> ≈ infeasible</text>
-        </g>
-
-        <!-- Second preimage -->
-        <g transform="translate(260,68)">
-          <text x="100" y="0" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">SECOND PREIMAGE</text>
-          <text x="100" y="18" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">given input x₁, find x₂ ≠ x₁ with same hash</text>
-
-          <rect x="0" y="32" width="200" height="60" rx="3" fill="#14100b" stroke="rgba(140,82,64,0.65)"/>
-          <text x="14" y="50" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">given:</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  x₁ + H(x₁)</text>
-          <text x="14" y="78" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">find: x₂ s.t. H(x₂) = H(x₁)</text>
-
-          <text x="100" y="120" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">cost ≈ 2<tspan font-size="8" baseline-shift="super">n</tspan></text>
-          <text x="100" y="138" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">target one specific hash</text>
-
-          <text x="100" y="170" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">also infeasible</text>
-          <text x="100" y="184" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">forge a document</text>
-          <text x="100" y="198" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">that hashes to original</text>
-        </g>
-
-        <!-- Collision -->
-        <g transform="translate(480,68)">
-          <text x="100" y="0" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">COLLISION</text>
-          <text x="100" y="18" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">find any two distinct inputs with same hash</text>
-
-          <rect x="0" y="32" width="200" height="60" rx="3" fill="#14100b" stroke="rgba(140,82,64,0.65)"/>
-          <text x="14" y="50" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">given: nothing</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">find: x₁ ≠ x₂ s.t.</text>
-          <text x="14" y="78" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  H(x₁) = H(x₂)</text>
-
-          <text x="100" y="120" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)">cost ≈ 2<tspan font-size="8" baseline-shift="super">n/2</tspan></text>
-          <text x="100" y="138" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">birthday paradox</text>
-
-          <text x="100" y="170" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">EASIEST</text>
-          <text x="100" y="184" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">SHA-1: 2<tspan font-size="6" baseline-shift="super">63</tspan> · achieved 2017</text>
-          <text x="100" y="198" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">MD5: broken 2004 · seconds today</text>
-        </g>
-
-        <!-- Bottom: birthday paradox -->
-        <g transform="translate(40,260)">
-          <rect x="0" y="0" width="640" height="80" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">BIRTHDAY PARADOX: why collision is √cheaper than preimage</text>
-          <text x="320" y="40" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">in a room of 23 people, two share a birthday with probability &gt; 50%</text>
-          <text x="320" y="54" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">because there are 23×22/2 = 253 pairs · pairs grow quadratically</text>
-          <text x="320" y="68" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">a hash with n-bit output has 2<tspan font-size="7" baseline-shift="super">n</tspan> values · collision found at ≈ 2<tspan font-size="7" baseline-shift="super">n/2</tspan> attempts</text>
-        </g>
-      </svg>
-      <p id="ch14-hashing-p2" class="diagram-caption">The three hash-security properties, ordered from hardest to break down to easiest. Collision resistance is the weakest, and so the property that fails <em>first</em> when a hash is weakened (its birthday bound is ~2<sup>128</sup> against a preimage's ~2<sup>256</sup>). SHA-1 (160-bit output) became collision-vulnerable in 2017 when Google published <em>SHAttered</em> (two PDF files with identical SHA-1 hashes) at a cost of about 2<sup>63</sup> hash computations. Preimage resistance against SHA-1 is still intact at ~2<sup>160</sup>. The lesson: when a hash function shows weakness, it shows up at collision first; preimage and second-preimage are typically stable for years afterwards. SHA-256, the modern standard, has 2<sup>128</sup> as its theoretical collision bound, well beyond foreseeable computing, and is what every modern system uses. SHA-3 (Keccak, chosen by NIST in 2012 and standardised in 2015), built on a different internal structure, exists as a hedge against unforeseen weaknesses in SHA-256's underlying construction.</p>
+    <div class="diagram-card fig-v2" id="fig-14-3">
+      <div class="diagram-label">Fig 14.3&nbsp;· Three hash properties&nbsp;· three different attacks</div>
+      <svg viewBox="0 0 400 342" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-16 svgd-part4-16">
+<title id="svgt-part4-16">Fig 14.3 · Three hash properties · three different attacks</title>
+<desc id="svgd-part4-16">The work needed to break each property of SHA-256, drawn to scale in the exponent: finding an input for a given hash (preimage) takes about 2 to the 256; finding a second input with the same hash as a given one also takes about 2 to the 256; finding any two inputs with one hash (a collision) takes only about 2 to the 128. Below, the birthday effect explains why: people are placed one at a time on a strip of the 365 days of the year, the count of pairs growing as the square of the people, and the 23rd person shares a birthday with the 5th; 23 people make 253 pairs.</desc>
+<text x="20" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">bits of work to break SHA-256</text>
+<text x="20" y="48" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">preimage</text>
+<text x="380" y="48" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">a hash: find an input</text>
+<rect x="20" y="56" width="290.0" height="16" rx="2" fill="#c05a48" fill-opacity="0.55"/>
+<text x="318" y="69" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">2<tspan dy="-6">256</tspan></text>
+<text x="20" y="104" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">second preimage</text>
+<text x="380" y="104" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">an input: find another</text>
+<rect x="20" y="112" width="290.0" height="16" rx="2" fill="#c05a48" fill-opacity="0.55"/>
+<text x="318" y="125" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">2<tspan dy="-6">256</tspan></text>
+<text x="20" y="160" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">collision</text>
+<text x="380" y="160" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">any two with one hash</text>
+<rect x="20" y="168" width="145.0" height="16" rx="2" fill="#c9a25a" fill-opacity="0.55"/>
+<text x="173" y="181" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">2<tspan dy="-6">128</tspan></text>
+<line x1="20" y1="202" x2="380" y2="202" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.35"/>
+<text x="20" y="222" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">why collisions are cheap: birthdays</text>
+<rect x="20" y="252" width="360" height="6" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="20" y="276" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Jan</text>
+<text x="199.011" y="276" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Jul</text>
+<text x="380" y="276" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Dec</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="258.8" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.163167;0.163333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="80.8" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.193167;0.193333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="337.0" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.223167;0.223333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="328.1" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.253167;0.253333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="222.2" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="221.2" y="226" width="5" height="26" rx="1" fill="#cf8d78"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.283167;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="289.5" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.313167;0.313333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="365.6" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.343167;0.343333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="26.4" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.373167;0.373333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="121.4" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.403167;0.403333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="154.0" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="374.5" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.463167;0.463333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="338.0" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.493167;0.493333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="120.4" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.523167;0.523333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="371.6" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.553167;0.553333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="348.8" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.583167;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="92.7" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.613167;0.613333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="58.1" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.643167;0.643333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="229.2" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.673167;0.673333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="241.0" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.703167;0.703333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="118.4" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.733167;0.733333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="30.4" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.763167;0.763333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="60.0" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="222.2" y="230" width="3" height="20" rx="1" fill="rgba(230,217,189,0.85)"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="221.2" y="226" width="5" height="26" rx="1" fill="#cf8d78"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.793167;0.793333;0.851667;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="223.7" cy="240" r="14" fill="none" stroke="#cf8d78" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.162667;0.162917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 1</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.163167;0.163333;0.192667;0.192917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 2</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.193167;0.193333;0.222667;0.222917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 3</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.223167;0.223333;0.252667;0.252917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 4</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 6</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.253167;0.253333;0.282667;0.282917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 5</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 10</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.283167;0.283333;0.312667;0.312917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 6</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 15</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.313167;0.313333;0.342667;0.342917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 7</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 21</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.343167;0.343333;0.372667;0.372917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 8</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 28</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.373167;0.373333;0.402667;0.402917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 9</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 36</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.403167;0.403333;0.432667;0.432917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 10</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 45</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.433167;0.433333;0.462667;0.462917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 11</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 55</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.463167;0.463333;0.492667;0.492917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 12</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 66</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.493167;0.493333;0.522667;0.522917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 13</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 78</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.523167;0.523333;0.552667;0.552917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 14</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 91</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.553167;0.553333;0.582667;0.582917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 15</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 105</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.583167;0.583333;0.612667;0.612917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 16</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 120</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.613167;0.613333;0.642667;0.642917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 17</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 136</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.643167;0.643333;0.672667;0.672917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 18</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 153</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.673167;0.673333;0.702667;0.702917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 19</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 171</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.703167;0.703333;0.732667;0.732917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 20</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 190</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.733167;0.733333;0.762667;0.762917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 21</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 210</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.763167;0.763333;0.792667;0.792917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 22</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 231</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 23</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 253</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">person 23 shares a day with person 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.792667;0.792917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">pairs grow as the square</text></g>
+</svg>
+      <p id="ch14-hashing-p2" class="diagram-caption">A collision needs only some pair of inputs to match, and the pairs grow as the square of the inputs tried: 23 people already make 253 pairs and better than even odds of a shared birthday. So a 256-bit hash holds out against collisions only to about 2<sup>128</sup> work, against about 2<sup>256</sup> for either preimage.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>SHA-1.</b> A 160-bit hash: collisions were produced in practice in 2017 (<span class="key-term">SHAttered</span>, about 2<sup>63</sup> computations), while a preimage still costs about 2<sup>160</sup>.</li>
+          <li><b>No shortcut for a second preimage.</b> The target is one fixed hash, not any pair, so the birthday effect does not help.</li>
+          <li><b>Choosing a size.</b> Collision resistance is half the output size in bits, which is why 128-bit security calls for a 256-bit hash.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Inside SHA-256 · sketches · not pseudocode</h3>

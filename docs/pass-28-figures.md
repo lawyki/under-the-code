@@ -180,7 +180,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | done 2026-10-11 |
 | 171 | 4 | `fig-14-1` Fig 14.1 · Two thousand years of cryptography in one strip | 2.5 px · cap 117 | done 2026-10-11 |
 | 172 | 4 | `fig-14-2` Fig 14.2 · The four one-way functions cryptography is built on | 2.5 px · cap 240 | done 2026-10-11 |
-| 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | todo |
+| 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | done 2026-10-11 |
 | 174 | 4 | `fig-14-4` Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF | 2.9 px · cap 129 | todo |
 | 175 | 4 | `fig-14-5` Fig 14.5 · One AES round · four steps on a 4×4 byte grid | 2.2 px · cap 127 | done 2026-10-11 |
 | 176 | 4 | `fig-14-6` Fig 14.6 · ECB's famous failure · structure leaks through | 2.9 px · cap 142 | todo |
