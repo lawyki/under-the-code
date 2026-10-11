@@ -3676,6 +3676,14 @@ delta), traces 228/0 (+1 skip), marks 106/0, UI 93/0, parity 39/40 (one
 part-3 sample in a caption gap, ch8-layers-p5, same class as §4aa Part III:
 sub-pixel, table-rebuild timing).
 
+## 4ac. Pass 29 (2026-10-11 →): the book teaches
+
+Brief: `docs/pass-29-30-brief.md` (PASS 29). Per section: cold reader → teacher → student advocate → fact and voice gate → cold reader again (zero search points to pass; two repair rounds at most, then an owner call). Per part: apply, aliases, glossary and sections rebuilt, dashes, `tests/pass25`, budget, Sonnet 5.5 verification against the text at 664e794. Model: Opus 5.5. Tools: `scripts/count-prose.mjs` (budget), `scripts/known-terms.mjs` → `docs/pass-29-known-terms.json`, `scripts/section-packet.mjs` (the section as agents read it), cold-reader instructions `docs/pass-29-cold-reader.md`.
+
+**Budget** (section prose, Passes 28 and 29 together, ceiling 02f486b × 1.05): I 12,699 (Pass 28 close 12,098), II 11,435 (10,898), III 14,712 (14,066), IV 10,249 (9,811), V 6,490 (6,187).
+
+**Calibration (2026-10-11).** Planted gap (ch1-context-p4's definition of Turing's device removed): logged on the first try, as the reader's first point. Real runs: ch1-context 10 search points, ch16-lockfree 4 (record `docs/pass-29-calibration.json`). Owner page published (https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu). **Owner gave go without marks, 2026-10-11; recall and precision tests not run.** The cold reader runs as calibrated (v1).
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em

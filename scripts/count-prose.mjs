@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Section-prose words per section and per part (Pass 29 budget, docs/pass-29-30-brief.md).
 //
-// "Section prose" is what Pass 27 counted (§4aa): every <p> and <li> inside a
-// <section class="section" id="ch…">, with figure cards (drawing, caption and
+// "Section prose" is what Pass 27 counted (§4aa): every <p> and <li> from a
+// <section class="section" id="ch…"> up to the next one (so a chapter's coda and the
+// next chapter's hero lead count with the section before them), with figure cards (drawing, caption and
 // "How it works" strip) masked out, section-number labels skipped, tags
 // stripped, words split on whitespace. A port of Pass 27's p27/extract.py.
 //
@@ -42,6 +43,8 @@ export function countPart(src) {
   return out;
 }
 
+if (import.meta.url === `file://${process.argv[1]}`) main();
+function main() {
 const result = {};
 for (const part of PARTS) {
   const secs = countPart(read(part));
@@ -55,3 +58,4 @@ for (const part of PARTS) {
   if (ARGS.sections) for (const s of r.sections) console.log(`  ${s.id} ${s.words}`);
 }
 if (PARTS.length > 1) console.log(`total: ${total.toLocaleString('en')}`);
+}
