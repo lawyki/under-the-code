@@ -201,86 +201,72 @@
       concurrent programming are about the price of the danger.
     </p>
 
-    <div class="diagram-card" id="fig-16-1">
-      <div class="diagram-label">Fig 16.1 · Threads vs processes · the same parallelism, two isolation models</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-2"><title id="svgt-part5-2">Fig 16.1 · Threads vs processes · the same parallelism, two isolation models</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(160,140,255,0.95)">shared memory and shared peril vs separate everything and copy costs</text>
-
-        <!-- Threads -->
-        <g transform="translate(40,68)">
-          <text x="160" y="0" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">THREADS: shared address space</text>
-          <rect x="0" y="14" width="320" height="240" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
-
-          <!-- Single shared memory at top -->
-          <rect x="20" y="34" width="280" height="60" rx="4" fill="rgba(160,140,255,0.18)" stroke="rgba(96,80,190,0.85)"/>
-          <text x="160" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(160,140,255,0.95)">SHARED MEMORY</text>
-          <text x="160" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">heap · globals · file descriptors</text>
-          <text x="160" y="86" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.6)">visible to all threads</text>
-
-          <!-- Three thread stacks -->
-          <rect x="20" y="114" width="80" height="70" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="60" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">thread 1</text>
-          <text x="60" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="60" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own regs</text>
-          <text x="60" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 0</text>
-
-          <rect x="120" y="114" width="80" height="70" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="160" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">thread 2</text>
-          <text x="160" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="160" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own regs</text>
-          <text x="160" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 1</text>
-
-          <rect x="220" y="114" width="80" height="70" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="260" y="132" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">thread 3</text>
-          <text x="260" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="260" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own regs</text>
-          <text x="260" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 2</text>
-
-          <text x="160" y="208" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(160,140,255,0.85)">communicate by reading/writing memory</text>
-          <text x="160" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.85)">cheap to create (microseconds) · fast IPC</text>
-          <text x="160" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.85)">a bug in one thread can corrupt all of them</text>
-        </g>
-
-        <!-- Processes -->
-        <g transform="translate(380,68)">
-          <text x="160" y="0" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">PROCESSES: isolated address spaces</text>
-          <rect x="0" y="14" width="320" height="240" rx="4" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.55)"/>
-
-          <rect x="20" y="34" width="80" height="170" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="60" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">process A</text>
-          <text x="60" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own heap</text>
-          <text x="60" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="60" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own files</text>
-          <text x="60" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 0</text>
-
-          <rect x="120" y="34" width="80" height="170" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="160" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">process B</text>
-          <text x="160" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own heap</text>
-          <text x="160" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="160" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own files</text>
-          <text x="160" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 1</text>
-
-          <rect x="220" y="34" width="80" height="170" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="260" y="54" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.95)">process C</text>
-          <text x="260" y="80" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own heap</text>
-          <text x="260" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own stack</text>
-          <text x="260" y="112" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">own files</text>
-          <text x="260" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="rgba(214,210,236,0.7)">core 2</text>
-
-          <text x="160" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(160,140,255,0.85)">communicate by IPC (Chapter 4 §05)</text>
-          <text x="160" y="240" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.85)">expensive to start (~1 ms) · IPC ~100× slower than memory</text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,278)">
-          <rect x="0" y="0" width="640" height="80" rx="4" fill="#16132a" stroke="rgba(160,140,255,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(160,140,255,0.95)" letter-spacing="0.1em">CONTEXT-SWITCH COST</text>
-          <text x="320" y="40" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">thread switch within the same process: ~hundreds of nanoseconds (just save/restore registers)</text>
-          <text x="320" y="56" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">process switch: ~microseconds (also flush TLB, swap page tables · Chapter 4 §03)</text>
-          <text x="320" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.85)">→ when threads are enough, threads are dramatically cheaper · when isolation matters, processes are the only safe answer</text>
-        </g>
-      </svg>
-      <p id="ch16-threads-p2" class="diagram-caption">Threads share the heap, the globals, the file descriptor table, and most other process state. Only the call stack and the registers are per-thread. Processes share none of this; each lives behind its own page table, with the kernel mediating any communication. The trade is real and consequential: threads make IPC free (just write to a variable; the other thread can read it) but make every concurrent access a potential bug. Processes make every interaction a system call but make memory corruption between them impossible. Modern programming languages reach for both: C, C++, Java, Rust default to threads; Python's <code>multiprocessing</code> reaches for processes (because the GIL of <a href="part-2#ch7">Chapter 7</a> §04 makes threads less useful); Erlang and Go invented their own lightweight thread-like primitives: Erlang's BEAM processes genuinely get both (share-nothing isolation, cheap messaging); Go's goroutines get the cheapness but keep the shared memory and the races that come with it.</p>
+    <div class="diagram-card fig-v2" id="fig-16-1">
+      <div class="diagram-label">Fig 16.1&nbsp;· Threads vs processes&nbsp;· the same parallelism, two isolation models</div>
+      <svg viewBox="0 0 400 282" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-2 svgd-part5-2">
+<title id="svgt-part5-2">Fig 16.1 · Threads vs processes · the same parallelism, two isolation models</title>
+<desc id="svgd-part5-2">Left: one process with three threads, each with its own stack, all sharing one memory that holds x = 0. Thread 1 writes x = 5 and threads 2 and 3 read 5 at once: fast, with no copy, but a bug in one thread can damage all of them. Right: three processes, each with its own memory. Process A writes x = 5 while B and C still hold 0 until A sends a message through the kernel, by pipe or socket: walls keep them safe, but every share is a copy.</desc>
+<text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">threads: one memory</text>
+<rect x="10" y="28" width="184" height="56" rx="10" fill="#1d1930" stroke="#a08cff" stroke-width="1.5"/>
+<text x="102" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">shared memory</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.199200;0.199500;1.000000" dur="10s" repeatCount="indefinite"/><text x="102" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">x = 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.199800;0.200000;1.000000" dur="10s" repeatCount="indefinite"/><text x="102" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">x = 5</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.199800;0.200000;0.260000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="28" width="184" height="56" rx="10" fill="none" stroke="#fff" stroke-width="2"/></g>
+<line x1="30" y1="84" x2="30" y2="112" stroke="#a08cff" stroke-opacity="0.6"/>
+<rect x="2" y="112" width="56" height="40" rx="8" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.7"/>
+<text x="30" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">t1</text>
+<text x="30" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.299200;0.299500;1.000000" dur="10s" repeatCount="indefinite"/><text x="30" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">write 5</text></g>
+<line x1="102" y1="84" x2="102" y2="112" stroke="#a08cff" stroke-opacity="0.6"/>
+<rect x="74" y="112" width="56" height="40" rx="8" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.7"/>
+<text x="102" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">t2</text>
+<text x="102" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.299800;0.300000;1.000000" dur="10s" repeatCount="indefinite"/><text x="102" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">reads 5</text></g>
+<line x1="174" y1="84" x2="174" y2="112" stroke="#a08cff" stroke-opacity="0.6"/>
+<rect x="146" y="112" width="56" height="40" rx="8" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.7"/>
+<text x="174" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">t3</text>
+<text x="174" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.299800;0.300000;1.000000" dur="10s" repeatCount="indefinite"/><text x="174" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">reads 5</text></g>
+<text x="206" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">processes: own memory</text>
+<rect x="206" y="28" width="56" height="124" rx="8" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.7"/>
+<text x="234" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">A</text>
+<text x="234" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.199200;0.199500;1.000000" dur="10s" repeatCount="indefinite"/><text x="234" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">x = 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.199800;0.200000;1.000000" dur="10s" repeatCount="indefinite"/><text x="234" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">x = 5</text></g>
+<rect x="270" y="28" width="56" height="124" rx="8" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.7"/>
+<text x="298" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">B</text>
+<text x="298" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="298" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">x = 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><text x="298" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">x = 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.299800;0.300000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="298" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">still 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><text x="298" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">got it</text></g>
+<rect x="334" y="28" width="56" height="124" rx="8" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.7"/>
+<text x="362" y="46" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">C</text>
+<text x="362" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">stack</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="362" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">x = 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><text x="362" y="72" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">x = 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.299800;0.300000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="362" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">still 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><text x="362" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">got it</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.199800;0.200000;0.260000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="206" y="28" width="56" height="124" rx="8" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="206" y="200" width="184" height="26" rx="13" fill="none" stroke="rgba(232,229,244,0.58)" stroke-dasharray="4 3"/>
+<text x="298" y="218" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">kernel: pipe, socket</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.620200;0.620500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="64.00 0;64.00 0;0.00 0;0.00 0;64.00 0;64.00 0" keyTimes="0.000000;0.059950;0.060000;0.500000;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="234" cy="213" r="6" fill="#4fd8c2"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.620200;0.620500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="128.00 0;128.00 0;0.00 0;0.00 0;128.00 0;128.00 0" keyTimes="0.000000;0.059950;0.060000;0.500000;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="234" cy="213" r="6" fill="#4fd8c2"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.439800;0.440000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="206" y="172" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">send</text></g>
+<text x="10" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">fast: no copy</text>
+<text x="10" y="270" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">one bug hits all</text>
+<text x="206" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">safe: walls</text>
+<text x="206" y="270" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">every share is a copy</text>
+</svg>
+      <p id="ch16-threads-p2" class="diagram-caption">Threads share one memory, so a value one writes the others can read at once, and a bug in one can damage all of them. Processes each have their own memory: nothing passes until one sends a message through the kernel, which is slower but walls each one off.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>What is shared.</b> Threads share the heap, globals and open files; each has its own stack and registers. Processes share nothing unless they set up shared memory or talk through the kernel.</li>
+          <li><b>The costs.</b> Creating a thread or switching between threads of one process is cheaper than doing the same for processes, which need their own page tables (Chapter 4).</li>
+          <li><b>The standard.</b> POSIX threads (1995) made the shared-memory model portable; C, C++, Java and Rust default to threads, and browsers put each site in its own process for safety.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Where parallelism actually helps</h3>

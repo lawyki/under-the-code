@@ -83,3 +83,9 @@ COURIER = 'font-family="Courier Prime"'
 PARCH, PSOFT, PMUTED = '#e6d9bd', 'rgba(230,217,189,0.85)', 'rgba(230,217,189,0.6)'
 SEAL, STAMP, OXBLOOD, BRASS, SAGE = '#cf8d78', '#b8372f', '#c05a48', '#c9a25a', '#a9bf8e'
 DOSSIER, DCARD = '#171008', '#241a10'
+
+# Part V · Quorum (many machines as one): JetBrains Mono labels, violet and teal in phase on a void-indigo glass
+# plate; motion is phase-synced (things move together, in step). A part's script sets figlib.FONT = JETBRAINS.
+JETBRAINS = 'font-family="JetBrains Mono"'
+VIOLET, TEAL, QSOFT, QMUTED = '#a08cff', '#4fd8c2', 'rgba(232,229,244,0.85)', 'rgba(232,229,244,0.58)'
+QROSE, QAMBER, QVOID, QCARD = '#f08aa8', '#f2c46d', '#14111f', '#1d1930'
