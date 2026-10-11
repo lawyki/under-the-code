@@ -79,8 +79,8 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Why the same chunk.</b> Allocators reuse recently freed chunks of the right size first, because they are likely still in the cache, so the next <code>malloc(64)</code> often gets exactly the chunk just freed.</li>
-          <li><b>Finding them.</b> Valgrind and AddressSanitizer track every allocation: they report leaks when the program exits and a use-after-free at the moment it happens.</li>
-          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; Rust's ownership rules reject use-after-free at compile time.</li>
+          <li><b>Finding them.</b> Valgrind and AddressSanitizer track every allocation: they report leaks when the program exits and a use-after-free when it happens, as long as the freed chunk has not yet been reused.</li>
+          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; in safe Rust, the ownership rules reject use-after-free at compile time.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-5-7">

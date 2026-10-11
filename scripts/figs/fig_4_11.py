@@ -2,7 +2,7 @@
 # not the attack). Top: copy-on-write's one promise, a write lands in a private copy and never in the file underneath.
 # Below, a vertical timeline swept from 2005 to 2017: Linus's first fix of the race (2005) is undone; from Linux 2.6.22
 # (2007) the flaw is in every kernel, a red bar growing for nine years; October 2016, seen in use, patched within
-# hours (author date 2016-10-13, §4g); 2017, the same flaw in the huge-page path (CVE-2017-1000405).
+# hours (author date 2016-10-13, §4g); 2017, a related flaw in the huge-page path (CVE-2017-1000405).
 # t=0 (shift): the whole timeline drawn.
 import figlib
 from figlib import Timeline, text, splice, PLEX, PHOS, PHOS_SOFT, PLATE, PANEL, GOLD, RED, MUTED
@@ -24,8 +24,8 @@ a(text(32, 74, 'never in the file underneath', size=13, fill='#fff', ls='0'))
 # the axis
 AX = 70
 a(f'<line x1="{AX}" y1="{Y[2005] - 14}" x2="{AX}" y2="{Y[2017] + 10}" stroke="{MUTED}"/>')
-EV = [(2005, 'a first fix, later undone', MUTED), (2007, 'Linux 2.6.22: the flaw is in', GOLD),
-      (2016, 'seen in use: patched in hours', PHOS), (2017, 'same flaw in huge pages', GOLD)]
+EV = [(2005, 'a first fix, later undone', MUTED), (2007, 'Linux 2.6.22: flaw ships', GOLD),
+      (2016, 'seen in use: patched in hours', PHOS), (2017, 'a related flaw, huge pages', GOLD)]
 for yr, s, col in EV:
     y = Y[yr]
     a(text(20, y + 5, str(yr), size=13, fill=MUTED, ls='0'))
@@ -38,7 +38,7 @@ grow = T.anim('height', [(0.0, B1 - B0), (0.3, B1 - B0), (0.305, 0.0), (ty(B0), 
 a(f'<rect x="{BX}" y="{B0}" width="10" height="{B1 - B0}" rx="3" fill="{RED}" fill-opacity="0.8">{grow}</rect>')
 MY = (B0 + B1) / 2
 a(text(BX + 24, MY - 4, 'nine years in', size=13, fill=RED, ls='0'))
-a(text(BX + 24, MY + 14, 'every kernel', size=13, fill=RED, ls='0'))
+a(text(BX + 24, MY + 14, 'every kernel after', size=13, fill=RED, ls='0'))
 # the sweep
 mv = T.translate([(0.0, 0.0), (0.3, 0.0), (0.305, 0.0), (TT[2005], 0.0), (TT[2017], Y[2017] - Y[2005]), (D, Y[2017] - Y[2005])], 'y')
 a(f'<g class="fx" opacity="0">{T.anim("opacity", [(0.0, 0.0), (TT[2005] - 0.002, 0.0), (TT[2005], 1.0), (TT[2017] + 0.3, 1.0), (TT[2017] + 0.32, 0.0), (D, 0.0)])}'
@@ -46,16 +46,16 @@ a(f'<g class="fx" opacity="0">{T.anim("opacity", [(0.0, 0.0), (TT[2005] - 0.002,
 H = Y[2017] + 26
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-12 svgd-part2-12">')
 o.insert(1, '<title id="svgt-part2-12">Fig 4.11 · Dirty COW: the race that broke Linux</title>')
-o.insert(2, '<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a first fix for the race is made and later undone; from Linux 2.6.22 in 2007 the flaw is in every kernel, for nine years; in October 2016 it is seen in use and patched within hours; in 2017 the same flaw turns up in the huge-page code.</desc>')
+o.insert(2, '<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a first fix for the race is made and later undone; from Linux 2.6.22 in 2007 the flaw ships in every kernel, for nine years; in October 2016 it is seen in use and patched within hours; in 2017 a related flaw turns up in the huge-page code.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Dirty COW broke copy-on-write\'s one promise: a narrow race let an unprivileged program write to files it could only read. '
-           'It sat in every Linux kernel for nine years, was patched within hours of being seen in use in October 2016, and returned in the huge-page code a year later.')
+caption = ('Dirty COW broke copy-on-write\'s one promise, that a write lands in a private copy and never in the file. '
+           'It shipped in Linux for nine years, was patched within hours of being seen in use in October 2016, and a related flaw followed in the huge-page code a year later.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The fix.</b> The kernel now remembers that it made the private copy and checks that the copy is still the page being written, instead of trusting an earlier look-up.</li>
+          <li><b>The fix.</b> The kernel now remembers that it made the private copy and allows the write only if the page-table entry is still that private copy, instead of retrying the look-up as a plain read.</li>
           <li><b>The class.</b> A check, then an action that relies on it, with a moment between them in which something else can change: time-of-check to time-of-use, closed by making the two one step or checking again.</li>
           <li><b>Getting the patch out.</b> A fix protects only machines that install it; distributions shipped it within days, Android in its December 2016 security bulletin.</li>
         </ol>
