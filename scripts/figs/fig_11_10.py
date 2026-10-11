@@ -77,7 +77,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('With symmetric encryption one key both locks and unlocks: fast, but the key must reach the other side. '
-           'With a key pair the public half locks and only the private half unlocks, so Bob can publish one half openly; TLS uses that slow trick once, to agree on a symmetric key for the data.')
+           'With a key pair the public half locks and only the private half unlocks, so Bob can publish one half openly; TLS uses key pairs once per connection, to agree on a symmetric key for the data.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

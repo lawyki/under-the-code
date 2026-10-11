@@ -25,7 +25,7 @@ win = lambda t0: T.anim('opacity', [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (t0 - 
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-42 svgd-part3-42">')
 a('<title id="svgt-part3-42">Fig 11.3 · One curl, fully traced</title>')
-a('<desc id="svgd-part3-42">A waterfall of the four exchanges behind curl https://example.com/, with a resolver 10 milliseconds away and the server 20 milliseconds away. '
+a('<desc id="svgd-part3-42">A waterfall of the four exchanges behind curl https://example.com/, with a 10 millisecond round trip to the resolver and 20 milliseconds to the server. '
   'DNS turns the name into an address from 0 to 10 milliseconds. The TCP handshake runs from 10 to 30, the TLS 1.3 handshake from 30 to 50, and the HTTP request and response from 50 to 70. '
   'Each starts only when the one before it has finished.</desc>')
 # faint guides at each hand-off
@@ -53,11 +53,11 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Fetching one page over HTTPS is four exchanges in a row, each waiting for the one before: DNS finds the address, TCP opens a connection, TLS agrees on keys, and only then does HTTP ask for the page. '
-           'With the server 20 ms away, the page arrives at 70 ms; only the last 20 carry the request.')
+           'With a 20 ms round trip to the server, the page arrives at 70 ms; only the last 20 carry the request.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The setting.</b> A resolver 10 ms away that already has the name cached, a server 20 ms away. A cold lookup that has to walk the DNS tree (Fig 11.6) takes longer.</li>
+          <li><b>The setting.</b> A resolver a 10 ms round trip away that already has the name cached, and a server a 20 ms round trip away. A cold lookup that has to walk the DNS tree (Fig 11.6) takes longer.</li>
           <li><b>The overlaps.</b> The TLS ClientHello rides in the same flight as TCP's final ACK, and the GET rides with TLS's Finished, so each handshake costs one round trip, not more.</li>
           <li><b>Inside TLS.</b> Once the keys are agreed, the GET and the page cross the wire as encrypted bytes. curl prints the body as it arrives, then closes the connection or keeps it for the next request.</li>
         </ol>

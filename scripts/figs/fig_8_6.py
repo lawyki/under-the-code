@@ -72,7 +72,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Real drift.</b> Real clocks differ by parts per million, not 20%, but over a long enough run of identical bits the error adds up the same way.</li>
-          <li><b>The compromise.</b> Modern links use codes such as 8b/10b and 64b/66b, which stay close to NRZ's efficiency while guaranteeing an edge every few bits.</li>
+          <li><b>The compromise.</b> Modern links use codes such as 8b/10b and 64b/66b, which keep NRZ's simplicity but bound the longest flat run: 8b/10b never repeats a bit more than five times, and 64b/66b guarantees an edge in every 66-bit block.</li>
           <li><b>NRZ.</b> Non-return-to-zero simply holds the level for each bit: high for 1, low for 0.</li>
         </ol>
       </details>'''

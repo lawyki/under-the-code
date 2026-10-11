@@ -31,7 +31,7 @@ H = int(max(L0 + LS * (len(EV) - 1) + 30, yy(2026.9) + 14))
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-57 svgd-part3-57">')
 a('<title id="svgt-part3-57">Fig 12.2 · May 1995 to ECMAScript 2026 · the slow legitimisation</title>')
 a('<desc id="svgd-part3-57">A timeline from 1995 to 2026. In 1995 the language is written in ten days and named Mocha, then LiveScript, then JavaScript. 1996, Microsoft ships JScript in Internet Explorer 3. 1997, it is standardised as ECMA-262, ECMAScript. 1999, ES3. '
-  'Then nearly ten years without an edition: ES4 is abandoned in 2008, and ES5 arrives in 2009 with strict mode and JSON. ES2015 brings classes, modules and promises, and from 2016 to 2026 a new edition ships every June.</desc>')
+  'Then a decade without an edition: ES4 is abandoned in 2008, and ES5 arrives in 2009 with strict mode and JSON. ES2015 brings classes, modules and promises, and from 2016 to 2026 a new edition ships every June.</desc>')
 a(f'<line x1="{AX}" y1="{yy(1995)}" x2="{AX}" y2="{yy(2026.9)}" stroke="{CMUTED}"/>')
 for y in (1995, 2005, 2015, 2025):
     a(f'<line x1="{AX - 5}" y1="{yy(y)}" x2="{AX}" y2="{yy(y)}" stroke="{CMUTED}"/>')

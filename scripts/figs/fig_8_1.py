@@ -14,7 +14,7 @@ a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" ari
 a('<title id="svgt-part3-2">Fig 8.1 · One signal, two scales</title>')
 a('<desc id="svgd-part3-2">Two panels. Inside a chip, a pulse crosses about a micrometre of copper wiring from one gate to the next and arrives unchanged. '
   'Under the ocean, a pulse of light crosses about 5,600 km of glass fibre from New York to London, taking about 28 milliseconds; it fades as it travels and is restored at each repeater along the way, arriving weakened and noisy but still readable. '
-  'The two distances are twelve orders of magnitude apart.</desc>')
+  'The two distances are more than twelve orders of magnitude apart.</desc>')
 def flight(x0, x1):
     return T.translate([(0.0, 0.0), (F0, 0.0), (F1, x1 - x0), (D, x1 - x0)], 'x')
 def fade(pts):
@@ -53,7 +53,7 @@ a(text(200, FY + 76, 'but readable', anchor='middle', size=13, fill=ROUTE, ls='0
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing twelve orders of magnitude apart: a signal guided along a line, voltage in copper, light in glass. '
+caption = ('A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing over twelve orders of magnitude apart: a signal guided along a line, in copper or in glass. '
            'On the chip it arrives unchanged; under the sea it fades with distance, and repeaters every 50 to 100 km restore it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

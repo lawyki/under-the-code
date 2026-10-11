@@ -69,8 +69,8 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The backoff.</b> In <span class="key-term">truncated binary exponential backoff</span>, after the k-th collision in a row a station waits a random 0 to 2<sup>k</sup> − 1 slot times (k stops growing at 10), and gives up after 16 tries.</li>
-          <li><b>Why random.</b> If both waited the same time they would collide again; spreading the choices grows the gap as the line gets busier.</li>
-          <li><b>Today.</b> Switched Ethernet gives every link to one pair, so collisions no longer happen; Wi-Fi uses the same random backoff but tries to avoid collisions rather than detect them.</li>
+          <li><b>Why random.</b> If both waited the same time they would collide again; each further collision doubles the range of waits, so the stations spread out as the line gets busier.</li>
+          <li><b>Today.</b> In switched Ethernet each link joins just two devices, so collisions no longer happen; Wi-Fi uses the same random backoff but tries to avoid collisions rather than detect them.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-8-8">

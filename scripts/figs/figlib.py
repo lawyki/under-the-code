@@ -76,3 +76,10 @@ def splice(part, fig_id, caption_id, card):
 SPACE = 'font-family="Space Mono"'
 CYAN, ROUTE, CPLATE, CDEEP = '#4fc4e6', '#e07a3f', '#0d2740', '#081b2e'
 CSOFT, CMUTED = 'rgba(223,234,242,0.85)', 'rgba(223,234,242,0.6)'
+
+# Part IV · Strongroom (the sealed dossier): Courier Prime labels, parchment on a dark dossier plate, seal and
+# stamp reds, brass; lock-step motion (things land like stamps). A part's script sets figlib.FONT = COURIER.
+COURIER = 'font-family="Courier Prime"'
+PARCH, PSOFT, PMUTED = '#e6d9bd', 'rgba(230,217,189,0.85)', 'rgba(230,217,189,0.6)'
+SEAL, STAMP, OXBLOOD, BRASS, SAGE = '#cf8d78', '#b8372f', '#c05a48', '#c9a25a', '#a9bf8e'
+DOSSIER, DCARD = '#171008', '#241a10'

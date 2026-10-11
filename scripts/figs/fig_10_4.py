@@ -1,13 +1,13 @@
-# Fig 10.4 · The sliding window (Pass 28, law 3). Chart Room. Bytes 100 to 113, a window of 6. Phases:
+# Fig 10.4 · The sliding window (Pass 28, law 3). Chart Room. Bytes 100 to 114, a window of 6. Phases:
 # 4 bytes in flight and 2 more allowed; the window full; ACK 103 slides it by 3; full again; ACK 109
 # slides it on. Each cell is coloured by its state, the window bracket moves. t=0 (shift): after ACK 103.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
 figlib.FONT = SPACE
 
-N, BASE, WIN = 14, 100, 6
+N, BASE, WIN = 15, 100, 6
 W, H = 400, 236
-X0, CWD, CY, CHT = 25, 25, 54, 34
+X0, CWD, CY, CHT = 20, 24, 54, 34
 D = 10.0
 # phase: (t0, acked_upto (exclusive, offset), sent_upto (exclusive), window start, status)
 PH = [(0.0, 0, 4, 0, '4 in flight, 2 more allowed'),
@@ -32,9 +32,9 @@ def span_anim(t0, t1):
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-31 svgd-part3-31">')
 a('<title id="svgt-part3-31">Fig 10.4 · The sliding window</title>')
-a('<desc id="svgd-part3-31">A sender\'s view of bytes 100 to 113 with a window of six bytes. At first bytes 100 to 103 are in flight and 104 and 105 may still be sent. Then 104 and 105 go out and the window is full. '
+a('<desc id="svgd-part3-31">A sender\'s view of bytes 100 to 114 with a window of six bytes. At first bytes 100 to 103 are in flight and 104 and 105 may still be sent. Then 104 and 105 go out and the window is full. '
   'An ACK numbered 103 arrives, meaning 100 to 102 are received: the window slides to cover 103 to 108, and 106 to 108 may be sent. They go, the window is full again, and ACK 109 slides it on to 109 to 114.</desc>')
-a(text(X0, 22, 'BYTES 100 TO 113 · WINDOW 6', size=13, fill=CMUTED))
+a(text(X0, 22, 'BYTES 100 TO 114 · WINDOW 6', size=13, fill=CMUTED))
 for i in range(N):
     x = X0 + i * CWD
     a(f'<rect x="{x}" y="{CY}" width="{CWD - 2}" height="{CHT}" rx="2" fill="{CDEEP}" stroke="rgba(223,234,242,0.15)"/>')

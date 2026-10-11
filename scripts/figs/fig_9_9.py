@@ -53,7 +53,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Scale.</b> 2<sup>32</sup> is about 4.3 billion, fewer than the people alive; 2<sup>128</sup> is about 3.4 × 10<sup>38</sup>, so even every 64-bit subnet has room for 1.8 × 10<sup>19</sup> devices.</li>
           <li><b>One :: only.</b> It may appear once per address, or a reader could not tell how many zero groups each stood for.</li>
-          <li><b>The price.</b> Every router, operating system, firewall and networking library had to change, which is why, nearly thirty years on, the move is still unfinished.</li>
+          <li><b>The price.</b> Every router, operating system, firewall and networking library had to change, which is why, three decades on, the move is still unfinished.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card light-diagram fig-v2" id="fig-9-9">

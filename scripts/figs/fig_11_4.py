@@ -79,7 +79,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>The rest of the table.</b> HEAD is GET without the body; PATCH changes part of a resource; OPTIONS asks what the server allows, and browsers send it as the CORS preflight.</li>
           <li><b>The asterisk.</b> PATCH is idempotent only when its format is: a JSON Merge Patch applied twice gives the same result; a JSON Patch that appends to a list does not.</li>
-          <li><b>Caches and retries.</b> A shared cache stores GET responses its headers allow and in practice never a POST's; a retry library resends GETs and PUTs freely but a POST only with an <code>Idempotency-Key</code> the server checks.</li>
+          <li><b>Caches and retries.</b> A shared cache stores GET responses its headers allow and rarely a POST's; a retry library resends GETs and PUTs freely but a POST only with an <code>Idempotency-Key</code> the server checks.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-11-4">

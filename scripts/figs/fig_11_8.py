@@ -1,7 +1,7 @@
 # Fig 11.8 · One-way function · easy forward, infeasible backward (Pass 28, law 3). Chart Room plate. The
 # textbook RSA toy: 61 × 53 = 3233 in one step. Backward, trial division tries each prime in turn and finds 53
 # on the 16th try (every prime up to 53; sqrt(3233) ≈ 56.9). Then the real sizes, bars by digits: 4 (the toy),
-# 250 (RSA-250, the largest RSA challenge number factored, February 2020, about 2,700 core-years with the
+# 250 (RSA-250, the record from February 2020 until RSA-260 and RSA-896 fell in September 2026, about 2,700 core-years with the
 # General Number Field Sieve) and 617 (a 2048-bit RSA modulus). t=0 (shift): product shown, factor found.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CSOFT, CMUTED
@@ -41,7 +41,7 @@ assert TD + 1.0 < D
 # row C: the real sizes, bars by digits
 a(text(20, 186, 'at real sizes, digits of the product:', anchor='start', size=13, fill=CSOFT, ls='0'))
 BX, BW = 20, 360
-ROWS = [(4, 'the toy: 16 tries', CSOFT), (250, 'record, 2020: ~2,700 core-years', ROUTE), (617, 'RSA-2048: out of reach', LOSS)]
+ROWS = [(4, 'the toy: 16 tries', CSOFT), (250, 'RSA-250, 2020: ~2,700 core-years', ROUTE), (617, 'RSA-2048: out of reach', LOSS)]
 for j, (dg, lab, col) in enumerate(ROWS):
     y = 214 + j * 40
     a(text(BX, y, f'{dg}', anchor='start', size=13, fill=col, ls='0'))
@@ -51,17 +51,17 @@ H = 214 + 2 * 40 + 30
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-47 svgd-part3-47">')
 o.insert(1, '<title id="svgt-part3-47">Fig 11.8 · One-way function · easy forward, infeasible backward</title>')
 o.insert(2, '<desc id="svgd-part3-47">Forward: 61 times 53 equals 3233, in one step. Backward: to factor 3233 by trial division, divide by 2, 3, 5, 7 and each prime in turn; 53 divides it, on the 16th try, giving 61. '
-  'Below, the sizes that matter, in digits of the product: 4 for the toy; 250 for the largest RSA challenge number ever factored, in 2020, at about 2,700 core-years; 617 for a 2048-bit RSA key.</desc>')
+  'Below, the sizes that matter, in digits of the product: 4 for the toy; 250 for RSA-250, factored in 2020 at about 2,700 core-years; 617 for a 2048-bit RSA key.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Multiplying two primes is one step; getting them back from the product is a search. '
-           'For 3233 it takes 16 tries; the largest such number ever factored had 250 digits and took about 2,700 core-years, and a 2048-bit RSA key has 617.')
+           'For 3233 it takes 16 tries; a 250-digit product took about 2,700 core-years in 2020, and a 2048-bit RSA key has 617 digits.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The toy.</b> 61 × 53 = 3233 is the textbook RSA example. Trial division tries each prime up to √3233 ≈ 57 and finds 53 on the 16th.</li>
-          <li><b>The record.</b> RSA-250 (829 bits) was factored in February 2020 with the General Number Field Sieve, about 2,700 core-years of computing. Each extra digit makes the job harder; 617 digits is far beyond any known classical method.</li>
+          <li><b>The state of the art.</b> RSA-250 (829 bits) took about 2,700 core-years in February 2020. In September 2026 GPU clusters running the same General Number Field Sieve pushed the public record to RSA-896, 270 digits. Each extra digit makes the job harder; 617 digits is far beyond any known classical method.</li>
           <li><b>Why it matters.</b> The product goes into the <em>public key</em>; the <em>private key</em> is computed from the primes. Shor's algorithm (1994) would factor quickly on a large enough quantum computer, which is why post-quantum cryptography is being deployed.</li>
         </ol>
       </details>'''

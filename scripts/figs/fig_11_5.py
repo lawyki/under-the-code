@@ -18,7 +18,7 @@ NODES = {'root': (110, 0, '.', CYAN), 'com': (50, 1, 'com', GREEN), 'org': (112,
 EDGES = [('root', 'com'), ('root', 'org'), ('root', 'fi'), ('root', 'tlds'), ('com', 'example'), ('com', 'google'), ('com', 'sld'),
          ('example', 'www'), ('example', 'mail')]
 PATH = ['root', 'com', 'example', 'www']
-OPS = [('root zone:', '12 operators'), ('com: VeriSign', 'fi: Traficom'), ('example.com:', 'its registrant'), ('www: one host', 'in that zone')]
+OPS = [('root servers:', '12 operators'), ('com: VeriSign', 'fi: Traficom'), ('example.com:', 'its registrant'), ('www: one host', 'in that zone')]
 OX = 254
 bw = lambda s: max(34, len(s) * 8 + 20)
 D = 9.0
@@ -60,7 +60,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('A domain name is a path through one tree, written leaf first: read <code>www.example.com.</code> from the right and each label is a step down, from the root to <code>com</code> to <code>example</code> to <code>www</code>. '
-           'Each step hands authority to a different operator.')
+           'Each of the first three steps hands authority to a different operator; <code>www</code> is a host in the last zone.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

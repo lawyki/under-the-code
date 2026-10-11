@@ -34,7 +34,7 @@ a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" ari
 a('<title id="svgt-part3-33">Fig 10.6 · AIMD\'s fairness, in phase space</title>')
 a('<desc id="svgd-part3-33">Flow A\'s share across, flow B\'s share up, on a link of capacity 32. A dashed line marks the link full (A plus B equals 32), another marks A equals B. '
   'Starting at A 22, B 4, both flows add one per round trip, moving diagonally until the link is full, then both halve, moving toward the origin. '
-  'The gap between them goes 18, 9, 4.5, 2.3, 1.1: the walk settles onto the fair line, each peak touching the point where the link is full and the shares are equal.</desc>')
+  'The gap between them goes 18, 9, 4.5, 2.25, 1.1: the walk settles onto the fair line, its peaks on the capacity line creeping toward the point where the link is full and the shares are equal.</desc>')
 # axes
 a(f'<line x1="{X0}" y1="{Y0}" x2="{px(AA)}" y2="{Y0}" stroke="{INK_SOFT}"/><line x1="{X0}" y1="{Y0}" x2="{X0}" y2="{py(AB)}" stroke="{INK_SOFT}"/>')
 a(text(X0 - 8, Y0 + 5, '0', anchor='end', size=13, fill=INK_SOFT, ls='0'))
@@ -73,7 +73,7 @@ GY = 22
 a(text(X0 - 8, GY, 'gap A − B:', anchor='start', size=13, fill=INK_SOFT, ls='0'))
 gx = X0 - 8 + 11 * 8
 for k, g in enumerate(GAPS):
-    s = ('18', '9', '4.5', '2.3', '1.1')[k]
+    s = ('18', '9', '4.5', '2.25', '1.1')[k]
     assert abs(float(s) - g) < 0.06
     a(text(gx, GY, s, anchor='start', size=13, fill=INK_SOFT, ls='0'))
     lit_at = GAP0 if k == 0 else TS[2 * k]
@@ -87,7 +87,7 @@ caption = ('Adding one segment to each flow per round trip keeps the gap between
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The plane.</b> Flow A's window across, flow B's up. On the blue line the link is exactly full; on the green line the two are equal. The target is where they cross: AIMD ends up oscillating along the green line, its peaks at the target.</li>
+          <li><b>The plane.</b> Flow A's window across, flow B's up. On the blue line the link is exactly full; on the green line the two are equal. The target is where they cross: AIMD ends up oscillating along the green line, its peaks closing in on the target.</li>
           <li><b>The two moves.</b> <em>Additive increase</em> adds the same amount to both, so the point moves at 45° and the gap stays. <em>Multiplicative decrease</em> halves both, so the point slides toward the origin along its own ray and the gap halves.</li>
           <li><b>This run.</b> Capacity 32, start A 22 and B 4, both flows losing at the same moment, as in Chiu and Jain's model. Real flows with different round-trip times converge less neatly.</li>
         </ol>

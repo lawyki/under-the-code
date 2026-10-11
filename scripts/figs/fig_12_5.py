@@ -12,7 +12,7 @@ GREEN, GOLD, LOSS = '#9bd89b', '#d4a853', '#ec8d8d'
 TIERS = [('parser', 'source to bytecode', CMUTED), ('Ignition', 'runs it, notes types', CYAN), ('Sparkplug', 'plain machine code', GREEN),
          ('Maglev', 'optimises for types', GOLD), ('TurboFan', 'optimises hardest', ROUTE)]
 W = 400
-BX0, BX1, BY0, BH, BG = 10, 300, 10, 42, 14
+BX0, BX1, BY0, BH, BG = 10, 300, 10, 42, 20
 by = lambda i: BY0 + i * (BH + BG)
 CX = 262                                         # the function chip's x
 D = 10.0
@@ -27,7 +27,7 @@ for i, (name, desc, col) in enumerate(TIERS):
     a(text(BX0 + 10, y + 34, desc, anchor='start', size=13, fill=CMUTED, ls='0'))
     if i:
         a(f'<path d="M40,{y - BG + 2} V{y - 2} m-4,-5 l4,5 l4,-5" fill="none" stroke="{CMUTED}"/>')
-a(text(52, by(2) - 3, 'hotter', anchor='start', size=13, fill=CMUTED, ls='0'))
+a(text(52, by(2) - 5, 'hotter', anchor='start', size=13, fill=CMUTED, ls='0'))
 # the deopt path: TurboFan (and Maglev) back to Ignition
 yI, yT = by(1) + BH / 2, by(4) + BH / 2
 dp = f'<path d="M{BX1},{yT} H{BX1 + 22} V{yI} H{BX1 + 6} m6,-5 l-6,5 l6,5" fill="none" stroke="{LOSS}" stroke-width="2"/>'
@@ -67,7 +67,7 @@ caption = ('V8 runs every function first in its interpreter, which records the t
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The tiers.</b> Each costs more to compile and runs faster: Ignition interprets, Sparkplug (since 2021) translates bytecode straight to machine code, Maglev (since 2023) and TurboFan optimise. Compiling happens on background threads while the program runs.</li>
+          <li><b>The tiers.</b> Each costs more to compile and runs faster: Ignition interprets, Sparkplug (since 2021) translates bytecode straight to machine code, Maglev (since 2023) and TurboFan optimise. The optimising compilers, Maglev and TurboFan, work on background threads while the program runs.</li>
           <li><b>The bet.</b> Optimised code is built for the types seen so far, guarded by cheap checks. When a check fails, V8 rebuilds the interpreter's state and carries on there: <span class="key-term">deoptimisation</span>.</li>
           <li><b>Then and now.</b> The first V8, in 2008, had no interpreter and compiled everything straight to machine code. SpiderMonkey and JavaScriptCore also run tiers of interpreters and compilers today.</li>
         </ol>

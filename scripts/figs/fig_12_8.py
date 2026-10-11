@@ -61,7 +61,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Default ports.</b> A URL without a port uses its scheme's default, 443 for https and 80 for http, so <code>http://www.example.com</code> differs in two places.</li>
           <li><b>The opt-ins.</b> A server can let named origins read its responses with CORS headers (<code>Access-Control-Allow-Origin</code>); two pages can agree to talk with <code>postMessage</code>.</li>
-          <li><b>History.</b> The policy arrived with JavaScript itself, in Netscape 2.0 (1996). Cookies follow older, looser rules: they ignore the port, for one.</li>
+          <li><b>History.</b> The policy arrived with JavaScript itself, in Netscape Navigator 2.0. Cookies follow older, looser rules: they ignore the port, for one.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-12-8">

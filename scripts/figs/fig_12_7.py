@@ -49,7 +49,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The stages.</b> Parse turns HTML and CSS into the DOM and CSSOM; style matches rules to elements; layout works out every box's size and position; paint draws each layer's pixels; composite stacks the layers into the frame.</li>
-          <li><b>The budget.</b> At 60 frames a second each frame has about 16 ms for all of it, your JavaScript included (Fig 12.3).</li>
+          <li><b>The budget.</b> At 60 frames a second each frame has about 16 ms for style, layout, paint and composite, your JavaScript included (Fig 12.3); parse runs when HTML or CSS arrives.</li>
           <li><b>The fast path.</b> A CSS animation of <code>transform</code> or <code>opacity</code> on its own layer runs on the compositor thread, so it stays smooth even while the main thread is busy.</li>
         </ol>
       </details>'''

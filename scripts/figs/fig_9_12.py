@@ -38,7 +38,7 @@ for b, s in ((P1, SRC), (P2, DST)):
     a(f'<line x1="{x1}" y1="{y1 + 0}" x2="{x2}" y2="{y2}" stroke="{CYAN}" stroke-opacity="0.5" stroke-width="3"/>')
 for (x, y), lab, col in ((P1, 'P1', CSOFT), (P2, 'P2', CSOFT), (C, 'C · small', ROUTE), (SRC, 'source', CSOFT), (DST, 'destination', CSOFT)):
     a(f'<rect x="{x}" y="{y}" width="{BW}" height="{BH}" rx="2" fill="{CDEEP}" stroke="{col}" stroke-opacity="0.8"/>')
-    a(text(x + BW / 2, y + 25, lab, anchor='middle', size=13, fill='#fff', ls='0'))
+    a(text(x + BW / 2, y + (17 if lab.startswith('C') else 25), lab, anchor='middle', size=13, fill='#fff', ls='0'))
 # the leak: C tells P1 about P2's routes
 (lx1, ly1), (lx2, ly2) = mid(C, 'top'), mid(P1, 'r')
 a(f'<g opacity="0">{win(LEAK, D - 0.3)}<path d="M{lx1} {ly1} Q{lx1 - 10} {ly2 + 30} {lx2 + 6} {ly2 + 12}" fill="none" stroke="{ROUTE}" stroke-width="2.5" stroke-dasharray="6 4">'
@@ -55,7 +55,7 @@ def flow(pts, t0, t1, col, n=4):
         kx.append((D, kx[-1][1])); ky.append((D, ky[-1][1]))
         a(f'<g class="fx" opacity="0">{win(s, s + 1.4)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}<circle cx="{pts[0][0]}" cy="{pts[0][1]}" r="5" fill="{col}"/></g></g></g>')
 normal = [mid(SRC, 'top'), mid(P1, 'bot'), mid(P1, 'r'), mid(P2, 'l'), mid(P2, 'bot'), mid(DST, 'top')]
-detour = [mid(SRC, 'top'), mid(P1, 'bot'), mid(C, 'l'), mid(C, 'r'), mid(P2, 'bot'), mid(DST, 'top')]
+detour = [mid(SRC, 'top'), mid(P1, 'bot'), (C[0], C[1] + 31), (C[0] + BW, C[1] + 31), mid(P2, 'bot'), mid(DST, 'top')]   # under C's label
 flow(normal, RUN1, LEAK - 0.4, CYAN)
 flow(detour, RUN2, D - 0.4, RED, n=8)
 a(f'<rect class="fx" x="{C[0] - 3}" y="{C[1] - 3}" width="{BW + 6}" height="{BH + 6}" rx="3" fill="none" stroke="{RED}" stroke-width="2.5" opacity="0">{win(RUN2 + 0.8, D - 0.3)}</rect>')

@@ -40,7 +40,7 @@ H = RY0 + 7 * RH + 4
 o.append(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-12 svgd-part3-12">')
 o.append('<title id="svgt-part3-12">Fig 8.11 · The OSI seven-layer cake</title>')
 o.append('<desc id="svgd-part3-12">The seven layers of the OSI model, from Application at the top to Physical at the bottom, and a request passing down through them. '
-         'At the application layer it is GET /. Presentation encrypts it with TLS. Transport adds a TCP header, Network an IP header, and Data link an Ethernet header in front and a checksum, FCS, behind. '
+         'At the application layer it is GET /. TLS, drawn here at the presentation layer, encrypts it. Transport adds a TCP header, Network an IP header, and Data link an Ethernet header in front and a checksum, FCS, behind. '
          'The physical layer sends the whole frame as a stream of bits on the wire.</desc>')
 o.extend(body)
 o.append('</svg>')
@@ -51,7 +51,7 @@ caption = ('Each layer serves the one above and adds its own wrapping on the way
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Examples.</b> 7: HTTP, DNS, SSH. 6: TLS, compression. 5: session handling. 4: TCP, UDP. 3: IP, ICMP. 2: Ethernet, Wi-Fi. 1: copper, fibre, radio.</li>
+          <li><b>Examples.</b> 7: HTTP, DNS, SSH. 6: TLS (its placement varies), compression. 5: session handling. 4: TCP, UDP. 3: IP, ICMP. 2: Ethernet, Wi-Fi. 1: copper, fibre, radio.</li>
           <li><b>On arrival.</b> The receiver works upward, each layer removing its own header and handing the rest up, in the reverse order.</li>
           <li><b>The standard.</b> ISO published the model in 1984 as ISO 7498; its protocols lost to TCP/IP, but its layer numbers stayed in engineers' vocabulary.</li>
         </ol>

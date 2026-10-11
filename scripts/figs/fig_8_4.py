@@ -1,6 +1,6 @@
 # Fig 8.4 · Channel capacity as a function of SNR (Pass 28, law 3). Chart Room. log2(1 + SNR) computed
 # exactly against SNR in dB; the region above the curve shaded as unreachable; a marker sweeps the curve.
-# Marked: a phone line at 30 dB (ceiling 10 b/Hz) with V.34's 33.6 kbps in 4 kHz just under it, and
+# Marked: a phone line at 30 dB (ceiling 10 b/Hz) with V.34's 33.6 kbps over its 3.43 kHz band (9.8 b/Hz) just under it, and
 # Wi-Fi 6 at 20 dB. t=0 (shift): marker near the phone-line point.
 import math
 import figlib
@@ -8,7 +8,7 @@ from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CS
 figlib.FONT = SPACE
 
 C = lambda db: math.log2(1 + 10 ** (db / 10))
-assert abs(C(30) - 9.97) < 0.01 and abs(C(20) - 6.66) < 0.01 and abs(33.6 / 4 - 8.4) < 1e-9
+assert abs(C(30) - 9.97) < 0.01 and abs(C(20) - 6.66) < 0.01 and abs(33.6 / 3.429 - 9.8) < 0.01 and abs(C(30) * 3.429 - 34.2) < 0.1
 W, H = 400, 290
 X0, X1, Y0, Y1 = 60, 372, 244, 44
 DBMAX, CMAX = 40, 14
@@ -21,7 +21,7 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-5 svgd-part3-5">')
 a('<title id="svgt-part3-5">Fig 8.4 · Channel capacity as a function of SNR</title>')
 a('<desc id="svgd-part3-5">Shannon\'s limit, in bits per second per hertz of bandwidth, against signal-to-noise ratio in decibels: log₂(1 + SNR). Above the curve no code can transmit without errors. '
-  'Wi-Fi 6 at about 20 dB is allowed about 6.7 bits per hertz. A phone line at about 30 dB is allowed about 10, which over 4 kHz is 40 kbps; V.34 modems reached 33.6 kbps, 8.4 bits per hertz, just under the curve.</desc>')
+  'Wi-Fi 6 at about 20 dB is allowed about 6.7 bits per hertz. A phone line at about 30 dB is allowed about 10, which over the 3.4 kHz band V.34 modems used is about 34 kbps; they reached 33.6 kbps, 9.8 bits per hertz, just under the curve.</desc>')
 pts = [(db / 4) for db in range(0, DBMAX * 4 + 1)]
 curve = ' '.join(f'{xd(d):.1f},{yc(C(d)):.1f}' for d in pts)
 a(f'<polygon points="{X0},{Y1} {curve} {X1},{Y1}" fill="{ROUTE}" fill-opacity="0.1"/>')
@@ -41,10 +41,9 @@ def dot(db, c, col, r=4.5):
 dot(20, C(20), CYAN)
 a(text(xd(20) + 10, yc(C(20)) + 20, 'Wi-Fi 6 · 6.7', size=13, fill=CYAN, ls='0'))
 dot(30, C(30), CYAN)
-dot(30, 8.4, ROUTE)
-a(f'<line x1="{xd(30):.1f}" y1="{yc(C(30)) + 5:.1f}" x2="{xd(30):.1f}" y2="{yc(8.4) - 5:.1f}" stroke="{ROUTE}" stroke-dasharray="2 2"/>')
-a(text(xd(30) + 10, yc(8.4) + 2, 'V.34', size=13, fill=ROUTE, ls='0'))
-a(text(xd(30) + 10, yc(8.4) + 19, '8.4', size=13, fill=ROUTE, ls='0'))
+dot(30, 9.8, ROUTE)
+a(text(xd(30) + 10, yc(9.8) + 18, 'V.34', size=13, fill=ROUTE, ls='0'))
+a(text(xd(30) + 10, yc(9.8) + 35, '9.8', size=13, fill=ROUTE, ls='0'))
 a(text(xd(30) - 10, yc(C(30)) - 10, 'phone line · 10', anchor='end', size=13, fill=CYAN, ls='0'))
 # the marker, sweeping SNR
 N = 40
@@ -59,7 +58,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Shannon\'s limit: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above the curve errors cannot be avoided. '
-           'A phone line at 30&nbsp;dB allows about 10 bits per hertz, 40&nbsp;kbps in 4&nbsp;kHz; V.34 modems reached 33.6&nbsp;kbps, just under it.')
+           'A phone line at 30&nbsp;dB allows about 10 bits per hertz, about 34&nbsp;kbps over the 3.4&nbsp;kHz band a V.34 modem uses; V.34 modems reached 33.6&nbsp;kbps, just under it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

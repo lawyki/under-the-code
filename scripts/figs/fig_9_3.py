@@ -80,7 +80,7 @@ for name, (pos, edges, dead) in PANELS:
     a(text(cx, 168, name, anchor='middle', size=13, fill=INK, ls='0'))
     a(f'<g>{comes(AFTER + 0.4)}{text(cx, 190, f"{len(big)} of {len(alive)}", anchor="middle", size=14, fill=GREEN if len(big) == len(alive) else ROUTE_D, ls="0")}</g>')
 assert [r[1] for r in results] == [0, 8, 9] and [r[2] for r in results] == [8, 11, 9], results
-a(text(200, 22, 'the same strike on three networks', anchor='middle', size=13, fill=INK_SOFT, ls='0'))
+a(text(200, 22, 'the same kind of strike, three networks', anchor='middle', size=13, fill=INK_SOFT, ls='0'))
 a(f'<g>{comes(AFTER + 0.4)}{text(200, 222, "survivors that can reach another", anchor="middle", size=13, fill=INK_SOFT, ls="0")}</g>')
 a('<desc id="svgd-part3-17">Paul Baran\'s three network shapes from 1964, each hit by the same kind of strike. The centralised star loses its centre, and none of its eight survivors can reach another. '
   'The decentralised network loses one of its three hubs: that hub\'s three nodes are cut off, and 8 of the 11 survivors stay connected. '
