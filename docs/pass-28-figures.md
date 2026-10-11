@@ -182,7 +182,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 172 | 4 | `fig-14-2` Fig 14.2 · The four one-way functions cryptography is built on | 2.5 px · cap 240 | done 2026-10-11 |
 | 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | deferred: conceptual pass |
 | 174 | 4 | `fig-14-4` Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF | 2.9 px · cap 129 | deferred: conceptual pass |
-| 175 | 4 | `fig-14-5` Fig 14.5 · One AES round · four steps on a 4×4 byte grid | 2.2 px · cap 127 | todo |
+| 175 | 4 | `fig-14-5` Fig 14.5 · One AES round · four steps on a 4×4 byte grid | 2.2 px · cap 127 | done 2026-10-11 |
 | 176 | 4 | `fig-14-6` Fig 14.6 · ECB's famous failure · structure leaks through | 2.9 px · cap 142 | deferred: conceptual pass |
 | 177 | 4 | `fig-14-7` Fig 14.7 · Diffie–Hellman with actual numbers · g=5, p=23 | 2.5 px · cap 129 | todo |
 | 178 | 4 | `fig-14-8` Fig 14.8 · RSA worked through · p=17, q=23 | 2.5 px · cap 139 | todo |
