@@ -2289,87 +2289,69 @@
       least two CT logs.
     </p>
 
-    <div class="diagram-card" id="fig-14-12">
-      <div class="diagram-label">Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-25"><title id="svgt-part4-25">Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">every certificate any CA issues is publicly logged · misissuance becomes detectable</text>
-
-        <!-- Signature mechanism -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">SIGNING: what the CA does to issue a cert</text>
-          <rect x="0" y="14" width="640" height="60" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.65)"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  cert_to_sign = { hostname: "example.com", pubkey: …, validity: …, issuer: "DigiCert" }</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  hash = SHA-256(cert_to_sign)</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">  signature = sign(CA_private_key, hash)    ←  only CA can produce</text>
-        </g>
-
-        <!-- Verification -->
-        <g transform="translate(40,148)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">VERIFYING: what the browser does to trust a cert</text>
-          <rect x="0" y="14" width="640" height="60" rx="3" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.65)"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  recomputed = SHA-256(received_cert)</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  expected   = verify(CA_public_key, signature)</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">  if recomputed == expected → cert is genuinely from CA · anyone with public key can check</text>
-        </g>
-
-        <!-- CT log -->
-        <g transform="translate(40,228)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">CERTIFICATE TRANSPARENCY: Merkle tree of every cert ever issued</text>
-          <rect x="0" y="14" width="640" height="80" rx="3" fill="#100b06" stroke="rgba(207,141,120,0.65)"/>
-
-          <!-- Tiny Merkle tree -->
-          <g transform="translate(120,28)">
-            <rect x="170" y="0" width="60" height="20" rx="2" fill="rgba(207,141,120,0.30)" stroke="rgba(140,82,64,0.85)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;0.3;0.3;0.3;1;0.3" keyTimes="0;0.20;0.40;0.55;0.70;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="200" y="14" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">root</text>
-
-            <line x1="200" y1="20" x2="120" y2="34" stroke="rgba(207,141,120,0.5)"/>
-            <line x1="200" y1="20" x2="280" y2="34" stroke="rgba(207,141,120,0.5)"/>
-
-            <rect x="80" y="34" width="80" height="18" rx="2" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;0.3;1;0.3;0.3;0.3" keyTimes="0;0.20;0.50;0.62;0.75;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="120" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(207,141,120,0.85)">H(L0,L1)</text>
-            <rect x="240" y="34" width="80" height="18" rx="2" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;0.3;1;0.3;0.3;0.3" keyTimes="0;0.20;0.55;0.66;0.77;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="280" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(207,141,120,0.85)">H(L2,L3)</text>
-
-            <line x1="120" y1="52" x2="80" y2="58" stroke="rgba(207,141,120,0.5)"/>
-            <line x1="120" y1="52" x2="160" y2="58" stroke="rgba(207,141,120,0.5)"/>
-            <line x1="280" y1="52" x2="240" y2="58" stroke="rgba(207,141,120,0.5)"/>
-            <line x1="280" y1="52" x2="320" y2="58" stroke="rgba(207,141,120,0.5)"/>
-
-            <rect x="40" y="58" width="80" height="14" rx="2" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;1;0.3;0.3;0.3;0.3" keyTimes="0;0.10;0.25;0.50;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="80" y="68" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="rgba(150,216,150,0.85)">cert L0</text>
-            <rect x="124" y="58" width="80" height="14" rx="2" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;1;0.3;0.3;0.3" keyTimes="0;0.10;0.20;0.35;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="164" y="68" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="rgba(150,216,150,0.85)">cert L1</text>
-            <rect x="208" y="58" width="80" height="14" rx="2" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;0.3;1;0.3;0.3" keyTimes="0;0.20;0.30;0.40;0.85;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="248" y="68" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="rgba(150,216,150,0.85)">cert L2</text>
-            <rect x="292" y="58" width="80" height="14" rx="2" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)">
-              <animate attributeName="fill-opacity" values="0.3;0.3;0.3;0.3;1;0.3;0.3" keyTimes="0;0.20;0.30;0.40;0.50;0.65;1" dur="6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="332" y="68" text-anchor="middle" font-family="Courier Prime" font-size="7" fill="rgba(150,216,150,0.85)">cert L3</text>
-          </g>
-
-          <text x="320" y="92" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)" font-style="italic">to prove a cert is in the log: send only its sibling hashes up to the root · O(log N) per proof</text>
-        </g>
-
-        <!-- Detection -->
-        <g transform="translate(40,322)">
-          <rect x="0" y="0" width="640" height="48" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">DigiNotar 2011: Dutch CA compromised · misissued *.google.com cert went undetected for weeks</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">CT mandatory in Chrome 2018: same attack today would be visible in CT logs within hours</text>
-        </g>
-      </svg>
-      <p id="ch14-tls-pqc-p5" class="diagram-caption">Digital signatures (top half) and Certificate Transparency (bottom half), the two cryptographic mechanisms that hold the modern web's trust hierarchy together. A signature provides authenticity: only the holder of the private key could have produced it, anyone with the public key can verify it. CT provides <em>auditability</em>: every certificate ever issued lives in a public Merkle-tree log, so any domain owner can monitor for certificates issued in their name without their consent. After DigiNotar's 2011 compromise, in which fraudulent <code>*.google.com</code> certificates were issued and used to MITM Iranian Gmail users for weeks, the industry collectively concluded that the trust-everything-the-CA-says model was insufficient. CT was the response. Today every certificate Chrome trusts is in at least two CT logs, every CA's behaviour is publicly auditable, and "we issued a cert nobody noticed" is no longer a viable attack.</p>
+    <div class="diagram-card fig-v2" id="fig-14-12">
+      <div class="diagram-label">Fig 14.12&nbsp;· Digital signatures and Certificate Transparency&nbsp;· Merkle trees keep CAs honest</div>
+      <svg viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-25 svgd-part4-25">
+<title id="svgt-part4-25">Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest</title>
+<desc id="svgd-part4-25">Top: a certificate authority signs a hash of the certificate with its private key; a browser verifies it with the public key, the hash and the signature, and gets yes. Bottom: a Certificate Transparency log as a Merkle tree over eight certificates, c0 to c7, whose root the log signs. To prove c5 is in the log, the log sends three hashes, c4, the hash of c6 and c7, and the hash of c0 to c3; hashing upwards from c5 reproduces the root. A trillion certificates would need about 40.</desc>
+<text x="10" y="18" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">signature</text>
+<g opacity="0.25"><text x="10" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">CA:</text><text x="70" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sign(private key, hash)</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.099833;0.100000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">CA:</text><text x="70" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sign(private key, hash)</text></g>
+<g opacity="0.25"><text x="10" y="60" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">browser:</text><text x="90" y="60" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">verify(public key, hash, sig)</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.166500;0.166667;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="60" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">browser:</text><text x="90" y="60" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">verify(public key, hash, sig)</text></g>
+<g opacity="0.25"><text x="390" y="80" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">→ yes</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.216500;0.216667;1.000000" dur="12s" repeatCount="indefinite"/><text x="390" y="80" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">→ yes</text></g>
+<text x="10" y="110" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">Certificate Transparency log</text>
+<line x1="59.0" y1="256" x2="35.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="59.0" y1="256" x2="82.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="153.0" y1="256" x2="129.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="153.0" y1="256" x2="176.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="247.0" y1="256" x2="223.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="247.0" y1="256" x2="270.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="341.0" y1="256" x2="317.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="341.0" y1="256" x2="364.5" y2="282" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="106.0" y1="210" x2="59.0" y2="236" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="106.0" y1="210" x2="153.0" y2="236" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="294.0" y1="210" x2="247.0" y2="236" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="294.0" y1="210" x2="341.0" y2="236" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="200.0" y1="164" x2="106.0" y2="190" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<line x1="200.0" y1="164" x2="294.0" y2="190" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<rect x="15.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="35.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c0</text>
+<rect x="62.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="82.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c1</text>
+<rect x="109.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="129.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c2</text>
+<rect x="156.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="176.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c3</text>
+<rect x="203.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="223.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c4</text>
+<rect x="250.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="270.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c5</text>
+<rect x="297.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="317.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c6</text>
+<rect x="344.5" y="282" width="40" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="364.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">c7</text>
+<rect x="32.0" y="236" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="126.0" y="236" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="220.0" y="236" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="314.0" y="236" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="79.0" y="190" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="267.0" y="190" width="54" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
+<rect x="170.0" y="144" width="60" height="20" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><text x="200" y="159" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">root</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.299833;0.300000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="250.5" y="282" width="40" height="20" rx="3" fill="#a9bf8e" fill-opacity="0.35" stroke="#a9bf8e" stroke-width="1.5"/><text x="270.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">c5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.366500;0.366667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="203.5" y="282" width="40" height="20" rx="3" fill="#c9a25a" fill-opacity="0.35" stroke="#c9a25a" stroke-width="1.5"/><text x="223.5" y="297" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">c4</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.366500;0.366667;0.408333;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="223.5" cy="292" r="20" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.449833;0.450000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="314.0" y="236" width="54" height="20" rx="3" fill="#c9a25a" fill-opacity="0.35" stroke="#c9a25a" stroke-width="1.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.449833;0.450000;0.491667;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="341.0" cy="246" r="20" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="79.0" y="190" width="54" height="20" rx="3" fill="#c9a25a" fill-opacity="0.35" stroke="#c9a25a" stroke-width="1.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.533167;0.533333;0.575000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="106.0" cy="200" r="20" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.408167;0.408333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="220.0" y="236" width="54" height="20" rx="3" fill="#a9bf8e" fill-opacity="0.35" stroke="#a9bf8e" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.491500;0.491667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="267.0" y="190" width="54" height="20" rx="3" fill="#a9bf8e" fill-opacity="0.35" stroke="#a9bf8e" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.574833;0.575000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="170.0" y="144" width="60" height="20" rx="3" fill="#a9bf8e" fill-opacity="0.35" stroke="#a9bf8e" stroke-width="1.5"/><text x="200" y="159" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">root</text></g>
+<g opacity="0.25"><text x="390" y="132" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">root signed by the log</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.099833;0.100000;1.000000" dur="12s" repeatCount="indefinite"/><text x="390" y="132" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">root signed by the log</text></g>
+<g opacity="0.25"><text x="10" y="328" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">c5 proved with 3 hashes</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.624833;0.625000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="328" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">c5 proved with 3 hashes</text></g>
+<g opacity="0.25"><text x="10" y="348" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">a trillion certificates: about 40</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.674833;0.675000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="348" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">a trillion certificates: about 40</text></g>
+<rect x="250" y="318" width="12" height="12" fill="#c9a25a" fill-opacity="0.6"/><text x="268" y="328" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">siblings sent</text>
+</svg>
+      <p id="ch14-tls-pqc-p5" class="diagram-caption">A certificate authority signs each certificate with its private key, and any browser can check the signature with the public key. Certificate Transparency logs every certificate in a Merkle tree, so proving one is in the log takes only the sibling hashes along its path: three for eight certificates, about forty for a trillion.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Signing.</b> The CA signs a hash of the certificate; verifying takes the public key, the same hash and the signature, and answers yes or no. Only the private key could have made a signature that verifies.</li>
+          <li><b>The log.</b> Each leaf is a certificate's hash, each node the hash of its two children, and the log signs the root. A proof for one certificate is its sibling at every level: log₂ N hashes.</li>
+          <li><b>Why it exists.</b> In 2011 the breached Dutch CA DigiNotar issued a false certificate for <code>*.google.com</code> that went unnoticed for weeks. Since 2018 Chrome trusts a new certificate only if public logs hold it, so a domain owner can spot one issued in their name.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Post-quantum · Shor's algorithm and the slow migration</h3>
