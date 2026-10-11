@@ -4954,56 +4954,105 @@ main:
       runs only on misses.
     </p>
 
-    <div class="light-diagram" id="fig-br-5">
-      <div class="diagram-label">Fig BR.5 · The TLB · why the walk usually doesn't happen</div>
-      <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47"><title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn't happen</title>
-        <!-- Two paths -->
-        <text x="360" y="28" text-anchor="middle" font-family="DM Mono" font-size="11" fill="#8a6a2a" letter-spacing="0.15em">EVERY ADDRESS GOES THROUGH THE TLB FIRST</text>
-
-        <!-- Input -->
-        <rect x="30" y="86" width="120" height="40" rx="5" fill="#fff" stroke="rgba(0,0,0,0.18)"/>
-        <text x="90" y="104" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#1a1614">virtual address</text>
-        <text x="90" y="118" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#7a7570">0x7fff_a3c4_0010</text>
-
-        <!-- TLB -->
-        <rect x="190" y="60" width="180" height="120" rx="6" fill="#fff" stroke="rgba(140,98,30,0.6)" stroke-width="1.2"/>
-        <text x="280" y="84" text-anchor="middle" font-family="DM Mono" font-size="10" fill="#8a6a2a">TLB</text>
-        <text x="280" y="98" text-anchor="middle" font-family="serif" font-size="8.5" font-style="italic" fill="#7a7570">recent translations</text>
-        <line x1="200" y1="106" x2="360" y2="106" stroke="rgba(0,0,0,0.08)"/>
-        <g font-family="DM Mono" font-size="7.5" fill="#1a1614">
-          <text x="206" y="120">0x7fff_a3c4_0</text>
-          <text x="318" y="120" fill="#8a6a2a">→ 0x4a2_0</text>
-          <text x="206" y="135">0x7fff_a3c5_0</text>
-          <text x="318" y="135" fill="#8a6a2a">→ 0x4a3_0</text>
-          <text x="206" y="150">0x7fff_a3c6_0</text>
-          <text x="318" y="150" fill="#8a6a2a">→ 0x4a4_0</text>
-          <text x="206" y="165">0x7fff_a3c7_0</text>
-          <text x="318" y="165" fill="#8a6a2a">→ 0x4a5_0</text>
-        </g>
-
-        <!-- arrow input → TLB -->
-        <line x1="150" y1="106" x2="190" y2="106" stroke="rgba(0,0,0,0.4)"/>
-        <polygon points="184,102 192,106 184,110" fill="rgba(0,0,0,0.5)"/>
-
-        <!-- HIT path top -->
-        <line x1="370" y1="90" x2="540" y2="60" stroke="#96d896" stroke-width="1.5"/>
-        <polygon points="535,57 545,60 537,66" fill="#96d896"/>
-        <text x="455" y="62" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#5fa05f">HIT · ~1 cycle · &gt; 99% of accesses</text>
-
-        <rect x="540" y="42" width="150" height="40" rx="5" fill="#fff" stroke="rgba(95,160,95,0.5)"/>
-        <text x="615" y="60" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#1a1614">physical address</text>
-        <text x="615" y="74" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="#5fa05f">returned to CPU</text>
-
-        <!-- MISS path bottom -->
-        <line x1="370" y1="148" x2="500" y2="190" stroke="#e87878" stroke-width="1.5"/>
-        <polygon points="495,186 503,191 497,196" fill="#e87878"/>
-        <text x="430" y="180" text-anchor="middle" font-family="DM Mono" font-size="8" fill="#b85050">MISS · &lt; 1%</text>
-
-        <rect x="500" y="172" width="190" height="40" rx="5" fill="#fff" stroke="rgba(184,80,80,0.5)"/>
-        <text x="595" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="#1a1614">page-table walk</text>
-        <text x="595" y="204" text-anchor="middle" font-family="DM Mono" font-size="7" fill="#b85050">4 memory loads · ~100 cycles</text>
-      </svg>
-      <p id="chBridge-mmu-p6" class="diagram-caption">A virtual address arrives at the MMU. The TLB is checked first; on a hit, translation is essentially free. The page-table walker runs only on a miss. Modern CPUs achieve TLB hit rates above 99% on typical workloads, which means the four-level walk, apparently a 5× tax on memory access, actually happens less than 1% of the time. The TLB is what makes paging affordable.</p>
+    <div class="diagram-card fig-v2" id="fig-br-5">
+      <div class="diagram-label">Fig BR.5&nbsp;· The TLB&nbsp;· why the walk usually doesn't happen</div>
+      <svg viewBox="0 0 400 328" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47">
+<title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn't happen</title>
+<desc id="svgd-part1-47">Twelve memory accesses from a program working through a few pages, run through a four-entry TLB. Most name a page the TLB already holds and are translated at once. Two name a page it does not hold: each of those runs the page-table walk, four extra memory reads, and loads the translation into the TLB, replacing the entry used longest ago. The count ends at ten hits and two misses; real programs usually hit well over 99% of the time.</desc>
+<text x="20" y="22" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">virtual pages the program touches</text>
+<rect x="20" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="33" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.099857;0.100000;1.000000" dur="14s" repeatCount="indefinite"/><rect x="20" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.099857;0.100000;0.163714;0.163929;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="50" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="63" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.164143;0.164286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="50" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.164143;0.164286;0.228000;0.228214;1.000000" dur="14s" repeatCount="indefinite"/><rect x="48" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="80" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="93" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">5</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.228429;0.228571;1.000000" dur="14s" repeatCount="indefinite"/><rect x="80" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.228429;0.228571;0.292286;0.292500;1.000000" dur="14s" repeatCount="indefinite"/><rect x="78" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="110" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="123" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.292714;0.292857;1.000000" dur="14s" repeatCount="indefinite"/><rect x="110" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.292714;0.292857;0.356571;0.356786;1.000000" dur="14s" repeatCount="indefinite"/><rect x="108" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="140" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="153" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">5</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.357000;0.357143;1.000000" dur="14s" repeatCount="indefinite"/><rect x="140" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.357000;0.357143;0.420857;0.421071;1.000000" dur="14s" repeatCount="indefinite"/><rect x="138" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="170" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="183" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">6</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.421286;0.421429;1.000000" dur="14s" repeatCount="indefinite"/><rect x="170" y="62" width="26" height="6" rx="2" fill="#ec8d8d"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.421286;0.421429;0.485143;0.485357;1.000000" dur="14s" repeatCount="indefinite"/><rect x="168" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="200" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="213" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.485571;0.485714;1.000000" dur="14s" repeatCount="indefinite"/><rect x="200" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.485571;0.485714;0.549429;0.549643;1.000000" dur="14s" repeatCount="indefinite"/><rect x="198" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="230" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="243" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">6</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.549857;0.550000;1.000000" dur="14s" repeatCount="indefinite"/><rect x="230" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.549857;0.550000;0.613714;0.613929;1.000000" dur="14s" repeatCount="indefinite"/><rect x="228" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="260" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="273" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">7</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.614143;0.614286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="260" y="62" width="26" height="6" rx="2" fill="#ec8d8d"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.614143;0.614286;0.678000;0.678214;1.000000" dur="14s" repeatCount="indefinite"/><rect x="258" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="290" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="303" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">7</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.678429;0.678571;1.000000" dur="14s" repeatCount="indefinite"/><rect x="290" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.678429;0.678571;0.742286;0.742500;1.000000" dur="14s" repeatCount="indefinite"/><rect x="288" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="320" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="333" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">4</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.742714;0.742857;1.000000" dur="14s" repeatCount="indefinite"/><rect x="320" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.742714;0.742857;0.806571;0.806786;1.000000" dur="14s" repeatCount="indefinite"/><rect x="318" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="350" y="32" width="26" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-opacity="0.5"/>
+<text x="363" y="50" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">5</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.807000;0.807143;1.000000" dur="14s" repeatCount="indefinite"/><rect x="350" y="62" width="26" height="6" rx="2" fill="#9bd89b"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.807000;0.807143;0.870857;0.871071;1.000000" dur="14s" repeatCount="indefinite"/><rect x="348" y="30" width="30" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
+<text x="20" y="88" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">page a3c? (last digit shown)</text>
+<rect x="20" y="112" width="360" height="152" rx="6" fill="#d4a853" fill-opacity="0.06" stroke="#d4a853" stroke-opacity="0.7"/>
+<text x="32" y="134" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">TLB · four entries</text>
+<rect x="32" y="146" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="163" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c4 → 4a20</text></g>
+<rect x="32" y="174" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="191" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c5 → 4a31</text></g>
+<rect x="32" y="202" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.420857;0.421071;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="219" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">b210 → 51e0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.421286;0.421429;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="219" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c6 → 4a07</text></g>
+<rect x="32" y="230" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.613714;0.613929;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="247" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">b211 → 51e1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.614143;0.614286;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="247" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c7 → 4a52</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.421286;0.421429;0.464286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="30" y="200" width="204" height="28" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.614143;0.614286;0.657143;1.000000" dur="14s" repeatCount="indefinite"/><rect x="30" y="228" width="204" height="28" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g>
+<rect x="250" y="146" width="118" height="108" rx="5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.5" stroke-dasharray="4 3"/>
+<text x="309" y="168" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">page-table</text>
+<text x="309" y="186" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">walk</text>
+<text x="309" y="216" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 extra</text>
+<text x="309" y="234" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">memory reads</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.421286;0.421429;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><rect x="250" y="146" width="118" height="108" rx="5" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.614143;0.614286;0.663714;0.663929;1.000000" dur="14s" repeatCount="indefinite"/><rect x="250" y="146" width="118" height="108" rx="5" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.099857;0.100000;0.163714;0.163929;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 1</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.164143;0.164286;0.228000;0.228214;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 2</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.228429;0.228571;0.292286;0.292500;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 3</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.292714;0.292857;0.356571;0.356786;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 4</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.357000;0.357143;0.420857;0.421071;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 5</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.421286;0.421429;0.485143;0.485357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 5</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.485571;0.485714;0.549429;0.549643;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 6</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.549857;0.550000;0.613714;0.613929;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 7</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.614143;0.614286;0.678000;0.678214;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 7</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.678429;0.678571;0.742286;0.742500;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 8</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.742714;0.742857;0.806571;0.806786;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 9</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.807000;0.807143;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">hits 10</text><text x="120" y="294" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">misses 2</text></g>
+<text x="20" y="316" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">real programs: well over 99% hits</text>
+</svg>
+      <p id="chBridge-mmu-p6" class="diagram-caption">Programs touch the same few pages again and again, so the TLB, a small cache of recent translations, can answer most accesses at once. Only a miss pays for the four-read walk, and then the new translation replaces the entry used longest ago.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Sizes.</b> From 64 entries to a few thousand per core, in one or two levels; one entry can also cover a 2 MiB or 1 GiB huge page.</li>
+          <li><b>Keeping it true.</b> When the kernel changes a page-table entry it must drop the stale translation (<code>INVLPG</code> on x86), on every core that might hold it.</li>
+          <li><b>Switching processes.</b> Each process has its own tables; tagging entries with an address-space ID (PCID on x86) lets the TLB keep them through a switch.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="chBridge-mmu-p7">

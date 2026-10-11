@@ -50,7 +50,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 40 | 1 | `fig-br-2` Fig BR.2 · The trap mechanism · one round trip across the boundary | 2.2 px · cap 124 | done 2026-10-10 |
 | 41 | 1 | `fig-br-3` Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel | 2.2 px · cap 66 | held: owner decision |
 | 42 | 1 | `fig-br-4` Fig BR.4 · The MMU · silicon between the CPU and the RAM | 2.1 px · cap 146 | done 2026-10-11 |
-| 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | deferred: conceptual pass |
+| 43 | 1 | `fig-br-5` Fig BR.5 · The TLB · why the walk usually doesn't happen | 2.2 px · cap 65 | done 2026-10-11 |
 | 44 | 1 | `fig-br-6` Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back | 2.2 px · cap 97 | deferred: conceptual pass |
 | 45 | 1 | `fig-br-7` Fig BR.7 · The physical address space · devices among the RAM | 2.2 px · cap 130 | deferred: conceptual pass |
 | 46 | 1 | `fig-br-8` Fig BR.8 · Direct memory access · the device writes RAM by itself | 2.2 px · cap 113 | deferred: conceptual pass |
