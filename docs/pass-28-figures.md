@@ -204,22 +204,22 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 194 | 5 | `fig-16-1` Fig 16.1 · Threads vs processes · the same parallelism, two isolation models | 2.5 px · cap 150 | done 2026-10-11 |
 | 195 | 5 | `fig-16-2` Fig 16.2 · The classic race · two threads, one counter, lost updates | 2.9 px · cap 122 | done 2026-10-11 |
 | 196 | 5 | `fig-16-3` Fig 16.3 · Mutex protects · deadlock is the new failure mode | 2.5 px · cap 144 | done 2026-10-11 |
-| 197 | 5 | `fig-16-4` Fig 16.4 · Compare-and-swap · the atomic primitive everything else is built on | 2.5 px · cap 115 | todo |
-| 198 | 5 | `fig-16-5` Fig 16.5 · Memory orderings · four levels, four guarantees, four costs | 2.9 px · cap 134 | todo |
-| 199 | 5 | `fig-16-6` Fig 16.6 · CPU vs GPU · few clever cores vs thousands of simple ones | 1.9 px · cap 148 | todo |
-| 200 | 5 | `fig-16-7` Fig 16.7 · The CUDA hierarchy · thread → warp → block → grid | 2.5 px · cap 185 | todo |
-| 201 | 5 | `fig-16-8` Fig 16.8 · Amdahl's law · the ceiling that won't move | 2.5 px · cap 128 | todo |
-| 202 | 5 | `fig-16-9` Fig 16.9 · Amdahl vs Gustafson · same hardware, different question | 2.5 px · cap 129 | todo |
-| 203 | 5 | `fig-16-10` Fig 16.10 · NUMA · two sockets, two memories, asymmetric latency | 2.5 px · cap 141 | todo |
-| 204 | 5 | `fig-16-11` Fig 16.11 · MESI · how four cores keep one cache line consistent | 2.5 px · cap 155 | todo |
-| 205 | 5 | `fig-17-1` Fig 17.1 · Type 1 vs Type 2 hypervisors · bare metal vs hosted | 2.5 px · cap 193 | todo |
-| 206 | 5 | `fig-17-2` Fig 17.2 · Docker image layers · copy-on-write filesystems for software distribution | 2.5 px · cap 161 | todo |
-| 207 | 5 | `fig-17-3` Fig 17.3 · Kubernetes architecture · control plane + workers | 2.2 px · cap 136 | todo |
-| 208 | 5 | `fig-17-4` Fig 17.4 · The reconcile loop · observe, diff, act, repeat | 2.5 px · cap 125 | todo |
-| 209 | 5 | `fig-17-5` Fig 17.5 · Raft · leader election and log replication | 2.5 px · cap 157 | todo |
-| 210 | 5 | `fig-17-6` Fig 17.6 · FLP impossibility · safety vs liveness vs asynchronous failure | 2.5 px · cap 136 | todo |
-| 211 | 5 | `fig-17-7` Fig 17.7 · CAP triangle · pick two when the network splits | 2.5 px · cap 143 | todo |
-| 212 | 5 | `fig-17-8` Fig 17.8 · CAP in production · which database picked which corner | 2.2 px · cap 171 | todo |
+| 197 | 5 | `fig-16-4` Fig 16.4 · Compare-and-swap · the atomic primitive everything else is built on | 2.5 px · cap 115 | done 2026-10-11 |
+| 198 | 5 | `fig-16-5` Fig 16.5 · Memory orderings · four levels, four guarantees, four costs | 2.9 px · cap 134 | done 2026-10-11 |
+| 199 | 5 | `fig-16-6` Fig 16.6 · CPU vs GPU · few clever cores vs thousands of simple ones | 1.9 px · cap 148 | done 2026-10-11 |
+| 200 | 5 | `fig-16-7` Fig 16.7 · The CUDA hierarchy · thread → warp → block → grid | 2.5 px · cap 185 | done 2026-10-11 |
+| 201 | 5 | `fig-16-8` Fig 16.8 · Amdahl's law · the ceiling that won't move | 2.5 px · cap 128 | done 2026-10-11 |
+| 202 | 5 | `fig-16-9` Fig 16.9 · Amdahl vs Gustafson · same hardware, different question | 2.5 px · cap 129 | done 2026-10-11 |
+| 203 | 5 | `fig-16-10` Fig 16.10 · NUMA · two sockets, two memories, asymmetric latency | 2.5 px · cap 141 | done 2026-10-11 |
+| 204 | 5 | `fig-16-11` Fig 16.11 · MESI · how four cores keep one cache line consistent | 2.5 px · cap 155 | done 2026-10-11 |
+| 205 | 5 | `fig-17-1` Fig 17.1 · Type 1 vs Type 2 hypervisors · bare metal vs hosted | 2.5 px · cap 193 | done 2026-10-11 |
+| 206 | 5 | `fig-17-2` Fig 17.2 · Docker image layers · copy-on-write filesystems for software distribution | 2.5 px · cap 161 | done 2026-10-11 |
+| 207 | 5 | `fig-17-3` Fig 17.3 · Kubernetes architecture · control plane + workers | 2.2 px · cap 136 | done 2026-10-11 |
+| 208 | 5 | `fig-17-4` Fig 17.4 · The reconcile loop · observe, diff, act, repeat | 2.5 px · cap 125 | done 2026-10-11 |
+| 209 | 5 | `fig-17-5` Fig 17.5 · Raft · leader election and log replication | 2.5 px · cap 157 | done 2026-10-11 |
+| 210 | 5 | `fig-17-6` Fig 17.6 · FLP impossibility · safety vs liveness vs asynchronous failure | 2.5 px · cap 136 | done 2026-10-11 |
+| 211 | 5 | `fig-17-7` Fig 17.7 · CAP triangle · pick two when the network splits | 2.5 px · cap 143 | done 2026-10-11 |
+| 212 | 5 | `fig-17-8` Fig 17.8 · CAP in production · which database picked which corner | 2.2 px · cap 171 | done 2026-10-11 |
 | 213 | 5 | `fig-17-9` Fig 17.9 · Monolith vs microservices · same business logic, different deployment | 2.2 px · cap 137 | todo |
 | 214 | 5 | `fig-17-10` Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026 | 2.2 px · cap 216 | todo |
 | 215 | 5 | `fig-17-11` Fig 17.11 · The architectural pendulum · same problems, different costumes | 2.9 px · cap 129 | todo |
