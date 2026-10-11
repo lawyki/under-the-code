@@ -35,7 +35,7 @@ line(BX, 94, f'B = 5{sup(B_)} mod 23 = {PB}', PSOFT, 1.8)
 # the public channel, and Eve
 CY0, CY1 = 108, 186
 a(f'<rect x="4" y="{CY0}" width="392" height="{CY1 - CY0}" rx="3" fill="{OXBLOOD}" fill-opacity="0.12" stroke="{OXBLOOD}" stroke-opacity="0.5" stroke-dasharray="4 3"/>')
-a(text(392, CY1 - 8, 'public channel', anchor='end', size=13, fill=OXBLOOD, ls='0'))
+a(text(392, CY0 + 16, 'public channel', anchor='end', size=13, fill=OXBLOOD, ls='0'))
 eve = text(10, CY0 + 16, f'Eve sees {PA} and {PB}', anchor='start', size=13, fill=OXBLOOD, ls='0')
 a(f'<g opacity="0.25">{eve}</g><g opacity="0">{win(3.4)}{eve}</g>')
 def token(x0, x1, y, s, col, t0, t1):
@@ -43,8 +43,8 @@ def token(x0, x1, y, s, col, t0, t1):
     mv = T.translate([(0.0, x1 - x0), (0.3, x1 - x0), (0.305, 0.0), (t0, 0.0), (t1, x1 - x0), (D, x1 - x0)], 'x')
     a(f'<g class="fx" opacity="0">{win(t0)}<g>{mv}<rect x="{x0 - w / 2}" y="{y - 11}" width="{w}" height="22" rx="4" fill="{DCARD}" stroke="{col}" stroke-width="1.5"/>'
       f'{text(x0, y + 5, s, anchor="middle", size=13, fill=col, ls="0")}</g></g>')
-token(60, 300, CY0 + 32, f'A = {PA}', SEAL, 2.6, 3.8)
-token(300, 60, CY0 + 56, f'B = {PB}', BRASS, 2.6, 3.8)
+token(60, 300, CY0 + 40, f'A = {PA}', SEAL, 2.6, 3.8)
+token(300, 60, CY0 + 64, f'B = {PB}', BRASS, 2.6, 3.8)
 # each combines the other's number with their own secret
 line(AX, 210, f'K = {PB}{sup(A_)} mod 23 = {K}', PSOFT, 5.0)
 line(BX, 210, f'K = {PA}{sup(B_)} mod 23 = {K}', PSOFT, 5.4)
