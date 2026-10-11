@@ -1,7 +1,7 @@
 # Fig 14.1 · Two thousand years of cryptography in one strip (Pass 28, law 3). Strongroom dossier plate. A thin
 # axis to scale, 50 BCE to 2030, banded shared-key (to 1976) and public-key (after): the whole public-key era is the
 # last sliver. Evenly spaced labels on the right, joined by non-crossing leaders: Caesar (~50 BCE, broken by letter
-# frequencies, al-Kindi, 800s), Bellaso's "Vigenère" (1553; Babbage 1854, Kasiski 1863), Enigma (1923; Rejewski 1932,
+# frequencies, al-Kindi, 800s), Bellaso's "Vigenère" (1553; Babbage 1854, Kasiski 1863), Enigma (military, 1926; Rejewski 1932,
 # Bombe 1940), Diffie–Hellman (1976), RSA (1977), AES (2001), NIST post-quantum (2024). A marker steps event by event.
 # t=0 (shift): every event stamped.
 import figlib
@@ -14,7 +14,7 @@ YR0, YR1 = -50, 2030
 yy = lambda yr: Y0 + (yr - YR0) / (YR1 - YR0) * (Y1 - Y0)
 EV = [(-50, '~50 BCE · Caesar shift', 'broken by letter frequencies', BRASS),
       (1553, '1553 · "Vigenère" (Bellaso)', 'broken: Babbage, Kasiski 1863', BRASS),
-      (1923, '1923 · Enigma', 'broken: Rejewski 1932, Bombe 1940', BRASS),
+      (1926, '1926 · Enigma, German military', 'broken: Rejewski 1932, Bombe 1940', BRASS),
       (1976, '1976 · Diffie–Hellman', 'strangers agree a key in public', SAGE),
       (1977, '1977 · RSA', 'public-key encryption, signatures', SAGE),
       (2001, '2001 · AES', 'the shared-key standard', BRASS),
@@ -51,7 +51,7 @@ a(f'<g class="fx"><g>{T.translate(ky, "y")}<path d="M{AX - 16},{yy(YR0) - 6} L{A
 H = max(L0 + LS * (len(EV) - 1) + 30, int(Y1) + 14)
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-14 svgd-part4-14">')
 o.insert(1, '<title id="svgt-part4-14">Fig 14.1 · Two thousand years of cryptography in one strip</title>')
-o.insert(2, '<desc id="svgd-part4-14">A timeline drawn to scale from 50 BCE to 2030. Shared-key ciphers fill almost all of it: Caesar\'s shift, broken by letter frequencies; Bellaso\'s cipher of 1553, later called Vigenère\'s, broken by Babbage and by Kasiski in 1863; Enigma in 1923, broken by Rejewski in 1932 and the Bombe in 1940. '
+o.insert(2, '<desc id="svgd-part4-14">A timeline drawn to scale from 50 BCE to 2030. Shared-key ciphers fill almost all of it: Caesar\'s shift, broken by letter frequencies; Bellaso\'s cipher of 1553, later called Vigenère\'s, broken by Babbage and by Kasiski in 1863; Enigma, in German military service from 1926, broken by Rejewski in 1932 and the Bombe in 1940. '
   'Public-key cryptography is the last sliver: Diffie–Hellman in 1976, RSA in 1977, then AES in 2001 for shared keys, and NIST\'s post-quantum standards in 2024.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
@@ -61,9 +61,9 @@ caption = ('For two thousand years every cipher needed a key shared in advance, 
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The scale.</b> Each leader runs to the event's year on a line from 50 BCE to 2030; the public-key era is its last 2.5%.</li>
+          <li><b>The scale.</b> Each leader runs to the event's year on a line from 50 BCE to 2030; the public-key era is under its last 3%.</li>
           <li><b>The exception.</b> The <span class="key-term">one-time pad</span> is provably unbreakable, but it needs as much truly random shared key as there is message, so it never scaled.</li>
-          <li><b>First, in secret.</b> At GCHQ, James Ellis, Clifford Cocks and Malcolm Williamson found public-key cryptography between 1970 and 1974; it stayed classified until 1997.</li>
+          <li><b>First, in secret.</b> At GCHQ, James Ellis, Clifford Cocks and Malcolm Williamson found public-key cryptography between 1969 and 1974; it stayed classified until 1997.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-14-1">

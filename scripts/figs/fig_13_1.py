@@ -52,12 +52,12 @@ for k, r, c, name, yr, col in NODES:
     a(f'<g class="fx" opacity="0">{stamp(ty(yr))}<rect x="{x - 3}" y="{y - 3}" width="{NW + 6}" height="{NH + 6}" rx="4" fill="none" stroke="{STAMP}" stroke-width="2.5"/></g>')
 BY = ROWS['syb'] + NH + 30
 a(f'<g opacity="0">{win(ty(1996) + 0.8)}{text(28, BY, "still running: DB2, Oracle,", anchor="start", size=13, fill=PSOFT, ls="0")}'
-  f'{text(28, BY + 18, "PostgreSQL 18, SQL Server", anchor="start", size=13, fill=PSOFT, ls="0")}</g>')
+  f'{text(28, BY + 18, "PostgreSQL, SQL Server", anchor="start", size=13, fill=PSOFT, ls="0")}</g>')
 H = BY + 28
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-2 svgd-part4-2">')
 o.insert(1, '<title id="svgt-part4-2">Fig 13.1 · Codd 1970 to PostgreSQL 18 · two lineages, fifty years</title>')
 o.insert(2, '<desc id="svgd-part4-2">Codd\'s 1970 paper on the relational model, and the two prototypes it inspired. At IBM in San Jose, System R in 1974, which IBM shipped as SQL/DS in 1981 and DB2 in 1983; Oracle, in 1979, built its product from the SQL that IBM had published. '
-  'At UC Berkeley, Ingres in 1973, which led to Postgres in 1986 and PostgreSQL in 1996; people from Ingres founded Sybase in 1984, which Microsoft licensed for SQL Server in 1989. DB2, Oracle, PostgreSQL 18 and SQL Server are all still running.</desc>')
+  'At UC Berkeley, Ingres in 1973, which led to Postgres in 1986 and PostgreSQL in 1996; people from Ingres founded Sybase in 1984, which Microsoft licensed for SQL Server in 1989. DB2, Oracle, PostgreSQL and SQL Server are all still running.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -66,7 +66,6 @@ caption = ('Codd\'s 1970 paper inspired two prototypes, System R at IBM and Ingr
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The paper.</b> "A Relational Model of Data for Large Shared Data Banks", Communications of the ACM, June 1970: data as tables, and queries that say what to find, not how.</li>
           <li><b>IBM's side.</b> System R produced SQL; IBM shipped it as SQL/DS (1981) and DB2 (1983), after Oracle had shipped its own version, built from IBM's published papers, in 1979.</li>
           <li><b>Berkeley's side.</b> Ingres led to Postgres and PostgreSQL (version 18 in 2025); Ingres alumni founded Sybase, which Microsoft licensed for SQL Server. MySQL and SQLite were written fresh, but speak the same SQL.</li>
         </ol>

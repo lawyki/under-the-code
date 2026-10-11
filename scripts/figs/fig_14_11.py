@@ -1,8 +1,8 @@
 # Fig 14.11 · TLS 1.3 handshake at cryptographic depth (Pass 28, law 3). Strongroom dossier plate. Where Part III's
 # Fig 11.11 drew the messages, this draws the key schedule (RFC 8446 §7.1, simplified): client secret x, server
 # secret y; x·G and y·G cross; both compute the shared point xy·G (X25519); HKDF turns it into handshake keys, then,
-# mixed with a hash of the transcript, into one AES-GCM traffic key per direction. The server's signature over the
-# transcript closes the loop. Lock-step: each stage stamps in order. t=0 (shift): the schedule complete.
+# mixed with a hash of the transcript, into one AES-GCM traffic key per direction. The server signs the transcript
+# inside the encrypted handshake, before the traffic keys exist. Lock-step: each stage stamps in order. t=0 (shift): the schedule complete.
 import figlib
 from figlib import Timeline, text, splice, COURIER, PARCH, PSOFT, PMUTED, SEAL, STAMP, OXBLOOD, BRASS, SAGE, DCARD
 figlib.FONT = COURIER
@@ -37,17 +37,18 @@ for (x0, x1, s, col) in ((60, 340, 'x·G', SEAL), (340, 60, 'y·G', BRASS)):
 staged(box(20, 118, 360, 44, 'shared = x·(y·G) = y·(x·G)', 'X25519: both get the same point', SAGE), 3.4)
 a(f'<g class="fx" opacity="0">{stamp(3.4)}<rect x="17" y="115" width="366" height="50" rx="4" fill="none" stroke="{STAMP}" stroke-width="2.5"/></g>')
 a(down(164, 182))
-staged(box(20, 184, 360, 44, 'HKDF → handshake keys', 'encrypt certificate, signature, Finished', PARCH), 4.6)
-a(down(230, 248))
-staged(box(20, 250, 360, 44, 'HKDF + transcript hash', 'everything said so far, mixed in', PARCH), 5.8)
-a(f'<path d="M150,296 L100,314 m3,-7 l-3,7 l7,1" fill="none" stroke="{PMUTED}"/><path d="M250,296 L300,314 m-3,-7 l3,7 l-7,1" fill="none" stroke="{PMUTED}"/>')
-staged(box(20, 316, 170, 44, 'client → server', 'AES-GCM key', SAGE) + box(210, 316, 170, 44, 'server → client', 'AES-GCM key', SAGE), 7.0)
-staged(text(200, 384, 'server signs the transcript hash', anchor='middle', size=13, fill=OXBLOOD, ls='0'), 8.2)
-H = 396
+staged(box(20, 184, 360, 44, 'HKDF → handshake keys', 'keyed by the shared point and the hellos', PARCH), 4.6)
+a(down(230, 244))
+staged(text(200, 262, 'server signs the transcript, encrypted', anchor='middle', size=13, fill=OXBLOOD, ls='0'), 5.4)
+a(down(270, 284))
+staged(box(20, 286, 360, 44, 'HKDF + transcript hash', 'everything said so far, mixed in', PARCH), 6.4)
+a(f'<path d="M150,332 L100,350 m3,-7 l-3,7 l7,1" fill="none" stroke="{PMUTED}"/><path d="M250,332 L300,350 m-3,-7 l3,7 l-7,1" fill="none" stroke="{PMUTED}"/>')
+staged(box(20, 352, 170, 44, 'client → server', 'AES-GCM key', SAGE) + box(210, 352, 170, 44, 'server → client', 'AES-GCM key', SAGE), 7.6)
+H = 404
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-24 svgd-part4-24">')
 o.insert(1, '<title id="svgt-part4-24">Fig 14.11 · TLS 1.3 handshake at cryptographic depth</title>')
 o.insert(2, '<desc id="svgd-part4-24">The TLS 1.3 key schedule. The client keeps a secret x and sends x times the curve\'s base point G; the server keeps y and sends y·G. Each multiplies the other\'s point by its own secret, and both reach the same shared point. '
-  'HKDF turns it into handshake keys, which encrypt the certificate, signature and Finished messages; then HKDF, mixed with a hash of the whole transcript, gives one AES-GCM key for each direction. The server signs the transcript hash with its certificate key.</desc>')
+  'HKDF turns it, with the hellos, into handshake keys; under them the server signs the transcript. Then HKDF, mixed with a hash of the whole transcript, gives one AES-GCM key for each direction. The server signs the transcript hash with its certificate key.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -56,7 +57,7 @@ caption = ('Each side multiplies the curve\'s base point by a fresh secret and s
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The primitives.</b> X25519 (the curve arithmetic of Fig 14.9) for the shared secret; HKDF, built on HMAC-SHA-256, for every key; AES-GCM or ChaCha20-Poly1305 for the data; Ed25519, ECDSA or RSA-PSS for the server's signature.</li>
+          <li><b>The primitives.</b> X25519 (the curve arithmetic of Fig 14.9) for the shared secret; HKDF, built on HMAC (SHA-256 or SHA-384, by cipher suite), for every key; AES-GCM or ChaCha20-Poly1305 for the data; Ed25519, ECDSA or RSA-PSS for the server's signature.</li>
           <li><b>Why the transcript goes in.</b> A hash of every handshake message is mixed into the keys, so any tampering leaves the two sides with different keys and the Finished messages fail.</li>
           <li><b>Who is on the other end.</b> The server signs the transcript hash with its certificate's private key (CertificateVerify), and the certificate chains to a trusted root (Part III, Fig 11.12).</li>
         </ol>

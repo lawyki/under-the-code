@@ -55,7 +55,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>The sizes.</b> Inverting SHA-256 means trying about 2²⁵⁶ inputs; 2048-bit RSA and 3072-bit discrete logs resist every known classical method (the public factoring record is 270 digits, RSA-896, September 2026); a 256-bit elliptic-curve key matches 3072-bit RSA.</li>
           <li><b>Not proven.</b> These are assumptions: nobody has proven that any one-way function exists; these are believed hard because decades of attack have found nothing fast.</li>
-          <li><b>After Shor.</b> NIST's 2024 standards replace the last three with lattice problems (ML-KEM, ML-DSA) and hash-based signatures (SLH-DSA). Grover's algorithm only square-roots a hash search, so SHA-256 keeps about 128 bits.</li>
+          <li><b>After Shor.</b> NIST's 2024 standards replace the last three with lattice problems (ML-KEM, ML-DSA) and hash-based signatures (SLH-DSA).</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-14-2">

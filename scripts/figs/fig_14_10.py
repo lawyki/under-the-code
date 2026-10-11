@@ -45,9 +45,8 @@ caption = ('For the same strength an elliptic-curve key is a sliver of an RSA ke
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Strength.</b> The bits of work an attacker must spend, matched to an AES key of that length; the sizes are NIST's (SP 800-57).</li>
+          <li><b>Strength.</b> The bits of work an attacker must spend, matched to the work of breaking a symmetric key of that length; the sizes are NIST's (SP 800-57).</li>
           <li><b>Why RSA grows faster.</b> The best attack on RSA, the number field sieve, is sub-exponential, so each step up in strength needs a far larger modulus; the best known attack on a good curve is a generic square-root search, so twice the bits suffice.</li>
-          <li><b>In practice.</b> Protocols designed since 2010 (Signal, WireGuard, modern SSH) went elliptic-curve first; RSA lives on mostly for compatibility.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-14-10">

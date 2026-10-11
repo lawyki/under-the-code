@@ -61,7 +61,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Alice and Bob each keep a secret exponent and publish only 5 raised to it, mod 23; each raises the other\'s public number to their own secret, and both arrive at 2. '
-           'Eve sees 8 and 19, but to reach 2 she must recover an exponent, the discrete log, which at real sizes no one can.')
+           'Eve sees 8 and 19, but to reach 2 she must recover an exponent, the discrete log, which no one can do at real sizes.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

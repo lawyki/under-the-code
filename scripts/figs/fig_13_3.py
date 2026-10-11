@@ -42,7 +42,7 @@ mvx = T.translate([(0.0, dx), (0.3, dx), (0.305, 0.0), (TM0, 0.0), (TM1, dx), (D
 mvy = T.translate([(0.0, dy), (0.3, dy), (0.305, 0.0), (TM0, 0.0), (TM1, dy), (D, dy)], 'y')
 a(f'<g class="fx"><g>{mvx}<g>{mvy}{node(*SIG0, "σ age &gt; 18", SEAL)}</g></g></g>')
 # the plan, stamped on
-PLAN = [(NB['users'], 'index scan, age', TP[0], 'below'), (NB['orders'], 'full scan', TP[1], 'below'), (NB['join'], 'hash join', TP[2], 'right')]
+PLAN = [(NB['users'], 'full scan + filter', TP[0], 'below'), (NB['orders'], 'full scan', TP[1], 'below'), (NB['join'], 'hash join', TP[2], 'right')]
 for (cx, cy), s, t0, where in PLAN:
     x, y, anc = (cx, cy + NH / 2 + 18, 'middle') if where == 'below' else (cx + NW / 2 + 10, cy + 5, 'start')
     lab = text(x, y, s, anchor=anc, size=13, fill=STAMP if False else SEAL, ls='0')
@@ -57,7 +57,7 @@ o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role
 o.insert(1, '<title id="svgt-part4-4">Fig 13.3 · Same query, three forms · SQL → relational algebra → execution plan</title>')
 o.insert(2, '<desc id="svgd-part4-4">The query SELECT u.name, o.product FROM users u JOIN orders o ON u.id = o.user_id WHERE u.age > 18. '
   'Parsed, it becomes a tree: a projection of name and product over a selection of age greater than 18 over the join of users and orders. '
-  'The optimiser moves the selection below the join, onto users, because the test uses only users\' columns. Then the plan is chosen: an index scan of users on age, a full scan of orders, and a hash join.</desc>')
+  'The optimiser moves the selection below the join, onto users, because the test uses only users\' columns. Then the plan is chosen: a full scan of users with the age test applied as rows stream by, a full scan of orders, and a hash join.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -67,7 +67,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rewrite.</b> Filtering first gives the same answer with fewer rows to join: σ(R ⨝ S) = σ(R) ⨝ S whenever the test uses only R's columns.</li>
-          <li><b>The choices.</b> Statistics on table sizes and value spread decide each step: an index on age if few rows pass, a hash join when both inputs are large (Fig 13.4).</li>
+          <li><b>The choices.</b> Statistics on table sizes and value spread decide each step: an index on age only if few rows pass (here nearly everyone is an adult, so scanning wins), a hash join when both inputs are large (Fig 13.4).</li>
           <li><b>Seeing it.</b> <code>EXPLAIN</code> in PostgreSQL or MySQL prints the plan the engine chose.</li>
         </ol>
       </details>'''

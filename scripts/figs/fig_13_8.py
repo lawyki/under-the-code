@@ -72,13 +72,12 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('A lookup descends from the root, one page per level, to the leaf holding the first key in range; the scan then walks the linked leaves left to right, emitting keys until one passes the end. '
-           'Here: three page reads down, then 22, 30 and 38, and 45 stops it.')
+           'Here: three page reads down and two along (five in all), finding 22, 30 and 38; 45 stops it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Real sizes.</b> A node is one disk page holding hundreds of keys, so a billion rows need only three or four levels, and the upper levels usually sit in memory.</li>
+          <li><b>Inserts.</b> A full leaf splits in two and pushes a key up to its parent; when the root splits, the tree grows a level at the top, so every leaf stays at the same depth.</li>
           <li><b>Why the links.</b> Only the leaves hold keys with row pointers; linking them turns a range into one descent plus a walk, the cost being the depth plus the matches divided by the leaf size.</li>
-          <li><b>Who.</b> Rudolf Bayer and Edward McCreight invented the B-tree at Boeing in 1970; the linked-leaf B+ variant is what databases build.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-13-8">

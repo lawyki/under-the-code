@@ -61,7 +61,7 @@ o.insert(2, '<desc id="svgd-part4-8">The SQL standard\'s four isolation levels a
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each isolation level is defined by the anomalies it allows: a dirty read sees another transaction\'s uncommitted change, a non-repeatable read sees a row change between two reads, a phantom sees new rows appear. '
+caption = ('Each isolation level is defined by the anomalies it allows: a dirty read sees another transaction\'s uncommitted change, a non-repeatable read (re-read) sees a row change between two reads, a phantom sees new rows appear. '
            'Run once, the same re-read returns 50 under read committed and 100 under repeatable read.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

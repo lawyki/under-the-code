@@ -56,7 +56,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Shor\'s algorithm would break every public-key scheme in use today, so NIST\'s 2024 standards replace them: ML-KEM for key exchange, ML-DSA for signatures, and SLH-DSA, built only on hashes, as a backup. '
-           'The price is size, a key share 37 times larger and signatures about 50 times larger, and browsers already pair X25519 with ML-KEM in one hybrid key exchange.')
+           'The price is size, a key share 37 times larger and signatures more than 50 times larger, and browsers already pair X25519 with ML-KEM.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

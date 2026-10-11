@@ -104,9 +104,9 @@ caption = ('Each AES round runs four steps on a 4 × 4 grid of bytes: each byte 
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The values.</b> Round 1 of the worked example in the AES standard (FIPS 197, Appendix B), computed and checked: the first column goes 19 3d e3 be, then d4 27 11 ae, d4 bf 5d 30, 04 66 81 e5, and a4 9c 7f f2.</li>
+          <li><b>The values.</b> Round 1 of the worked example in the AES standard (FIPS 197, Appendix B): the first column goes 19 3d e3 be, then d4 27 11 ae, d4 bf 5d 30, 04 66 81 e5, and a4 9c 7f f2.</li>
           <li><b>What each step adds.</b> SubBytes is the only non-linear step, the source of confusion; ShiftRows and MixColumns spread each byte across the block, diffusion; AddRoundKey brings in the key.</li>
-          <li><b>Rounds.</b> 10, 12 or 14 for 128-, 192- and 256-bit keys, the last skipping MixColumns. Rijndael, by Joan Daemen and Vincent Rijmen, won NIST's competition in 2000 and became the standard in 2001.</li>
+          <li><b>Decrypting.</b> Every step has an inverse (an inverse S-box, rotation the other way, an inverse matrix); decryption runs them in reverse order with the round keys taken backwards.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-14-5">

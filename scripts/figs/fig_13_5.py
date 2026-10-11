@@ -1,4 +1,4 @@
-# Fig 13.5 · A bank transfer · what each ACID letter actually guarantees (Pass 28, law 3). Strongroom dossier plate.
+# Fig 13.5 · A bank transfer · atomicity: all of it or none of it (Pass 28, law 3). Strongroom dossier plate.
 # Transfer €100 from Alice (200) to Bob (50), and the power fails between the two updates. Run twice, step by step:
 # without a transaction the restart finds Alice at 100 and Bob at 50, €100 gone; inside BEGIN … COMMIT the restart
 # finds no commit record in the log and undoes the debit, Alice back to 200. Lock-step: three shared steps light
@@ -49,7 +49,7 @@ lane(Y2, 'BEGIN … COMMIT', SAGE,
      'no COMMIT in the log: undone', SAGE)
 H = Y2 + 80
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6">')
-o.insert(1, '<title id="svgt-part4-6">Fig 13.5 · A bank transfer · what each ACID letter actually guarantees</title>')
+o.insert(1, '<title id="svgt-part4-6">Fig 13.5 · A bank transfer · atomicity: all of it or none of it</title>')
 o.insert(2, '<desc id="svgd-part4-6">A transfer of 100 euros from Alice, who has 200, to Bob, who has 50, interrupted by a power cut after Alice is debited and before Bob is paid. '
   'Without a transaction the restarted database shows Alice at 100 and Bob at 50: 100 euros have vanished. Inside BEGIN and COMMIT, the restart finds no commit record in the log and undoes the debit: Alice is back at 200 and the total is still 250.</desc>')
 a('</svg>')
@@ -60,13 +60,12 @@ caption = ('A transfer is two updates. If the power fails between them, a databa
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The four letters.</b> Atomicity: all of a transaction or none. Consistency: constraints hold before and after. Isolation: concurrent transactions behave as if run one at a time. Durability: once committed, it survives a crash.</li>
           <li><b>How recovery knows.</b> Every change goes to the write-ahead log before the table (Fig 13.6); at restart, the changes of any transaction with no commit record are undone.</li>
           <li><b>Who.</b> Jim Gray set out the transaction concept in 1981 (Turing Award 1998); Theo Härder and Andreas Reuter named it ACID in 1983.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-13-5">
-      <div class="diagram-label">Fig 13.5 · A bank transfer · what each ACID letter actually guarantees</div>
+      <div class="diagram-label">Fig 13.5 · A bank transfer · atomicity: all of it or none of it</div>
       {svg}
       <p id="CAPID" class="diagram-caption">{caption}</p>
       {how}
