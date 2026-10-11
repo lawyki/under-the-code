@@ -2115,78 +2115,36 @@
       prime form under modular addition.
     </p>
 
-    <div class="diagram-card" id="fig-14-9">
-      <div class="diagram-label">Fig 14.9 · Point addition on an elliptic curve · geometric picture</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-22"><title id="svgt-part4-22">Fig 14.9 · Point addition on an elliptic curve · geometric picture</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">three points on a line · reflect the third · welcome to elliptic-curve "addition"</text>
-
-        <!-- Axes -->
-        <line x1="360" y1="60" x2="360" y2="340" stroke="rgba(230,217,189,0.4)" stroke-dasharray="2,3"/>
-        <line x1="80" y1="220" x2="660" y2="220" stroke="rgba(230,217,189,0.4)" stroke-dasharray="2,3"/>
-        <text x="668" y="224" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.6)">x</text>
-        <text x="364" y="56" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.6)">y</text>
-
-        <!-- Curve y^2 = x^3 - 3x + 5 (just for visual; gives nice shape) -->
-        <!-- Right branch upper -->
-        <path d="M 245 220 Q 290 130 380 100 Q 470 80 540 70 Q 600 64 660 60" stroke="rgba(207,141,120,0.85)" stroke-width="2" fill="none"/>
-        <!-- Right branch lower -->
-        <path d="M 245 220 Q 290 310 380 340 Q 470 360 540 370 Q 600 376 660 380" stroke="rgba(207,141,120,0.85)" stroke-width="2" fill="none"/>
-
-        <!-- Equation -->
-        <text x="120" y="80" font-family="Playfair Display" font-style="italic" font-size="16" fill="rgba(207,141,120,0.95)">y² = x³ − 3x + 5</text>
-
-        <!-- Point P -->
-        <circle cx="290" cy="160" r="5" fill="rgba(150,216,150,0.95)">
-          <animate attributeName="r" values="5;7;5" dur="2.4s" repeatCount="indefinite"/>
-        </circle>
-        <text x="276" y="156" text-anchor="end" font-family="Courier Prime" font-size="11" fill="rgba(150,216,150,0.95)">P</text>
-
-        <!-- Point Q -->
-        <circle cx="430" cy="120" r="5" fill="rgba(232,120,120,0.95)">
-          <animate attributeName="r" values="5;7;5" dur="2.4s" begin="-1.2s" repeatCount="indefinite"/>
-        </circle>
-        <text x="442" y="116" font-family="Courier Prime" font-size="11" fill="rgba(232,120,120,0.95)">Q</text>
-
-        <!-- Line through P and Q, extended -->
-        <line x1="200" y1="186" x2="600" y2="71" stroke="rgba(207,141,120,0.6)" stroke-width="1.5" stroke-dasharray="5,4">
-          <animate attributeName="stroke-dashoffset" values="0;-18" dur="1.2s" repeatCount="indefinite"/>
-        </line>
-
-        <!-- Third intersection R (below x axis) -->
-        <circle cx="555" cy="100" r="4" fill="rgba(230,217,189,0.45)" stroke="rgba(230,217,189,0.7)">
-          <animate attributeName="r" values="4;6;4" dur="2.4s" begin="-0.6s" repeatCount="indefinite"/>
-          <animate attributeName="fill-opacity" values="0.45;1;0.45" dur="2.4s" begin="-0.6s" repeatCount="indefinite"/>
-        </circle>
-        <text x="568" y="96" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.7)">R = -(P+Q)</text>
-
-        <!-- Reflection arrow downward -->
-        <line x1="555" y1="100" x2="555" y2="340" stroke="rgba(230,217,189,0.4)" stroke-dasharray="2,2">
-          <animate attributeName="stroke-dashoffset" values="0;-12" dur="1.6s" repeatCount="indefinite"/>
-        </line>
-        <!-- traveling reflection packet -->
-        <circle r="3.5" fill="rgba(207,141,120,0.9)">
-          <animateMotion dur="2.4s" repeatCount="indefinite" path="M 555 100 L 555 340"/>
-          <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.30;0.45;0.85;1" dur="2.4s" repeatCount="indefinite"/>
-        </circle>
-
-        <!-- P+Q point (reflection across x axis at y=220 means at 220+(220-100)=340) -->
-        <circle cx="555" cy="340" r="6" fill="rgba(207,141,120,0.95)">
-          <animate attributeName="r" values="6;9;6" dur="2.4s" repeatCount="indefinite"/>
-          <animate attributeName="fill-opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
-        </circle>
-        <text x="568" y="346" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">P + Q</text>
-
-        <!-- Steps -->
-        <g transform="translate(100,260)" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">
-          <text x="0" y="0">① take P and Q on the curve</text>
-          <text x="0" y="14">② draw the unique line through them</text>
-          <text x="0" y="28">③ that line crosses the curve at a third point R'</text>
-          <text x="0" y="42">④ reflect R' across the x-axis → that's P + Q</text>
-          <text x="0" y="60" fill="rgba(207,141,120,0.95)">P + Q is itself on the curve · this is closure</text>
-          <text x="0" y="74" fill="rgba(230,217,189,0.7)">addition is associative · has identity ("point at infinity") · is a group</text>
-        </g>
-      </svg>
-      <p id="ch14-ecc-p3" class="diagram-caption">Elliptic-curve point addition. Take two points P and Q on the curve. The line through them crosses the curve at exactly one other point, which we call R'. Reflect R' across the x-axis. The resulting point is, by definition, P + Q. The construction looks arbitrary but produces a genuine mathematical group: addition is commutative, associative, and has an identity (the so-called "point at infinity," which serves the role of zero). The corresponding "scalar multiplication" (starting from a point G and adding it to itself <em>k</em> times to get <em>kG</em>) is fast in one direction but, given <em>kG</em> alone, infeasible to recover <em>k</em>. This is the elliptic-curve discrete logarithm problem, and it's the trapdoor that all of ECC pulls on.</p>
+    <div class="diagram-card fig-v2" id="fig-14-9">
+      <div class="diagram-label">Fig 14.9&nbsp;· Point addition on an elliptic curve&nbsp;· geometric picture</div>
+      <svg viewBox="0 0 400 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-22 svgd-part4-22">
+<title id="svgt-part4-22">Fig 14.9 · Point addition on an elliptic curve · geometric picture</title>
+<desc id="svgd-part4-22">The curve y squared equals x cubed minus 3x plus 5, one smooth branch. P is at x = −2 and Q at x = 0, both above the axis. The straight line through them meets the curve a third time at R prime, near x = 2.06, y = 2.76. Reflecting R prime across the x-axis gives the point P + Q, at x = 2.06, y = −2.76.</desc>
+<text x="24" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">y² = x³ − 3x + 5</text>
+<line x1="24" y1="168.0" x2="384" y2="168.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<line x1="191.1" y1="40" x2="191.1" y2="296" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<polyline points="367.2,294.9 363.9,291.3 360.7,287.7 357.4,284.2 354.1,280.8 350.9,277.4 347.7,274.2 344.5,271.0 341.3,267.9 338.2,264.8 335.0,261.9 331.9,259.0 328.8,256.3 325.7,253.6 322.6,251.0 319.5,248.5 316.5,246.1 313.4,243.8 310.4,241.5 307.4,239.4 304.5,237.4 301.5,235.5 298.6,233.7 295.6,232.1 292.7,230.5 289.8,229.0 286.9,227.7 284.1,226.5 281.2,225.4 278.4,224.4 275.6,223.6 272.8,222.9 270.0,222.2 267.3,221.7 264.6,221.3 261.8,221.1 259.1,220.9 256.4,220.8 253.8,220.8 251.1,220.9 248.5,221.1 245.8,221.3 243.2,221.7 240.7,222.1 238.1,222.5 235.5,223.0 233.0,223.6 230.5,224.1 228.0,224.8 225.5,225.4 223.0,226.1 220.6,226.8 218.1,227.5 215.7,228.3 213.3,229.0 210.9,229.8 208.6,230.5 206.2,231.3 203.9,232.0 201.6,232.8 199.3,233.5 197.0,234.3 194.7,235.0 192.5,235.7 190.2,236.4 188.0,237.1 185.8,237.8 183.6,238.5 181.5,239.1 179.3,239.8 177.2,240.4 175.1,241.0 173.0,241.6 170.9,242.1 168.9,242.6 166.8,243.2 164.8,243.6 162.8,244.1 160.8,244.6 158.8,245.0 156.8,245.4 154.9,245.8 153.0,246.1 151.1,246.5 149.2,246.8 147.3,247.1 145.4,247.3 143.6,247.6 141.8,247.8 140.0,248.0 138.2,248.1 136.4,248.3 134.6,248.4 132.9,248.5 131.2,248.6 129.5,248.6 127.8,248.6 126.1,248.6 124.5,248.6 122.8,248.6 121.2,248.5 119.6,248.4 118.0,248.3 116.4,248.2 114.9,248.0 113.4,247.8 111.8,247.6 110.3,247.4 108.9,247.1 107.4,246.9 105.9,246.6 104.5,246.3 103.1,245.9 101.7,245.6 100.3,245.2 98.9,244.8 97.6,244.4 96.3,244.0 94.9,243.5 93.6,243.0 92.4,242.5 91.1,242.0 89.8,241.5 88.6,240.9 87.4,240.4 86.2,239.8 85.0,239.2 83.9,238.6 82.7,237.9 81.6,237.3 80.5,236.6 79.4,235.9 78.3,235.2 77.2,234.4 76.2,233.7 75.2,232.9 74.2,232.2 73.2,231.4 72.2,230.6 71.2,229.8 70.3,228.9 69.4,228.1 68.5,227.2 67.6,226.3 66.7,225.5 65.8,224.5 65.0,223.6 64.2,222.7 63.4,221.8 62.6,220.8 61.8,219.8 61.1,218.9 60.3,217.9 59.6,216.9 58.9,215.9 58.2,214.8 57.5,213.8 56.9,212.8 56.2,211.7 55.6,210.6 55.0,209.6 54.4,208.5 53.9,207.4 53.3,206.3 52.8,205.2 52.3,204.1 51.8,202.9 51.3,201.8 50.8,200.7 50.4,199.5 49.9,198.4 49.5,197.2 49.1,196.0 48.7,194.8 48.4,193.7 48.0,192.5 47.7,191.3 47.4,190.1 47.1,188.9 46.8,187.7 46.5,186.5 46.3,185.3 46.1,184.0 45.9,182.8 45.7,181.6 45.5,180.4 45.3,179.1 45.2,177.9 45.1,176.7 44.9,175.4 44.8,174.2 44.8,173.0 44.7,171.7 44.7,170.5 44.6,169.2 44.6,168.0 44.6,168.0 44.6,166.8 44.7,165.5 44.7,164.3 44.8,163.0 44.8,161.8 44.9,160.6 45.1,159.3 45.2,158.1 45.3,156.9 45.5,155.6 45.7,154.4 45.9,153.2 46.1,152.0 46.3,150.7 46.5,149.5 46.8,148.3 47.1,147.1 47.4,145.9 47.7,144.7 48.0,143.5 48.4,142.3 48.7,141.2 49.1,140.0 49.5,138.8 49.9,137.6 50.4,136.5 50.8,135.3 51.3,134.2 51.8,133.1 52.3,131.9 52.8,130.8 53.3,129.7 53.9,128.6 54.4,127.5 55.0,126.4 55.6,125.4 56.2,124.3 56.9,123.2 57.5,122.2 58.2,121.2 58.9,120.1 59.6,119.1 60.3,118.1 61.1,117.1 61.8,116.2 62.6,115.2 63.4,114.2 64.2,113.3 65.0,112.4 65.8,111.5 66.7,110.5 67.6,109.7 68.5,108.8 69.4,107.9 70.3,107.1 71.2,106.2 72.2,105.4 73.2,104.6 74.2,103.8 75.2,103.1 76.2,102.3 77.2,101.6 78.3,100.8 79.4,100.1 80.5,99.4 81.6,98.7 82.7,98.1 83.9,97.4 85.0,96.8 86.2,96.2 87.4,95.6 88.6,95.1 89.8,94.5 91.1,94.0 92.4,93.5 93.6,93.0 94.9,92.5 96.3,92.0 97.6,91.6 98.9,91.2 100.3,90.8 101.7,90.4 103.1,90.1 104.5,89.7 105.9,89.4 107.4,89.1 108.9,88.9 110.3,88.6 111.8,88.4 113.4,88.2 114.9,88.0 116.4,87.8 118.0,87.7 119.6,87.6 121.2,87.5 122.8,87.4 124.5,87.4 126.1,87.4 127.8,87.4 129.5,87.4 131.2,87.4 132.9,87.5 134.6,87.6 136.4,87.7 138.2,87.9 140.0,88.0 141.8,88.2 143.6,88.4 145.4,88.7 147.3,88.9 149.2,89.2 151.1,89.5 153.0,89.9 154.9,90.2 156.8,90.6 158.8,91.0 160.8,91.4 162.8,91.9 164.8,92.4 166.8,92.8 168.9,93.4 170.9,93.9 173.0,94.4 175.1,95.0 177.2,95.6 179.3,96.2 181.5,96.9 183.6,97.5 185.8,98.2 188.0,98.9 190.2,99.6 192.5,100.3 194.7,101.0 197.0,101.7 199.3,102.5 201.6,103.2 203.9,104.0 206.2,104.7 208.6,105.5 210.9,106.2 213.3,107.0 215.7,107.7 218.1,108.5 220.6,109.2 223.0,109.9 225.5,110.6 228.0,111.2 230.5,111.9 233.0,112.4 235.5,113.0 238.1,113.5 240.7,113.9 243.2,114.3 245.8,114.7 248.5,114.9 251.1,115.1 253.8,115.2 256.4,115.2 259.1,115.1 261.8,114.9 264.6,114.7 267.3,114.3 270.0,113.8 272.8,113.1 275.6,112.4 278.4,111.6 281.2,110.6 284.1,109.5 286.9,108.3 289.8,107.0 292.7,105.5 295.6,103.9 298.6,102.3 301.5,100.5 304.5,98.6 307.4,96.6 310.4,94.5 313.4,92.2 316.5,89.9 319.5,87.5 322.6,85.0 325.7,82.4 328.8,79.7 331.9,77.0 335.0,74.1 338.2,71.2 341.3,68.1 344.5,65.0 347.7,61.8 350.9,58.6 354.1,55.2 357.4,51.8 360.7,48.3 363.9,44.7 367.2,41.1" fill="none" stroke="#c9a25a" stroke-width="2"/>
+<defs><clipPath id="clip-fig-14-9"><rect class="fx" x="24" y="0" width="360" height="400"><animate attributeName="width" values="360;360;360;360;0;0;360;360" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.272727;0.381818;1.000000" dur="11s" repeatCount="indefinite"/></rect></clipPath></defs>
+<g clip-path="url(#clip-fig-14-9)"><line x1="36.9" y1="118.3" x2="346.3" y2="81.3" stroke="#cf8d78" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.490727;0.490909;1.000000" dur="11s" repeatCount="indefinite"/><line x1="323.8" y1="90.0" x2="323.8" y2="246.0" stroke="rgba(230,217,189,0.6)" stroke-dasharray="4 3"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127091;0.127273;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="62.6" cy="115.2" r="5.5" fill="#e6d9bd"/><text x="50.5714" y="105.214" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">P</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.172727;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="62.6" cy="115.2" r="11" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.199818;0.200000;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="191.1" cy="99.9" r="5.5" fill="#e6d9bd"/><text x="179.143" y="89.8532" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">Q</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.199818;0.200000;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="191.1" cy="99.9" r="11" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.399818;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="323.8" cy="84.0" r="5.5" fill="#cf8d78"/><text x="309.797" y="72.0049" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">R′</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.399818;0.400000;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="323.8" cy="84.0" r="11" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.581636;0.581818;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="323.8" cy="252.0" r="5.5" fill="#a9bf8e"/><text x="309.797" y="273.995" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">P + Q</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.581636;0.581818;0.627273;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="323.8" cy="252.0" r="11" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+</svg>
+      <p id="ch14-ecc-p3" class="diagram-caption">To add two points on the curve, draw the line through them, find where it meets the curve a third time, and reflect that point across the x-axis. Adding a point to itself k times is fast, but recovering k from the result is the elliptic-curve discrete log, the trapdoor ECC rests on.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The numbers.</b> On y² = x³ − 3x + 5, P = (−2, 1.73) and Q = (0, 2.24); the line through them meets the curve again at (2.06, 2.76), so P + Q = (2.06, −2.76).</li>
+          <li><b>A real group.</b> The addition is commutative and associative, with a "point at infinity" as zero. Cryptography uses the same rules over a finite field instead of the real numbers, where the curve is a scatter of points, not a line.</li>
+          <li><b>In use.</b> Curve25519 (X25519, Ed25519) and secp256k1 (Bitcoin) work over prime fields of about 256 bits; a 256-bit key gives about 128 bits of security.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch14-ecc-p4">
