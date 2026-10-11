@@ -5348,81 +5348,76 @@ main:
       sets it up correctly at boot. The diagram below maps the chain.
     </p>
 
-    <div class="diagram-card" id="fig-br-9">
-      <div class="diagram-label">Fig BR.9 · Hardware features → kernel → abstractions</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51"><title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>
-        <!-- Title -->
-        <text x="360" y="24" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">SILICON · KERNEL · ABSTRACTION: A ONE-TO-ONE CHAIN</text>
-
-        <!-- TOP ROW: hardware features -->
-        <g font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.85)">
-          <rect x="40" y="44" width="118" height="50" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.65)"/>
-          <text x="99" y="65" text-anchor="middle">PRIVILEGE BIT</text>
-          <text x="99" y="78" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">CPL · EL · privilege mode</text>
-
-          <rect x="170" y="44" width="118" height="50" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.65)"/>
-          <text x="229" y="65" text-anchor="middle">TRAP / IDT</text>
-          <text x="229" y="78" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">syscall · exception · IRQ</text>
-
-          <rect x="300" y="44" width="118" height="50" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.65)"/>
-          <text x="359" y="65" text-anchor="middle">MMU · TLB</text>
-          <text x="359" y="78" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">page tables · CR3 · NX · U/S</text>
-
-          <rect x="430" y="44" width="118" height="50" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.65)"/>
-          <text x="489" y="65" text-anchor="middle">TIMER</text>
-          <text x="489" y="78" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">LAPIC · generic timer</text>
-
-          <rect x="560" y="44" width="118" height="50" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.65)"/>
-          <text x="619" y="65" text-anchor="middle">MMIO · DMA</text>
-          <text x="619" y="78" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">device regs · IOMMU</text>
-        </g>
-
-        <!-- arrows down to KERNEL -->
-        <line x1="99" y1="94" x2="180" y2="155" stroke="rgba(212,168,83,0.4)" stroke-dasharray="3,3"/>
-        <line x1="229" y1="94" x2="260" y2="155" stroke="rgba(212,168,83,0.4)" stroke-dasharray="3,3"/>
-        <line x1="359" y1="94" x2="360" y2="155" stroke="rgba(212,168,83,0.4)" stroke-dasharray="3,3"/>
-        <line x1="489" y1="94" x2="460" y2="155" stroke="rgba(212,168,83,0.4)" stroke-dasharray="3,3"/>
-        <line x1="619" y1="94" x2="540" y2="155" stroke="rgba(212,168,83,0.4)" stroke-dasharray="3,3"/>
-
-        <!-- KERNEL block in middle -->
-        <rect x="160" y="155" width="400" height="60" rx="10" fill="#1a1200" stroke="rgba(212,168,83,0.95)" stroke-width="2"/>
-        <text x="360" y="180" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(212,168,83,1)" letter-spacing="0.2em">KERNEL</text>
-        <text x="360" y="200" text-anchor="middle" font-family="serif" font-size="11" font-style="italic" fill="rgba(255,255,255,0.6)">the program that arranges the silicon to keep its promises</text>
-
-        <!-- arrows down to abstractions -->
-        <line x1="220" y1="215" x2="100" y2="255" stroke="rgba(150,216,150,0.4)" stroke-dasharray="3,3"/>
-        <line x1="280" y1="215" x2="230" y2="255" stroke="rgba(150,216,150,0.4)" stroke-dasharray="3,3"/>
-        <line x1="360" y1="215" x2="360" y2="255" stroke="rgba(150,216,150,0.4)" stroke-dasharray="3,3"/>
-        <line x1="440" y1="215" x2="490" y2="255" stroke="rgba(150,216,150,0.4)" stroke-dasharray="3,3"/>
-        <line x1="500" y1="215" x2="620" y2="255" stroke="rgba(150,216,150,0.4)" stroke-dasharray="3,3"/>
-
-        <!-- BOTTOM ROW: abstractions -->
-        <g font-family="DM Mono" font-size="8" fill="rgba(150,216,150,0.85)">
-          <rect x="40" y="255" width="118" height="50" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="99" y="276" text-anchor="middle">ROOT vs USER</text>
-          <text x="99" y="289" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">file perms · capabilities</text>
-
-          <rect x="170" y="255" width="118" height="50" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="229" y="276" text-anchor="middle">SYSCALL API</text>
-          <text x="229" y="289" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">read · write · open · …</text>
-
-          <rect x="300" y="255" width="118" height="50" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="359" y="276" text-anchor="middle">PROCESSES</text>
-          <text x="359" y="289" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">isolation · memory mapping</text>
-
-          <rect x="430" y="255" width="118" height="50" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="489" y="276" text-anchor="middle">MULTITASKING</text>
-          <text x="489" y="289" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">preemption · scheduling</text>
-
-          <rect x="560" y="255" width="118" height="50" rx="6" fill="#0d0d0d" stroke="rgba(150,216,150,0.55)"/>
-          <text x="619" y="276" text-anchor="middle">FILES · NET</text>
-          <text x="619" y="289" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.5)">drivers · stacks · sockets</text>
-        </g>
-
-        <!-- Footnote -->
-        <text x="360" y="335" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">REMOVE ANY ONE HARDWARE FEATURE AND THE CORRESPONDING ABSTRACTION DISAPPEARS</text>
-      </svg>
-      <p id="chBridge-synthesis-p3" class="diagram-caption">Read top to bottom: each hardware feature in the upper row enables one (or more) of the abstractions in the lower row. The kernel is the middle layer: the program that takes the raw silicon primitives and arranges them into something programs can use. Without the privilege bit, there is no root vs user. Without the trap, there is no system call API. Without the MMU, processes share one memory space. Without the timer, multitasking is impossible. Without MMIO and DMA, the CPU cannot reach beyond itself. The whole tower of modern operating systems sits on these five features and the few thousand lines of kernel that bind them together at boot.</p>
+    <div class="diagram-card fig-v2" id="fig-br-9">
+      <div class="diagram-label">Fig BR.9&nbsp;· Hardware features → kernel → abstractions</div>
+      <svg viewBox="0 0 400 336" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51">
+<title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>
+<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives root versus user, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. Each feature is then taken away in turn and its abstraction goes with it: without privilege any program can do anything, without traps there is no safe way into the kernel, without the MMU every program can read every other, without the timer a stuck loop keeps the CPU, and without MMIO and DMA there is no disk and no network.</desc>
+<text x="20" y="24" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">silicon</text>
+<text x="192" y="24" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel</text>
+<text x="380" y="24" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">what you get</text>
+<rect x="156" y="36" width="72" height="256" rx="6" fill="#d4a853" fill-opacity="0.10" stroke="#d4a853" stroke-opacity="0.6"/>
+<rect x="20" y="40" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="65" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">privilege bit</text></g>
+<rect x="244" y="40" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.364143;0.364286;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="65" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">root vs user</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="60.0" x2="156" y2="60.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="60.0" x2="244" y2="60.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="60.0" r="4" fill="#d4a853"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.099857;0.100000;0.143000;0.143214;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.100000;0.142857;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="60.0" r="6" fill="#fff"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.142714;0.142857;0.178571;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="38" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="38" width="124" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="38" width="140" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<rect x="20" y="92" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.471286;0.471429;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="117" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">traps</text></g>
+<rect x="244" y="92" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.492714;0.492857;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="117" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">system calls</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.471286;0.471429;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="112.0" x2="156" y2="112.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="112.0" x2="244" y2="112.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="112.0" r="4" fill="#d4a853"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.135571;0.135714;0.178714;0.178929;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.135714;0.178571;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="112.0" r="6" fill="#fff"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.178429;0.178571;0.214286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="90" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.471286;0.471429;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="90" width="124" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.471286;0.471429;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="90" width="140" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<rect x="20" y="144" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.599857;0.600000;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="169" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">MMU · TLB</text></g>
+<rect x="244" y="144" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.621286;0.621429;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="169" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">processes</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.599857;0.600000;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="164.0" x2="156" y2="164.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="164.0" x2="244" y2="164.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="164.0" r="4" fill="#d4a853"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.171286;0.171429;0.214429;0.214643;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.171429;0.214286;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="164.0" r="6" fill="#fff"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.214143;0.214286;0.250000;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="142" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.599857;0.600000;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="142" width="124" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.599857;0.600000;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="142" width="140" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<rect x="20" y="196" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.728429;0.728571;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="221" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">timer</text></g>
+<rect x="244" y="196" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.749857;0.750000;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="221" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">multitasking</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.728429;0.728571;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="216.0" x2="156" y2="216.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="216.0" x2="244" y2="216.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="216.0" r="4" fill="#d4a853"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.207000;0.207143;0.250143;0.250357;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.207143;0.250000;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="216.0" r="6" fill="#fff"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.249857;0.250000;0.285714;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="194" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.728429;0.728571;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="194" width="124" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.728429;0.728571;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="194" width="140" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<rect x="20" y="248" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="273" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">MMIO · DMA</text></g>
+<rect x="244" y="248" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.878429;0.878571;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="273" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">files, network</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="268.0" x2="156" y2="268.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="268.0" x2="244" y2="268.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="268.0" r="4" fill="#d4a853"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.242714;0.242857;0.285857;0.286071;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.242857;0.285714;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="268.0" r="6" fill="#fff"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.285571;0.285714;0.321429;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="246" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="246" width="124" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="246" width="140" height="44" rx="6" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no privilege: any program can do anything</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.471286;0.471429;0.599429;0.599643;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no traps: no safe way into the kernel</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.599857;0.600000;0.728000;0.728214;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no MMU: every program reads every other</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.728429;0.728571;0.856571;0.856786;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no timer: a stuck loop keeps the CPU</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no MMIO or DMA: no disk, no network</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">take a feature away, its abstraction goes</text></g>
+</svg>
+      <p id="chBridge-synthesis-p3" class="diagram-caption">Each abstraction programs rely on rests on a hardware feature that the kernel sets up at boot and then manages. Take a feature away and its abstraction goes with it: without the timer there is no multitasking, without the MMU no separate processes.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why the kernel.</b> Only code running with full privilege can program these features, so one program does it and every other program asks it through system calls.</li>
+          <li><b>Not strictly one to one.</b> A process needs the MMU, traps and the timer together; each row shows the feature its abstraction cannot do without.</li>
+          <li><b>What comes next.</b> The silicon asks for little: page tables, a trap handler, a timer. Everything else a kernel contains, Part II takes up.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The kernel as the smallest program that arranges the silicon</h3>
