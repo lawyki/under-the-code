@@ -303,65 +303,45 @@
       writes can stomp on each other.
     </p>
 
-    <div class="diagram-card" id="fig-16-2">
-      <div class="diagram-label">Fig 16.2 · The classic race · two threads, one counter, lost updates</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-3"><title id="svgt-part5-3">Fig 16.2 · The classic race · two threads, one counter, lost updates</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(160,140,255,0.95)">"counter++" is three machine instructions · interleaving them produces lost updates</text>
-
-        <!-- Code -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="JetBrains Mono" font-size="10" fill="rgba(160,140,255,0.95)" letter-spacing="0.1em">SOURCE: looks atomic</text>
-          <rect x="0" y="14" width="640" height="34" rx="3" fill="#100d1e" stroke="rgba(96,80,190,0.65)"/>
-          <text x="14" y="34" font-family="JetBrains Mono" font-size="10" fill="rgba(214,210,236,0.95)">counter++;   // both threads run this a million times · expected total: 2,000,000</text>
-        </g>
-
-        <!-- Bytecode -->
-        <g transform="translate(40,118)">
-          <text x="0" y="0" font-family="JetBrains Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">UNDERNEATH: three instructions</text>
-          <rect x="0" y="14" width="640" height="50" rx="3" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
-          <text x="14" y="32" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">  ① LOAD  reg, [counter]      // read current value into register</text>
-          <text x="14" y="46" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">  ② ADD   reg, 1              // increment register</text>
-          <text x="14" y="60" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.85)">  ③ STORE [counter], reg      // write back to memory</text>
-        </g>
-
-        <!-- Interleaving -->
-        <g transform="translate(40,200)">
-          <text x="0" y="0" font-family="JetBrains Mono" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">THE RACE: counter starts at 100</text>
-
-          <!-- two columns -->
-          <rect x="0" y="14" width="200" height="140" rx="3" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.55)"/>
-          <text x="100" y="32" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(150,216,150,0.95)">THREAD 1</text>
-
-          <rect x="220" y="14" width="200" height="140" rx="3" fill="rgba(100,150,255,0.10)" stroke="rgba(60,100,180,0.55)"/>
-          <text x="320" y="32" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(100,150,255,0.95)">THREAD 2</text>
-
-          <text x="500" y="32" font-family="JetBrains Mono" font-size="10" fill="rgba(160,140,255,0.95)">memory</text>
-          <text x="500" y="48" font-family="JetBrains Mono" font-size="10" fill="rgba(214,210,236,0.85)">counter = 100</text>
-
-          <!-- Step by step -->
-          <text x="14" y="56" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.85)">LOAD  reg=100</text>
-          <text x="500" y="68" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.7)">100</text>
-
-          <text x="234" y="76" font-family="JetBrains Mono" font-size="9" fill="rgba(100,150,255,0.85)">LOAD  reg=100</text>
-          <text x="500" y="88" font-family="JetBrains Mono" font-size="9" fill="rgba(214,210,236,0.7)">100</text>
-
-          <text x="14" y="96" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.85)">ADD   reg=101</text>
-          <text x="234" y="116" font-family="JetBrains Mono" font-size="9" fill="rgba(100,150,255,0.85)">ADD   reg=101</text>
-
-          <text x="14" y="136" font-family="JetBrains Mono" font-size="9" fill="rgba(150,216,150,0.85)">STORE 101 →</text>
-          <text x="500" y="124" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.95)">101</text>
-
-          <text x="234" y="148" font-family="JetBrains Mono" font-size="9" fill="rgba(100,150,255,0.85)">STORE 101 →</text>
-          <text x="500" y="148" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.95)">101  (lost!)</text>
-        </g>
-
-        <!-- Result -->
-        <g transform="translate(40,360)">
-          <rect x="0" y="0" width="640" height="20" fill="#16132a" stroke="rgba(160,140,255,0.45)"/>
-          <text x="320" y="14" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="rgba(232,120,120,0.95)">two increments happened · counter went up by 1 · the second thread's increment was lost</text>
-        </g>
-      </svg>
-      <p id="ch16-races-p2" class="diagram-caption">The reference race condition. Both threads execute <code>counter++</code> when the counter is 100. Thread 1 reads 100, adds 1, plans to store 101. Before Thread 1 stores, Thread 2 also reads 100 (the not-yet-updated value), adds 1, plans to store 101. Both stores happen; the counter ends at 101 instead of 102. Thread 2's increment vanished. Multiply this across a million iterations and the expected result of 2,000,000 routinely comes out as 1,000,000 + ε for some small ε. The bug is invisible in source code, depends entirely on scheduling, fails to reproduce reliably, and is one of the most frustrating classes of error in software. Decades of language design (atomics, locks, channels, Rust's borrow checker) exist to prevent this category specifically.</p>
+    <div class="diagram-card fig-v2" id="fig-16-2">
+      <div class="diagram-label">Fig 16.2&nbsp;· The classic race&nbsp;· two threads, one counter, lost updates</div>
+      <svg viewBox="0 0 400 298" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-3 svgd-part5-3">
+<title id="svgt-part5-3">Fig 16.2 · The classic race · two threads, one counter, lost updates</title>
+<desc id="svgd-part5-3">counter++ is three steps: load, add one, store. With the counter at 100, thread 1 loads 100, then thread 2 loads 100 too. Thread 1 adds and stores 101. Thread 2 adds to its own stale copy and stores 101 as well. Two increments ran, and the counter rose by one: expected 102, got 101.</desc>
+<text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)" style="font-variant-ligatures:none">counter++ is three steps:</text>
+<text x="10" y="38" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">load it, add 1, store it</text>
+<text x="70" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">thread 1</text>
+<text x="200" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">counter</text>
+<text x="330" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">thread 2</text>
+<g opacity="0.25"><rect x="14" y="78" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">load  100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="78" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">load  100</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.145273;0.145455;0.200000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="76" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.25"><rect x="274" y="108" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">load  100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="108" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">load  100</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.245273;0.245455;0.300000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="106" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.25"><rect x="14" y="138" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">add  101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="138" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">add  101</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.345273;0.345455;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="136" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.25"><rect x="14" y="168" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">store 101 →</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="168" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">store 101 →</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.445273;0.445455;0.500000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="166" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.25"><rect x="274" y="198" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">add  101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="198" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">add  101</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.545273;0.545455;0.600000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="196" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0.25"><rect x="274" y="228" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">← store 101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="228" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">← store 101</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.645273;0.645455;0.700000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="226" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">101</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">101</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">101  lost</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.699818;0.700000;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="284" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">two increments, +1: expected 102, got 101</text></g>
+</svg>
+      <p id="ch16-races-p2" class="diagram-caption"><code>counter++</code> looks like one step but is three: load, add, store. When thread 2 loads before thread 1 has stored, both add one to the same 100 and both store 101, so one increment is lost.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>At scale.</b> Two threads doing a million increments each typically end well short of two million, and the total changes from run to run with the timing.</li>
+          <li><b>Why it hides.</b> The bug depends on which instructions interleave, so it rarely shows in testing and appears under load.</li>
+          <li><b>The fixes.</b> Make the read-modify-write one indivisible step (an atomic increment, Fig 16.4) or let only one thread in at a time (a mutex, Fig 16.3).</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The mutex · serialise the critical section</h3>
