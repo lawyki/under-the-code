@@ -229,4 +229,4 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 219 | 5 | `fig-18-3` Fig 18.3 · Three things the next decade will change | 2.5 px · cap 168 | done 2026-10-11 |
 | 220 | 5 | `fig-18-4` Fig 18.4 · CS intersections · the disciplines that now run on the substrate | 2.2 px · cap 143 | done 2026-10-11 |
 | 221 | 5 | `fig-18-5` Fig 18.5 · The reading list · grouped by part of this book | 2.5 px · cap 160 | done 2026-10-11 |
-| 222 | 5 | `fig-18-6` Fig 18.6 · The closing zoom-out · the inverse of where <a href="part-1#ch1">Chapter 1</a> began | 2.2 px · cap 156 | todo |
+| 222 | 5 | `fig-18-6` Fig 18.6 · The closing zoom-out · the inverse of where <a href="part-1#ch1">Chapter 1</a> began | 2.2 px · cap 156 | done 2026-10-11 (picture only; owner caption verbatim, exempt from the caption rule) |
