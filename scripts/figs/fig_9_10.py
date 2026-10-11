@@ -69,7 +69,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('The sender writes the source address itself and routers forward on the destination alone, so a forged source gets through and any reply goes to the address it names. '
-           'Source address validation (BCP 38, 2000) closes the gap at the edge: the ISP drops packets whose source is not one of the customer\'s own addresses.')
+           'Source address validation closes the gap at the edge: the ISP drops packets whose source is not one of the customer\'s own addresses.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

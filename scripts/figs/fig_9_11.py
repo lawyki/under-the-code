@@ -1,7 +1,7 @@
 # Fig 9.11 · Pakistan/YouTube, 24 February 2008 (Pass 28, law 3, conceptual pass: most-specific-wins, and the defence).
 # Chart Room. YouTube's block 208.65.152.0/22 as four /24 cells. Traffic to 208.65.153.x follows the most specific
-# route: YouTube's /22 (18:46 UTC); Pakistan Telecom's /24, leaked worldwide by PCCW, wins (18:47) and the traffic dies
-# in Pakistan's null route; YouTube's two /25s win it back (20:18); PCCW withdraws the /24 (20:51). Times from the RIPE
+# route: YouTube's /22 (before 18:47 UTC); Pakistan Telecom's /24, leaked worldwide by PCCW, wins (18:47) and the traffic dies
+# in Pakistan's null route; YouTube's two /25s win it back (20:18); PCCW withdraws the /24 (21:01). Times from the RIPE
 # NCC RIS case study. t=0 (shift): the /24 withdrawn, the /25s carrying the traffic.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
@@ -56,21 +56,21 @@ traffic(P1, P2, 295, RED)
 traffic(P2, P3, 105, CYAN)
 traffic(P3, D - 0.4, 105, CYAN)
 SY = BY + 66
-for t0, t1, s, col in ((0.31, P1, '18:46 UTC: the /22 is the best match', CYAN), (P1, P2, '18:47: the leaked /24 is more specific', RED),
-                       (P2, P3, '20:18: two /25s win the traffic back', CYAN), (P3, None, '20:51: the /24 is withdrawn', CSOFT)):
+for t0, t1, s, col in ((0.31, P1, 'before 18:47 UTC: the /22 wins', CYAN), (P1, P2, '18:47: the leaked /24 is more specific', RED),
+                       (P2, P3, '20:18: two /25s win the traffic back', CYAN), (P3, None, '21:01: the /24 is withdrawn', CSOFT)):
     vis = first(t1) if t0 < 0.5 else (win(t0) if t1 is None else lit(t0, t1))
     a(f'<g opacity="0">{vis}{text(20, SY, s, size=13, fill=col, ls="0")}</g>')
 a(text(20, SY + 22, 'traffic to 208.65.153.x', size=13, fill=CMUTED, ls='0'))
 H = SY + 34
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-25 svgd-part3-25">')
 o.insert(1, '<title id="svgt-part3-25">Fig 9.11 · Pakistan/YouTube, 24 February 2008</title>')
-o.insert(2, '<desc id="svgd-part3-25">YouTube\'s address block 208.65.152.0/22, drawn as four /24s, and traffic to 208.65.153.x. At 18:46 UTC the only route is YouTube\'s /22 and the traffic reaches YouTube. '
+o.insert(2, '<desc id="svgd-part3-25">YouTube\'s address block 208.65.152.0/22, drawn as four /24s, and traffic to 208.65.153.x. Before 18:47 UTC the only route is YouTube\'s /22 and the traffic reaches YouTube. '
   'At 18:47 Pakistan Telecom\'s announcement of 208.65.153.0/24, meant to block YouTube inside Pakistan and leaked worldwide by its upstream, is more specific, so routers everywhere send the traffic to Pakistan, where it is dropped. '
-  'At 20:18 YouTube announces two /25s, more specific again, and wins the traffic back; at 20:51 the /24 is withdrawn.</desc>')
+  'At 20:18 YouTube announces two /25s, more specific again, and wins the traffic back; at 21:01 the /24 is withdrawn.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Routers follow the most specific route they know, so Pakistan Telecom\'s /24, meant to block YouTube at home but leaked worldwide by its upstream PCCW, beat YouTube\'s own /22 everywhere. '
+caption = ('Routers follow the most specific route they know, so Pakistan Telecom\'s /24, meant to block YouTube at home but leaked worldwide by its upstream PCCW, beat YouTube\'s own /22 almost everywhere. '
            'YouTube answered with two still more specific /25s; withdrawing the /24 ended the outage after about two hours.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
