@@ -2608,112 +2608,58 @@
       could an attacker break this property of the system?
     </p>
 
-    <div class="diagram-card" id="fig-15-1">
-      <div class="diagram-label">Fig 15.1 · STRIDE · the six classes of threat to enumerate</div>
-      <svg viewBox="0 0 720 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-28"><title id="svgt-part4-28">Fig 15.1 · STRIDE · the six classes of threat to enumerate</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">walk every component, ask: which of these six can happen here?</text>
-
-        <!-- 6 cards -->
-        <g transform="translate(40,68)" font-family="Courier Prime" font-size="9">
-          <g transform="translate(0,0)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)">
-              <animate attributeName="stroke-width" values="1;2.5;1;1;1;1;1" keyTimes="0;0.08;0.20;0.40;0.60;0.80;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(232,120,120,1)">S</text>
-            <text x="40" y="20" font-size="11" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">SPOOFING</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">claim to be someone else</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: authentication</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">phishing · hijack · DNS spoof</text>
-          </g>
-          <g transform="translate(220,0)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)">
-              <animate attributeName="stroke-width" values="1;1;2.5;1;1;1;1" keyTimes="0;0.16;0.25;0.40;0.60;0.80;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(232,120,120,1)">T</text>
-            <text x="40" y="20" font-size="11" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">TAMPERING</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">modify data in transit or rest</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: integrity</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">SQLi · binary patch · MITM</text>
-          </g>
-          <g transform="translate(440,0)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)">
-              <animate attributeName="stroke-width" values="1;1;1;2.5;1;1;1" keyTimes="0;0.16;0.32;0.41;0.55;0.80;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(232,120,120,1)">R</text>
-            <text x="40" y="20" font-size="11" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">REPUDIATION</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">deny having performed an action</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: non-repudiation</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">no audit log · forged signature</text>
-          </g>
-
-          <g transform="translate(0,100)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)">
-              <animate attributeName="stroke-width" values="1;1;1;1;2.5;1;1" keyTimes="0;0.16;0.32;0.49;0.58;0.80;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(207,141,120,1)">I</text>
-            <text x="40" y="20" font-size="11" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">INFO DISCLOSURE</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">read data the attacker shouldn't</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: confidentiality</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">Heartbleed · Spectre · S3 leaks</text>
-          </g>
-          <g transform="translate(220,100)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)">
-              <animate attributeName="stroke-width" values="1;1;1;1;1;2.5;1" keyTimes="0;0.16;0.32;0.49;0.65;0.74;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(207,141,120,1)">D</text>
-            <text x="40" y="20" font-size="11" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">DENIAL OF SERVICE</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">make legitimate use impossible</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: availability</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">SYN flood · resource exhaustion</text>
-          </g>
-          <g transform="translate(440,100)">
-            <rect x="0" y="0" width="200" height="80" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)">
-              <animate attributeName="stroke-width" values="1;1;1;1;1;1;2.5;1" keyTimes="0;0.16;0.32;0.49;0.65;0.81;0.92;1" dur="9s" repeatCount="indefinite"/>
-            </rect>
-            <text x="20" y="20" font-size="13" fill="rgba(150,216,150,1)">E</text>
-            <text x="40" y="20" font-size="11" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">ELEVATION OF PRIV</text>
-            <text x="14" y="40" fill="rgba(230,217,189,0.85)">gain rights you shouldn't have</text>
-            <text x="14" y="56" fill="rgba(230,217,189,0.7)" font-style="italic">violates: authorisation</text>
-            <text x="14" y="72" fill="rgba(230,217,189,0.65)">Dirty COW · sudo bug · LPE → RCE</text>
-          </g>
-        </g>
-
-        <!-- Trust boundary illustration -->
-        <g transform="translate(40,272)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">TRUST BOUNDARIES: places where data crosses from less-trusted to more-trusted</text>
-
-          <rect x="0" y="14" width="200" height="60" rx="4" fill="rgba(232,120,120,0.12)" stroke="rgba(180,80,80,0.65)"/>
-          <text x="100" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">untrusted</text>
-          <text x="100" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">internet, user input,</text>
-          <text x="100" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">third-party APIs</text>
-
-          <line x1="200" y1="44" x2="240" y2="44" stroke="rgba(232,120,120,0.7)" stroke-width="2"/>
-          <polygon points="240,44 232,38 232,50" fill="rgba(232,120,120,0.85)"/>
-          <text x="220" y="34" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(232,120,120,0.95)">boundary</text>
-
-          <rect x="240" y="14" width="200" height="60" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.65)"/>
-          <text x="340" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">your code</text>
-          <text x="340" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">validate · sanitise · check</text>
-          <text x="340" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">never assume</text>
-
-          <line x1="440" y1="44" x2="480" y2="44" stroke="rgba(150,216,150,0.7)" stroke-width="2"/>
-          <polygon points="480,44 472,38 472,50" fill="rgba(150,216,150,0.85)"/>
-
-          <rect x="480" y="14" width="160" height="60" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.65)"/>
-          <text x="560" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">trusted</text>
-          <text x="560" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">database, kernel,</text>
-          <text x="560" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">private network</text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,362)">
-          <rect x="0" y="0" width="640" height="56" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="18" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">PRINCIPLE OF LEAST PRIVILEGE: every component runs with the minimum permissions it needs</text>
-          <text x="14" y="34" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">a web server doesn't need root · a database account doesn't need DROP TABLE</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">a microservice doesn't need access to every other microservice</text>
-        </g>
-      </svg>
-      <p id="ch15-mindset-p4" class="diagram-caption">STRIDE is the working enumeration. For every component in your design (every API endpoint, every database, every file write, every external call), walk the six letters and ask whether each threat applies. Most will not (a static asset CDN doesn't worry about repudiation). The ones that do define your concrete defences. Underneath STRIDE is the deeper concept of <em>trust boundaries</em>: data crosses from less-trusted to more-trusted territory at specific places, and those places are where validation and sanitisation must live. The complementary discipline is <span class="key-term">least privilege</span>: every component runs with the minimum permissions it needs, so that a successful exploit of one component does not compromise everything around it. The two principles, applied consistently, would prevent a substantial fraction of the attacks discussed in the rest of this chapter.</p>
+    <div class="diagram-card fig-v2" id="fig-15-1">
+      <div class="diagram-label">Fig 15.1&nbsp;· STRIDE&nbsp;· the six classes of threat to enumerate</div>
+      <svg viewBox="0 0 400 374" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-28 svgd-part4-28">
+<title id="svgt-part4-28">Fig 15.1 · STRIDE · the six classes of threat to enumerate</title>
+<desc id="svgd-part4-28">STRIDE applied to two parts of one design. Each part is asked six questions in turn: spoofing, which breaks authentication; tampering, which breaks integrity; repudiation, which breaks non-repudiation; information disclosure, which breaks confidentiality; denial of service, which breaks availability; and elevation of privilege, which breaks authorisation. For a login service all six apply. For a public image CDN, repudiation and information disclosure do not, since there is nothing to deny and nothing secret, while the other four still apply.</desc>
+<rect x="20" y="12" width="170" height="40" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="105" y="37" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">login service</text>
+<rect x="210" y="12" width="170" height="40" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="295" y="37" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">public image CDN</text>
+<g><animateTransform attributeName="transform" type="translate" values="190.00 0;190.00 0;190.00 0;190.00 0;0.00 0;0.00 0;190.00 0;190.00 0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.536364;0.563636;1.000000" dur="11s" repeatCount="indefinite"/><rect x="18" y="10" width="174" height="44" rx="3" fill="none" stroke="#c9a25a" stroke-width="2.5"/></g>
+<text x="20" y="80" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">ask of this part:</text>
+<text x="20" y="110" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">S</text>
+<text x="44" y="110" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">spoofing</text>
+<text x="44" y="128" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks authentication</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="110" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.563455;0.563636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="110" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<text x="20" y="156" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">T</text>
+<text x="44" y="156" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">tampering</text>
+<text x="44" y="174" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks integrity</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.177091;0.177273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="156" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.613455;0.613636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="156" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<text x="20" y="202" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">R</text>
+<text x="44" y="202" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">repudiation</text>
+<text x="44" y="220" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks non-repudiation</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.227091;0.227273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="202" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.663455;0.663636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="202" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">not here</text></g>
+<text x="20" y="248" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">I</text>
+<text x="44" y="248" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">information disclosure</text>
+<text x="44" y="266" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks confidentiality</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.277091;0.277273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="248" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.713455;0.713636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="248" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">not here</text></g>
+<text x="20" y="294" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">D</text>
+<text x="44" y="294" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">denial of service</text>
+<text x="44" y="312" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks availability</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.327091;0.327273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="294" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.763455;0.763636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="294" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<text x="20" y="340" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78" font-weight="700">E</text>
+<text x="44" y="340" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">elevation of privilege</text>
+<text x="44" y="358" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">breaks authorisation</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.377091;0.377273;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="340" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.813455;0.813636;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="340" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">applies</text></g>
+<g class="fx"><animateTransform attributeName="transform" type="translate" values="0 230.00;0 230.00;0 230.00;0 230.00;0 0.00;0 0.00;0 0.00;0 46.00;0 46.00;0 92.00;0 92.00;0 138.00;0 138.00;0 184.00;0 184.00;0 230.00;0 230.00;0 0.00;0 0.00;0 46.00;0 46.00;0 92.00;0 92.00;0 138.00;0 138.00;0 184.00;0 184.00;0 230.00;0 230.00" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127273;0.166364;0.177273;0.216364;0.227273;0.266364;0.277273;0.316364;0.327273;0.366364;0.377273;0.552727;0.563636;0.602727;0.613636;0.652727;0.663636;0.702727;0.713636;0.752727;0.763636;0.802727;0.813636;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="94" width="372" height="42" rx="3" fill="#c9a25a" fill-opacity="0.08" stroke="#c9a25a" stroke-opacity="0.8"/></g>
+</svg>
+      <p id="ch15-mindset-p4" class="diagram-caption">STRIDE turns threat modelling into six questions asked of every part of a design: could someone spoof, tamper, repudiate, disclose, deny service or elevate privilege here? The answers differ from part to part, and each yes names the property that part must defend.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The defences.</b> Each letter has its usual answer: authentication, integrity checks, audit logs, encryption and access control, rate limits and spare capacity, least privilege.</li>
+          <li><b>Per element.</b> Applied to a data-flow diagram, processes face all six, data stores mainly tampering, disclosure and denial, and flows between them tampering, disclosure and denial.</li>
+          <li><b>Least privilege.</b> A part that runs with only the rights it needs cannot hand the rest of the system over when it falls.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
