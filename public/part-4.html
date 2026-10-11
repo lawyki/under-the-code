@@ -3036,42 +3036,45 @@
       it were the last one.
     </p>
 
-    <div class="diagram-card" id="fig-15-5">
-      <div class="diagram-label">Fig 15.5 · SQL injection defence in depth · five layers, each independent</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-32"><title id="svgt-part4-32">Fig 15.5 · SQL injection defence in depth · five layers, each independent</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">no single layer is sufficient · every layer reduces blast radius if upstream layers fail</text>
-
-        <!-- Five layers stacked -->
-        <g transform="translate(40,68)">
-          <rect x="0" y="0" width="640" height="40" rx="4" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)"/>
-          <text x="20" y="20" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)">① INPUT VALIDATION</text>
-          <text x="20" y="34" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">reject inputs that don't match expected shape · numeric IDs are numeric · UUIDs match regex · max lengths</text>
-
-          <rect x="0" y="48" width="640" height="40" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)"/>
-          <text x="20" y="68" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)">② PARAMETERISED QUERIES: the actual fix</text>
-          <text x="20" y="82" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">SQL text and values travel separate channels · attacker's payload stays data, never parsed as code · Chapter 13 Fig 13.11</text>
-
-          <rect x="0" y="96" width="640" height="40" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)"/>
-          <text x="20" y="116" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)">③ ORM / QUERY BUILDER</text>
-          <text x="20" y="130" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">framework wraps parameterisation by default · raw SQL has to be opted into · makes the unsafe path harder</text>
-
-          <rect x="0" y="144" width="640" height="40" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="20" y="164" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">④ LEAST-PRIVILEGE DB ACCOUNT</text>
-          <text x="20" y="178" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">app's connection has only SELECT/INSERT/UPDATE on its own tables · DROP TABLE rejected by DB even if SQLi succeeds</text>
-
-          <rect x="0" y="192" width="640" height="40" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="20" y="212" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">⑤ WAF + MONITORING</text>
-          <text x="20" y="226" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">Web Application Firewall flags SQL-like patterns · SIEM alerts on anomalous query rates · post-breach forensics</text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,308)">
-          <rect x="0" y="0" width="640" height="40" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">a single missing layer is recoverable · five missing layers means an attacker has full DB access in minutes</text>
-          <text x="320" y="34" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)" font-style="italic">the same template applies to every attack class: XSS, CSRF, deserialisation, SSRF</text>
-        </g>
-      </svg>
-      <p id="ch15-web-p3" class="diagram-caption">SQL injection defence in production is never a single mechanism. The same template applies to every attack class in this section: input validation rejects obvious-bad inputs early, the primary fix (parameterised queries here, output encoding for XSS, allow-listing for SSRF) closes the technical vulnerability, the framework's defaults make the safe path the easy path, least privilege contains the blast radius if all of the above fail, and monitoring detects exploitation attempts. Strip layer 2 alone (a developer writes raw SQL on one endpoint) and you still have four other lines of defence. Strip all five and you become the next breach in the news. Defence in depth is the discipline of treating every layer as fallible, because in practice every layer is.</p>
+    <div class="diagram-card fig-v2" id="fig-15-5">
+      <div class="diagram-label">Fig 15.5&nbsp;· SQL injection defence in depth&nbsp;· five layers, each independent</div>
+      <svg viewBox="0 0 400 334" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-32 svgd-part4-32">
+<title id="svgt-part4-32">Fig 15.5 · SQL injection defence in depth · five layers, each independent</title>
+<desc id="svgd-part4-32">Five layers stand between a bad input and the data: input validation, parameterised queries, an ORM that parameterises by default, a database account with the least privilege it needs, and monitoring. First, with every layer in place, the input fails validation and stops at layer 1. Then an input passes validation, and one endpoint built its SQL by hand, leaving a gap in layers 2 and 3; it falls through both, the database account refuses it at layer 4 for lack of the right, and monitoring raises an alert.</desc>
+<text x="20" y="24" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">a bad input</text>
+<line x1="300" y1="30" x2="300" y2="300" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.25" stroke-dasharray="3 4"/>
+<rect x="20" y="56" width="360" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/>
+<text x="32" y="79" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">1 · validate input</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.482667;0.482917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="108" width="360" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.483167;0.483333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="108" width="258" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/><rect x="322" y="108" width="58" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/></g>
+<text x="32" y="131" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">2 · parameterised queries</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.482667;0.482917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="360" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.483167;0.483333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="258" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/><rect x="322" y="160" width="58" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/></g>
+<text x="32" y="183" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">3 · ORM by default</text>
+<rect x="20" y="212" width="360" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/>
+<text x="32" y="235" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">4 · least-privilege account</text>
+<rect x="20" y="264" width="360" height="36" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.75"/>
+<text x="32" y="287" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">5 · monitoring</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.116500;0.116667;0.382667;0.382917;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 24.00;0 24.00;0 0.00;0 0.00;0 24.00;0 24.00" keyTimes="0.000000;0.049958;0.050000;0.116667;0.126282;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="300" cy="24" r="7" fill="#cf8d78"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.141500;0.141667;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="17" y="53" width="366" height="42" rx="3" fill="#cf8d78" fill-opacity="0.18" stroke="#cf8d78" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.032667;0.032917;0.049958;0.050000;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 180.00;0 180.00;0 0.00;0 0.00;0 180.00;0 180.00" keyTimes="0.000000;0.049958;0.050000;0.533333;0.605449;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="300" cy="24" r="7" fill="#cf8d78"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.483167;0.483333;0.541667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="276" y="106" width="48" height="40" rx="2" fill="none" stroke="#cf8d78" stroke-width="2" stroke-dasharray="4 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.483167;0.483333;0.541667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="276" y="158" width="48" height="40" rx="2" fill="none" stroke="#cf8d78" stroke-width="2" stroke-dasharray="4 3"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.605282;0.605449;0.663782;1.000000" dur="12s" repeatCount="indefinite"/><rect x="17" y="209" width="366" height="42" rx="3" fill="#a9bf8e" fill-opacity="0.18" stroke="#a9bf8e" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.638615;0.638782;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="287" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">alert</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.432667;0.432917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">fails validation: stopped at 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.433167;0.433333;0.604782;0.605032;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">hand-built SQL: 2 and 3 have a gap</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.605282;0.605449;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">no such right: refused at 4</text></g>
+</svg>
+      <p id="ch15-web-p3" class="diagram-caption">Defence in depth stacks independent layers so that no single mistake is fatal: here one endpoint built its SQL by hand, opening a gap in two layers, and the least-privileged database account still refused while monitoring raised the alarm. Each layer is built as if the ones above it had failed.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The cure and the rest.</b> Layer 2 is the real fix (Fig 13.11); the others exist for the day it is missing.</li>
+          <li><b>The same template.</b> Every web flaw has its own primary fix under the same supporting layers: output encoding for XSS, allow-lists for URLs a server fetches.</li>
+          <li><b>Least privilege in practice.</b> The application's database account gets only the statements it needs on its own tables, never ownership or the right to drop them.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>SSRF · the server fetches what the user asked for</h3>
