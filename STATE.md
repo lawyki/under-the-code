@@ -3,6 +3,8 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
+**Pass 29/30 at:** Before starting, step 3 (read the laws and ledgers). Done: step 1 (brief saved, 557fe93); step 2 (Pass 28 close confirmed 2026-10-11: 204 done + 18 kept original, no todo/held/deferred; the dry Pass 28 session cron `b79ffe22` cancelled; git clean bar `.kilo/`, `shots4/`; lists in `docs/pass-30-figures.md`). Brief: `docs/pass-29-30-brief.md`.
+
 ## WHERE WE ARE
 
 **READY.** Pass 19 — the book-wide closing sweep — completed 2026-08-09
