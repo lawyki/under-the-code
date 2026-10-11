@@ -31,9 +31,9 @@ a(text(48, 74, 'https://cdn.example.com', size=13, fill='#fff', ls='0'))
 GX = 222
 RY0, RH = 126, 50
 ry = lambda k: RY0 + k * RH
-a(text(20, RY0 - 12, 'the page asks to run', size=13, fill=CMUTED, ls='0'))
+a(text(20, RY0 - 12, 'requested', size=13, fill=CMUTED, ls='0'))
 a(f'<line x1="{GX}" y1="{RY0 - 4}" x2="{GX}" y2="{ry(4) - 6}" stroke="{ROUTE}" stroke-width="3" stroke-opacity="0.8"/>')
-a(text(380, RY0 - 12, 'policy check', anchor='end', size=13, fill=ROUTE, ls='0'))
+a(text(GX, RY0 - 12, 'browser checks', anchor='middle', size=13, fill=ROUTE, ls='0'))
 for k, (lab, verdict, ok, injected) in enumerate(ROWS):
     y = ry(k); ly = y + 34
     a(text(20, y + 16, lab, size=13, fill=RED if injected else '#fff', ls='0'))
@@ -46,7 +46,7 @@ for k, (lab, verdict, ok, injected) in enumerate(ROWS):
     a(f'<g class="fx" opacity="0">{lit(t0, t1 + 0.6)}<g>{T.translate(pts, "x")}<circle cx="28" cy="{ly}" r="6" fill="{CYAN if ok else RED}"/></g></g>')
     a(f'<g class="fx" opacity="0">{pulse(t0 + GO)}<rect x="{GX - 5}" y="{y + 22}" width="10" height="24" rx="2" fill="{CYAN if ok else RED}"/></g>')
 SY = ry(4) + 18
-for t0, t1, s, col in ((0.31, TR[2] + GO, "the page's own and a listed origin run", CYAN), (TR[2] + GO, None, 'injected, yet refused', RED)):
+for t0, t1, s, col in ((0.31, TR[2] + GO, 'each script checked on its own', CYAN), (TR[2] + GO, None, 'injected, yet refused', RED)):
     vis = first(t1) if t0 < 0.5 else win(t0)
     a(f'<g opacity="0">{vis}{text(20, SY, s, size=13, fill=col, ls="0")}</g>')
 H = SY + 12
@@ -57,14 +57,14 @@ o.insert(2, '<desc id="svgd-part3-66">The server\'s response carries the header 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A Content-Security-Policy header tells the browser which origins may supply scripts, and the browser checks every script against it before running anything. '
-           'A script that is not on the list is refused even when an <span class="key-term">XSS</span> injection has already put it in the page, and so is inline code unless the policy allows it.')
+caption = ('The browser checks each script against the header on its own: the page\'s own and the listed origin run, and everything else is refused, even when an <span class="key-term">XSS</span> injection has already put it in the page. '
+           'Inline code counts as everything else unless the policy admits it by nonce or hash.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Nonces and hashes.</b> A strict policy can admit one inline script by a random nonce issued with each response, or by the script's hash, without allowing inline code in general.</li>
-          <li><b>Reports.</b> The <code>report-to</code> directive has the browser report each refused load, so a blocked injection shows up in the site's monitoring.</li>
-          <li><b>Rolling it out.</b> <code>Content-Security-Policy-Report-Only</code> applies a policy without enforcing it, so a site can see what would break before switching it on.</li>
+          <li><b>Nonces and hashes.</b> A strict policy admits chosen inline scripts by a fresh random nonce, sent in the header and repeated on each trusted script tag, or by the hash of the script's text.</li>
+          <li><b>Reports.</b> A <code>report-to</code> directive names a reporting endpoint, and the browser sends it a report for each violation, so a refused injection shows up in the site's monitoring (the older <code>report-uri</code> still works).</li>
+          <li><b>Rolling it out.</b> <code>Content-Security-Policy-Report-Only</code> applies a policy without enforcing it and reports what it would have blocked, so a site can see what would break before switching it on.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-12-11">
