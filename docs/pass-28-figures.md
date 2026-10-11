@@ -127,7 +127,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 117 | 3 | `fig-9-7` Fig 9.7 · The internet's tier hierarchy | 2.5 px · cap 161 | done 2026-10-11 |
 | 118 | 3 | `fig-9-8` Fig 9.8 · IPv4 ran out, then CGNAT papered over it | 2.5 px · cap 125 | done 2026-10-11 |
 | 119 | 3 | `fig-9-9` Fig 9.9 · The shape of an IPv4 vs an IPv6 address | 2.5 px · cap 120 | done 2026-10-11 |
-| 120 | 3 | `fig-9-10` Fig 9.10 · IP spoofing: a forged source field | 2.5 px · cap 134 | deferred: conceptual pass |
+| 120 | 3 | `fig-9-10` Fig 9.10 · IP spoofing: a forged source field | 2.5 px · cap 134 | done 2026-10-11 |
 | 121 | 3 | `fig-9-11` Fig 9.11 · Pakistan/YouTube, 24 February 2008 | 2.2 px · cap 149 | deferred: conceptual pass |
 | 122 | 3 | `fig-9-12` Fig 9.12 · A route leak: traffic takes the wrong door | 2.5 px · cap 148 | done 2026-10-11 |
 | 123 | 3 | `fig-10-1` Fig 10.1 · UDP: eight bytes, no state, no apologies | 2.2 px · cap 100 | done 2026-10-11 |

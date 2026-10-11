@@ -2006,45 +2006,55 @@
       </p>
     </div>
 
-    <div class="diagram-card" id="fig-9-10">
-      <div class="diagram-label">Fig 9.10 · IP spoofing: a forged source field</div>
-      <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-24"><title id="svgt-part3-24">Fig 9.10 · IP spoofing: a forged source field</title>
-        <text x="360" y="30" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(79,196,230,0.95)">the sender writes the source field, and nobody checks it</text>
-
-        <!-- Attacker box -->
-        <rect x="40" y="80" width="160" height="60" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.85)"/>
-        <text x="120" y="104" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(232,120,120,0.95)">attacker</text>
-        <text x="120" y="120" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">203.0.113.7</text>
-        <text x="120" y="134" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(255,255,255,0.55)">"real" IP</text>
-
-        <!-- Forged packet -->
-        <g transform="translate(220,90)">
-          <rect x="0" y="0" width="280" height="44" rx="3" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.85)" stroke-width="1.5"/>
-          <text x="140" y="18" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">SRC: 198.51.100.5 (forged!)</text>
-          <text x="140" y="34" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">DST: 192.0.2.10 (target)</text>
-        </g>
-
-        <!-- Animated arrow -->
-        <line x1="200" y1="110" x2="220" y2="110" stroke="rgba(232,120,120,0.7)"/>
-        <polygon points="220,110 214,104 214,116" fill="rgba(232,120,120,0.7)"/>
-        <line x1="500" y1="110" x2="540" y2="110" stroke="rgba(79,196,230,0.7)"/>
-        <polygon points="540,110 534,104 534,116" fill="rgba(79,196,230,0.7)"/>
-
-        <!-- Target server -->
-        <rect x="540" y="80" width="140" height="60" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-        <text x="610" y="104" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">target</text>
-        <text x="610" y="120" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">192.0.2.10</text>
-
-        <!-- Reply goes to wrong host -->
-        <g transform="translate(40,180)">
-          <text x="0" y="0" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.7)">reply (if any) goes to 198.51.100.5, not to the attacker</text>
-          <text x="0" y="16" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">→ no two-way conversation, BUT plenty of one-way attacks work fine</text>
-          <text x="0" y="32" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">→ DNS amplification, SYN floods, NTP reflection: all use spoofed sources</text>
-        </g>
-
-        <text x="360" y="266" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">BCP 38 (2000) ASKS ISPS TO FILTER · ENFORCEMENT IS UNEVEN · SPOOFED TRAFFIC IS STILL ROUTINE</text>
-      </svg>
-      <p id="ch9-security-p3" class="diagram-caption">An attacker writes any source IP they want into the IP header and sends. Routers in between forward the packet based on the destination only. The target receives the packet with the forged source. This is fine for one-way attacks: a TCP SYN flood (<a href="#ch10">Chapter 10</a>) needs only to cause the target to allocate state for a half-open connection, never to receive the reply. DNS and NTP amplification attacks send small spoofed queries that elicit large responses. The responses are all directed at the spoofed victim, not the attacker. BCP 38 (2000) recommends every ISP filter outgoing packets so that customers cannot spoof addresses that are not theirs to use; a quarter-century later, deployment of BCP 38 is incomplete and spoofed-source attacks remain routine. The fix exists. The internet has not finished installing it.</p>
+    <div class="diagram-card fig-v2" id="fig-9-10">
+      <div class="diagram-label">Fig 9.10&nbsp;· IP spoofing: a forged source field</div>
+      <svg viewBox="0 0 400 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-24 svgd-part3-24">
+<title id="svgt-part3-24">Fig 9.10 · IP spoofing: a forged source field</title>
+<desc id="svgd-part3-24">A packet's header has a source and a destination field, and the sender fills in both. A sender on the network 203.0.113.0/24 sends a packet to 192.0.2.10 with the source field set to 198.51.100.5, an address that is not its own. With no filter at the ISP's edge router it gets through, since routers forward on the destination only, and the reply goes to 198.51.100.5 instead of the sender. Then the edge router checks sources: a packet from the sender's own address 203.0.113.7 passes, and the packet with the forged source is dropped at the edge.</desc>
+<rect x="20" y="12" width="360" height="54" rx="3" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="32" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">src</text>
+<text x="32" y="56" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">dst</text>
+<text x="80" y="56" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">192.0.2.10</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.455360;0.455600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="80" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">198.51.100.5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.455840;0.456000;0.711360;0.711600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="80" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">203.0.113.7</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.711840;0.712000;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="80" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">198.51.100.5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.455360;0.455600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="368" y="34" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">forged</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.455840;0.456000;0.711360;0.711600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="368" y="34" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">genuine</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.711840;0.712000;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="368" y="34" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">forged</text></g>
+<rect x="20" y="88" width="210" height="36" rx="3" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="32" y="111" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">sender 203.0.113.x</text>
+<rect x="20" y="150" width="210" height="36" rx="3" fill="#081b2e" stroke="#e07a3f" stroke-opacity="0.8"/>
+<text x="32" y="173" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">ISP edge router</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.407360;0.407600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="242" y="173" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">no filter</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.407840;0.408000;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="242" y="173" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">checks src</text></g>
+<rect x="20" y="212" width="210" height="36" rx="3" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="32" y="235" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">routes on dst only</text>
+<rect x="20" y="280" width="210" height="36" rx="3" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.8"/>
+<text x="32" y="303" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">192.0.2.10</text>
+<rect x="250" y="280" width="130" height="36" rx="3" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="315" y="303" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">198.51.100.5</text>
+<line x1="210" y1="124" x2="210" y2="280" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.35" stroke-width="2"/>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.407840;0.408000;0.456000;1.000000" dur="12.5s" repeatCount="indefinite"/><rect x="17" y="147" width="216" height="42" rx="4" fill="none" stroke="#4fc4e6" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.103840;0.104000;0.271360;0.271600;1.000000" dur="12.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 180.00;0 180.00;0 0.00;0 0.00;0 180.00;0 180.00" keyTimes="0.000000;0.039960;0.040000;0.104000;0.232000;1.000000" dur="12.5s" repeatCount="indefinite"/><circle cx="210" cy="106.0" r="6" fill="#ec6b6b"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.455840;0.456000;0.623360;0.623600;1.000000" dur="12.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 180.00;0 180.00;0 0.00;0 0.00;0 180.00;0 180.00" keyTimes="0.000000;0.039960;0.040000;0.456000;0.584000;1.000000" dur="12.5s" repeatCount="indefinite"/><circle cx="210" cy="106.0" r="6" fill="#4fc4e6"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.711840;0.712000;0.795449;0.795689;1.000000" dur="12.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 62.00;0 62.00;0 0.00;0 0.00;0 62.00;0 62.00" keyTimes="0.000000;0.039960;0.040000;0.712000;0.756089;1.000000" dur="12.5s" repeatCount="indefinite"/><circle cx="210" cy="106.0" r="6" fill="#ec6b6b"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.755929;0.756089;0.804089;1.000000" dur="12.5s" repeatCount="indefinite"/><rect x="17" y="147" width="216" height="42" rx="4" fill="#ec6b6b" fill-opacity="0.2" stroke="#ec6b6b" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.279840;0.280000;0.375360;0.375600;1.000000" dur="12.5s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="52.00 0;52.00 0;0.00 0;0.00 0;52.00 0;52.00 0" keyTimes="0.000000;0.039960;0.040000;0.280000;0.344000;1.000000" dur="12.5s" repeatCount="indefinite"/><circle cx="210" cy="298.0" r="6" fill="#e07a3f"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.343840;0.344000;0.392000;1.000000" dur="12.5s" repeatCount="indefinite"/><rect x="247" y="277" width="136" height="42" rx="4" fill="none" stroke="#e07a3f" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.279360;0.279600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="20" y="342" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">no filter: the forgery gets through</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.279840;0.280000;0.407360;0.407600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="20" y="342" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">the reply goes to 198.51.100.5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.039960;0.040000;0.407840;0.408000;0.711360;0.711600;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="20" y="342" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">filter on: its own address passes</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.039960;0.040000;0.064000;0.064400;0.711840;0.712000;1.000000" dur="12.5s" repeatCount="indefinite"/><text x="20" y="342" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">forged source: dropped at the edge</text></g>
+</svg>
+      <p id="ch9-security-p3" class="diagram-caption">The sender writes the source address itself and routers forward on the destination alone, so a forged source gets through and any reply goes to the address it names. Source address validation (BCP 38, 2000) closes the gap at the edge: the ISP drops packets whose source is not one of the customer's own addresses.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>One way only.</b> A forger never sees the reply, so it cannot hold a TCP conversation; spoofing suits single packets, which is why Chapter 10's SYN flood relies on it.</li>
+          <li><b>Automating the check.</b> Strict unicast reverse path forwarding (uRPF) accepts a packet only if the router's route back to its source leaves through the interface the packet arrived on.</li>
+          <li><b>Uneven deployment.</b> The filter only works where each edge network applies it; measurement projects such as CAIDA's Spoofer still find networks that let forged packets out.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch9-security-p4">
