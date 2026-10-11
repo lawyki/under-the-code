@@ -82,7 +82,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Signing.</b> The CA signs a hash of the certificate; verifying takes the public key, the same hash and the signature, and answers yes or no. Only the private key could have made a signature that verifies.</li>
           <li><b>The log.</b> Each leaf is a certificate's hash, each node the hash of its two children, and the log signs the root. A proof for one certificate is its sibling at every level: log₂ N hashes.</li>
-          <li><b>Why it exists.</b> In 2011 the breached Dutch CA DigiNotar issued a false certificate for <code>*.google.com</code> that went unnoticed for weeks. Since 2018 Chrome trusts a new certificate only if public logs hold it, so a domain owner can spot one issued in their name.</li>
+          <li><b>Why it exists.</b> In 2011 the breached Dutch CA DigiNotar issued a false certificate for <code>*.google.com</code>, used for weeks to intercept (<span class="key-term">MITM</span>) Gmail users in Iran. Since 2018 Chrome trusts a new certificate only if public logs hold it, so a domain owner can spot one issued in their name.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-14-12">

@@ -742,7 +742,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.090800;0.091000;1.000000" dur="10s" repeatCount="indefinite"/><text x="280" y="209" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="rgba(230,217,189,0.85)">€250</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="238" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">no COMMIT in the log: undone</text></g>
 </svg>
-      <p id="ch13-acid-p3" class="diagram-caption">A transfer is two updates. If the power fails between them, a database without transactions wakes up with Alice debited and Bob unpaid; with <code>BEGIN</code> and <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.</p>
+      <p id="ch13-acid-p3" class="diagram-caption">A transfer is two updates. If the power fails between them, a database without transactions wakes up with Alice debited and Bob unpaid; inside a <span class="key-term">transaction</span>, <code>BEGIN</code> to <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1568,7 +1568,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.783167;0.783333;1.000000" dur="12s" repeatCount="indefinite"/><text x="390" y="334" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#b8372f">Shor breaks it</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.783167;0.783333;0.825000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="272.8" y="320" width="119.2" height="20" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
 </svg>
-      <p id="ch14-primer-p5" class="diagram-caption">Every primitive in this chapter rests on a function that is quick one way and infeasible the other: hashing, modular powers, multiplying primes, multiplying a point on an elliptic curve. A large quantum computer running Shor's algorithm would undo the last three; hashing would only lose half its bits of strength.</p>
+      <p id="ch14-primer-p5" class="diagram-caption">Every primitive in this chapter rests on a function that is quick one way and infeasible the other: hashing (<span class="key-term">SHA-256</span>), modular powers (<span class="key-term">Diffie–Hellman</span>), multiplying primes, multiplying a point on an elliptic curve. A large quantum computer running Shor's algorithm would undo the last three; hashing would only lose half its bits of strength.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2349,7 +2349,7 @@
         <ol>
           <li><b>Signing.</b> The CA signs a hash of the certificate; verifying takes the public key, the same hash and the signature, and answers yes or no. Only the private key could have made a signature that verifies.</li>
           <li><b>The log.</b> Each leaf is a certificate's hash, each node the hash of its two children, and the log signs the root. A proof for one certificate is its sibling at every level: log₂ N hashes.</li>
-          <li><b>Why it exists.</b> In 2011 the breached Dutch CA DigiNotar issued a false certificate for <code>*.google.com</code> that went unnoticed for weeks. Since 2018 Chrome trusts a new certificate only if public logs hold it, so a domain owner can spot one issued in their name.</li>
+          <li><b>Why it exists.</b> In 2011 the breached Dutch CA DigiNotar issued a false certificate for <code>*.google.com</code>, used for weeks to intercept (<span class="key-term">MITM</span>) Gmail users in Iran. Since 2018 Chrome trusts a new certificate only if public logs hold it, so a domain owner can spot one issued in their name.</li>
         </ol>
       </details>
     </div>

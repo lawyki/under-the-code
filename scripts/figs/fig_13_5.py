@@ -56,7 +56,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('A transfer is two updates. If the power fails between them, a database without transactions wakes up with Alice debited and Bob unpaid; '
-           'with <code>BEGIN</code> and <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.')
+           'inside a <span class="key-term">transaction</span>, <code>BEGIN</code> to <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

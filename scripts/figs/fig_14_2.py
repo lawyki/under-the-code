@@ -48,7 +48,7 @@ o.insert(2, f'<desc id="svgd-part4-15">Four one-way functions, each easy forward
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Every primitive in this chapter rests on a function that is quick one way and infeasible the other: hashing, modular powers, multiplying primes, multiplying a point on an elliptic curve. '
+caption = ('Every primitive in this chapter rests on a function that is quick one way and infeasible the other: hashing (<span class="key-term">SHA-256</span>), modular powers (<span class="key-term">Diffie–Hellman</span>), multiplying primes, multiplying a point on an elliptic curve. '
            'A large quantum computer running Shor\'s algorithm would undo the last three; hashing would only lose half its bits of strength.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
