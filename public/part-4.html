@@ -1970,116 +1970,38 @@
       step needed to reconstruct it runs backward against the asymmetry.
     </p>
 
-    <div class="diagram-card" id="fig-14-7">
-      <div class="diagram-label">Fig 14.7 · Diffie–Hellman with actual numbers · g=5, p=23</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-20"><title id="svgt-part4-20">Fig 14.7 · Diffie–Hellman with actual numbers · g=5, p=23</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">small numbers for legibility · real DH uses 2048-bit primes</text>
-
-        <!-- Public params -->
-        <g transform="translate(40,60)">
-          <rect x="0" y="0" width="640" height="40" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)"/>
-          <text x="320" y="20" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">PUBLIC PARAMETERS: agreed in advance, visible to everyone</text>
-          <text x="320" y="34" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.85)">prime p = 23   ·   base g = 5</text>
-        </g>
-
-        <!-- Two columns -->
-        <!-- Alice -->
-        <g transform="translate(40,116)">
-          <rect x="0" y="0" width="240" height="280" rx="6" fill="rgba(150,216,150,0.10)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="120" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">ALICE</text>
-
-          <text x="14" y="50" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">① pick secret a = 6</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">never tells anyone</text>
-
-          <text x="14" y="92" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">② compute A = g<tspan font-size="7" baseline-shift="super">a</tspan> mod p</text>
-          <text x="14" y="106" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  A = 5<tspan font-size="7" baseline-shift="super">6</tspan> mod 23</text>
-          <text x="14" y="120" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  A = 15625 mod 23</text>
-          <text x="14" y="134" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">  A = 8</text>
-
-          <text x="14" y="160" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">③ send A = 8 over public channel</text>
-
-          <line x1="14" y1="178" x2="226" y2="178" stroke="rgba(150,216,150,0.4)"/>
-
-          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">④ receive B = 19</text>
-          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">⑤ compute K = B<tspan font-size="7" baseline-shift="super">a</tspan> mod p</text>
-          <text x="14" y="234" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  K = 19<tspan font-size="7" baseline-shift="super">6</tspan> mod 23</text>
-          <text x="14" y="252" font-family="Courier Prime" font-size="14" fill="rgba(207,141,120,1)">  K = 2 ←  shared!
-            <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" repeatCount="indefinite"/>
-          </text>
-        </g>
-
-        <!-- Public channel in middle -->
-        <g transform="translate(280,116)">
-          <rect x="0" y="0" width="160" height="280" rx="6" fill="#100b06" stroke="rgba(232,120,120,0.55)" stroke-dasharray="4,3"/>
-          <text x="80" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">PUBLIC CHANNEL</text>
-          <text x="80" y="36" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(232,120,120,0.7)">eavesdropper sees</text>
-
-          <line x1="0" y1="60" x2="160" y2="60" stroke="rgba(150,216,150,0.6)" stroke-dasharray="4,3">
-            <animate attributeName="stroke-dashoffset" values="0;-14" dur="1.2s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="160,60 152,54 152,66" fill="rgba(150,216,150,0.7)">
-            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
-          </polygon>
-          <text x="80" y="78" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(150,216,150,0.95)">A = 8 →</text>
-          <!-- packet riding the wire -->
-          <circle r="5" fill="rgba(150,216,150,0.95)">
-            <animateMotion dur="3s" repeatCount="indefinite" path="M 0 60 L 160 60"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite"/>
-          </circle>
-
-          <line x1="160" y1="120" x2="0" y2="120" stroke="rgba(232,120,120,0.6)" stroke-dasharray="4,3">
-            <animate attributeName="stroke-dashoffset" values="0;14" dur="1.2s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="0,120 8,114 8,126" fill="rgba(232,120,120,0.7)">
-            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
-          </polygon>
-          <text x="80" y="138" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(232,120,120,0.95)">← B = 19</text>
-          <circle r="5" fill="rgba(100,150,255,0.95)">
-            <animateMotion dur="3s" begin="-1.5s" repeatCount="indefinite" path="M 160 120 L 0 120"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" begin="-1.5s" repeatCount="indefinite"/>
-          </circle>
-
-          <line x1="0" y1="172" x2="160" y2="172" stroke="rgba(207,141,120,0.3)" stroke-dasharray="2,2"/>
-
-          <text x="80" y="200" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Eve knows:</text>
-          <text x="80" y="216" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">p=23, g=5</text>
-          <text x="80" y="230" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">A=8, B=19</text>
-          <text x="80" y="252" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">to compute K she needs a</text>
-          <text x="80" y="266" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">i.e. solve 5<tspan font-size="7" baseline-shift="super">a</tspan> mod 23 = 8</text>
-        </g>
-
-        <!-- Bob -->
-        <g transform="translate(440,116)">
-          <rect x="0" y="0" width="240" height="280" rx="6" fill="rgba(100,150,255,0.10)" stroke="rgba(60,100,180,0.85)"/>
-          <text x="120" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(100,150,255,0.95)" letter-spacing="0.1em">BOB</text>
-
-          <text x="14" y="50" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">① pick secret b = 15</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">never tells anyone</text>
-
-          <text x="14" y="92" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">② compute B = g<tspan font-size="7" baseline-shift="super">b</tspan> mod p</text>
-          <text x="14" y="106" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  B = 5<tspan font-size="7" baseline-shift="super">15</tspan> mod 23</text>
-          <text x="14" y="120" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  B = 30517578125 mod 23</text>
-          <text x="14" y="134" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">  B = 19</text>
-
-          <text x="14" y="160" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">③ send B = 19 over public channel</text>
-
-          <line x1="14" y1="178" x2="226" y2="178" stroke="rgba(100,150,255,0.4)"/>
-
-          <text x="14" y="198" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">④ receive A = 8</text>
-          <text x="14" y="220" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">⑤ compute K = A<tspan font-size="7" baseline-shift="super">b</tspan> mod p</text>
-          <text x="14" y="234" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  K = 8<tspan font-size="7" baseline-shift="super">15</tspan> mod 23</text>
-          <text x="14" y="252" font-family="Courier Prime" font-size="14" fill="rgba(207,141,120,1)">  K = 2 ←  same!
-            <animate attributeName="opacity" values="0.5;1;0.5" dur="2.4s" begin="-1.2s" repeatCount="indefinite"/>
-          </text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,412)">
-          <rect x="0" y="0" width="640" height="40" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="320" y="22" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)">because (g<tspan font-size="8" baseline-shift="super">a</tspan>)<tspan font-size="8" baseline-shift="super">b</tspan> ≡ (g<tspan font-size="8" baseline-shift="super">b</tspan>)<tspan font-size="8" baseline-shift="super">a</tspan> ≡ g<tspan font-size="8" baseline-shift="super">ab</tspan> (mod p)  ·  Alice and Bob compute the same K from different sides</text>
-        </g>
-      </svg>
-      <p id="ch14-publickey-p3" class="diagram-caption">The whole Diffie–Hellman protocol in actual numbers. Alice picks secret <em>a</em>=6, Bob picks secret <em>b</em>=15; they both know the public prime <em>p</em>=23 and base <em>g</em>=5. Alice sends Bob A=g<sup>a</sup> mod p = 8; Bob sends Alice B=g<sup>b</sup> mod p = 19. Each then raises the received value to their own secret: Alice computes B<sup>a</sup>=2, Bob computes A<sup>b</sup>=2. They have the same shared secret. The eavesdropper Eve sees p, g, A, B. To compute K she would need to solve g<sup>a</sup> mod p = A for <em>a</em>, the discrete logarithm problem. With <em>p</em>=23 it's trivial; with the 2048-bit primes used in real Diffie–Hellman, no efficient algorithm is known. The same construction with <em>elliptic curves</em> (§05) instead of integer modular arithmetic gives ECDH, the key exchange of choice in TLS 1.3.</p>
+    <div class="diagram-card fig-v2" id="fig-14-7">
+      <div class="diagram-label">Fig 14.7&nbsp;· Diffie–Hellman with actual numbers&nbsp;· g=5, p=23</div>
+      <svg viewBox="0 0 400 286" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-20 svgd-part4-20">
+<title id="svgt-part4-20">Fig 14.7 · Diffie–Hellman with actual numbers · g=5, p=23</title>
+<desc id="svgd-part4-20">Public numbers p = 23 and g = 5. Alice keeps a secret 6 and sends 5 to the 6th mod 23, which is 8; Bob keeps a secret 15 and sends 5 to the 15th mod 23, which is 19. Eve sees 8 and 19 on the public channel. Alice computes 19 to the 6th mod 23 and Bob computes 8 to the 15th mod 23; both get 2. To find it Eve would need the exponent x with 5 to the x mod 23 equal to 8.</desc>
+<text x="200" y="18" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">public: p = 23, g = 5</text>
+<text x="10" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">Alice</text>
+<text x="210" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">Bob</text>
+<g opacity="0.25"><text x="10" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">secret a = 6</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.116500;0.116667;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">secret a = 6</text></g>
+<g opacity="0.25"><text x="210" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">secret b = 15</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.116500;0.116667;1.000000" dur="12s" repeatCount="indefinite"/><text x="210" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">secret b = 15</text></g>
+<g opacity="0.25"><text x="10" y="94" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">A = 5⁶ mod 23 = 8</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="94" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">A = 5⁶ mod 23 = 8</text></g>
+<g opacity="0.25"><text x="210" y="94" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">B = 5¹⁵ mod 23 = 19</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><text x="210" y="94" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">B = 5¹⁵ mod 23 = 19</text></g>
+<rect x="4" y="108" width="392" height="78" rx="3" fill="#c05a48" fill-opacity="0.12" stroke="#c05a48" stroke-opacity="0.5" stroke-dasharray="4 3"/>
+<text x="392" y="178" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">public channel</text>
+<g opacity="0.25"><text x="10" y="124" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Eve sees 8 and 19</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="124" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Eve sees 8 and 19</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266500;0.266667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="240.00 0;240.00 0;240.00 0;240.00 0;0.00 0;0.00 0;240.00 0;240.00 0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266667;0.366667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="33.5" y="129" width="53.0" height="22" rx="4" fill="#241a10" stroke="#cf8d78" stroke-width="1.5"/><text x="60" y="145" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">A = 8</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266500;0.266667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-240.00 0;-240.00 0;-240.00 0;-240.00 0;0.00 0;0.00 0;-240.00 0;-240.00 0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266667;0.366667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="269.6" y="153" width="60.8" height="22" rx="4" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="300" y="169" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">B = 19</text></g></g>
+<g opacity="0.25"><text x="10" y="210" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">K = 19⁶ mod 23 = 2</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.466500;0.466667;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="210" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">K = 19⁶ mod 23 = 2</text></g>
+<g opacity="0.25"><text x="210" y="210" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">K = 8¹⁵ mod 23 = 2</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.499833;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><text x="210" y="210" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">K = 8¹⁵ mod 23 = 2</text></g>
+<g opacity="0.2"><rect x="130" y="222" width="140" height="26" rx="13" fill="none" stroke="#a9bf8e" stroke-width="2"/><text x="200" y="240" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">same K = 2</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.566500;0.566667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="130" y="222" width="140" height="26" rx="13" fill="none" stroke="#a9bf8e" stroke-width="2"/><text x="200" y="240" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">same K = 2</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.566500;0.566667;0.608333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="126" y="218" width="148" height="34" rx="17" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0.25"><text x="10" y="274" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Eve needs x: 5ˣ mod 23 = 8</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="274" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Eve needs x: 5ˣ mod 23 = 8</text></g>
+</svg>
+      <p id="ch14-publickey-p3" class="diagram-caption">Alice and Bob each keep a secret exponent and publish only 5 raised to it, mod 23; each raises the other's public number to their own secret, and both arrive at 2. Eve sees 8 and 19, but to reach 2 she must recover an exponent, the discrete log, which at real sizes no one can.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why both get 2.</b> (5⁶)¹⁵ and (5¹⁵)⁶ are both 5⁹⁰, and 5⁹⁰ mod 23 = 2.</li>
+          <li><b>Real sizes.</b> p has 2048 bits or more, or the group is an elliptic curve (X25519 in TLS 1.3). With p = 23, Eve would simply try all 22 exponents.</li>
+          <li><b>In TLS.</b> Fresh secrets are picked for every connection and thrown away after, which is forward secrecy (Part III, Fig 11.13); a signature, not Diffie–Hellman, proves who is on the other end.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>RSA · the same idea with factoring instead of discrete log</h3>
