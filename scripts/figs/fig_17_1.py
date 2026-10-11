@@ -1,7 +1,7 @@
 # Fig 17.1 · Type 1 vs Type 2 hypervisors · bare metal vs hosted (Pass 28, law 3). Quorum glass plate. Two stacks: type
 # 1, guests on a hypervisor on the hardware; type 2, guests on a hypervisor that is an application inside a host
 # operating system. In each, a guest's ordinary instruction runs straight on the CPU, while a privileged one (here,
-# switching page tables) traps down to the hypervisor, which does it on the guest's behalf and returns. Hardware
+# cpuid; with nested paging, page-table switches no longer trap) traps down to the hypervisor, which does it on the guest's behalf and returns. Hardware
 # support (VT-x, AMD-V) makes that trap reliable. Phase-synced in both stacks. t=0 (shift): both traps returned.
 import figlib
 from figlib import Timeline, text, splice, JETBRAINS, VIOLET, TEAL, QSOFT, QMUTED, QROSE, QAMBER, QCARD
@@ -46,18 +46,18 @@ a(f'<g class="fx" opacity="0">{pulse(TB1)}<rect x="{LX - 2}" y="114" width="{SW 
 a(f'<g class="fx" opacity="0">{pulse(TB1)}<rect x="{RX - 2}" y="80" width="92" height="38" rx="8" fill="none" stroke="#fff" stroke-width="2"/></g>')
 # what is happening
 SY = 266
-for t0, t1, s, col in ((TA0, TB0, 'add: runs straight on the CPU', QSOFT), (TB0, TB2, 'switch page tables: traps', QROSE),
-                       (TB2, None, 'hypervisor does it, guest resumes', VIOLET)):
+for t0, t1, s, col in ((TA0, TB0, 'add: runs straight on the CPU', QSOFT), (TB0, TB2, 'read CPU id: traps', QROSE),
+                       (TB2, None, 'hypervisor answers, guest resumes', VIOLET)):
     a(f'<g opacity="0">{win(t0) if t1 is None else lit(t0, t1)}{text(10, SY, s, anchor="start", size=13, fill=col, ls="0")}</g>')
 H = SY + 12
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-14 svgd-part5-14">')
 o.insert(1, '<title id="svgt-part5-14">Fig 17.1 · Type 1 vs Type 2 hypervisors · bare metal vs hosted</title>')
 o.insert(2, '<desc id="svgd-part5-14">Two stacks. Type 1: guest operating systems run on a hypervisor such as KVM, ESXi or Hyper-V, which runs directly on the hardware. Type 2: guests run on a hypervisor that is an application inside a host operating system such as macOS or Windows, beside ordinary apps. '
-  'In both, a guest\'s ordinary instruction, such as an add, runs straight on the processor, while a privileged one, such as switching page tables, traps down to the hypervisor, which does it on the guest\'s behalf, and the guest resumes.</desc>')
+  'In both, a guest\'s ordinary instruction, such as an add, runs straight on the processor, while a sensitive one, such as cpuid, which asks what processor this is, traps down to the hypervisor, which answers on the guest\'s behalf, and the guest resumes.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A guest\'s ordinary instructions run straight on the processor; only privileged ones, such as switching page tables, trap to the hypervisor, which does them on the guest\'s behalf. '
+caption = ('A guest\'s ordinary instructions run straight on the processor; only sensitive ones, such as asking what processor this is or touching a device, trap to the hypervisor, which answers on the guest\'s behalf. '
            'A type 1 hypervisor sits on the bare hardware, as in every public cloud; a type 2 runs as an application inside a desktop operating system.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

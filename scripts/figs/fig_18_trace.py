@@ -9,10 +9,10 @@ figlib.FONT = JETBRAINS
 
 ZONES = [('your machine', TEAL, [('KEY', 'contact closes', '1'), ('GATE', 'keycode decoded', '2'), ('CPU', 'interrupt taken', '3'),
                                   ('TRAP', 'into the kernel', 'Bridge'), ('KERN', 'event queued', '4'), ('libc', 'to user space', '5'),
-                                  ('V8', 'event loop', '6'), ('JS', 'builds the request', '12')]),
+                                  ('V8', 'event loop', '12'), ('JS', 'builds the request', '12')]),
          ('the network', VIOLET, [('DNS', 'name → address', '11'), ('TCP', 'handshake', '10'), ('TLS', 'keys agreed', '14'),
                                   ('HTTP', 'GET /search', '11'), ('IP', 'routed (BGP)', '9'), ('WIRE', 'fibre, Ethernet', '8')]),
-         ('Google', QAMBER, [('CLOUD', 'load balancer', '17'), ('SVC', 'a service runs', '7'), ('INDEX', 'sharded lookup', '13'),
+         ('Google', QAMBER, [('CLOUD', 'pods, orchestrated', '17'), ('SVC', 'a microservice', '17'), ('INDEX', 'index lookup', '13'),
                              ('RANK', 'many cores, GPUs', '16')])]
 BOUND = {'TRAP', 'DNS', 'TLS', 'INDEX'}             # a trust boundary is crossed on the way into these
 STATIONS = [(z, col, st) for z, col, sts in ZONES for st in sts]
@@ -66,20 +66,20 @@ a(f'<g opacity="0.3">{text(PX + 18, SY + 22, "the response returns the same way 
 H = SY + 34
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-27 svgd-part5-27">')
 o.insert(1, '<title id="svgt-part5-27">Fig 18.1.5 · The trace · what happens when you press Enter on google.com</title>')
-o.insert(2, '<desc id="svgd-part5-27">Eighteen stations of one search, top to bottom. On your machine: the key\'s contact closes (Chapter 1), the keycode is decoded (2), the CPU takes the interrupt (3), the trap into the kernel (the Bridge), the event is queued (4), libc carries it to user space (5), V8\'s event loop picks it up (6), and JavaScript builds the request (12). '
+o.insert(2, '<desc id="svgd-part5-27">Eighteen stations of one search, top to bottom. On your machine: the key\'s contact closes (Chapter 1), the keycode is decoded (2), the CPU takes the interrupt (3), the trap into the kernel (the Bridge), the event is queued (4), libc carries it to user space (5), V8\'s event loop picks it up (12), and JavaScript builds the request (12). '
   'In the network: DNS turns the name into an address (11), TCP shakes hands (10), TLS agrees keys (14), HTTP sends GET /search (11), IP routes it by BGP (9), and the wire carries it as light and voltage (8). '
-  'At Google: a load balancer (17), a service (7), a sharded index lookup (13), and ranking on many cores and GPUs (16). Four trust boundaries are marked, into the kernel, to the resolver, to the server\'s TLS and into the database. The response then returns the same way up.</desc>')
+  'At Google: orchestrated pods (17), a microservice (17), an index lookup (13), and ranking on many cores and GPUs (16). Four trust boundaries are marked, into the kernel, to the resolver, to the server\'s TLS and into the database. The response then returns the same way up.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One search, followed from a key\'s contact to Google\'s ranking and back, passes through every chapter of the book, and crosses four trust boundaries on the way. '
+caption = ('One search, followed from a key\'s contact to Google\'s ranking and back, passes through sixteen chapters and the Bridge, and crosses four trust boundaries that Chapter 15 defends. '
            'Each station keeps the promise the next relies on, and the whole round trip takes well under a second.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Reading it.</b> Top to bottom is the order of the request; the chapter on the right is where each step was taught. The response climbs back up: TLS decrypts, TCP reassembles, the browser parses, the GPU draws.</li>
           <li><b>The red lines.</b> Each is a place where data moves from less trusted to more trusted hands, and where Chapter 15's defences apply.</li>
-          <li><b>Not a station.</b> Chapter 18 is this figure: the moment the layers stop being a list and become one system.</li>
+          <li><b>A first visit.</b> Later searches reuse the open connection and skip DNS, TCP and TLS; and once a browser has learned Google speaks QUIC, the request rides UDP where TCP is drawn here (Fig 10.9).</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-18-trace">

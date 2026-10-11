@@ -1,4 +1,4 @@
-# Fig 16.5 · Memory orderings · four levels, four guarantees, four costs (Pass 28, law 3). Quorum glass plate. The
+# Fig 16.5 · Memory orderings · relaxed vs release and acquire (Pass 28, law 3). Quorum glass plate. The
 # message-passing test, run twice in step, time left to right in five slots. A writer does x = 1, then flag = 1; a
 # reader waits for flag = 1, then reads x. Relaxed, on a weakly ordered CPU (ARM, POWER): other cores may see flag
 # before x, so the reader gets x = 0. Release on the flag store, acquire on the flag load: x is visible no later than
@@ -43,7 +43,7 @@ LY = P2 + 28 + 3 * 28 + 6
 a(f'<rect x="10" y="{LY - 10}" width="22" height="12" rx="3" fill="none" stroke="{QSOFT}" stroke-width="2"/>' + text(40, LY + 1, 'release store / acquire load', anchor='start', size=13, fill=QMUTED, ls='0'))
 H = LY + 12
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-6 svgd-part5-6">')
-o.insert(1, '<title id="svgt-part5-6">Fig 16.5 · Memory orderings · four levels, four guarantees, four costs</title>')
+o.insert(1, '<title id="svgt-part5-6">Fig 16.5 · Memory orderings · relaxed vs release and acquire</title>')
 o.insert(2, '<desc id="svgd-part5-6">A writer sets x to 1 and then a flag to 1; a reader waits for the flag and then reads x. Run with relaxed ordering on a weakly ordered processor such as ARM, other cores can see the flag before x, so the reader sees the flag but reads x as 0. '
   'Run with a release store on the flag and an acquire load on the reader\'s side, x becomes visible no later than the flag, so the reader reads 1.</desc>')
 a('</svg>')
@@ -60,7 +60,7 @@ how = '''<details class="fig-how">
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-16-5">
-      <div class="diagram-label">Fig 16.5 · Memory orderings · four levels, four guarantees, four costs</div>
+      <div class="diagram-label">Fig 16.5 · Memory orderings · relaxed vs release and acquire</div>
       {svg}
       <p id="CAPID" class="diagram-caption">{caption}</p>
       {how}

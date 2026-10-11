@@ -73,7 +73,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Level, not edge.</b> The controller acts on the current difference, not on remembered events, so a missed crash or a failed start is simply caught on the next pass.</li>
           <li><b>Idempotent.</b> A pass with nothing to fix changes nothing, so running the loop often is safe.</li>
-          <li><b>Elsewhere.</b> Terraform, Argo CD and most infrastructure-as-code tools share the shape: declare the state, and let a loop converge on it.</li>
+          <li><b>Elsewhere.</b> Argo CD and Flux run the same loop over a Git repository; Terraform and Pulumi declare state too, but converge only when someone runs a plan and applies it.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-17-4">

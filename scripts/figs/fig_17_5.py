@@ -85,7 +85,7 @@ caption = ('When no leader is heard from, the node whose random timeout runs out
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Majorities.</b> In <span class="key-term">log replication</span> an entry counts once a majority hold it. Any two majorities of the same cluster share a node, so a committed entry can never be lost by a later leader: N nodes tolerate (N − 1)/2 failures, which is why clusters run 3, 5 or 7.</li>
+          <li><b>Majorities.</b> In <span class="key-term">log replication</span> an entry counts once a majority hold it. Any two majorities of the same cluster share a node, so a committed entry can never be lost by a later leader: N nodes tolerate ⌊(N − 1)/2⌋ failures, which is why clusters run 3, 5 or 7.</li>
           <li><b>Votes.</b> In <span class="key-term">leader election</span> a node votes once per term, and only for a candidate whose log is at least as up to date as its own; random timeouts make split votes rare.</li>
           <li><b>Where it runs.</b> Diego Ongaro and John Ousterhout published Raft in 2014 as an understandable alternative to Paxos; etcd, Consul and CockroachDB use it.</li>
         </ol>

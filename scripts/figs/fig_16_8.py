@@ -28,7 +28,7 @@ for k, n in enumerate(NS):
     t0, t1 = TS[k], (TS[k + 1] if k + 1 < len(NS) else None)
     pw = P / n * BW
     body = f'<rect x="{BX + SW:.1f}" y="28" width="{pw:.1f}" height="22" rx="3" fill="{TEAL}" fill-opacity="0.85"/>'
-    lab = text(BX, 72, f'N = {n} cores · speedup {S(n):.1f}×', anchor='start', size=13, fill=TEAL, ls='0')
+    lab = text(BX, 72, f'N = {n} core{"s" if n > 1 else ""} · speedup {S(n):.1f}×', anchor='start', size=13, fill=TEAL, ls='0')
     vis = win(t0) if t1 is None else lit(t0, t1)
     if k == 0:
         vis = T.anim('opacity', [(0.0, 0.0), (0.3, 0.0), (0.305, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])

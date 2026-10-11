@@ -294,9 +294,9 @@
       The price of shared memory shows up the first time two threads
       modify the same variable concurrently. The classic example sounds
       harmless: two threads each increment a shared counter a million
-      times. The expected result is two million. The actual result, on
-      any real machine, is somewhere between one million and two
-      million, depending on scheduling, cache coherence, and luck. The
+      times. The expected result is two million. The actual result is
+      nearly always well short of it and changes from run to run,
+      depending on scheduling, cache coherence, and luck. The
       increment that looks <span class="key-term">atomic</span> in source code (<code>counter++</code>) is in fact three
       operations underneath: read the value into a register, add one,
       write it back. If two threads' three-step sequences overlap, the
@@ -362,7 +362,7 @@
 
     <div class="code-block">
       <span class="code-lang">C++: the bug and the fix</span>
-<pre><span class="cm">// the race: counter ends somewhere between 1,000,000 and 2,000,000</span>
+<pre><span class="cm">// the race: counter ends well short of 2,000,000, and differs from run to run</span>
 <span class="kw">int</span> counter = <span class="st">0</span>;
 <span class="kw">void</span> worker() {
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="st">0</span>; i &lt; <span class="st">1'000'000</span>; ++i)
@@ -557,9 +557,9 @@
     </p>
 
     <div class="diagram-card fig-v2" id="fig-16-5">
-      <div class="diagram-label">Fig 16.5&nbsp;· Memory orderings&nbsp;· four levels, four guarantees, four costs</div>
+      <div class="diagram-label">Fig 16.5&nbsp;· Memory orderings&nbsp;· relaxed vs release and acquire</div>
       <svg viewBox="0 0 400 268" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-6 svgd-part5-6">
-<title id="svgt-part5-6">Fig 16.5 · Memory orderings · four levels, four guarantees, four costs</title>
+<title id="svgt-part5-6">Fig 16.5 · Memory orderings · relaxed vs release and acquire</title>
 <desc id="svgd-part5-6">A writer sets x to 1 and then a flag to 1; a reader waits for the flag and then reads x. Run with relaxed ordering on a weakly ordered processor such as ARM, other cores can see the flag before x, so the reader sees the flag but reads x as 0. Run with a release store on the flag and an acquire load on the reader's side, x becomes visible no later than the flag, so the reader reads 1.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">relaxed, on ARM or POWER</text>
 <text x="10" y="49" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">write</text>
@@ -974,7 +974,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Real sizes.</b> A desktop CPU has 8 to 24 cores; an NVIDIA H100 has 132 streaming multiprocessors with about 17,000 lanes in all, run in groups of 32 that share one instruction (Fig 16.7).</li>
+          <li><b>Real sizes.</b> A desktop CPU has 8 to 24 cores; an NVIDIA H100 (SXM) has 132 streaming multiprocessors with about 17,000 lanes in all, run in groups of 32 that share one instruction (Fig 16.7).</li>
           <li><b>Where the transistors go.</b> A CPU core spends them on out-of-order execution, branch prediction and large caches; a GPU lane has almost none of that, and hides memory delays by switching between thousands of waiting threads.</li>
           <li><b>Why it took over.</b> Graphics, video and neural networks are the same arithmetic over huge arrays; training a network is mostly matrix multiplication, exactly the GPU's shape.</li>
         </ol>
@@ -1067,7 +1067,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Blocks.</b> Threads in one block share fast on-chip memory (up to 227 KB per block on an H100) and can wait for each other; separate blocks cannot, and talk only through slow global memory.</li>
+          <li><b>Blocks.</b> Threads in one block share fast on-chip memory (up to 227 KB per block on an H100) and can wait for each other; in the classic model separate blocks cannot, and share data through slow global memory.</li>
           <li><b>Memory.</b> Registers are per thread and nearly free; global memory (HBM, 80 GB on an H100) is huge and slow per access. Fast kernels keep data in shared memory and have each warp read neighbouring addresses together (coalesced access).</li>
           <li><b>The model.</b> The programmer writes one thread's code; the launch runs it for every thread of the grid, each finding its own index.</li>
         </ol>
@@ -1108,7 +1108,7 @@
 <text x="20" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">time for one job, 5% serial</text>
 <rect x="20" y="28" width="18.0" height="22" rx="3" fill="#f08aa8" fill-opacity="0.9"/>
 <rect x="20" y="28" width="360" height="22" rx="3" fill="none" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.35" stroke-dasharray="3 3"/>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.199273;0.199545;1.000000" dur="11s" repeatCount="indefinite"/><rect x="38.0" y="28" width="342.0" height="22" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="72" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">N = 1 cores · speedup 1.0×</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.199273;0.199545;1.000000" dur="11s" repeatCount="indefinite"/><rect x="38.0" y="28" width="342.0" height="22" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="72" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">N = 1 core · speedup 1.0×</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.199818;0.200000;0.272000;0.272273;1.000000" dur="11s" repeatCount="indefinite"/><rect x="38.0" y="28" width="171.0" height="22" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="72" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">N = 2 cores · speedup 1.9×</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.272545;0.272727;0.344727;0.345000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="38.0" y="28" width="85.5" height="22" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="72" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">N = 4 cores · speedup 3.5×</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.345273;0.345455;0.417455;0.417727;1.000000" dur="11s" repeatCount="indefinite"/><rect x="38.0" y="28" width="42.8" height="22" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="72" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">N = 8 cores · speedup 5.9×</text></g>
@@ -1168,7 +1168,7 @@
 <title id="svgt-part5-10">Fig 16.9 · Amdahl vs Gustafson · same hardware, different question</title>
 <desc id="svgd-part5-10">One program whose work is 5% serial, on 1 to 64 cores, asked two questions. Amdahl keeps the job fixed and asks how much faster it runs: the time bar shrinks toward its serial floor, and the speedup reaches 15.4 at 64 cores, never more than 20. Gustafson keeps the time fixed and asks how much more work gets done: the parallel part grows with the cores, so the work done in the same time reaches 60.9 times as much at 64 cores.</desc>
 <g><text x="20" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">N = </text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.239200;0.239500;1.000000" dur="10s" repeatCount="indefinite"/><text x="52" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">1 cores</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.239200;0.239500;1.000000" dur="10s" repeatCount="indefinite"/><text x="52" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">1 core</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.239800;0.240000;0.339200;0.339500;1.000000" dur="10s" repeatCount="indefinite"/><text x="52" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">2 cores</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.439200;0.439500;1.000000" dur="10s" repeatCount="indefinite"/><text x="52" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">4 cores</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.439800;0.440000;0.539200;0.539500;1.000000" dur="10s" repeatCount="indefinite"/><text x="52" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">8 cores</text></g>
@@ -1199,7 +1199,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.739800;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="210" width="360.0" height="20" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">work done 60.9× · grows with N</text></g>
 <text x="20" y="196" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">work done in that time:</text>
 </svg>
-      <p id="ch16-amdahl-p8" class="diagram-caption">Amdahl keeps the job fixed and asks how much faster more cores make it: with 5% serial work, 15.4× on 64 cores and never past 20×. Gustafson keeps the time fixed and asks how much more work fits: the parallel part grows with the machine, so 64 cores do 60.9 times the work.</p>
+      <p id="ch16-amdahl-p8" class="diagram-caption">Amdahl keeps the job fixed and asks how much faster more cores make it: with 5% of the time serial, 15.4× on 64 cores and never past 20×. Gustafson keeps the time fixed and asks how much more work fits: the parallel part grows with the machine, so 64 cores do about 61 times the work.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1480,7 +1480,7 @@
       <div class="diagram-label">Fig 17.1&nbsp;· Type 1 vs Type 2 hypervisors&nbsp;· bare metal vs hosted</div>
       <svg viewBox="0 0 400 278" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-14 svgd-part5-14">
 <title id="svgt-part5-14">Fig 17.1 · Type 1 vs Type 2 hypervisors · bare metal vs hosted</title>
-<desc id="svgd-part5-14">Two stacks. Type 1: guest operating systems run on a hypervisor such as KVM, ESXi or Hyper-V, which runs directly on the hardware. Type 2: guests run on a hypervisor that is an application inside a host operating system such as macOS or Windows, beside ordinary apps. In both, a guest's ordinary instruction, such as an add, runs straight on the processor, while a privileged one, such as switching page tables, traps down to the hypervisor, which does it on the guest's behalf, and the guest resumes.</desc>
+<desc id="svgd-part5-14">Two stacks. Type 1: guest operating systems run on a hypervisor such as KVM, ESXi or Hyper-V, which runs directly on the hardware. Type 2: guests run on a hypervisor that is an application inside a host operating system such as macOS or Windows, beside ordinary apps. In both, a guest's ordinary instruction, such as an add, runs straight on the processor, while a sensitive one, such as cpuid, which asks what processor this is, traps down to the hypervisor, which answers on the guest's behalf, and the guest resumes.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">type 1: bare metal</text>
 <rect x="10" y="30" width="88" height="40" rx="7" fill="#1d1930" stroke="rgba(232,229,244,0.85)" stroke-opacity="0.85"/>
 <text x="54" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">guest A</text>
@@ -1510,10 +1510,10 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.459800;0.460000;0.530000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="114" width="188" height="48" rx="8" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.459800;0.460000;0.530000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="204" y="80" width="92" height="38" rx="8" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.359200;0.359500;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="266" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">add: runs straight on the CPU</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.359800;0.360000;0.579200;0.579500;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="266" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">switch page tables: traps</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.579800;0.580000;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="266" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">hypervisor does it, guest resumes</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.359800;0.360000;0.579200;0.579500;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="266" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">read CPU id: traps</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.579800;0.580000;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="266" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">hypervisor answers, guest resumes</text></g>
 </svg>
-      <p id="ch17-virt-p2" class="diagram-caption">A guest's ordinary instructions run straight on the processor; only privileged ones, such as switching page tables, trap to the hypervisor, which does them on the guest's behalf. A type 1 hypervisor sits on the bare hardware, as in every public cloud; a type 2 runs as an application inside a desktop operating system.</p>
+      <p id="ch17-virt-p2" class="diagram-caption">A guest's ordinary instructions run straight on the processor; only sensitive ones, such as asking what processor this is or touching a device, trap to the hypervisor, which answers on the guest's behalf. A type 1 hypervisor sits on the bare hardware, as in every public cloud; a type 2 runs as an application inside a desktop operating system.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1637,12 +1637,13 @@
 <desc id="svgd-part5-16">A Kubernetes cluster: a control plane of API server, etcd, scheduler and controllers, above three worker nodes, each running a kubelet. One request traced: kubectl apply sends a pod to the API server, which stores it in etcd. The scheduler, watching the API server, picks node 2 and the choice is recorded; node 2's kubelet, also watching, starts the pod. Every component talks only to the API server.</desc>
 <rect x="6" y="62" width="388" height="106" rx="12" fill="none" stroke="#a08cff" stroke-opacity="0.35"/>
 <text x="390" y="182" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">control plane</text>
+<line x1="70" y1="44" x2="200" y2="72" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.35"/>
 <line x1="70" y1="206" x2="200" y2="112" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
 <line x1="200" y1="206" x2="200" y2="112" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
 <line x1="330" y1="206" x2="200" y2="112" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
 <line x1="200" y1="92" x2="66.0" y2="92.0" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
 <line x1="200" y1="92" x2="334.0" y2="92.0" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
-<line x1="200" y1="92" x2="200.0" y2="143.0" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
+<line x1="200" y1="92" x2="66.0" y2="143.0" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.25"/>
 <rect x="10" y="10" width="120" height="34" rx="7" fill="#1d1930" stroke="rgba(232,229,244,0.85)" stroke-opacity="0.85"/>
 <text x="70" y="32" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">kubectl apply</text>
 <rect x="140" y="72" width="120" height="40" rx="7" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.85"/>
@@ -1651,8 +1652,8 @@
 <text x="66" y="97" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">etcd</text>
 <rect x="282" y="72" width="104" height="40" rx="7" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.85"/>
 <text x="334" y="97" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">scheduler</text>
-<rect x="140" y="126" width="120" height="34" rx="7" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.85"/>
-<text x="200" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">controllers</text>
+<rect x="14" y="126" width="104" height="34" rx="7" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.85"/>
+<text x="66" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">controllers</text>
 <rect x="14" y="206" width="112" height="68" rx="9" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.6"/>
 <text x="24" y="224" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">node 1</text>
 <text x="24" y="242" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">kubelet</text>
@@ -1704,8 +1705,8 @@
       remember what it did last time; it only looks at what is versus
       what should be. The pattern of <em>declared desired state, observed actual state, continuous reconciliation</em> is borrowed from control theory
       (<a href="part-3#ch10">Chapter 10</a>'s TCP congestion control is the same shape)
-      and is the architectural genus of all modern
-      infrastructure-as-code: Terraform, Pulumi, Argo CD.
+      and runs through modern infrastructure-as-code: Argo CD and Flux
+      run it as a loop, Terraform and Pulumi as a plan applied on demand.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-17-4">
@@ -1748,7 +1749,7 @@
         <ol>
           <li><b>Level, not edge.</b> The controller acts on the current difference, not on remembered events, so a missed crash or a failed start is simply caught on the next pass.</li>
           <li><b>Idempotent.</b> A pass with nothing to fix changes nothing, so running the loop often is safe.</li>
-          <li><b>Elsewhere.</b> Terraform, Argo CD and most infrastructure-as-code tools share the shape: declare the state, and let a loop converge on it.</li>
+          <li><b>Elsewhere.</b> Argo CD and Flux run the same loop over a Git repository; Terraform and Pulumi declare state too, but converge only when someone runs a plan and applies it.</li>
         </ol>
       </details>
     </div>
@@ -1901,7 +1902,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Majorities.</b> In <span class="key-term">log replication</span> an entry counts once a majority hold it. Any two majorities of the same cluster share a node, so a committed entry can never be lost by a later leader: N nodes tolerate (N − 1)/2 failures, which is why clusters run 3, 5 or 7.</li>
+          <li><b>Majorities.</b> In <span class="key-term">log replication</span> an entry counts once a majority hold it. Any two majorities of the same cluster share a node, so a committed entry can never be lost by a later leader: N nodes tolerate ⌊(N − 1)/2⌋ failures, which is why clusters run 3, 5 or 7.</li>
           <li><b>Votes.</b> In <span class="key-term">leader election</span> a node votes once per term, and only for a candidate whose log is at least as up to date as its own; random timeouts make split votes rare.</li>
           <li><b>Where it runs.</b> Diego Ongaro and John Ousterhout published Raft in 2014 as an understandable alternative to Paxos; etcd, Consul and CockroachDB use it.</li>
         </ol>
@@ -1969,7 +1970,7 @@
       <div class="math-label">FLP, in one line</div>
       <p id="ch17-consensus-p10">Fischer, Lynch, and Paterson, 1985:</p>
       <p id="ch17-consensus-p11" class="math-formula">∄ deterministic protocol that solves consensus in an asynchronous system with even <em>one</em> crash failure.</p>
-      <p id="ch17-consensus-p12">The proof is short: any protocol that always terminates must, at some configuration, have a <em>bivalent</em> step, one whose outcome can still go either way. The adversary delays exactly the messages that would resolve it. The protocol either decides early (and risks being wrong) or waits forever. Real systems escape by ruling out pure asynchrony: <em>partial synchrony</em> (Paxos, Raft) assumes messages eventually arrive within some bound; <em>randomisation</em> (Ben-Or) flips coins to break adversarial schedules; <em>eventual consistency</em> (Dynamo) keeps serving but stops insisting all nodes agree right now. Every working protocol is FLP plus one assumption.</p>
+      <p id="ch17-consensus-p12">The proof is short: some starting configuration is <em>bivalent</em>, its outcome still open, and from any bivalent configuration the adversary can delay exactly the message that would settle it, keeping the outcome open. The protocol either decides early (and risks being wrong) or waits forever. Real systems escape by ruling out pure asynchrony: <em>partial synchrony</em> (Paxos, Raft) assumes messages eventually arrive within some bound; <em>randomisation</em> (Ben-Or) flips coins to break adversarial schedules; <em>eventual consistency</em> (Dynamo) keeps serving but stops insisting all nodes agree right now. Every working protocol is FLP plus one assumption.</p>
     </div>
   </section>
 
@@ -2000,9 +2001,9 @@
     </div>
 
     <div class="diagram-card fig-v2" id="fig-17-7">
-      <div class="diagram-label">Fig 17.7&nbsp;· CAP triangle&nbsp;· pick two when the network splits</div>
+      <div class="diagram-label">Fig 17.7&nbsp;· CAP&nbsp;· when the network splits, consistency or availability</div>
       <svg viewBox="0 0 400 274" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-20 svgd-part5-20">
-<title id="svgt-part5-20">Fig 17.7 · CAP triangle · pick two when the network splits</title>
+<title id="svgt-part5-20">Fig 17.7 · CAP · when the network splits, consistency or availability</title>
 <desc id="svgd-part5-20">Two replicas both hold x = 1. The link between them is cut. A client writes x = 2 to replica 1, and another client asks replica 2 for x. In a consistent system, replica 2 cannot confirm the latest value and returns an error. In an available system, replica 2 answers with what it has, the stale x = 1.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">CP: stay consistent</text>
 <rect x="54" y="42" width="112" height="44" rx="9" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.7"/>
@@ -2044,9 +2045,9 @@
     </div>
 
     <div class="diagram-card fig-v2" id="fig-17-8">
-      <div class="diagram-label">Fig 17.8&nbsp;· CAP in production&nbsp;· which database picked which corner</div>
+      <div class="diagram-label">Fig 17.8&nbsp;· CAP in production&nbsp;· which database picked which side</div>
       <svg viewBox="0 0 400 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-21 svgd-part5-21">
-<title id="svgt-part5-21">Fig 17.8 · CAP in production · which database picked which corner</title>
+<title id="svgt-part5-21">Fig 17.8 · CAP in production · which database picked which side</title>
 <desc id="svgd-part5-21">Systems that choose consistency: etcd and ZooKeeper, for leader election and cluster configuration; Spanner and CockroachDB, for ledgers and orders; MongoDB by default, whose primary steps down without a majority. Systems that choose availability: Cassandra, for telemetry and feeds; Dynamo-style stores, for shopping carts; DNS, where a stale name beats none. When a partition strikes, the first group refuses writes it cannot confirm and the second accepts them and reconciles later.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">CP: refuse rather than lie</text>
 <text x="10" y="178" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">AP: answer, reconcile later</text>
@@ -2084,7 +2085,7 @@
         <ol>
           <li><b>Reconciling.</b> AP stores settle diverged copies afterwards: last writer wins, vector clocks, or data types that merge by design (CRDTs).</li>
           <li><b>Tunable.</b> Many stores let each request choose: Cassandra's quorum reads and writes, DynamoDB's strongly consistent reads, at the cost of latency or availability.</li>
-          <li><b>Spanner.</b> Google's TrueTime, GPS and atomic clocks bounding clock error, makes partitions rare and consistency cheap, but when one does happen it still chooses consistency.</li>
+          <li><b>Spanner.</b> TrueTime (GPS and atomic clocks bounding clock error) makes consistent transactions cheap, and Google's private network makes partitions rare; when one does happen, Spanner still chooses consistency.</li>
         </ol>
       </details>
     </div>
@@ -2145,16 +2146,16 @@
         <summary>How it works</summary>
         <ol>
           <li><b>What it buys.</b> Teams ship their service on their own schedule, in their own language, and a crash in one service need not take down the rest.</li>
-          <li><b>What it costs.</b> Every former function call can be slow or fail; one order spans several databases, so it needs a saga of steps and compensations instead of one transaction; following a request takes distributed tracing.</li>
+          <li><b>What it costs.</b> Every former function call can be slow or fail, and a retried call must be safe to repeat (an idempotency key) or a timed-out payment can charge twice; one order spans several databases, so it needs a saga of steps and compensations instead of one transaction; following a request takes distributed tracing.</li>
           <li><b>The usual advice.</b> Split only where a team needs that independence; a well-structured monolith is the cheaper default.</li>
         </ol>
       </details>
     </div>
 
     <div class="diagram-card fig-v2" id="fig-17-10">
-      <div class="diagram-label">Fig 17.10&nbsp;· Service mesh and the sidecar&nbsp;· how microservices actually talk in 2026</div>
+      <div class="diagram-label">Fig 17.10&nbsp;· Service mesh and the sidecar&nbsp;· how a mesh moves one call</div>
       <svg viewBox="0 0 400 298" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-23 svgd-part5-23">
-<title id="svgt-part5-23">Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026</title>
+<title id="svgt-part5-23">Fig 17.10 · Service mesh and the sidecar · how a mesh moves one call</title>
 <desc id="svgd-part5-23">Two pods, orders and auth, each holding an app and a sidecar proxy, and above them a control plane such as Istio or Linkerd that pushes routes and certificates to every sidecar. The orders app sends a plain request to its own sidecar. The sidecar sends it, encrypted with mutual TLS, to the auth pod's sidecar; the first attempt fails and the sidecar retries. The auth sidecar checks the caller and hands the plain request to its app. Neither app sees the failure.</desc>
 <rect x="80" y="10" width="240" height="34" rx="10" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"/>
 <text x="200" y="32" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">control plane (Istio, Linkerd)</text>
@@ -2472,7 +2473,7 @@
       <div class="diagram-label">Fig 18.1.5&nbsp;· The trace&nbsp;· what happens when you press Enter on google.com</div>
       <svg viewBox="0 0 400 534" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-27 svgd-part5-27">
 <title id="svgt-part5-27">Fig 18.1.5 · The trace · what happens when you press Enter on google.com</title>
-<desc id="svgd-part5-27">Eighteen stations of one search, top to bottom. On your machine: the key's contact closes (Chapter 1), the keycode is decoded (2), the CPU takes the interrupt (3), the trap into the kernel (the Bridge), the event is queued (4), libc carries it to user space (5), V8's event loop picks it up (6), and JavaScript builds the request (12). In the network: DNS turns the name into an address (11), TCP shakes hands (10), TLS agrees keys (14), HTTP sends GET /search (11), IP routes it by BGP (9), and the wire carries it as light and voltage (8). At Google: a load balancer (17), a service (7), a sharded index lookup (13), and ranking on many cores and GPUs (16). Four trust boundaries are marked, into the kernel, to the resolver, to the server's TLS and into the database. The response then returns the same way up.</desc>
+<desc id="svgd-part5-27">Eighteen stations of one search, top to bottom. On your machine: the key's contact closes (Chapter 1), the keycode is decoded (2), the CPU takes the interrupt (3), the trap into the kernel (the Bridge), the event is queued (4), libc carries it to user space (5), V8's event loop picks it up (12), and JavaScript builds the request (12). In the network: DNS turns the name into an address (11), TCP shakes hands (10), TLS agrees keys (14), HTTP sends GET /search (11), IP routes it by BGP (9), and the wire carries it as light and voltage (8). At Google: orchestrated pods (17), a microservice (17), an index lookup (13), and ranking on many cores and GPUs (16). Four trust boundaries are marked, into the kernel, to the resolver, to the server's TLS and into the database. The response then returns the same way up.</desc>
 <text x="40" y="34" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">your machine</text>
 <g opacity="0.3"><text x="40" y="61" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">KEY</text><text x="98" y="61" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">contact closes</text><text x="390" y="61" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 1</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.107538;0.107692;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="61" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">KEY</text><text x="98" y="61" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">contact closes</text><text x="390" y="61" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 1</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.107538;0.107692;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="57" r="4" fill="#4fd8c2"/></g>
@@ -2487,7 +2488,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.236769;0.236923;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="141" r="4" fill="#4fd8c2"/></g>
 <g opacity="0.3"><text x="40" y="166" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">libc</text><text x="98" y="166" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">to user space</text><text x="390" y="166" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 5</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.269077;0.269231;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="166" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">libc</text><text x="98" y="166" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">to user space</text><text x="390" y="166" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 5</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.269077;0.269231;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="162" r="4" fill="#4fd8c2"/></g>
-<g opacity="0.3"><text x="40" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">V8</text><text x="98" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">event loop</text><text x="390" y="187" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 6</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.301385;0.301538;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">V8</text><text x="98" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">event loop</text><text x="390" y="187" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 6</text></g>
+<g opacity="0.3"><text x="40" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">V8</text><text x="98" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">event loop</text><text x="390" y="187" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 12</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.301385;0.301538;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">V8</text><text x="98" y="187" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">event loop</text><text x="390" y="187" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 12</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.301385;0.301538;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="183" r="4" fill="#4fd8c2"/></g>
 <g opacity="0.3"><text x="40" y="208" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">JS</text><text x="98" y="208" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">builds the request</text><text x="390" y="208" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 12</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.333692;0.333846;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="208" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">JS</text><text x="98" y="208" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">builds the request</text><text x="390" y="208" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 12</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.333692;0.333846;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="204" r="4" fill="#4fd8c2"/></g>
@@ -2507,12 +2508,12 @@
 <g opacity="0.3"><text x="40" y="360" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">WIRE</text><text x="98" y="360" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">fibre, Ethernet</text><text x="390" y="360" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 8</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.527538;0.527692;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="360" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">WIRE</text><text x="98" y="360" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">fibre, Ethernet</text><text x="390" y="360" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 8</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.527538;0.527692;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="356" r="4" fill="#a08cff"/></g>
 <text x="40" y="380" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">Google</text>
-<g opacity="0.3"><text x="40" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">CLOUD</text><text x="98" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">load balancer</text><text x="390" y="407" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.559846;0.560000;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">CLOUD</text><text x="98" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">load balancer</text><text x="390" y="407" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g>
+<g opacity="0.3"><text x="40" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">CLOUD</text><text x="98" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">pods, orchestrated</text><text x="390" y="407" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.559846;0.560000;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">CLOUD</text><text x="98" y="407" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">pods, orchestrated</text><text x="390" y="407" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.559846;0.560000;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="403" r="4" fill="#f2c46d"/></g>
-<g opacity="0.3"><text x="40" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">SVC</text><text x="98" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">a service runs</text><text x="390" y="428" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 7</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.592154;0.592308;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">SVC</text><text x="98" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">a service runs</text><text x="390" y="428" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 7</text></g>
+<g opacity="0.3"><text x="40" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">SVC</text><text x="98" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">a microservice</text><text x="390" y="428" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.592154;0.592308;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">SVC</text><text x="98" y="428" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">a microservice</text><text x="390" y="428" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 17</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.592154;0.592308;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="424" r="4" fill="#f2c46d"/></g>
 <line x1="34" y1="434" x2="390" y2="434" stroke="#f08aa8" stroke-opacity="0.8" stroke-dasharray="2 3"/>
-<g opacity="0.3"><text x="40" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">INDEX</text><text x="98" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">sharded lookup</text><text x="390" y="449" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 13</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.624462;0.624615;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">INDEX</text><text x="98" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">sharded lookup</text><text x="390" y="449" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 13</text></g>
+<g opacity="0.3"><text x="40" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">INDEX</text><text x="98" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">index lookup</text><text x="390" y="449" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 13</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.624462;0.624615;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">INDEX</text><text x="98" y="449" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">index lookup</text><text x="390" y="449" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 13</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.624462;0.624615;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="445" r="4" fill="#f2c46d"/></g>
 <g opacity="0.3"><text x="40" y="470" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">RANK</text><text x="98" y="470" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">many cores, GPUs</text><text x="390" y="470" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 16</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.656769;0.656923;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="470" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">RANK</text><text x="98" y="470" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">many cores, GPUs</text><text x="390" y="470" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">Ch 16</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.656769;0.656923;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="22" cy="466" r="4" fill="#f2c46d"/></g>
@@ -2523,13 +2524,13 @@
 <line x1="40" y1="496" x2="62" y2="496" stroke="#f08aa8" stroke-dasharray="2 3"/><text x="70" y="500" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">trust boundary (Ch 15)</text>
 <g opacity="0.3"><text x="40" y="522" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">the response returns the same way up</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.719846;0.720000;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="522" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">the response returns the same way up</text></g>
 </svg>
-      <p id="ch18-trace-p4" class="diagram-caption">One search, followed from a key's contact to Google's ranking and back, passes through every chapter of the book, and crosses four trust boundaries on the way. Each station keeps the promise the next relies on, and the whole round trip takes well under a second.</p>
+      <p id="ch18-trace-p4" class="diagram-caption">One search, followed from a key's contact to Google's ranking and back, passes through sixteen chapters and the Bridge, and crosses four trust boundaries that Chapter 15 defends. Each station keeps the promise the next relies on, and the whole round trip takes well under a second.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Reading it.</b> Top to bottom is the order of the request; the chapter on the right is where each step was taught. The response climbs back up: TLS decrypts, TCP reassembles, the browser parses, the GPU draws.</li>
           <li><b>The red lines.</b> Each is a place where data moves from less trusted to more trusted hands, and where Chapter 15's defences apply.</li>
-          <li><b>Not a station.</b> Chapter 18 is this figure: the moment the layers stop being a list and become one system.</li>
+          <li><b>A first visit.</b> Later searches reuse the open connection and skip DNS, TCP and TLS; and once a browser has learned Google speaks QUIC, the request rides UDP where TCP is drawn here (Fig 10.9).</li>
         </ol>
       </details>
     </div>
@@ -2550,8 +2551,7 @@
 
     <p id="ch18-trace-p7">
       That sentence has been the through-line of <em>Under the Code</em>
-      from the first transistor to this trace, and the two hundred and
-      thirty-five figures that came before were preparation for the
+      from the first transistor to this trace, and every figure that came before was preparation for the
       figure above. A reader who has finished the book has, in some precise sense, watched a keystroke travel through their entire civilization and come back.
       Whatever they go on to build or break or maintain, they will see
       those layers from now on.
@@ -2567,7 +2567,7 @@
       of it was inevitable. The Boolean algebra in your CPU was invented by
       a Lincolnshire schoolteacher who died in 1864. The transistor
       came out of three physicists at Bell Labs in 1947. The kernel
-      structure of every modern operating system descends from UNIX,
+      structure of Linux, macOS, Android and iOS descends from UNIX,
       which two engineers wrote on a spare PDP-7 to play a game called
       <em>Space Travel</em>. The web came out of a particle physics
       lab in 1989 because a researcher wanted a better way to organise
@@ -2623,7 +2623,7 @@
 <g opacity="0.3"><text x="96" y="310" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">1991 · Linux</text><text x="96" y="327" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Torvalds, Helsinki</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.680603;0.680785;1.000000" dur="11s" repeatCount="indefinite"/><text x="96" y="310" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">1991 · Linux</text><text x="96" y="327" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Torvalds, Helsinki</text></g>
 <g class="fx"><g><animateTransform attributeName="transform" type="translate" values="0 324.00;0 324.00;0 324.00;0 324.00;0 0.00;0 0.00;0 324.00;0 324.00" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127273;0.818182;1.000000" dur="11s" repeatCount="indefinite"/><path d="M30,20 L38,26 L30,32 Z" fill="#fff"/></g></g>
 </svg>
-      <p id="ch18-civilization-p2" class="diagram-caption">Seven moments, a few rooms and a few people: Boole's algebra in 1854, then nothing for eighty years, then Turing's machine, the transistor, the network and the kernel, public keys, the web and Linux in the fifty-five years that followed. Everything in this book is built on them.</p>
+      <p id="ch18-civilization-p2" class="diagram-caption">Seven moments, a few rooms and a few people: Boole's algebra in 1854, then no entry for eighty years, then Turing's machine, the transistor, the network and the kernel, public keys, the web and Linux in the fifty-five years that followed. Everything in this book is built on them.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2821,7 +2821,7 @@
       <div class="diagram-label">Fig 18.5&nbsp;· The reading list&nbsp;· grouped by part of this book</div>
       <svg viewBox="0 0 400 316" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-31 svgd-part5-31">
 <title id="svgt-part5-31">Fig 18.5 · The reading list · grouped by part of this book</title>
-<desc id="svgd-part5-31">Five shelves, one per part. Part I: Petzold's Code and Hennessy and Patterson's Computer Architecture. Part II: Kernighan and Ritchie's The C Programming Language, Tanenbaum and Bos's Modern Operating Systems, and Stroustrup's The C++ Programming Language. Part III: Stevens's TCP/IP Illustrated and Tanenbaum and Wetherall's Computer Networks. Part IV: Silberschatz and others' Database System Concepts and Ferguson, Schneier and Kohno's Cryptography Engineering. Part V: Kleppmann's Designing Data-Intensive Applications.</desc>
+<desc id="svgd-part5-31">Five shelves, one per part. Part I: Petzold's Code and Hennessy and Patterson's Computer Architecture. Part II: Kernighan and Ritchie's The C Programming Language, Tanenbaum and Bos's Modern Operating Systems, and Stroustrup's The C++ Programming Language. Part III: Stevens's TCP/IP Illustrated and Tanenbaum, Feamster and Wetherall's Computer Networks. Part IV: Silberschatz and others' Database System Concepts and Ferguson, Schneier and Kohno's Cryptography Engineering. Part V: Kleppmann and Riccomini's Designing Data-Intensive Applications.</desc>
 <text x="10" y="22" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">Part I · the physical world</text>
 <g opacity="0.3"><rect x="10" y="30" width="49.2" height="26" rx="3" fill="#4fd8c2" fill-opacity="0.18" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="34.6" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Code</text><rect x="65.2" y="30" width="158.4" height="26" rx="3" fill="#4fd8c2" fill-opacity="0.18" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="144.4" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Comp. Architecture</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139800;0.140000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="30" width="49.2" height="26" rx="3" fill="#4fd8c2" fill-opacity="0.18" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="34.6" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Code</text><rect x="65.2" y="30" width="158.4" height="26" rx="3" fill="#4fd8c2" fill-opacity="0.18" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="144.4" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">Comp. Architecture</text></g>
 <line x1="10" y1="58" x2="390" y2="58" stroke="rgba(232,229,244,0.58)" stroke-opacity="0.5" stroke-width="2"/>
@@ -2843,8 +2843,8 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Parts I and II.</b> Petzold, <cite>Code</cite>; Hennessy and Patterson, <cite>Computer Architecture: A Quantitative Approach</cite>; K&amp;R, <cite>The C Programming Language</cite>; Tanenbaum and Bos, <cite>Modern Operating Systems</cite>; Stroustrup, <cite>The C++ Programming Language</cite>. Also Ramalho, <cite>Fluent Python</cite>, and Kerrisk, <cite>The Linux Programming Interface</cite>.</li>
-          <li><b>Parts III and IV.</b> Stevens, <cite>TCP/IP Illustrated</cite>; Tanenbaum and Wetherall, <cite>Computer Networks</cite>; Grigorik, <cite>High Performance Browser Networking</cite> (free online); Silberschatz, Korth and Sudarshan, <cite>Database System Concepts</cite>; Ferguson, Schneier and Kohno, <cite>Cryptography Engineering</cite>; Boneh and Shoup, <cite>A Graduate Course in Applied Cryptography</cite> (free draft).</li>
-          <li><b>Part V.</b> Kleppmann, <cite>Designing Data-Intensive Applications</cite>, the modern reference on distributed data systems.</li>
+          <li><b>Parts III and IV.</b> Stevens, <cite>TCP/IP Illustrated</cite>; Tanenbaum, Feamster and Wetherall, <cite>Computer Networks</cite>; Grigorik, <cite>High Performance Browser Networking</cite> (free online); Silberschatz, Korth and Sudarshan, <cite>Database System Concepts</cite>; Ferguson, Schneier and Kohno, <cite>Cryptography Engineering</cite>; Boneh and Shoup, <cite>A Graduate Course in Applied Cryptography</cite> (free draft).</li>
+          <li><b>Part V.</b> Kleppmann and Riccomini, <cite>Designing Data-Intensive Applications</cite> (2nd edition, 2026), the modern reference on distributed data systems; for Chapter 16, Herlihy and Shavit, <cite>The Art of Multiprocessor Programming</cite>.</li>
         </ol>
       </details>
     </div>

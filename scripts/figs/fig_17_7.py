@@ -1,4 +1,4 @@
-# Fig 17.7 · CAP triangle · pick two when the network splits (Pass 28, law 3). Quorum glass plate. Two replicas hold
+# Fig 17.7 · CAP · when the network splits, consistency or availability (Pass 28, law 3). Quorum glass plate. Two replicas hold
 # x = 1. The link between them breaks. A client writes x = 2 to replica 1; another client reads x from replica 2, which
 # cannot reach replica 1. Run twice in step: a CP system makes replica 2 refuse ("can't confirm") and stay consistent;
 # an AP system makes it answer with the stale x = 1 and stay available. t=0 (shift): both answers given.
@@ -38,7 +38,7 @@ SY = 140 + 120
 a(f'<g opacity="0">{win(TCUT)}{text(200, SY, "partition: the link is cut", anchor="middle", size=13, fill=QROSE, ls="0")}</g>')
 H = SY + 14
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-20 svgd-part5-20">')
-o.insert(1, '<title id="svgt-part5-20">Fig 17.7 · CAP triangle · pick two when the network splits</title>')
+o.insert(1, '<title id="svgt-part5-20">Fig 17.7 · CAP · when the network splits, consistency or availability</title>')
 o.insert(2, '<desc id="svgd-part5-20">Two replicas both hold x = 1. The link between them is cut. A client writes x = 2 to replica 1, and another client asks replica 2 for x. '
   'In a consistent system, replica 2 cannot confirm the latest value and returns an error. In an available system, replica 2 answers with what it has, the stale x = 1.</desc>')
 a('</svg>')
@@ -55,7 +55,7 @@ how = '''<details class="fig-how">
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-17-7">
-      <div class="diagram-label">Fig 17.7 · CAP triangle · pick two when the network splits</div>
+      <div class="diagram-label">Fig 17.7 · CAP · when the network splits, consistency or availability</div>
       {svg}
       <p id="CAPID" class="diagram-caption">{caption}</p>
       {how}

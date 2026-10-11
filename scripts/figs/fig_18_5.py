@@ -34,7 +34,7 @@ H = SY0 + 4 * SS + 46
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-31 svgd-part5-31">')
 o.insert(1, '<title id="svgt-part5-31">Fig 18.5 · The reading list · grouped by part of this book</title>')
 o.insert(2, '<desc id="svgd-part5-31">Five shelves, one per part. Part I: Petzold\'s Code and Hennessy and Patterson\'s Computer Architecture. Part II: Kernighan and Ritchie\'s The C Programming Language, Tanenbaum and Bos\'s Modern Operating Systems, and Stroustrup\'s The C++ Programming Language. '
-  'Part III: Stevens\'s TCP/IP Illustrated and Tanenbaum and Wetherall\'s Computer Networks. Part IV: Silberschatz and others\' Database System Concepts and Ferguson, Schneier and Kohno\'s Cryptography Engineering. Part V: Kleppmann\'s Designing Data-Intensive Applications.</desc>')
+  'Part III: Stevens\'s TCP/IP Illustrated and Tanenbaum, Feamster and Wetherall\'s Computer Networks. Part IV: Silberschatz and others\' Database System Concepts and Ferguson, Schneier and Kohno\'s Cryptography Engineering. Part V: Kleppmann and Riccomini\'s Designing Data-Intensive Applications.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -43,8 +43,8 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Parts I and II.</b> Petzold, <cite>Code</cite>; Hennessy and Patterson, <cite>Computer Architecture: A Quantitative Approach</cite>; K&amp;R, <cite>The C Programming Language</cite>; Tanenbaum and Bos, <cite>Modern Operating Systems</cite>; Stroustrup, <cite>The C++ Programming Language</cite>. Also Ramalho, <cite>Fluent Python</cite>, and Kerrisk, <cite>The Linux Programming Interface</cite>.</li>
-          <li><b>Parts III and IV.</b> Stevens, <cite>TCP/IP Illustrated</cite>; Tanenbaum and Wetherall, <cite>Computer Networks</cite>; Grigorik, <cite>High Performance Browser Networking</cite> (free online); Silberschatz, Korth and Sudarshan, <cite>Database System Concepts</cite>; Ferguson, Schneier and Kohno, <cite>Cryptography Engineering</cite>; Boneh and Shoup, <cite>A Graduate Course in Applied Cryptography</cite> (free draft).</li>
-          <li><b>Part V.</b> Kleppmann, <cite>Designing Data-Intensive Applications</cite>, the modern reference on distributed data systems.</li>
+          <li><b>Parts III and IV.</b> Stevens, <cite>TCP/IP Illustrated</cite>; Tanenbaum, Feamster and Wetherall, <cite>Computer Networks</cite>; Grigorik, <cite>High Performance Browser Networking</cite> (free online); Silberschatz, Korth and Sudarshan, <cite>Database System Concepts</cite>; Ferguson, Schneier and Kohno, <cite>Cryptography Engineering</cite>; Boneh and Shoup, <cite>A Graduate Course in Applied Cryptography</cite> (free draft).</li>
+          <li><b>Part V.</b> Kleppmann and Riccomini, <cite>Designing Data-Intensive Applications</cite> (2nd edition, 2026), the modern reference on distributed data systems; for Chapter 16, Herlihy and Shavit, <cite>The Art of Multiprocessor Programming</cite>.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-18-5">

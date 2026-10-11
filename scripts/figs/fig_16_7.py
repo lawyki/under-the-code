@@ -58,7 +58,7 @@ caption = ('A kernel launch is a grid of blocks, each block a set of warps, each
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Blocks.</b> Threads in one block share fast on-chip memory (up to 227 KB per block on an H100) and can wait for each other; separate blocks cannot, and talk only through slow global memory.</li>
+          <li><b>Blocks.</b> Threads in one block share fast on-chip memory (up to 227 KB per block on an H100) and can wait for each other; in the classic model separate blocks cannot, and share data through slow global memory.</li>
           <li><b>Memory.</b> Registers are per thread and nearly free; global memory (HBM, 80 GB on an H100) is huge and slow per access. Fast kernels keep data in shared memory and have each warp read neighbouring addresses together (coalesced access).</li>
           <li><b>The model.</b> The programmer writes one thread's code; the launch runs it for every thread of the grid, each finding its own index.</li>
         </ol>

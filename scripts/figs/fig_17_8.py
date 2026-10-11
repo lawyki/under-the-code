@@ -1,4 +1,4 @@
-# Fig 17.8 · CAP in production · which database picked which corner (Pass 28, law 3). Quorum glass plate. Two columns,
+# Fig 17.8 · CAP in production · which database picked which side (Pass 28, law 3). Quorum glass plate. Two columns,
 # the systems that refuse during a partition (CP) and those that keep answering (AP), each with the job it suits. A
 # partition strikes; on the same beat each system shows its reaction: CP systems turn away writes on the minority side,
 # AP systems accept them and reconcile when the link returns. t=0 (shift): both reactions shown.
@@ -35,7 +35,7 @@ for t0, t1, s, col in ((0.31, TP, 'network healthy: all agree', QMUTED), (TP, No
     a(f'<g opacity="0">{vis}{text(200, SY, s, anchor="middle", size=13, fill=col, ls="0")}</g>')
 H = SY + 14
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-21 svgd-part5-21">')
-o.insert(1, '<title id="svgt-part5-21">Fig 17.8 · CAP in production · which database picked which corner</title>')
+o.insert(1, '<title id="svgt-part5-21">Fig 17.8 · CAP in production · which database picked which side</title>')
 o.insert(2, '<desc id="svgd-part5-21">Systems that choose consistency: etcd and ZooKeeper, for leader election and cluster configuration; Spanner and CockroachDB, for ledgers and orders; MongoDB by default, whose primary steps down without a majority. '
   'Systems that choose availability: Cassandra, for telemetry and feeds; Dynamo-style stores, for shopping carts; DNS, where a stale name beats none. When a partition strikes, the first group refuses writes it cannot confirm and the second accepts them and reconciles later.</desc>')
 a('</svg>')
@@ -47,11 +47,11 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Reconciling.</b> AP stores settle diverged copies afterwards: last writer wins, vector clocks, or data types that merge by design (CRDTs).</li>
           <li><b>Tunable.</b> Many stores let each request choose: Cassandra's quorum reads and writes, DynamoDB's strongly consistent reads, at the cost of latency or availability.</li>
-          <li><b>Spanner.</b> Google's TrueTime, GPS and atomic clocks bounding clock error, makes partitions rare and consistency cheap, but when one does happen it still chooses consistency.</li>
+          <li><b>Spanner.</b> TrueTime (GPS and atomic clocks bounding clock error) makes consistent transactions cheap, and Google's private network makes partitions rare; when one does happen, Spanner still chooses consistency.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-17-8">
-      <div class="diagram-label">Fig 17.8 · CAP in production · which database picked which corner</div>
+      <div class="diagram-label">Fig 17.8 · CAP in production · which database picked which side</div>
       {svg}
       <p id="CAPID" class="diagram-caption">{caption}</p>
       {how}

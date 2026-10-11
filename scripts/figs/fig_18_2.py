@@ -43,7 +43,7 @@ o.insert(2, '<desc id="svgd-part5-28">A timeline drawn to scale from 1850 to 202
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Seven moments, a few rooms and a few people: Boole\'s algebra in 1854, then nothing for eighty years, then Turing\'s machine, the transistor, the network and the kernel, public keys, the web and Linux in the fifty-five years that followed. '
+caption = ('Seven moments, a few rooms and a few people: Boole\'s algebra in 1854, then no entry for eighty years, then Turing\'s machine, the transistor, the network and the kernel, public keys, the web and Linux in the fifty-five years that followed. '
            'Everything in this book is built on them.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

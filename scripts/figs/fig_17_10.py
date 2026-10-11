@@ -1,4 +1,4 @@
-# Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026 (Pass 28, law 3). Quorum glass
+# Fig 17.10 · Service mesh and the sidecar · how a mesh moves one call (Pass 28, law 3). Quorum glass
 # plate. Two pods, orders and auth, each an app beside a sidecar proxy. orders' app sends a plain request to its own
 # sidecar; the sidecar encrypts it (mTLS) and sends it to auth's sidecar; the first attempt fails, the sidecar retries;
 # auth's sidecar checks the caller's certificate and hands the plain request to its app. Above, the control plane pushes
@@ -52,7 +52,7 @@ for t0, t1, s, col in ((TPUSH, 2.2, 'control plane pushes routes, certificates',
     a(f'<g opacity="0">{win(t0) if t1 is None else lit(t0, t1)}{text(200, SY, s, anchor="middle", size=13, fill=col, ls="0")}</g>')
 H = SY + 12
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-23 svgd-part5-23">')
-o.insert(1, '<title id="svgt-part5-23">Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026</title>')
+o.insert(1, '<title id="svgt-part5-23">Fig 17.10 · Service mesh and the sidecar · how a mesh moves one call</title>')
 o.insert(2, '<desc id="svgd-part5-23">Two pods, orders and auth, each holding an app and a sidecar proxy, and above them a control plane such as Istio or Linkerd that pushes routes and certificates to every sidecar. '
   'The orders app sends a plain request to its own sidecar. The sidecar sends it, encrypted with mutual TLS, to the auth pod\'s sidecar; the first attempt fails and the sidecar retries. The auth sidecar checks the caller and hands the plain request to its app. Neither app sees the failure.</desc>')
 a('</svg>')
@@ -68,7 +68,7 @@ how = '''<details class="fig-how">
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-17-10">
-      <div class="diagram-label">Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026</div>
+      <div class="diagram-label">Fig 17.10 · Service mesh and the sidecar · how a mesh moves one call</div>
       {svg}
       <p id="CAPID" class="diagram-caption">{caption}</p>
       {how}

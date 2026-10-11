@@ -15,11 +15,12 @@ pulse = lambda t0: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), 
 o = []; a = o.append
 BOX = {'user': (10, 10, 120, 34, 'kubectl apply', QSOFT), 'api': (140, 72, 120, 40, 'API server', VIOLET),
        'etcd': (14, 72, 104, 40, 'etcd', QAMBER), 'sched': (282, 72, 104, 40, 'scheduler', VIOLET),
-       'ctrl': (140, 126, 120, 34, 'controllers', VIOLET)}
+       'ctrl': (14, 126, 104, 34, 'controllers', VIOLET)}
 NODES = [(14, 'node 1'), (144, 'node 2'), (274, 'node 3')]
 NY = 206
 a(f'<rect x="6" y="62" width="388" height="106" rx="12" fill="none" stroke="{VIOLET}" stroke-opacity="0.35"/>')
 a(text(390, 182, 'control plane', anchor='end', size=13, fill=VIOLET, ls='0'))
+a(f'<line x1="70" y1="44" x2="200" y2="72" stroke="{QMUTED}" stroke-opacity="0.35"/>')
 for x, lab in NODES:
     a(f'<line x1="{x + 56}" y1="{NY}" x2="200" y2="112" stroke="{QMUTED}" stroke-opacity="0.25"/>')
 for key in ('etcd', 'sched', 'ctrl'):

@@ -53,7 +53,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>What it buys.</b> Teams ship their service on their own schedule, in their own language, and a crash in one service need not take down the rest.</li>
-          <li><b>What it costs.</b> Every former function call can be slow or fail; one order spans several databases, so it needs a saga of steps and compensations instead of one transaction; following a request takes distributed tracing.</li>
+          <li><b>What it costs.</b> Every former function call can be slow or fail, and a retried call must be safe to repeat (an idempotency key) or a timed-out payment can charge twice; one order spans several databases, so it needs a saga of steps and compensations instead of one transaction; following a request takes distributed tracing.</li>
           <li><b>The usual advice.</b> Split only where a team needs that independence; a well-structured monolith is the cheaper default.</li>
         </ol>
       </details>'''

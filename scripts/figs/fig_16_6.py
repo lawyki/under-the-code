@@ -53,7 +53,7 @@ caption = ('A CPU spends its transistors on a few cores that run one stream of i
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Real sizes.</b> A desktop CPU has 8 to 24 cores; an NVIDIA H100 has 132 streaming multiprocessors with about 17,000 lanes in all, run in groups of 32 that share one instruction (Fig 16.7).</li>
+          <li><b>Real sizes.</b> A desktop CPU has 8 to 24 cores; an NVIDIA H100 (SXM) has 132 streaming multiprocessors with about 17,000 lanes in all, run in groups of 32 that share one instruction (Fig 16.7).</li>
           <li><b>Where the transistors go.</b> A CPU core spends them on out-of-order execution, branch prediction and large caches; a GPU lane has almost none of that, and hides memory delays by switching between thousands of waiting threads.</li>
           <li><b>Why it took over.</b> Graphics, video and neural networks are the same arithmetic over huge arrays; training a network is mostly matrix multiplication, exactly the GPU's shape.</li>
         </ol>

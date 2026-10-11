@@ -26,7 +26,7 @@ def stepped(draw):
         vis = first(t1) if k == 0 else (win(TS[k]) if t1 is None else lit(TS[k], t1))
         a(f'<g opacity="0">{vis}{draw(n)}</g>')
 a(f'<g>{text(BX, 18, "N = ", anchor="start", size=13, fill=QSOFT, ls="0")}</g>')
-stepped(lambda n: text(BX + 32, 18, f'{n} cores', anchor='start', size=13, fill=QSOFT, ls='0'))
+stepped(lambda n: text(BX + 32, 18, f'{n} core{"s" if n > 1 else ""}', anchor='start', size=13, fill=QSOFT, ls='0'))
 # Amdahl: fixed work, time shrinks
 a(text(BX, 50, 'Amdahl: same job, how much faster?', anchor='start', size=13, fill=VIOLET, ls='0'))
 SW = (1 - P) * BW
@@ -52,8 +52,8 @@ o.insert(2, '<desc id="svgd-part5-10">One program whose work is 5% serial, on 1 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Amdahl keeps the job fixed and asks how much faster more cores make it: with 5% serial work, 15.4× on 64 cores and never past 20×. '
-           'Gustafson keeps the time fixed and asks how much more work fits: the parallel part grows with the machine, so 64 cores do 60.9 times the work.')
+caption = ('Amdahl keeps the job fixed and asks how much faster more cores make it: with 5% of the time serial, 15.4× on 64 cores and never past 20×. '
+           'Gustafson keeps the time fixed and asks how much more work fits: the parallel part grows with the machine, so 64 cores do about 61 times the work.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
