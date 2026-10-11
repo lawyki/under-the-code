@@ -18,7 +18,7 @@ def box(x, y, w, h, col):
     a(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{col}" fill-opacity="0.08" stroke="{col}" stroke-opacity="0.6"/>')
 box(20, 14, 170, 70, BLUE)
 a(text(32, 36, 'CPU', size=13, fill=BLUE, ls='0'))
-for t0, t1, s, col in ((0.31, TC, 'process A asks', MUTED), (TC, TS0, 'kernel: command', GOLD), (TS0, TI, 'runs process B', BLUE),
+for t0, t1, s, col in ((0.31, TC, 'process A asks', MUTED), (TC, TS0, 'kernel: doorbell', GOLD), (TS0, TI, 'runs process B', BLUE),
                        (TI, TI + 1.2, 'IRQ: kernel done', GOLD), (TI + 1.2, None, 'A woken', GREEN)):
     vis = first(t1) if t0 < 0.5 else (win(t0) if t1 is None else lit(t0, t1))
     a(f'<g opacity="0">{vis}{text(32, 62, s, size=13, fill=col, ls="0")}</g>')
@@ -46,27 +46,26 @@ for b in range(NB):                                             # 2: data, block
     fly(295, 84, x, RY + 48, t0, t0 + (TS1 - TS0) / NB, GREEN)
 fly(210, 70, 190, 70, TI, TI + 0.6, RED)                        # 3: interrupt
 LY = RY + 100
-STEPS = [('1', 'kernel writes a small command', GOLD, TC), ('2', 'the SSD fills RAM on its own', GREEN, TS0), ('3', 'an interrupt says done', RED, TI)]
+STEPS = [('1', 'kernel queues a command', GOLD, TC), ('2', 'the SSD fills RAM on its own', GREEN, TS0), ('3', 'an interrupt says done', RED, TI)]
 for k, (n, s, col, t0) in enumerate(STEPS):
     body = text(20, LY + k * 22, f'{n}  {s}', size=13, fill=col, ls='0')
     a(f'<g opacity="0.3">{body}</g><g opacity="0">{win(t0)}{body}</g>')
-a(text(20, LY + 3 * 22 + 6, 'the CPU never touches the data', size=13, fill=MUTED, ls='0'))
-H = LY + 3 * 22 + 18
+H = LY + 2 * 22 + 14
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">')
 o.insert(1, '<title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>')
-o.insert(2, '<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data and the kernel writes a small command into the SSD\'s registers: read these blocks into the buffer at 0x4a20_0000. '
-  'The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never touches the data itself.</desc>')
+o.insert(2, '<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM (read these blocks into the buffer at 0x4a20_0000) and rings the SSD\'s doorbell register. '
+  'The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never copies the data during the transfer.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('With direct memory access the kernel only writes a small command telling the device where to put the data; the device then copies it into RAM on its own while the CPU runs something else. '
-           'An interrupt says when it is done, so the CPU handles the command and the completion but never the data.')
+           'An interrupt says when it is done, so the CPU handles the command and the completion but not the transfer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Queues.</b> An NVMe drive takes its commands from queues in RAM that the kernel fills; one register write (a doorbell) tells it new work is waiting.</li>
+          <li><b>Queues.</b> Only the doorbell is a register write; the drive fetches the command itself from the queue in RAM, by DMA like the data.</li>
           <li><b>The IOMMU.</b> A second address-translation unit, for devices: the kernel decides which parts of RAM each device may reach, so a faulty or untrusted device cannot write anywhere it likes.</li>
-          <li><b>Why it pays.</b> Copying gigabytes a second through the CPU would take a core's whole attention; with DMA it takes almost none.</li>
+          <li><b>Scattered buffers.</b> The buffer need not be one block of RAM: the command can list many separate pages (PRP or SGL entries), and the drive fills each in turn.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-8">

@@ -70,9 +70,9 @@ caption = ('The kernel sets a hardware timer to interrupt it at a fixed rate; ea
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250 or 1,000 per second; the kernel programs the local APIC timer (on ARM, the generic timer) at boot.</li>
+          <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250, 300 or 1,000 per second; the kernel programs the local APIC timer (on ARM, the generic timer) at boot.</li>
           <li><b>Tickless.</b> An idle core can skip ticks entirely, and a core running one task can almost stop them (Linux's NO_HZ_IDLE and NO_HZ_FULL), saving power.</li>
-          <li><b>Why it matters.</b> Privilege, traps and the MMU decide what user code may do; the timer is what guarantees the kernel gets to run at all.</li>
+          <li><b>Not to scale.</b> The kernel slices are drawn wide enough to see; a real tick takes microseconds, and the scheduler often lets one process run for several ticks.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-6">

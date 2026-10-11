@@ -6,7 +6,7 @@
 from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
 
 PAGES = ['a3c4', 'a3c4', 'a3c5', 'a3c4', 'a3c5', 'a3c6', 'a3c4', 'a3c6', 'a3c7', 'a3c7', 'a3c4', 'a3c5']
-FRAME = {'a3c4': '4a20', 'a3c5': '4a31', 'a3c6': '4a07', 'a3c7': '4a52', 'a3c8': '4a60'}
+FRAME = {'a3c4': 'a200', 'a3c5': 'b731', 'a3c6': '0907', 'a3c7': 'c152'}       # a3c4 → a200 as in Fig BR.4
 INIT = ['a3c4', 'a3c5', 'b210', 'b211']
 # simulate LRU
 tlb, events, slots_hist = INIT[:], [], []

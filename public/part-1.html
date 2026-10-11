@@ -4875,11 +4875,11 @@ main:
       <div class="diagram-label">Fig BR.4&nbsp;· The MMU&nbsp;· silicon between the CPU and the RAM</div>
       <svg viewBox="0 0 400 394" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46">
 <title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>
-<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_a3c4_0010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4_a200_0010 goes to RAM, keeping the same offset within the page. Then a store to the same address: the walk succeeds, but the page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>
+<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_a3c4_0010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4_a200_0010 goes to RAM, keeping the same offset within the page. Then a store to the next page up, 0x7fff_a3c5_0010: it misses the TLB too, the walk succeeds, but that page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>
 <rect x="20" y="14" width="360" height="54" rx="6" fill="#86a8ff" fill-opacity="0.08" stroke="#86a8ff" stroke-opacity="0.6"/>
 <text x="32" y="36" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">CPU</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075667;0.075833;0.549333;0.549583;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="56" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">load  0x7fff_a3c4_0010</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="56" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">store 0x7fff_a3c4_0010</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="56" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">store 0x7fff_a3c5_0010</text></g>
 <rect x="20" y="90" width="360" height="196" rx="6" fill="#d4a853" fill-opacity="0.08" stroke="#d4a853" stroke-opacity="0.8"/>
 <text x="32" y="112" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">MMU · a circuit, no code</text>
 <rect x="32" y="124" width="336" height="30" rx="6" fill="rgba(255,255,255,0.6)" fill-opacity="0.08" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.5"/>
@@ -4925,7 +4925,7 @@ main:
         <ol>
           <li><b>The walk.</b> On x86-64, CR3 holds the top table; nine bits of the address pick an entry at each of four levels, and the last twelve are the offset inside the 4 KiB page.</li>
           <li><b>The bits.</b> Each entry carries present, user/supervisor, writable and no-execute flags; a failed check raises a page fault (vector 14).</li>
-          <li><b>Who does what.</b> The kernel writes the tables, the MMU reads them on every access, and the <span class="key-term">TLB</span> keeps recent answers so most accesses skip the walk (Fig BR.5).</li>
+          <li><b>The shortcut.</b> The <span class="key-term">TLB</span> keeps recent answers, so a second access to the same page skips the walk (Fig BR.5).</li>
         </ol>
       </details>
     </div>
@@ -5012,15 +5012,15 @@ main:
 <rect x="20" y="112" width="360" height="152" rx="6" fill="#d4a853" fill-opacity="0.06" stroke="#d4a853" stroke-opacity="0.7"/>
 <text x="32" y="134" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">TLB · four entries</text>
 <rect x="32" y="146" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="163" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c4 → 4a20</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="163" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c4 → a200</text></g>
 <rect x="32" y="174" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="191" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c5 → 4a31</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.064857;0.065000;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="191" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c5 → b731</text></g>
 <rect x="32" y="202" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.420857;0.421071;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="219" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">b210 → 51e0</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.421286;0.421429;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="219" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c6 → 4a07</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.421286;0.421429;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="219" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c6 → 0907</text></g>
 <rect x="32" y="230" width="200" height="24" rx="4" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.6"/>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.613714;0.613929;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="247" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">b211 → 51e1</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.614143;0.614286;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="247" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c7 → 4a52</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.614143;0.614286;1.000000" dur="14s" repeatCount="indefinite"/><text x="42" y="247" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">a3c7 → c152</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.421286;0.421429;0.464286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="30" y="200" width="204" height="28" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.614143;0.614286;0.657143;1.000000" dur="14s" repeatCount="indefinite"/><rect x="30" y="228" width="204" height="28" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2"/></g>
 <rect x="250" y="146" width="118" height="108" rx="5" fill="none" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.5" stroke-dasharray="4 3"/>
@@ -5137,9 +5137,9 @@ main:
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250 or 1,000 per second; the kernel programs the local APIC timer (on ARM, the generic timer) at boot.</li>
+          <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250, 300 or 1,000 per second; the kernel programs the local APIC timer (on ARM, the generic timer) at boot.</li>
           <li><b>Tickless.</b> An idle core can skip ticks entirely, and a core running one task can almost stop them (Linux's NO_HZ_IDLE and NO_HZ_FULL), saving power.</li>
-          <li><b>Why it matters.</b> Privilege, traps and the MMU decide what user code may do; the timer is what guarantees the kernel gets to run at all.</li>
+          <li><b>Not to scale.</b> The kernel slices are drawn wide enough to see; a real tick takes microseconds, and the scheduler often lets one process run for several ticks.</li>
         </ol>
       </details>
     </div>
@@ -5217,7 +5217,7 @@ main:
 <rect x="20" y="306" width="196" height="66" rx="4" fill="#9bd89b" fill-opacity="0.12" stroke="#9bd89b" stroke-opacity="0.6"/>
 <text x="30" y="336" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">RAM</text>
 <text x="30" y="353" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0x0000_0000</text>
-<text x="20" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">low addresses at the bottom</text>
+<text x="20" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">low addresses at the bottom, not to scale</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="344" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">stored, nothing else</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.199833;0.200000;0.250000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="304.0" width="200" height="70" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.200167;0.200417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 287.00;0 287.00;0 0.00;0 0.00;0 287.00;0 287.00" keyTimes="0.000000;0.049958;0.050000;0.133333;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
@@ -5235,9 +5235,9 @@ main:
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Who routes it.</b> The memory controller and PCIe root complex send each access to RAM or to the device that claimed that range at boot; the addresses shown are typical, and every machine's map differs.</li>
-          <li><b>Who may touch it.</b> Only the kernel maps device ranges into an address space (Fig BR.4), so a user program cannot reach a device's registers directly.</li>
-          <li><b>Not cached.</b> Device ranges are marked uncacheable, so every store really reaches the device instead of waiting in a cache.</li>
+          <li><b>Who routes it.</b> The CPU's address decoding sends each access to RAM, to a unit inside the CPU (the local APIC), or out to the device that claimed that range at boot; the addresses shown are typical, and every machine's map differs.</li>
+          <li><b>Who may touch it.</b> These are physical addresses, after the MMU's translation (Fig BR.4); only the kernel maps device ranges into an address space, so a user program cannot reach a device's registers directly.</li>
+          <li><b>Not cached.</b> Device registers are marked uncacheable, so every store really reaches the device; a frame buffer is write-combining, which batches stores but still sends them all.</li>
         </ol>
       </details>
     </div>
@@ -5257,13 +5257,13 @@ main:
 
     <div class="diagram-card fig-v2" id="fig-br-8">
       <div class="diagram-label">Fig BR.8&nbsp;· Direct memory access&nbsp;· the device writes RAM by itself</div>
-      <svg viewBox="0 0 400 304" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">
+      <svg viewBox="0 0 400 278" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">
 <title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>
-<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data and the kernel writes a small command into the SSD's registers: read these blocks into the buffer at 0x4a20_0000. The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never touches the data itself.</desc>
+<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM (read these blocks into the buffer at 0x4a20_0000) and rings the SSD's doorbell register. The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never copies the data during the transfer.</desc>
 <rect x="20" y="14" width="170" height="70" rx="6" fill="#86a8ff" fill-opacity="0.08" stroke="#86a8ff" stroke-opacity="0.6"/>
 <text x="32" y="36" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">CPU</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.126545;0.126818;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">process A asks</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.253818;0.254091;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel: command</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.127091;0.127273;0.253818;0.254091;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel: doorbell</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.254364;0.254545;0.744727;0.745000;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">runs process B</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.745273;0.745455;0.853818;0.854091;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">IRQ: kernel done</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.854364;0.854545;1.000000" dur="11s" repeatCount="indefinite"/><text x="32" y="62" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">A woken</text></g>
@@ -5299,18 +5299,17 @@ main:
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.581636;0.581818;0.636545;0.636818;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="11.25 0;11.25 0;0.00 0;0.00 0;11.25 0;11.25 0" keyTimes="0.000000;0.054500;0.054545;0.581818;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.581818;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.636182;0.636364;0.691091;0.691364;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="53.75 0;53.75 0;0.00 0;0.00 0;53.75 0;53.75 0" keyTimes="0.000000;0.054500;0.054545;0.636364;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 84.00;0 84.00;0 0.00;0 0.00;0 84.00;0 84.00" keyTimes="0.000000;0.054500;0.054545;0.636364;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="295" cy="84" r="6" fill="#9bd89b"/></g></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.745273;0.745455;0.800182;0.800455;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-20.00 0;-20.00 0;0.00 0;0.00 0;-20.00 0;-20.00 0" keyTimes="0.000000;0.054500;0.054545;0.745455;0.800000;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00" keyTimes="0.000000;0.054500;0.054545;0.745455;0.800000;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="210" cy="70" r="6" fill="#ec8d8d"/></g></g></g>
-<g opacity="0.3"><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel writes a small command</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127091;0.127273;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel writes a small command</text></g>
+<g opacity="0.3"><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel queues a command</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.127091;0.127273;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="220" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">1  kernel queues a command</text></g>
 <g opacity="0.3"><text x="20" y="242" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">2  the SSD fills RAM on its own</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.254364;0.254545;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="242" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">2  the SSD fills RAM on its own</text></g>
 <g opacity="0.3"><text x="20" y="264" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">3  an interrupt says done</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.745273;0.745455;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="264" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">3  an interrupt says done</text></g>
-<text x="20" y="292" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the CPU never touches the data</text>
 </svg>
-      <p id="chBridge-io-p5" class="diagram-caption">With direct memory access the kernel only writes a small command telling the device where to put the data; the device then copies it into RAM on its own while the CPU runs something else. An interrupt says when it is done, so the CPU handles the command and the completion but never the data.</p>
+      <p id="chBridge-io-p5" class="diagram-caption">With direct memory access the kernel only writes a small command telling the device where to put the data; the device then copies it into RAM on its own while the CPU runs something else. An interrupt says when it is done, so the CPU handles the command and the completion but not the transfer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Queues.</b> An NVMe drive takes its commands from queues in RAM that the kernel fills; one register write (a doorbell) tells it new work is waiting.</li>
+          <li><b>Queues.</b> Only the doorbell is a register write; the drive fetches the command itself from the queue in RAM, by DMA like the data.</li>
           <li><b>The IOMMU.</b> A second address-translation unit, for devices: the kernel decides which parts of RAM each device may reach, so a faulty or untrusted device cannot write anywhere it likes.</li>
-          <li><b>Why it pays.</b> Copying gigabytes a second through the CPU would take a core's whole attention; with DMA it takes almost none.</li>
+          <li><b>Scattered buffers.</b> The buffer need not be one block of RAM: the command can list many separate pages (PRP or SGL entries), and the drive fills each in turn.</li>
         </ol>
       </details>
     </div>
@@ -5352,7 +5351,7 @@ main:
       <div class="diagram-label">Fig BR.9&nbsp;· Hardware features → kernel → abstractions</div>
       <svg viewBox="0 0 400 336" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51">
 <title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>
-<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives root versus user, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. Each feature is then taken away in turn and its abstraction goes with it: without privilege any program can do anything, without traps there is no safe way into the kernel, without the MMU every program can read every other, without the timer a stuck loop keeps the CPU, and without MMIO and DMA there is no disk and no network.</desc>
+<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives a protected kernel apart from user programs, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. Each feature is then taken away in turn and its abstraction goes with it: without privilege any program can do anything, without traps there is no safe way into the kernel, without the MMU every program can read every other, without the timer a stuck loop keeps the CPU, and without MMIO and DMA there is no disk and no network.</desc>
 <text x="20" y="24" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">silicon</text>
 <text x="192" y="24" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">kernel</text>
 <text x="380" y="24" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">what you get</text>
@@ -5360,7 +5359,7 @@ main:
 <rect x="20" y="40" width="120" height="40" rx="5" fill="#86a8ff" fill-opacity="0.10" stroke="#86a8ff" stroke-opacity="0.6"/>
 <g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="30" y="65" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">privilege bit</text></g>
 <rect x="244" y="40" width="136" height="40" rx="5" fill="#9bd89b" fill-opacity="0.10" stroke="#9bd89b" stroke-opacity="0.6"/>
-<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.364143;0.364286;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="65" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">root vs user</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.364143;0.364286;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><text x="254" y="65" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">kernel vs user</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0.3;0.3;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.470857;0.471071;1.000000" dur="14s" repeatCount="indefinite"/><line x1="140" y1="60.0" x2="156" y2="60.0" stroke="rgba(255,255,255,0.6)"/><line x1="228" y1="60.0" x2="244" y2="60.0" stroke="rgba(255,255,255,0.6)"/><circle cx="192.0" cy="60.0" r="4" fill="#d4a853"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.099857;0.100000;0.143000;0.143214;1.000000" dur="14s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="104.00 0;104.00 0;0.00 0;0.00 0;104.00 0;104.00 0" keyTimes="0.000000;0.042821;0.042857;0.100000;0.142857;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="140" cy="60.0" r="6" fill="#fff"/></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.142714;0.142857;0.178571;1.000000" dur="14s" repeatCount="indefinite"/><rect x="242" y="38" width="140" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2"/></g>
@@ -5415,7 +5414,7 @@ main:
         <ol>
           <li><b>Why the kernel.</b> Only code running with full privilege can program these features, so one program does it and every other program asks it through system calls.</li>
           <li><b>Not strictly one to one.</b> A process needs the MMU, traps and the timer together; each row shows the feature its abstraction cannot do without.</li>
-          <li><b>What comes next.</b> The silicon asks for little: page tables, a trap handler, a timer. Everything else a kernel contains, Part II takes up.</li>
+          <li><b>One level down.</b> A hypervisor gives each guest kernel its own copy of these features (a further privilege level, nested page tables, virtual timers), so the same chain repeats inside a virtual machine.</li>
         </ol>
       </details>
     </div>

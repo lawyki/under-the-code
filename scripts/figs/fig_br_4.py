@@ -1,5 +1,5 @@
 # Fig BR.4 · The MMU · silicon between the CPU and the RAM (Pass 28, law 3, conceptual pass). Two accesses through the
-# MMU, top to bottom. A load of 0x7fff_a3c4_0010: the TLB misses, the walker reads the four page-table levels from CR3
+# MMU, top to bottom (each to its own page, so each misses the TLB). A load of 0x7fff_a3c4_0010: the TLB misses, the walker reads the four page-table levels from CR3
 # down, the permission bits allow it, and the physical address 0x4_a200_0010 (same low 12 bits, the offset in the page)
 # goes to RAM. Then a store to a read-only page: the walk succeeds but the check fails, and the MMU raises a page fault
 # for the kernel instead of touching RAM. t=0 (shift): both outcomes shown.
@@ -22,7 +22,7 @@ def box(x, y, w, h, col, op=0.6):
 box(20, 14, 360, 54, BLUE)
 a(text(32, 36, 'CPU', size=13, fill=BLUE, ls='0'))
 a(f'<g opacity="0">{lit(0.31, T2["ask"])}{text(32, 56, "load  0x7fff_a3c4_0010", size=13, fill="#fff", ls="0")}</g>')
-a(f'<g opacity="0">{win(T2["ask"])}{text(32, 56, "store 0x7fff_a3c4_0010", size=13, fill="#fff", ls="0")}</g>')
+a(f'<g opacity="0">{win(T2["ask"])}{text(32, 56, "store 0x7fff_a3c5_0010", size=13, fill="#fff", ls="0")}</g>')
 # MMU
 MY = 90
 box(20, MY, 360, 196, GOLD, 0.8)
@@ -58,7 +58,7 @@ H = EY + 88
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46">')
 o.insert(1, '<title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>')
 o.insert(2, '<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_a3c4_0010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4_a200_0010 goes to RAM, keeping the same offset within the page. '
-  'Then a store to the same address: the walk succeeds, but the page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>')
+  'Then a store to the next page up, 0x7fff_a3c5_0010: it misses the TLB too, the walk succeeds, but that page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -69,7 +69,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>The walk.</b> On x86-64, CR3 holds the top table; nine bits of the address pick an entry at each of four levels, and the last twelve are the offset inside the 4 KiB page.</li>
           <li><b>The bits.</b> Each entry carries present, user/supervisor, writable and no-execute flags; a failed check raises a page fault (vector 14).</li>
-          <li><b>Who does what.</b> The kernel writes the tables, the MMU reads them on every access, and the <span class="key-term">TLB</span> keeps recent answers so most accesses skip the walk (Fig BR.5).</li>
+          <li><b>The shortcut.</b> The <span class="key-term">TLB</span> keeps recent answers, so a second access to the same page skips the walk (Fig BR.5).</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-4">

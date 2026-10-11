@@ -4,7 +4,7 @@
 # five rows connected, with the rule beneath.
 from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
 
-ROWS = [('privilege bit', 'root vs user', 'no privilege: any program can do anything'),
+ROWS = [('privilege bit', 'kernel vs user', 'no privilege: any program can do anything'),
         ('traps', 'system calls', 'no traps: no safe way into the kernel'),
         ('MMU · TLB', 'processes', 'no MMU: every program reads every other'),
         ('timer', 'multitasking', 'no timer: a stuck loop keeps the CPU'),
@@ -52,7 +52,7 @@ a(f'<g>{rule}{text(HX, LY, "take a feature away, its abstraction goes", size=13,
 H = LY + 14
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51">')
 o.insert(1, '<title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>')
-o.insert(2, '<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives root versus user, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. '
+o.insert(2, '<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives a protected kernel apart from user programs, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. '
   'Each feature is then taken away in turn and its abstraction goes with it: without privilege any program can do anything, without traps there is no safe way into the kernel, without the MMU every program can read every other, without the timer a stuck loop keeps the CPU, and without MMIO and DMA there is no disk and no network.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
@@ -64,7 +64,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>Why the kernel.</b> Only code running with full privilege can program these features, so one program does it and every other program asks it through system calls.</li>
           <li><b>Not strictly one to one.</b> A process needs the MMU, traps and the timer together; each row shows the feature its abstraction cannot do without.</li>
-          <li><b>What comes next.</b> The silicon asks for little: page tables, a trap handler, a timer. Everything else a kernel contains, Part II takes up.</li>
+          <li><b>One level down.</b> A hypervisor gives each guest kernel its own copy of these features (a further privilege level, nested page tables, virtual timers), so the same chain repeats inside a virtual machine.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-9">

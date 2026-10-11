@@ -37,7 +37,7 @@ for lab, addr, h, col in REG:
     a(text(MX + 10, y + h / 2 + 12, 'from ' + addr, size=13, fill=MUTED, ls='0'))
     ys.append(y + (h - 4) / 2)
     y += h
-a(text(MX, y + 16, 'low addresses at the bottom', size=13, fill=MUTED, ls='0'))
+a(text(MX, y + 16, 'low addresses at the bottom, not to scale', size=13, fill=MUTED, ls='0'))
 # effects beside the map; each store's token runs from the CPU down to its region
 EX = MX + MW + 14
 for k, (ri, addr, eff, col) in enumerate(STORES):
@@ -60,9 +60,9 @@ caption = ('To the CPU, physical memory is one flat range of addresses, but only
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Who routes it.</b> The memory controller and PCIe root complex send each access to RAM or to the device that claimed that range at boot; the addresses shown are typical, and every machine's map differs.</li>
-          <li><b>Who may touch it.</b> Only the kernel maps device ranges into an address space (Fig BR.4), so a user program cannot reach a device's registers directly.</li>
-          <li><b>Not cached.</b> Device ranges are marked uncacheable, so every store really reaches the device instead of waiting in a cache.</li>
+          <li><b>Who routes it.</b> The CPU's address decoding sends each access to RAM, to a unit inside the CPU (the local APIC), or out to the device that claimed that range at boot; the addresses shown are typical, and every machine's map differs.</li>
+          <li><b>Who may touch it.</b> These are physical addresses, after the MMU's translation (Fig BR.4); only the kernel maps device ranges into an address space, so a user program cannot reach a device's registers directly.</li>
+          <li><b>Not cached.</b> Device registers are marked uncacheable, so every store really reaches the device; a frame buffer is write-combining, which batches stores but still sends them all.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-7">
