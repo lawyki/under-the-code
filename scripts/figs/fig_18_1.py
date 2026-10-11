@@ -35,7 +35,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Each layer is a piece of mathematics made real in the layer beneath it, from the physics of a transistor to the consensus of a thousand machines. '
-           'The remarkable part is that all eleven work at once, each keeping the promise the next one up relies on.')
+           'The remarkable thing is not that any one layer works; it\'s that all of them work at once.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

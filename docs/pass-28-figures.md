@@ -224,7 +224,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 214 | 5 | `fig-17-10` Fig 17.10 · Service mesh and the sidecar · how microservices actually talk in 2026 | 2.2 px · cap 216 | done 2026-10-11 |
 | 215 | 5 | `fig-17-11` Fig 17.11 · The architectural pendulum · same problems, different costumes | 2.9 px · cap 129 | done 2026-10-11 |
 | 216 | 5 | `fig-18-1` Fig 18.1 · The full stack · sand to web service · math at every layer | 3.5 px · cap 154 | done 2026-10-11 |
-| 217 | 5 | `fig-18-trace` Fig 18.1.5 · The trace · what happens when you press Enter on google.com | 1.5 px · cap 190 | todo |
+| 217 | 5 | `fig-18-trace` Fig 18.1.5 · The trace · what happens when you press Enter on google.com | 1.5 px · cap 190 | done 2026-10-11 |
 | 218 | 5 | `fig-18-2` Fig 18.2 · The civilization timeline · seven moments that made the rest possible | 2.9 px · cap 135 | todo |
 | 219 | 5 | `fig-18-3` Fig 18.3 · Three things the next decade will change | 2.5 px · cap 168 | todo |
 | 220 | 5 | `fig-18-4` Fig 18.4 · CS intersections · the disciplines that now run on the substrate | 2.2 px · cap 143 | todo |
