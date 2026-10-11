@@ -203,7 +203,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | done 2026-10-11 |
 | 194 | 5 | `fig-16-1` Fig 16.1 · Threads vs processes · the same parallelism, two isolation models | 2.5 px · cap 150 | done 2026-10-11 |
 | 195 | 5 | `fig-16-2` Fig 16.2 · The classic race · two threads, one counter, lost updates | 2.9 px · cap 122 | done 2026-10-11 |
-| 196 | 5 | `fig-16-3` Fig 16.3 · Mutex protects · deadlock is the new failure mode | 2.5 px · cap 144 | todo |
+| 196 | 5 | `fig-16-3` Fig 16.3 · Mutex protects · deadlock is the new failure mode | 2.5 px · cap 144 | done 2026-10-11 |
 | 197 | 5 | `fig-16-4` Fig 16.4 · Compare-and-swap · the atomic primitive everything else is built on | 2.5 px · cap 115 | todo |
 | 198 | 5 | `fig-16-5` Fig 16.5 · Memory orderings · four levels, four guarantees, four costs | 2.9 px · cap 134 | todo |
 | 199 | 5 | `fig-16-6` Fig 16.6 · CPU vs GPU · few clever cores vs thousands of simple ones | 1.9 px · cap 148 | todo |
