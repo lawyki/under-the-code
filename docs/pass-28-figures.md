@@ -190,7 +190,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 180 | 4 | `fig-14-10` Fig 14.10 · Equivalent security · ECC keys are dramatically smaller | 2.9 px · cap 132 | done 2026-10-11 |
 | 181 | 4 | `fig-14-11` Fig 14.11 · TLS 1.3 handshake at cryptographic depth | 2.5 px · cap 141 | done 2026-10-11 |
 | 182 | 4 | `fig-14-12` Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest | 2.2 px · cap 137 | done 2026-10-11 |
-| 183 | 4 | `fig-14-13` Fig 14.13 · Post-quantum migration · the algorithms that survive Shor | 2.9 px · cap 129 | todo |
+| 183 | 4 | `fig-14-13` Fig 14.13 · Post-quantum migration · the algorithms that survive Shor | 2.9 px · cap 129 | done 2026-10-11 |
 | 184 | 4 | `fig-15-1` Fig 15.1 · STRIDE · the six classes of threat to enumerate | 2.5 px · cap 129 | deferred: conceptual pass |
 | 185 | 4 | `fig-15-2` Fig 15.2 · The arms race continued · Fig 3.11 extended through 2026 | 2.5 px · cap 140 | deferred: conceptual pass |
 | 186 | 4 | `fig-15-3` Fig 15.3 · Man-in-the-middle · with and without TLS | 2.5 px · cap 132 | deferred: conceptual pass |

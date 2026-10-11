@@ -2392,57 +2392,57 @@
       than RSA's fifty years.
     </p>
 
-    <div class="diagram-card" id="fig-14-13">
-      <div class="diagram-label">Fig 14.13 · Post-quantum migration · the algorithms that survive Shor</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-26"><title id="svgt-part4-26">Fig 14.13 · Post-quantum migration · the algorithms that survive Shor</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">NIST 2024 standards · the cryptography after Shor</text>
-
-        <!-- Threat -->
-        <g transform="translate(40,68)">
-          <rect x="0" y="0" width="640" height="60" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">SHOR'S ALGORITHM (1994)</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">factor(n) and discrete_log(g, h, p) both solvable in polynomial time on a quantum computer</text>
-          <text x="14" y="52" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">→ when CRQC ("Cryptographically Relevant Quantum Computer") exists: RSA, DH, ECDH, ECDSA all broken</text>
-        </g>
-
-        <!-- Migration table -->
-        <g transform="translate(40,148)">
-          <rect x="0" y="0" width="640" height="32" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="20" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">USE</text>
-          <text x="200" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">CLASSICAL (broken by Shor)</text>
-          <text x="430" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">POST-QUANTUM (NIST 2024)</text>
-        </g>
-
-        <g transform="translate(40,180)" font-family="Courier Prime" font-size="10">
-          <rect x="0" y="0" width="640" height="32" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="20" y="20" fill="rgba(230,217,189,0.95)">key exchange</text>
-          <text x="200" y="20" fill="rgba(232,120,120,0.85)">RSA · ECDH (X25519)</text>
-          <text x="430" y="20" fill="rgba(150,216,150,1)">ML-KEM (Kyber)</text>
-
-          <rect x="0" y="32" width="640" height="32" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="20" y="52" fill="rgba(230,217,189,0.95)">signatures</text>
-          <text x="200" y="52" fill="rgba(232,120,120,0.85)">RSA · ECDSA · Ed25519</text>
-          <text x="430" y="52" fill="rgba(150,216,150,1)">ML-DSA (Dilithium)</text>
-
-          <rect x="0" y="64" width="640" height="32" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="20" y="84" fill="rgba(230,217,189,0.95)">stateless backup signature</text>
-          <text x="200" y="84" fill="rgba(232,120,120,0.85)">none</text>
-          <text x="430" y="84" fill="rgba(150,216,150,1)">SLH-DSA (SPHINCS+)</text>
-
-          <rect x="0" y="96" width="640" height="32" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)"/>
-          <text x="20" y="116" fill="rgba(150,216,150,1)">symmetric (AES, hashing)</text>
-          <text x="200" y="116" fill="rgba(150,216,150,1)">unaffected by Shor</text>
-          <text x="430" y="116" fill="rgba(150,216,150,1)">unaffected (use larger keys)</text>
-        </g>
-
-        <!-- Bottom -->
-        <g transform="translate(40,316)">
-          <rect x="0" y="0" width="640" height="48" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">"HARVEST NOW, DECRYPT LATER": adversaries record encrypted traffic today, decrypt it when CRQC exists</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">Cloudflare and Google began deploying hybrid (X25519 + ML-KEM) TLS in 2023; Apple's iMessage PQ3 followed in 2024</text>
-        </g>
-      </svg>
-      <p id="ch14-tls-pqc-p8" class="diagram-caption">The migration is real and underway. Symmetric cryptography (AES, SHA-256, HMAC) is essentially unaffected by quantum computing. Grover's algorithm offers a square-root speedup on brute-force search, which means doubling the key size restores security. Public-key cryptography is the problem: Shor's algorithm breaks RSA, DH, and ECC in polynomial time on a sufficiently large quantum computer. NIST published the standardised replacements in August 2024: Kyber (now ML-KEM), Dilithium (ML-DSA), and SPHINCS+ (SLH-DSA). They are based on lattice problems (or, for SPHINCS+, hash chains) that are believed quantum-resistant. As of 2026, hybrid handshakes that use both classical ECDH and post-quantum Kyber simultaneously are deploying across major web infrastructure, defending against the "harvest now, decrypt later" attack where an adversary records encrypted traffic today to decrypt years later when a CRQC exists.</p>
+    <div class="diagram-card fig-v2" id="fig-14-13">
+      <div class="diagram-label">Fig 14.13&nbsp;· Post-quantum migration&nbsp;· the algorithms that survive Shor</div>
+      <svg viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-26 svgd-part4-26">
+<title id="svgt-part4-26">Fig 14.13 · Post-quantum migration · the algorithms that survive Shor</title>
+<desc id="svgd-part4-26">What changes after Shor. Key exchange: X25519 and RSA, struck out, are replaced by ML-KEM. Signatures: ECDSA and RSA, struck out, are replaced by ML-DSA, with SLH-DSA, built only on hash functions, as a backup. AES and SHA-256 are kept. The price in bytes: an X25519 key share is 32 bytes and an ML-KEM-768 key 1,184; an Ed25519 signature is 64 bytes and an ML-DSA-65 signature 3,309.</desc>
+<text x="10" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">use</text>
+<text x="128" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">today</text>
+<text x="254" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">after Shor</text>
+<line x1="10" y1="28" x2="390" y2="28" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="10" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">key exchange</text>
+<text x="128" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">X25519, RSA</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.163455;0.163636;1.000000" dur="11s" repeatCount="indefinite"/><line x1="126" y1="42" x2="215.8" y2="42" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0.2"><text x="254" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">ML-KEM</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.308909;0.309091;1.000000" dur="11s" repeatCount="indefinite"/><text x="254" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">ML-KEM</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.308909;0.309091;0.354545;1.000000" dur="11s" repeatCount="indefinite"/><rect x="250" y="31" width="54.8" height="21" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<text x="10" y="76" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">signatures</text>
+<text x="128" y="76" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">ECDSA, RSA</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.190727;0.190909;1.000000" dur="11s" repeatCount="indefinite"/><line x1="126" y1="72" x2="208.0" y2="72" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0.2"><text x="254" y="76" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">ML-DSA</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.354364;0.354545;1.000000" dur="11s" repeatCount="indefinite"/><text x="254" y="76" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">ML-DSA</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.354364;0.354545;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="250" y="61" width="54.8" height="21" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<text x="10" y="106" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">backup sig</text>
+<text x="128" y="106" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">none</text>
+<g opacity="0.2"><text x="254" y="106" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">SLH-DSA</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.399818;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><text x="254" y="106" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">SLH-DSA</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.399818;0.400000;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="250" y="91" width="62.6" height="21" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<text x="10" y="136" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">symmetric</text>
+<text x="128" y="136" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">AES, SHA-256</text>
+<g opacity="0.2"><text x="254" y="136" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">keep</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><text x="254" y="136" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">keep</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.445273;0.445455;0.490909;1.000000" dur="11s" repeatCount="indefinite"/><rect x="250" y="121" width="39.2" height="21" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.163455;0.163636;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="164" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#b8372f">struck: Shor</text></g>
+<text x="10" y="200" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">the price, in bytes</text>
+<text x="10" y="222" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">X25519 share</text>
+<rect x="10" y="227" width="2.9" height="10" rx="1.5" fill="rgba(230,217,189,0.85)"><animate attributeName="width" values="2.901;2.901;2.901;2.901;0;0;2.901;2.901" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545455;0.600000;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.599818;0.600000;1.000000" dur="11s" repeatCount="indefinite"/><text x="18.9012" y="237" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">32</text></g>
+<text x="10" y="256" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">ML-KEM-768 key</text>
+<rect x="10" y="261" width="107.3" height="10" rx="1.5" fill="#a9bf8e"><animate attributeName="width" values="107.344;107.344;107.344;107.344;0;0;107.344;107.344" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.590909;0.645455;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/><text x="123.344" y="271" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">1,184</text></g>
+<text x="10" y="290" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Ed25519 signature</text>
+<rect x="10" y="295" width="5.8" height="10" rx="1.5" fill="rgba(230,217,189,0.85)"><animate attributeName="width" values="5.802;5.802;5.802;5.802;0;0;5.802;5.802" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.636364;0.690909;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.690727;0.690909;1.000000" dur="11s" repeatCount="indefinite"/><text x="21.8024" y="305" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">64</text></g>
+<text x="10" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">ML-DSA-65 signature</text>
+<rect x="10" y="329" width="300.0" height="10" rx="1.5" fill="#a9bf8e"><animate attributeName="width" values="300;300;300;300;0;0;300;300" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.681818;0.736364;1.000000" dur="11s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.736182;0.736364;1.000000" dur="11s" repeatCount="indefinite"/><text x="316" y="339" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">3,309</text></g>
+</svg>
+      <p id="ch14-tls-pqc-p8" class="diagram-caption">Shor's algorithm would break every public-key scheme in use today, so NIST's 2024 standards replace them: ML-KEM for key exchange, ML-DSA for signatures, and SLH-DSA, built only on hashes, as a backup. The price is size, a key share 37 times larger and signatures about 50 times larger, and browsers already pair X25519 with ML-KEM in one hybrid key exchange.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Harvest now, decrypt later.</b> Traffic recorded today could be decrypted once a large quantum computer exists, which is why key exchange moved first.</li>
+          <li><b>Hybrid.</b> Chrome added X25519 plus a draft of Kyber in 2023, turned it on by default in 2024 and switched to X25519MLKEM768 late that year; Apple's iMessage PQ3 shipped in 2024. A hybrid connection stays safe if either half holds.</li>
+          <li><b>Symmetric is fine.</b> Grover's algorithm only square-roots a brute-force search, so AES-256 and SHA-256 keep about 128 bits.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">
