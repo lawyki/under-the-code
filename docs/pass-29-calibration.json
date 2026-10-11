@@ -1,0 +1,180 @@
+{
+ "note": "Pass 29 cold-reader calibration (docs/pass-29-30-brief.md, PASS 29, calibration). Instructions: docs/pass-29-cold-reader.md version 1. Model: Opus 5.5.",
+ "date": "2026-10-11",
+ "planted_gap": {
+  "section": "ch1-context",
+  "removed": "ch1-context-p4: 'He invented an imaginary device: an infinite tape divided into cells, a read/write head that could move along the tape, and a finite set of rules that said what to do based on the current symbol and the machine's current state.' replaced by 'He invented an imaginary device.'",
+  "logged": true,
+  "tries": 1,
+  "hit": {
+   "id": "ch1-context-p4",
+   "kind": "A",
+   "quote": "He invented an imaginary device. Then he turned that device against itself.",
+   "missing": "The reader is told nothing about what this device is or how it works (tape, head, rules, and a 'program' for it). So 'turned against itself' and the 'program' it inspects have nothing to attach to, and the reader cannot tell whether the device is the same thing as the decider in the next sentence.",
+   "close_with": "one plain line describing the device before the proof, plus 'the decider would be one such device' (explained later at p5 by name and at fig-1-1 by mechanism)"
+  },
+  "count": 12
+ },
+ "runs": {
+  "ch1-context": {
+   "section": "ch1-context",
+   "search_points": [
+    {
+     "id": "ch1-context-p4",
+     "kind": "A",
+     "quote": "based on the current symbol and the machine's current state",
+     "missing": "The reader cannot say what a machine's 'state' is: a named mode that works as its only memory apart from the tape, which the rules read and change.",
+     "close_with": "one plain sentence: a state is the mode the machine is in (e.g. 'carry'), which tells it which rules apply. fig-1-1 only gives examples (carry, halt) and never explains it"
+    },
+    {
+     "id": "ch1-context-p4",
+     "kind": "A",
+     "quote": "Suppose a machine existed that could inspect any program",
+     "missing": "'Program' has not been tied to the device just described (its set of rules), and nothing has said how one machine can be handed another's program to inspect.",
+     "close_with": "say a program is a machine's rule set, written as symbols on the tape for another machine to read (explained later only partly: fig-1-1 'THE WHOLE PROGRAM', p5 'rules on its tape')"
+    },
+    {
+     "id": "ch1-context-p4",
+     "kind": "B",
+     "quote": "decide, in finite time, whether it would ever halt",
+     "missing": "Hilbert's question was whether a procedure can decide the truth of any mathematical statement, and the text switches to deciding whether a program halts without saying why answering the second answers the first.",
+     "close_with": "one link sentence: 'this program halts' is itself a mathematical statement, so a truth-decider would also be a halting-decider"
+    },
+    {
+     "id": "ch1-context-p4",
+     "kind": "F",
+     "quote": "Feed it a program built to do the opposite of whatever the decider predicts",
+     "missing": "The reader cannot follow how the contrary program knows what the decider predicts about it, or what exactly is fed to what.",
+     "close_with": "spell out the self-reference: the contrary program contains the decider, asks it about itself, then does the opposite"
+    },
+    {
+     "id": "ch1-context-p6",
+     "kind": "A",
+     "quote": "The machine adds one to binary 1011",
+     "missing": "Binary has not been taught, so the reader cannot check '1011 = 11' or '1100 = 12', or see why the carry rule adds one.",
+     "close_with": "a short gloss on base two (place values 8, 4, 2, 1; 1+1 writes 0 and carries) in the caption or strip, or a decimal example. Binary is never explained in this section"
+    },
+    {
+     "id": "ch1-context-p8",
+     "kind": "A",
+     "quote": "It did not try all 158 quintillion keys, because no machine could.",
+     "missing": "The reader does not know that a 'key' here is one complete choice of the day's secret settings. Fig 1.2 then uses 'key' for a keyboard key, which adds to the confusion.",
+     "close_with": "define the cipher key as one full set of daily settings (rotor order, start positions, plugboard pairs). Explained only in the fig-1-2 strip, which says 'settings' and never 'keys'"
+    },
+    {
+     "id": "ch1-context-p8",
+     "kind": "B",
+     "quote": "Enigma had a fatal quirk: no letter is ever encrypted as itself",
+     "missing": "The text never says how the quirk was used: any position where a guessed letter lines up with the same intercepted letter is impossible, which shows where the guess can sit.",
+     "close_with": "one sentence stating that the quirk rules out alignments of the guessed fragment"
+    },
+    {
+     "id": "ch1-context-p8",
+     "kind": "F",
+     "quote": "each letter it pairs with forces a chain of assumptions about the day's secret settings",
+     "missing": "The reader cannot follow why one guessed-letter/intercepted-letter pair implies anything about the settings, or what the 'contradiction' and 'electrical consequences' are.",
+     "close_with": "one worked step: if A became F here, a setting must pair A with some letter, which forces another pairing, and a letter paired two ways is a contradiction"
+    },
+    {
+     "id": "ch1-context-p8",
+     "kind": "A",
+     "quote": "The Bombe raced through candidate rotor positions",
+     "missing": "At this point the reader does not know Enigma is a machine with rotors, what a rotor is, or what a rotor position means.",
+     "close_with": "introduce Enigma's rotors before this paragraph (explained later at fig-1-2 picture and strip: stepping scrambles of 26 wires)"
+    },
+    {
+     "id": "ch1-context-p8",
+     "kind": "D",
+     "quote": "These machines were special-purpose, not Turing machines in his theoretical sense",
+     "missing": "Colossus was just called 'programmable', and fig 1.1's add-one machine is a special-purpose Turing machine, so the reader cannot tell what 'not Turing machines' means here (the intended sense is 'not universal').",
+     "close_with": "say 'not universal machines' and what Colossus's programming was (switches and plugs within one code-breaking job)"
+    }
+   ],
+   "terms_looked_up": [
+    "state (of a machine)",
+    "program",
+    "binary",
+    "key (cipher sense)",
+    "rotor",
+    "programmable"
+   ],
+   "known_from_prose": [],
+   "fact_doubts": [
+    "p10: the 'two years' estimate is usually Hinsley's for Ultra intelligence as a whole, not Bombe and Colossus alone. 'Fourteen million lives' is a later extrapolation, and 'historians estimate' overstates agreement.",
+    "p8: Turing designed the Bombe (building on the Polish bomba, with Welchman's diagonal board). The British Tabulating Machine Company built it, so 'Turing built the Bombe' is loose.",
+    "p6 caption: 'Anything that can be computed can be computed by a machine like this' is the Church–Turing thesis, a widely accepted hypothesis rather than a proved result.",
+    "p4: Turing's 1936 proof did not use the halting-problem framing. That framing and its name came later (Davis, 1950s). Attributing the halting decider to Turing is a modern simplification."
+   ],
+   "count": 10
+  },
+  "ch16-lockfree": {
+   "section": "ch16-lockfree",
+   "search_points": [
+    {
+     "id": "ch16-lockfree-p1",
+     "kind": "B",
+     "quote": "the system as a whole always makes progress, even if individual threads can starve",
+     "missing": "This reader cannot say why CAS code guarantees that some thread always gets through, or how a thread can starve when nothing blocks it: nobody has said that a CAS fails only because another thread's CAS just succeeded, or that one unlucky thread can lose that race every time (shown in part later at ch16-lockfree-p2 and in the fig-16-4 strip).",
+     "close_with": "one sentence: a failed CAS means another thread just succeeded; an unlucky thread can keep losing"
+    },
+    {
+     "id": "ch16-lockfree-p3",
+     "kind": "A",
+     "quote": "Out-of-order execution (Chapter 1 §04), store buffers, and cache coherence all conspire",
+     "missing": "Store buffers and cache coherence are never explained. Fig 16.1 taught that a write is seen by other threads at once, so this reader cannot explain how a write can reach another core late, let alone out of order.",
+     "close_with": "a clause saying each core holds its writes in its own buffer and cache before other cores see them"
+    },
+    {
+     "id": "ch16-lockfree-p3",
+     "kind": "B",
+     "quote": "the reader tags its flag load _acquire_ (the matching demand",
+     "missing": "The broken example is told from the writer's side only, and release already promises that x is visible by the time the flag is, so this reader cannot say what would go wrong on the reading side without acquire. Nobody has said the reading core can run its load of x early.",
+     "close_with": "one clause: the reader's core can also run its load of x before its load of the flag"
+    },
+    {
+     "id": "ch16-lockfree-p4",
+     "kind": "D",
+     "quote": "With relaxed ordering a weakly ordered CPU can show the flag first",
+     "missing": "The prose says all modern multi-core CPUs make writes visible out of order, but the figure and caption limit this to 'weakly ordered' CPUs (ARM, POWER), and the strip says x86 keeps stores in order. This reader cannot tell which machines the bug happens on, or what 'weakly ordered' singles out.",
+     "close_with": "a prose clause: x86 keeps stores in order; ARM and POWER may reorder them"
+    }
+   ],
+   "terms_looked_up": [
+    "store buffer",
+    "cache coherence",
+    "weakly ordered CPU"
+   ],
+   "known_from_prose": [
+    {
+     "term": "starve",
+     "where": "ch4-scheduling (priority table: low-priority processes can be starved indefinitely)"
+    },
+    {
+     "term": "serialise",
+     "where": "ch16-races (p3: critical sections are serialised)"
+    },
+    {
+     "term": "block (a waiting thread)",
+     "where": "ch16-races (p3: lock() blocks until the holder releases)"
+    },
+    {
+     "term": "compare-and-swap (named as what a mutex is built on)",
+     "where": "ch16-races (p3)"
+    },
+    {
+     "term": "out-of-order execution",
+     "where": "ch1-cpu (p9: instruction 5 may run before 4)"
+    },
+    {
+     "term": "the race of Fig 16.2",
+     "where": "ch16-races (fig-16-2)"
+    }
+   ],
+   "fact_doubts": [
+    "p3 says outright that the order in which one core's writes become visible to another 'is not the order they were issued'. x86 (TSO) makes stores visible in program order, as the fig-16-5 strip itself says. The claim should read 'need not be'.",
+    "p3 lists cache coherence as a cause of reordered writes. Coherence protocols keep a single order of writes to each location; the reordering comes mostly from store buffers and invalidation queues. Out-of-order cores also commit stores in program order, so out-of-order execution mainly reorders loads on the reading side, not writes."
+   ],
+   "count": 4
+  }
+ }
+}

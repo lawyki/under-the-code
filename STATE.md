@@ -3,7 +3,23 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pass 29/30 at:** Before starting, step 3 (read the laws and ledgers). Done: step 1 (brief saved, 557fe93); step 2 (Pass 28 close confirmed 2026-10-11: 204 done + 18 kept original, no todo/held/deferred; the dry Pass 28 session cron `b79ffe22` cancelled; git clean bar `.kilo/`, `shots4/`; lists in `docs/pass-30-figures.md`). Brief: `docs/pass-29-30-brief.md`.
+**Pass 29/30 at:** Pass 29, calibration step 3: the owner page is published (https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu); waiting for the owner's marks and "go" (BLOCKED ON TIGER). Next session, after "go": read the marks (`ArtifactData` list, collection `marks`), compare with `docs/pass-29-calibration.json` (recall: the cold reader found at least two thirds of the owner's marks; precision: a Sonnet 5.5 agent judges each cold-reader point the owner did not mark, at most a third unneeded), retune at most twice, then Part I. Done: BEFORE STARTING steps 1 to 5 (brief 557fe93; Pass 28 close confirmed, the dry Pass 28 session cron `b79ffe22` cancelled, lists 487fadc; laws and ledgers read; WebSearch and WebFetch confirmed working in a subagent; tools built, independently reviewed, fixed and committed); calibration steps 1 and 2. Brief: `docs/pass-29-30-brief.md`.
+
+**Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
+
+**Pass 29 budget** (`node scripts/count-prose.mjs`; section prose, Passes 28 and 29 together; ceiling = 02f486b × 1.05, rounded down). The script reproduces §4aa's 02f486b counts exactly in all five parts, so no calibration differences.
+
+| Part | 02f486b | Ceiling | Pass 28 close (7d56482) | Headroom |
+|---|---|---|---|---|
+| I | 12,095 | 12,699 | 12,098 | 601 |
+| II | 10,891 | 11,435 | 10,898 | 537 |
+| III | 14,012 | 14,712 | 14,066 | 646 |
+| IV | 9,761 | 10,249 | 9,811 | 438 |
+| V | 6,181 | 6,490 | 6,187 | 303 |
+
+**Pass 30 tools** (built 2026-10-11; each reviewed by an independent agent and fixed): `tests/pass28/figs.mjs` (`--kind=figs|heroes|cover|icons|all`, widths 320 to 1440, `--motion` at 0/25/50/75 % of each cycle, `--fullscreen` at the fitted viewBox scale, contrast at 1440 from pixels: text 4.5, named marks 3 on the worse paint, icons 3, unrounded; helper `tests/pass30/contrast.mjs`; skips only from `docs/pass-30-exceptions.json`; a run that measures nothing exits 2), `tests/pass30/bare.mjs` (the svg alone, any selector, `--frames`, cover at its end state, collision-guarded output), `tests/pass28/clip.mjs` (adds 360, `--textsize=200` from 768 up, `--spacing` per WCAG F104, a `scroll` finding for any overflowing scroll container not listed in the exceptions, scroll-driven reveals cancelled so headings are measured, `--state=open` for closed details). For Gate 1: the plain clip sweep now reports 250 scroll findings (chapter navs, code blocks, wide tables), each to be listed with a §5 entry or fixed; contrast already fails on some redrawn figures (fig 1.2 at 1440: text min 2.7, 23 named marks); known limit: the 200 % run scales rem/em text only, so px-sized labels, captions, code, tables and chapter navs are not exercised by it (record beside the Gate 1 results).
+
+**Paragraph id form** (checked 2026-10-11 against `book.js` `/-p\d+$/`, `tests/pass25/lib.mjs` `PARA_RE`, `traces.mjs`, `ui.mjs`, `build-sections.js`, `build-glossary.js`): `<section id>-p<N>`. A new paragraph takes N = one more than the highest N the section has ever used (current ids, `ANCHOR_ALIASES` keys, git history), so it never reuses an id; ids then run out of numeric order in the page, which nothing relies on (the code reads DOM order). Never run `scripts/add-anchor-ids.js` for this: it fills gaps from 1 and would reuse merged-away ids.
 
 ## WHERE WE ARE
 
@@ -129,6 +145,7 @@ the live database is empty and ready for fresh sign-ups.
 Owner decisions and actions live here and nowhere else. If it is not on
 this list, it is not blocking.
 
+- **Pass 29 reader check (blocks Pass 29).** Read Chapter 1 §01 and Chapter 16 §03 at https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu as a newcomer would, and mark every place you had to stop and wonder (select the words, press Mark; a note is optional). Options: write go when you have marked / write go with no marks if nothing stopped you. Recommended: the first; the cold reader is compared against your marks before it touches Part I. Your answer: 
 - **Look at the figure pilot** (https://claude.ai/artifact/ADZTGFP5QqDEqq62E9Ebhn,
   three figures redrawn, before/after and live). One question: is this the
   direction for every figure? The work continues meanwhile; a change you ask
