@@ -139,7 +139,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 129 | 3 | `fig-10-7` Fig 10.7 · CUBIC vs Reno: same loss, different recovery | 2.5 px · cap 105 | done 2026-10-11 |
 | 130 | 3 | `fig-10-8` Fig 10.8 · BBR aims for the bandwidth-delay product | 2.9 px · cap 140 | done 2026-10-11 |
 | 131 | 3 | `fig-10-9` Fig 10.9 · TCP+TLS+HTTP vs QUIC: the same job, two stacks | 2.5 px · cap 146 | done 2026-10-11 |
-| 132 | 3 | `fig-10-10` Fig 10.10 · SYN flood: half-open connections fill the table | 2.2 px · cap 129 | deferred: conceptual pass |
+| 132 | 3 | `fig-10-10` Fig 10.10 · SYN flood: half-open connections fill the table | 2.2 px · cap 129 | held: owner decision |
 | 133 | 3 | `fig-10-11` Fig 10.11 · SYN cookies: the state goes into the wire | 2.5 px · cap 143 | deferred: conceptual pass |
 | 134 | 3 | `fig-11-1` Fig 11.1 · March 1989 to August 1991 · a quiet two and a half years | 2.2 px · cap 105 | done 2026-10-11 |
 | 135 | 3 | `fig-11-2` Fig 11.2 · A complete HTTP exchange · request and response, byte for byte | 2.5 px · cap 98 | done 2026-10-11 |
