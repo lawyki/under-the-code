@@ -197,7 +197,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 187 | 4 | `fig-15-4` Fig 15.4 · ARP spoofing · poisoning the address-resolution cache | 2.5 px · cap 137 | kept: original (2026-10-11) |
 | 188 | 4 | `fig-15-5` Fig 15.5 · SQL injection defence in depth · five layers, each independent | 2.5 px · cap 122 | done 2026-10-11 |
 | 189 | 4 | `fig-15-6` Fig 15.6 · SSRF · the server makes the request the attacker can't | 2.5 px · cap 134 | kept: original (2026-10-11) |
-| 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | todo |
+| 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | done 2026-10-11 |
 | 191 | 4 | `fig-15-8` Fig 15.8 · Stuxnet · four zero-days, a USB jump, sabotage of physical machines | 2.9 px · cap 158 | kept: original (2026-10-11) |
 | 192 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns | 2.5 px · cap 141 | kept: original (2026-10-11) |
 | 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | done 2026-10-11 |

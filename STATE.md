@@ -99,7 +99,7 @@ in substance throughout.
    on any part shows the tracker's state; constants in `book.js` `T`).
 5. **Passes 27–28: laws 2 and 3** (owner 2026-10-10, `CLAUDE.md`): 27 the
    cut, DONE (§4aa: 11.2 % shorter, glossary authored);
-   28 figures IN PROGRESS (§4ab; ledger `docs/pass-28-figures.md`, 202 of 222
+   28 figures IN PROGRESS (§4ab; ledger `docs/pass-28-figures.md`, 203 of 222
    done, 18 kept original (attack mechanics), 8 to redraw, security figures deferred to the end, pilot published for the owner; Parts I to V verified by Sonnet 5.5 and fixed; book-wide no-clipping and 60 fps checks at 0 findings, `tests/pass28/clip.mjs` and `smooth.mjs`), every figure one by one, handcrafted and
    tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
    fig 1.2 note: the image explains itself, text goes into explainers).
