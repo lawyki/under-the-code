@@ -83,7 +83,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 73 | 2 | `fig-5-4` Fig 5.4 · A pointer walks down memory | 2.5 px · cap 86 | done 2026-10-10 |
 | 74 | 2 | `fig-5-5` Fig 5.5 · a[i] ≡ *(a + i) | 2.5 px · cap 76 | done 2026-10-10 |
 | 75 | 2 | `fig-5-6` Fig 5.6 · The heap, as a free list | 2.5 px · cap 90 | done 2026-10-10 |
-| 76 | 2 | `fig-5-7` Fig 5.7 · Leak vs use-after-free | 2.5 px · cap 107 | deferred: conceptual pass |
+| 76 | 2 | `fig-5-7` Fig 5.7 · Leak vs use-after-free | 2.5 px · cap 107 | done 2026-10-11 |
 | 77 | 2 | `fig-5-8` Fig 5.8 · How "trust the programmer" deletes your bug check | 2.9 px · cap 99 | done 2026-10-10 |
 | 78 | 2 | `fig-5-9` Fig 5.9 · A NULL dereference, traced | 2.5 px · cap 96 | done 2026-10-10 |
 | 79 | 2 | `fig-5-10` Fig 5.10 · Where C still runs in 2026 | 2.2 px · cap 121 | done 2026-10-10 |

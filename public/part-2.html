@@ -2882,50 +2882,67 @@
       reads someone else's data, writing it corrupts that data.
     </p>
 
-    <div class="diagram-card" id="fig-5-7">
-      <div class="diagram-label">Fig 5.7 · Leak vs use-after-free</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-31"><title id="svgt-part2-31">Fig 5.7 · Leak vs use-after-free</title>
-        <!-- Left: leak -->
-        <text x="180" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(232,120,120,0.95)">memory leak</text>
-        <g transform="translate(40,60)">
-          <!-- Code -->
-          <rect x="0" y="0" width="280" height="80" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.45)"/>
-          <text x="14" y="22" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">char *p = malloc(1024);</text>
-          <text x="14" y="40" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">use(p);</text>
-          <text x="14" y="58" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">// forgot free(p)</text>
-          <text x="14" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">return; // p goes out of scope</text>
-
-          <!-- Visual -->
-          <rect x="40" y="106" width="200" height="36" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="140" y="128" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(150,216,150,0.95)">marked "used"</text>
-          <text x="140" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">no pointer references it</text>
-          <text x="140" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">allocator can't reclaim</text>
-          <text x="140" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">silent · grows over time</text>
-          <text x="140" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">OS eventually OOM-kills</text>
-        </g>
-
-        <!-- Right: use-after-free -->
-        <text x="540" y="36" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="14" fill="rgba(232,120,120,0.95)">use-after-free</text>
-        <g transform="translate(400,60)">
-          <!-- Code -->
-          <rect x="0" y="0" width="280" height="80" rx="4" fill="#0e1510" stroke="rgba(232,120,120,0.45)"/>
-          <text x="14" y="22" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">char *p = malloc(1024);</text>
-          <text x="14" y="40" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">free(p);</text>
-          <text x="14" y="58" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">// p now dangles</text>
-          <text x="14" y="74" font-family="IBM Plex Mono" font-size="9" fill="rgba(198,222,206,0.85)">strcpy(p, attacker);</text>
-
-          <!-- Visual -->
-          <rect x="40" y="106" width="200" height="36" fill="#0e1510" stroke="rgba(132,255,178,0.45)" stroke-dasharray="4,3"/>
-          <text x="140" y="128" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(132,255,178,0.85)">on free list, reusable</text>
-          <text x="140" y="172" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">next malloc may return it</text>
-          <text x="140" y="190" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(232,120,120,0.85)">to a different caller</text>
-          <text x="140" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">writes corrupt their data</text>
-          <text x="140" y="234" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="rgba(255,255,255,0.55)">→ exploit vector</text>
-        </g>
-
-        <text x="360" y="298" text-anchor="middle" font-family="IBM Plex Mono" font-size="8" fill="rgba(132,255,178,0.65)" letter-spacing="0.1em">UAF ALONE: A THIRD OF SEVERE BROWSER CVES</text>
-      </svg>
-      <p id="ch5-malloc-p6" class="diagram-caption">A leak is silent and slow: memory accumulates until the OS kills the process. A use-after-free is silent and fast: the moment <code>free</code> returns, the chunk is back on the allocator's free list, and a future <code>malloc</code> may hand it to a totally different part of your program. Reads from the dangling pointer return whatever that other code has stored. Writes corrupt it. In a security context, the attacker arranges for a sensitive object (a function pointer, a credentials structure) to be allocated where the dangling pointer still points, then writes through the dangling pointer to take control. UAF is the modern equivalent of the buffer overflow.</p>
+    <div class="diagram-card fig-v2" id="fig-5-7">
+      <div class="diagram-label">Fig 5.7&nbsp;· Leak vs use-after-free</div>
+      <svg viewBox="0 0 400 348" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-31 svgd-part2-31">
+<title id="svgt-part2-31">Fig 5.7 · Leak vs use-after-free</title>
+<desc id="svgd-part2-31">Two ways to get malloc and free wrong. A leak: three times, the pointer p is given a chunk and then goes out of scope without free; each chunk stays marked in use with nothing pointing at it, and the heap only grows. A use-after-free: p is given a chunk, free(p) hands it back to the allocator while p still points at it, the next malloc gives the same chunk to q, and a write through p overwrites q's data.</desc>
+<text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">leak: allocated, never freed</text>
+<g><animate attributeName="opacity" values="0.3;0.3;0.3;0.3;1;1;0.3;0.3;1;1;0.3;0.3;1;1;0.3;0.3" keyTimes="0.000000;0.046115;0.046154;0.122923;0.123077;0.184462;0.184615;0.246000;0.246154;0.307538;0.307692;0.369077;0.369231;0.430615;0.430769;1.000000" dur="13s" repeatCount="indefinite"/>
+<rect x="20" y="40" width="44" height="30" rx="4" fill="#152016" stroke="#84ffb2" stroke-opacity="0.7"/>
+<text x="42" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">p</text>
+</g>
+<rect x="196" y="40" width="184" height="30" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.5)"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.122462;0.122692;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="60" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.122923;0.123077;0.184000;0.184231;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="60" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">in use</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.184462;0.184615;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="60" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">in use, no pointer</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.122923;0.123077;0.184000;0.184231;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,55 H150 V55 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.184462;0.184615;0.230769;1.000000" dur="13s" repeatCount="indefinite"/><rect x="194" y="38" width="188" height="34" rx="5" fill="none" stroke="#d4a853" stroke-width="2"/></g>
+<rect x="196" y="80" width="184" height="30" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.5)"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.245538;0.245769;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.246000;0.246154;0.307077;0.307308;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">in use</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.307538;0.307692;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">in use, no pointer</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.246000;0.246154;0.307077;0.307308;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,55 H150 V95 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.307538;0.307692;0.353846;1.000000" dur="13s" repeatCount="indefinite"/><rect x="194" y="78" width="188" height="34" rx="5" fill="none" stroke="#d4a853" stroke-width="2"/></g>
+<rect x="196" y="120" width="184" height="30" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.5)"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.368615;0.368846;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="140" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.369077;0.369231;0.430154;0.430385;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="140" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">in use</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.430615;0.430769;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="140" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">in use, no pointer</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.369077;0.369231;0.430154;0.430385;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,55 H150 V135 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.430615;0.430769;0.476923;1.000000" dur="13s" repeatCount="indefinite"/><rect x="194" y="118" width="188" height="34" rx="5" fill="none" stroke="#d4a853" stroke-width="2"/></g>
+<text x="20" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">returns, no free</text>
+<text x="20" y="164" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the heap only grows</text>
+<line x1="20" y1="192" x2="380" y2="192" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.4"/>
+<text x="20" y="214" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">use-after-free: freed, still used</text>
+<rect x="20" y="230" width="44" height="30" rx="4" fill="#152016" stroke="#84ffb2" stroke-opacity="0.7"/>
+<text x="42" y="250" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">p</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.722923;0.723077;1.000000" dur="13s" repeatCount="indefinite"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.722923;0.723077;1.000000" dur="13s" repeatCount="indefinite"/><rect x="20" y="276" width="44" height="30" rx="4" fill="#152016" stroke="#84ffb2" stroke-opacity="0.7"/><text x="42" y="296" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">q</text></g>
+<rect x="196" y="250" width="184" height="38" rx="4" fill="#0c120e" stroke="rgba(132,255,178,0.5)"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.507077;0.507308;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="274" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.507538;0.507692;0.614769;0.615000;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="274" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">p's data</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.615231;0.615385;0.722462;0.722692;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="274" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">free</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.722923;0.723077;0.830154;0.830385;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="274" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">q's data</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.830615;0.830769;1.000000" dur="13s" repeatCount="indefinite"/><text x="208" y="274" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">q's data, overwritten</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.507538;0.507692;0.614769;0.615000;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,245 H150 V262 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.615231;0.615385;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,245 H150 V262 H196" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.722923;0.723077;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,291 H150 V276 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.830615;0.830769;0.876923;1.000000" dur="13s" repeatCount="indefinite"/><rect x="194" y="248" width="188" height="42" rx="5" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d" stroke-width="2"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.507077;0.507308;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p = malloc(64)</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.507538;0.507692;0.614769;0.615000;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p = malloc(64)</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.615231;0.615385;0.722462;0.722692;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free(p): p still points here</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.722923;0.723077;0.830154;0.830385;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">q = malloc(64): the same chunk</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.830615;0.830769;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">write through p: q is hit</text></g>
+</svg>
+      <p id="ch5-malloc-p6" class="diagram-caption">A leak loses the last pointer to memory that is still allocated, so the heap only grows until the OS ends the process. A use-after-free keeps a pointer to memory already given back: the allocator hands that chunk to the next caller, and every write through the old pointer overwrites their data.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why the same chunk.</b> Allocators reuse recently freed chunks of the right size first, because they are likely still in the cache, so the next <code>malloc(64)</code> often gets exactly the chunk just freed.</li>
+          <li><b>Finding them.</b> Valgrind and AddressSanitizer track every allocation: they report leaks when the program exits and a use-after-free at the moment it happens.</li>
+          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; Rust's ownership rules reject use-after-free at compile time.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Why this is still in production</h3>
