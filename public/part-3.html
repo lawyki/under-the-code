@@ -2068,78 +2068,60 @@
       happened on <strong>24 February 2008</strong>.
     </p>
 
-    <div class="diagram-card" id="fig-9-11">
-      <div class="diagram-label">Fig 9.11 · Pakistan/YouTube, 24 February 2008</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-25"><title id="svgt-part3-25">Fig 9.11 · Pakistan/YouTube, 24 February 2008</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(232,120,120,0.95)">how a domestic block became a global outage in two minutes</text>
-
-        <!-- World map silhouette (very abstract) -->
-        <path d="M 60,180 Q 80,150 140,140 Q 200,135 280,150 Q 380,140 460,150 Q 560,140 640,160 Q 670,180 660,210 Q 600,240 480,235 Q 380,245 280,235 Q 180,240 100,225 Q 60,210 60,180 Z"
-              fill="rgba(150,216,150,0.05)" stroke="rgba(150,216,150,0.25)" stroke-dasharray="3,3"/>
-
-        <!-- YouTube origin AS (real, in US) -->
-        <circle cx="180" cy="180" r="14" fill="rgba(150,216,150,0.45)" stroke="rgba(80,140,80,0.95)" stroke-width="2"/>
-        <text x="180" y="160" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(150,216,150,0.95)">AS 36561</text>
-        <text x="180" y="206" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(150,216,150,0.7)">YouTube</text>
-
-        <!-- Pakistan Telecom AS -->
-        <circle cx="500" cy="200" r="14" fill="rgba(232,120,120,0.45)" stroke="rgba(180,80,80,0.95)" stroke-width="2"/>
-        <text x="500" y="180" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">AS 17557</text>
-        <text x="500" y="226" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(232,120,120,0.7)">Pakistan Telecom</text>
-
-        <!-- Their upstream PCCW -->
-        <circle cx="380" cy="120" r="12" fill="#0a2033" stroke="rgba(79,196,230,0.85)"/>
-        <text x="380" y="106" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.95)">AS 3491</text>
-        <text x="380" y="142" text-anchor="middle" font-family="Space Mono" font-size="7" fill="rgba(255,255,255,0.55)">PCCW (HK)</text>
-
-        <!-- Other rest-of-world ASes -->
-        <g fill="#123049" stroke="rgba(180,200,220,0.5)">
-          <circle cx="100" cy="120" r="10"/>
-          <circle cx="240" cy="100" r="10"/>
-          <circle cx="320" cy="220" r="10"/>
-          <circle cx="440" cy="80"  r="10"/>
-          <circle cx="600" cy="120" r="10"/>
-          <circle cx="640" cy="220" r="10"/>
-        </g>
-
-        <!-- Original announcement: legitimate -->
-        <g stroke="rgba(150,216,150,0.5)" fill="none">
-          <line x1="180" y1="180" x2="100" y2="120"/>
-          <line x1="180" y1="180" x2="240" y2="100"/>
-          <line x1="240" y1="100" x2="320" y2="220"/>
-        </g>
-
-        <!-- Hijack announcement: stronger /24 from Pakistan flooding outward -->
-        <g stroke="rgba(232,120,120,0.8)" stroke-width="1.5" fill="none">
-          <line x1="500" y1="200" x2="380" y2="120"/>
-          <line x1="380" y1="120" x2="240" y2="100"/>
-          <line x1="380" y1="120" x2="440" y2="80"/>
-          <line x1="380" y1="120" x2="600" y2="120"/>
-          <line x1="380" y1="120" x2="640" y2="220"/>
-        </g>
-
-        <!-- Animated propagation -->
-        <circle r="3" fill="rgba(232,120,120,1)">
-          <animateMotion dur="2.4s" repeatCount="indefinite" path="M 500,200 L 380,120 L 240,100"/>
-        </circle>
-        <circle r="3" fill="rgba(232,120,120,1)" opacity="0">
-          <animateMotion dur="2.4s" begin="0.6s" repeatCount="indefinite" path="M 500,200 L 380,120 L 600,120"/>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="2.4s" begin="0.6s" repeatCount="indefinite"/>
-        </circle>
-        <circle r="3" fill="rgba(232,120,120,1)" opacity="0">
-          <animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M 500,200 L 380,120 L 640,220"/>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="2.4s" begin="1.2s" repeatCount="indefinite"/>
-        </circle>
-
-        <!-- Annotation -->
-        <g font-family="Space Mono" font-size="9">
-          <rect x="40" y="270" width="640" height="60" rx="4" fill="#0c2438" stroke="rgba(232,120,120,0.55)"/>
-          <text x="56" y="290" fill="rgba(232,120,120,0.95)">① 18:47 UTC · Pakistan Telecom announces 208.65.153.0/24 to block YouTube domestically</text>
-          <text x="56" y="306" fill="rgba(232,120,120,0.95)">② their upstream PCCW (AS 3491) leaks the announcement to the global internet</text>
-          <text x="56" y="322" fill="rgba(232,120,120,0.95)">③ /24 is more specific than YouTube's /22 → wins everywhere → YouTube globally offline ~2 hours</text>
-        </g>
-      </svg>
-      <p id="ch9-security-p5" class="diagram-caption">On 24 February 2008, Pakistan Telecom (AS 17557) decided to block YouTube domestically by announcing the prefix <code>208.65.153.0/24</code> to its own routers, redirecting traffic to a null route. By accident, the announcement was leaked upstream to PCCW (AS 3491), which propagated it to the rest of the internet. Because <code>/24</code> is more specific than YouTube's legitimate <code>/22</code>, every BGP router on Earth preferred the more-specific route, and now sent YouTube's traffic to Pakistan, where it was being null-routed. YouTube went off the air globally for about two hours, until the announcement was withdrawn and the legitimate routes propagated back. There was no malice and no exploit; one local engineering decision, one configuration mistake, and a protocol with no source authentication produced a planet-scale outage. RPKI (Resource Public Key Infrastructure) and BGPsec are partial answers, deployed slowly. As of 2025, the underlying issue remains: BGP trusts whatever an AS says.</p>
+    <div class="diagram-card fig-v2" id="fig-9-11">
+      <div class="diagram-label">Fig 9.11&nbsp;· Pakistan/YouTube, 24 February 2008</div>
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-25 svgd-part3-25">
+<title id="svgt-part3-25">Fig 9.11 · Pakistan/YouTube, 24 February 2008</title>
+<desc id="svgd-part3-25">YouTube's address block 208.65.152.0/22, drawn as four /24s, and traffic to 208.65.153.x. At 18:46 UTC the only route is YouTube's /22 and the traffic reaches YouTube. At 18:47 Pakistan Telecom's announcement of 208.65.153.0/24, meant to block YouTube inside Pakistan and leaked worldwide by its upstream, is more specific, so routers everywhere send the traffic to Pakistan, where it is dropped. At 20:18 YouTube announces two /25s, more specific again, and wins the traffic back; at 20:51 the /24 is withdrawn.</desc>
+<text x="20" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">208.65.152.0/22, YouTube's block</text>
+<rect x="20" y="32" width="90" height="30" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="65" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">.152</text>
+<rect x="110" y="32" width="90" height="30" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="155" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">.153</text>
+<rect x="200" y="32" width="90" height="30" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="245" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">.154</text>
+<rect x="290" y="32" width="90" height="30" fill="#081b2e" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
+<text x="335" y="52" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">.155</text>
+<rect x="20" y="74" width="360" height="28" rx="3" fill="#4fc4e6" fill-opacity="0.18" stroke="#4fc4e6" stroke-opacity="0.7"/>
+<text x="32" y="93" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">/22 YouTube</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.322923;0.323077;0.799385;0.799615;1.000000" dur="13s" repeatCount="indefinite"/><rect x="110" y="112" width="90" height="28" rx="3" fill="#ec6b6b" fill-opacity="0.35" stroke="#ec6b6b"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.799846;0.800000;1.000000" dur="13s" repeatCount="indefinite"/><rect x="110" y="112" width="90" height="28" rx="3" fill="none" stroke="#ec6b6b" stroke-opacity="0.6" stroke-dasharray="5 4"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.322923;0.323077;1.000000" dur="13s" repeatCount="indefinite"/><text x="212" y="131" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">/24 Pakistan Telecom</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.569077;0.569231;1.000000" dur="13s" repeatCount="indefinite"/><rect x="110" y="150" width="43.0" height="28" rx="3" fill="#4fc4e6" fill-opacity="0.35" stroke="#4fc4e6"/><rect x="157.0" y="150" width="43.0" height="28" rx="3" fill="#4fc4e6" fill-opacity="0.35" stroke="#4fc4e6"/><text x="212" y="169" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">two /25s, YouTube</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.107538;0.107692;0.153846;1.000000" dur="13s" repeatCount="indefinite"/><rect x="17" y="71" width="366" height="34" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.322923;0.323077;0.369231;1.000000" dur="13s" repeatCount="indefinite"/><rect x="107" y="109" width="96" height="34" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.569077;0.569231;0.615385;1.000000" dur="13s" repeatCount="indefinite"/><rect x="107" y="147" width="96" height="34" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
+<rect x="20" y="220" width="170" height="40" rx="3" fill="#081b2e" stroke="#4fc4e6" stroke-opacity="0.8"/>
+<text x="105" y="245" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">YouTube</text>
+<rect x="210" y="220" width="170" height="40" rx="3" fill="#081b2e" stroke="#ec6b6b" stroke-opacity="0.8"/>
+<text x="295" y="245" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">Pakistan: dropped</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.122923;0.123077;0.195538;0.195769;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.165385;0.192308;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.123077;0.165385;0.192308;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.184462;0.184615;0.257077;0.257308;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.226923;0.253846;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.184615;0.226923;0.253846;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.246000;0.246154;0.318615;0.318846;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.288462;0.315385;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.246154;0.288462;0.315385;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.338308;0.338462;0.410923;0.411154;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="140.00 0;140.00 0;0.00 0;0.00 0;140.00 0;140.00 0" keyTimes="0.000000;0.046115;0.046154;0.380769;0.407692;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.338462;0.380769;0.407692;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#ec6b6b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.399846;0.400000;0.472462;0.472692;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="140.00 0;140.00 0;0.00 0;0.00 0;140.00 0;140.00 0" keyTimes="0.000000;0.046115;0.046154;0.442308;0.469231;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.400000;0.442308;0.469231;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#ec6b6b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.461385;0.461538;0.534000;0.534231;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="140.00 0;140.00 0;0.00 0;0.00 0;140.00 0;140.00 0" keyTimes="0.000000;0.046115;0.046154;0.503846;0.530769;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.461538;0.503846;0.530769;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#ec6b6b"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.584462;0.584615;0.657077;0.657308;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.626923;0.653846;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.584615;0.626923;0.653846;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.646000;0.646154;0.718615;0.718846;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.688462;0.715385;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.646154;0.688462;0.715385;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.707538;0.707692;0.780154;0.780385;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.750000;0.776923;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.707692;0.750000;0.776923;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.815231;0.815385;0.887846;0.888077;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.857692;0.884615;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.815385;0.857692;0.884615;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.876769;0.876923;0.949385;0.949615;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-50.00 0;-50.00 0;0.00 0;0.00 0;-50.00 0;-50.00 0" keyTimes="0.000000;0.046115;0.046154;0.919231;0.946154;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 193.00;0 193.00" keyTimes="0.000000;0.046115;0.046154;0.876923;0.919231;0.946154;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.010923;0.011154;0.046115;0.046154;0.938308;0.938462;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-35.71 0;-50.00 0;-50.00 0;0.00 0;0.00 0;-35.71 0" keyTimes="0.000000;0.007692;0.046115;0.046154;0.980769;1.000000" dur="13s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 178.71;0 193.00;0 193.00;0 0.00;0 0.00;0 143.00;0 178.71" keyTimes="0.000000;0.007692;0.046115;0.046154;0.938462;0.980769;1.000000" dur="13s" repeatCount="indefinite"/><circle cx="155.0" cy="47" r="5" fill="#4fc4e6"/></g></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.322462;0.322692;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="286" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">18:46 UTC: the /22 is the best match</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.322923;0.323077;0.568615;0.568846;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="286" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">18:47: the leaked /24 is more specific</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.569077;0.569231;0.799385;0.799615;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="286" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">20:18: two /25s win the traffic back</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.799846;0.800000;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="286" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">20:51: the /24 is withdrawn</text></g>
+<text x="20" y="308" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">traffic to 208.65.153.x</text>
+</svg>
+      <p id="ch9-security-p5" class="diagram-caption">Routers follow the most specific route they know, so Pakistan Telecom's /24, meant to block YouTube at home but leaked worldwide by its upstream PCCW, beat YouTube's own /22 everywhere. YouTube answered with two still more specific /25s; withdrawing the /24 ended the outage after about two hours.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>No malice.</b> The block was a domestic order; the outage came from a configuration mistake upstream, where PCCW passed its customer's announcement on without filtering it.</li>
+          <li><b>Origin validation.</b> With RPKI, a prefix holder signs a route origin authorisation (ROA) naming who may announce its prefixes and how specific they may be; a router that checks it drops a /24 like this one as invalid.</li>
+          <li><b>Why it must be automatic.</b> A new route spreads across the world's routers within minutes, faster than any operator can notice and react.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="diagram-card fig-v2" id="fig-9-12">
