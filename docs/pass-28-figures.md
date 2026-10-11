@@ -188,7 +188,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 178 | 4 | `fig-14-8` Fig 14.8 · RSA worked through · p=17, q=23 | 2.5 px · cap 139 | done 2026-10-11 |
 | 179 | 4 | `fig-14-9` Fig 14.9 · Point addition on an elliptic curve · geometric picture | 2.9 px · cap 120 | done 2026-10-11 |
 | 180 | 4 | `fig-14-10` Fig 14.10 · Equivalent security · ECC keys are dramatically smaller | 2.9 px · cap 132 | done 2026-10-11 |
-| 181 | 4 | `fig-14-11` Fig 14.11 · TLS 1.3 handshake at cryptographic depth | 2.5 px · cap 141 | todo |
+| 181 | 4 | `fig-14-11` Fig 14.11 · TLS 1.3 handshake at cryptographic depth | 2.5 px · cap 141 | done 2026-10-11 |
 | 182 | 4 | `fig-14-12` Fig 14.12 · Digital signatures and Certificate Transparency · Merkle trees keep CAs honest | 2.2 px · cap 137 | todo |
 | 183 | 4 | `fig-14-13` Fig 14.13 · Post-quantum migration · the algorithms that survive Shor | 2.9 px · cap 129 | todo |
 | 184 | 4 | `fig-15-1` Fig 15.1 · STRIDE · the six classes of threat to enumerate | 2.5 px · cap 129 | deferred: conceptual pass |

@@ -2225,90 +2225,36 @@
       property each piece contributes.
     </p>
 
-    <div class="diagram-card" id="fig-14-11">
-      <div class="diagram-label">Fig 14.11 · TLS 1.3 handshake at cryptographic depth</div>
-      <svg viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-24"><title id="svgt-part4-24">Fig 14.11 · TLS 1.3 handshake at cryptographic depth</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">every byte cryptographically accounted for · handshake takes one round trip</text>
-
-        <!-- Two columns -->
-        <g transform="translate(40,60)">
-          <rect x="0" y="0" width="120" height="40" rx="4" fill="#241a10" stroke="rgba(150,216,150,0.85)" stroke-width="2"/>
-          <text x="60" y="24" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">CLIENT</text>
-          <line x1="60" y1="40" x2="60" y2="380" stroke="rgba(150,216,150,0.4)"/>
-
-          <rect x="540" y="0" width="120" height="40" rx="4" fill="#241a10" stroke="rgba(232,120,120,0.85)" stroke-width="2"/>
-          <text x="600" y="24" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)">SERVER</text>
-          <line x1="600" y1="40" x2="600" y2="380" stroke="rgba(232,120,120,0.4)"/>
-        </g>
-
-        <!-- ClientHello with crypto detail -->
-        <g>
-          <line x1="160" y1="152" x2="600" y2="164" stroke="rgba(150,216,150,0.7)" stroke-width="1.5" stroke-dasharray="6,4">
-            <animate attributeName="stroke-dashoffset" values="0;-20" dur="1.5s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="600,164 590,160 593,172" fill="rgba(150,216,150,0.85)"/>
-          <circle r="5" fill="rgba(150,216,150,0.95)">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path="M 160 152 L 600 164"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.85;1" dur="2.6s" repeatCount="indefinite"/>
-          </circle>
-          <text x="380" y="100" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">① ClientHello</text>
-          <text x="380" y="116" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">cipher_suites, key_share = (X25519, x·G), client_random</text>
-          <text x="380" y="132" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)" font-style="italic">x is fresh ephemeral · client computes x·G as its public DH share</text>
-          <text x="380" y="148" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">PRIMITIVES USED: ECC (Curve25519), CSPRNG</text>
-        </g>
-
-        <!-- ServerHello -->
-        <g>
-          <line x1="600" y1="238" x2="160" y2="250" stroke="rgba(232,120,120,0.7)" stroke-width="1.5" stroke-dasharray="6,4">
-            <animate attributeName="stroke-dashoffset" values="0;20" dur="1.5s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="160,250 170,246 167,258" fill="rgba(232,120,120,0.85)"/>
-          <circle r="5" fill="rgba(232,120,120,0.95)">
-            <animateMotion dur="2.6s" repeatCount="indefinite" path="M 600 238 L 160 250"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.85;1" dur="2.6s" repeatCount="indefinite"/>
-          </circle>
-          <text x="380" y="186" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)">② ServerHello + EncryptedExtensions + Certificate + CertificateVerify + Finished</text>
-          <text x="380" y="202" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">key_share = (X25519, y·G), server_random, X.509 cert, signature, MAC</text>
-          <text x="380" y="218" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)" font-style="italic">y fresh · server computes y·G as DH share AND signs the transcript with long-term private key</text>
-          <text x="380" y="234" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">PRIMITIVES USED: ECC, ECDSA/Ed25519, SHA-256, HKDF, AES-GCM</text>
-        </g>
-
-        <!-- Key derivation block -->
-        <g transform="translate(140,260)">
-          <rect x="0" y="0" width="440" height="80" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)">
-            <animate attributeName="fill-opacity" values="0.6;1.4;0.6" dur="2.6s" repeatCount="indefinite"/>
-          </rect>
-          <text x="220" y="20" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">BOTH SIDES NOW DERIVE THE SAME KEYS</text>
-          <text x="220" y="36" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">shared = x·(y·G) = y·(x·G) = xy·G  (ECDH)</text>
-          <text x="220" y="50" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">handshake_secret = HKDF-Extract(salt, shared)</text>
-          <text x="220" y="64" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">application_traffic_secret = HKDF-Expand(handshake_secret, label, transcript)</text>
-          <text x="220" y="76" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(207,141,120,0.85)">→ AES-128-GCM key + 96-bit nonce derived for client→server and server→client separately</text>
-        </g>
-
-        <!-- Finished -->
-        <g>
-          <line x1="160" y1="384" x2="600" y2="388" stroke="rgba(150,216,150,0.7)" stroke-width="1.5" stroke-dasharray="6,4">
-            <animate attributeName="stroke-dashoffset" values="0;-20" dur="1.5s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="600,388 590,383 591,395" fill="rgba(150,216,150,0.85)"/>
-          <circle r="4" fill="rgba(150,216,150,0.95)">
-            <animateMotion dur="3.4s" repeatCount="indefinite" path="M 160 384 L 600 388"/>
-            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.85;1" dur="3.4s" repeatCount="indefinite"/>
-          </circle>
-          <text x="380" y="362" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">③ {Finished}: encrypted MAC over transcript</text>
-          <text x="380" y="378" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)" font-style="italic">proves client also derived the same keys</text>
-        </g>
-
-        <!-- Application data flowing -->
-        <g transform="translate(140,396)">
-          <rect x="0" y="0" width="440" height="40" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)">
-            <animate attributeName="fill-opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite"/>
-          </rect>
-          <text x="220" y="18" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)">④ application data: AES-128-GCM</text>
-          <text x="220" y="32" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">HTTP/1.1, HTTP/2 frames, etc. · encrypted + authenticated, every byte</text>
-        </g>
-      </svg>
-      <p id="ch14-tls-pqc-p2" class="diagram-caption">The same TLS 1.3 handshake from <a href="part-3#ch11">Chapter 11</a> §05, now with the cryptographic primitives labelled. The key exchange is ECDH on Curve25519: each side picks an ephemeral scalar, multiplies the curve generator G by it to get a public point, sends that point. Both sides compute the shared secret as the product of their own scalar with the other's public point. The shared secret is run through HKDF (an HMAC-based key derivation function) to produce separate AES-GCM keys for each direction. The server's certificate is verified against the trust root chain (<a href="part-3#fig-11-12">Fig 11.12</a>); the server's signature over the transcript proves that the holder of the certificate's private key participated in this specific handshake. Every primitive in this chapter appears exactly once in its right role: ECC for key exchange, ECDSA or Ed25519 for signing, SHA-256 inside HKDF, AES-GCM for bulk encryption.</p>
+    <div class="diagram-card fig-v2" id="fig-14-11">
+      <div class="diagram-label">Fig 14.11&nbsp;· TLS 1.3 handshake at cryptographic depth</div>
+      <svg viewBox="0 0 400 396" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-24 svgd-part4-24">
+<title id="svgt-part4-24">Fig 14.11 · TLS 1.3 handshake at cryptographic depth</title>
+<desc id="svgd-part4-24">The TLS 1.3 key schedule. The client keeps a secret x and sends x times the curve's base point G; the server keeps y and sends y·G. Each multiplies the other's point by its own secret, and both reach the same shared point. HKDF turns it into handshake keys, which encrypt the certificate, signature and Finished messages; then HKDF, mixed with a hash of the whole transcript, gives one AES-GCM key for each direction. The server signs the transcript hash with its certificate key.</desc>
+<text x="10" y="18" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">client</text>
+<text x="390" y="18" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">server</text>
+<g opacity="0.25"><text x="10" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">secret x</text><text x="390" y="40" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">secret y</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.099833;0.100000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="40" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">secret x</text><text x="390" y="40" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">secret y</text></g>
+<g opacity="0.25"><text x="10" y="62" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sends x·G</text><text x="390" y="62" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sends y·G</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.149833;0.150000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="62" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sends x·G</text><text x="390" y="62" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sends y·G</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="280.00 0;280.00 0;280.00 0;280.00 0;0.00 0;0.00 0;280.00 0;280.00 0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.200000;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="38" y="74" width="44" height="20" rx="4" fill="#241a10" stroke="#cf8d78" stroke-width="1.5"/><text x="60" y="89" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">x·G</text></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-280.00 0;-280.00 0;-280.00 0;-280.00 0;0.00 0;0.00 0;-280.00 0;-280.00 0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.200000;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="318" y="92" width="44" height="20" rx="4" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="340" y="107" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">y·G</text></g></g>
+<g opacity="0.25"><rect x="20" y="118" width="360" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="200" y="136" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">shared = x·(y·G) = y·(x·G)</text><text x="200" y="154" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">X25519: both get the same point</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="118" width="360" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="200" y="136" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">shared = x·(y·G) = y·(x·G)</text><text x="200" y="154" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">X25519: both get the same point</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.375000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="17" y="115" width="366" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<path d="M200,164 V182 m-4,-6 l4,6 l4,-6" fill="none" stroke="rgba(230,217,189,0.6)"/>
+<g opacity="0.25"><rect x="20" y="184" width="360" height="44" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="202" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">HKDF → handshake keys</text><text x="200" y="220" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">encrypt certificate, signature, Finished</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="184" width="360" height="44" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="202" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">HKDF → handshake keys</text><text x="200" y="220" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">encrypt certificate, signature, Finished</text></g>
+<path d="M200,230 V248 m-4,-6 l4,6 l4,-6" fill="none" stroke="rgba(230,217,189,0.6)"/>
+<g opacity="0.25"><rect x="20" y="250" width="360" height="44" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">HKDF + transcript hash</text><text x="200" y="286" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">everything said so far, mixed in</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="250" width="360" height="44" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="268" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">HKDF + transcript hash</text><text x="200" y="286" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">everything said so far, mixed in</text></g>
+<path d="M150,296 L100,314 m3,-7 l-3,7 l7,1" fill="none" stroke="rgba(230,217,189,0.6)"/><path d="M250,296 L300,314 m-3,-7 l3,7 l-7,1" fill="none" stroke="rgba(230,217,189,0.6)"/>
+<g opacity="0.25"><rect x="20" y="316" width="170" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="105" y="334" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">client → server</text><text x="105" y="352" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">AES-GCM key</text><rect x="210" y="316" width="170" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="295" y="334" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">server → client</text><text x="295" y="352" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">AES-GCM key</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="316" width="170" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="105" y="334" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">client → server</text><text x="105" y="352" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">AES-GCM key</text><rect x="210" y="316" width="170" height="44" rx="3" fill="#241a10" stroke="#a9bf8e" stroke-width="1.5"/><text x="295" y="334" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">server → client</text><text x="295" y="352" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">AES-GCM key</text></g>
+<g opacity="0.25"><text x="200" y="384" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">server signs the transcript hash</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.733167;0.733333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="384" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">server signs the transcript hash</text></g>
+</svg>
+      <p id="ch14-tls-pqc-p2" class="diagram-caption">Each side multiplies the curve's base point by a fresh secret and sends the result; each then multiplies the other's point by its own secret, and both hold the same shared point. HKDF stretches it, mixed with a hash of the conversation, into separate AES-GCM keys, first for the handshake and then for the data each way.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The primitives.</b> X25519 (the curve arithmetic of Fig 14.9) for the shared secret; HKDF, built on HMAC-SHA-256, for every key; AES-GCM or ChaCha20-Poly1305 for the data; Ed25519, ECDSA or RSA-PSS for the server's signature.</li>
+          <li><b>Why the transcript goes in.</b> A hash of every handshake message is mixed into the keys, so any tampering leaves the two sides with different keys and the Finished messages fail.</li>
+          <li><b>Who is on the other end.</b> The server signs the transcript hash with its certificate's private key (CertificateVerify), and the certificate chains to a trusted root (Part III, Fig 11.12).</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Digital signatures · and Certificate Transparency</h3>
