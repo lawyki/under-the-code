@@ -941,80 +941,66 @@
       which every commercial database implements).
     </p>
 
-    <div class="diagram-card" id="fig-13-8">
-      <div class="diagram-label">Fig 13.8 · A B+ tree · range scan walks the leaves left to right</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-9"><title id="svgt-part4-9">Fig 13.8 · A B+ tree · range scan walks the leaves left to right</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">SELECT * FROM users WHERE age BETWEEN 25 AND 40 · index does the rest</text>
-
-        <!-- Root -->
-        <rect x="320" y="62" width="80" height="36" rx="3" fill="rgba(207,141,120,0.20)" stroke="rgba(140,82,64,0.95)" stroke-width="1.5"/>
-        <text x="350" y="84" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">25</text>
-        <text x="370" y="84" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">|</text>
-        <text x="380" y="84" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">50</text>
-
-        <!-- Internal nodes -->
-        <line x1="330" y1="98" x2="200" y2="138" stroke="rgba(207,141,120,0.55)"/>
-        <line x1="360" y1="98" x2="360" y2="138" stroke="rgba(207,141,120,0.55)"/>
-        <line x1="390" y1="98" x2="540" y2="138" stroke="rgba(207,141,120,0.55)"/>
-
-        <rect x="160" y="138" width="80" height="36" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.65)"/>
-        <text x="190" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">10</text>
-        <text x="210" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">|</text>
-        <text x="220" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">18</text>
-
-        <rect x="320" y="138" width="80" height="36" rx="3" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)" stroke-width="1.5"/>
-        <text x="350" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">31</text>
-        <text x="370" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">|</text>
-        <text x="380" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(207,141,120,0.95)">42</text>
-
-        <rect x="500" y="138" width="80" height="36" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.65)"/>
-        <text x="530" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">62</text>
-        <text x="550" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">|</text>
-        <text x="560" y="160" text-anchor="middle" font-family="Courier Prime" font-size="11" fill="rgba(230,217,189,0.85)">78</text>
-
-        <!-- Leaves -->
-        <line x1="330" y1="174" x2="290" y2="220" stroke="rgba(207,141,120,0.55)"/>
-        <line x1="350" y1="174" x2="380" y2="220" stroke="rgba(207,141,120,0.55)"/>
-        <line x1="380" y1="174" x2="470" y2="220" stroke="rgba(207,141,120,0.55)"/>
-
-        <!-- highlight rectangles for the matching leaves -->
-        <rect x="240" y="220" width="100" height="44" rx="3" fill="rgba(207,141,120,0.30)" stroke="rgba(140,82,64,0.95)" stroke-width="1.5"/>
-        <text x="290" y="238" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,1)">25→r9 · 27→r3</text>
-        <text x="290" y="252" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,1)">29→r2 · 31→r1</text>
-
-        <rect x="350" y="220" width="100" height="44" rx="3" fill="rgba(207,141,120,0.30)" stroke="rgba(140,82,64,0.95)" stroke-width="1.5"/>
-        <text x="400" y="238" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,1)">36→r5 · 38→r4</text>
-        <text x="400" y="252" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,1)">39→r7 · 40→r6</text>
-
-        <rect x="120" y="220" width="100" height="44" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.55)"/>
-        <text x="170" y="238" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.5)">9→r12 · 14→r8</text>
-        <text x="170" y="252" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.5)">18→r11 · 22→r10</text>
-
-        <rect x="460" y="220" width="100" height="44" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.55)"/>
-        <text x="510" y="238" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.5)">42→r13 · 47→r14</text>
-        <text x="510" y="252" text-anchor="middle" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.5)">…</text>
-
-        <!-- Linked-leaves arrows -->
-        <line x1="220" y1="242" x2="240" y2="242" stroke="rgba(207,141,120,0.7)" stroke-width="1.5"/>
-        <line x1="340" y1="242" x2="350" y2="242" stroke="rgba(207,141,120,0.7)" stroke-width="1.5"/>
-        <line x1="450" y1="242" x2="460" y2="242" stroke="rgba(207,141,120,0.7)" stroke-width="1.5"/>
-        <text x="285" y="282" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">leaves linked left → right</text>
-
-        <!-- range-scan cursor: descends root→internal→leaf, then walks right -->
-        <circle r="7" fill="none" stroke="rgba(150,216,150,0.95)" stroke-width="2">
-          <animateMotion dur="6s" repeatCount="indefinite"
-            path="M 360 80 L 360 156 L 290 242 L 400 242"/>
-          <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.10;0.85;1" dur="6s" repeatCount="indefinite"/>
-        </circle>
-
-        <!-- Bottom note -->
-        <g transform="translate(40,316)">
-          <rect x="0" y="0" width="640" height="48" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">① descend root → internal → leaf · find first key ≥ 25  (3 page reads)</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.85)">② walk leaves rightward emitting (key, row) pairs until key &gt; 40  (~1 leaf per few hundred matches)</text>
-        </g>
-      </svg>
-      <p id="ch13-indexes-p3" class="diagram-caption">A B+ tree on the <code>age</code> column. Internal nodes route lookups by comparing against keys; leaf nodes hold the actual (key, row-pointer) pairs. Crucially, the leaves are linked left-to-right, so a range scan such as "find every user aged 25 to 40" does one tree descent to the first matching key (3 page reads at depth 3) and then walks leaves rightward emitting matches until it overshoots. The total cost is roughly the depth of the tree plus the number of matches divided by the leaf size. On a billion-row table that's typically 3–4 page reads plus a small linear scan, total time milliseconds. Without the index, the same query would scan the whole table, which takes minutes. The B+ tree is the reason every "find by ID" or "show me orders from last week" feels instant; without it, the modern web does not work.</p>
+    <div class="diagram-card fig-v2" id="fig-13-8">
+      <div class="diagram-label">Fig 13.8&nbsp;· A B+ tree&nbsp;· range scan walks the leaves left to right</div>
+      <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-9 svgd-part4-9">
+<title id="svgt-part4-9">Fig 13.8 · A B+ tree · range scan walks the leaves left to right</title>
+<desc id="svgd-part4-9">A small B+ tree on age: a root holding 30, internal nodes holding 15 and 45, and four leaves, 5 and 10, 15 and 22, 30 and 38, 45 and 52, linked left to right. The query for ages 20 to 40 reads the root, the internal node 15 and the leaf holding 22, three page reads, then walks the leaf links: 22, 30 and 38 are found, and 45 ends the scan.</desc>
+<text x="200" y="16" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">WHERE age BETWEEN 20 AND 40</text>
+<line x1="200" y1="61.0" x2="100" y2="101.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<line x1="200" y1="61.0" x2="300" y2="101.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<line x1="100" y1="131.0" x2="52" y2="177.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<line x1="100" y1="131.0" x2="150" y2="177.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<line x1="300" y1="131.0" x2="248" y2="177.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<line x1="300" y1="131.0" x2="346" y2="177.0" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.7"/>
+<rect x="172.0" y="31.0" width="56" height="30" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="51" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">30</text>
+<rect x="72.0" y="101.0" width="56" height="30" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="100" y="121" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">15</text>
+<rect x="272.0" y="101.0" width="56" height="30" rx="3" fill="#241a10" stroke="#e6d9bd" stroke-width="1.5"/><text x="300" y="121" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">45</text>
+<rect x="10.0" y="177.0" width="84" height="30" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/>
+<text x="34" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">5</text>
+<text x="70" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">10</text>
+<path d="M94.0,192 H107.0 m-5,-4 l5,4 l-5,4" fill="none" stroke="#c9a25a" stroke-opacity="0.8"/>
+<rect x="108.0" y="177.0" width="84" height="30" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/>
+<text x="132" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">15</text>
+<text x="168" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">22</text>
+<path d="M192.0,192 H205.0 m-5,-4 l5,4 l-5,4" fill="none" stroke="#c9a25a" stroke-opacity="0.8"/>
+<rect x="206.0" y="177.0" width="84" height="30" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/>
+<text x="230" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">30</text>
+<text x="266" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">38</text>
+<path d="M290.0,192 H303.0 m-5,-4 l5,4 l-5,4" fill="none" stroke="#c9a25a" stroke-opacity="0.8"/>
+<rect x="304.0" y="177.0" width="84" height="30" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/>
+<text x="328" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">45</text>
+<text x="364" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">52</text>
+<text x="200" y="232" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">leaves linked left to right</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.116500;0.116667;0.199333;0.199583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="169.0" y="28.0" width="62" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.199833;0.200000;0.282667;0.282917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="69.0" y="98.0" width="62" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.283167;0.283333;0.449333;0.449583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="105.0" y="174.0" width="90" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.449833;0.450000;0.582667;0.582917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="203.0" y="174.0" width="90" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.583167;0.583333;0.682667;0.682917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="301.0" y="174.0" width="90" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="153" y="181" width="30" height="21" rx="3" fill="#a9bf8e" fill-opacity="0.85"/><text x="168" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">22</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.491500;0.491667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="215" y="181" width="30" height="21" rx="3" fill="#a9bf8e" fill-opacity="0.85"/><text x="230" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">30</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="251" y="181" width="30" height="21" rx="3" fill="#a9bf8e" fill-opacity="0.85"/><text x="266" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">38</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.624833;0.625000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="313" y="181" width="30" height="21" rx="3" fill="#c05a48" fill-opacity="0.85"/><text x="328" y="197" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#241a10">45</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.116500;0.116667;0.199333;0.199583;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.199833;0.200000;0.282667;0.282917;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 2</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.283167;0.283333;0.449333;0.449583;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.449833;0.450000;0.582667;0.582917;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 4</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.583167;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075667;0.075833;0.116000;0.116250;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="268" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">page reads: 0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.491000;0.491250;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="288" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">found: 22</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.491500;0.491667;0.532667;0.532917;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="288" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">found: 22, 30</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.533167;0.533333;0.624333;0.624583;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="288" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">found: 22, 30, 38</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.624833;0.625000;1.000000" dur="12s" repeatCount="indefinite"/><text x="10" y="288" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">found: 22, 30, 38 · 45 &gt; 40: stop</text></g>
+</svg>
+      <p id="ch13-indexes-p3" class="diagram-caption">A lookup descends from the root, one page per level, to the leaf holding the first key in range; the scan then walks the linked leaves left to right, emitting keys until one passes the end. Here: three page reads down, then 22, 30 and 38, and 45 stops it.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Real sizes.</b> A node is one disk page holding hundreds of keys, so a billion rows need only three or four levels, and the upper levels usually sit in memory.</li>
+          <li><b>Why the links.</b> Only the leaves hold keys with row pointers; linking them turns a range into one descent plus a walk, the cost being the depth plus the matches divided by the leaf size.</li>
+          <li><b>Who.</b> Rudolf Bayer and Edward McCreight invented the B-tree at Boeing in 1970; the linked-leaf B+ variant is what databases build.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Hash index · O(1) lookup, no ranges</h3>
