@@ -200,7 +200,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 190 | 4 | `fig-15-7` Fig 15.7 · Five generations of defence · firewall → IDS → SIEM → EDR → zero trust | 2.5 px · cap 124 | deferred: conceptual pass |
 | 191 | 4 | `fig-15-8` Fig 15.8 · Stuxnet · four zero-days, a USB jump, sabotage of physical machines | 2.9 px · cap 158 | deferred: conceptual pass |
 | 192 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns | 2.5 px · cap 141 | deferred: conceptual pass |
-| 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | todo |
+| 193 | 4 | `fig-15-10` Fig 15.10 · The security ecosystem · learning, working, meeting | 2.5 px · cap 150 | done 2026-10-11 |
 | 194 | 5 | `fig-16-1` Fig 16.1 · Threads vs processes · the same parallelism, two isolation models | 2.5 px · cap 150 | todo |
 | 195 | 5 | `fig-16-2` Fig 16.2 · The classic race · two threads, one counter, lost updates | 2.9 px · cap 122 | todo |
 | 196 | 5 | `fig-16-3` Fig 16.3 · Mutex protects · deadlock is the new failure mode | 2.5 px · cap 144 | todo |
