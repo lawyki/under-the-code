@@ -173,7 +173,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 163 | 4 | `fig-13-4` Fig 13.4 · Nested-loop · hash · merge: three ways to do the same join | 2.5 px · cap 115 | done 2026-10-11 |
 | 164 | 4 | `fig-13-5` Fig 13.5 · A bank transfer · what each ACID letter actually guarantees | 2.5 px · cap 102 | done 2026-10-11 |
 | 165 | 4 | `fig-13-6` Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash | 2.5 px · cap 126 | done 2026-10-11 |
-| 166 | 4 | `fig-13-7` Fig 13.7 · The four isolation levels · what each one permits | 2.9 px · cap 145 | todo |
+| 166 | 4 | `fig-13-7` Fig 13.7 · The four isolation levels · what each one permits | 2.9 px · cap 145 | done 2026-10-11 |
 | 167 | 4 | `fig-13-8` Fig 13.8 · A B+ tree · range scan walks the leaves left to right | 2.9 px · cap 145 | todo |
 | 168 | 4 | `fig-13-9` Fig 13.9 · B-tree vs hash index · which one wins which workload | 2.9 px · cap 131 | todo |
 | 169 | 4 | `fig-13-10` Fig 13.10 · SQL injection · a single quote turns a SELECT into a tautology | 2.9 px · cap 162 | deferred: conceptual pass |

@@ -831,60 +831,56 @@
       more concurrency.
     </p>
 
-    <div class="diagram-card" id="fig-13-7">
-      <div class="diagram-label">Fig 13.7 · The four isolation levels · what each one permits</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-8"><title id="svgt-part4-8">Fig 13.7 · The four isolation levels · what each one permits</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">stricter goes down · faster goes up · pick your trade</text>
-
-        <!-- Header -->
-        <g transform="translate(40,60)">
-          <rect x="0" y="0" width="640" height="32" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="20" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">LEVEL</text>
-          <text x="200" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">DIRTY READ</text>
-          <text x="320" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">NON-REPEATABLE READ</text>
-          <text x="500" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">PHANTOM READ</text>
-        </g>
-
-        <!-- Rows -->
-        <g transform="translate(40,92)" font-family="Courier Prime" font-size="10">
-          <!-- READ UNCOMMITTED -->
-          <rect x="0" y="0" width="640" height="32" fill="rgba(232,120,120,0.18)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="20" y="20" fill="rgba(232,120,120,1)">READ UNCOMMITTED</text>
-          <text x="200" y="20" fill="rgba(232,120,120,1)">possible</text>
-          <text x="320" y="20" fill="rgba(232,120,120,1)">possible</text>
-          <text x="500" y="20" fill="rgba(232,120,120,1)">possible</text>
-
-          <!-- READ COMMITTED -->
-          <rect x="0" y="32" width="640" height="32" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.4)"/>
-          <text x="20" y="52" fill="rgba(232,120,120,0.95)">READ COMMITTED</text>
-          <text x="200" y="52" fill="rgba(150,216,150,1)">prevented</text>
-          <text x="320" y="52" fill="rgba(232,120,120,1)">possible</text>
-          <text x="500" y="52" fill="rgba(232,120,120,1)">possible</text>
-
-          <!-- REPEATABLE READ -->
-          <rect x="0" y="64" width="640" height="32" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.4)"/>
-          <text x="20" y="84" fill="rgba(207,141,120,0.95)">REPEATABLE READ</text>
-          <text x="200" y="84" fill="rgba(150,216,150,1)">prevented</text>
-          <text x="320" y="84" fill="rgba(150,216,150,1)">prevented</text>
-          <text x="500" y="84" fill="rgba(232,120,120,1)">possible</text>
-
-          <!-- SERIALIZABLE -->
-          <rect x="0" y="96" width="640" height="32" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.55)"/>
-          <text x="20" y="116" fill="rgba(150,216,150,1)">SERIALIZABLE</text>
-          <text x="200" y="116" fill="rgba(150,216,150,1)">prevented</text>
-          <text x="320" y="116" fill="rgba(150,216,150,1)">prevented</text>
-          <text x="500" y="116" fill="rgba(150,216,150,1)">prevented</text>
-        </g>
-
-        <!-- Footer -->
-        <g transform="translate(40,236)">
-          <rect x="0" y="0" width="640" height="60" rx="4" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">DIRTY READ: see another transaction's uncommitted change</text>
-          <text x="14" y="36" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">NON-REPEATABLE: same row read twice in one txn returns different values</text>
-          <text x="14" y="52" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.85)">PHANTOM: same query run twice returns different sets of rows</text>
-        </g>
-      </svg>
-      <p id="ch13-acid-p7" class="diagram-caption">The isolation levels are defined by which <em>anomalies</em> they permit. Read Uncommitted (almost never used) lets you see another transaction's uncommitted changes: your transaction reads "dirty" data that may be rolled back. Read Committed (the PostgreSQL default) only shows committed data, but a row you read might be modified by another transaction before you read it again. Repeatable Read holds the rows you have already read stable, but new rows matching your filter can appear ("phantoms"). Serializable, the strictest, behaves as if every transaction ran by itself. Most production code uses Read Committed (Postgres) or Repeatable Read (MySQL InnoDB); Serializable is reserved for code where the cost of an anomaly outweighs the cost of throughput. Picking the right level is the working SQL programmer's most important concurrency decision. It is also one most programmers never explicitly think about, because the database default is usually adequate.</p>
+    <div class="diagram-card fig-v2" id="fig-13-7">
+      <div class="diagram-label">Fig 13.7&nbsp;· The four isolation levels&nbsp;· what each one permits</div>
+      <svg viewBox="0 0 400 286" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-8 svgd-part4-8">
+<title id="svgt-part4-8">Fig 13.7 · The four isolation levels · what each one permits</title>
+<desc id="svgd-part4-8">The SQL standard's four isolation levels against three anomalies. Read uncommitted allows dirty reads, non-repeatable reads and phantoms; read committed blocks dirty reads; repeatable read also blocks non-repeatable reads; serializable blocks all three. Below, transaction 1 reads a balance of 100, transaction 2 sets it to 50 and commits, and transaction 1 reads it again: under read committed it sees 50, under repeatable read still 100.</desc>
+<text x="196" y="18" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">dirty</text>
+<text x="270" y="18" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">re-read</text>
+<text x="348" y="18" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">phantom</text>
+<line x1="10" y1="26" x2="390" y2="26" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="10" y="42" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">read uncommitted</text>
+<text x="196" y="42" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="270" y="42" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="348" y="42" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="10" y="64" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">read committed</text>
+<text x="196" y="64" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<text x="270" y="64" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="348" y="64" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="10" y="86" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">repeatable read</text>
+<text x="196" y="86" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<text x="270" y="86" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<text x="348" y="86" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">allows</text>
+<text x="10" y="108" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">serializable</text>
+<text x="196" y="108" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<text x="270" y="108" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<text x="348" y="108" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">blocks</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="236" y="50" width="68" height="18" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="236" y="72" width="68" height="18" rx="3" fill="none" stroke="#b8372f" stroke-width="2"/></g>
+<text x="10" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">a re-read, run:</text>
+<text x="10" y="187" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">T1</text>
+<text x="10" y="221" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">T2</text>
+<line x1="40" y1="182" x2="390" y2="182" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.3"/>
+<line x1="40" y1="216" x2="390" y2="216" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.3"/>
+<g opacity="0.25"><rect x="44" y="170" width="100" height="24" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="94" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">read: 100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139800;0.140000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="44" y="170" width="100" height="24" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="94" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">read: 100</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.190000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="41" y="167" width="106" height="30" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0.25"><rect x="128" y="204" width="132" height="24" rx="3" fill="#241a10" stroke="#c05a48" stroke-width="1.5"/><text x="194" y="221" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">set 50, commit</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.279800;0.280000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="128" y="204" width="132" height="24" rx="3" fill="#241a10" stroke="#c05a48" stroke-width="1.5"/><text x="194" y="221" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">set 50, commit</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.279800;0.280000;0.330000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="125" y="201" width="138" height="30" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0.25"><rect x="270" y="170" width="100" height="24" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="320" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">read again</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.439800;0.440000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="270" y="170" width="100" height="24" rx="3" fill="#241a10" stroke="#c9a25a" stroke-width="1.5"/><text x="320" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">read again</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.439800;0.440000;0.490000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="267" y="167" width="106" height="30" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><text x="170" y="256" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">read committed:</text><text x="180" y="256" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">50</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.549800;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><text x="170" y="276" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">repeatable read:</text><text x="180" y="276" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">100</text></g>
+</svg>
+      <p id="ch13-acid-p7" class="diagram-caption">Each isolation level is defined by the anomalies it allows: a dirty read sees another transaction's uncommitted change, a non-repeatable read sees a row change between two reads, a phantom sees new rows appear. Run once, the same re-read returns 50 under read committed and 100 under repeatable read.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The defaults.</b> PostgreSQL runs at read committed, MySQL's InnoDB at repeatable read; serializable is kept for code where an anomaly costs more than lost throughput.</li>
+          <li><b>The table is a minimum.</b> PostgreSQL's repeatable read is snapshot isolation and blocks phantoms too; snapshot isolation still allows write skew, which only serializable prevents.</li>
+          <li><b>How.</b> Engines either lock what a transaction reads, or keep old versions of rows so each transaction reads its own snapshot (MVCC).</li>
+        </ol>
+      </details>
     </div>
 
     <p id="ch13-acid-p8">
