@@ -4,7 +4,7 @@
 // then hold a screen of animated figures for two seconds. Static audit: CSS transitions/animations on layout
 // properties. Reduced motion: every figure's SMIL paused, no CSS animation running.
 //   node smooth.mjs [--pages=part-1] [--widths=375,1440] [--rate=4]
-import { chromium } from '/Users/yki/.npm/_npx/361ceb562f3b3235/node_modules/playwright/index.mjs';
+import { chromium } from '../pass25/node_modules/playwright/index.mjs';
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 
 const ARGS = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));

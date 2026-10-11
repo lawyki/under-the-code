@@ -1,5 +1,5 @@
 // Fullscreen view of a figure: node fsshot.mjs <part> <fig-id> <outdir> [--widths=375,1440] [--browser=webkit]
-import { chromium, webkit } from '/Users/yki/.npm/_npx/361ceb562f3b3235/node_modules/playwright/index.mjs';
+import { chromium, webkit } from '../pass25/node_modules/playwright/index.mjs';
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 const [part, fig, outdir] = process.argv.slice(2);
 const ARGS = Object.fromEntries(process.argv.slice(5).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));

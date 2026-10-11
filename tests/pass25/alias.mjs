@@ -1,5 +1,5 @@
 // Anchor-ID law: a stored place on a removed id must land exactly where the surviving id lands.
-import { webkit, chromium } from '/Users/yki/.npm/_npx/361ceb562f3b3235/node_modules/playwright/index.mjs';
+import { webkit, chromium } from 'playwright';
 const [part, port, ...pairs] = process.argv.slice(2);
 let bad = 0;
 for (const bt of [chromium, webkit]) for (const vw of [375, 1440]) {
