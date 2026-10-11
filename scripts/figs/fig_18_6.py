@@ -51,7 +51,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Where each frame was built.</b> The transistor and the CPU in Part I, the kernel in Part II, the network in Part III, the cloud in Part V.</li>
-          <li><b>The other direction.</b> Chapter 1 started at the same centre, one switch, and worked outward chapter by chapter; this figure makes the whole climb at once.</li>
+          <li><b>Reading it.</b> The figure starts at Chapter 1's transistor and adds one ring at a time, out to Chapter 18.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-18-6">

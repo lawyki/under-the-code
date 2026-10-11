@@ -64,8 +64,8 @@ caption = ('STRIDE turns threat modelling into six questions asked of every part
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The defences.</b> Each letter has its usual answer: authentication, integrity checks, audit logs, encryption and access control, rate limits and spare capacity, least privilege.</li>
-          <li><b>Per element.</b> Applied to a data-flow diagram, processes face all six, data stores mainly tampering, disclosure and denial, and flows between them tampering, disclosure and denial.</li>
+          <li><b>The defences.</b> Each letter has its usual answer: authentication, integrity checks, audit logs, encryption and access control, rate limits and spare capacity, permission checks.</li>
+          <li><b>Per element.</b> On a data-flow diagram, processes face all six, while data stores and the flows between them mainly face tampering, disclosure and denial.</li>
           <li><b>Least privilege.</b> A part that runs with only the rights it needs cannot hand the rest of the system over when it falls.</li>
         </ol>
       </details>'''

@@ -58,8 +58,8 @@ for t0 in (TV1, TV2):
     drop(RX + 140, 154, QY + 22, t0, t0 + 0.9, SAGE)
     a(f'<g class="fx" opacity="0">{pulse(t0 + 0.9)}<rect x="{SX - 3}" y="{QY + 5}" width="156" height="34" rx="3" fill="none" stroke="{SAGE}" stroke-width="2.5"/></g>')
 SY = QY + 70
-phases(20, SY, [(0.31, TV1, 'parsed once into a plan', BRASS), (TV1, TV2, "the apostrophe is just a letter", SAGE),
-                (TV2, None, 'a new value, no second parse', SAGE)])
+phases(20, SY, [(0.31, TV1, 'parse: once', BRASS), (TV1, TV2, "bound as data: O'Brien", SAGE),
+                (TV2, None, 'new value, same statement', SAGE)])
 H = SY + 14
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-12 svgd-part4-12">')
 o.insert(1, '<title id="svgt-part4-12">Fig 13.11 · Parameterised queries · code and data on separate wires</title>')
@@ -75,7 +75,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>On the wire.</b> PostgreSQL's extended query protocol and MySQL's prepared statements send the statement and its parameters as separate messages; a driver that only emulates this must escape every value correctly instead.</li>
           <li><b>Values only.</b> A placeholder can hold a value but not a table or column name, so code that varies those must pick from a fixed list.</li>
-          <li><b>Reuse.</b> The plan can be kept and run again for each new value, which also saves the parse.</li>
+          <li><b>Reuse.</b> The parsed statement can be kept and run again for each new value, which saves the parse.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-13-11">

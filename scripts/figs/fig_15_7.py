@@ -61,8 +61,8 @@ for k, (x, y, w, h) in enumerate(((18, WY - 4, 364, 8), (IX - 2, IY - 2, 88, 30)
     a(f'<g class="fx" opacity="0">{pulse(TG[k])}<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" fill="none" stroke="#fff" stroke-width="2"/></g>')
 # legend for the two marks on the machines, and the era line
 LY = SY + 54
-a(f'<g opacity="0">{win(TG[3])}<circle cx="25" cy="{LY - 4}" r="4.5" fill="{STAMP}"/>{text(38, LY, "4 · EDR agent on each machine", size=13, fill=STAMP, ls="0")}</g>')
-a(f'<g opacity="0">{win(TG[4])}{lock(20, LY + 10)}{text(38, LY + 22, "5 · zero trust: each checks every request", size=13, fill=BRASS, ls="0")}</g>')
+a(f'<g opacity="0">{win(TG[3])}<circle cx="25" cy="{LY - 4}" r="4.5" fill="{STAMP}"/>{text(38, LY, "4 · EDR agent on each machine", size=13, fill=PARCH, ls="0")}</g>')
+a(f'<g opacity="0">{win(TG[4])}{lock(20, LY + 10)}{text(38, LY + 22, "5 · zero trust: every request checked", size=13, fill=BRASS, ls="0")}</g>')
 ERAS = ['1990s: filter at the edge', 'early 2000s: inspect what got in', 'mid 2000s: all the logs together',
         'mid 2010s: watch every machine', 'late 2010s: trust no position']
 EY = LY + 52

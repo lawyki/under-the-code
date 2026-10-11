@@ -1211,9 +1211,9 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.469800;0.470000;0.530000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="211" y="259" width="156" height="34" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.699800;0.700000;0.819200;0.819500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 122.00;0 122.00;0 0.00;0 0.00;0 122.00;0 122.00" keyTimes="0.000000;0.059950;0.060000;0.700000;0.790000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="360" cy="154" r="6" fill="#a9bf8e"/></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.789800;0.790000;0.850000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="211" y="259" width="156" height="34" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.379200;0.379500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">parsed once into a plan</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.379800;0.380000;0.699200;0.699500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">the apostrophe is just a letter</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699800;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">a new value, no second parse</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.379200;0.379500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">parse: once</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.379800;0.380000;0.699200;0.699500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">bound as data: O'Brien</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699800;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">new value, same statement</text></g>
 </svg>
       <p id="ch13-injection-p5" class="diagram-caption">With a parameterised query the SQL text, a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.</p>
       <details class="fig-how">
@@ -1221,7 +1221,7 @@
         <ol>
           <li><b>On the wire.</b> PostgreSQL's extended query protocol and MySQL's prepared statements send the statement and its parameters as separate messages; a driver that only emulates this must escape every value correctly instead.</li>
           <li><b>Values only.</b> A placeholder can hold a value but not a table or column name, so code that varies those must pick from a fixed list.</li>
-          <li><b>Reuse.</b> The plan can be kept and run again for each new value, which also saves the parse.</li>
+          <li><b>Reuse.</b> The parsed statement can be kept and run again for each new value, which saves the parse.</li>
         </ol>
       </details>
     </div>
@@ -1608,8 +1608,8 @@
       size and produces a fixed-size output: 256 bits for SHA-256, 512
       bits for SHA-512, 160 bits for the now-broken SHA-1, 128 bits for
       the long-broken MD5. The function is deterministic (same input
-      always produces same output) and easy to compute (microseconds for
-      megabytes of input). It must satisfy three security properties.
+      always produces same output) and easy to compute (about a millisecond per
+      megabyte of input). It must satisfy three security properties.
       <strong>Preimage resistance</strong>:
       given a hash, no practical algorithm finds an input producing it.
       <strong>Second-preimage resistance</strong>: given an input, no
@@ -1624,13 +1624,13 @@
       <svg viewBox="0 0 400 342" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-16 svgd-part4-16">
 <title id="svgt-part4-16">Fig 14.3 · Three hash properties · three different attacks</title>
 <desc id="svgd-part4-16">The work needed to break each property of SHA-256, drawn to scale in the exponent: finding an input for a given hash (preimage) takes about 2 to the 256; finding a second input with the same hash as a given one also takes about 2 to the 256; finding any two inputs with one hash (a collision) takes only about 2 to the 128. Below, the birthday effect explains why: people are placed one at a time on a strip of the 365 days of the year, the count of pairs growing as the square of the people, and the 23rd person shares a birthday with the 5th; 23 people make 253 pairs.</desc>
-<text x="20" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">bits of work to break SHA-256</text>
+<text x="20" y="20" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">work to break SHA-256 (bar = exponent)</text>
 <text x="20" y="48" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">preimage</text>
-<text x="380" y="48" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">a hash: find an input</text>
+<text x="380" y="48" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">given a hash, find an input</text>
 <rect x="20" y="56" width="290.0" height="16" rx="2" fill="#c05a48" fill-opacity="0.55"/>
 <text x="318" y="69" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">2<tspan dy="-6">256</tspan></text>
 <text x="20" y="104" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">second preimage</text>
-<text x="380" y="104" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">an input: find another</text>
+<text x="380" y="104" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">given an input, find another</text>
 <rect x="20" y="112" width="290.0" height="16" rx="2" fill="#c05a48" fill-opacity="0.55"/>
 <text x="318" y="125" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">2<tspan dy="-6">256</tspan></text>
 <text x="20" y="160" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">collision</text>
@@ -1692,8 +1692,8 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.733167;0.733333;0.762667;0.762917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 21</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 210</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.763167;0.763333;0.792667;0.792917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 22</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 231</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="306" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">people 23</text><text x="380" y="306" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">pairs 253</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">person 23 shares a day with person 5</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.792667;0.792917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">pairs grow as the square</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.793167;0.793333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">one run: 23 shares a day with 5</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.792667;0.792917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="330" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">count the pairs, not the people</text></g>
 </svg>
       <p id="ch14-hashing-p2" class="diagram-caption">A collision needs only some pair of inputs to match, and the pairs grow as the square of the inputs tried: 23 people already make 253 pairs and better than even odds of a shared birthday. So a 256-bit hash holds out against collisions only to about 2<sup>128</sup> work, against about 2<sup>256</sup> for either preimage.</p>
       <details class="fig-how">
@@ -2655,8 +2655,8 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The defences.</b> Each letter has its usual answer: authentication, integrity checks, audit logs, encryption and access control, rate limits and spare capacity, least privilege.</li>
-          <li><b>Per element.</b> Applied to a data-flow diagram, processes face all six, data stores mainly tampering, disclosure and denial, and flows between them tampering, disclosure and denial.</li>
+          <li><b>The defences.</b> Each letter has its usual answer: authentication, integrity checks, audit logs, encryption and access control, rate limits and spare capacity, permission checks.</li>
+          <li><b>Per element.</b> On a data-flow diagram, processes face all six, while data stores and the flows between them mainly face tampering, disclosure and denial.</li>
           <li><b>Least privilege.</b> A part that runs with only the rights it needs cannot hand the rest of the system over when it falls.</li>
         </ol>
       </details>
@@ -3063,10 +3063,10 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.605282;0.605449;0.663782;1.000000" dur="12s" repeatCount="indefinite"/><rect x="17" y="209" width="366" height="42" rx="3" fill="#a9bf8e" fill-opacity="0.18" stroke="#a9bf8e" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.638615;0.638782;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="287" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">alert</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.432667;0.432917;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">fails validation: stopped at 1</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.433167;0.433333;0.604782;0.605032;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">hand-built SQL: 2 and 3 have a gap</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.433167;0.433333;0.604782;0.605032;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">passes 1; hand-built SQL: 2, 3 open</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.605282;0.605449;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">no such right: refused at 4</text></g>
 </svg>
-      <p id="ch15-web-p3" class="diagram-caption">Defence in depth stacks independent layers so that no single mistake is fatal: here one endpoint built its SQL by hand, opening a gap in two layers, and the least-privileged database account still refused while monitoring raised the alarm. Each layer is built as if the ones above it had failed.</p>
+      <p id="ch15-web-p3" class="diagram-caption">Defence in depth stacks independent layers so that no single mistake is fatal: here an input that passed validation met an endpoint with hand-built SQL, a gap in two layers, and the least-privileged database account still refused while monitoring raised the alarm. Each layer is built as if the ones above it had failed.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3255,8 +3255,8 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.457000;0.457143;0.507143;1.000000" dur="14s" repeatCount="indefinite"/><rect x="128" y="200" width="144" height="34" rx="3" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.635571;0.635714;0.685714;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="120" width="364" height="44" rx="3" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.814143;0.814286;0.864286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="18" y="120" width="364" height="44" rx="3" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.635571;0.635714;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="25" cy="252" r="4.5" fill="#b8372f"/><text x="38" y="256" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#b8372f">4 · EDR agent on each machine</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.814143;0.814286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="20" y="270" width="10" height="8" rx="1" fill="#c9a25a"/><path d="M22,270 v-2 a3,3 0 0 1 6,0 v2" fill="none" stroke="#c9a25a" stroke-width="1.6"/><text x="38" y="278" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">5 · zero trust: each checks every request</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.635571;0.635714;1.000000" dur="14s" repeatCount="indefinite"/><circle cx="25" cy="252" r="4.5" fill="#b8372f"/><text x="38" y="256" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">4 · EDR agent on each machine</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.064286;0.064643;0.814143;0.814286;1.000000" dur="14s" repeatCount="indefinite"/><rect x="20" y="270" width="10" height="8" rx="1" fill="#c9a25a"/><path d="M22,270 v-2 a3,3 0 0 1 6,0 v2" fill="none" stroke="#c9a25a" stroke-width="1.6"/><text x="38" y="278" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">5 · zero trust: every request checked</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.099857;0.100000;0.278000;0.278214;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="308" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">1990s: filter at the edge</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.278429;0.278571;0.456571;0.456786;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="308" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">early 2000s: inspect what got in</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.457000;0.457143;0.635143;0.635357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="308" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">mid 2000s: all the logs together</text></g>

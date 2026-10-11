@@ -28,8 +28,8 @@ pulse = lambda t0: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), 
 pw = lambda e: f'2<tspan dy="-6">{e}</tspan>'
 o = []; a = o.append
 # the three properties, the work to break each for SHA-256, to scale in the exponent
-a(text(20, 20, 'bits of work to break SHA-256', size=13, fill=PMUTED, ls='0'))
-PROPS = [('preimage', 'a hash: find an input', 256, OXBLOOD), ('second preimage', 'an input: find another', 256, OXBLOOD),
+a(text(20, 20, 'work to break SHA-256 (bar = exponent)', size=13, fill=PMUTED, ls='0'))
+PROPS = [('preimage', 'given a hash, find an input', 256, OXBLOOD), ('second preimage', 'given an input, find another', 256, OXBLOOD),
          ('collision', 'any two with one hash', 128, BRASS)]
 BX, BWMAX = 20, 290
 for k, (name, what, e, col) in enumerate(PROPS):
@@ -62,8 +62,8 @@ for k in range(N):
     vis = win(tk(k)) if t1 is None else lit(tk(k), t1)
     body = text(20, CY, f'people {k + 1}', size=13, fill=PARCH, ls='0') + text(380, CY, f'pairs {(k + 1) * k // 2}', anchor='end', size=13, fill=BRASS, ls='0')
     a(f'<g opacity="0">{vis}{body}</g>')
-a(f'<g opacity="0">{T.anim("opacity", [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (TM - 0.002, 0.0), (TM, 1.0), (D, 1.0)])}{text(20, CY + 24, "person 23 shares a day with person 5", size=13, fill=SEAL, ls="0")}</g>')
-a(f'<g opacity="0">{lit(T0, TM)}{text(20, CY + 24, "pairs grow as the square", size=13, fill=PMUTED, ls="0")}</g>')
+a(f'<g opacity="0">{T.anim("opacity", [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (TM - 0.002, 0.0), (TM, 1.0), (D, 1.0)])}{text(20, CY + 24, "one run: 23 shares a day with 5", size=13, fill=SEAL, ls="0")}</g>')
+a(f'<g opacity="0">{lit(T0, TM)}{text(20, CY + 24, "count the pairs, not the people", size=13, fill=PMUTED, ls="0")}</g>')
 H = CY + 36
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-16 svgd-part4-16">')
 o.insert(1, '<title id="svgt-part4-16">Fig 14.3 · Three hash properties · three different attacks</title>')

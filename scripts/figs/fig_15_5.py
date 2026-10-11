@@ -45,7 +45,7 @@ for k in (1, 2):
 a(f'<g class="fx" opacity="0">{pulse(T4)}<rect x="17" y="{ly(3) - 3}" width="366" height="42" rx="3" fill="{SAGE}" fill-opacity="0.18" stroke="{SAGE}" stroke-width="2"/></g>')
 a(f'<g opacity="0">{win(T4 + 0.4)}{text(368, ly(4) + 23, "alert", anchor="end", size=13, fill=SEAL, ls="0")}</g>')
 SY = ly(5) + 6
-for t0, t1, s, col in ((0.31, R2, 'fails validation: stopped at 1', SAGE), (R2, T4, 'hand-built SQL: 2 and 3 have a gap', SEAL),
+for t0, t1, s, col in ((0.31, R2, 'fails validation: stopped at 1', SAGE), (R2, T4, 'passes 1; hand-built SQL: 2, 3 open', SEAL),
                        (T4, None, 'no such right: refused at 4', SAGE)):
     vis = first(t1) if t0 < 0.5 else (win(t0) if t1 is None else lit(t0, t1))
     a(f'<g opacity="0">{vis}{text(20, SY, s, size=13, fill=col, ls="0")}</g>')
@@ -57,7 +57,7 @@ o.insert(2, '<desc id="svgd-part4-32">Five layers stand between a bad input and 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Defence in depth stacks independent layers so that no single mistake is fatal: here one endpoint built its SQL by hand, opening a gap in two layers, and the least-privileged database account still refused while monitoring raised the alarm. '
+caption = ('Defence in depth stacks independent layers so that no single mistake is fatal: here an input that passed validation met an endpoint with hand-built SQL, a gap in two layers, and the least-privileged database account still refused while monitoring raised the alarm. '
            'Each layer is built as if the ones above it had failed.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
