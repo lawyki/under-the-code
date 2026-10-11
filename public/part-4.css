@@ -136,6 +136,7 @@ p { font-size: 1.08rem; }
 /* the declassification row: bars disappear as the part teaches (3 → 1 → 0) */
 .sr-redact {
   display: flex;
+  flex-wrap: wrap;               /* Pass 28 no-clipping: one row would widen the hero past a phone screen */
   gap: 8px;
   align-items: center;
   margin-top: 28px;
@@ -285,7 +286,7 @@ h4 { font-family: var(--sans); font-weight: 500; }
 .memory-diagram { border-radius: 2px; }
 .summary-table.dark { border-radius: 2px; }
 
-h3 { background-image: linear-gradient(to right, rgba(138, 35, 50, 0.4), rgba(138, 35, 50, 0)); }
+h3::after { background: linear-gradient(to right, rgba(138, 35, 50, 0.4), rgba(138, 35, 50, 0)); }   /* the underline lives on ::after (Pass 28 smoothness) */
 
 .chapter-end { background: var(--dark); }
 .next-btn {

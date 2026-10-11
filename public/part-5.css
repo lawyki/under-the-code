@@ -87,6 +87,7 @@
   color: transparent;
 }
 .part-opener h1 em { font-style: normal; }
+@media (max-width: 360px) { .part-opener h1 { font-size: 2.4rem; } }   /* Pass 28 no-clipping: "Machine" overran 320 px at 3rem */
 .part-tagline {
   font-family: var(--sans);
   font-style: normal;
@@ -294,7 +295,7 @@ h4 { font-family: var(--sans); font-weight: 600; }
 .memory-diagram { border-radius: 12px; }
 .summary-table.dark { border-radius: 12px; }
 
-h3 { background-image: linear-gradient(to right, rgba(122, 104, 224, 0.5), rgba(122, 104, 224, 0)); }
+h3::after { background: linear-gradient(to right, rgba(122, 104, 224, 0.5), rgba(122, 104, 224, 0)); }   /* the underline lives on ::after (Pass 28 smoothness) */
 
 .chapter-end { background: var(--qm-void); }
 .next-btn {

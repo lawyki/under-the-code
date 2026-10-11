@@ -96,7 +96,7 @@
   .part-opener h1 em { font-style: italic; color: var(--accent); }
   .part-tagline { font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: rgba(255,255,255,0.6); max-width: 720px; line-height: 1.6; position: relative; margin-bottom: 80px; }
   .part-toc { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 720px; width: 100%; position: relative; }
-  .toc-card { background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; text-align: left; transition: all 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
+  .toc-card { background: var(--dark-card); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 28px; text-align: left; transition: transform 0.2s, border-color 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
   .toc-card:hover { border-color: rgba(212,168,83,0.4); transform: translateY(-2px); }
   .toc-num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 12px; }
   .toc-title { font-family: var(--serif); font-size: 1.2rem; color: white; margin-bottom: 12px; line-height: 1.3; }
@@ -172,6 +172,7 @@
 
   .code-block { background: var(--dark); border-radius: 12px; padding: 32px; margin: 32px 0; overflow-x: auto; position: relative; }
   .code-lang { position: absolute; top: 12px; right: 16px; font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 400px) { .code-lang { position: static; display: block; margin-bottom: 12px; } }   /* Pass 28 no-clipping: a long label sat on the code */
   .code-block pre { font-family: var(--mono); font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.78); white-space: pre; }
   .code-block .kw { color: #d4a853; }
   .code-block .cm { color: rgba(255,255,255,0.35); font-style: italic; }
@@ -286,31 +287,42 @@
       content: '';
       position: absolute;
       left: 0; bottom: -10px;
-      width: 0; height: 1px;
+      width: 48px; height: 1px;
       background: var(--accent);
+      transform-origin: left center;
       animation: drawStripe 0.9s ease-out both;
       animation-timeline: view();
       animation-range: entry 0% entry 35%;
     }
-    h3 {
-      background-image: linear-gradient(to right, rgba(212,168,83,0.5), rgba(212,168,83,0));
-      background-position: 0 calc(100% - 4px);
-      background-repeat: no-repeat;
-      background-size: 0% 1px;
+    h3 { position: relative; }
+    h3::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 4px;
+      width: 50%; height: 1px;
+      background: linear-gradient(to right, rgba(212,168,83,0.5), rgba(212,168,83,0));
+      transform-origin: left center;
+      pointer-events: none;
       animation: drawUnderline 1.1s ease-out both;
       animation-timeline: view();
       animation-range: entry 15% entry 55%;
+    }
+    /* reduced motion: scroll-driven timelines ignore durations, so stop them and show the finished state */
+    @media (prefers-reduced-motion: reduce) {
+      .diagram-card, .light-diagram, .scale-shock, .math-callout, .pull-quote, .section-number::after, h3::after { animation: none !important; }
     }
   }
   @keyframes scrollFade {
     from { opacity: 0.35; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes drawStripe {
-    to { width: 48px; }
+  @keyframes drawStripe {                 /* transform only (Pass 28 smoothness) */
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
   @keyframes drawUnderline {
-    to { background-size: 50% 1px; }
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
   }
 
   /* Marginal "live" indicator — a tiny pulsing dot beside each section number */
@@ -366,7 +378,6 @@
          3px -1px 0 rgba(110, 220, 255, 0.35),
          0 0 32px rgba(212, 168, 83, 0.4);
       transform: translateY(30px) scale(1.045);
-      letter-spacing: 0.005em;
       filter: blur(0.5px);
     }
     45% {
@@ -389,7 +400,6 @@
          0.6px 0 0 rgba(110, 200, 255, 0.08),
          0 0 0 rgba(212, 168, 83, 0);
       transform: translateY(0) scale(1);
-      letter-spacing: -0.02em;
       filter: blur(0);
     }
   }
@@ -610,15 +620,18 @@
   }
   /* Wide-amplitude sweeps so the colour fields actually flow across the gap.
      Periods 28 / 33 / 41 / 47 are incommensurate — visual never repeats. */
+  /* Drift on the `translate` property: composited alongside the breath's `transform`, so neither costs a main-thread
+     frame (Pass 28 smoothness; it was background-position, repainted every frame on every page). The two layers drift
+     against each other, which keeps the marbled crossings. */
   @keyframes liquidDriftA {
-    0%   { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-    50%  { background-position: -14% 12%, 16% -10%, -10% -14%, 14% 10%, 4% -4%; }
-    100% { background-position: 10% -8%, -12% 14%, 14% 8%, -10% -12%, -4% 6%; }
+    0%   { translate: 0 0; }
+    50%  { translate: -3% 2.5%; }
+    100% { translate: 2.5% -2%; }
   }
   @keyframes liquidDriftB {
-    0%   { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-    50%  { background-position: 12% -10%, -14% 12%, 10% 14%, -12% -8%; }
-    100% { background-position: -10% 14%, 14% -8%, -14% -10%, 12% 14%; }
+    0%   { translate: 0 0; }
+    50%  { translate: 3% -2.5%; }
+    100% { translate: -2.5% 3%; }
   }
   @keyframes liquidBreathA {
     0%, 100% { transform: scale(1) rotate(0deg); }
@@ -736,21 +749,19 @@
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 10px;
-    height: 1px;
+    width: 24px;                          /* drawn at its largest and scaled down: transform, not width (Pass 28) */
+    height: 1.5px;
     background: rgba(26, 22, 20, 0.28);
-    transform: translate(-50%, -50%);
-    transition: width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
-                height 0.35s ease,
+    transform: translate(-50%, -50%) scale(0.4167, 0.6667);
+    transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
                 background-color 0.35s ease;
   }
   .rail-tick:hover::before {
-    width: 18px;
+    transform: translate(-50%, -50%) scale(0.75, 0.6667);
     background: rgba(140, 98, 30, 0.7);
   }
   .rail-tick.active::before {
-    width: 24px;
-    height: 1.5px;
+    transform: translate(-50%, -50%) scale(1, 1);
     background: var(--accent);
   }
   .rail-label {
@@ -1348,12 +1359,12 @@
     text-transform: uppercase;
     padding: 8px 16px;
     display: inline-block;
-    transition: color 0.25s, letter-spacing 0.25s;
+    transition: color 0.25s;
     user-select: none;
   }
   .colophon summary::-webkit-details-marker { display: none; }
   .colophon summary::marker { display: none; content: ''; }
-  .colophon summary:hover { color: var(--accent); letter-spacing: 0.35em; }
+  .colophon summary:hover { color: var(--accent); }
   .colophon[open] summary { color: var(--accent); }
 
   .colophon-grid {
@@ -1652,7 +1663,9 @@
   .nav-item.is-marked[data-c="3"]::before { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 3px; }
   .nav-item.is-marked[data-c="4"]::before { background: linear-gradient(to bottom, var(--mk-c) 50%, transparent 50%); }
   .nav-item.is-marked[data-c="5"]::before { background: none; box-shadow: inset 0 0 0 1px var(--mk-c); }
-  .rail-tick.is-marked::before { background: var(--mk-c); height: 3px; }
+  .rail-tick.is-marked::before { background: var(--mk-c); height: 3px; width: 10px; transform: translate(-50%, -50%); }   /* patterns at true scale, so width, untransitioned */
+  .rail-tick.is-marked:hover::before { width: 18px; transform: translate(-50%, -50%); }
+  .rail-tick.is-marked.active::before { width: 24px; transform: translate(-50%, -50%); }
   .rail-tick.is-marked[data-c="2"]::before { background: repeating-linear-gradient(135deg, var(--mk-c) 0 2px, transparent 2px 4px); }
   .rail-tick.is-marked[data-c="3"]::before { background: radial-gradient(circle, var(--mk-c) 1.1px, transparent 1.4px) 0 0 / 4px 3px; }
   .rail-tick.is-marked[data-c="4"]::before { background: linear-gradient(to bottom, var(--mk-c) 50%, transparent 50%); }
