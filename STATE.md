@@ -3,15 +3,17 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pass 29/30 at:** Pass 29, Part I, per-section method running (24 sections: cold reader, teacher, advocate, gate, re-read; two repair rounds max), then the part-wide consolidation, apply, tests, Sonnet 5.5 verification, ledger §4ac, commit and push; then three before-and-after samples for the owner and Part II. Owner gave go without marks (2026-10-11); recall and precision tests not run. Done: BEFORE STARTING 1 to 5, calibration. Brief: `docs/pass-29-30-brief.md`. Working files: scratchpad `p29/part-1/<section>/`.
+**Pass 29/30 at:** Pass 29, Part II, not started. Paused by the owner after Part I (2026-10-11) to save tokens; resume only when the owner writes continue.
 
 **Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
+
+**Pass 29 Part I done (2026-10-11; ledger UNDER.md §4ac).** 24 sections through the per-section method and two repair rounds: ch2-gates repaired to zero search points, none already teaching at the first read, 23 with open points; 22 facts corrected (§4g); verified by Sonnet 5.5 (77 findings: 24 fixed in the text, the rest fixed in the glossary or ledger, queued for Pass 30, or listed as owner calls). Part I raised more owner calls than the brief allows per part (its hard stop), listed in `docs/pass-29-owner-calls.md`. Samples page for the owner: SAMPLES_LINK.
 
 **Pass 29 budget** (`node scripts/count-prose.mjs`; section prose, Passes 28 and 29 together; ceiling = 02f486b × 1.05, rounded down). The script reproduces §4aa's 02f486b counts exactly in all five parts, so no calibration differences.
 
 | Part | 02f486b | Ceiling | Pass 28 close (7d56482) | Headroom |
 |---|---|---|---|---|
-| I | 12,095 | 12,699 | 12,098 | 601 |
+| I | 12,095 | 12,699 | 12,098 (after Part I: 12,697) | 2 |
 | II | 10,891 | 11,435 | 10,898 | 537 |
 | III | 14,012 | 14,712 | 14,066 | 646 |
 | IV | 9,761 | 10,249 | 9,811 | 438 |
@@ -145,6 +147,10 @@ the live database is empty and ready for fresh sign-ups.
 Owner decisions and actions live here and nowhere else. If it is not on
 this list, it is not blocking.
 
+- **Pass 29 Part I owner calls (more than the brief's 10 per part, so Pass 29 stopped after Part I).** Each, one line with question, options and recommended option: https://github.com/lawyki/under-the-code/blob/main/docs/pass-29-owner-calls.md (A: from the per-section method; B: verification findings left; C: kept-original figures). Options: rule on them / let the next session apply every "recommended" / keep the cap and leave them. Recommended: let the next session apply the recommended fixes for facts (section B) and decide the rest when you read.
+- **ch1-memory-p7, a wrong fact (verification H).** "Peter Denning's working set theory (1968) made this rigorous, and every CPU since has been a refinement of the idea" (the working set is a virtual-memory model; CPU caches came earlier). Options: "Peter Denning's working set model (1968) made the idea rigorous for virtual memory, and processor caches rest on the same principle." / leave. Recommended: the fix; it waits only on the paragraph limit. Link: docs/pass-29-owner-calls.md, section B.
+- **Fig BR.3, kept original, contradicts §4g (verification H).** Its rows "SYSCALL or int 0x80" and "32 · timer (LAPIC)" repeat two corrected errors beside the corrected prose. Options: redraw those rows / accept. Recommended: redraw. Link: docs/pass-29-owner-calls.md, section C.
+- **ch1-context-p10, the Bletchley estimate (owner-ruled).** It credits Bombe and Colossus alone with two years and fourteen million lives; the sources give it to Bletchley Park's codebreaking as a whole. Options: "Some historians estimate that Bletchley Park's codebreaking as a whole shortened the war by two years or more." / leave. Recommended: the rewrite. Link: docs/pass-29-owner-calls.md, section B.
 - **Pass 29 reader check (answered).** Read Chapter 1 §01 and Chapter 16 §03 at https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu as a newcomer would, and mark every place you had to stop and wonder (select the words, press Mark; a note is optional). Options: write go when you have marked / write go with no marks if nothing stopped you. Recommended: the first; the cold reader is compared against your marks before it touches Part I. Your answer: go. Owner gave go without marks, 2026-10-11; recall and precision tests not run.
 - **Permission rules (not blocking).** The owner's 2026-10-11 list of `permissions.allow` rules for `.claude/settings.local.json` (node, npm, npx, git, python3, curl, cp, mv, mkdir, touch, chmod, sort, awk, tee, `pkill -f serve.mjs`, lsof; Edit, Write, Read, WebSearch, WebFetch, Artifact, ArtifactData, ArtifactComments, Workflow, Agent, Skill, ToolSearch, Monitor, ScheduleWakeup) was not written: Claude Code's auto-mode safety check refuses an agent editing its own permissions. Options: add them yourself (or run `/permissions`) / leave as is. Recommended: leave as is while auto mode runs the work; add them if prompts start to stall it.
 - **Look at the figure pilot** (https://claude.ai/artifact/ADZTGFP5QqDEqq62E9Ebhn,

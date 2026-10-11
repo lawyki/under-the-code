@@ -181,16 +181,18 @@
     </p>
 
     <p id="ch1-context-p4">
-      Turing's answer was no. To show that no such procedure could exist, he first had to
-      define precisely what "mechanical procedure" meant. He invented an imaginary device: an
-      infinite tape divided into cells, a read/write head that could move along the tape, and
-      a finite set of rules that said what to do based on the current symbol and the machine's
-      current state. Then he turned that device against itself. Suppose a machine existed that
-      could inspect any program and decide, in finite time, whether it would ever halt. Feed it
-      a program built to do the opposite of whatever the decider predicts (loop forever if told
-      it will halt, halt if told it will loop), and the decider is wrong whichever verdict it
-      gives. The machine that decides everything cannot exist. Defining the machine was not a
-      detour from the proof; the machine was the proof.
+      Turing's answer was no. To prove it, he first had to define precisely what
+      "mechanical procedure" meant. He invented an imaginary device: an infinite tape
+      divided into cells, a read/write head that moved along it, and a finite set of
+      rules that said what to do based on the current symbol and the machine's current
+      state, one of a fixed list of named modes. A machine's rules, its program, can be
+      written as symbols on a tape for another machine to read. Suppose some machine
+      could decide, in finite time, whether any program would ever halt. Build a program
+      that includes the decider's rules and runs them on a copy of itself, asking "will
+      this very program halt?" If told yes, it loops forever; if told no, it halts. The
+      decider is wrong whichever verdict it gives. A program is only symbols and rules,
+      so whether it halts is a mathematical statement, and no machine, and therefore no
+      mechanical procedure, can decide every statement.
     </p>
 
     <p id="ch1-context-p5">
@@ -285,21 +287,7 @@
     <h3>The war that built the first computers</h3>
 
     <p id="ch1-context-p8">
-      Theory met urgency in 1939. Britain needed to break German naval codes, the Enigma
-      cipher, faster than humans could. At Bletchley Park, Turing built the
-      <strong>Bombe</strong>, an electromechanical machine. It did not try all 158
-      quintillion keys, because no machine could. It exploited a guess and a flaw.
-      Cryptanalysts could often guess a fragment of the plaintext hidden in a message (a
-      stock phrase, a weather report), and Enigma had a fatal quirk: no letter is ever
-      encrypted as itself. Slide the guessed fragment along the intercepted text and each
-      letter it pairs with forces a chain of assumptions about the day's secret settings. The
-      Bombe raced through candidate rotor positions, followed each position's assumptions
-      to their electrical consequences, and discarded any that led to a contradiction,
-      searching by elimination, not exhaustion. Later, his colleague Tommy Flowers built
-      <strong>Colossus</strong>, the first programmable electronic digital computer, used to
-      break the higher-level Lorenz cipher used by Hitler's high command. These machines were
-      special-purpose, not Turing machines in his theoretical sense, but they proved that
-      mechanical computation worked at scale.
+      Theory met urgency in 1939. Britain needed to break Enigma faster than people could. At Bletchley Park, Turing designed the <strong>Bombe</strong>, an electromechanical machine. It did not try all 158 quintillion settings of Enigma's stepping rotors (Fig 1.2) and plugboard, which swapped letters in pairs. Cryptanalysts could often guess a few words of a message (a stock phrase, a weather report), and because Enigma never encrypted a letter as itself, the guess fitted the intercepted text only where no letter lined up with itself. There each lined-up pair showed what the machine had done (turned A into F, say). At each rotor position, the Bombe assumed a plugboard partner for one letter and followed what the known rotor wiring forced: if A's partner is Q and the rotors there turn Q into X, the plugboard must turn X into F, and so on from pair to pair. A letter that needed two partners ruled the position out. It stopped only where nothing did; those few positions were tested further. Later, his colleague Tommy Flowers built <strong>Colossus</strong>, the first programmable electronic digital computer (its program set by switches and plugs), used against the Lorenz cipher of Hitler's high command. Neither machine was universal in Turing's sense, but they proved that mechanical computation worked at scale.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-2">
@@ -457,8 +445,7 @@
       The first general-purpose electronic computer, ENIAC (1945), was built from
       <span class="key-term">vacuum tubes</span>: glass bulbs that controlled electrical
       current using a heated filament inside a vacuum. ENIAC had 17,468 of them. It
-      filled a room thirty metres long, weighed thirty tons, consumed 150 kilowatts
-      (enough to dim the lights of Philadelphia when it switched on), and
+      filled a room thirty metres long, weighed thirty tons, consumed 150 kilowatts, and
       broke down on average every two days because a tube would burn out.
     </p>
 
@@ -538,9 +525,9 @@
     </p>
 
     <p id="ch1-transistor-p5">
-      That is the entire mechanism under every computer ever built. Everything else
-      is layers of abstraction over switches turning on and off:
-      every program, every webpage, every video game, every neural network.
+      That is the entire mechanism under every modern computer. Off and on can stand for
+      0 and 1, and switches wired together can carry out rules like a Turing machine's
+      (<a href="#ch2">Chapter 2</a> shows how).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-4">
@@ -587,7 +574,7 @@
 <g><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.23s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.47s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.70s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.93s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-1.17s" repeatCount="indefinite"/></circle></g>
 <text x="296" y="312" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#d4a853">current flows</text>
 </svg>
-      <p id="ch1-transistor-p6" class="diagram-caption">With no voltage on the base, no current flows between collector and emitter; with a small one, it does. Every computer is built from this one switch: a modern CPU holds roughly fifty billion of them.</p>
+      <p id="ch1-transistor-p6" class="diagram-caption">With no voltage on the base, no current flows between collector and emitter; with a small one, it does. This is the older kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -601,20 +588,7 @@
     <h3>Why semiconductors</h3>
 
     <p id="ch1-transistor-p7">
-      The transistor works because it is built from a <em>semiconductor</em>, a material
-      whose conductivity sits between a conductor (like copper) and an insulator (like
-      glass). A conductor is always on and an
-      insulator always off; a switch is precisely a thing you can flip, so you need the
-      in-between material, one that can be pushed either way. What lets you push it is <em>doping</em>:
-      salting the pure silicon with a trace of another element. A dopant atom carrying one
-      more outer electron than silicon leaves a spare electron free to wander; one
-      carrying one fewer leaves a vacancy, a "hole", that a neighbouring electron can
-      drop into, so the hole itself drifts like a positive charge. Either way the crystal
-      gains mobile carriers, and once charge can be summoned or held back on command, a
-      small voltage is enough to open or close a conducting path through the material.
-      Almost all modern transistors are built from silicon, the second most abundant
-      element in Earth's crust. Sand is mostly silicon dioxide. The entire digital economy
-      is, in a literal sense, built on purified sand.
+      The transistor works because it is built from a <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass). A conductor is always on and an insulator always off, so a switch needs the in-between material, one that can be pushed either way. What lets you push it is <em>doping</em>: salting silicon with a trace of another element. Silicon's atoms bond by sharing their outer electrons, so in the pure crystal almost none move freely. A dopant atom carrying one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one carrying one fewer leaves a vacancy, a "hole", that a neighbouring electron can drop into, so the hole itself drifts like a positive charge (p-type). A field-effect transistor puts p-type silicon between two n-type regions. Where the two kinds meet, free electrons drop into the nearby holes, leaving a thin barrier with almost nothing free to move, so no current flows until a voltage on the gate draws electrons under it to bridge the gap (Fig 1.5). Silicon is refined from sand, which is mostly silicon dioxide, the insulator that silicon also grows on its own surface (the oxide in Fig 1.5). The entire digital economy is built on purified sand.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-5">
@@ -890,11 +864,7 @@
     </p>
 
     <p id="ch1-vonneumann-p4">
-      This is the difference between a machine that does one thing very well and a
-      machine that, given the right instructions, can do anything. The compiler that
-      turns C code into machine code is a program. So is the web browser running on
-      your computer, and so is the kernel that runs the browser. They all live as data
-      in memory until the CPU reads them as instructions.
+      Such a computer is never rewired: like Turing's universal machine, it runs whatever program its memory holds. A compiler, which turns code in a language such as C into the CPU's own instructions, is a program that writes programs. Each instruction is a number written in ones and zeros (bits): a code for an operation plus the memory cell (one numbered slot) or value it works on. The CPU's program counter names the next cell to run; that cell is read as an instruction, and any cell the instruction names, as data. In Fig 1.8, <code>load A</code> copies A's 5 into a register (a slot in the CPU holding one value), <code>add B</code> adds B's 3, and <code>store C</code> writes the 8 to C.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-8">
@@ -1000,17 +970,7 @@
     </p>
 
     <p id="ch1-cpu-p2">
-      The <span class="key-term">instruction cycle</span> is the fundamental unit of
-      computation at the hardware level, a loop of four steps.
-      A special register called the <strong>program counter</strong> holds the address
-      of the next instruction to run. <em>Fetch</em>: the CPU reads the bytes at
-      that address out of memory. <em>Decode</em>: it interprets that pattern of bits,
-      working out which operation is being asked for and which registers or values it
-      acts on. <em>Execute</em>: the unit that does the work (usually the ALU) carries
-      it out, adding, comparing, or computing an address. <em>Writeback</em>: the result
-      is stored back into a register or memory, and the program counter advances to
-      the instruction that comes next. Then the cycle starts over, on every core, without pause. Everything else is a sequence of instructions fed through this one
-      loop: your operating system, your browser, your music, this page.
+      This loop is the <span class="key-term">instruction cycle</span>. The <strong>program counter</strong> holds the address of the next instruction to run. <em>Fetch</em>: the CPU reads the bytes at that address out of memory. <em>Decode</em>: the control unit works out which operation those bits ask for and which registers or values it acts on. <em>Execute</em>: the unit that does the work (usually the ALU) carries it out, adding, comparing, or computing an address. <em>Writeback</em>: the result is stored back into a register or memory, and the program counter moves to the next instruction. Then the cycle starts over, on every core (a complete copy of this machinery). Fig 1.9 writes addresses in hexadecimal (0x): each digit, 0–9 or A–F, is four bits.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-9">
@@ -1210,11 +1170,13 @@
     <h3>Pipelining and parallelism inside one core</h3>
 
     <p id="ch1-cpu-p7">
-      A naive CPU would run one instruction through every step of the cycle before
-      starting the next. Modern CPUs use <span class="key-term">pipelining</span>
-      instead, overlapping the stages of different instructions, like an assembly line.
-      While instruction 3 is being executed, instruction 4 is being decoded, and
-      instruction 5 is being fetched. A modern pipeline may have 14 to 20 stages.
+      Instead of finishing one instruction before starting the next, modern CPUs use
+      <span class="key-term">pipelining</span>: they cut the four steps into stages and
+      overlap the stages of different instructions, like an assembly line. While
+      instruction 3 is being executed, instruction 4 is being decoded, and instruction 5
+      is being fetched. Fig 1.11 adds a fifth stage, MEM, for reading or writing data in
+      memory; a modern pipeline may have 14 to 20. Each stage takes one clock cycle, one
+      tick of a timing signal that pulses billions of times a second.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-11">
@@ -1517,17 +1479,7 @@
     <h3>The system call: crossing the boundary</h3>
 
     <p id="ch1-kernel-p6">
-      When your Python script opens a file, it cannot touch the disk itself: running in
-      Ring 3, it has no permission to talk to the disk controller.
-      Instead it asks: <code>open()</code> in Python calls <code>fopen()</code> in the
-      C library, which executes the system call, the one instruction whose whole job
-      is to cross the boundary. The CPU switches to Ring 0 at an entry point the
-      kernel registered in advance, the kernel checks permission and does the work,
-      and your program gets back a numeric handle (a <em>file descriptor</em>). What
-      the silicon must provide for that crossing to be safe (the trap, the saved
-      state, the one door user code cannot re-aim) is the story of the Bridge that
-      closes this Part. What the kernel does with the request once it arrives is
-      Chapter 4's.
+      When your Python script opens a file, it cannot touch the disk itself: running in Ring 3, it has no permission to talk to the disk controller. Instead it asks: Python's <code>open()</code> passes the request to the C library (ready-made code that programs use), which executes the system call, the one instruction whose whole job is to cross the boundary. That instruction traps, switching the CPU to Ring 0 and jumping to an entry point the kernel registered in advance. The kernel checks permission and does the work, and your program gets back a small number (a <em>file descriptor</em>) that names the file in every later read or write. The Bridge that closes this Part shows what the silicon must provide to make that crossing safe, and <a href="part-2#ch4">Chapter 4</a> shows what the kernel does with the request.
     </p>
 
     <p id="ch1-kernel-p7">
@@ -1540,17 +1492,7 @@
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating
-      system called UNIX, on a creed austere enough to fit four words:
-      <strong>everything is a file</strong>. The keyboard, the network connection
-      and the running process are all reached through the same few calls. UNIX became,
-      directly or indirectly, the ancestor of nearly every operating system in
-      current use: Linux, written from scratch by Linus Torvalds in 1991; macOS's
-      XNU; iOS and Android; even Windows now ships a Linux subsystem. The
-      architectural ideas it introduced (processes, file descriptors, the system
-      call interface) define what an operating system <em>is</em>. <a href="part-2#ch4">Chapter 4</a>
-      opens the kernel as a program; <a href="part-2#ch5">Chapter 5</a> tells the
-      story of the language it is written in.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX, on a creed austere enough to fit four words: <strong>everything is a file</strong>. The keyboard and, in later versions, the network connection and the running program (to the kernel, a <em>process</em>, reached through files under /proc) are all read and written through a file descriptor. UNIX became, directly or indirectly, the ancestor of nearly every operating system in current use: Linux, written from scratch by Linus Torvalds in 1991; macOS's XNU; iOS and Android; even Windows now ships a Linux subsystem. The architectural ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
     </p>
 
     <div class="insight-strip">
@@ -1659,7 +1601,14 @@
       <div class="math-label">Why caches multiply speed</div>
       <p id="ch1-memory-p4">The hierarchy works because programs do not access memory uniformly. They keep returning to the same regions: looping over an array, calling a function repeatedly, reading the next word in a string. This is called <strong>locality of reference</strong>, and it is the reason a small fast cache speeds up a much larger slow memory. The math is simple:</p>
       <p id="ch1-memory-p5" class="math-formula">T<sub>avg</sub> = h · t<sub>cache</sub> + (1 − h) · t<sub>RAM</sub></p>
-      <p id="ch1-memory-p6">If 95% of accesses hit L1 cache (1 ns) and only 5% miss into RAM (60 ns), the average access time is 0.95 × 1 + 0.05 × 60 = <strong>3.95 ns</strong>. Without the cache, every access would cost 60 ns. The cache makes the whole system roughly <em>fifteen times</em> faster, and the hit rate only has to be high, not perfect. The same calculation justifies every layer of the hierarchy: a small fast tier above a larger slow one, exploiting locality.</p>
+      <p id="ch1-memory-p6">
+      If the hit rate h, the share of accesses found in the cache, is 95% for L1
+      (t<sub>cache</sub> = 1 ns) and the other 5% miss into RAM (t<sub>RAM</sub> = 60
+      ns), the average access time is 0.95 × 1 + 0.05 × 60 = <strong>3.95 ns</strong>.
+      Without the cache, every access would cost 60 ns. The cache makes the average
+      access roughly <em>fifteen times</em> faster, and the hit rate only has to be
+      high, not perfect. The same calculation justifies every layer of the hierarchy.
+    </p>
       <p id="ch1-memory-p7">Peter Denning's <em>working set theory</em> (1968) made this rigorous, and every CPU since has been a refinement of the idea. We will see the same locality argument resurface in <a href="part-2">Part II</a>'s kernel chapter when we look at virtual memory and page caches, in <a href="part-3">Part III</a>'s web chapter when we examine DNS caching, and in <a href="part-4">Part IV</a>'s data chapter when we examine database buffer pools.</p>
     </div>
 
@@ -1696,7 +1645,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch1-memory-p11" class="insight-text">
-        <strong>Buffer overflow attacks</strong> exploit the memory model directly. If a program writes more data than a buffer can hold, the extra bytes spill into adjacent memory. If that memory contains a return address (an address the CPU will jump to when the current function ends), an attacker who controls the input controls where the CPU jumps next. Three layered defences each cut a different link in that chain: a <strong>stack canary</strong> is a known value planted between the buffer and the return address, so an overflow must trample it on the way and the change is caught before the function returns; <strong>ASLR</strong> (Address Space Layout Randomization) reshuffles where code and data load on every run, so the attacker no longer knows which address to aim at; and <strong>DEP</strong> (Data Execution Prevention) marks writable memory as non-executable, so bytes smuggled into a buffer cannot run as instructions even if the CPU is redirected into them. We'll see exactly how each of these works at the assembly level in <a href="#ch3">Chapter 3</a>.
+        <strong>Buffer overflow attacks</strong> pass the MMU's checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in that call's own memory (the stack), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. Three layered defences each cut a different link in that chain: a <strong>stack canary</strong> is a secret random value planted between the buffer and the return address, so an overflow must trample it on the way and the change is caught before the function returns; <strong>ASLR</strong> (Address Space Layout Randomization) reshuffles where code and data load on every run, so the attacker no longer knows which address to aim at; and <strong>DEP</strong> (Data Execution Prevention) marks writable memory as non-executable, so the planted instructions cannot run. <a href="#ch3">Chapter 3</a> shows each at the assembly level.
       </p>
     </div>
   </section>
@@ -1812,20 +1761,20 @@
     </p>
 
     <p id="ch2-binary-p3">
-      Could you build a computer that used three voltage levels (low, medium, high)
-      to represent three digits? Yes. The Soviet Union built one. The <em>Setun</em>,
-      designed in 1958 at Moscow State University by Nikolay Brusentsov, used
-      <em>balanced ternary</em> (digits −1, 0, +1) and was, in many mathematical respects,
-      more elegant than binary. But it required three voltage levels to be told apart
-      reliably, and that is where it lost: a wire carries some fixed
-      span of voltage. Binary cuts that span with a single threshold, leaving one wide
-      gap between "low" and "high". A value has to drift almost halfway across the whole
-      range before it crosses the line and flips. Ternary has to fit three levels into the
-      same span, which means two thresholds and much narrower bands between them; now a
-      drift that binary would shrug off is large enough to push a level across a
-      boundary into its neighbour. As components age and temperature swings, those small
-      drifts are constant. Binary won not because it was theoretically superior, but
-      because it left the most room for error before a bit changed its mind.
+      Could you build a computer that used three voltage levels (low, medium, high) to
+      represent three digits? The transistor allows it: part-way on, it holds a wire at
+      a middle voltage. Ternary machines have been built: the Soviet <em>Setun</em>,
+      designed in 1958 at Moscow State University by Nikolay Brusentsov, held each digit
+      in a pair of magnetic cores and used <em>balanced ternary</em> (digits −1, 0, +1),
+      in many mathematical respects more elegant than binary. But three levels cost
+      margin for error, because a wire carries some fixed span of voltage. Binary cuts
+      that span with a single threshold, leaving one wide gap between "low" and "high".
+      Ternary has to fit three levels into the same span, which means two thresholds and
+      much narrower bands between them; now a drift that binary would shrug off is large
+      enough to push a level across a boundary into its neighbour. As components age and
+      temperature swings, those small drifts are constant, which is why computers drive
+      each transistor fully on or fully off: those two extremes are the easiest to tell
+      apart.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-1">
@@ -1950,11 +1899,7 @@
     </p>
 
     <p id="ch2-boole-p7">
-      Shannon showed that any proposition expressible in Boolean algebra could be built as
-      a circuit of relays that physically computed it, and that a circuit could be
-      simplified by simplifying its Boolean expression. Logic and electricity were the
-      same thing. The thesis is widely considered the most important master's thesis ever
-      written: without it, the universal computer Turing imagined could not have been built.
+      Shannon showed that any proposition expressible in Boolean algebra could be built as a circuit of relays that physically computed it, and that a circuit could be simplified by simplifying its Boolean expression. A switch circuit computing one of the three operations is now called a gate (not the transistor's gate terminal). The thesis has been called one of the most important master's theses ever written.
     </p>
 
 
@@ -2021,7 +1966,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5v15h15z"/><path d="M8.5 12.5v3h3z"/><path d="M4.5 8.5h2M4.5 12h1.5M4.5 15.5h2"/></svg></span>
       <p id="ch2-boole-p10" class="insight-text">
-        <strong>The deeper claim.</strong> Anything that can be computed (any function that takes some input and produces some output by following a finite procedure) can be expressed as a Boolean formula and built as a circuit of AND, OR, and NOT gates. This is the practical version of Turing's universality theorem. It is why the same hardware can run a calculator, a video game, and a neural network. They are all, at the bottom, Boolean expressions.
+        <strong>The deeper claim.</strong> Any rule that turns a fixed number of input bits into output bits can be built from gates. For each input combination whose output is 1, AND the inputs, passing each 0 through a NOT first, so that AND is 1 for that combination alone; then OR those ANDs together. Gates also build the CPU, one fixed circuit that reads its program from memory like any other data: the universal machine of Chapter 1.
       </p>
     </div>
   </section>
@@ -2176,25 +2121,11 @@
     <h3>Universal gates: NAND alone is enough</h3>
 
     <p id="ch2-gates-p4">
-      A result due to Henry Sheffer in 1913: you don't need three different kinds of gates.
-      A single gate type, <span class="key-term">NAND</span> (NOT-AND), can be wired up
-      to imitate all of them. A NAND is an AND with its output inverted; it emits 0 only
-      when both inputs are 1. Tie its two inputs together so the same signal <em>A</em>
-      feeds both: it computes NOT(<em>A</em> · <em>A</em>), and since <em>A</em> ·
-      <em>A</em> is just <em>A</em>, the result is NOT <em>A</em>. You have built an
-      inverter from one NAND. Run a NAND's output into a second NAND wired as that
-      inverter and the two inversions cancel, leaving a plain AND. OR takes three NANDs
-      arranged by De Morgan's laws so each input is inverted before a final NAND
-      recombines them. Every gate, from one primitive. This is called <em>functional
-      completeness</em>, and NAND is a <em>universal gate</em>.
+      A result that goes back to Henry Sheffer in 1913: you don't need three different kinds of gates. A single gate type, <span class="key-term">NAND</span> (NOT-AND), can be wired up to imitate all of them. A NAND is an AND with its output inverted; it emits 0 only when both inputs are 1. Tie its two inputs together so the same signal <em>A</em> feeds both: it computes NOT(<em>A</em> · <em>A</em>), and since <em>A</em> · <em>A</em> is just <em>A</em>, the result is NOT <em>A</em>: an inverter, from one NAND. Run a NAND's output into a second NAND wired as that inverter and the two inversions cancel, leaving a plain AND. For OR, two such inverters give NOT <em>A</em> and NOT <em>B</em>, and a third NAND gives 0 only when both are 1, that is, when <em>A</em> and <em>B</em> are both 0, the one case where OR is 0 (De Morgan's second law, below). Building every gate from one type is called <em>functional completeness</em>, and NAND is a <em>universal gate</em>.
     </p>
 
     <p id="ch2-gates-p5">
-      In practice, this lets chip manufacturers build their fabrication process around
-      a single gate type. Modern CPUs aren't literally made of just NANDs (there are also
-      NOR, XOR, and other compound gates for efficiency), but the principle stands.
-      <strong>One gate, repeated billions of times in different arrangements, is enough
-      to compute anything computable.</strong>
+      In practice, this lets chip manufacturers build their fabrication process around a single gate type. Modern CPUs aren't literally made of just NANDs (there are also NOR, XOR, and other compound gates for efficiency), but the principle stands. <strong>One gate type, repeated billions of times in different arrangements, is enough to build any circuit.</strong>
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-4">
@@ -2280,7 +2211,7 @@
 <circle cx="70" cy="362" r="3.5" fill="#e8e8e8"/>
 <text x="20" y="412" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.45)">every gate drawn here is a NAND</text>
 </svg>
-      <p id="ch2-gates-p6" class="diagram-caption">NAND alone is enough: tie its inputs together and it is NOT, follow it with that NOT and it is AND, invert both inputs first and it is OR. From this one gate any circuit can be built, as Henry Sheffer showed in 1913.</p>
+      <p id="ch2-gates-p6" class="diagram-caption">NAND alone is enough: tie its inputs together and it is NOT, follow it with that NOT and it is AND, invert both inputs first and it is OR.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2317,7 +2248,9 @@
 
     <h3>The half adder</h3>
 
-    <p id="ch2-arithmetic-p3">Adding two single bits has four cases:</p>
+    <p id="ch2-arithmetic-p3">
+      Adding two single bits has four cases. Binary digits are worth 1, 2, 4, 8 from the right, so 0101 is 4 + 1, or 5. With no digit 2, 1 + 1 is written 10: 0, carry 1, as with 5 + 5 in decimal.
+    </p>
 
     <div class="truth-table" style="margin-top: 0;">
       <h4>Adding two single bits</h4>
@@ -2344,9 +2277,10 @@
       to the next. That needs a <em>full adder</em>: a circuit that takes three
       input bits (A, B, and a carry-in from the previous position) and produces a
       sum bit and a carry-out. It is built from two half adders and an OR
-      gate: the first half adder adds A and B, the second adds that sum to the incoming
-      carry, and the OR merges their two carry-outs into one, which is safe because the two
-      can never fire together.
+      gate: the first adds A and B, the second adds that sum to the incoming
+      carry, and the OR merges their two carry-outs into one. That loses nothing,
+      because the first carries only on 1 + 1, leaving its sum 0, so the second
+      cannot carry too.
     </p>
 
     <p id="ch2-arithmetic-p6">
@@ -2560,17 +2494,7 @@
     </p>
 
     <p id="ch2-twos-p6">
-      With this representation, <strong>subtraction is just addition</strong>.
-      To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> on the
-      same adder circuit it uses for every other addition. The bits line up by
-      arithmetic, not luck: flip-and-add-one turns a number <em>x</em> into
-      <em>2<sup>n</sup> − x</em>.
-      (In 8 bits, −5 came out as <code>11111011</code>, which is 251, and 251 is exactly
-      256 − 5.) So when the adder computes <em>a + (−b)</em>, what it really adds is
-      <em>a + (2<sup>n</sup> − b)</em>, which equals <em>2<sup>n</sup> + (a − b)</em>.
-      That extra <em>2<sup>n</sup></em> is a 1 sitting in bit position <em>n</em>,
-      one place to the left of the widest bit the register can hold. It falls off the
-      end and is discarded, and what remains in the register is precisely <em>a − b</em>.
+      With this representation, <strong>subtraction is just addition</strong>. To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> on its ordinary adder: NOT gates flip 5's bits on the way in, and a carry-in of 1 into the rightmost full adder adds the 1. The bits of −5, <code>11111011</code>, are worth 251, exactly 256 − 5: <code>00000101</code> plus its flipped self, <code>11111010</code>, is all ones, and adding 1 carries into bit 8 (counting from 0 at the right), worth 256. The same holds in any <em>n</em> bits, so flip-and-add-one turns <em>x</em> into <em>2<sup>n</sup> − x</em>. So when the adder computes <em>a + (−b)</em>, what it really adds is <em>a + (2<sup>n</sup> − b)</em>, which equals <em>2<sup>n</sup> + (a − b)</em>. If <em>a</em> is at least <em>b</em>, that extra <em>2<sup>n</sup></em> is a 1 in bit <em>n</em>, just past the register's <em>n</em> bits, and it falls off the end, leaving precisely <em>a − b</em>. Otherwise nothing falls off: the sum, <em>2<sup>n</sup> − (b − a)</em>, is how two's complement writes <em>a − b</em>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-7">
@@ -2705,7 +2629,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch2-twos-p10" class="insight-text">
-        <strong>Integer overflow vulnerabilities.</strong> Because the range is finite, adding two large positive numbers can produce a negative result: the carry overflows the most significant bit and changes the sign. In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a 64-bit floating-point velocity value was converted to a 16-bit signed integer that overflowed. Cost: $370 million. In security, integer overflow bugs are a classic source of buffer overflows: a length check using a signed integer can be tricked into accepting an enormous "negative" length that bypasses bounds checking. <a href="#fig-2-9">Fig 2.9</a> traces one such exploit step by step.
+        <strong>Integer overflow vulnerabilities.</strong> Adding two large positive numbers can produce a negative result: a carry runs into the top bit, which is 1 in every negative number, rather than off the end. In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a 64-bit floating-point velocity value was converted to a 16-bit signed integer that overflowed. In security, a check that a signed length is not too long is a classic route to a buffer overflow. It lets −1 through to a copy whose 64-bit length is <em>unsigned</em>: a plain number with no sign. Widening the 32-bit −1 copies its top bit into the new bits, so it stays all ones, the largest value 64 bits can hold (<a href="#fig-2-9">Fig 2.9</a>).
       </p>
     </div>
 
@@ -2932,9 +2856,7 @@
     </div>
 
     <p id="ch2-float-p6">
-      The 52 bits of mantissa give about 15 to 17 decimal digits of precision; the
-      11-bit exponent gives a dynamic range of about 10<sup>−308</sup> to 10<sup>308</sup>.
-      Most decimal fractions fit no finite binary expansion, so a double stores the nearest representable binary fraction, with a tiny rounding error.
+      The binary point shifts until a single non-zero digit stands before it, and in binary that digit can only be 1, so it is never stored. The 52 bits of mantissa give about 15 to 17 decimal digits of precision; the 11-bit exponent gives a dynamic range of about 10<sup>−308</sup> to 10<sup>308</sup>. A double rounds an endless expansion to the nearest binary fraction it can hold: 0.1 and 0.2 round up, 0.3 rounds down.
     </p>
 
     <p id="ch2-float-p7">
@@ -2991,7 +2913,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.087500;0.087625;0.124875;0.125000;0.424875;0.425000;1.000000" dur="8s" repeatCount="indefinite"/><text x="210" y="268" font-family="DM Mono" font-size="15" fill="#ec8d8d">0.1 + 0.2</text><text x="210" y="286" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">one double up</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.087500;0.087625;0.124875;0.125000;0.549875;0.550000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" font-family="DM Mono" font-size="16" fill="#fff">0.1 + 0.2 prints <tspan fill="#ec8d8d">0.30000000000000004</tspan></text></g>
 </svg>
-      <p id="ch2-float-p8" class="diagram-caption">0.1 never fits in binary: its digits repeat forever, so the double keeps the nearest 52-bit fraction, and 0.2 likewise. Their sum lands one representable step above where 0.3 itself is stored; the error was in the inputs, not the addition.</p>
+      <p id="ch2-float-p8" class="diagram-caption">0.1 never fits in binary: its digits repeat forever, so the double keeps the nearest 52-bit fraction, and 0.2 likewise. Their sum, rounded again to a double, lands one representable step above where 0.3 itself is stored.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3035,7 +2957,14 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 6.5v11"/><path d="M14.6 9.2c-.5-.8-1.4-1.2-2.6-1.2-1.4 0-2.6.7-2.6 1.9s1.1 1.6 2.6 2 2.6.9 2.6 2.1-1.2 1.9-2.6 1.9c-1.2 0-2.1-.4-2.6-1.2"/></svg></span>
       <p id="ch2-float-p11" class="insight-text">
-        <strong>Real-world consequences.</strong> Financial software cannot use floating point for currency, because rounding errors compound across millions of transactions. Banks use either integer cents or special decimal types instead. The 1991 Patriot missile failure during the Gulf War, which killed 28 American soldiers, was traced to a timing error, 0.1 rounded in binary, that accumulated over 100 hours of operation, causing the missile to miscalculate the position of an incoming Scud. Floating point is precise enough for almost everything, but its errors are real, and they compound.
+        <strong>Real-world consequences.</strong> Financial software cannot use floating
+      point for currency, because rounding errors compound across millions of
+      transactions. Banks use either integer cents or special decimal types instead. The
+      1991 Patriot missile failure during the Gulf War, which killed 28 American
+      soldiers, was traced to a timing error: the system cut the unending binary 0.1
+      short to store it in fixed point (the binary point at a set place, no exponent),
+      and over 100 hours the shortfall grew until the radar looked for an incoming Scud
+      in the wrong place.
       </p>
     </div>
 
@@ -3422,17 +3351,18 @@
     <p id="ch3-isa-p6">
       In the 1980s there was a vigorous debate. <strong>CISC</strong> (Complex
       Instruction Set Computers, like x86) had hundreds of specialised instructions,
-      including multi-step operations like "load from memory, add, and store back"
-      in a single instruction. <strong>RISC</strong> (Reduced Instruction Set Computers,
-      like ARM, MIPS, SPARC) had a small set of simple, uniform instructions. RISC
-      machines could clock faster, and the reason is decoding. A variable-length
-      instruction hides its own length. Fig 3.1's x86 <code>add</code> spent seven bytes,
-      and other encodings of the same operation run anywhere from two bytes to a
-      dozen, so the decoder cannot even find where
-      the next instruction begins until it has finished parsing this one. Fixed-width
-      instructions, always four bytes on ARM, sit at known boundaries, so the CPU can
-      locate and decode a whole run of them at once, and each decode step stays simple
-      enough to fit inside a shorter clock tick.
+      including multi-step operations like "load from memory, add, and store back" in a
+      single instruction. <strong>RISC</strong> (Reduced Instruction Set Computers, like
+      ARM, MIPS, SPARC) had a small set of simple, uniform instructions. They computed
+      only in registers and reached memory only through separate loads and stores, which
+      is why Fig 3.2's three x86 lines became six. RISC machines could clock faster, and
+      the reason is decoding. A variable-length instruction hides its own length. Fig
+      3.1's x86 <code>add</code> spent four bytes, but other encodings of the same
+      operation run anywhere from two bytes to a dozen, so the decoder cannot even find
+      where the next instruction begins until it has finished parsing this one.
+      Fixed-width instructions, always four bytes on ARM64, sit at known boundaries, so
+      the CPU can locate and decode a whole run of them at once, and each decode step
+      stays simple enough to fit inside a shorter clock tick.
     </p>
 
     <p id="ch3-isa-p7">
@@ -3462,11 +3392,7 @@
     </p>
 
     <p id="ch3-registers-p2">
-      x86-64 has 16 general-purpose registers, each 64 bits wide. Their names carry
-      historical baggage: in 1978 the original 8086 had 16-bit registers named AX, BX,
-      CX, DX. When Intel went to 32 bits in 1985, they prepended an "E" for
-      <em>extended</em>, giving EAX, EBX, etc. When AMD pushed to 64 bits in 2003, they
-      replaced "E" with "R": RAX, RBX, RCX, RDX. The names persist; the chip remembers.
+      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are fixed by instructions that use a register without naming it (<code>push</code> and <code>pop</code> move RSP). The rest are conventions, needed because a called function shares its caller's registers. It must preserve some and may overwrite the others, called volatile, so a caller first saves any it still needs. RSP and RBP point into the stack, where each call keeps its values in a block called its frame (next section).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-3">
@@ -3696,10 +3622,12 @@
 
     <p id="ch3-stack-p4">
       Each function call creates a <span class="key-term">stack frame</span>: a
-      contiguous region of the stack containing that function's local variables,
-      saved registers, and bookkeeping data. When the function returns, moving RSP
-      back up discards the frame. There is no garbage to clean up: local variables
-      vanish as soon as the function exits.
+      contiguous region of the stack holding that function's local variables, its return
+      address, and copies of the caller's register values it must restore. A caller
+      waits for the function it called, so the newest frame always leaves first. When a
+      function returns, moving RSP back up discards its frame. Data that must outlive
+      the call goes instead in a block of heap memory, taken with <code>malloc</code>
+      and kept until freed.
     </p>
   </section>
 
@@ -3722,7 +3650,7 @@
     </p>
 
     <p id="ch3-call-p3">
-      Under System V, <code>add(5, 3)</code> therefore receives its arguments in <code>EDI</code> and <code>ESI</code> and returns its result in <code>EAX</code>; the caller saves any volatile registers it cares about, and the callee preserves RBX, RBP, R12–R15.
+      Under System V, <code>add(5, 3)</code> therefore receives its 32-bit <code>int</code> arguments in <code>EDI</code> and <code>ESI</code>, the lower halves of RDI and RSI, and returns its result in <code>EAX</code>. (Windows would pass them in <code>ECX</code> and <code>EDX</code>, hence the wrapper.) The caller saves any volatile register (RAX, RCX, RDX, RSI, RDI, R8–R11) it still needs.
     </p>
 
     <div class="code-block">
@@ -3851,9 +3779,10 @@ main:
       <code>strcpy</code> is the culprit. It copies bytes from <code>name</code> into
       <code>buffer</code> one at a time, stopping only at a null byte (a zero), and never
       checks whether <code>buffer</code> has room. If <code>name</code> is 17 characters
-      long, the 17th byte lands one byte <em>past</em> the end of <code>buffer</code>, in
-      whatever lives next in memory. On the stack, that is the saved RBP, and just past it,
-      the <strong>return address</strong>.
+      long, the 17th byte lands one byte <em>past</em> the end of <code>buffer</code>. The
+      stack grows downward, so the values pushed before <code>buffer</code> sit at higher
+      addresses, but the copy fills <code>buffer</code> from its lowest address up and runs
+      on into them: the saved RBP, and just past it, the <strong>return address</strong>.
     </p>
 
     <div class="diagram-card" id="fig-3-7">
@@ -3952,7 +3881,7 @@ main:
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14" rx="1.5"/><path d="M4 9.5h16M8.5 3.5v4M15.5 3.5v4M8 13h2M11 13h2M14 13h2M8 16h2M11 16h2"/></svg></span>
       <p id="ch3-overflow-p10" class="insight-text">
-        <strong>Famous buffer overflow incidents.</strong> The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL), technically a buffer over-<em>read</em> rather than overflow. The server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer, including the private keys of millions of HTTPS servers. For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels, Linux itself included as of 2022.
+        <strong>Famous buffer overflow incidents.</strong> The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL), technically a buffer over-<em>read</em> rather than overflow. The server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer, which could include the server's private key. For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels, Linux itself included as of 2022.
       </p>
     </div>
   </section>
@@ -4097,15 +4026,18 @@ main:
     <h3>Defence three: ASLR</h3>
 
     <p id="ch3-defenses-p6">
-      Even without injecting shellcode, attackers could redirect execution by overwriting
-      the return address with the address of an existing function, such as the C library function
-      <code>system()</code> with a string argument like <code>"/bin/sh"</code>. This is
+      Even without injecting shellcode, attackers could redirect execution by
+      overwriting the return address with the address of an existing function, such as
+      the C library's <code>system()</code> called with <code>"/bin/sh"</code>, which
+      starts the shell, the program that runs whatever the attacker types. This is
       called a <em>return-to-libc</em> attack. The countermeasure is
       <span class="key-term">ASLR</span>, Address Space Layout Randomization. At each
       program launch, the operating system loads code, libraries, the heap, and the
-      stack at random addresses. The attacker no longer knows where to point the
-      overwritten return address. ASLR debuted in PaX (a Linux patch) in 2001, and
-      became default on most operating systems by the late 2000s.
+      stack at random addresses, so the attacker no longer knows where to point the
+      return address. Like the canary, ASLR holds only while the addresses stay secret:
+      a library loads as one block, so one leaked address locates all of it. ASLR
+      debuted in PaX (a Linux patch) in 2001, and became default on most operating
+      systems by the late 2000s.
     </p>
 
     <div class="diagram-card" id="fig-3-9">
@@ -4228,13 +4160,7 @@ main:
     </p>
 
     <p id="ch3-defenses-p9">
-      ROP forced another layer: <strong>Control Flow Integrity</strong> (CFI, in which the
-      compiler records where indirect jumps may legally land and the runtime refuses
-      any transfer to an address off that list), shadow
-      stacks (a separate, protected stack that mirrors the call stack and is checked on
-      return), and ARM Pointer Authentication (which cryptographically signs return
-      addresses, making forgery infeasible). Apple Silicon and recent Intel CPUs
-      (CET, Control-flow Enforcement Technology) ship these defences in hardware.
+      The leaks above undid the canary and ASLR, and ROP undid DEP, which forced another layer. A <code>ret</code> is an indirect jump: its destination is read from memory as the program runs. In <strong>Control Flow Integrity</strong> (CFI), the compiler records where indirect jumps may legally land and the runtime refuses any transfer to an address off that list. Shadow stacks (a separate, protected stack that mirrors the call stack and is checked on return) and ARM Pointer Authentication (a code computed from each return address and a key the program cannot read, checked before <code>ret</code>) guard the return address itself. Apple Silicon and recent Intel CPUs (CET, Control-flow Enforcement Technology) ship these defences in hardware.
     </p>
 
     <div class="diagram-card" id="fig-3-10">
@@ -4370,14 +4296,7 @@ main:
     <h3>The deeper lesson</h3>
 
     <p id="ch3-defenses-p12">
-      Buffer overflows are not a bug in any one program. They are a structural consequence
-      of a particular language model, one in which memory is raw, addresses are first-class
-      values, and the programmer is responsible for every check. The defences above are
-      mitigation, not a cure. The cure is to use a memory-safe language wherever possible.
-      That so much critical infrastructure (operating system kernels, web browsers,
-      database engines, network stacks) is still written in C and C++ is both a tribute
-      to those languages' performance and a permanent source of risk. We will return to
-      this when we discuss C, C++, and Rust in later chapters.
+      Buffer overflows follow from a particular language model, one in which memory is raw, addresses are plain numbers any stray write can change, and the programmer is responsible for every check. The defences above only make a missed check harder to exploit; the cure is to use a memory-safe language wherever possible. That so much critical infrastructure (operating system kernels, web browsers, database engines, network stacks) is still written in C and C++ reflects those languages' performance, and it remains a permanent source of risk.
     </p>
   </section>
 
@@ -4520,16 +4439,17 @@ main:
     </p>
 
     <p id="chBridge-mode-p2">
-      The bit goes by different names on different chips. On x86 it is the bottom two
-      bits of the <code>CS</code> selector, called the Current Privilege Level or <code>CPL</code>,
-      with values 0 (most privileged) through 3 (least). On ARM it is the Exception Level,
-      <code>EL0</code> through <code>EL3</code>. On RISC-V it is the privilege mode field:
-      <code>U</code>, <code>S</code>, <code>M</code>. Architectures offer different numbers
-      of levels, but every operating system in use today reduces them to two: a privileged
-      mode for the kernel, and an unprivileged mode for everything else. Books and
-      conversations call these <strong>Ring 0</strong> and <strong>Ring 3</strong>, after
-      the original Multics and Intel terminology, even on architectures whose hardware has
-      no rings at all.
+      On x86 the bit lives in the bottom two bits of <code>CS</code>, the code-segment
+      register; those bits are the Current Privilege Level or <code>CPL</code>, with
+      values 0 (most privileged) through 3 (least). On ARM the bit is the Exception
+      Level, <code>EL0</code> through <code>EL3</code>. On RISC-V it is the privilege
+      mode field: <code>U</code>, <code>S</code>, <code>M</code>. Architectures offer
+      different numbers of levels, but every operating system in use today reduces them
+      to two, a privileged mode for the kernel and an unprivileged mode for everything
+      else, so in effect it is one bit: kernel or not. Books and conversations call
+      these <strong>Ring 0</strong> and <strong>Ring 3</strong>, after the original
+      Multics and Intel terminology, even on architectures whose hardware has no rings
+      at all.
     </p>
 
     <h3>The hardware enforces, not the operating system</h3>
@@ -4632,7 +4552,7 @@ main:
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="chBridge-mode-p8" class="insight-text">
-        <strong>Why this is the seam.</strong> Every protection the operating system claims to enforce (process isolation, file permissions, network sandboxing, container boundaries) bottoms out in this one bit. If a user-mode program could clear the bit by itself, the entire stack would collapse. It cannot, because the bit lives in silicon: it is set only by a small set of instructions that themselves require Ring 0 to execute. The whole tower of operating-system security stands on the bit's circular self-protection.
+        <strong>Why this is the seam.</strong> Every protection the operating system claims to enforce (process isolation, file permissions, network sandboxing, container boundaries) bottoms out in this one bit. If a user-mode program could clear the bit by itself, the entire stack would collapse. It cannot, because privilege rises only through a trap, and a trap enters Ring 0 at an address the kernel registered at boot, so a program's own instructions never run there. Dropping back to user mode needs Ring 0 too.
       </p>
     </div>
   </section>
@@ -4723,16 +4643,18 @@ main:
     <h3>Traps, interrupts, exceptions: the same mechanism, three names</h3>
 
     <p id="chBridge-trap-p4">
-      The system call is one case of something more general. Whenever the CPU must
-      stop running the current code and run something the kernel chose instead, it
-      takes this same path; only the name changes with the trigger. A
-      <strong>system call</strong> is a synchronous trap initiated by the program.
-      An <strong>exception</strong> is a synchronous trap caused by something the program
-      did wrong: division by zero, a page fault, a #GP from Section 01. An
-      <strong>interrupt</strong> is an asynchronous trap from a hardware device: a
-      network card receiving a packet, a disk finishing a read, the timer firing. On x86,
-      exceptions, interrupts and the legacy <code>int 0x80</code> system call are all
-      dispatched through one data structure: the interrupt descriptor table.
+      Every time the CPU must stop the current code and run something the kernel chose,
+      it saves its place and enters Ring 0 at an address the kernel registered. A
+      <strong>system call</strong> and an <strong>exception</strong> are synchronous
+      traps, caused by the instruction now running: the program asks on purpose, or the
+      instruction cannot complete (division by zero, a page fault, a #GP from Section
+      01). An <strong>interrupt</strong> is an asynchronous trap from a hardware device
+      (a disk finishing a read, the timer firing), free to arrive between any two
+      instructions. On x86, each exception and interrupt has a number, its vector, which
+      indexes one data structure: the interrupt descriptor table. The instruction
+      <code>int n</code> lets software fire vector n itself; legacy Linux system calls
+      used <code>int 0x80</code> (vector 128), while <code>SYSCALL</code> skips the
+      table and jumps to the entry point in <code>MSR_LSTAR</code> (Fig BR.2).
     </p>
 
     <div class="diagram-card" id="fig-br-3">
@@ -4840,7 +4762,7 @@ main:
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="chBridge-trap-p7" class="insight-text">
-        <strong>The kernel's authority is registered, not assumed.</strong> The CPU does not know what the kernel is. It knows where to jump on each kind of trap, because the kernel told it at boot by writing the IDT into memory and pointing <code>IDTR</code> at it. After boot, that pointer is in a privileged register that user code cannot change. The kernel's authority is an arrangement the kernel made with the silicon while it was still alone with the machine.
+        <strong>The kernel's authority is registered, not assumed.</strong> The CPU does not know what the kernel is. It knows where to jump on each kind of trap because the kernel told it at boot: it wrote the IDT and pointed <code>IDTR</code> at it, and stored the system-call entry point in <code>MSR_LSTAR</code>. After boot, both sit in privileged registers that user code cannot change. The kernel's authority is an arrangement the kernel made with the silicon while it was still alone with the machine.
       </p>
     </div>
   </section>
@@ -4862,11 +4784,14 @@ main:
     </p>
 
     <p id="chBridge-mmu-p2">
-      <a href="#ch1">Chapter 1</a> introduced virtual memory: each process believes
-      it owns the entire address space, and the kernel maintains the illusion. The MMU
-      is the part of the illusion that lives in hardware. It runs no code, kernel or
-      otherwise; it is a circuit. Given a virtual address, it produces a
-      physical address in nanoseconds, or it produces a fault.
+      <a href="#ch1">Chapter 1</a> introduced virtual memory: each process believes it
+      owns the entire address space, and the kernel maintains the illusion. The MMU is
+      the part of the illusion that lives in hardware. It translates whole
+      <span class="key-term">pages</span>, fixed-size blocks (4 KiB on x86-64): an
+      address splits into a page number and an offset inside the page, and only the page
+      number changes, from virtual to physical. The page tables form four levels: a
+      slice of the page number picks an entry at each, leading to the next table and
+      finally to the physical page.
     </p>
 
     <h3>The page-table walker as a hardware unit</h3>
@@ -5086,14 +5011,7 @@ main:
     </p>
 
     <p id="chBridge-timer-p2">
-      The piece of silicon that solves this is the <strong>hardware timer</strong>,
-      a free-running counter wired directly into the interrupt controller. Every
-      modern CPU has at least one. On x86 the local APIC timer ticks at the bus frequency
-      and fires interrupts at a programmable rate; on ARM a generic timer does the same.
-      The kernel programs it once, at boot (say, "interrupt me every millisecond"), and
-      from then on, no matter what user code is doing, the timer fires and control
-      returns to the kernel, which decides what to do next. Without this one piece of
-      hardware, preemptive multitasking is impossible.
+      Devices interrupt only when they have news and programs yield only when they choose, so neither guarantees the kernel a turn. The <strong>hardware timer</strong>, a counter wired into every modern CPU's interrupt controller, does. It counts down from a number the kernel loads, say a millisecond's worth, and at zero raises an interrupt (a timer tick) and starts again. Whatever user code is doing, each tick hands the CPU back to the kernel, which decides what runs next. No program can stop the ticks, because reprogramming the timer and switching interrupts off are privileged. Without the timer, preemptive multitasking, in which the kernel takes the CPU back instead of waiting for a yield, is impossible.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-6">
@@ -5176,14 +5094,15 @@ main:
     </p>
 
     <p id="chBridge-io-p2">
-      Two channels carry every conversation between CPU and device. The first is
-      <strong>memory-mapped I/O</strong>: device registers sit at fixed
-      addresses in the physical address space, and reading or writing those addresses
-      is how the CPU talks to the device. The second is <strong>direct memory access</strong>:
-      the device, on its own initiative, copies data into or out of RAM without
-      asking the CPU on every byte. Both are coordinated by interrupts: the device
-      tells the CPU "I'm done" by raising an IRQ, which goes through the same trap
-      machinery from Section 02.
+      Two channels carry most of the conversation between CPU and device. The first is
+      <strong>memory-mapped I/O</strong>: a device's registers, small cells in its own
+      circuit, sit at fixed addresses in the physical address space, so writing one
+      gives the device a command and reading one reports its status. The second is
+      <strong>direct memory access</strong>: the device becomes master of the bus,
+      issuing its own reads and writes to RAM without asking the CPU on every byte or
+      passing through the CPU's MMU. Both channels are coordinated by interrupts: the
+      device tells the CPU "I'm done" by raising an IRQ, which goes through the same
+      trap machinery from Section 02.
     </p>
 
     <h3>Memory-mapped I/O: devices live at memory addresses</h3>
@@ -5245,14 +5164,7 @@ main:
     <h3>DMA: when the device copies on its own</h3>
 
     <p id="chBridge-io-p4">
-      MMIO is fine for sending small commands ("read sector 4096 into buffer at
-      0x4a200000"), not for the data itself. A modern NVMe SSD reads gigabytes
-      per second; if the CPU had to copy each byte one MMIO load at a time, the CPU would
-      do nothing else, and the SSD would still be the slow part. The hardware solution
-      is direct memory access: the device has its own memory-bus master, and once the
-      CPU has told it where to read and where to write, the device shovels data on its
-      own. The CPU runs something else until the device raises its completion interrupt
-      and the kernel takes over to clean up.
+      MMIO suits the doorbell, the one register write that tells a drive a command is waiting in a queue in RAM, but not the data itself. A modern NVMe SSD reads gigabytes per second; if the CPU had to copy the data with MMIO loads, each waiting about a microsecond for the device to answer, it would do nothing else, and the copy, not the SSD, would set the speed. The hardware solution is direct memory access: once the CPU has told the device where to read and where to write, the device shovels data on its own. The CPU runs something else until the device raises its completion interrupt and the kernel takes over to clean up.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-8">
@@ -5441,13 +5353,7 @@ main:
     </p>
 
     <p id="chBridge-synthesis-p6">
-      But every one of them assumes, silently, that the bridge we have just walked
-      across already exists. That somewhere underneath the <code>schedule()</code>
-      function is a timer that called it. That somewhere underneath the
-      <code>read()</code> system call is a <code>SYSCALL</code> instruction and an entry point the kernel registered at boot. That somewhere underneath every memory dereference is a four-level
-      page-table walker doing the translation in nanoseconds. The kernel chapter that
-      opens <a href="part-2">Part II</a> will not stop to mention these things. They are what the
-      Bridge is for.
+      But every one of them assumes, silently, that the bridge we have just walked across already exists: under the <code>schedule()</code> function, a timer tick that took the CPU back; under the <code>read()</code> system call, a <code>SYSCALL</code> instruction and an entry point the kernel registered at boot; under every memory access, the TLB or, on a miss, the four-level page-table walker. The kernel chapter that opens <a href="part-2">Part II</a> will not stop to mention these things, because the Bridge has.
     </p>
 
     <div class="pull-quote">

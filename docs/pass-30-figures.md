@@ -56,3 +56,21 @@ The owner settled these on 2026-10-11. Not redrawn or edited. Gate 1 checks clip
 | 4 | `fig-15-9` Fig 15.9 · The attack-pattern map · every specific exploit reduces to a few patterns |
 
 18 figures.
+
+## Handed over by Pass 29 (figure text Pass 29 may not change)
+
+Found by Pass 29 Part I and its Sonnet 5.5 verification (2026-10-11; UNDER.md §4ac). Fix in the figure's turn; log each fact in §4g.
+
+| Figure | Finding | Fix |
+|---|---|---|
+| `fig-1-6` | The 2017 Epyc point (a four-die package) sits on the two-year line the caption says the chips fall below after about 2015 | Re-check the data point; the caption is an open owner call (docs/pass-29-owner-calls.md) |
+| `fig-2-1` | Strip: "half the span" (binary) against "a sixth of the span" (ternary) uses two different baselines | One baseline: rails give a half for binary and a quarter for ternary |
+| `fig-2-2` | Strip: "closed is 1, open is 0" credits Shannon with a convention he did not use (his 1938 paper gave 0 to the closed circuit's hindrance) | "label closed 1, open 0" |
+| `fig-2-9` | Title "How a signed overflow becomes a buffer overflow": the bug is a signed-to-unsigned conversion (CWE-195) | "How a signed length becomes a buffer overflow" |
+| `fig-2-10` | Caption repeats "after an implied leading 1", which ch2-float-p6 now says | Drop the phrase (say it once) |
+| `fig-2-12` | Strip: "570 m" is 0.34 s × 1,676 m/s (Mach 5); GAO gives the 0.3433 s drift and a range-gate shift, not 570 m | "about 570 m at Mach 5" |
+| `fig-3-3` | Strip: RFLAGS "set by every arithmetic operation" (INC leaves CF; MULX sets none) | "set by most arithmetic operations" |
+| `fig-3-4` | Strip: "structures larger than 16 bytes are passed by a hidden pointer" (System V ABI 3.2.3: class MEMORY, copied onto the stack) | "structures larger than 16 bytes are copied onto the stack" |
+| `fig-3-6` | Label, desc and strip give the return address as "main+5"; the section's own listing puts it at main+19 | "main+19" in all three |
+
+Not queued: Fig 1.5's "3 nm" is owner-ruled (UNDER.md §5); a change would be a re-ruling request to the owner, not a repair.

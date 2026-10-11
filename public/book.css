@@ -289,6 +289,7 @@
       position: absolute;
       left: 0; bottom: -10px;
       width: 48px; height: 1px;
+      pointer-events: none;   /* decoration: never take a tap meant for the section dot above it */
       background: var(--accent);
       transform-origin: left center;
       animation: drawStripe 0.9s ease-out both;
@@ -1651,7 +1652,8 @@
   }
   .mark-dot svg { flex: none; width: 10px; height: 10px; overflow: visible; }
   @media (pointer: coarse) {
-    .section-number .mark-dot::after { content: ''; position: absolute; left: -19px; top: -19px; width: 44px; height: 44px; }
+    /* 52 px, centred: the unmarked dot's livePulse scales it (and this area) down to 0.85, which still leaves 44 px */
+    .section-number .mark-dot::after { content: ''; position: absolute; left: calc(50% - 26px); top: calc(50% - 26px); width: 52px; height: 52px; }
   }
 
   /* marked section tab: a 2px strip above the label (the bottom border still means "active") */

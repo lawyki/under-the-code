@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-11T13:57:27.116Z",
-  "count": 464,
-  "scanned": 1087,
+  "generated": "2026-10-11T20:18:06.832Z",
+  "count": 465,
+  "scanned": 1099,
   "curated_added": 171,
   "curated_missing": [
     "half-adder",
@@ -278,7 +278,7 @@
     },
     "balanced ternary": {
       "term": "balanced ternary",
-      "definition": "A number system with digits −1, 0 and +1, used by the Soviet Setun computer (1958); it lost to binary because three voltage levels leave narrower margins for noise.",
+      "definition": "A number system with digits −1, 0 and +1, used by the Soviet Setun computer (1958); three levels on one wire leave narrower margins for error than binary's two.",
       "part": "part-1",
       "section": "ch2-binary",
       "chapter": "ch2",
@@ -448,7 +448,7 @@
     },
     "bombe": {
       "term": "Bombe",
-      "definition": "The electromechanical machine Turing built at Bletchley Park to break Enigma, racing through candidate rotor positions and discarding any that led to a contradiction.",
+      "definition": "The electromechanical machine Turing designed at Bletchley Park to break Enigma, racing through candidate rotor positions and discarding any that led to a contradiction.",
       "part": "part-1",
       "section": "ch1-context",
       "chapter": "ch1",
@@ -1798,7 +1798,7 @@
     },
     "hardware timer": {
       "term": "hardware timer",
-      "definition": "A free-running counter wired into the interrupt controller that fires interrupts at a programmed rate, letting the kernel take the CPU back and making preemptive multitasking possible.",
+      "definition": "A counter in the interrupt controller that counts down from a number the kernel loads, interrupts at zero and restarts, so the kernel can always take the CPU back.",
       "part": "part-1",
       "section": "chBridge-timer",
       "chapter": "chBridge",
@@ -2078,7 +2078,7 @@
     },
     "instruction cycle": {
       "term": "instruction cycle",
-      "definition": "The loop every CPU core runs without pause: fetch an instruction, decode it, execute it, write back the result, then advance the program counter and start again.",
+      "definition": "The loop every CPU core runs: fetch an instruction, decode it, execute it, write back the result, then advance the program counter and start again.",
       "part": "part-1",
       "section": "ch1-cpu",
       "chapter": "ch1",
@@ -2098,7 +2098,7 @@
     },
     "integrated circuit": {
       "term": "integrated circuit",
-      "definition": "Multiple transistors etched onto a single piece of semiconductor, first made by Jack Kilby in germanium in 1958 and, within months, by Robert Noyce in silicon.",
+      "definition": "Several circuit parts, transistors among them, made from one piece of semiconductor: first by Jack Kilby in germanium in 1958 and, within months, by Robert Noyce in silicon.",
       "part": "part-1",
       "section": "ch1-transistor",
       "chapter": "ch1",
@@ -2268,7 +2268,7 @@
     },
     "kernel": {
       "term": "kernel",
-      "definition": "The one program that always runs and owns the hardware, forcing every other program to ask its permission; it shares the machine between programs and protects them from each other.",
+      "definition": "The one program that stays loaded and owns the hardware, forcing every other program to ask its permission; it shares the machine between programs and protects them from each other.",
       "part": "part-1",
       "section": "ch1-kernel",
       "chapter": "ch1",
@@ -2998,13 +2998,13 @@
     },
     "pages": {
       "term": "pages",
-      "definition": "The fixed-size blocks, typically 4 KB, into which memory is divided: virtual pages in a process's address space, physical pages (page frames) in RAM.",
-      "part": "part-2",
-      "section": "ch4-vm",
-      "chapter": "ch4",
-      "chapter_num": "Chapter 4",
-      "section_label": "03 · Virtual memory",
-      "section_title": "The lie of unlimited memory"
+      "definition": "The fixed-size blocks, typically 4 KiB, into which memory is divided: virtual pages in a process's address space, physical pages (page frames) in RAM.",
+      "part": "part-1",
+      "section": "chBridge-mmu",
+      "chapter": "chBridge",
+      "chapter_num": "Bridge",
+      "section_label": "03 · The MMU",
+      "section_title": "The hardware that draws the walls between processes"
     },
     "parameterised queries": {
       "term": "parameterised queries",
@@ -3210,11 +3210,11 @@
       "term": "process",
       "definition": "A running program together with the private virtual address space the kernel gives it, kept apart from other processes by the MMU's page tables.",
       "part": "part-1",
-      "section": "chBridge-mmu",
-      "chapter": "chBridge",
-      "chapter_num": "Bridge",
-      "section_label": "03 · The MMU",
-      "section_title": "The hardware that draws the walls between processes"
+      "section": "ch1-kernel",
+      "chapter": "ch1",
+      "chapter_num": "Chapter 1",
+      "section_label": "05 · The Kernel",
+      "section_title": "Why the kernel had to be invented"
     },
     "promise": {
       "term": "promise",
@@ -3978,7 +3978,7 @@
     },
     "stack frame": {
       "term": "stack frame",
-      "definition": "The contiguous region of the stack that one function call creates, holding its local variables, saved registers and bookkeeping data, discarded when the function returns.",
+      "definition": "The contiguous region of the stack that one function call creates, holding its local variables, its return address and the caller's registers it must restore, discarded when the function returns.",
       "part": "part-1",
       "section": "ch3-stack",
       "chapter": "ch3",
@@ -4318,7 +4318,7 @@
     },
     "turing": {
       "term": "Turing",
-      "definition": "Alan Turing, the Cambridge mathematician whose 1936 paper defined the Turing machine and the universal machine, and who built the Bombe at Bletchley Park.",
+      "definition": "Alan Turing, the Cambridge mathematician whose 1936 paper defined the Turing machine and the universal machine, and who designed the Bombe at Bletchley Park.",
       "part": "part-1",
       "section": "ch1-context",
       "chapter": "ch1",
@@ -4375,6 +4375,16 @@
       "chapter_num": "Chapter 5",
       "section_label": "05 · Undefined behavior",
       "section_title": "The optimiser's cruel logic."
+    },
+    "unsigned": {
+      "term": "unsigned",
+      "definition": "A whole-number type with no sign: every bit pattern is read as a plain count from zero up, so all ones is the largest value, not −1.",
+      "part": "part-1",
+      "section": "ch2-twos",
+      "chapter": "ch2",
+      "chapter_num": "Chapter 2",
+      "section_label": "05 · Negative numbers",
+      "section_title": "Two's complement, or how to subtract by adding"
     },
     "url": {
       "term": "URL",

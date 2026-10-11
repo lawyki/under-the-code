@@ -623,7 +623,9 @@ export const TABBABLE = () => {
     if (!el.getClientRects().length) continue;
     if (el.closest('[hidden]')) continue;
     if (el.matches('[popover]:not(:popover-open), [popover]:not(:popover-open) *')) continue;
-    const cls = (typeof el.className === 'string' ? el.className.trim().split(/\s+/)[0] : '') || '';
+    // a glossary tooltip is described as one whatever its first class (a key-term span becomes one when the
+    // glossary's first use of its term moves earlier, which Pass 29 does on purpose): the invariants' glossary filter
+    const cls = el.classList.contains('glossary-ref') ? 'glossary-ref' : (typeof el.className === 'string' ? el.className.trim().split(/\s+/)[0] : '') || '';
     out.push({ d: el.tagName.toLowerCase() + (cls ? '.' + cls : ''), inNav: !!el.closest('.book-nav') });
   }
   return out;
