@@ -4871,80 +4871,63 @@ main:
 
     <h3>The page-table walker as a hardware unit</h3>
 
-    <div class="diagram-card" id="fig-br-4">
-      <div class="diagram-label">Fig BR.4 · The MMU · silicon between the CPU and the RAM</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46"><title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>
-        <!-- CPU on left -->
-        <rect x="40" y="120" width="100" height="120" rx="8" fill="#1a1a1a" stroke="rgba(212,168,83,0.55)" stroke-width="1.2"/>
-        <text x="90" y="148" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">CPU</text>
-        <text x="90" y="168" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">running</text>
-        <text x="90" y="180" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">user code</text>
-        <text x="90" y="220" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">issues:</text>
-        <text x="90" y="234" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">virt addr</text>
-
-        <!-- arrow CPU → MMU -->
-        <line x1="140" y1="180" x2="220" y2="180" stroke="rgba(212,168,83,0.85)" stroke-width="1.5" stroke-dasharray="6 4" class="flow-dash"/>
-        <text x="180" y="172" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(212,168,83,0.6)">0x7fff_a3c4_0010</text>
-
-        <!-- MMU box -->
-        <rect x="220" y="80" width="280" height="200" rx="10" fill="#1a1200" stroke="rgba(212,168,83,0.85)" stroke-width="1.5"/>
-        <text x="360" y="105" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(212,168,83,0.95)" letter-spacing="0.18em">MMU · SILICON</text>
-        <text x="360" y="120" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="rgba(255,255,255,0.5)">memory management unit</text>
-
-        <!-- TLB at top inside MMU -->
-        <rect x="240" y="130" width="100" height="34" rx="4" fill="#1a1a1a" stroke="rgba(150,216,150,0.55)"/>
-        <text x="290" y="148" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="rgba(150,216,150,0.9)">TLB</text>
-        <text x="290" y="160" text-anchor="middle" font-family="DM Mono" font-size="6.5" fill="rgba(255,255,255,0.4)">recent · cached</text>
-
-        <!-- Page-walker -->
-        <rect x="350" y="130" width="130" height="34" rx="4" fill="#1a1a1a" stroke="rgba(212,168,83,0.55)"/>
-        <text x="415" y="148" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="rgba(212,168,83,0.9)">PAGE-TABLE WALKER</text>
-        <text x="415" y="160" text-anchor="middle" font-family="DM Mono" font-size="6.5" fill="rgba(255,255,255,0.4)">CR3 → L4 → L3 → L2 → L1</text>
-
-        <!-- 4 level boxes -->
-        <g font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.6)">
-          <rect x="232" y="178" width="50" height="36" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.35)"/>
-          <text x="257" y="192" text-anchor="middle" fill="rgba(212,168,83,0.75)">L4</text>
-          <text x="257" y="206" text-anchor="middle">PML4</text>
-
-          <rect x="293" y="178" width="50" height="36" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.35)"/>
-          <text x="318" y="192" text-anchor="middle" fill="rgba(212,168,83,0.75)">L3</text>
-          <text x="318" y="206" text-anchor="middle">PDPT</text>
-
-          <rect x="354" y="178" width="50" height="36" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.35)"/>
-          <text x="379" y="192" text-anchor="middle" fill="rgba(212,168,83,0.75)">L2</text>
-          <text x="379" y="206" text-anchor="middle">PD</text>
-
-          <rect x="415" y="178" width="50" height="36" rx="4" fill="#0d0d0d" stroke="rgba(212,168,83,0.35)"/>
-          <text x="440" y="192" text-anchor="middle" fill="rgba(212,168,83,0.75)">L1</text>
-          <text x="440" y="206" text-anchor="middle">PT</text>
-        </g>
-        <line x1="282" y1="196" x2="293" y2="196" stroke="rgba(212,168,83,0.4)"/>
-        <line x1="343" y1="196" x2="354" y2="196" stroke="rgba(212,168,83,0.4)"/>
-        <line x1="404" y1="196" x2="415" y2="196" stroke="rgba(212,168,83,0.4)"/>
-
-        <!-- Permission check -->
-        <rect x="240" y="226" width="240" height="40" rx="4" fill="#0d0d0d" stroke="rgba(232,120,120,0.45)"/>
-        <text x="360" y="244" text-anchor="middle" font-family="DM Mono" font-size="8.5" fill="rgba(232,120,120,0.9)">PERMISSION CHECK</text>
-        <text x="360" y="258" text-anchor="middle" font-family="DM Mono" font-size="6.5" fill="rgba(255,255,255,0.45)">U/S · R/W · NX · present; fail = #PF (vector 14)</text>
-
-        <!-- arrow MMU → RAM -->
-        <line x1="500" y1="180" x2="580" y2="180" stroke="rgba(100,150,255,0.85)" stroke-width="1.5" stroke-dasharray="6 4" class="flow-dash"/>
-        <text x="540" y="172" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(100,150,255,0.7)">0x4_a200_0010</text>
-
-        <!-- RAM on right -->
-        <rect x="580" y="120" width="100" height="120" rx="8" fill="#1a1a1a" stroke="rgba(100,150,255,0.55)" stroke-width="1.2"/>
-        <text x="630" y="148" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(100,150,255,0.85)">RAM</text>
-        <text x="630" y="168" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">physical</text>
-        <text x="630" y="180" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.5)">addresses</text>
-        <text x="630" y="220" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.4)">returns:</text>
-        <text x="630" y="234" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.85)">data byte</text>
-
-        <!-- Caption strip -->
-        <text x="360" y="320" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(212,168,83,0.7)" letter-spacing="0.15em">EVERY · LOAD · STORE · INSTRUCTION-FETCH · GOES · THROUGH · HERE</text>
-        <text x="360" y="340" text-anchor="middle" font-family="DM Mono" font-size="7.5" fill="rgba(255,255,255,0.4)">The kernel writes the page tables. The MMU reads them. The CPU asks the MMU on every access.</text>
-      </svg>
-      <p id="chBridge-mmu-p3" class="diagram-caption">The MMU is a piece of silicon between the CPU and the rest of the machine. On every memory access (load, store, or instruction fetch), the CPU hands the MMU a 64-bit virtual address and waits for a physical address back. The MMU first checks the TLB (a small associative cache of recent translations); on a hit, it returns immediately. On a miss, the page-table walker (a hardware finite-state-machine, not the kernel) descends four levels of page tables in main memory, starting from the address in <code>CR3</code>, and produces both a physical address and a set of permission bits. The permission bits are checked. If anything is wrong, the MMU raises a #PF (page fault, vector 14) and the kernel takes over. Wrong means a page not present, an S-tagged page touched from user mode, a write to a read-only page, or an NX-tagged page executed.</p>
+    <div class="diagram-card fig-v2" id="fig-br-4">
+      <div class="diagram-label">Fig BR.4&nbsp;· The MMU&nbsp;· silicon between the CPU and the RAM</div>
+      <svg viewBox="0 0 400 394" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46">
+<title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>
+<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_a3c4_0010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4_a200_0010 goes to RAM, keeping the same offset within the page. Then a store to the same address: the walk succeeds, but the page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>
+<rect x="20" y="14" width="360" height="54" rx="6" fill="#86a8ff" fill-opacity="0.08" stroke="#86a8ff" stroke-opacity="0.6"/>
+<text x="32" y="36" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">CPU</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075667;0.075833;0.549333;0.549583;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="56" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">load  0x7fff_a3c4_0010</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="56" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">store 0x7fff_a3c4_0010</text></g>
+<rect x="20" y="90" width="360" height="196" rx="6" fill="#d4a853" fill-opacity="0.08" stroke="#d4a853" stroke-opacity="0.8"/>
+<text x="32" y="112" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#d4a853">MMU · a circuit, no code</text>
+<rect x="32" y="124" width="336" height="30" rx="6" fill="rgba(255,255,255,0.6)" fill-opacity="0.08" stroke="rgba(255,255,255,0.6)" stroke-opacity="0.5"/>
+<text x="44" y="144" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">TLB: recent translations</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.166500;0.166667;0.207667;0.207917;1.000000" dur="12s" repeatCount="indefinite"/><text x="356" y="144" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">miss</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.591500;0.591667;0.632667;0.632917;1.000000" dur="12s" repeatCount="indefinite"/><text x="356" y="144" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">miss</text></g>
+<text x="44" y="180" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">walk from CR3:</text>
+<rect x="44" y="190" width="72" height="30" rx="5" fill="none" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="80" y="210" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">L4</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.216500;0.216667;0.249333;0.249583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="44" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.624833;0.625000;0.657667;0.657917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="44" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<path d="M116,205 h12 m-5,-4 l5,4 l-5,4" fill="none" stroke="rgba(255,255,255,0.6)"/>
+<rect x="128" y="190" width="72" height="30" rx="5" fill="none" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="164" y="210" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">L3</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.249833;0.250000;0.282667;0.282917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="128" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.649833;0.650000;0.682667;0.682917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="128" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<path d="M200,205 h12 m-5,-4 l5,4 l-5,4" fill="none" stroke="rgba(255,255,255,0.6)"/>
+<rect x="212" y="190" width="72" height="30" rx="5" fill="none" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="248" y="210" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">L2</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.283167;0.283333;0.316000;0.316250;1.000000" dur="12s" repeatCount="indefinite"/><rect x="212" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.674833;0.675000;0.707667;0.707917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="212" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<path d="M284,205 h12 m-5,-4 l5,4 l-5,4" fill="none" stroke="rgba(255,255,255,0.6)"/>
+<rect x="296" y="190" width="72" height="30" rx="5" fill="none" stroke="#d4a853" stroke-opacity="0.6"/>
+<text x="332" y="210" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">L1</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.316500;0.316667;0.349333;0.349583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="296" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.699833;0.700000;0.732667;0.732917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="296" y="190" width="72" height="30" rx="5" fill="#d4a853" fill-opacity="0.35" stroke="#d4a853" stroke-width="2"/></g>
+<text x="44" y="252" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">check: present, user, writable?</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.366500;0.366667;0.549333;0.549583;1.000000" dur="12s" repeatCount="indefinite"/><text x="44" y="272" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">load allowed</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.741500;0.741667;1.000000" dur="12s" repeatCount="indefinite"/><text x="44" y="272" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">store to a read-only page: no</text></g>
+<rect x="20" y="306" width="170" height="52" rx="6" fill="#9bd89b" fill-opacity="0.08" stroke="#9bd89b" stroke-opacity="0.6"/>
+<text x="32" y="327" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#9bd89b">RAM</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><text x="32" y="347" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">0x4_a200_0010</text></g>
+<rect x="210" y="306" width="170" height="52" rx="6" fill="#ec8d8d" fill-opacity="0.08" stroke="#ec8d8d" stroke-opacity="0.6"/>
+<text x="222" y="327" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">page fault</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.766500;0.766667;1.000000" dur="12s" repeatCount="indefinite"/><text x="222" y="347" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">kernel decides</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.416500;0.416667;0.458333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="304" width="174" height="56" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.766500;0.766667;0.808333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="208" y="304" width="174" height="56" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
+<text x="20" y="382" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">offset 0x010 unchanged: only the page moves</text>
+</svg>
+      <p id="chBridge-mmu-p3" class="diagram-caption">Every load, store and instruction fetch goes through the MMU, which turns the virtual address into a physical one by walking the page tables the kernel wrote, then checks the permission bits. If the check fails, nothing reaches RAM: the MMU raises a page fault and the kernel takes over.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The walk.</b> On x86-64, CR3 holds the top table; nine bits of the address pick an entry at each of four levels, and the last twelve are the offset inside the 4 KiB page.</li>
+          <li><b>The bits.</b> Each entry carries present, user/supervisor, writable and no-execute flags; a failed check raises a page fault (vector 14).</li>
+          <li><b>Who does what.</b> The kernel writes the tables, the MMU reads them on every access, and the <span class="key-term">TLB</span> keeps recent answers so most accesses skip the walk (Fig BR.5).</li>
+        </ol>
+      </details>
     </div>
 
     <p id="chBridge-mmu-p4">
