@@ -1744,46 +1744,48 @@
       be publicly audited without downloading every certificate.
     </p>
 
-    <div class="diagram-card" id="fig-14-4">
-      <div class="diagram-label">Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-17"><title id="svgt-part4-17">Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">four eras · each one a defence against a specific 1990s–2010s attack</text>
-
-        <!-- Era 1: plaintext -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">ERA 1: PLAINTEXT (don't)</text>
-          <rect x="0" y="14" width="640" height="48" rx="3" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">DB row:  alice → "p4ssw0rd"</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">attacker who steals the DB has every password directly. Disastrous · RockYou 2009 stored 32 million this way.</text>
-        </g>
-
-        <!-- Era 2: simple hash -->
-        <g transform="translate(40,138)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">ERA 2: SIMPLE HASH (better, not enough)</text>
-          <rect x="0" y="14" width="640" height="48" rx="3" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">DB row:  alice → SHA-256("p4ssw0rd") = 5e88...</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">rainbow tables (precomputed hash of every common password) break this in milliseconds (LinkedIn 2012).</text>
-        </g>
-
-        <!-- Era 3: salted -->
-        <g transform="translate(40,208)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">ERA 3: SALTED HASH (rainbow tables defeated)</text>
-          <rect x="0" y="14" width="640" height="48" rx="3" fill="rgba(207,141,120,0.10)" stroke="rgba(140,82,64,0.65)"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">DB row:  alice → salt=7f3a · SHA-256("7f3a:p4ssw0rd") = b1d2...</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">unique salt per user · same password produces different hash · attacker must crack each user separately.</text>
-        </g>
-
-        <!-- Era 4: slow KDF -->
-        <g transform="translate(40,278)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">ERA 4: SLOW KDF (current standard)</text>
-          <rect x="0" y="14" width="640" height="80" rx="3" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)" stroke-width="1.5"/>
-          <text x="14" y="32" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">DB row:  alice → argon2id(salt=7f3a, mem=64MB, iters=3, pw="p4ssw0rd") = $argon2id$...</text>
-          <text x="14" y="48" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">hash function deliberately slow (~250 ms per attempt) and memory-hard (defeats GPU/ASIC speedups)</text>
-          <text x="14" y="64" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">→ attacker can try ~4 passwords/second per GPU core, not millions</text>
-          <text x="14" y="80" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)">argon2id (PHC winner 2015) · scrypt (Litecoin) · bcrypt (older, still acceptable)</text>
-        </g>
-      </svg>
-      <p id="ch14-hashing-p5" class="diagram-caption">The evolution of password storage maps to the evolution of attacker capability. Plaintext fails to anyone with database read access. Simple unsalted hashing fails to rainbow tables, which precompute SHA-256 of every common password. Salting (a unique random string per user, mixed with the password before hashing) defeats rainbow tables but not GPU-accelerated brute force; modern GPUs compute billions of SHA-256 hashes per second. The modern answer is <strong>slow, memory-hard key derivation functions</strong> like argon2id, deliberately tuned to take 100–500 ms and several megabytes of RAM per password attempt. The legitimate user notices nothing (one login attempt per session); an attacker with a stolen hash database can try perhaps a few attempts per second per GPU core. The arithmetic of "billions of attempts per second" becomes "thousands per hour."</p>
+    <div class="diagram-card fig-v2" id="fig-14-4">
+      <div class="diagram-label">Fig 14.4&nbsp;· Password storage&nbsp;· plaintext to hash to salted hash to slow KDF</div>
+      <svg viewBox="0 0 400 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-17 svgd-part4-17">
+<title id="svgt-part4-17">Fig 14.4 · Password storage · plaintext to hash to salted hash to slow KDF</title>
+<desc id="svgd-part4-17">A table with two users, alice and bob, who chose the same password, p4ssw0rd, stored four ways in turn. As plain text, a stolen copy gives away the passwords themselves. As a SHA-256 hash, both rows read 48d2a5bbcf42…, so equal rows give away equal passwords. Salted per user, with salts 7f3a and c2e9, the rows differ, 24a8b7da… and 57bea797…, so each must be guessed alone. With argon2id at 64 MiB of memory and 3 passes, the rows still differ by salt and every single guess also costs 64 MiB.</desc>
+<rect x="20" y="12" width="84" height="30" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="62" y="32" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">plain</text>
+<rect x="112" y="12" width="84" height="30" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="154" y="32" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">hash</text>
+<rect x="204" y="12" width="84" height="30" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="246" y="32" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">salt</text>
+<rect x="296" y="12" width="84" height="30" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="338" y="32" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">slow</text>
+<g><animateTransform attributeName="transform" type="translate" values="276.00 0;276.00 0;276.00 0;276.00 0;0.00 0;0.00 0;92.00 0;92.00 0;184.00 0;184.00 0;276.00 0;276.00 0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.313636;0.336364;0.540909;0.563636;0.768182;0.790909;1.000000" dur="11s" repeatCount="indefinite"/><rect x="18" y="10" width="88" height="34" rx="3" fill="none" stroke="#c9a25a" stroke-width="2.5"/></g>
+<rect x="20" y="62" width="360" height="104" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<text x="32" y="84" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">user</text>
+<text x="100" y="84" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">stored</text>
+<line x1="20" y1="94" x2="380" y2="94" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.4"/>
+<text x="32" y="118" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">alice</text>
+<text x="32" y="148" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">bob</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.335636;0.335909;1.000000" dur="11s" repeatCount="indefinite"/><text x="100" y="118" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">p4ssw0rd</text><text x="100" y="148" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">p4ssw0rd</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.336182;0.336364;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="100" y="118" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">48d2a5bbcf42…</text><text x="100" y="148" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">48d2a5bbcf42…</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.563455;0.563636;0.790182;0.790455;1.000000" dur="11s" repeatCount="indefinite"/><text x="100" y="118" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">7f3a · 24a8b7da…</text><text x="100" y="148" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">c2e9 · 57bea797…</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.790727;0.790909;1.000000" dur="11s" repeatCount="indefinite"/><text x="100" y="118" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">argon2id · N2YzYS · z+2Mq/Xe…</text><text x="100" y="148" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">argon2id · YzJlOS · R29t9BR3…</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.336182;0.336364;0.390909;1.000000" dur="11s" repeatCount="indefinite"/><rect x="94" y="100" width="282" height="60" rx="2" fill="none" stroke="#cf8d78" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.563455;0.563636;0.618182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="94" y="100" width="282" height="60" rx="2" fill="none" stroke="#c9a25a" stroke-width="2"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.790727;0.790909;0.845455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="94" y="100" width="282" height="60" rx="2" fill="none" stroke="#a9bf8e" stroke-width="2"/></g>
+<text x="20" y="196" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">a stolen copy:</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.335636;0.335909;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="218" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">shows the passwords</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.336182;0.336364;0.562909;0.563182;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="218" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">shows who shares a password</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.563455;0.563636;0.790182;0.790455;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="218" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">must be guessed row by row</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.790727;0.790909;1.000000" dur="11s" repeatCount="indefinite"/><text x="20" y="218" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">row by row, 64 MiB per guess</text></g>
+</svg>
+      <p id="ch14-hashing-p5" class="diagram-caption">Stored well, a stolen password table gives away as little as possible: a hash hides the password, a per-user salt makes equal passwords look different, and a slow, memory-hard function makes every guess expensive. Each step closes the gap the one before it left open.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Lookup tables.</b> Without a salt, one precomputed table of common passwords' hashes serves every stolen database at once; LinkedIn's 2012 leak was unsalted SHA-1.</li>
+          <li><b>Tuning.</b> argon2id's memory, passes and lanes are set so one login takes a fraction of a second on the server; OWASP's minimum is 19 MiB with 2 passes.</li>
+          <li><b>Older choices.</b> bcrypt (1999) and scrypt (2009) remain acceptable; argon2 won the Password Hashing Competition in 2015.</li>
+        </ol>
+      </details>
     </div>
   </section>
 
