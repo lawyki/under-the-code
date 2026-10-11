@@ -1177,41 +1177,53 @@
       always exactly what the developer wrote.
     </p>
 
-    <div class="diagram-card" id="fig-13-11">
-      <div class="diagram-label">Fig 13.11 · Parameterised queries · code and data on separate wires</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-12"><title id="svgt-part4-12">Fig 13.11 · Parameterised queries · code and data on separate wires</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">data never touches the parser · attacker payloads stay data forever</text>
-
-        <!-- Code with placeholders -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">SAFE CODE</text>
-          <rect x="0" y="14" width="640" height="44" rx="3" fill="#14100b" stroke="rgba(80,140,80,0.65)"/>
-          <text x="14" y="34" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.95)">stmt = db.prepare(<tspan fill="rgba(150,216,150,0.95)">"SELECT id FROM users WHERE name = ? AND pw = ?"</tspan>);</text>
-          <text x="14" y="50" font-family="Courier Prime" font-size="10" fill="rgba(230,217,189,0.95)">stmt.execute(input_name, input_pw);</text>
-        </g>
-
-        <!-- Two channels -->
-        <g transform="translate(40,144)">
-          <rect x="0" y="0" width="300" height="60" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)"/>
-          <text x="150" y="20" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">CHANNEL 1: SQL TEXT</text>
-          <text x="150" y="38" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">parsed once · plan cached</text>
-          <text x="150" y="52" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">attacker cannot influence parsing</text>
-
-          <rect x="340" y="0" width="300" height="60" rx="4" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-          <text x="490" y="20" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)" letter-spacing="0.1em">CHANNEL 2: VALUES</text>
-          <text x="490" y="38" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">bound to placeholders as data</text>
-          <text x="490" y="52" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">never enters the parser</text>
-        </g>
-
-        <!-- Same attacker input -->
-        <g transform="translate(40,224)">
-          <rect x="0" y="0" width="640" height="76" rx="3" fill="#100b06" stroke="rgba(207,141,120,0.45)"/>
-          <text x="14" y="20" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">attacker still supplies:  ' OR '1'='1</text>
-          <text x="14" y="38" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">database treats it as the literal string "' OR '1'='1" and looks for a user whose name is exactly that</text>
-          <text x="14" y="56" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">no such user exists  →  zero rows returned  →  login fails  →  attack neutralised</text>
-        </g>
-      </svg>
-      <p id="ch13-injection-p5" class="diagram-caption">Parameterised queries solve SQL injection at the protocol level. The SQL text and the data values arrive at the database through different paths in the wire protocol; the parser only sees the SQL text with <code>?</code> placeholders, and the values are bound to those placeholders after parsing has already produced the execution plan. The same attacker payload that bypassed login in <a href="#fig-13-10">Fig 13.10</a>, <code>' OR '1'='1</code>, becomes a literal string the database is asked to match exactly. No user has that name. The query returns zero rows. <strong>Every modern database driver supports prepared statements.</strong> Every modern web framework wraps them. The pattern is universally available; the only reason SQL injection still exists is that programmers still occasionally bypass the safe path.</p>
+    <div class="diagram-card fig-v2" id="fig-13-11">
+      <div class="diagram-label">Fig 13.11&nbsp;· Parameterised queries&nbsp;· code and data on separate wires</div>
+      <svg viewBox="0 0 400 338" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-12 svgd-part4-12">
+<title id="svgt-part4-12">Fig 13.11 · Parameterised queries · code and data on separate wires</title>
+<desc id="svgd-part4-12">The code sends the SQL text SELECT * FROM users WHERE name = ? and, separately, the value of name. The SQL text goes through the database's parser once and becomes a plan with an empty slot where the question mark was. The value O'Brien never passes through the parser: it is bound into the slot as plain data, and its apostrophe is just a letter in a name. A second value, Smith, is bound into the same plan with no second parse.</desc>
+<rect x="20" y="12" width="360" height="74" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.5"/>
+<text x="32" y="34" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">sql = "SELECT * FROM users</text>
+<text x="86.6" y="54" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">WHERE name = ?"</text>
+<text x="32" y="74" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">db.execute(sql, [name])</text>
+<text x="20" y="112" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">the SQL text</text>
+<text x="220" y="112" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">the value</text>
+<rect x="20" y="122" width="180" height="32" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/>
+<text x="32" y="143" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">name = ?</text>
+<rect x="220" y="122" width="160" height="32" rx="2" fill="#241a10" stroke="#a9bf8e" stroke-opacity="0.7"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699200;0.699500;1.000000" dur="10s" repeatCount="indefinite"/><text x="232" y="143" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">O'Brien</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699800;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="232" y="143" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">Smith</text></g>
+<rect x="20" y="184" width="180" height="40" rx="2" fill="#241a10" stroke="#c05a48" stroke-opacity="0.8"/>
+<text x="32" y="209" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">parser</text>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.090800;0.091000;1.000000" dur="10s" repeatCount="indefinite"/><text x="188" y="209" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">once</text></g>
+<text x="220" y="209" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">never parsed</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.189800;0.190000;0.250000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="17" y="181" width="186" height="46" rx="3" fill="none" stroke="#c05a48" stroke-width="2.5"/></g>
+<rect x="20" y="254" width="360" height="44" rx="2" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.9"/>
+<text x="32" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">plan: users,</text>
+<text x="133.4" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">name =</text>
+<rect x="214" y="262" width="150" height="28" rx="2" fill="none" stroke="#a9bf8e" stroke-dasharray="4 3"/>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.469200;0.469500;1.000000" dur="10s" repeatCount="indefinite"/><text x="226" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">?</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.469800;0.470000;0.789200;0.789500;1.000000" dur="10s" repeatCount="indefinite"/><text x="226" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">O'Brien</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.789800;0.790000;1.000000" dur="10s" repeatCount="indefinite"/><text x="226" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">Smith</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.229800;0.230000;1.000000" dur="10s" repeatCount="indefinite"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.259200;0.259500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 94.00;0 94.00;0 0.00;0 0.00;0 94.00;0 94.00" keyTimes="0.000000;0.059950;0.060000;0.140000;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="120" cy="154" r="6" fill="#c9a25a"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.379800;0.380000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 122.00;0 122.00;0 0.00;0 0.00;0 122.00;0 122.00" keyTimes="0.000000;0.059950;0.060000;0.380000;0.470000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="360" cy="154" r="6" fill="#a9bf8e"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.469800;0.470000;0.530000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="211" y="259" width="156" height="34" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.699800;0.700000;0.819200;0.819500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 122.00;0 122.00;0 0.00;0 0.00;0 122.00;0 122.00" keyTimes="0.000000;0.059950;0.060000;0.700000;0.790000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="360" cy="154" r="6" fill="#a9bf8e"/></g></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.789800;0.790000;0.850000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="211" y="259" width="156" height="34" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.379200;0.379500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">parsed once into a plan</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.379800;0.380000;0.699200;0.699500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">the apostrophe is just a letter</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699800;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">a new value, no second parse</text></g>
+</svg>
+      <p id="ch13-injection-p5" class="diagram-caption">With a parameterised query the SQL text, a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>On the wire.</b> PostgreSQL's extended query protocol and MySQL's prepared statements send the statement and its parameters as separate messages; a driver that only emulates this must escape every value correctly instead.</li>
+          <li><b>Values only.</b> A placeholder can hold a value but not a table or column name, so code that varies those must pick from a fixed list.</li>
+          <li><b>Reuse.</b> The plan can be kept and run again for each new value, which also saves the parse.</li>
+        </ol>
+      </details>
     </div>
 
     <div class="insight-strip">

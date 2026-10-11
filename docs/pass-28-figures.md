@@ -177,7 +177,7 @@ Order (2026-10-10): figures in security, exploit or low-level-trap territory are
 | 167 | 4 | `fig-13-8` Fig 13.8 · A B+ tree · range scan walks the leaves left to right | 2.9 px · cap 145 | done 2026-10-11 |
 | 168 | 4 | `fig-13-9` Fig 13.9 · B-tree vs hash index · which one wins which workload | 2.9 px · cap 131 | done 2026-10-11 |
 | 169 | 4 | `fig-13-10` Fig 13.10 · SQL injection · a single quote turns a SELECT into a tautology | 2.9 px · cap 162 | kept: original (2026-10-11) |
-| 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | todo |
+| 170 | 4 | `fig-13-11` Fig 13.11 · Parameterised queries · code and data on separate wires | 2.5 px · cap 121 | done 2026-10-11 |
 | 171 | 4 | `fig-14-1` Fig 14.1 · Two thousand years of cryptography in one strip | 2.5 px · cap 117 | done 2026-10-11 |
 | 172 | 4 | `fig-14-2` Fig 14.2 · The four one-way functions cryptography is built on | 2.5 px · cap 240 | done 2026-10-11 |
 | 173 | 4 | `fig-14-3` Fig 14.3 · Three hash properties · three different attacks | 2.5 px · cap 146 | todo |
