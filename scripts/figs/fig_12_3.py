@@ -48,17 +48,22 @@ stx, sty = (SB[0] + SB[1]) / 2, SB[3] - 18     # where a frame sits on the stack
 a(f'<g class="fx" opacity="0">{lit(0.6, 4.4)}{chip(stx, sty, "script", CYAN)}</g>')
 # chips: (label, colour, queue box, enqueue window, to-stack window, run until)
 CHIPS = [('log 4', GOLD, TQ, (1.6, 2.3), (7.6, 8.2), 9.0), ('log 3', GREEN, MQ, (2.6, 3.3), (4.8, 5.4), 6.2)]
+CODE_BOT = CY0 - 18 + CL * 4 + 8                   # bottom of the code box
 for lab, col, q, (e0, e1), (s0, s1), r1 in CHIPS:
-    qx, qy = (q[0] + q[1]) / 2, q[2] + 31
-    sx0, sy0 = 300, cy(1 if lab == 'log 4' else 2) - 4
-    # fly from the code line to the queue
+    # each queue's chip sits in the gap between that box's two labels; chips leave from just under the code box
+    qx, qy = (225 if q is TQ else 274), q[2] + 31
+    sx0, sy0 = 300, CODE_BOT + 12
+    # fly from the code box to the queue
     a(f'<g class="fx" opacity="0">{lit(e0, e1 + 0.01)}<g>{T.translate([(0.0, 0.0), (e0, 0.0), (e1, qx - sx0), (D, qx - sx0)], "x")}'
       f'<g>{T.translate([(0.0, 0.0), (e0, 0.0), (e1, qy - sy0), (D, qy - sy0)], "y")}{chip(sx0, sy0, lab, col)}</g></g></g>')
     # wait in the queue
     a(f'<g class="fx" opacity="0">{lit(e1, s0)}{chip(qx, qy, lab, col)}</g>')
-    # move to the stack and run
-    a(f'<g class="fx" opacity="0">{lit(s0, s1 + 0.01)}<g>{T.translate([(0.0, 0.0), (s0, 0.0), (s1, stx - qx), (D, stx - qx)], "x")}'
-      f'<g>{T.translate([(0.0, 0.0), (s0, 0.0), (s1, sty - qy), (D, sty - qy)], "y")}{chip(qx, qy, lab, col)}</g></g></g>')
+    # to the stack: across at the queue's own height, then down the stack's column
+    sm = s0 + (s1 - s0) * 0.7
+    kx = [(0.0, 0.0), (s0, 0.0), (sm, stx - qx), (s1, stx - qx), (D, stx - qx)]
+    ky = [(0.0, 0.0), (s0, 0.0), (sm, 0.0), (s1, sty - qy), (D, sty - qy)]
+    a(f'<g class="fx" opacity="0">{lit(s0, s1 + 0.01)}<g>{T.translate(kx, "x")}'
+      f'<g>{T.translate(ky, "y")}{chip(qx, qy, lab, col)}</g></g></g>')
     a(f'<g class="fx" opacity="0">{lit(s1, r1)}{chip(stx, sty, lab, col)}</g>')
 # render, between the microtasks and the next task
 a(f'<rect x="142" y="{RY - 12}" width="248" height="24" rx="12" fill="none" stroke="{CMUTED}" stroke-opacity="0.6"/>')

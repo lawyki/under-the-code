@@ -17,7 +17,7 @@ def box(x0, x1, y0, y1, col, l1, l2=None):
     a(text(x0 + 10, y0 + 18, l1, anchor='start', size=13, fill=col, ls='0'))
     if l2:
         a(text(x0 + 10, y0 + 36, l2, anchor='start', size=13, fill=CMUTED, ls='0'))
-box(10, 390, *R1, CSOFT, 'your JavaScript', 'app.js and its packages')
+box(10, 390, *R1, CSOFT, 'your JavaScript', 'app.js calls fs.readFile')
 box(10, 390, *R2, GREEN, 'Node\'s APIs', 'fs, http, net, crypto…')
 box(*V8X, *R3, CYAN, 'V8', 'one thread runs JS')
 box(*LUX, *R3, GOLD, 'libuv', 'event loop')
@@ -49,10 +49,8 @@ P = [(0.8, (300, (R1[0] + R1[1]) / 2)), (1.4, (300, (R2[0] + R2[1]) / 2)), (2.0,
 x0, y0 = P[0][1]
 kx = [(0.0, 0.0), (P[0][0], 0.0)] + [(t, x - x0) for t, (x, y) in P] + [(D, P[-1][1][0] - x0)]
 ky = [(0.0, 0.0), (P[0][0], 0.0)] + [(t, y - y0) for t, (x, y) in P] + [(D, P[-1][1][1] - y0)]
-w = 76
 a(f'<g class="fx" opacity="0">{lit(P[0][0], P[-1][0] + 0.4)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}'
-  f'<rect x="{x0 - w / 2}" y="{y0 - 10}" width="{w}" height="20" rx="4" fill="#0a1c2d" stroke="#fff" stroke-width="1.5"/>'
-  f'{text(x0, y0 + 5, "readFile", anchor="middle", size=13, fill="#fff", ls="0")}</g></g></g>')
+  f'<circle cx="{x0}" cy="{y0}" r="7" fill="#fff" stroke="{CYAN}" stroke-width="2"/></g></g></g>')
 H = R4[1] + 8
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-61 svgd-part3-61">')
 o.insert(1, '<title id="svgt-part3-61">Fig 12.6 · Node.js · V8 + libuv + a JavaScript stdlib</title>')

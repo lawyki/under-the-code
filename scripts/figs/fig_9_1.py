@@ -64,7 +64,7 @@ for n, pts in PATHS.items():
         kx.append((t, x - A[0])); ky.append((t, y - A[1]))
     ARR[n] = t
     kx.append((D, kx[-1][1])); ky.append((D, ky[-1][1]))
-    a(f'<g class="fx" opacity="0">{win(START[n], t + 0.15)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}'
+    a(f'<g class="fx" opacity="0">{win(START[n] + 0.25, t + 0.15)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}'
       f'<circle cx="{A[0]}" cy="{A[1]}" r="9" fill="{CYAN}"/>{text(A[0], A[1] + 5, str(n), anchor="middle", size=13, fill=CDEEP, ls="0")}</g></g></g>')
 order = sorted(ARR, key=ARR.get)
 assert order == [2, 1, 3], order
