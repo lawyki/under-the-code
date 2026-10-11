@@ -74,3 +74,7 @@ Found by Pass 29 Part I and its Sonnet 5.5 verification (2026-10-11; UNDER.md §
 | `fig-3-6` | Label, desc and strip give the return address as "main+5"; the section's own listing puts it at main+19 | "main+19" in all three |
 
 Not queued: Fig 1.5's "3 nm" is owner-ruled (UNDER.md §5); a change would be a re-ruling request to the owner, not a repair.
+
+## Owner's direction for Gate 2 (2026-10-12)
+
+After reading the book again from the start, the owner found Fig 1.1 not understandable for a newcomer ("someone lower IQ would never figure out what that means") while Fig 1.2 Enigma works because it draws the real machine. His rule for every repair: **a figure may come in parts, one showing the real thing and one depicting its function, and anything that actually makes it understandable is allowed.** Fig 1.1 is redrawn this way (the machine with its two rules, then the run step by step, tally marks instead of binary): see UNDER.md §4ac. Also found: the book-wide `.diagram-label` text (rgba 255,255,255,0.3) fails 4.5:1 on every figure; fix it once in CSS during Gate 1.
