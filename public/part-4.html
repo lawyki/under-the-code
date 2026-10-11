@@ -770,78 +770,55 @@
       a cache.
     </p>
 
-    <div class="diagram-card" id="fig-13-6">
-      <div class="diagram-label">Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-7"><title id="svgt-part4-7">Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash</title>
-        <text x="360" y="32" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.95)">a sequential log on disk is faster to fsync than scattered random writes</text>
-
-        <!-- Normal flow -->
-        <g transform="translate(40,68)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(207,141,120,0.95)" letter-spacing="0.1em">NORMAL OPERATION</text>
-
-          <!-- Application -->
-          <rect x="0" y="14" width="120" height="40" rx="4" fill="#241a10" stroke="rgba(150,216,150,0.85)"/>
-          <text x="60" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(150,216,150,0.95)">application</text>
-          <text x="60" y="44" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">UPDATE …</text>
-
-          <!-- Step 1: log -->
-          <line x1="120" y1="34" x2="160" y2="34" stroke="rgba(207,141,120,0.6)" stroke-dasharray="3,2">
-            <animate attributeName="stroke-dashoffset" values="0;-10" dur="1s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="160,34 152,28 152,40" fill="rgba(207,141,120,0.7)"/>
-          <text x="140" y="26" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(207,141,120,0.85)">①</text>
-          <circle r="3" fill="rgba(207,141,120,0.95)">
-            <animateMotion dur="6s" repeatCount="indefinite" path="M 120 34 L 160 34"/>
-            <animate attributeName="opacity" values="0;1;1;0;0;0" keyTimes="0;0.05;0.20;0.25;0.95;1" dur="6s" repeatCount="indefinite"/>
-          </circle>
-
-          <rect x="160" y="14" width="200" height="60" rx="4" fill="rgba(207,141,120,0.18)" stroke="rgba(140,82,64,0.85)">
-            <animate attributeName="fill-opacity" values="0.5;0.5;1;1;0.5;0.5" keyTimes="0;0.20;0.30;0.50;0.55;1" dur="6s" repeatCount="indefinite"/>
-          </rect>
-          <text x="260" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(207,141,120,0.95)">WAL: append + fsync</text>
-          <text x="260" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">[txn 42] balance: 200 → 100</text>
-          <text x="260" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(207,141,120,0.85)">durably on disk before reply</text>
-
-          <!-- Step 2: ack -->
-          <line x1="160" y1="44" x2="120" y2="44" stroke="rgba(150,216,150,0.6)"/>
-          <polygon points="120,44 128,38 128,50" fill="rgba(150,216,150,0.7)"/>
-          <text x="140" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(150,216,150,0.85)">② OK</text>
-
-          <!-- Step 3: lazy data page write -->
-          <line x1="360" y1="44" x2="420" y2="44" stroke="rgba(230,217,189,0.5)" stroke-dasharray="4,3">
-            <animate attributeName="stroke-dashoffset" values="0;-14" dur="2s" repeatCount="indefinite"/>
-          </line>
-          <polygon points="420,44 412,38 412,50" fill="rgba(230,217,189,0.6)"/>
-          <text x="390" y="36" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">③ later</text>
-          <circle r="3" fill="rgba(100,150,255,0.85)">
-            <animateMotion dur="6s" repeatCount="indefinite" path="M 360 44 L 420 44"/>
-            <animate attributeName="opacity" values="0;0;0;0;1;1;0" keyTimes="0;0.30;0.60;0.65;0.70;0.95;1" dur="6s" repeatCount="indefinite"/>
-          </circle>
-
-          <rect x="420" y="14" width="200" height="60" rx="4" fill="rgba(100,150,255,0.18)" stroke="rgba(60,100,180,0.85)">
-            <animate attributeName="fill-opacity" values="0.5;0.5;0.5;0.5;0.5;1;0.5" keyTimes="0;0.30;0.60;0.65;0.75;0.85;1" dur="6s" repeatCount="indefinite"/>
-          </rect>
-          <text x="520" y="30" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(100,150,255,0.95)">data pages (lazy)</text>
-          <text x="520" y="46" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.85)">flushed at checkpoint</text>
-          <text x="520" y="60" text-anchor="middle" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.7)">may be far behind WAL</text>
-
-          <text x="0" y="100" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.7)" font-style="italic">key insight: sequential WAL fsync is ~100× faster than random data-page fsyncs</text>
-        </g>
-
-        <!-- Crash recovery -->
-        <g transform="translate(40,200)">
-          <text x="0" y="0" font-family="Courier Prime" font-size="10" fill="rgba(232,120,120,0.95)" letter-spacing="0.1em">CRASH RECOVERY</text>
-
-          <rect x="0" y="14" width="640" height="120" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.65)"/>
-          <text x="14" y="34" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">on restart:</text>
-          <text x="14" y="52" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ① find last checkpoint (a known-consistent point on data pages)</text>
-          <text x="14" y="68" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ② replay WAL forward: re-apply every committed transaction past the checkpoint</text>
-          <text x="14" y="84" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.85)">  ③ undo WAL backward: roll back any uncommitted transaction whose effects leaked to disk</text>
-          <text x="14" y="100" font-family="Courier Prime" font-size="9" fill="rgba(232,120,120,0.95)">  ④ database is now exactly the state it would have been if the crash had not happened</text>
-          <text x="14" y="120" font-family="Courier Prime" font-size="8" fill="rgba(230,217,189,0.6)" font-style="italic">canonical algorithm: ARIES (IBM 1992) · DB2, MS SQL, MySQL InnoDB; PostgreSQL's WAL is redo-only</text>
-        </g>
-      </svg>
-      <p id="ch13-acid-p5" class="diagram-caption">The trick is that <em>sequential</em> writes to the log fsync orders of magnitude faster than scattered random writes to the data pages. The engine takes the cost of one cheap, sequential, durable log write per transaction and amortises the expensive data-page writes asynchronously, batching them and writing them back when convenient. On crash, the log tells recovery exactly what to replay forward (committed but not yet flushed to data pages) and what to undo (uncommitted changes that leaked to data pages). The same mechanism appears in filesystems (<a href="part-2#ch4">Chapter 4</a> §04, journaled ext4), in distributed databases (Raft and Paxos logs in <a href="part-5#ch17">Chapter 17</a>), and in event-sourcing application architectures. <em>Write the intent before doing the deed</em> turns out to be one of the deepest patterns in systems engineering.</p>
+    <div class="diagram-card fig-v2" id="fig-13-6">
+      <div class="diagram-label">Fig 13.6&nbsp;· Write-ahead log&nbsp;· log first, mutate later, replay on crash</div>
+      <svg viewBox="0 0 400 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-7 svgd-part4-7">
+<title id="svgt-part4-7">Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash</title>
+<desc id="svgd-part4-7">A write-ahead log and two data pages. Transaction 42 moves Alice from 200 to 100 and commits; both records are forced to disk before the application is told OK, but Alice's page still says 200. Transaction 43 moves Bob from 50 to 150 without committing, and Bob's page is written early. The power fails. Recovery reads the log, redoes transaction 42 so Alice's page says 100, and undoes transaction 43 so Bob's says 50 again.</desc>
+<text x="10" y="18" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">write-ahead log, forced to disk</text>
+<rect x="10" y="28" width="240" height="22" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.45"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.119800;0.120000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="44" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">T42  Alice 200 → 100</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.119800;0.120000;0.170000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="26" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<rect x="10" y="54" width="240" height="22" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.45"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.179800;0.180000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">T42  commit</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.179800;0.180000;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="52" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<rect x="10" y="80" width="240" height="22" rx="2" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.45"/>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.279800;0.280000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="96" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">T43  Bob 50 → 150</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.279800;0.280000;0.330000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="78" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<rect x="266" y="28" width="124" height="48" rx="3" fill="#241a10" stroke="rgba(230,217,189,0.6)" stroke-opacity="0.6"/>
+<text x="276" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">application</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.229200;0.229500;1.000000" dur="10s" repeatCount="indefinite"/><text x="276" y="66" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">waits…</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.229800;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><text x="276" y="66" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">T42: OK</text></g>
+<text x="10" y="124" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">data pages, written later</text>
+<rect x="10" y="134" width="180" height="46" rx="3" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/>
+<text x="20" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Alice</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.539200;0.539500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€200</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€100</text><text x="180" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">redo</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.539800;0.540000;0.590000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<rect x="210" y="134" width="180" height="46" rx="3" fill="#241a10" stroke="#c9a25a" stroke-opacity="0.7"/>
+<text x="220" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Bob</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.339200;0.339500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€50</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.659200;0.659500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#c05a48">€150</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.390000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="208" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.659800;0.660000;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€50</text><text x="380" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">undo</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.659800;0.660000;0.710000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="208" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.599200;0.599500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="26" width="244" height="26" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.619800;0.620000;0.719200;0.719500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="78" width="244" height="26" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
+<g opacity="0.25"><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="#b8372f" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#b8372f">power cut</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="#b8372f" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#b8372f">power cut</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.419200;0.419500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">running: log first, pages later</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.419800;0.420000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Alice's page stale, Bob's dirty</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.759200;0.759500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">recovery: redo T42, undo T43</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.759800;0.760000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">consistent: T42 kept, T43 gone</text></g>
+</svg>
+      <p id="ch13-acid-p5" class="diagram-caption">Every change is written to the log and forced to disk before the commit is acknowledged; the data pages catch up later, whenever convenient. After a crash, recovery replays the log: committed changes the pages missed are redone, and uncommitted ones that reached them are undone.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Why it is fast.</b> Appending to one file is sequential; updating data pages means writes scattered across the disk. A commit costs one log flush, and the pages catch up in the background, at checkpoints.</li>
+          <li><b>Redo and undo.</b> This is the ARIES scheme (IBM, 1992), used by DB2, SQL Server and InnoDB. PostgreSQL's log is redo-only: an aborted transaction's row versions simply stay invisible.</li>
+          <li><b>The same idea elsewhere.</b> Journaling file systems (Chapter 4) and the replicated logs of Raft and Paxos (Chapter 17) write the intent before doing the deed.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Isolation levels · the trade between safety and speed</h3>
