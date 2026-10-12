@@ -52,10 +52,10 @@ Signed out, your reading position — and any sections you mark — is kept in t
 
 ## Go deeper videos
 
-Optional outside videos sit beside the text, never in it: the book must teach on its own. Each is an `<aside class="deeper">` placed right after the passage it belongs to, on a page that loads `deeper.js` after `book.js`. With script it becomes a tab at the right edge, shown while that passage is on screen; hover or a tap opens a small panel. Without script it is one quiet line. Copy the Enigma aside in `part-1.html` (ch1-context) and change the data:
+Optional outside videos sit beside the text, never in it: the book must teach on its own. Each is an `<aside class="deeper">` placed just before the paragraph it belongs to, on a page that loads `deeper.js` after `book.js`. On wide screens it is a note in the right margin beside that paragraph; narrower, a small pill at the bottom right while the paragraph is on screen. Either opens a viewer with the play button. Without script it is one quiet line. `data-art` picks a small drawing for the picture (`enigma`; none gives a plain dark card). Copy the Enigma aside in `part-1.html` (ch1-context) and change the data:
 
 - `data-yt`: the 11-character video id, no start time. `data-length`: the length, e.g. `47:41`.
-- `.deeper-intro` introduces it as an outside resource ("An excellent video by Veritasium."); `.deeper-about` says in one line what it shows, using only what the video itself states; `.deeper-title` links the watch URL, `.deeper-channel` the creator's channel.
+- `.deeper-about` says in one line what it shows, using only what the video itself states; `.deeper-title` links the watch URL, `.deeper-channel` the creator's channel.
 - Use no `<p>` or `<li>` inside the aside (they would count as section prose) and no `ch…`/`fig-…` ids (anchor law).
 
 Rules (EU copyright and privacy):
