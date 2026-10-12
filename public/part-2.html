@@ -2073,27 +2073,15 @@
     <h2>One source. A thousand binaries.</h2>
 
     <p id="ch5-portability-p1" class="lead">
-      Until 1973, an operating system was a thing you wrote in assembly for one specific
-      machine. To run that OS on a different computer, you didn't recompile. You rewrote
-      it, instruction by instruction, for that computer's CPU. Then C arrived, and one
-      source file became a thousand binaries.
+      Until 1973, an operating system was usually written in assembly for one specific machine. To run it on a different computer, you rewrote it, instruction by instruction, for that computer's CPU. Then C arrived, and one source file became a thousand binaries.
     </p>
 
     <p id="ch5-portability-p2">
-      In 1965, IBM shipped the System/360. To write software for it, you wrote
-      System/360 assembly directly, in mnemonics like <code>L</code>, <code>ST</code>,
-      <code>BAL</code>, encoded in EBCDIC. When DEC shipped the PDP-11 in 1970, the machine spoke
-      an entirely different assembly language. A program for the System/360 was unusable
-      on the PDP-11. Not "needs porting." Unusable. The bits did not even mean the same
-      opcodes.
+      In 1965, IBM shipped the System/360, a family of computers whose systems software was written in their own assembly language. The PDP-11, a minicomputer that the Digital Equipment Corporation (DEC) shipped in 1970, had a different instruction set: bits that meant one instruction on the System/360 meant another on the PDP-11. A System/360 program could not be adjusted to run there; it had to be written again.
     </p>
 
     <p id="ch5-portability-p3">
-      This was the normal state of computing: operating systems, compilers, every piece
-      of systems software, all rewritten per machine. A small army of programmers spent
-      their careers translating known-good programs into yet another assembly. When a new
-      CPU appeared, porting cost so much that most software simply did not make the trip.
-      Each generation of hardware was an island.
+      This was the normal state of computing: operating systems, compilers, every piece of systems software, all rewritten per machine. A small army of programmers spent their careers translating known-good programs into yet another assembly. When a new CPU appeared, porting cost so much that most software simply did not make the trip.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-1">
@@ -2138,7 +2126,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="348" width="96" height="22" rx="2" fill="#86a8ff" fill-opacity="0.22" stroke="#86a8ff"/><text x="244" y="364" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">00008067</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="364" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 B</text></g>
 </svg>
-      <p id="ch5-portability-p4" class="diagram-caption">One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the fixed 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: not one binary everywhere, but one source that compiles to each.</p>
+      <p id="ch5-portability-p4" class="diagram-caption">One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the fixed 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: the same source, compiled separately for each processor.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2152,39 +2140,21 @@
     <h3>What makes a language portable</h3>
 
     <p id="ch5-portability-p5">
-      Three things. First, the language must abstract away CPU-specific details
-      (register sets, instruction widths, calling conventions) without forcing the
-      programmer to give up speed. Second, it must be small enough that a small team can
-      write a compiler for a new architecture. Third, its memory model must be loose
-      enough to map cleanly onto whatever memory hardware provides: bytes here, words
-      there, alignment requirements everywhere.
+      A portable language needs three things. It must hide the differences Fig 5.1 shows (instructions, registers, encodings) without giving up speed. It must be small enough that a few people can write its compiler for a new processor. And it needs one picture of memory that fits every machine, though processors differ in how many bits make up a word.
     </p>
 
     <p id="ch5-portability-p6">
-      C achieves all three with one trade. Its types map directly onto machine words.
-      Its control flow maps directly onto conditional jumps. Its data structures are
-      layouts you could draw on graph paper. The cost: you, the programmer, see the metal
-      whether you want to or not. The benefit: a competent compiler-writer can target a
-      new ISA in a few months, and C written for the PDP-11 half a century ago still
-      compiles on a 2026 ARM Mac. The dialect has aged, but the language has never broken
-      its old programs lightly.
+      C meets all three by building only on what processors have in common and leaving the rest to the compiler. Its types are the byte and the processor's own word, its <code>if</code> statements and loops become conditional jumps, and its data structures are byte layouts you could draw on graph paper. Translating that is simple: a competent compiler-writer can target a new ISA in a few months, and C written for the PDP-11 half a century ago still compiles, with small changes, on a 2026 ARM Mac. The price falls on the programmer, who handles the machine's memory directly.
     </p>
 
     <h3>BCPL → B → C</h3>
 
     <p id="ch5-portability-p7">
-      <strong>BCPL</strong> (Martin Richards, Cambridge, 1967) was a typeless language
-      designed for writing compilers. Words. No types. Just memory. <strong>B</strong> (Ken
-      Thompson at Bell Labs, 1969) was a smaller, cleaner BCPL: also typeless, also
-      word-oriented. B ran on early UNIX. But the PDP-11 that arrived at Bell Labs in 1970
-      was <em>byte-addressable</em>, and B's word-only model fit it badly. In 1972 Ritchie
-      added types (<code>int</code>, <code>char</code>, pointers, structs) and called the
-      result <strong>C</strong>. The name was exactly the joke it looks like: the language
-      that comes after B.
+      <strong>BCPL</strong> (Martin Richards, Cambridge, 1967) was typeless: every value was a machine word, whether it held a number, a letter or an address. <strong>B</strong> (Ken Thompson at Bell Labs, 1969), a smaller BCPL, was just as typeless and ran on early UNIX. But the PDP-11 that arrived at Bell Labs in 1970 was <em>byte-addressable</em>, every byte with its own address, and B, which saw only words, had no direct way to reach one. In 1972 Ritchie added types, so the compiler knew a <code>char</code> (one byte) from an <code>int</code> (a word), and called the result <strong>C</strong>: the language that comes after B.
     </p>
 
     <div class="insight-strip">
-      <p id="ch5-portability-p8">C did not solve portability by being abstract. It solved it by being <em>just barely</em> abstract enough: close enough to assembly to compile efficiently on any reasonable CPU, just far enough above it to never mention specific registers.</p>
+      <p id="ch5-portability-p8">C solved portability by being <em>just barely</em> abstract enough: close enough to assembly to compile efficiently on any reasonable CPU, just far enough above it never to mention specific registers.</p>
     </div>
 
   </section>
@@ -2194,30 +2164,15 @@
     <h2>Two men, a discarded minicomputer, four years.</h2>
 
     <p id="ch5-bell-labs-p1" class="lead">
-      In a windowless room at Bell Labs in 1969, Ken Thompson found a discarded PDP-7 and
-      started writing a programming environment for himself. His friend Dennis Ritchie
-      joined. Within four years they had built UNIX, written the C language to write more
-      UNIX in, and laid the foundations of every operating system you use today. No
-      marketing. No grand plan.
+      In a windowless room at Bell Labs in 1969, Ken Thompson found a discarded PDP-7 and started writing a programming environment for himself. His friend Dennis Ritchie joined. Within four years they had built UNIX, written the C language to write more UNIX in, and laid the foundations of most operating systems you use today.
     </p>
 
     <p id="ch5-bell-labs-p2">
-      The story begins with a project that failed. Bell Labs had been one of three
-      institutions building <strong>Multics</strong>, a vast time-sharing operating system
-      meant to be a "computing utility" for hundreds of simultaneous users. Multics was
-      technically remarkable and managerially catastrophic. By 1969 Bell Labs had pulled
-      out. Thompson and Ritchie, who had been Multics contributors, were left with the
-      appetite for that kind of system but no machine, no team, and no permission.
+      Bell Labs had been one of three institutions building <strong>Multics</strong>, a vast time-sharing operating system meant to be a "computing utility" for hundreds of simultaneous users. Multics was technically remarkable and managerially catastrophic. By 1969 Bell Labs had pulled out. Thompson and Ritchie, who had been Multics contributors, were left with the appetite for that kind of system but no machine, no team, and no permission.
     </p>
 
     <p id="ch5-bell-labs-p3">
-      Thompson salvaged an unused PDP-7, an 18-bit minicomputer already old by 1969; DEC
-      had stopped selling it. He started writing a small operating system for it, partly to
-      play a space-travel game he had ported from Multics, partly to have an environment to
-      work in. By the end of 1969 there was a kernel, a shell, an editor, and a primitive
-      filesystem. Brian Kernighan, noting that the system was a stripped-down Multics,
-      quipped that they should call it "UNICS" (UNiplexed Information and Computing
-      Service), a pun on Multics. The name became <strong>UNIX</strong>.
+      Thompson salvaged an unused PDP-7, an 18-bit minicomputer already old by 1969; DEC had stopped selling it. He started writing a small operating system for it, partly to play a space-travel game he had ported from Multics, partly to have an environment to work in. By the end of 1969 there was a kernel, a shell, an editor, and a primitive filesystem. Brian Kernighan, noting that the system was a stripped-down Multics, quipped that they should call it "UNICS" (UNiplexed Information and Computing Service), a pun on Multics, the MULTiplexed Information and Computing Service. The name became <strong>UNIX</strong>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-2">
@@ -2297,24 +2252,13 @@
     <h3>The PDP-11</h3>
 
     <p id="ch5-bell-labs-p5">
-      The PDP-11 was a 16-bit minicomputer that DEC sold from 1970 onwards. It was small
-      (the size of a refrigerator, not a room), had eight general-purpose registers, used
-      byte-addressable memory, supported indirect addressing through registers, and had a
-      clean, regular instruction set. C's design choices are PDP-11 idioms made into a
-      language: pointer arithmetic that adds <code>sizeof(*p)</code> bytes, structures
-      laid out in memory in declaration order, the equivalence of arrays and pointers. To a first approximation, C is a portable PDP-11 assembler.
+      The PDP-11 was a 16-bit minicomputer that DEC sold from 1970 onwards: small (the size of a refrigerator, not a room), with eight general-purpose registers, byte-addressable memory and a clean, regular instruction set. C was shaped around it. A C pointer, a variable that holds an address (Section 03 explains them), steps by the size of what it points at: 1 byte for a character, 2 for an integer (Fig 5.3). To a first approximation, C is a portable PDP-11 assembler.
     </p>
 
     <h3>K&amp;R, 1978</h3>
 
     <p id="ch5-bell-labs-p6">
-      Brian Kernighan and Dennis Ritchie published <em>The C Programming Language</em>
-      with Prentice-Hall in 1978. Two hundred and twenty-eight pages. Every example a few
-      lines, compilable, runnable. The famous opener, a program that prints
-      <code>hello, world</code>, is on page 6. K&amp;R defined the language until ANSI
-      standardisation in 1989, and it is still on the bookshelf of every working C
-      programmer. The book is unfussy, exact, and assumes intelligence: someone could
-      plausibly read it in an afternoon and write working code that night.
+      Brian Kernighan and Dennis Ritchie published <em>The C Programming Language</em> with Prentice-Hall in 1978: 228 pages, every example a few lines you could compile and run, starting on page 6 with a program that prints <code>hello, world</code>. K&amp;R, as the book is known, defined the language until ANSI standardised it in 1989. It is short and exact, and it assumes an intelligent reader: someone could plausibly read it in an afternoon and write working code that night.
     </p>
 
     <div class="pull-quote">
@@ -2377,31 +2321,15 @@
     <h2>A pointer is an integer with attitude.</h2>
 
     <p id="ch5-pointers-p1" class="lead">
-      A pointer is not a mysterious thing. It is an integer: the address of a byte
-      in memory. What makes C feel different from every language since is that it
-      lets you do arithmetic on these integers directly, without a safety net, and
-      trusts you to know what you're doing.
+      A pointer is an integer: the address of a byte in memory. What sets C apart from most languages since is that it lets you do arithmetic on these integers directly, and never checks that the result still points at anything valid.
     </p>
 
     <p id="ch5-pointers-p2">
-      To a C program, memory is a giant array of bytes, and each byte has an
-      integer address. On a 64-bit machine, those addresses run from <code>0x0000_0000_0000_0000</code>
-      to <code>0xFFFF_FFFF_FFFF_FFFF</code>, more addresses than any single machine
-      will ever fill.
-      A <span class="key-term">pointer</span> in C is just one of those integer addresses,
-      stored in a variable that the compiler has labelled with the type of thing the
-      address is supposed to point at.
+      To a C program, memory is a giant array of bytes, and each byte has an integer address. A <span class="key-term">pointer</span> in C is one of those addresses, stored in a variable that the compiler has labelled with the type of thing the address is supposed to point at.
     </p>
 
     <p id="ch5-pointers-p3">
-      Three operators do nearly all the work. The unary <code>&amp;</code> takes the
-      address of a variable: <code>&amp;x</code> is "the address where <code>x</code>
-      lives." The unary <code>*</code> dereferences a pointer: if <code>p</code> is the
-      address of an int, then <code>*p</code> is the int stored there. And pointer
-      arithmetic (<code>p + 1</code>) does <em>not</em> mean "the next byte." It means
-      "the next thing of the type <code>p</code> points to." If <code>p</code> is an
-      <code>int *</code> on a 32-bit-int machine, <code>p + 1</code> advances four bytes.
-      The compiler scales the arithmetic for you. This is the entire trick.
+      Three operators do nearly all the work. <code>&amp;x</code> is the address where the variable <code>x</code> lives. <code>*p</code> dereferences the pointer <code>p</code>, reading what is stored at its address: if <code>p</code> holds the address of an <code>int</code>, <code>*p</code> is that <code>int</code>. And <code>p + 1</code> means the next thing of the type <code>p</code> points to, not the next byte: if <code>p</code> is an <code>int *</code> (a pointer to <code>int</code>) and an <code>int</code> takes four bytes, <code>p + 1</code> is four bytes further on. The compiler scales the arithmetic for you.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-4">
@@ -2498,13 +2426,7 @@
     <h3>Arrays are pointers in disguise</h3>
 
     <p id="ch5-pointers-p5">
-      The expression <code>a[i]</code>, where <code>a</code> is an array, is defined
-      by the C standard to be exactly equivalent to <code>*(a + i)</code>. Not
-      "compiles to similar code": <em>defined to be equivalent.</em> The array indexing
-      operator is syntactic sugar for pointer arithmetic, and it works in both
-      directions. With a pointer <code>p</code>, <code>p[3]</code> is a legal C
-      expression meaning <code>*(p + 3)</code>; with an array <code>a</code>,
-      <code>*a</code> is <code>a[0]</code>.
+      The C standard defines <code>a[i]</code>, element <code>i</code> of the array <code>a</code>, to mean exactly <code>*(a + i)</code>: indexing is shorthand for pointer arithmetic. It works in both directions: with a pointer <code>p</code>, <code>p[3]</code> means <code>*(p + 3)</code>, and with an array <code>a</code>, <code>*a</code> is <code>a[0]</code>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-5">
@@ -2557,30 +2479,17 @@
     <h3>What this lets you do</h3>
 
     <p id="ch5-pointers-p7">
-      Linked structures built by chasing pointers from one node to the next. Arrays
-      of arrays, dynamically sized. Function pointers: pointers to executable code,
-      the foundation of callbacks, interrupt handlers, and the virtual method tables
-      (<em>vtables</em>) of <a href="#ch6">Chapter 6</a>. Type-punning casts that let
-      you treat the same bytes as different types, useful for binary protocols and for
-      reading raw hardware registers. Everything systems software does, eventually, comes down
-      to this.
+      Pointers let a program join data that sits anywhere in memory: a list can be a chain of items, each stored with the address of the next. A pointer can also hold the address of code, so a program can choose while it runs which function to call: a sorting routine can be handed the function that compares two items, and the virtual method tables (<em>vtables</em>) of <a href="#ch6">Chapter 6</a> are tables of such pointers. And because a device's registers sit at memory addresses (the memory-mapped I/O of <a href="part-1#chBridge">the Bridge</a>), a pointer set to one of them lets a driver written in C command the hardware directly.
     </p>
 
     <h3>What this lets you screw up</h3>
 
     <p id="ch5-pointers-p8">
-      A pointer that points outside its valid range will happily write anywhere your
-      process is allowed to write. There is no check. <code>arr[i]</code> with
-      <code>i</code> too large does not raise an exception; it stores into whatever
-      lies 4×<em>i</em> bytes past the start of <code>arr</code>. If that is the saved
-      return address on the stack, you have the buffer overflow of
-      <a href="part-1#ch3">Chapter 3</a>: the mechanism drawn on paper there <em>is
-      exactly this</em>, a few lines of C compiled with bounds checking off (which is
-      to say: compiled as C).
+      A pointer that points outside its valid range will write anywhere your process is allowed to write, and nothing checks. If <code>arr</code> holds <code>int</code>s and <code>i</code> is too large, <code>arr[i] = x</code> stores <code>x</code> into whatever lies 4×<em>i</em> bytes past the start of <code>arr</code>. If that is the saved return address on the stack, you have the buffer overflow of <a href="part-1#ch3">Chapter 3</a>, and because C itself checks no bounds, a few lines are enough to cause it.
     </p>
 
     <div class="insight-strip">
-      <p id="ch5-pointers-p9"><strong>The trade:</strong> Pointer arithmetic gives you the most direct access to memory of any high-level language. It is also the source of approximately every memory-corruption vulnerability in computing history. The second is the price of the first.</p>
+      <p id="ch5-pointers-p9"><strong>The trade:</strong> Pointer arithmetic gives C direct access to memory with nothing checking it, and that missing check is where C's memory-corruption vulnerabilities come from.</p>
     </div>
 
   </section>
@@ -2598,24 +2507,11 @@
     </p>
 
     <p id="ch5-malloc-p2">
-      Recall from <a href="part-1#ch3">Chapter 3</a> that memory comes in two main flavours: the <strong>stack</strong>,
-      which grows and shrinks automatically as functions enter and exit, and the
-      <strong>heap</strong>, a region the kernel hands the process for long-lived
-      allocations. Heap memory requires explicit requests. C exposes those requests
-      through two functions: <code>malloc(n)</code> asks for <em>n</em> bytes of heap and
-      returns the address; <code>free(p)</code> tells the allocator that the bytes at
-      address <code>p</code> are no longer needed.
+      Recall from <a href="part-1#ch3">Chapter 3</a> that memory comes in two main flavours: the <strong>stack</strong>, which grows and shrinks automatically as functions enter and exit, and the <strong>heap</strong>, a region the kernel hands the process for long-lived allocations. Heap memory requires explicit requests. C exposes those requests through two functions: <code>malloc(n)</code> asks for <em>n</em> bytes of heap and returns the address; <code>free(p)</code> hands the bytes at address <code>p</code> back for reuse.
     </p>
 
     <p id="ch5-malloc-p3">
-      Behind these two functions lives an entire algorithm, the <strong>allocator</strong>.
-      The kernel hands the process a single big chunk of address space (via the
-      <code>brk</code> or <code>mmap</code> system calls). The allocator subdivides that
-      chunk into smaller pieces in response to <code>malloc</code> calls, and stitches
-      pieces back together when <code>free</code> calls return them. Over time, allocations
-      and frees leave the heap a patchwork: free chunks of various sizes, threaded
-      onto the allocator's free list, interleaved with allocated
-      chunks, each tagged with whether it is in use.
+      Behind these two functions lives an entire algorithm, the <strong>allocator</strong>. The kernel hands the process one big chunk of address space, and the allocator cuts it into pieces as <code>malloc</code> calls ask for them and joins neighbouring free pieces back together as <code>free</code> calls return them. Over time the heap becomes a patchwork of chunks, each marked in use or free, with the free ones linked into the allocator's free list, which it searches for room.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-6">
@@ -2674,14 +2570,7 @@
     <h3>The two failure modes</h3>
 
     <p id="ch5-malloc-p5">
-      There are exactly two ways to mishandle <code>malloc</code> and <code>free</code>.
-      The first is to allocate and never free: a <strong>leak</strong>.
-      The chunk stays in use forever, even though no pointer in the program references it
-      any more. Run a leaky program long enough and the OS kills it for exhausting memory.
-      The second is the inverse: free a chunk and keep using the pointer to it. This
-      is a <strong>use-after-free</strong>. The chunk has gone back to the free list and
-      may have been handed to a different <code>malloc</code> caller; reading it now
-      reads someone else's data, writing it corrupts that data.
+      Mistakes with <code>malloc</code> and <code>free</code> come in two kinds. The first is to allocate and never free: a <strong>leak</strong>. The chunk stays in use forever, even though no pointer in the program references it any more. Run a leaky program long enough and the OS kills it for exhausting memory. The second is the inverse: free a chunk and keep using the pointer to it, if only to free it again. This is a <strong>use-after-free</strong>. The chunk has gone back to the free list and may have been handed to a different <code>malloc</code> caller; reading it now reads someone else's data, writing it corrupts that data.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-7">
@@ -2750,13 +2639,7 @@
     <h3>Why this is still in production</h3>
 
     <p id="ch5-malloc-p7">
-      Garbage collection was invented in 1959 by John McCarthy for Lisp. By 1990 it was
-      well-understood. C kept refusing it for one reason: <em>predictability</em>. A
-      garbage collector decides on its own schedule when to pause your program and walk
-      the heap. For an audio stack draining 48,000 samples per second through a buffer
-      a few milliseconds deep, a 100-millisecond GC pause is catastrophic. C's manual
-      model gives you a contract: memory is freed exactly when you free it, never sooner,
-      never later. The price is that you must be right.
+      Garbage collection, invented by John McCarthy for Lisp in 1959, frees memory automatically: code called a collector finds the chunks no pointer reaches any more and frees them, often pausing the program while it walks the heap. By 1990 the technique was well understood, and C still did without it. One reason that still holds is <em>predictability</em>. Sound hardware plays 48,000 samples a second, each a number tracing the sound wave, from a buffer only a few milliseconds deep; a 100-millisecond collector pause leaves the buffer empty, and the sound breaks up. In C, memory is freed exactly when you free it, never sooner and never later.
     </p>
 
   </section>
@@ -2766,24 +2649,15 @@
     <h2>The optimiser's cruel logic.</h2>
 
     <p id="ch5-ub-p1" class="lead">
-      The C standard contains a list of operations whose behavior is "undefined." This
-      does not mean they crash, or fail, or return garbage. It means the standard places
-      no requirement at all on what happens. Modern optimisers will exploit that
-      freedom in ways that look like betrayal. Code that worked for ten years can break
-      catastrophically on the next compiler upgrade.
+      The C standard contains a list of operations whose behaviour is "undefined": the standard places no requirement at all on what happens, not even a crash. Modern optimisers, the parts of a compiler that rewrite code to run faster, exploit that freedom, and code that worked for ten years can break catastrophically on the next compiler upgrade.
     </p>
 
     <p id="ch5-ub-p2">
-      The core of the list is short and dangerous: signed integer overflow; dereferencing a null
-      pointer; reading or writing past the end of an array; using a value before
-      initialising it; modifying a string literal; data races between threads. Each is a
-      <strong>contract</strong> the programmer has implicitly accepted: "I promise I will
-      never do this." The compiler takes that promise on trust, never checking whether you can keep it, and generates code that <em>only makes sense if you did.</em>
+      The core of the list is short and dangerous: signed integer overflow; dereferencing a null pointer; reading or writing past the end of an array; reading a variable before anything has been stored in it. Each is a <strong>contract</strong> the programmer has implicitly accepted: "I promise I will never do this." The compiler follows C's old motto, "trust the programmer": it never checks whether you can keep the promise, and generates code that <em>only makes sense if you did.</em>
     </p>
 
     <p id="ch5-ub-p3">
-      The canonical example is a function that checks for signed integer overflow
-      before doing something dangerous:
+      Adding 1 to the largest <code>int</code> makes the processor wrap round to the most negative one (Fig 2.8), so a careful programmer guards with <code>if (i + 1 &lt; i) abort();</code>, which stops the program if the sum has wrapped. But the wrap is only what the hardware does; the C language promises nothing about it. Overflow is on the list above, so the optimiser assumes it never happens and reasons from there:
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-8">
@@ -2804,7 +2678,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.469800;0.470000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">4</text><text x="40" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">so abort() is dead code</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="262" width="360" height="56" rx="3" fill="#0c120e" stroke="#84ffb2" stroke-opacity="0.7"/><text x="32" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">lea eax,[rdi+1]</text><text x="32" y="306" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">ret</text><text x="368" y="284" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no check left</text></g>
 </svg>
-      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is <span class="key-term">undefined behaviour</span>, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code. At <code>-O2</code> gcc deletes it, leaving only an add and a return.</p>
+      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is <span class="key-term">undefined behaviour</span>, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code, code that can never run. With optimisation switched on (<code>-O2</code>), the gcc compiler deletes it, leaving only an add and a return.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2818,13 +2692,7 @@
     <h3>NULL dereference</h3>
 
     <p id="ch5-ub-p5">
-      A pointer with the value <code>0</code> (or <code>NULL</code>, the macro that
-      means the same thing) is conventionally "the address that points nowhere." The
-      kernel arranges for the very first page of every process's virtual address space
-      to be unmapped. Touching that page raises a hardware fault. The kernel intercepts
-      the fault and converts it into a signal called <code>SIGSEGV</code> ("segmentation
-      violation"), which by default kills the process. This is the <code>Segmentation
-      fault (core dumped)</code> message that has greeted C programmers for fifty years.
+      A pointer with the value <code>0</code> (or <code>NULL</code>, C's name for it) is conventionally "the address that points nowhere." The kernel arranges for the very first page of every process's virtual address space to be unmapped. Touching that page raises a hardware fault. The kernel intercepts the fault and converts it into a signal called <code>SIGSEGV</code> ("segmentation violation"), which by default kills the process. This is the <code>Segmentation fault (core dumped)</code> message that has greeted C programmers for fifty years.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-9">
@@ -2878,18 +2746,11 @@
     <h3>The optimiser's contract, the programmer's homework</h3>
 
     <p id="ch5-ub-p7">
-      "Trust the programmer" was C's original philosophy and is still its operating
-      stance. Modern optimisers take it to its logical limit, removing code based
-      on assumptions you never knowingly made. The Linux kernel has accumulated a handful
-      of <code>-f</code> flags telling GCC <em>not</em> to exploit specific UB optimisations.
-      Security-aware C codebases compile with UndefinedBehaviorSanitizer in development
-      (the compiler inserting checks for exactly the assumptions its optimising self
-      exploits) to catch the cases where the programmer's and the compiler's models of
-      "what is allowed" have drifted apart.
+      Modern optimisers take "trust the programmer" to its logical limit, removing code on assumptions you never knowingly made. The Linux kernel compiles with a handful of GCC options (<code>-f</code> flags) that switch specific deductions off. Careful C projects also test under UndefinedBehaviorSanitizer, which compiles in checks for many of these promises, signed overflow among them, and reports each one the running program breaks.
     </p>
 
     <div class="insight-strip">
-      <p id="ch5-ub-p8"><strong>The right way to think about UB:</strong> not "the program might crash" but "the program's behavior is no longer governed by the source you wrote." This is the cost of C's performance.</p>
+      <p id="ch5-ub-p8"><strong>The right way to think about undefined behaviour:</strong> not "the program might crash" but "the program's behaviour is no longer governed by the source you wrote." This is the cost of C's performance.</p>
     </div>
 
   </section>
@@ -2899,21 +2760,11 @@
     <h2>Half a century later, still in the foundation.</h2>
 
     <p id="ch5-survives-p1" class="lead">
-      Every five years, someone writes a clickbait piece announcing that C is dying.
-      Every five years, more C runs in production than ever before. Linux is C. macOS
-      XNU and Windows NT are mostly C. The Python interpreter is C. The browser
-      rendering this page is C++, C's first child. The TLS library that secured your connection is C.
-      C is so deep in the foundations that it has become invisible.
+      Every five years, someone writes a clickbait piece announcing that C is dying. Every five years, more C runs in production than ever before. Linux is C. macOS XNU and Windows NT are mostly C. The Python interpreter is C. The browser rendering this page is C++, C's best-known descendant. The TLS library that secured your connection is C. C is so deep in the foundations that it has become invisible.
     </p>
 
     <p id="ch5-survives-p2">
-      Three properties keep C in the floor of every system. <strong>Performance</strong>:
-      C compiles to assembly with no runtime overhead; what you write is, very nearly,
-      what runs. <strong>Predictability</strong>: every operation
-      has a known, bounded cost; there is no garbage collector to pause your program on
-      its own schedule, no JIT to recompile your hot loop in the middle of a frame.
-      <strong>Ubiquity</strong>: every hardware vendor ships a C compiler before any other
-      language, every embedded system speaks C, every kernel API is described in C.
+      Three properties keep C at the bottom of every system. <strong>Performance</strong>: C compiles straight to machine code, so a program that keeps C's promises runs very nearly as written. <strong>Predictability</strong>: nothing runs that the program did not ask for, with no garbage collector pausing it on its own schedule and no just-in-time compiler recompiling its busiest code while it runs. <strong>Ubiquity</strong>: a new processor gets a C compiler before any other language, embedded systems speak C, and kernels describe their interfaces in C.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-10">
@@ -3037,7 +2888,7 @@
     <h3>The seam to <a href="#ch6">Chapter 6</a></h3>
 
     <p id="ch5-survives-p6">
-      Stroustrup, who said that, was reflecting on his own creation. By 1979 he was watching C carry systems of millions of lines, written by hundreds of people, that it was never designed to hold: it gave them speed and portability, but no tools to manage <em>complexity at that scale</em>. He set out to make C scale without giving up anything it did well.
+      Stroustrup, who said that, was reflecting on his own creation. In 1979 he began work on spreading an operating system's services across a network, a job too large for plain C: it gave him speed and portability, but no tools to manage <em>complexity at that scale</em>. He set out to make C scale without giving up anything it did well.
     </p>
 
   </section>
