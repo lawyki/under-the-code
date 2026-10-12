@@ -4096,44 +4096,21 @@ main:
     <h2>One bit, two worlds</h2>
 
     <p id="chBridge-mode-p1" class="lead">
-      Of all the millions of bits inside a modern CPU, exactly one decides whether the
-      next instruction runs at all. Software does not set it in the ordinary sense: the
-      hardware does, in response to specific events, and no program in the lower mode
-      can flip it. This single bit is the seam at which all of operating-system security
-      begins.
+      Of all the millions of bits inside a modern CPU, one decides what the running code may do: set one way, the CPU runs every instruction; set the other way, it refuses the few that control the whole machine. No user program can flip it: it changes only when a trap carries the CPU into the kernel, or when the kernel hands the CPU back. This bit is the seam at which all of operating-system security begins.
     </p>
 
     <p id="chBridge-mode-p2">
-      On x86 the bit lives in the bottom two bits of <code>CS</code>, the code-segment
-      register; those bits are the Current Privilege Level or <code>CPL</code>, with
-      values 0 (most privileged) through 3 (least). On ARM the bit is the Exception
-      Level, <code>EL0</code> through <code>EL3</code>. On RISC-V it is the privilege
-      mode field: <code>U</code>, <code>S</code>, <code>M</code>. Architectures offer
-      different numbers of levels, but every operating system in use today reduces them
-      to two, a privileged mode for the kernel and an unprivileged mode for everything
-      else, so in effect it is one bit: kernel or not. Books and conversations call
-      these <strong>Ring 0</strong> and <strong>Ring 3</strong>, after the original
-      Multics and Intel terminology, even on architectures whose hardware has no rings
-      at all.
+      On x86 this setting is stored in two bits, the bottom two of a register called <code>CS</code>; together they hold the Current Privilege Level, or <code>CPL</code>, from 0 (most privileged) to 3 (least). Operating systems use only two of those four levels: <strong>Ring 0</strong> (kernel mode) for the kernel and <strong>Ring 3</strong> (user mode) for everything else. So in effect it is one bit: kernel or not.
     </p>
 
     <h3>The hardware enforces, not the operating system</h3>
 
     <p id="chBridge-mode-p3">
-      What makes the arrangement <em>work</em> is that the silicon enforces the privilege
-      bit, not software. When a program in Ring 3 tries to execute a privileged
-      instruction, the CPU does not ask politely whether that is allowed. It does not
-      consult a kernel table. It traps. The instruction does not execute; control is
-      yanked from the program and handed to a piece of code at a fixed address, in
-      Ring 0, that the kernel set up at boot. From the program's point of view, the next
-      instruction simply did not happen, though the kernel may be about to terminate it.
+      When a program in Ring 3 tries a privileged instruction, the CPU itself checks the CPL, with no kernel code involved, so there is nothing to fool. The instruction does not execute. Instead the CPU raises a general-protection fault (<code>#GP</code> in the figure below): it takes control from the program and jumps, in Ring 0, to a handler the kernel set up at boot, which may end the program.
     </p>
 
     <p id="chBridge-mode-p4">
-      Roughly thirty instructions are privileged on x86-64. They are exactly the
-      instructions that would let a program break the operating system's abstractions if run from user space: those that load the page-table base register (<code>MOV CR3</code>), the interrupt descriptor table (<code>LIDT</code>) or the global descriptor table (<code>LGDT</code>); read or write model-specific registers (<code>RDMSR</code>, <code>WRMSR</code>); talk directly to physical I/O ports (<code>IN</code>, <code>OUT</code>); flush the translation cache (<code>INVLPG</code>); or halt the processor (<code>HLT</code>). User mode is
-      defined by exclusion: it can do everything <em>except</em> these. The diagram below
-      shows the division.
+      On x86-64 a short list of instructions is reserved for Ring 0: those that control the machine as a whole. <code>MOV CR3</code> chooses which page tables the MMU uses, so a program allowed to run it could map in any memory on the machine. <code>IN</code> and <code>OUT</code> talk to devices directly, past the kernel's permission checks, and <code>HLT</code> halts the processor. User mode is defined by exclusion: it can do everything <em>except</em> these.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-1">
@@ -4180,7 +4157,7 @@ main:
 <path d="M 380 168 H 392 V 304 H 382" fill="none" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0.35;0.35;0;0;0;0;1;1;0.35;0.35" keyTimes="0.000000;0.075000;0.075125;0.099938;0.100000;0.412375;0.412500;0.537500;0.562500;1.000000" dur="8s" repeatCount="indefinite"/></path>
 <path d="M 380 224 H 392 V 304 H 382" fill="none" stroke="#ec8d8d" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0.35;0.35;0;0;0;0;1;1;0.35;0.35" keyTimes="0.000000;0.075000;0.075125;0.099938;0.100000;0.612375;0.612500;0.737500;0.762500;1.000000" dur="8s" repeatCount="indefinite"/></path>
 </svg>
-      <p id="chBridge-mode-p5" class="diagram-caption">Two bits in the CS register say which world the CPU is in: Ring 0 for the kernel, Ring 3 for everything else. In Ring 3 about thirty privileged instructions are refused by the silicon itself, which jumps to the kernel instead.</p>
+      <p id="chBridge-mode-p5" class="diagram-caption">Two bits in the CS register say which mode the CPU is in: Ring 0 for the kernel, Ring 3 for everything else. In Ring 3 the silicon itself refuses the privileged instructions and jumps to the kernel instead.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4192,32 +4169,17 @@ main:
     </div>
 
     <p id="chBridge-mode-p6">
-      How does the CPL get set in the first place? Boot starts in the most privileged
-      mode the chip has, because there is no operating system yet and so no one to grant
-      privileges. The bootloader hands control to the kernel, which is therefore born in
-      Ring 0. The kernel then sets up the data structures the CPU will need to <em>lower</em>
-      privilege when it launches the first user-space program: page tables that map user
-      addresses, an interrupt descriptor table that handles future traps, a Global
-      Descriptor Table whose code and stack segments mark Ring 3. Only then does the
-      kernel execute the instruction (<code>SYSRET</code> on x86-64, <code>ERET</code> on
-      ARM) that drops the CPU into user mode. From that moment on, getting back to Ring 0
-      requires going through the single mechanism the next section is about: the trap.
+      The CPU powers on in its most privileged mode, since there is no operating system yet to grant privileges, so the kernel starts in Ring 0 and must step down by itself. First it prepares what user programs will depend on: page tables that map their memory, the table telling the CPU where to jump on each trap, and the timer of Section 04. All of it must be ready in advance, because once the CPU is in Ring 3 the kernel runs again only when a trap, the subject of the next section, brings it back. Then one instruction (<code>SYSRET</code> on x86-64, <code>ERET</code> on ARM) switches the CPU to Ring 3 and jumps to the start of the first user program.
     </p>
 
     <p id="chBridge-mode-p7">
-      The privilege bit is not just a switch on instructions; it is a switch on
-      <em>memory access</em>. Page-table entries are tagged with a U/S bit
-      (user/supervisor), and pages tagged S are readable only when CPL=0. This is what
-      stops a user program from poking around the kernel's data structures even by
-      accident: the same hardware that enforces virtual-to-physical translation also
-      refuses to translate a user-mode access into a supervisor-only page. Section 03
-      shows the page-table walker that does this.
+      The CPL also guards memory. Each page-table entry carries a flag, U or S (user or supervisor), and on every access the MMU compares it with the CPL: a page marked S is open only to the kernel, in Ring 0. A user program that reaches for the kernel's data, even by accident, gets a page fault instead. Section 03 shows the MMU at work.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="chBridge-mode-p8" class="insight-text">
-        <strong>Why this is the seam.</strong> Every protection the operating system claims to enforce (process isolation, file permissions, network sandboxing, container boundaries) bottoms out in this one bit. If a user-mode program could clear the bit by itself, the entire stack would collapse. It cannot, because privilege rises only through a trap, and a trap enters Ring 0 at an address the kernel registered at boot, so a program's own instructions never run there. Dropping back to user mode needs Ring 0 too.
+        <strong>Why this is the seam.</strong> Every protection the operating system enforces (keeping processes apart, file permissions, sandboxes) rests on this bit, because what they are built from (the page tables, the trap table, the timer) can be changed only from Ring 0. No program can raise the bit itself: a trap raises it, but always at an entry point the kernel chose and keeps in registers and S pages that Ring 3 cannot change. And <code>SYSRET</code>, which lowers it, faults outside Ring 0.
       </p>
     </div>
   </section>
@@ -4229,23 +4191,11 @@ main:
     <h2>The one door between the two worlds</h2>
 
     <p id="chBridge-trap-p1" class="lead">
-      A user program eventually needs to do things only the kernel can do. Read a file.
-      Open a socket. Print to the screen. The ISA has no <code>READ_FILE</code> opcode.
-      What exists is one instruction that asks the kernel to do the thing on the
-      program's behalf. The instruction is the <strong>system call</strong>, and
-      the mechanism that delivers it across the boundary is the <strong>trap</strong>.
+      A user program often needs things only the kernel can do: reading a file, opening a network connection, printing to the screen. The ISA has no <code>READ_FILE</code> opcode, and a program in Ring 3 cannot reach the devices itself, so it asks the kernel to do the work: it makes a <strong>system call</strong>, Chapter 1's request across the boundary, by executing one special instruction. The request crosses by a <strong>trap</strong>, the only way from Ring 3 into Ring 0.
     </p>
 
     <p id="chBridge-trap-p2">
-      Unlike a function call, which jumps to an address the caller chose, a trap jumps
-      to an address the kernel registered in advance, and which user code cannot change.
-      All the user program knows is which instruction to fire (<code>SYSCALL</code> on
-      x86-64, <code>SVC</code> on ARM, <code>ECALL</code> on RISC-V), and the silicon
-      handles the rest: switch CPL to 0, save user-mode registers, jump to the kernel
-      entry point, run the handler, then return to user mode at the next user
-      instruction. From user space's perspective the syscall looks like any other
-      instruction that took an unusually long time. From the kernel's perspective an
-      entire round trip across the privilege boundary has just happened.
+      A function call jumps to an address the caller chose; a trap jumps to an address the kernel registered in advance, which user code cannot change. The program chooses the request, never the destination: it puts the number of the service it wants in a register (on x86-64 Linux, 1 in RAX asks for write, as in Fig BR.2) and executes its chip's system-call instruction (<code>SYSCALL</code> on x86-64, <code>SVC</code> on ARM, <code>ECALL</code> on RISC-V). The CPU then makes the crossing in one step: it saves the address of the program's next instruction, switches CPL to 0 and jumps to the kernel's entry point. The kernel does the work, and <code>SYSRET</code> returns to Ring 3 at the saved address with the result in RAX. To the program, the system call looks like any other instruction that took unusually long.
     </p>
 
     <h3>The path of one syscall</h3>
@@ -4308,18 +4258,7 @@ main:
     <h3>Traps, interrupts, exceptions: the same mechanism, three names</h3>
 
     <p id="chBridge-trap-p4">
-      Every time the CPU must stop the current code and run something the kernel chose,
-      it saves its place and enters Ring 0 at an address the kernel registered. A
-      <strong>system call</strong> and an <strong>exception</strong> are synchronous
-      traps, caused by the instruction now running: the program asks on purpose, or the
-      instruction cannot complete (division by zero, a page fault, a #GP from Section
-      01). An <strong>interrupt</strong> is an asynchronous trap from a hardware device
-      (a disk finishing a read, the timer firing), free to arrive between any two
-      instructions. On x86, each exception and interrupt has a number, its vector, which
-      indexes one data structure: the interrupt descriptor table. The instruction
-      <code>int n</code> lets software fire vector n itself; legacy Linux system calls
-      used <code>int 0x80</code> (vector 128), while <code>SYSCALL</code> skips the
-      table and jumps to the entry point in <code>MSR_LSTAR</code> (Fig BR.2).
+      System calls are not the only traps. An <strong>exception</strong> is a trap raised by the running instruction when it cannot complete: division by zero, a page fault, Section 01's #GP. An <strong>interrupt</strong> is a trap raised by a device (a disk finishing a read, the timer firing), and it can arrive between any two instructions. On x86 each kind of exception and interrupt has a number, its vector, and the kernel keeps one table, the interrupt descriptor table (IDT), with a handler address for each vector (Fig BR.3). A system call made with <code>SYSCALL</code> skips that table and jumps to its own entry point (Fig BR.2); older Linux programs made theirs through the table, as vector 128.
     </p>
 
     <div class="diagram-card" id="fig-br-3">
@@ -4415,19 +4354,13 @@ main:
     </div>
 
     <p id="chBridge-trap-p6">
-      Each IDT entry carries a <strong>DPL</strong>
-      (Descriptor Privilege Level) that controls whether user code can <em>cause</em>
-      that vector to fire by software. Without the DPL, user code could spoof any kernel
-      handler invocation by raising the corresponding interrupt by hand. The kernel sets
-      DPL=3 only on the few vectors user code is meant to raise, such as the legacy
-      syscall vector; the rest have DPL=0, which means a user-mode <code>int 13</code>
-      instruction does not deliver a fake general-protection fault, it raises a real one.
+      The instruction <code>int n</code> lets a program raise any vector n itself, as if that event had happened; this is how those older system calls reached vector 128. So each IDT entry also carries a <strong>DPL</strong> (Descriptor Privilege Level): 3 lets user code raise that vector this way, 0 only the kernel. Without it, a program could run <code>int 14</code>, and the kernel's page-fault handler would go to work on a fault that never happened, using details no real fault produced. The kernel gives DPL 3 only to the few vectors user code is meant to raise, such as 128, so <code>int 14</code> from Ring 3 becomes a real general-protection fault.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="chBridge-trap-p7" class="insight-text">
-        <strong>The kernel's authority is registered, not assumed.</strong> The CPU does not know what the kernel is. It knows where to jump on each kind of trap because the kernel told it at boot: it wrote the IDT and pointed <code>IDTR</code> at it, and stored the system-call entry point in <code>MSR_LSTAR</code>. After boot, both sit in privileged registers that user code cannot change. The kernel's authority is an arrangement the kernel made with the silicon while it was still alone with the machine.
+        <strong>Where the kernel's authority comes from.</strong> On a trap the CPU jumps only where the kernel told it to at boot: the kernel wrote the IDT into memory and pointed <code>IDTR</code> at it, and stored the system-call entry point in <code>MSR_LSTAR</code>. Only Ring 0 can load those registers, and the table sits in pages marked S (Section 01), so no user program can redirect a trap.
       </p>
     </div>
   </section>
@@ -4439,24 +4372,11 @@ main:
     <h2>The hardware that draws the walls between processes</h2>
 
     <p id="chBridge-mmu-p1" class="lead">
-      Memory isolation is not a software policy. If process A could simply read
-      address <code>0x4000</code> in process B's space by asking, no firewall and no
-      kernel subroutine could stop it. The read would already be done by the time the
-      kernel found out. Isolation has to happen <em>before</em> any memory access
-      completes. It does, because between the CPU and the RAM sits a small piece of
-      silicon called the <strong>memory management unit</strong>, and every memory
-      access flows through it.
+      Memory isolation cannot be a software policy. A memory read is an ordinary instruction that the CPU runs on its own, without the kernel. If process A could aim one at address <code>0x4000</code> in process B's memory, no kernel code would run in time to stop it. The check has to happen inside every access, before it completes. It does, because between the CPU and the RAM sits a small piece of silicon called the <strong>memory management unit</strong>, and every memory access the CPU makes flows through it.
     </p>
 
     <p id="chBridge-mmu-p2">
-      <a href="#ch1">Chapter 1</a> introduced virtual memory: each process believes it
-      owns the entire address space, and the kernel maintains the illusion. The MMU is
-      the part of the illusion that lives in hardware. It translates whole
-      <span class="key-term">pages</span>, fixed-size blocks (4 KiB on x86-64): an
-      address splits into a page number and an offset inside the page, and only the page
-      number changes, from virtual to physical. The page tables form four levels: a
-      slice of the page number picks an entry at each, leading to the next table and
-      finally to the physical page.
+      The MMU is the hardware half of the virtual memory of <a href="#ch1">Chapter 1</a>, the illusion that each process owns the entire address space. It translates whole <span class="key-term">pages</span>, blocks of 4 KiB on x86-64: the last twelve bits of an address (2<sup>12</sup> = 4,096) give the offset inside the page and pass through unchanged, and only the page number above them is translated, using page tables the kernel keeps in RAM. One flat table with an entry for every page a process could address would take 512 GiB. So x86-64 splits it into four levels of small tables, each a single page of 512 entries, and the kernel builds only the tables for parts of the address space in use. Nine bits of the page number pick an entry in the top table, which points to a table on the next level; three more steps reach the physical page. Following that chain is the page-table walk.
     </p>
 
     <h3>The page-table walker as a hardware unit</h3>
@@ -4509,7 +4429,7 @@ main:
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.766500;0.766667;0.808333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="208" y="304" width="174" height="56" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <text x="20" y="382" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">offset 0x010 unchanged: only the page moves</text>
 </svg>
-      <p id="chBridge-mmu-p3" class="diagram-caption">Every load, store and instruction fetch goes through the MMU, which turns the virtual address into a physical one by walking the page tables the kernel wrote, then checks the permission bits. If the check fails, nothing reaches RAM: the MMU raises a page fault and the kernel takes over.</p>
+      <p id="chBridge-mmu-p3" class="diagram-caption">Every load, store and instruction fetch goes through the MMU, which first looks in its TLB, a cache of recent translations, and on a miss walks the page tables the kernel wrote; then it checks the permission bits. If the check fails, nothing reaches RAM: the MMU raises a page fault and the kernel takes over.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4521,27 +4441,13 @@ main:
     </div>
 
     <p id="chBridge-mmu-p4">
-      The kernel never runs the walk itself. It only writes the page tables (the data
-      structures the walker reads), points <code>CR3</code> at them, and lets the
-      silicon do the lookup. Translation happens billions of times per second; if the
-      kernel had to be involved in every access, the machine would not run at all. To
-      switch between processes, the kernel changes that one register, and from that
-      nanosecond on, every memory access made by the CPU resolves through a different
-      process's tables. This is what process isolation actually <em>is</em>: a
-      different value in <code>CR3</code> means a different graph of page tables means
-      different physical pages reachable from the same virtual addresses.
+      The kernel never runs the walk itself. It writes the page tables, points the register <code>CR3</code> at the top one, and leaves the walk to a circuit inside the MMU, the page-table walker; translation happens billions of times per second, and the machine could not run if the kernel took part in each. To switch between processes, the kernel changes that one register; from that nanosecond on, the same virtual addresses lead through different tables to different physical pages. That is what process isolation <em>is</em>. Every process's tables also map the kernel, or at least its entry code, in pages marked S (Section 01), so a trap lands in kernel code whichever process was running, and the program still cannot touch it.
     </p>
 
     <h3>The TLB: a cache for translations</h3>
 
     <p id="chBridge-mmu-p5">
-      A four-level walk costs four memory accesses on top of the one the program asked
-      for: a 5× tax on every load and store. No machine could afford that. So the MMU
-      includes an associative cache called the <strong>translation lookaside
-      buffer</strong>, the TLB, which remembers recent virtual-to-physical
-      translations. The TLB is small (perhaps 64 to a few thousand entries on modern
-      cores), but locality of reference means a hit rate above 99% is normal. The walker
-      runs only on misses.
+      A four-level walk costs four memory accesses on top of the one the program asked for, a 5× tax on every load and store that no machine could afford. So the MMU includes a cache called the <strong>translation lookaside buffer</strong>, the TLB, which remembers recent virtual-to-physical translations. It is small, but locality of reference means a hit rate above 99% is normal, and the walker runs only on misses. A switch of <code>CR3</code> drops the old process's translations so the next process cannot use them, unless each is tagged with its address space.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-5">
@@ -4646,16 +4552,7 @@ main:
     </div>
 
     <p id="chBridge-mmu-p7">
-      When the kernel changes a page-table entry (because a page got swapped out, say,
-      or a permission was revoked), the TLB must be told, or it will keep serving the
-      old translation. The instruction for this is <code>INVLPG</code>, which
-      invalidates a single TLB entry: the next access to that virtual page misses the
-      TLB and forces a fresh walk through the updated page tables. Extended across all
-      CPUs that share the page tables, this is called a TLB shootdown, and it is one of
-      the most expensive ordinary operations a kernel performs. <code>INVLPG</code> is
-      privileged, so Section 01's #GP applies: a user process cannot mess with the TLB,
-      even as a denial-of-service. The whole arrangement is enforced below, not above,
-      the operating system.
+      When the kernel changes a page-table entry (because a page was swapped out to disk, say, or a permission was taken away), the TLB must be told, or it will keep serving the old translation. The privileged instruction <code>INVLPG</code> drops one entry, so the next access to that page misses and the walker reads the updated tables. Each core has its own TLB, so the kernel must also have every other core that might hold the old entry drop it.
     </p>
   </section>
 
@@ -4666,17 +4563,11 @@ main:
     <h2>The piece of silicon that makes multitasking possible</h2>
 
     <p id="chBridge-timer-p1" class="lead">
-      Imagine a CPU exactly like the modern ones (privilege bit, traps,
-      MMU, all of it) but with no clock that fires interrupts. A cooperative kernel
-      could still exist: programs would yield voluntarily, the kernel would schedule
-      the next, and the world would mostly work. Until one program had a bug (an
-      infinite loop, a slow algorithm, an attacker) and refused to yield. The machine
-      would freeze, not because anything was broken, but because the kernel had no way
-      to take the CPU back.
+      Imagine a CPU exactly like the modern ones (privilege bit, traps, MMU, all of it) but with no timer, no circuit that interrupts the CPU on a schedule. A cooperative kernel could still share the CPU: each program would <em>yield</em>, handing the CPU back through a system call, and the kernel would run the next. One program that never yields, stuck in an endless loop or written that way, then freezes the machine, because the kernel never runs again to take the CPU back.
     </p>
 
     <p id="chBridge-timer-p2">
-      Devices interrupt only when they have news and programs yield only when they choose, so neither guarantees the kernel a turn. The <strong>hardware timer</strong>, a counter wired into every modern CPU's interrupt controller, does. It counts down from a number the kernel loads, say a millisecond's worth, and at zero raises an interrupt (a timer tick) and starts again. Whatever user code is doing, each tick hands the CPU back to the kernel, which decides what runs next. No program can stop the ticks, because reprogramming the timer and switching interrupts off are privileged. Without the timer, preemptive multitasking, in which the kernel takes the CPU back instead of waiting for a yield, is impossible.
+      Devices interrupt only when they have news and programs yield only when they choose, so neither guarantees the kernel a turn. The <strong>hardware timer</strong>, a counter in each core's interrupt controller (the circuit that delivers interrupts to the core), does. The kernel loads it with a count that runs out after, say, a millisecond, and at zero it raises an interrupt (a timer tick) and starts again. At each tick the kernel saves the interrupted program's registers, picks what runs next, restores that program's registers, points <code>CR3</code> at its page tables and returns into it, exactly where it stopped. No program can stop the ticks, because reprogramming the timer and switching interrupts off are privileged. Without the timer, preemptive multitasking, in which the kernel takes the CPU back instead of waiting for a yield, is impossible.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-6">
@@ -4728,19 +4619,13 @@ main:
     </div>
 
     <p id="chBridge-timer-p4">
-      Modern Linux can configure itself in three modes regarding the timer:
-      <code>HZ_PERIODIC</code> (a tick at every fixed interval, the historical default),
-      <code>NO_HZ_IDLE</code> (skip ticks when the CPU is idle, to save power), and
-      <code>NO_HZ_FULL</code> (skip ticks even when running, used for high-frequency
-      trading and scientific computing where each tick is an unwanted disruption).
-      Whatever the mode, the mechanism underneath is the same: hardware that
-      interrupts the CPU independently of the running program.
+      Ticks cost power and pause useful work, so most Linux systems stop them on an idle core, where there is nothing to take back, and Linux can be configured, for real-time and high-performance computing, to stop nearly all of them on a core with a single task. A core with more than one task keeps its tick: only the tick lets the kernel share it.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5v-4M10 2.5h4M12 2.5v4M17.5 7.5l1.5-1.5"/></svg></span>
       <p id="chBridge-timer-p5" class="insight-text">
-        <strong>Why the timer is irreducible.</strong> Privilege rings, traps, and the MMU all give the kernel <em>authority</em> over what user code can do. The timer gives the kernel a chance to <em>exercise</em> that authority, even when user code never calls into the kernel. Multitasking, time-sharing, fairness, deadline scheduling, even the ability to kill a misbehaving program: all rest on this one circuit firing on a schedule the user cannot disable.
+        <strong>Why the timer is irreducible.</strong> Privilege rings, traps, and the MMU all give the kernel <em>authority</em> over what user code can do. The timer gives the kernel a chance to <em>exercise</em> that authority, even when user code never calls into the kernel. Preemptive multitasking, time-sharing, fairness, deadline scheduling, even the ability to kill a misbehaving program: all rest on this one circuit firing on a schedule the user cannot disable.
       </p>
     </div>
   </section>
@@ -4759,15 +4644,7 @@ main:
     </p>
 
     <p id="chBridge-io-p2">
-      Two channels carry most of the conversation between CPU and device. The first is
-      <strong>memory-mapped I/O</strong>: a device's registers, small cells in its own
-      circuit, sit at fixed addresses in the physical address space, so writing one
-      gives the device a command and reading one reports its status. The second is
-      <strong>direct memory access</strong>: the device becomes master of the bus,
-      issuing its own reads and writes to RAM without asking the CPU on every byte or
-      passing through the CPU's MMU. Both channels are coordinated by interrupts: the
-      device tells the CPU "I'm done" by raising an IRQ, which goes through the same
-      trap machinery from Section 02.
+      Two channels carry most of the conversation between CPU and device. The first is <strong>memory-mapped I/O</strong>: a device's registers, small cells in its own circuit, sit at fixed addresses in the physical address space, so writing one gives the device a command and reading one reports its status. The second is <strong>direct memory access</strong>: the device reads and writes RAM by itself, without the CPU handling each byte and without passing through the CPU's MMU. x86 also has a third: the <code>IN</code> and <code>OUT</code> instructions of Section 01. Whichever channel carries the work, a device reports that it has finished by raising an interrupt request (IRQ), which reaches the CPU through the trap machinery of Section 02.
     </p>
 
     <h3>Memory-mapped I/O: devices live at memory addresses</h3>
@@ -4815,7 +4692,7 @@ main:
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.799833;0.800000;0.850000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="18" y="120.0" width="200" height="46" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.733167;0.733333;0.800167;0.800417;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 91.00;0 91.00;0 0.00;0 0.00;0 91.00;0 91.00" keyTimes="0.000000;0.049958;0.050000;0.733333;0.800000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="202" cy="52" r="6" fill="#fff"/></g></g>
 </svg>
-      <p id="chBridge-io-p3" class="diagram-caption">To the CPU, physical memory is one flat range of addresses, but only some of it is RAM: other ranges belong to devices. The same store instruction saves a value, changes a pixel, sends a packet or sets the timer, depending only on the address.</p>
+      <p id="chBridge-io-p3" class="diagram-caption">To the CPU, physical memory is one flat range of addresses, and only part of it is RAM: other ranges belong to devices, such as the GPU's frame buffer, which holds the screen's pixels, and the local APIC, each core's interrupt controller and home of its timer (Section 04). The same store instruction saves a value, changes a pixel, tells the network card to send a packet or sets the timer, depending only on the address.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4829,7 +4706,7 @@ main:
     <h3>DMA: when the device copies on its own</h3>
 
     <p id="chBridge-io-p4">
-      MMIO suits the doorbell, the one register write that tells a drive a command is waiting in a queue in RAM, but not the data itself. A modern NVMe SSD reads gigabytes per second; if the CPU had to copy the data with MMIO loads, each waiting about a microsecond for the device to answer, it would do nothing else, and the copy, not the SSD, would set the speed. The hardware solution is direct memory access: once the CPU has told the device where to read and where to write, the device shovels data on its own. The CPU runs something else until the device raises its completion interrupt and the kernel takes over to clean up.
+      Take a modern solid-state drive (an NVMe SSD) reading a file. The kernel writes a small command into a queue in RAM, a list of commands waiting for the drive: read this part of the drive into the buffer at this address. Then it makes one MMIO write, to a register called the doorbell, which tells the drive a command is waiting. The drive fetches the command from RAM itself and copies the data straight into the buffer: that is direct memory access. The CPU could copy the data with MMIO loads instead, but far too slowly: at eight bytes a load, each taking about a microsecond, it would move about 8 MB a second, while the drive delivers several gigabytes. With DMA the CPU runs other work until the drive's completion interrupt.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-8">
@@ -4892,15 +4769,7 @@ main:
     </div>
 
     <p id="chBridge-io-p6">
-      DMA has a security cost. A device that can write any address in RAM is
-      dangerous: a malicious or buggy network card could overwrite kernel
-      code. Modern systems address this with another piece of silicon, the
-      <strong>IOMMU</strong>: a second MMU that translates and bounds-checks the
-      addresses devices use, exactly as the regular MMU does for the CPU. A NIC can
-      then be told it may DMA only into a specific buffer; an attempt to
-      reach kernel memory raises a fault. The IOMMU is the reason VFIO and PCI
-      passthrough into virtual machines is safe. The rest of the kernel-as-program
-      story belongs to <a href="part-2">Part II</a>.
+      DMA has a security cost. A device that can write any address in RAM is dangerous: a malicious or buggy network card could overwrite kernel code. Modern systems address this with another piece of silicon, the <strong>IOMMU</strong>: a second MMU that translates and checks the addresses devices use, as the regular MMU does for the CPU. The kernel can then allow a network card to write only into its own buffers; an attempt to reach kernel memory raises a fault.
     </p>
   </section>
 
@@ -4911,17 +4780,11 @@ main:
     <h2>What the kernel must therefore be</h2>
 
     <p id="chBridge-synthesis-p1" class="lead">
-      Part I has been building toward one question since <a href="#ch1">Chapter 1</a>,
-      and we can now answer it without reading a single line of kernel source. Given
-      what the silicon provides, what is the minimum program that turns five hardware
-      features into the abstractions every modern computer offers?
+      Part I has been building toward one question since <a href="#ch1">Chapter 1</a>, and we can now answer it without reading a single line of kernel source. Given the five hardware features of the Bridge (the privilege bit, traps, the MMU, the timer, and MMIO with DMA), what is the smallest program that turns them into the services all other software relies on: protection, system calls, separate processes, multitasking, files and networking?
     </p>
 
     <p id="chBridge-synthesis-p2">
-      Each abstraction we use without thinking corresponds, almost one to one, to a
-      hardware feature from the previous five sections. No abstraction exists without
-      silicon to enforce it, and no silicon is useful until a program, the kernel,
-      sets it up correctly at boot. The diagram below maps the chain.
+      These services are abstractions: programs use them as if the machine offered them, but the kernel builds each one from the hardware. Each rests, almost one to one, on one of the five features, and no feature is of use until the kernel sets it up at boot. The diagram below maps the chain.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-br-9">
@@ -4985,7 +4848,7 @@ main:
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.042821;0.042857;0.857000;0.857143;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no MMIO or DMA: no disk, no network</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.042821;0.042857;0.342714;0.342857;0.985143;0.985357;1.000000" dur="14s" repeatCount="indefinite"/><text x="20" y="322" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">take a feature away, its abstraction goes</text></g>
 </svg>
-      <p id="chBridge-synthesis-p3" class="diagram-caption">Each abstraction programs rely on rests on a hardware feature that the kernel sets up at boot and then manages. Take a feature away and its abstraction goes with it: without the timer there is no multitasking, without the MMU no separate processes.</p>
+      <p id="chBridge-synthesis-p3" class="diagram-caption">Each abstraction programs rely on needs one hardware feature above all, which the kernel sets up at boot and then manages. Take that feature away and the abstraction goes with it: without the MMU there are no separate processes, and without the timer nothing can take the CPU from a program that never yields.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4999,26 +4862,15 @@ main:
     <h3>The kernel as the smallest program that arranges the silicon</h3>
 
     <p id="chBridge-synthesis-p4">
-      Note what this argument does <em>not</em> say: that the kernel is small, or that
-      it does only what hardware demands. Linux is more than thirty million lines of
-      code; macOS's XNU and Windows's NT are smaller but still vast. They contain
-      filesystems, network stacks, GPU drivers, virtual machines, security frameworks,
-      and the long tail of a thousand specialised subsystems. The silicon requires none
-      of that, only a kernel that sets up page tables, registers a trap handler,
-      programs a timer, and gets out of the way.
+      The answer is a short list. Set up the page tables, register the trap handlers, program the timer and the devices, and drop the CPU into Ring 3; from then on, run only when a trap brings the CPU back. That is the least the silicon demands of a kernel, not the size of a real one. Linux is more than thirty million lines of code, most of it drivers, filesystems, network stacks and other services built on top of that minimum.
     </p>
 
     <p id="chBridge-synthesis-p5">
-      The rest is engineering, and that engineering is what <a href="part-2">Part II</a> is about.
-      It takes the kernel as a real program and asks the questions only code can
-      answer: how should processes be scheduled? How should virtual memory be
-      organised in software, on top of the hardware tables we now know about? What
-      data structure connects a filename to a sequence of disk blocks? How do
-      processes talk to each other? What goes wrong when the kernel itself has bugs?
+      Everything else is engineering, and it is the subject of <a href="part-2">Part II</a>, which reads the kernel as a real program: how it schedules processes, organises virtual memory in software on top of the hardware tables, finds a file's data on disk, lets processes talk to each other, and what goes wrong when it has bugs.
     </p>
 
     <p id="chBridge-synthesis-p6">
-      But every one of them assumes, silently, that the bridge we have just walked across already exists: under the <code>schedule()</code> function, a timer tick that took the CPU back; under the <code>read()</code> system call, a <code>SYSCALL</code> instruction and an entry point the kernel registered at boot; under every memory access, the TLB or, on a miss, the four-level page-table walker. The kernel chapter that opens <a href="part-2">Part II</a> will not stop to mention these things, because the Bridge has.
+      Each of those subjects rests on what the Bridge has shown: under every forced switch from one process to another, a timer tick that took the CPU back; under the <code>read()</code> system call, a <code>SYSCALL</code> instruction and an entry point the kernel registered at boot; under every memory access, the TLB or, on a miss, the four-level page-table walk.
     </p>
 
     <div class="pull-quote">
