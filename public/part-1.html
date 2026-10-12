@@ -155,53 +155,25 @@
     <h2>Why does any of this exist?</h2>
 
     <p id="ch1-context-p1" class="lead">
-      To understand a modern computer, you have to understand that it was never inevitable.
-      For most of human history, calculation was something humans did. The word
-      <em>computer</em> itself originally referred to a person, usually a woman,
-      employed to perform arithmetic by hand. The machine you are reading this on
-      replaced an entire profession.
+      For most of human history, calculation was something people did by hand. The word <em>computer</em> once meant a person employed to do arithmetic, and from the late nineteenth century that person was often a woman. The machine you are reading this on replaced an entire profession.
     </p>
 
     <p id="ch1-context-p2">
-      Replacing the human computer required a particular insight: that <strong>thinking itself could be mechanised</strong>.
-      Alan Turing was careful about this. Not all thinking, only the kind that follows rules:
-      given the same input, it always produces the same output. Mathematics, in other words.
-      A machine that can do mathematics can do anything mathematics can describe, and
-      mathematics describes a remarkable amount of the world.
+      Replacing the human computer took a particular insight: that <strong>thinking itself could be mechanised</strong>. It applies to one kind of thinking only: following fixed rules step by step, so that the same input always gives the same output. That was exactly the work human computers did.
     </p>
 
     <h3>The 1936 paper that changed everything</h3>
 
     <p id="ch1-context-p3">
-      In 1936, a 24-year-old Cambridge mathematician named Alan Turing published a paper
-      titled <em>On Computable Numbers, with an Application to the Entscheidungsproblem</em>.
-      It had nothing to do with machines, ostensibly. It was about a question David Hilbert
-      had posed in 1928: is there a mechanical procedure that, given any mathematical
-      statement, will decide whether the statement is true or false?
+      In 1936, a 24-year-old Cambridge mathematician named Alan Turing published a paper titled <em>On Computable Numbers, with an Application to the Entscheidungsproblem</em>. The title's last word is German for "decision problem" and names a question David Hilbert had posed in 1928: is there a mechanical procedure that, given any mathematical statement, will decide whether the statement is true or false?
     </p>
 
     <p id="ch1-context-p4">
-      Turing's answer was no. To prove it, he first had to define precisely what
-      "mechanical procedure" meant. He invented an imaginary device: an infinite tape
-      divided into cells, a read/write head that moved along it, and a finite set of
-      rules that said what to do based on the current symbol and the machine's current
-      state, one of a fixed list of named modes. A machine's rules, its program, can be
-      written as symbols on a tape for another machine to read. Suppose some machine
-      could decide, in finite time, whether any program would ever halt. Build a program
-      that includes the decider's rules and runs them on a copy of itself, asking "will
-      this very program halt?" If told yes, it loops forever; if told no, it halts. The
-      decider is wrong whichever verdict it gives. A program is only symbols and rules,
-      so whether it halts is a mathematical statement, and no machine, and therefore no
-      mechanical procedure, can decide every statement.
+      Turing's answer was no. To prove it, he first pinned down what "mechanical procedure" meant by imagining a device: an endless tape of cells, a head that reads and writes one cell at a time as it moves, and a finite set of rules saying what to do for each symbol under the head and each state the machine can be in. A machine's rules, its program, can be written as symbols on a tape for another machine to read. The modern form of his proof narrows Hilbert's question to one case: can a machine read any program and decide whether it will ever stop? A program is only symbols and rules, so "this program stops" is a mathematical statement, and a procedure that decides every statement would settle it. Suppose such a decider exists. Build a program that runs the decider's rules on a copy of itself, asking "will this very program stop?", and then does the opposite: told it will stop, it loops forever; told it will never stop, it stops. The decider is wrong about this program either way, so it cannot exist, and neither can Hilbert's procedure.
     </p>
 
     <p id="ch1-context-p5">
-      He called it an <em>a-machine</em>, for automatic machine. We now call it a
-      <span class="key-term">Turing machine</span>. And he proved something that took
-      decades to fully appreciate: a single, sufficiently complex Turing machine could
-      simulate any other Turing machine, given the right rules on its tape. He called
-      this a <em>universal</em> machine. It is the first formal description of what
-      we now call a <strong>computer</strong>.
+      He called it an <em>a-machine</em>, for automatic machine; we now call it a <span class="key-term">Turing machine</span>. He also showed that one machine, with the right rules, can read any other machine's rules from its tape and do whatever that machine would do. He called such a machine <em>universal</em>. It is the first formal description of what we now call a <strong>computer</strong>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-1">
@@ -268,7 +240,7 @@
     </aside>
 
     <p id="ch1-context-p8">
-      Theory met urgency in 1939. Britain needed to read German messages scrambled by the Enigma machine (Fig 1.2), whose settings changed every day and could be chosen in more than 158 quintillion ways, far too many to try by hand. At Bletchley Park, Turing designed the <strong>Bombe</strong>, an electromechanical machine built to find the day's setting. Codebreakers could often guess a few words of a message, such as a weather report, and Enigma had a flaw that narrowed the search: it never turned a letter into itself. The Bombe did not try every setting. It raced through the rotor positions and threw out each one that could not have turned the guessed words into the scrambled text, leaving a handful for people to check. Later, his colleague Tommy Flowers built <strong>Colossus</strong>, the first programmable electronic digital computer, used against the Lorenz cipher of Hitler's high command. Each machine did one job only, so neither was universal in Turing's sense, but together they proved that mechanical computation worked at scale.
+      Theory met urgency in 1939. Britain needed to read German messages scrambled by the Enigma machine (Fig 1.2), whose settings changed every day and could be chosen in more than 158 quintillion ways, far too many to try by hand. At Bletchley Park, Turing designed the <strong>Bombe</strong>, an electromechanical machine built to find the day's setting. Codebreakers could often guess a few words of a message, such as a weather report, and Enigma had a flaw that narrowed the search: it never turned a letter into itself, so the guessed words could only sit where none of their letters matched the scrambled letter beneath. The Bombe did not try every setting. It raced through the positions of Enigma's turning wheels, the rotors, and threw out each one that could not have turned the guessed words into the scrambled text, leaving a handful for people to check. Later, his colleague Tommy Flowers built <strong>Colossus</strong>, the first programmable electronic digital computer, set up with switches and plugs for different tests against the Lorenz cipher of Hitler's high command. Each machine served one purpose only, so neither was universal in Turing's sense, but together they proved that mechanical computation worked at scale.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-2">
@@ -402,16 +374,13 @@
     </div>
 
     <p id="ch1-context-p10">
-      Historians estimate Bombe and Colossus shortened the war by two years and saved
-      roughly fourteen million lives. The question after the war became how to build a
-      machine that <em>isn't</em> purpose-built for a single problem: a universal machine,
-      Turing's theoretical idea, in actual hardware.
+      Some historians estimate that the codebreaking at Bletchley Park shortened the war in Europe by two years or more. The question after the war became how to build a machine that <em>isn't</em> purpose-built for a single problem: a universal machine, Turing's theoretical idea, in actual hardware.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 6 13.5h5l-1 7.5 7-10.5h-5z"/></svg></span>
       <p id="ch1-context-p11" class="insight-text">
-        <strong>Historical note.</strong> Turing was prosecuted for homosexuality in 1952, sentenced to chemical castration by court order, and died in 1954, officially by cyanide poisoning, likely suicide. He never saw the computer revolution he made possible. Britain issued a formal apology in 2009. He now appears on the £50 note.
+        <strong>Historical note.</strong> Turing was prosecuted for homosexuality in 1952 and given probation on condition of chemical castration. He died of cyanide poisoning in 1954; the inquest ruled it suicide. Britain issued a formal apology in 2009, and he now appears on the £50 note.
       </p>
     </div>
   </section>
@@ -431,11 +400,7 @@
     </p>
 
     <p id="ch1-transistor-p2">
-      To make computers smaller, faster, more reliable, and affordable, the vacuum
-      tube had to go. Its replacement was invented
-      in 1947 at Bell Labs in New Jersey by three physicists: William Shockley,
-      John Bardeen, and Walter Brattain. They called it the <span class="key-term">transistor</span>,
-      a contraction of <em>transfer resistor</em>.
+      To make computers smaller, faster, more reliable, and affordable, the vacuum tube had to go. Its replacement was invented in 1947 at Bell Labs in New Jersey by John Bardeen and Walter Brattain, physicists in William Shockley's group. They called it the <span class="key-term">transistor</span>, a contraction of <em>transfer resistor</em>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-3">
@@ -496,19 +461,11 @@
     <h3>What a transistor actually is</h3>
 
     <p id="ch1-transistor-p4">
-      A transistor is a switch with no moving parts,
-      controlled by electricity rather than by a finger or a relay arm. It has three
-      terminals: a <strong>base</strong> (or <em>gate</em>, in the modern field-effect
-      design), a <strong>collector</strong> (or <em>drain</em>), and an
-      <strong>emitter</strong> (or <em>source</em>). When you apply a small voltage
-      to the base, it lets a much larger current flow between collector and emitter.
-      No voltage at the base, no flow.
+      A transistor is a switch with no moving parts, flipped by electricity instead of a finger. A small voltage on its <strong>base</strong> (the control terminal) lets a much larger current flow between the other two, the <strong>collector</strong> (one end of the path) and the <strong>emitter</strong> (the other end); with no voltage there, nothing flows.
     </p>
 
     <p id="ch1-transistor-p5">
-      That is the entire mechanism under every modern computer. Off and on can stand for
-      0 and 1, and switches wired together can carry out rules like a Turing machine's
-      (<a href="#ch2">Chapter 2</a> shows how).
+      Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND; enough such rules, wired together, add numbers, hold them and carry out a program like a Turing machine's (<a href="#ch2">Chapter 2</a> builds them).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-4">
@@ -569,7 +526,7 @@
     <h3>Why semiconductors</h3>
 
     <p id="ch1-transistor-p7">
-      The transistor works because it is built from a <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass). A conductor is always on and an insulator always off, so a switch needs the in-between material, one that can be pushed either way. What lets you push it is <em>doping</em>: salting silicon with a trace of another element. Silicon's atoms bond by sharing their outer electrons, so in the pure crystal almost none move freely. A dopant atom carrying one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one carrying one fewer leaves a vacancy, a "hole", that a neighbouring electron can drop into, so the hole itself drifts like a positive charge (p-type). A field-effect transistor puts p-type silicon between two n-type regions. Where the two kinds meet, free electrons drop into the nearby holes, leaving a thin barrier with almost nothing free to move, so no current flows until a voltage on the gate draws electrons under it to bridge the gap (Fig 1.5). Silicon is refined from sand, which is mostly silicon dioxide, the insulator that silicon also grows on its own surface (the oxide in Fig 1.5). The entire digital economy is built on purified sand.
+      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows until a voltage on the gate, which rests on a thin insulating oxide over the p-type silicon, draws electrons under it into a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-5">
@@ -627,21 +584,11 @@
     </div>
 
     <p id="ch1-transistor-p9">
-      In 1958, Jack Kilby at Texas Instruments etched multiple transistors onto a single
-      piece of germanium, creating the first <span class="key-term">integrated circuit</span>.
-      Within months, Robert Noyce at Fairchild Semiconductor independently did the same
-      on silicon, with a more manufacturable process. Both filed patents.
-      Noyce's process became the basis of the entire industry.
+      In 1958, Jack Kilby at Texas Instruments made the first <span class="key-term">integrated circuit</span>: a transistor and the other parts of a small circuit, formed in one piece of germanium (another semiconductor) instead of made separately and wired by hand. Within months, Robert Noyce at Fairchild Semiconductor independently did the same on silicon, and his more manufacturable process became the basis of the entire industry. From then on, more parts on a chip meant smaller parts, not more wiring.
     </p>
 
     <p id="ch1-transistor-p10">
-      In 1965, Gordon Moore, co-founder of Intel and a former colleague of Noyce,
-      published the observation that the number of transistors that could fit on a single
-      integrated circuit was doubling roughly every twelve months, and would likely
-      continue to do so. He later revised this to every two years. This pattern,
-      <strong>Moore's Law</strong>, held with remarkable accuracy for fifty years and
-      drove the semiconductor industry's roadmap. It is why your phone, with
-      perhaps fifteen billion transistors, exists at all.
+      In 1965, Gordon Moore, Noyce's colleague at Fairchild and later a co-founder of Intel, observed that the number of transistors that fit on one integrated circuit was doubling about every year, and predicted it would continue; he later revised this to every two years. This pattern, <strong>Moore's Law</strong>, held for about fifty years, until around 2015, and drove the semiconductor industry's roadmap. It is why your phone, with perhaps fifteen billion transistors, exists at all.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-6">
@@ -685,7 +632,7 @@
 <text x="372" y="238" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">in 53 years</text>
 <text x="64" y="320" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.45)">transistors per chip, log scale</text>
 </svg>
-      <p id="ch1-transistor-p11" class="diagram-caption">On a log scale steady doubling draws a straight line: from 2,300 transistors in 1971 to 28 billion in 2024. Since about 2015 the chips have fallen below the two-year line as transistors approach the size of atoms.</p>
+      <p id="ch1-transistor-p11" class="diagram-caption">On a log scale, where each gridline is ten times the one below, steady doubling draws a straight line. The chips follow the dashed two-year line for more than forty years, then fall below it: 2,300 transistors in 1971, 28 billion in 2024.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -700,22 +647,22 @@
       <div class="timeline-item">
         <div class="timeline-year">1947</div>
         <div class="timeline-title">The transistor invented at Bell Labs</div>
-        <p id="ch1-transistor-p12" class="timeline-text">Shockley, Bardeen, and Brattain demonstrate the first working transistor on December 23, 1947. Nobel Prize 1956.</p>
+        <p id="ch1-transistor-p12" class="timeline-text">Bardeen and Brattain show the first working transistor on December 23, 1947; with Shockley, they share the 1956 Nobel Prize.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-year">1958</div>
         <div class="timeline-title">First integrated circuit</div>
-        <p id="ch1-transistor-p13" class="timeline-text">Kilby uses germanium, Noyce uses silicon. Silicon wins because it forms a superior native oxide insulator.</p>
+        <p id="ch1-transistor-p13" class="timeline-text">Silicon wins over germanium because it grows a better insulating oxide on its own surface.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-year">1965</div>
         <div class="timeline-title">Moore's Law stated</div>
-        <p id="ch1-transistor-p14" class="timeline-text">Gordon Moore predicts transistor density doubles every year (later revised to two years). The prediction becomes a self-fulfilling industrial roadmap.</p>
+        <p id="ch1-transistor-p14" class="timeline-text">Gordon Moore predicts the number of transistors per chip doubles every year (later revised to two years).</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-year">1971</div>
         <div class="timeline-title">Intel 4004: first commercial microprocessor</div>
-        <p id="ch1-transistor-p15" class="timeline-text">2,300 transistors on a 10μm process. 740 kHz clock. Originally designed for a Japanese calculator manufacturer. Marked the transition from "computers fill rooms" to "computers fit in pockets."</p>
+        <p id="ch1-transistor-p15" class="timeline-text">The 4004 put a whole processor, the part that carries out a program's instructions, on one chip: 2,300 transistors, paced by a clock ticking 740,000 times a second. Intel built it for a Japanese calculator maker.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-year">2024</div>
@@ -823,29 +770,19 @@
     <h2>Von Neumann's insight: instructions are data</h2>
 
     <p id="ch1-vonneumann-p1">
-      Early computers were hardwired. To set up a new calculation on ENIAC, its operators
-      (almost all women, called "the ENIAC girls") unplugged and replugged cables for
-      days. The hardware encoded the program. To change what the machine did, you
-      changed the machine.
+      Early computers were hardwired. To set up a new calculation on ENIAC, its operators (almost all women, called "the ENIAC girls") unplugged and replugged cables for days. To change what the machine did, you changed the machine.
     </p>
 
     <p id="ch1-vonneumann-p2">
-      In 1945, John von Neumann, a Hungarian-American polymath who had worked on the
-      Manhattan Project, circulated a paper called the <em>First Draft of a Report
-      on the EDVAC</em>. It described a different architecture, one that would
-      become the dominant design for every computer built afterward.
+      In 1945 the mathematician John von Neumann wrote the <em>First Draft of a Report on the EDVAC</em>, the machine ENIAC's builders planned as its successor. It described a different architecture, one that nearly every computer built since has followed.
     </p>
 
     <p id="ch1-vonneumann-p3">
-      His insight: <strong>store the program itself in memory, alongside the
-      data it operates on</strong>. Instructions are just patterns of bits. Data is just
-      patterns of bits. The CPU reads instructions from memory exactly the same way it
-      reads data, which means a program can read another program, modify it, and then
-      run it. A machine can write programs.
+      The report's central idea: <strong>store the program itself in memory, alongside the data it operates on</strong>. Turing's universal machine had done this on paper; the report turned it into a design for real hardware, with one fast memory holding both. Instructions and data are both patterns of bits (ones and zeros), and the processor (the CPU) reads both the same way, so a program can read, change or create another program: a compiler, which turns code in a language such as C into the CPU's own instructions, is a program that writes programs.
     </p>
 
     <p id="ch1-vonneumann-p4">
-      Such a computer is never rewired: like Turing's universal machine, it runs whatever program its memory holds. A compiler, which turns code in a language such as C into the CPU's own instructions, is a program that writes programs. Each instruction is a number written in ones and zeros (bits): a code for an operation plus the memory cell (one numbered slot) or value it works on. The CPU's program counter names the next cell to run; that cell is read as an instruction, and any cell the instruction names, as data. In Fig 1.8, <code>load A</code> copies A's 5 into a register (a slot in the CPU holding one value), <code>add B</code> adds B's 3, and <code>store C</code> writes the 8 to C.
+      A stored-program computer is never rewired: to change what it does, you load a different program into its memory. Each instruction is a number in bits: a code for an operation plus the number of the memory cell or the value it works on. The CPU's program counter names the next cell to run; that cell is read as an instruction, and any cell the instruction names, as data. In Fig 1.8, <code>load A</code> copies the 5 in cell 3 (A is the program's name for that cell) into a register (a slot in the CPU holding one value); <code>add B</code> adds the 3 in cell 4, and <code>store C</code> writes the 8 into cell 5.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-8">
@@ -906,7 +843,7 @@
 <circle cx="316" cy="306" r="6" fill="#86a8ff"/>
 <text x="326" y="311" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">data</text>
 </svg>
-      <p id="ch1-vonneumann-p5" class="diagram-caption">One memory holds the program and the data it works on, and one bus carries both to the CPU, one at a time. Nearly every computer built since 1945 follows this design.</p>
+      <p id="ch1-vonneumann-p5" class="diagram-caption">One memory holds the program and its data; one bus, shared wires that the input and output devices (I/O) also use, carries both to the CPU one transfer at a time. There the control unit reads each instruction and the ALU (arithmetic and logic unit) computes.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -921,21 +858,11 @@
     <h3>The Von Neumann bottleneck</h3>
 
     <p id="ch1-vonneumann-p6">
-      The architecture's one famous weakness comes from its core design choice. Because
-      instructions and data share the same memory, they share the same bus: the same
-      physical wires between the CPU and main memory. The CPU can only do one transfer
-      at a time. While CPUs got faster over the decades (clock speeds rose from
-      kilohertz to gigahertz), main memory became faster much more slowly. A modern CPU
-      can perform a basic operation in under a nanosecond. A round trip to main RAM
-      takes about sixty nanoseconds. The CPU spends most of its time waiting.
+      Because instructions and data share one memory, they share one bus, and it carries one transfer at a time: even fetching the next instruction is one. While CPUs got faster over the decades (their clocks went from thousands of ticks a second to billions), main memory became faster much more slowly. A modern CPU performs a basic operation in under a nanosecond (a billionth of a second); a round trip to main memory takes about sixty nanoseconds. Without help, the CPU would spend most of its time waiting.
     </p>
 
     <p id="ch1-vonneumann-p7">
-      The solution is a hierarchy of <span class="key-term">caches</span>: small, fast
-      memory built directly into the CPU that holds copies of recently used data. We'll
-      cover them later in this chapter. This bottleneck is one of the deepest design
-      constraints of modern computing, and almost every CPU optimisation since the
-      1980s has been an attempt to work around it.
+      The main remedy is a hierarchy of <span class="key-term">caches</span>: small, fast memory built into the CPU that holds copies of recently used data, so most reads never make the trip to main memory. Much of CPU design since the 1980s is an effort to work around this bottleneck.
     </p>
   </section>
 
@@ -946,12 +873,11 @@
     <h2>Fetch. Decode. Execute. Repeat.</h2>
 
     <p id="ch1-cpu-p1" class="section-intro">
-      Every CPU ever built does the same four things in a loop, billions of times per
-      second.
+      Every CPU ever built does the same four things in a loop, today billions of times per second.
     </p>
 
     <p id="ch1-cpu-p2">
-      This loop is the <span class="key-term">instruction cycle</span>. The <strong>program counter</strong> holds the address of the next instruction to run. <em>Fetch</em>: the CPU reads the bytes at that address out of memory. <em>Decode</em>: the control unit works out which operation those bits ask for and which registers or values it acts on. <em>Execute</em>: the unit that does the work (usually the ALU) carries it out, adding, comparing, or computing an address. <em>Writeback</em>: the result is stored back into a register or memory, and the program counter moves to the next instruction. Then the cycle starts over, on every core (a complete copy of this machinery). Fig 1.9 writes addresses in hexadecimal (0x): each digit, 0–9 or A–F, is four bits.
+      This loop is the <span class="key-term">instruction cycle</span>. The <strong>program counter</strong> holds the address of the next instruction. In Fig 1.8 each cell held a whole instruction; a real memory numbers every byte (eight bits), and an instruction may take one byte or several. <em>Fetch</em>: the CPU reads the instruction's bytes out of memory. <em>Decode</em>: the control unit works out which operation those bits ask for and which registers or values it acts on. <em>Execute</em>: the unit that does the work (usually the ALU) carries it out, adding, comparing, or computing an address. <em>Writeback</em>: the result is stored back into a register or memory, and the program counter moves to the next instruction. Then the cycle starts over, on every core (a complete copy of this machinery). Fig 1.9 writes addresses in hexadecimal (0x), base sixteen, because each of its digits, 0–9 or A–F, stands for exactly four bits.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-9">
@@ -1025,14 +951,7 @@
     <h3>What an instruction actually is</h3>
 
     <p id="ch1-cpu-p4">
-      At the hardware level, every instruction is a binary number, a specific
-      pattern of ones and zeros. The CPU's control unit is a circuit that, when given
-      a particular pattern, activates a particular sequence of internal signals.
-      The mapping from binary patterns to operations is called the
-      <span class="key-term">instruction set architecture</span>, or ISA. Intel and AMD
-      CPUs use the x86 ISA. Apple Silicon Macs, your phone, and the Raspberry Pi use
-      ARM. The two are incompatible: code compiled for one will not run on the other
-      unless translated.
+      To the hardware, an instruction is a pattern of bits, and the control unit is a circuit that turns each pattern into a particular sequence of internal signals. The mapping from bit patterns to operations is called the <span class="key-term">instruction set architecture</span>, or ISA. Intel and AMD CPUs use the x86 ISA; Apple Silicon Macs, your phone and the Raspberry Pi use ARM. The two are incompatible: code compiled for one will not run on the other unless translated.
     </p>
 
     <p id="ch1-cpu-p5">
@@ -1151,13 +1070,7 @@
     <h3>Pipelining and parallelism inside one core</h3>
 
     <p id="ch1-cpu-p7">
-      Instead of finishing one instruction before starting the next, modern CPUs use
-      <span class="key-term">pipelining</span>: they cut the four steps into stages and
-      overlap the stages of different instructions, like an assembly line. While
-      instruction 3 is being executed, instruction 4 is being decoded, and instruction 5
-      is being fetched. Fig 1.11 adds a fifth stage, MEM, for reading or writing data in
-      memory; a modern pipeline may have 14 to 20. Each stage takes one clock cycle, one
-      tick of a timing signal that pulses billions of times a second.
+      Instead of finishing one instruction before starting the next, modern CPUs use <span class="key-term">pipelining</span>: they cut the four steps into stages and overlap the stages of different instructions, like an assembly line. While instruction 3 is being executed, instruction 4 is being decoded, and instruction 5 is being fetched. Fig 1.11 adds a fifth stage, MEM, for reading or writing data in memory; a modern pipeline may have 14 to 20. Each stage takes one clock tick, or cycle.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-11">
@@ -1238,7 +1151,7 @@
 <rect x="20" y="328" width="119" height="14" rx="3" fill="#d4a853" fill-opacity="0.8"/>
 <text x="380" y="320" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">9 cycles</text>
 </svg>
-      <p id="ch1-cpu-p8" class="diagram-caption">Five instructions of five stages each, overlapped like an assembly line: they finish in 9 cycles instead of 25, and once the pipeline is full one instruction completes every cycle.</p>
+      <p id="ch1-cpu-p8" class="diagram-caption">Five instructions of five stages each, overlapped like an assembly line, finish in 9 cycles instead of 25. Each still takes five cycles; the gain is that once the pipeline is full, one instruction completes every cycle.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1250,12 +1163,7 @@
     </div>
 
     <p id="ch1-cpu-p9">
-      They also use <span class="key-term">out-of-order execution</span>. If
-      instruction 5 doesn't depend on instruction 4's result, the CPU may execute 5
-      first while 4 waits for memory. <span class="key-term">Speculative execution</span> goes further: at a branch (an <code>if</code> statement) the CPU guesses which way it will go
-      and starts executing that path before the condition has been computed.
-      If it guesses right, it saves time. If it guesses wrong, it discards the work.
-      Modern CPUs guess right about 95% of the time.
+      They also use <span class="key-term">out-of-order execution</span>. If instruction 5 doesn't depend on instruction 4's result, the CPU may execute 5 first while 4 waits for memory. <span class="key-term">Speculative execution</span> goes further. At a branch, a jump taken only if some condition holds (an <code>if</code> in a program), the pipeline must keep fetching before the condition is known, so the CPU guesses which way it will go and runs ahead on that path. A right guess keeps the work and saves the wait; a wrong one throws it away.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-12">
@@ -1326,7 +1234,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5 20 20"/></svg></span>
       <p id="ch1-cpu-p11" class="insight-text">
-        <strong>Spectre and Meltdown (2018).</strong> Two catastrophic CPU vulnerabilities discovered in nearly every fast processor made since the mid-1990s. They exploited speculative execution: when the CPU guessed wrong and discarded the work, traces of that work remained in the cache, where an attacker could measure them to read memory they should not have access to. Hardware has bugs too, and they are far harder to fix than software bugs. We will return to this in <a href="part-4#ch15">Chapter 15</a>.
+        <strong>Spectre and Meltdown (2018).</strong> These flaws, in nearly every fast processor made since the mid-1990s, let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte, then loads one of 256 memory locations, picked by the byte's value. The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. <a href="part-4#ch15">Chapter 15</a> returns to them.
       </p>
     </div>
   </section>
@@ -1338,10 +1246,7 @@
     <h2>Why the kernel had to be invented</h2>
 
     <p id="ch1-kernel-p1">
-      In the early 1950s, running a program meant booking the entire computer for
-      yourself. You brought your stack of punched cards to the machine room, the operator
-      loaded them, the machine ran your program, printed the output, and you came back
-      an hour later to read it. One program at a time. No sharing.
+      In the 1950s, running a program meant booking the entire computer for yourself: you handed in your stack of punched cards, the machine ran it alone, and you came back later for the printout.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-13">
@@ -1387,24 +1292,11 @@
     </div>
 
     <p id="ch1-kernel-p3">
-      As computers got faster and programs got longer, this became absurd. The CPU sat
-      idle most of the time, waiting for slow input/output devices like punch card
-      readers or magnetic tape drives. Universities started asking: can one program
-      run while another waits for I/O? Can different users be logged in simultaneously?
+      As computers got faster, the CPU sat idle most of the time even while a job ran, waiting for slow input/output (I/O) devices such as card readers and tape drives. Universities started asking: can one program run while another waits for I/O? Can different users be logged in at once?
     </p>
 
     <p id="ch1-kernel-p4">
-      The answer was yes, but only if something stood between the programs and the
-      hardware to manage the sharing. That something became the
-      <span class="key-term">operating system kernel</span>. The trick that made sharing
-      pay off is timing: the instant one program stops to wait on something slow (a disk,
-      a keypress, a network reply) is precisely the instant the kernel can hand the idle
-      CPU to a different program that has work ready. And once several programs are
-      interleaved on one machine, something has to keep them from trampling each other.
-      So the kernel is also the one program that always runs, owns the hardware, and
-      forces every other program to ask its permission to touch anything in the outside
-      world. Sharing and protection are the same job seen from two sides, and the kernel
-      is the answer to both.
+      The answer was time-sharing: programs taking turns on one CPU, so quickly that each user seems to have the machine alone. Running the turns takes something between the programs and the hardware: the <span class="key-term">operating system kernel</span>, the one program that stays loaded. A program that needs something slow (a disk, a keypress, a network reply) must ask the kernel, and asking makes the CPU jump into the kernel's code. While the program waits, the kernel saves where it stopped (its program counter and registers) and gives the CPU to another program with work ready; when the data arrives, it reloads them and the first program carries on. A program that never asks is interrupted anyway: a hardware timer hands the CPU to the kernel every few milliseconds. Programs sharing a machine must not trample each other, so the kernel owns the hardware and every other program must ask its permission to touch it (Fig 1.14).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-14">
@@ -1446,7 +1338,7 @@
 <circle cx="150" r="7" fill="#86a8ff" opacity="0"><animate attributeName="cy" values="90;90;300;300;204;204;90;90" keyTimes="0.000000;0.066611;0.066667;0.711111;0.777778;0.822222;0.911111;1.000000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.711000;0.711111;0.933111;0.933222;1.000000" dur="9s" repeatCount="indefinite"/></circle>
 <rect x="108" y="288" width="102" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.633222;0.633333;0.733111;0.733222;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="ch1-kernel-p5" class="diagram-caption">Programs run in Ring 3 and cannot touch the hardware: a direct attempt is stopped by the CPU itself. To reach the disk a program makes a system call, a trap into the kernel in Ring 0, which does the work and returns, typically in under a microsecond.</p>
+      <p id="ch1-kernel-p5" class="diagram-caption">The CPU runs each program at a privilege level, or ring: programs in Ring 3 cannot touch the hardware, and a direct attempt is stopped by the CPU itself. To reach the disk a program makes a system call, a controlled jump into the kernel in Ring 0, which does the work and returns the result.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1460,26 +1352,23 @@
     <h3>The system call: crossing the boundary</h3>
 
     <p id="ch1-kernel-p6">
-      When your Python script opens a file, it cannot touch the disk itself: running in Ring 3, it has no permission to talk to the disk controller. Instead it asks: Python's <code>open()</code> passes the request to the C library (ready-made code that programs use), which executes the system call, the one instruction whose whole job is to cross the boundary. That instruction traps, switching the CPU to Ring 0 and jumping to an entry point the kernel registered in advance. The kernel checks permission and does the work, and your program gets back a small number (a <em>file descriptor</em>) that names the file in every later read or write. The Bridge that closes this Part shows what the silicon must provide to make that crossing safe, and <a href="part-2#ch4">Chapter 4</a> shows what the kernel does with the request.
+      When your program opens a file, it cannot touch the disk itself: in Ring 3 it may not give the disk orders. Instead it asks the kernel through a system call, the one instruction whose whole job is to cross the boundary: it switches the CPU to Ring 0 and jumps to an entry point, an address the kernel chose at boot, so a program can ask but never pick where it lands. The kernel checks permission and does the work, and your program gets back a small number (a <em>file descriptor</em>) that names the file in every later read or write. The Bridge, the short chapter that closes Part I after Chapter 3, shows how the CPU makes that crossing safe; <a href="part-2#ch4">Chapter 4</a> shows what the kernel does with the request.
     </p>
 
     <p id="ch1-kernel-p7">
-      Your program never touched the hardware. It asked the kernel, the kernel decided.
-      This is the entire foundation of operating system security. Without this
-      hardware-enforced boundary, every program would have full access to every other
-      program's memory, every file, every network packet.
+      That boundary, enforced by the CPU itself, is the foundation of operating system security: without it, every program could read every other program's memory, every file and every network packet.
     </p>
 
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX, on a creed austere enough to fit four words: <strong>everything is a file</strong>. The keyboard and, in later versions, the network connection and the running program (to the kernel, a <em>process</em>, reached through files under /proc) are all read and written through a file descriptor. UNIX became, directly or indirectly, the ancestor of nearly every operating system in current use: Linux, written from scratch by Linus Torvalds in 1991; macOS's XNU; iOS and Android; even Windows now ships a Linux subsystem. The architectural ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or a running program (to the kernel, a <em>process</em>, reached through files under /proc) are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch1-kernel-p10" class="insight-text">
-        <strong>Why this matters for security.</strong> A <strong>privilege escalation</strong> attack is one in which an unprivileged process (your malicious program running in Ring 3) finds a way to gain Ring 0 access. If it succeeds, it has full control of the machine: it can read any file, watch any keypress, install any rootkit. Every major operating system has had privilege escalation vulnerabilities. The kernel is the most security-critical code on any computer. <a href="part-2">Part II</a>'s kernel chapter returns to this, and so does <a href="part-4">Part IV</a>'s unified security chapter.
+        <strong>Why this matters for security.</strong> In a <strong>privilege escalation</strong> attack, a malicious program running in Ring 3 gains Ring 0 power, for instance through a bug in the kernel code that handles its requests. If it succeeds, it controls the whole machine: it can read any file and watch any keypress. Every major operating system has had such bugs, which makes the kernel the most security-critical code on any computer. <a href="part-2">Part II</a>'s kernel chapter and <a href="part-4">Part IV</a>'s security chapter return to it.
       </p>
     </div>
   </section>
@@ -1491,17 +1380,11 @@
     <h2>The hierarchy of forgetting</h2>
 
     <p id="ch1-memory-p1">
-      Memory in a computer is not one thing. It is a hierarchy of storage, managed at
-      different levels by the CPU and the kernel, that grows larger, slower and cheaper
-      the further it sits from the CPU. Each level holds a copy of part of the level below it.
+      A computer's memory is a hierarchy of storage, managed at different levels by the CPU and the kernel, that grows larger, slower and cheaper the further it sits from the CPU. Each level holds a copy of part of the level below it.
     </p>
 
     <p id="ch1-memory-p2">
-      The numbers below explain why optimising software is hard. The
-      CPU performs an arithmetic operation in roughly 0.3 nanoseconds. A round trip to
-      main memory takes 60 nanoseconds: two hundred times longer. A read from a fast
-      SSD takes 50,000 nanoseconds, which is 167,000 times longer than a register access. Most
-      of computer architecture for the past forty years has been about hiding this gap.
+      The CPU performs an arithmetic operation in roughly 0.3 nanoseconds. A round trip to main memory (RAM) takes 60 nanoseconds, two hundred times longer, and a read from a fast SSD (solid-state drive) 50,000 nanoseconds, about 167,000 times longer than the arithmetic. Hiding these gaps is the job of the caches: three levels of them, L1 to L3, sit between the CPU and RAM.
     </p>
 
     <table class="summary-table dark">
@@ -1580,7 +1463,7 @@
 
     <div class="math-callout">
       <div class="math-label">Why caches multiply speed</div>
-      <p id="ch1-memory-p4">The hierarchy works because programs do not access memory uniformly. They keep returning to the same regions: looping over an array, calling a function repeatedly, reading the next word in a string. This is called <strong>locality of reference</strong>, and it is the reason a small fast cache speeds up a much larger slow memory. The math is simple:</p>
+      <p id="ch1-memory-p4">The hierarchy works because programs do not use memory evenly. They keep returning to the same places and the places next to them: a loop that adds up a list of numbers runs the same few instructions again and again, and reads numbers stored side by side. This is called <strong>locality of reference</strong>, and it is why a small fast cache can speed up a much larger slow memory. In numbers, the average time per access is:</p>
       <p id="ch1-memory-p5" class="math-formula">T<sub>avg</sub> = h · t<sub>cache</sub> + (1 − h) · t<sub>RAM</sub></p>
       <p id="ch1-memory-p6">
       If the hit rate h, the share of accesses found in the cache, is 95% for L1
@@ -1590,43 +1473,27 @@
       access roughly <em>fifteen times</em> faster, and the hit rate only has to be
       high, not perfect. The same calculation justifies every layer of the hierarchy.
     </p>
-      <p id="ch1-memory-p7">Peter Denning's <em>working set theory</em> (1968) made this rigorous, and every CPU since has been a refinement of the idea. We will see the same locality argument resurface in <a href="part-2">Part II</a>'s kernel chapter when we look at virtual memory and page caches, in <a href="part-3">Part III</a>'s web chapter when we examine DNS caching, and in <a href="part-4">Part IV</a>'s data chapter when we examine database buffer pools.</p>
+      <p id="ch1-memory-p7">Peter Denning's <em>working set</em> model (1968) made the idea rigorous for virtual memory (the next section), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (<a href="part-2">Part II</a>), recent web-address lookups remembered (<a href="part-3">Part III</a>), a database's busiest data held in memory (<a href="part-4">Part IV</a>).</p>
     </div>
 
     <h3>Virtual memory: the lie the kernel tells</h3>
 
     <p id="ch1-memory-p8">
-      When your program asks for memory, the kernel does not give it a real physical
-      address. It gives a <span class="key-term">virtual address</span>, which is a fiction.
-      Your program believes it has its own private address space starting at zero, with
-      gigabytes of memory available. So does every other program. They all think they
-      own the machine.
+      When your program asks for memory, the kernel does not give it a real physical address. It gives a <span class="key-term">virtual address</span>, a fiction: every program sees its own private range of addresses, starting at zero and seemingly gigabytes long, as if it had the machine to itself. So two programs can both use address 1,000 and reach different places in the real memory.
     </p>
 
     <p id="ch1-memory-p9">
-      Between the CPU and the RAM sits the <strong>Memory Management Unit</strong>
-      (MMU), a dedicated piece of hardware that translates every virtual
-      address to a physical one at the moment of access, guided by <em>page tables</em>
-      the kernel maintains. That one sentence hides an entire machine. The silicon
-      half (the walker, the translation cache, the fault that fires when a page
-      isn't there) is shown by the Bridge that closes this Part. The software
-      half belongs to Chapter 4: page faults used as features, files mapped
-      into memory, a fork that copies nothing.
+      Between the CPU and the RAM sits the <strong>Memory Management Unit</strong> (MMU), a piece of hardware that translates every virtual address to a physical one at the moment of access. Memory is handled in fixed-size blocks called pages, typically 4 KB (4,096 bytes), and for each program the kernel keeps <em>page tables</em> that say which physical page holds each of its virtual pages. Take address 1,000: it is byte 1,000 of virtual page 0. If one program's table maps its page 0 to physical page 37, the MMU reads byte 1,000 of page 37; the other program's table sends its page 0 elsewhere. The Bridge shows the hardware at work, and <a href="part-2#ch4">Chapter 4</a> the kernel's side.
     </p>
 
     <p id="ch1-memory-p10">
-      This achieves three things at once: <strong>isolation</strong> (no program can
-      read another's memory because the translation tables for different programs map
-      to different physical pages), <strong>flexibility</strong> (the kernel can move
-      pages around in RAM, swap them to disk, or load them on demand from a file),
-      and <strong>protection</strong> (the page tables also encode permissions for read,
-      write and execute, and the MMU enforces them).
+      This gives three things: <strong>isolation</strong> (no program can read another's memory, because different programs' page tables point to different physical pages), <strong>flexibility</strong> (the kernel can move pages around in RAM, move little-used ones out to disk and back, or load them on demand from a file), and <strong>protection</strong> (the page tables also encode permissions for read, write and execute, and the MMU enforces them).
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch1-memory-p11" class="insight-text">
-        <strong>Buffer overflow attacks</strong> pass the MMU's checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in that call's own memory (the stack), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. Three layered defences each cut a different link in that chain: a <strong>stack canary</strong> is a secret random value planted between the buffer and the return address, so an overflow must trample it on the way and the change is caught before the function returns; <strong>ASLR</strong> (Address Space Layout Randomization) reshuffles where code and data load on every run, so the attacker no longer knows which address to aim at; and <strong>DEP</strong> (Data Execution Prevention) marks writable memory as non-executable, so the planted instructions cannot run. <a href="#ch3">Chapter 3</a> shows each at the assembly level.
+        <strong>Buffer overflow attacks</strong> pass the MMU's checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in that call's own memory (the stack), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. <a href="#ch3">Chapter 3</a> shows the defences, among them the <strong>stack canary</strong>, <strong>ASLR</strong> and <strong>DEP</strong>, at the assembly level.
       </p>
     </div>
   </section>
