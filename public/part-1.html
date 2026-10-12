@@ -1591,38 +1591,15 @@
     <h2>Why a computer can only count to two</h2>
 
     <p id="ch2-binary-p1" class="lead">
-      You count to ten because you have ten fingers. The Babylonians counted to sixty
-      because they used the joints of the four fingers on one hand (twelve) times the
-      five fingers of the other (sixty). The Mayans used twenty, counting their toes.
-      Every counting system in human history was shaped by the body using it. Computers
-      count to two because they are made of switches, and a switch only has two states.
+      You count to ten because you have ten fingers. The Babylonians counted to sixty, perhaps from the twelve joints of one hand's four fingers times the five fingers of the other. The Mayans counted in twenties, perhaps on fingers and toes. Computers count to two because they are made of switches, each used in only two states: on and off.
     </p>
 
     <p id="ch2-binary-p2">
-      A common but wrong intuition is that computers use binary because it is simpler
-      or more elegant. The real reason is physical: <strong>electricity
-      reliably represents two states, but not many more</strong>. A wire either has a
-      voltage above some threshold (call it 1) or it doesn't (call it 0).
-      The CPU can tell "above the threshold" from "below the threshold" with very high
-      reliability, even through electrical noise, voltage fluctuations and
-      manufacturing variation.
+      The reason for two is physical: <strong>electricity reliably represents two states, but not many more</strong>. A wire either has a voltage above some threshold (call it 1) or it doesn't (call it 0), and the CPU can tell the two apart with very high reliability, even through electrical noise, voltage fluctuations and manufacturing variation.
     </p>
 
     <p id="ch2-binary-p3">
-      Could you build a computer that used three voltage levels (low, medium, high) to
-      represent three digits? The transistor allows it: part-way on, it holds a wire at
-      a middle voltage. Ternary machines have been built: the Soviet <em>Setun</em>,
-      designed in 1958 at Moscow State University by Nikolay Brusentsov, held each digit
-      in a pair of magnetic cores and used <em>balanced ternary</em> (digits −1, 0, +1),
-      in many mathematical respects more elegant than binary. But three levels cost
-      margin for error, because a wire carries some fixed span of voltage. Binary cuts
-      that span with a single threshold, leaving one wide gap between "low" and "high".
-      Ternary has to fit three levels into the same span, which means two thresholds and
-      much narrower bands between them; now a drift that binary would shrug off is large
-      enough to push a level across a boundary into its neighbour. As components age and
-      temperature swings, those small drifts are constant, which is why computers drive
-      each transistor fully on or fully off: those two extremes are the easiest to tell
-      apart.
+      Could a computer use three voltage levels (low, medium, high) for three digits? The transistor allows it: part-way on, it lets only some of the current through and holds a wire at a middle voltage. Ternary computers have been built: the Soviet <em>Setun</em> of 1958 counted in <em>balanced ternary</em> (digits −1, 0, +1), though it stored its digits magnetically, not as voltages. But a wire works within a fixed span of voltage. Binary splits it with one threshold, leaving each level a wide margin before it is misread. Ternary must fit three levels into the same span, with two thresholds and much narrower bands, so a drift that binary would shrug off can push a level across a threshold into its neighbour. Parts age and temperatures swing, so small drifts happen all the time, which is why computers drive each transistor fully on or fully off: those two extremes are the easiest to tell apart.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-1">
@@ -1659,7 +1636,7 @@
 <text x="284.5" y="364" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="#ec8d8d">sent 0, read +1</text>
 <line y1="40" y2="345" stroke="#fff" stroke-width="1.5" opacity="0"><animate attributeName="x1" values="379;379;64;64;379;379" keyTimes="0.000000;0.071357;0.071429;0.142857;0.857143;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="379;379;64;64;379;379" keyTimes="0.000000;0.071357;0.071429;0.142857;0.857143;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.8;0.8;0;0" keyTimes="0.000000;0.071357;0.071429;0.135714;0.142857;0.857143;0.871429;1.000000" dur="7s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch2-binary-p4" class="diagram-caption">The same wire, the same noise. With one threshold binary leaves each level a wide margin; with two, ternary squeezes its bands until a drift binary would shrug off reads as the wrong digit.</p>
+      <p id="ch2-binary-p4" class="diagram-caption">Both wires carry the same span and the same noise. Binary's one threshold leaves each level a wide margin; ternary's two squeeze the bands until a drift that binary shrugs off reads as the wrong digit.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1671,17 +1648,12 @@
     </div>
 
     <p id="ch2-binary-p5">
-      A wire that is either on or off holds one <span class="key-term">bit</span>,
-      short for <em>binary digit</em>. One wire expresses two values; two wires, four;
-      three, eight; <em>n</em> wires, 2<sup>n</sup>. Eight bits make a
-      <span class="key-term">byte</span>, enough to represent 256 distinct values.
-      A modern CPU works internally with words 64 bits wide: 2<sup>64</sup> ≈ 18
-      quintillion values per word.
+      A wire that is either on or off holds one <span class="key-term">bit</span>, short for <em>binary digit</em>. One wire expresses two values; two wires, four (00, 01, 10, 11); <em>n</em> wires, 2<sup>n</sup>. Read as numbers, binary places are worth 1, 2, 4, 8 from the right, where decimal places are worth 1, 10, 100, so 0101 is 4 + 1, or 5. Eight bits make a <span class="key-term">byte</span>, enough to represent 256 distinct values. A CPU handles a fixed number of bits at once, its word: 64 in today's laptops and phones.
     </p>
 
     <div class="math-callout">
       <div class="math-label">A note on counting</div>
-      <p id="ch2-binary-p6">In any base <em>b</em>, an <em>n</em>-digit number can represent <em>b<sup>n</sup></em> distinct values. A 3-digit decimal number ranges from 000 to 999, which is 10³ = 1,000 values. A 3-digit binary number ranges from 000 to 111: 2³ = 8 values. The growth is exponential in both; only the base differs. This is why computer memory grows so quickly with each added bit: adding one wire <em>doubles</em> the addressable space.</p>
+      <p id="ch2-binary-p6">In any base <em>b</em>, an <em>n</em>-digit number can represent <em>b<sup>n</sup></em> distinct values: three decimal digits run from 000 to 999, 10³ = 1,000 values, and three binary digits from 000 to 111, 2³ = 8. Memory works the same way: an address is a binary number, one bit per wire, so <em>n</em> wires name 2<sup>n</sup> memory cells, and each added wire doubles the memory a computer can reach.</p>
     </div>
   </section>
 
@@ -1692,28 +1664,15 @@
     <h2>The Victorian schoolteacher who reduced logic to algebra</h2>
 
     <p id="ch2-boole-p1">
-      George Boole, a shoemaker's son, was born in Lincoln, England, in 1815. He taught
-      himself Latin at twelve, Greek at fourteen, and the major European languages by his
-      late teens. By twenty-six, with no university degree, he was running his own school.
-      By thirty-two, he was a self-taught mathematician publishing original papers in
-      differential equations.
+      George Boole, a shoemaker's son, was born in Lincoln, England, in 1815. He taught himself Latin, Greek and the major European languages by his late teens, ran his own school by twenty-six with no university degree, and by thirty-two was publishing original mathematics.
     </p>
 
     <p id="ch2-boole-p2">
-      In 1847, he published a short book titled <em>The Mathematical Analysis of Logic</em>.
-      Seven years later, he expanded it into <em>An Investigation of the Laws of Thought</em>.
-      The thesis of these two works was, at the time, almost incomprehensible:
-      <strong>logic, the discipline of valid reasoning, was a branch of algebra</strong>.
+      In 1847 he published a short book, <em>The Mathematical Analysis of Logic</em>, and seven years later expanded it into <em>An Investigation of the Laws of Thought</em>. Their thesis was that <strong>logic, the discipline of valid reasoning, was a branch of algebra</strong>.
     </p>
 
     <p id="ch2-boole-p3">
-      In Boole's algebra, the variables represent not numbers but <em>truth values</em>:
-      propositions that are either true or false. The operations are not addition and
-      multiplication but three of their own. <em>AND</em>, written like multiplication
-      (<em>A · B</em>), is true only when both of its inputs are true. <em>OR</em>, written
-      like addition (<em>A + B</em>), is true when at least one input is true. <em>NOT</em>
-      turns true into false and false into true. A variable can take only two values,
-      <strong>0</strong> (false) and <strong>1</strong> (true), and that constraint gives the algebra laws that would be errors in school algebra, <em>A + A = A</em> and <em>A · A = A</em>, because "true or true" and "true and true" are each still just true. Same symbols; different rules underneath.
+      Boolean algebra works on statements that are either true or false, such as "it is raining". Its variables stand for <em>truth values</em>: true, written <strong>1</strong>, or false, written <strong>0</strong>. <em>AND</em>, written like multiplication (<em>A · B</em>), is true only when both statements are true: "raining and cold" is true only on a day that is both. <em>OR</em>, written like addition (<em>A + B</em>), is true when at least one is true. <em>NOT</em> turns true into false and false into true. Because AND and OR ask only whether something is true, the algebra has laws that would be errors in school algebra, <em>A + A = A</em> and <em>A · A = A</em>: "true or true" and "true and true" are each still just true.
     </p>
 
     <div class="pull-quote">
@@ -1722,32 +1681,17 @@
     </div>
 
     <p id="ch2-boole-p5">
-      Boole died of pneumonia in 1864, aged 49, after walking three miles in heavy rain to
-      give a lecture and then lecturing in soaking wet clothes; his wife put him to bed and,
-      on the principle that "like cures like," allegedly threw buckets of cold water on him.
-      He never saw electricity used in computing: he died thirty-three years before the
-      electron itself was discovered. For seventy years his algebra was considered a
-      beautiful but useless curiosity.
+      Boole died of pneumonia in 1864, aged 49, after lecturing in clothes soaked by a three-mile walk through heavy rain. He never saw electricity used in computing: he died thirty-three years before the electron was discovered. For seventy years his algebra stayed with the logicians, who reshaped it into the Boolean algebra used today.
     </p>
 
     <h3>Shannon's master's thesis: the most consequential paper of the 20th century</h3>
 
     <p id="ch2-boole-p6">
-      Then, in 1937, a 21-year-old MIT graduate student named Claude Shannon wrote his
-      master's thesis. He was working with electrical relay circuits: telephone-switch-like
-      devices that could be open (no current) or closed (current flowing) based on
-      another control signal. He noticed that the behaviour of these circuits
-      could be described <em>exactly</em> by Boole's algebra. An open relay was 0.
-      A closed one was 1. Wire two relays in <em>series</em>, one behind the other, and
-      current can reach the far end only if <em>both</em> are closed. That is AND. Wire
-      them in <em>parallel</em>, side by side, and current gets through if <em>either</em>
-      one is closed. That is OR. And a relay built to spring open when its control signal
-      arrives passes current only when the signal is absent. That is NOT. The three
-      operations Boole had defined on paper were sitting there in the wiring.
+      Then, in 1937, a 21-year-old MIT graduate student named Claude Shannon wrote his master's thesis. He was working with relays: switches that an electromagnet opens or closes, so that a current in one circuit controls another. He noticed that relay circuits could be described <em>exactly</em> by Boolean algebra. Call an open relay 0 and a closed one 1. Wire two relays in <em>series</em>, one behind the other, and current can reach the far end only if <em>both</em> are closed: that is AND. Wire them in <em>parallel</em>, side by side, and current gets through if <em>either</em> one is closed: OR. And a relay built to spring open when its control signal arrives passes current only when the signal is absent, which is NOT.
     </p>
 
     <p id="ch2-boole-p7">
-      Shannon showed that any proposition expressible in Boolean algebra could be built as a circuit of relays that physically computed it, and that a circuit could be simplified by simplifying its Boolean expression. A switch circuit computing one of the three operations is now called a gate (not the transistor's gate terminal). The thesis has been called one of the most important master's theses ever written.
+      Shannon showed that any expression in Boolean algebra could be built as a circuit of relays that physically computed it, and that a circuit could be simplified by simplifying its expression. A switch circuit computing one of the three operations is now called a gate (not the transistor's gate terminal). The computer pioneer Herman Goldstine called the thesis one of the most important master's theses ever written.
     </p>
 
 
@@ -1800,7 +1744,7 @@
 <text x="338" y="377" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 1</text>
 <text x="338" y="395" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">→ 1</text>
 </svg>
-      <p id="ch2-boole-p9" class="diagram-caption">Boole's A · B, true only where both propositions hold, is the overlap of two circles; Shannon saw that two switches in series pass current only when both are closed. The same algebra, ninety years apart, is the AND gate in every CPU.</p>
+      <p id="ch2-boole-p9" class="diagram-caption">Boole's A · B, true only where both statements hold, is the overlap of two circles; Shannon saw that two switches in series pass current only when both are closed. Ninety years apart it is the same AND, today the AND gate in every CPU.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1814,7 +1758,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5v15h15z"/><path d="M8.5 12.5v3h3z"/><path d="M4.5 8.5h2M4.5 12h1.5M4.5 15.5h2"/></svg></span>
       <p id="ch2-boole-p10" class="insight-text">
-        <strong>The deeper claim.</strong> Any rule that turns a fixed number of input bits into output bits can be built from gates. For each input combination whose output is 1, AND the inputs, passing each 0 through a NOT first, so that AND is 1 for that combination alone; then OR those ANDs together. Gates also build the CPU, one fixed circuit that reads its program from memory like any other data: the universal machine of Chapter 1.
+        <strong>The deeper claim.</strong> Any rule that turns a fixed number of input bits into output bits can be built from gates. Take XOR, "exactly one of A and B is 1": it gives 1 when A = 0, B = 1 and when A = 1, B = 0. Give each case an AND, with a NOT on each input that is 0 there: (NOT A AND B) is 1 in the first case alone, (A AND NOT B) in the second. An OR of the two is 1 in exactly those two cases: XOR. Because each AND picks out one case, the recipe builds any rule, of three inputs or thirty. Add memory to hold bits between steps, and gates build the CPU, Chapter 1's universal machine.
       </p>
     </div>
   </section>
@@ -1865,10 +1809,7 @@
     </div>
 
     <p id="ch2-gates-p2">
-      Each Boolean operator has several notations: AND is written <em>·</em> or <em>∧</em>, OR
-      <em>+</em> or <em>∨</em>, NOT <em>¬</em> or an overbar. In code, programmers write
-      <code>&amp;&amp;</code>, <code>||</code>, and <code>!</code> in C/Java/JavaScript, or
-      <code>and</code>, <code>or</code>, <code>not</code> in Python.
+      Transistors are switches worked by a voltage (Chapter 1), so gates are wired like Shannon's relays: two in series conduct only when both inputs are 1, two in parallel when either is. For NOT, a 1 at the input switches on a transistor that connects the output to 0 volts; a 0 leaves it off, and the supply holds the output at 1. In formulas, NOT is written ¬: ¬A means NOT A.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-3">
@@ -1969,11 +1910,11 @@
     <h3>Universal gates: NAND alone is enough</h3>
 
     <p id="ch2-gates-p4">
-      A result that goes back to Henry Sheffer in 1913: you don't need three different kinds of gates. A single gate type, <span class="key-term">NAND</span> (NOT-AND), can be wired up to imitate all of them. A NAND is an AND with its output inverted; it emits 0 only when both inputs are 1. Tie its two inputs together so the same signal <em>A</em> feeds both: it computes NOT(<em>A</em> · <em>A</em>), and since <em>A</em> · <em>A</em> is just <em>A</em>, the result is NOT <em>A</em>: an inverter, from one NAND. Run a NAND's output into a second NAND wired as that inverter and the two inversions cancel, leaving a plain AND. For OR, two such inverters give NOT <em>A</em> and NOT <em>B</em>, and a third NAND gives 0 only when both are 1, that is, when <em>A</em> and <em>B</em> are both 0, the one case where OR is 0 (De Morgan's second law, below). Building every gate from one type is called <em>functional completeness</em>, and NAND is a <em>universal gate</em>.
+      A result that goes back to Henry Sheffer in 1913: a single gate type, <span class="key-term">NAND</span> (NOT-AND), can imitate all three. A NAND is an AND with its output inverted; it emits 0 only when both inputs are 1. Tie its two inputs together so the same signal <em>A</em> feeds both: it computes NOT(<em>A</em> · <em>A</em>), and since <em>A</em> · <em>A</em> is just <em>A</em>, the result is NOT <em>A</em>: an inverter, from one NAND. Run a NAND's output into a second NAND wired as that inverter and the two inversions cancel, leaving a plain AND. For OR, invert <em>A</em> and <em>B</em> with two such NANDs and feed the results to a third. It gives 0 only when NOT <em>A</em> and NOT <em>B</em> are both 1, that is, when <em>A</em> and <em>B</em> are both 0, the one case where OR gives 0; so it is an OR (the box below gives the rule). NAND is therefore called a <em>universal gate</em>.
     </p>
 
     <p id="ch2-gates-p5">
-      In practice, this lets chip manufacturers build their fabrication process around a single gate type. Modern CPUs aren't literally made of just NANDs (there are also NOR, XOR, and other compound gates for efficiency), but the principle stands. <strong>One gate type, repeated billions of times in different arrangements, is enough to build any circuit.</strong>
+      Since AND, OR and NOT can build any circuit, so can NAND alone, repeated billions of times. Real CPUs also use NOR (an OR with its output inverted), XOR and larger compound gates, each doing in one gate a job that would take several NANDs: an XOR takes four.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-4">
@@ -2076,7 +2017,7 @@
       <p id="ch2-gates-p7">Two identities of Boolean algebra, both due to Augustus De Morgan, a contemporary of Boole:</p>
       <p id="ch2-gates-p8" class="math-formula">¬(A · B) = ¬A + ¬B</p>
       <p id="ch2-gates-p9" class="math-formula">¬(A + B) = ¬A · ¬B</p>
-      <p id="ch2-gates-p10">These laws say that you can move a NOT through an AND or OR by flipping the operator. They are how you simplify Boolean expressions, and how chip designers convert one kind of gate-level circuit into another. They reappear when we discuss filtering in databases (<a href="part-4#ch13">Chapter 13</a>) and access control in security (<a href="part-4#ch15">Chapter 15</a>).</p>
+      <p id="ch2-gates-p10">These laws say that a NOT can move through an AND or an OR by flipping it into the other: "not (raining and cold)" means "not raining, or not cold". They are how you simplify Boolean expressions and how chip designers turn one kind of gate circuit into another, as the NAND-built OR above does.</p>
     </div>
   </section>
 
@@ -2087,17 +2028,14 @@
     <h2>How a circuit learns to add</h2>
 
     <p id="ch2-arithmetic-p1">
-      A computer is a machine for arithmetic, yet at the level of voltages and gates it
-      has no concept of "five" or "twelve." It knows only ones and zeros and Boolean
-      operations on them. So how do we get from <em>NAND</em> to <em>5 + 3</em>? One
-      bit at a time.
+      A computer is a machine for arithmetic, yet at the level of voltages and gates it has no idea of "five" or "twelve": it knows only ones and zeros and Boolean operations on them. It works out <em>5 + 3</em> the way you add on paper, one column at a time, carrying as it goes.
     </p>
 
 
     <h3>The half adder</h3>
 
     <p id="ch2-arithmetic-p3">
-      Adding two single bits has four cases. Binary digits are worth 1, 2, 4, 8 from the right, so 0101 is 4 + 1, or 5. With no digit 2, 1 + 1 is written 10: 0, carry 1, as with 5 + 5 in decimal.
+      Adding two single bits has four cases. With no digit 2, 1 + 1 is written 10, a 1 in the twos place: write 0, carry 1, just as 5 + 5 in decimal gives 0, carry 1.
     </p>
 
     <div class="truth-table" style="margin-top: 0;">
@@ -2112,23 +2050,13 @@
     </div>
 
     <p id="ch2-arithmetic-p4">
-      The Sum column is true when exactly one input is true: that is
-      <span class="key-term">XOR</span> (exclusive OR). The Carry column is exactly an
-      AND. So a single-bit adder, called a <em>half adder</em>, is just an XOR and an
-      AND sharing the same two inputs.
+      The Sum column is 1 when exactly one input is 1: that is <span class="key-term">XOR</span> (exclusive OR), the rule built in section 02. The Carry column is exactly an AND. So a single-bit adder, called a <em>half adder</em>, is just an XOR and an AND sharing the same two inputs.
     </p>
 
     <h3>The full adder, and adding wider numbers</h3>
 
     <p id="ch2-arithmetic-p5">
-      Adding multi-bit numbers means handling the carry that passes from one bit position
-      to the next. That needs a <em>full adder</em>: a circuit that takes three
-      input bits (A, B, and a carry-in from the previous position) and produces a
-      sum bit and a carry-out. It is built from two half adders and an OR
-      gate: the first adds A and B, the second adds that sum to the incoming
-      carry, and the OR merges their two carry-outs into one. That loses nothing,
-      because the first carries only on 1 + 1, leaving its sum 0, so the second
-      cannot carry too.
+      Wider numbers pass a carry from each bit position to the next, which needs a <em>full adder</em>: a circuit that takes three input bits (A, B and a carry-in) and gives a sum bit and a carry-out. It is two half adders and an OR gate: the first adds A and B, the second adds that sum to the carry-in, and the OR merges their carry-outs. Nothing is lost, because the first carries only on 1 + 1, leaving its sum 0, so the second cannot carry too.
     </p>
 
     <p id="ch2-arithmetic-p6">
@@ -2139,10 +2067,7 @@
     </p>
 
     <p id="ch2-arithmetic-p7">
-      The Arithmetic Logic Unit, the ALU you saw inside the CPU diagram in <a href="#ch1">Chapter 1</a>,
-      is a circuit of adders plus logic for subtraction, multiplication, and bitwise
-      operations. <strong>Every numerical operation a computer performs is a Boolean
-      expression.</strong>
+      The ALU in <a href="#ch1">Chapter 1</a>'s CPU diagram is built from gates the same way: an adder that also subtracts (next section), and circuits for multiplication and for bitwise operations, which apply one gate to each pair of matching bits (0101 AND 0011 is 0001). Every calculation comes down to gates.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-5">
@@ -2302,33 +2227,20 @@
     <h2>Two's complement, or how to subtract by adding</h2>
 
     <p id="ch2-twos-p1">
-      Computers don't natively understand negative numbers. There is no transistor that
-      represents "minus." So how does your laptop store the value <em>−5</em>?
+      A computer has no transistor that means "minus", so a negative number such as <em>−5</em> has to be written in bits like any other.
     </p>
 
     <p id="ch2-twos-p2">
-      The naive approach, sometimes called <em>signed magnitude</em>, is to reserve
-      one bit (usually the leftmost) as a sign indicator. <code>0</code> means positive,
-      <code>1</code> means negative; the remaining bits represent the magnitude. So in
-      8 bits, <code>00000101</code> is +5 and <code>10000101</code> is −5. Simple,
-      intuitive, and almost never used.
+      The naive approach, sometimes called <em>signed magnitude</em>, is to reserve one bit (usually the leftmost) as a sign indicator. <code>0</code> means positive, <code>1</code> means negative; the remaining bits represent the magnitude. So in 8 bits, <code>00000101</code> is +5 and <code>10000101</code> is −5. It is simple, and almost never used for whole numbers.
     </p>
 
     <p id="ch2-twos-p3">
-      Why not? Two reasons. First, you end up with two zeros, <code>00000000</code>
-      and <code>10000000</code> ("positive zero" and "negative zero"), which makes
-      equality testing awkward. Second, and far worse, the ordinary adder gives the wrong
-      answer. Feed it +5 (<code>00000101</code>) and −5 (<code>10000101</code>), and out comes
-      <code>10001010</code>, which reads back as −10, not 0. The adder has no idea the
-      leftmost bit is a sign; it just adds it in. Making signed magnitude subtract
-      correctly would take a separate, more complex circuit that inspects the sign bits
-      first and decides what to do, and every extra circuit costs transistors, area,
-      heat and money.
+      It has two flaws. First, there are two zeros, <code>00000000</code> and <code>10000000</code> ("positive zero" and "negative zero"), which makes equality testing awkward. Second, and far worse, the ordinary adder gives the wrong answer: +5 (<code>00000101</code>) plus −5 (<code>10000101</code>) comes out as <code>10001010</code>, which reads back as −10, not 0, because the adder adds the sign bit in like any other. Subtracting correctly would take a separate, more complex circuit that inspects the sign bits first, costing transistors, area, heat and money.
     </p>
 
     <h3>The trick: complement</h3>
 
-    <p id="ch2-twos-p4">The solution, used by every modern computer, is called <span class="key-term">two's complement</span>. To represent a negative number in <em>n</em> bits:</p>
+    <p id="ch2-twos-p4">The solution, used by every modern computer, is called <span class="key-term">two's complement</span>, and with it <strong>subtraction is just addition</strong>. To represent a negative number in <em>n</em> bits:</p>
 
     <div class="memory-diagram" style="margin-bottom: 32px;">
       <div class="memory-row" style="grid-template-columns: 60px 1fr;"><span class="addr">Step 1</span><span class="val">Take the binary representation of the positive number</span></div>
@@ -2337,12 +2249,11 @@
     </div>
 
     <p id="ch2-twos-p5">
-      So in 8 bits, +5 is <code>00000101</code>. Flip the bits to get
-      <code>11111010</code>, add 1, and <code>11111011</code> is −5.
+      So in 8 bits, +5 is <code>00000101</code>. Flip the bits to get <code>11111010</code>, add 1, and <code>11111011</code> is −5. Read as a plain number, the same bits are 251, which is 256 − 5: 5 plus its flipped self is all ones, 255, and the added 1 makes 256. The pattern has two readings, 251 or −5, and the program decides which it means.
     </p>
 
     <p id="ch2-twos-p6">
-      With this representation, <strong>subtraction is just addition</strong>. To compute <code>7 − 5</code>, the CPU computes <code>7 + (−5)</code> on its ordinary adder: NOT gates flip 5's bits on the way in, and a carry-in of 1 into the rightmost full adder adds the 1. The bits of −5, <code>11111011</code>, are worth 251, exactly 256 − 5: <code>00000101</code> plus its flipped self, <code>11111010</code>, is all ones, and adding 1 carries into bit 8 (counting from 0 at the right), worth 256. The same holds in any <em>n</em> bits, so flip-and-add-one turns <em>x</em> into <em>2<sup>n</sup> − x</em>. So when the adder computes <em>a + (−b)</em>, what it really adds is <em>a + (2<sup>n</sup> − b)</em>, which equals <em>2<sup>n</sup> + (a − b)</em>. If <em>a</em> is at least <em>b</em>, that extra <em>2<sup>n</sup></em> is a 1 in bit <em>n</em>, just past the register's <em>n</em> bits, and it falls off the end, leaving precisely <em>a − b</em>. Otherwise nothing falls off: the sum, <em>2<sup>n</sup> − (b − a)</em>, is how two's complement writes <em>a − b</em>.
+      For <code>7 − 5</code>, the CPU adds 7 and <code>11111011</code> on its ordinary adder, which knows nothing of signs and simply adds 251: 7 + 256 − 5, or 256 + 2. Writing 256 takes a ninth place; the register has eight, so that 1 falls off the end and leaves exactly 2. When the answer is negative, nothing falls off: 5 − 7 becomes 5 + (256 − 7) = 254, and 254, <code>11111110</code>, is how two's complement writes −2. The adder itself never changes: for a subtract instruction, NOT gates flip the second number's bits on the way in, and a carry-in of 1 into the rightmost full adder adds the 1. Any width works the same way, with 2<sup>n</sup> in place of 256.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-7">
@@ -2477,7 +2388,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch2-twos-p10" class="insight-text">
-        <strong>Integer overflow vulnerabilities.</strong> Adding two large positive numbers can produce a negative result: a carry runs into the top bit, which is 1 in every negative number, rather than off the end. In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a 64-bit floating-point velocity value was converted to a 16-bit signed integer that overflowed. In security, a check that a signed length is not too long is a classic route to a buffer overflow. It lets −1 through to a copy whose 64-bit length is <em>unsigned</em>: a plain number with no sign. Widening the 32-bit −1 copies its top bit into the new bits, so it stays all ones, the largest value 64 bits can hold (<a href="#fig-2-9">Fig 2.9</a>).
+        <strong>Overflow and sign bugs.</strong> Adding two large positive numbers can produce a negative result: a carry runs into the top bit, which is 1 in every negative number, rather than off the end (the bottom of Fig 2.8). In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a velocity value was converted to a 16-bit signed integer too small to hold it. A misread sign is a second danger. A program copying data into a buffer, a fixed block of memory, checks that the length is not more than the buffer holds; −1 passes. The copying code then reads the length as <em>unsigned</em>: a plain number with no sign. −1 is all ones, the largest unsigned number its bits can hold, so the copy runs far past the buffer (<a href="#fig-2-9">Fig 2.9</a>): a classic buffer overflow.
       </p>
     </div>
 
@@ -2615,7 +2526,7 @@
 <rect class="fx" x="20" y="374" height="40" rx="4" fill="#ec8d8d" fill-opacity="0.45" stroke="#ec8d8d"><animate attributeName="width" values="360;360;360;0;2;360;360" keyTimes="0.000000;0.088778;0.088889;0.688889;0.689000;0.911111;1.000000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;1;1;0;1;1" keyTimes="0.000000;0.088778;0.088889;0.687778;0.688889;0.689000;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="380" y="432" text-anchor="end" font-family="DM Mono" font-size="14" fill="#ec8d8d" opacity="0">and on, over everything<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.077556;0.077667;0.088778;0.088889;0.822111;0.822222;1.000000" dur="9s" repeatCount="indefinite"/></text>
 </svg>
-      <p id="ch2-twos-p11" class="diagram-caption">A length check that looks safe: called with −1, it passes, because −1 is less than 256. Then memcpy takes the length as an unsigned size_t, eighteen quintillion on a 64-bit machine, and copies far past the 256-byte buffer.</p>
+      <p id="ch2-twos-p11" class="diagram-caption">The function refuses any length over 256, then hands n to memcpy, which copies n bytes. Called with −1, the check passes, since −1 is not over 256, and memcpy reads the length as an unsigned size_t, eighteen quintillion on a 64-bit machine, so it copies far past the 256-byte buffer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2635,35 +2546,20 @@
     <h2>Why 0.1 + 0.2 ≠ 0.3</h2>
 
     <p id="ch2-float-p1">
-      Open any programming language. Type <code>0.1 + 0.2</code>. The answer will not be
-      <code>0.3</code>. It will be <code>0.30000000000000004</code>, in Python, JavaScript,
-      C, Java and Rust alike. This is not a bug in any one language. It is a consequence
-      of how computers represent fractional numbers.
+      Type <code>0.1 + 0.2</code> into almost any programming language and the answer is not <code>0.3</code> but <code>0.30000000000000004</code>, in Python, JavaScript, C, Java and Rust alike. The languages agree because all of them store fractions the way the processor does, in binary.
     </p>
 
     <p id="ch2-float-p2">
-      The cause is the binary representation of fractions. A binary fraction is a sum of
-      halves, quarters, eighths (negative powers of two) and nothing else. So a fraction
-      can be written out exactly in binary only when its denominator is itself a power of
-      two. <code>0.5</code> is <code>1/2</code> and <code>0.25</code> is <code>1/4</code>,
-      so both are clean and finite. But <code>0.1</code> is <code>1/10</code>, and
-      10 = 2 × 5 carries a factor of 5 that no stack of halves can ever divide evenly, so
-      its binary expansion never terminates. It runs <code>0.0001100110011001100...</code>,
-      the pattern <code>0011</code> repeating forever, for exactly the reason <code>1/3</code>
-      repeats as <code>0.333...</code> in decimal: 3 divides no power of ten, just as 5
-      divides no power of two. Computer memory is finite, so the endless expansion has to
-      be cut off, and the remainder becomes a tiny error.
+      Decimal already has fractions that never end: 1/3 is <code>0.333...</code>, because decimal digits after the point are tenths, hundredths and thousandths, and no power of ten divides evenly by 3. Binary digits after the point are halves, quarters and eighths, so only a fraction that can be written over a power of two comes out exact: <code>0.5</code> is <code>1/2</code> and <code>0.25</code> is <code>1/4</code>. But <code>0.1</code> is <code>1/10</code>, and 10 = 2 × 5 has a factor of 5 that no power of two contains, so 0.1 in binary runs <code>0.0001100110011001100...</code>, the pattern <code>0011</code> repeating forever. Memory is finite, so the endless expansion has to be rounded to fit, and the difference becomes a tiny error.
     </p>
 
     <h3>IEEE 754: the universal floating-point standard</h3>
 
     <p id="ch2-float-p3">
-      In 1985 the IEEE published standard 754, which defines how all modern processors
-      represent fractional numbers. Before the standard, every CPU did it differently, and
-      numerical code was a portability nightmare.
+      In 1985 the IEEE published standard 754, which defines how all modern processors represent fractional numbers. Before it, every CPU had its own format.
     </p>
 
-    <p id="ch2-float-p4">A 64-bit "double precision" float divides its 64 bits into three fields, in a structure that mimics scientific notation:</p>
+    <p id="ch2-float-p4">The format works like scientific notation, which writes 6,500 as 6.5 × 10³: the digits, 6.5, called the mantissa, and an exponent, 3, that says where the point goes. Because the point moves, the number is called floating point, or a float. The usual 64-bit kind, double precision or a double, holds a sign bit, an 11-bit exponent and a 52-bit mantissa, in binary:</p>
 
     <div class="diagram-card fig-v2" id="fig-2-10">
       <div class="diagram-label">Fig 2.10&nbsp;· IEEE 754 double precision&nbsp;· sign, exponent, mantissa</div>
@@ -2704,13 +2600,11 @@
     </div>
 
     <p id="ch2-float-p6">
-      The binary point shifts until a single non-zero digit stands before it, and in binary that digit can only be 1, so it is never stored. The 52 bits of mantissa give about 15 to 17 decimal digits of precision; the 11-bit exponent gives a dynamic range of about 10<sup>−308</sup> to 10<sup>308</sup>. A double rounds an endless expansion to the nearest binary fraction it can hold: 0.1 and 0.2 round up, 0.3 rounds down.
+      The exponent is stored 1023 too high, so that negative powers need no sign: stored 1025 means 2<sup>2</sup>, 1022 means 2<sup>−1</sup>. And the binary point shifts until a single non-zero digit stands before it; in binary that digit is always 1, so it is never stored. A double rounds an endless expansion to the nearest binary fraction it can hold: 0.1 and 0.2 round up, 0.3 rounds down.
     </p>
 
     <p id="ch2-float-p7">
-      When you compute <code>0.1 + 0.2</code>, the CPU adds two slightly imprecise
-      binary values and produces a slightly imprecise 0.3, but not the same one you'd
-      get if you stored 0.3 directly. The errors don't cancel.
+      The stored 0.1 and 0.2, both slightly high, add up to a true sum exactly halfway between the stored 0.3 and the next double up. For such a tie, IEEE 754 picks the neighbour whose last binary digit is 0: here the upper one, which prints as <code>0.30000000000000004</code>.
     </p>
 
     <div class="code-block">
@@ -2761,7 +2655,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.087500;0.087625;0.124875;0.125000;0.424875;0.425000;1.000000" dur="8s" repeatCount="indefinite"/><text x="210" y="268" font-family="DM Mono" font-size="15" fill="#ec8d8d">0.1 + 0.2</text><text x="210" y="286" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">one double up</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.087500;0.087625;0.124875;0.125000;0.549875;0.550000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" font-family="DM Mono" font-size="16" fill="#fff">0.1 + 0.2 prints <tspan fill="#ec8d8d">0.30000000000000004</tspan></text></g>
 </svg>
-      <p id="ch2-float-p8" class="diagram-caption">0.1 never fits in binary: its digits repeat forever, so the double keeps the nearest 52-bit fraction, and 0.2 likewise. Their sum, rounded again to a double, lands one representable step above where 0.3 itself is stored.</p>
+      <p id="ch2-float-p8" class="diagram-caption">The doubles near 0.3, drawn to scale: where 0.3 is stored, where the true sum of the stored 0.1 and 0.2 falls, and the double it rounds to.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2776,43 +2670,17 @@
     <h3>Special values: ±∞ and NaN</h3>
 
     <p id="ch2-float-p9">
-      IEEE 754 reserves certain bit patterns for special values, because a calculation
-      that runs off the rails should be able to keep flowing rather than halt the
-      machine. When the exponent is all ones and the mantissa is zero, the value is
-      <strong>infinity</strong>, which is what you get by dividing by zero
-      (<code>1.0 / 0.0</code>) or by letting a number grow past the largest
-      representable value, roughly 10<sup>308</sup>. The sign bit says which
-      direction. When the
-      exponent is all ones and the mantissa is non-zero, the value is <strong>NaN</strong>
-      (Not a Number), the result of an operation with no meaningful answer at all, like
-      <code>0.0 / 0.0</code> or <code>sqrt(-1)</code>. And a NaN is built to spread: once one appears,
-      any later arithmetic that touches it yields another NaN, so the bad result carries
-      all the way through to the end of the computation, where it can be spotted, rather
-      than crashing the program the instant it first arises.
+      IEEE 754 reserves some bit patterns for special values, so that a calculation gone wrong keeps flowing instead of halting the machine. When the exponent is all ones and the mantissa is zero, the value is <strong>infinity</strong>, what you get when a number grows past the largest double, roughly 10<sup>308</sup>, or when a non-zero number is divided by zero (<code>1.0 / 0.0</code>), since dividing by ever smaller numbers gives ever larger results. The sign bit says which direction. When the exponent is all ones and the mantissa is non-zero, the value is <strong>NaN</strong> (Not a Number), the result of an operation with no meaningful answer, like the square root of −1 or <code>0.0 / 0.0</code> (every number times 0 gives 0, so no one number is the answer). A NaN spreads: any arithmetic that touches it yields another NaN, so the bad result reaches the end of the computation, where it can be spotted, instead of crashing the program where it arose.
     </p>
 
     <p id="ch2-float-p10">
-      NaN is not equal to anything, including itself.
-      <code>NaN == NaN</code> evaluates to <code>false</code> in every IEEE 754-compliant
-      language. That looks perverse until you remember what NaN means: <em>no value at
-      all</em>. Two failed computations are not "the same number," because neither is a
-      number; asking whether they are equal is as meaningless as asking whether two
-      silences are the same note. And because a NaN is the one value not equal to itself,
-      the test <code>x != x</code> is the standard, reliable way to catch one: the
-      property that looks broken is the property that does the work.
+      NaN is not equal to anything, including itself: <code>NaN == NaN</code>, "does NaN equal NaN?", gives <code>false</code> wherever IEEE 754 is followed. That looks perverse until you remember what NaN means: <em>no value at all</em>, and two failed computations are not "the same number", because neither is a number. Since a NaN is the one value not equal to itself, <code>x != x</code>, "is x unequal to x?", is true only for a NaN, a classic way to catch one.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 6.5v11"/><path d="M14.6 9.2c-.5-.8-1.4-1.2-2.6-1.2-1.4 0-2.6.7-2.6 1.9s1.1 1.6 2.6 2 2.6.9 2.6 2.1-1.2 1.9-2.6 1.9c-1.2 0-2.1-.4-2.6-1.2"/></svg></span>
       <p id="ch2-float-p11" class="insight-text">
-        <strong>Real-world consequences.</strong> Financial software cannot use floating
-      point for currency, because rounding errors compound across millions of
-      transactions. Banks use either integer cents or special decimal types instead. The
-      1991 Patriot missile failure during the Gulf War, which killed 28 American
-      soldiers, was traced to a timing error: the system cut the unending binary 0.1
-      short to store it in fixed point (the binary point at a set place, no exponent),
-      and over 100 hours the shortfall grew until the radar looked for an incoming Scud
-      in the wrong place.
+        <strong>Real-world consequences.</strong> Financial software counts money in integer cents or special decimal types, because floating-point rounding errors compound across millions of transactions. The 1991 Patriot missile failure during the Gulf War, which killed 28 American soldiers, came from the same endless 0.1, held in fixed point instead, a set number of binary places with no exponent: counting time in tenths of a second, the system chopped off the digits of 0.1 that did not fit. Every tick was a hair short, and over 100 hours the shortfall grew until the radar looked for an incoming Scud in the wrong place.
       </p>
     </div>
 
@@ -2839,7 +2707,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.075000;0.075125;0.099875;0.100000;0.762375;0.762500;1.000000" dur="8s" repeatCount="indefinite"/><circle cx="330" cy="312" r="9" fill="#ec8d8d"/><text x="330" y="352" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">the Scud</text><path d="M 142 278 H 330" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><path d="M 142 272 v 12 M 330 272 v 12" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/><text x="236" y="270" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff">≈ 570 m</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.075000;0.075125;0.099875;0.100000;0.837375;0.837500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="384" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.75)">0.34 s × 1,676 m/s ≈ 570 m</text></g>
 </svg>
-      <p id="ch2-float-p12" class="diagram-caption">A Patriot battery near Dhahran had run for 100 hours, counting time in tenths of a second, and 0.1 rounded in binary made every tick a hair short. The clock fell 0.34 s behind, about 570 m at a Scud's speed, so the radar looked in the wrong place and the battery never fired; 28 soldiers died.</p>
+      <p id="ch2-float-p12" class="diagram-caption">After 100 hours of tenth-of-a-second ticks the clock was 0.34 s behind, about 570 m at a Scud's speed, so the radar looked in the wrong place and the battery never fired.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
