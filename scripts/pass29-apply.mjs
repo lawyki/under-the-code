@@ -14,6 +14,7 @@
 // change: an owner call, not a rewrite (paragraphs = every <p> with a -pN id, captions included, as
 // the book numbers them). New ids take <section>-p<N>, N one more than the highest the section ever
 // used (current ids, ANCHOR_ALIASES keys, git history), so none is reused.
+// --no-quarter lifts the quarter-paragraph limit: only for the law-4 language pass (owner ruling, 2026-10-12, "redo the entire book").
 // Without --write the patched part goes to --out (default: stdout report only). With --write it goes to
 // public/<part>.html and new aliases are added to ANCHOR_ALIASES in public/book.js.
 import fs from 'node:fs';
@@ -115,7 +116,7 @@ for (const f of String(ARGS.edits).split(',').filter(Boolean)) {
 }
 for (const [a, t] of Object.entries(aliases)) { let x = t; const seen = new Set(); while (aliases[x] && !seen.has(x)) { seen.add(x); x = aliases[x]; } aliases[a] = x; if (!src.includes(`id="${x}"`)) problems.push(`alias ${a} -> ${x}: target does not survive`); }
 for (const [sid, set] of Object.entries(touched)) {
-  const n = baseProse[sid]; if (set.size * 4 > n) problems.push(`${sid}: ${set.size} of ${n} paragraphs touched, more than a quarter (owner call)`);
+  const n = baseProse[sid]; if (!ARGS['no-quarter'] && set.size * 4 > n) problems.push(`${sid}: ${set.size} of ${n} paragraphs touched, more than a quarter (owner call)`);
 }
 // section word deltas, counted exactly as scripts/count-prose.mjs counts them
 const count = s => Object.fromEntries(countPart(s).map(x => [x.id, x.words]));
