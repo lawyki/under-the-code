@@ -3,7 +3,7 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pass 29/30 at:** Pass 29 language pass under law 4 (owner, 2026-10-12: "redo the entire book"; the pause is lifted). Whole book, Part I first, chapter by chapter: one author edits, a blind newcomer and a blind expert read, one revision, my own read; one commit per chapter; budget under 5 million tokens (`docs/working-laws.md`). The quarter-paragraph limit does not apply to this pass (owner ruling); ids and owner text stay fixed. Then Pass 30 (figures, Fig 1.1 the reference, frame drops included).
+**Pass 29/30 at:** Pass 29 language pass under law 4 (owner, 2026-10-12: "redo the entire book"). Parts I and II done and live (2026-10-12; ledger UNDER.md §4ac "Language pass under law 4"). **Stopped after Part II at the owner's request ("stop after those finish", 2026-10-12); Part III not started.** Next session: Part III, chapter by chapter, the same way: one author edits, a blind newcomer and a blind expert read, one revision, my own read of every changed sentence; one commit per chapter (`docs/working-laws.md`). Token budget: about 4.6 million of the 5 million for the text pass spent on Parts I and II, so Parts III to V must come in far cheaper (one drafting agent per chapter, no repeat reads). The quarter-paragraph limit does not apply to this pass (owner ruling); ids and owner text stay fixed. Then Pass 30 (figures, Fig 1.1 the reference, frame drops included).
 
 **Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
 
@@ -13,8 +13,8 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 | Part | 02f486b | Ceiling | Pass 28 close (7d56482) | Headroom |
 |---|---|---|---|---|
-| I | 12,095 | 12,699 | 12,098 (after Part I: 12,697) | 2 |
-| II | 10,891 | 11,435 | 10,898 | 537 |
+| I | 12,095 | 12,699 | 12,098 (after law 4: 12,641) | 58 |
+| II | 10,891 | 11,435 | 10,898 (after law 4: 10,867) | 568 |
 | III | 14,012 | 14,712 | 14,066 | 646 |
 | IV | 9,761 | 10,249 | 9,811 | 438 |
 | V | 6,181 | 6,490 | 6,187 | 303 |
@@ -107,6 +107,8 @@ in substance throughout.
 
 ## WHAT'S NEXT — the to-do list (in order)
 
+**For the Go-deeper (video) work, not Pass 29 (2026-10-12):** `tests/pass25` invariants fail 12 checks, all on Part I and all from Go deeper: the injected id `deeper-viewer-title` needs the `utc-` prefix, and the new tab stops (`button.deeper-note` on desktop, `button.deeper-pill` on phones) need adding to the tab-stop baseline (or the test told about them). Everything else passes.
+
 1. **Marks sync on** once the owner approves `docs/pass-25-copy.md`: apply
    its five replacements in `public/account.html`, set `MARKS_SYNC = "1"`,
    push.
@@ -150,9 +152,7 @@ Owner decisions and actions live here and nowhere else. If it is not on
 this list, it is not blocking.
 
 - **Pass 29 Part I owner calls (more than the brief's 10 per part, so Pass 29 stopped after Part I).** Each, one line with question, options and recommended option: https://github.com/lawyki/under-the-code/blob/main/docs/pass-29-owner-calls.md (A: from the per-section method; B: verification findings left; C: kept-original figures). Options: rule on them / let the next session apply every "recommended" / keep the cap and leave them. Recommended: let the next session apply the recommended fixes for facts (section B) and decide the rest when you read.
-- **ch1-memory-p7, a wrong fact (verification H).** "Peter Denning's working set theory (1968) made this rigorous, and every CPU since has been a refinement of the idea" (the working set is a virtual-memory model; CPU caches came earlier). Options: "Peter Denning's working set model (1968) made the idea rigorous for virtual memory, and processor caches rest on the same principle." / leave. Recommended: the fix; it waits only on the paragraph limit. Link: docs/pass-29-owner-calls.md, section B.
 - **Fig BR.3, kept original, contradicts §4g (verification H).** Its rows "SYSCALL or int 0x80" and "32 · timer (LAPIC)" repeat two corrected errors beside the corrected prose. Options: redraw those rows / accept. Recommended: redraw. Link: docs/pass-29-owner-calls.md, section C.
-- **ch1-context-p10, the Bletchley estimate (owner-ruled).** It credits Bombe and Colossus alone with two years and fourteen million lives; the sources give it to Bletchley Park's codebreaking as a whole. Options: "Some historians estimate that Bletchley Park's codebreaking as a whole shortened the war by two years or more." / leave. Recommended: the rewrite. Link: docs/pass-29-owner-calls.md, section B.
 - **Pass 29 reader check (answered).** Read Chapter 1 §01 and Chapter 16 §03 at https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu as a newcomer would, and mark every place you had to stop and wonder (select the words, press Mark; a note is optional). Options: write go when you have marked / write go with no marks if nothing stopped you. Recommended: the first; the cold reader is compared against your marks before it touches Part I. Your answer: go. Owner gave go without marks, 2026-10-11; recall and precision tests not run.
 - **Permission rules (not blocking).** The owner's 2026-10-11 list of `permissions.allow` rules for `.claude/settings.local.json` (node, npm, npx, git, python3, curl, cp, mv, mkdir, touch, chmod, sort, awk, tee, `pkill -f serve.mjs`, lsof; Edit, Write, Read, WebSearch, WebFetch, Artifact, ArtifactData, ArtifactComments, Workflow, Agent, Skill, ToolSearch, Monitor, ScheduleWakeup) was not written: Claude Code's auto-mode safety check refuses an agent editing its own permissions. Options: add them yourself (or run `/permissions`) / leave as is. Recommended: leave as is while auto mode runs the work; add them if prompts start to stall it.
 - **Look at the figure pilot** (https://claude.ai/artifact/ADZTGFP5QqDEqq62E9Ebhn,
