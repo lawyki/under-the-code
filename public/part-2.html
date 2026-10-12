@@ -3880,46 +3880,15 @@
     <h2>Two pipelines, two trades.</h2>
 
     <p id="ch7-interpret-p1" class="lead">
-      The first Lisp interpreter ran on an IBM 704 at MIT in 1959. John
-      McCarthy had written a paper proposing a new language defined
-      recursively in terms of itself (its core function, <code>eval</code>,
-      evaluated Lisp expressions in Lisp) but had not implemented it.
-      A research assistant named Steve Russell, who had been transcribing
-      the paper, realised that <code>eval</code> looked like working
-      code rather than mathematical theory, and spent a few weeks
-      turning it into machine code by hand. The result was the first
-      interpreter that mattered: a program that read each Lisp
-      expression at runtime and executed it directly, without ever
-      producing a separate binary. The BASIC of the first microcomputers,
-      a decade and a half later, arrived the same way: an interpreter
-      squeezed into ROM, translating each line as it ran. The argument over <em>when</em>
-      a program should be translated to machine instructions is older than C
-      and older than UNIX. Once, on the developer's machine, into a self-sufficient
-      binary? Or every time it runs, in flight, on the user's? C took one side. Python took the other. The first gives you
-      speed. The second gives you back something C never thought worth
-      bargaining for: <em>your time.</em>
+      The first Lisp interpreter ran on an IBM 704 at MIT in 1959. John McCarthy had written a paper defining a new language in terms of itself (its core function, <code>eval</code>, evaluated Lisp expressions in Lisp) but had not implemented it. A research assistant named Steve Russell, who had been transcribing the paper, realised that <code>eval</code> looked like working code rather than mathematical theory, and spent a few weeks turning it into machine code by hand. The result was the first interpreter that mattered: a program that read each Lisp expression at runtime and executed it directly, without ever producing a separate binary. The BASIC of the first microcomputers, a decade and a half later, arrived the same way: an interpreter squeezed into ROM, translating each line as it ran. So the question of <em>when</em> to translate a program into machine instructions is older than C: once, in advance, or every time it runs.
     </p>
 
     <p id="ch7-interpret-p2">
-      A compiled language passes through a long pipeline before it ever runs. A C source
-      file becomes preprocessor output, becomes parser tokens, becomes an abstract syntax
-      tree, becomes intermediate representation (often LLVM IR), becomes optimised IR,
-      becomes target-specific assembly, becomes machine code in an object file, becomes a
-      linked executable. All of this happens in advance, on the developer's machine. When
-      a user runs the program, the CPU loads the instructions and executes them; nothing
-      translates at runtime. Speed is bounded only by the hardware and the
-      compiler's cleverness.
+      A compiled language passes through a pipeline before it ever runs. A C compiler splits each source file into tokens (its words and symbols), arranges them into a tree of the program's structure, the abstract syntax tree (AST), and translates that tree into optimised machine code; a linker then joins the compiled files and the library code they use into one executable. All of this happens in advance, on the developer's machine. When a user runs the program, the CPU executes the instructions directly, so speed is bounded only by the hardware and the compiler's cleverness.
     </p>
 
     <p id="ch7-interpret-p3">
-      An interpreted language does most of the same pipeline, but at runtime, on the
-      end-user's machine. Python source becomes tokens, becomes an AST, becomes
-      <em>bytecode</em>: a sequence of small, simple opcodes for a virtual machine. The
-      translation is cached between runs; the interpretation itself is paid for every
-      time. The CPython interpreter is a giant <code>switch</code> statement in C that
-      reads each opcode and performs its action. The CPU executes the interpreter; the
-      interpreter executes your code. Every Python statement becomes hundreds of CPU
-      instructions in the interpreter's dispatch loop, plus the actual work.
+      An interpreted language runs most of the same pipeline, but at runtime, on the user's machine. Python source becomes tokens, then an AST, then <em>bytecode</em>: a sequence of small, simple opcodes for an imaginary processor. Imported modules keep their bytecode in a cache until their source changes; the interpretation is paid for on every run. CPython, the standard interpreter, is a loop in C that reads each opcode and runs the C code for it. The CPU executes the interpreter; the interpreter executes your code. Every Python statement becomes hundreds of CPU instructions in that loop, plus the actual work. In return, a changed line runs at once, with no build to wait for.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-1">
@@ -3983,27 +3952,11 @@
     <h2>A Christmas hobby that ate the world.</h2>
 
     <p id="ch7-vanrossum-p1" class="lead">
-      Christmas 1989, at the Centrum Wiskunde &amp; Informatica in Amsterdam, Guido van
-      Rossum was bored. He had spent three years on a research language called
-      ABC, which had failed to gain traction outside CWI. Over the holiday break,
-      working from home, he started writing an interpreter for a new language that
-      borrowed ABC's clarity and added the things ABC had refused: modules,
-      exceptions, escape hatches into C. He named it after a British comedy
-      troupe he liked. By 1991 he had released it to USENET, where it began the slow,
-      improbable march that ended with it eating data science, scientific computing,
-      and most of the world's introductory programming courses.
+      Christmas 1989, at the Centrum Wiskunde &amp; Informatica in Amsterdam, the Dutch programmer Guido van Rossum was bored. He had spent three years on a research language called ABC, which had failed to gain traction outside CWI. Over the holiday break, working from home, he started writing an interpreter for a new language that borrowed ABC's clarity and added the things ABC had refused: modules, exceptions, and a way to call code written in C. He named it Python, after the British comedy troupe Monty Python. In 1991 he posted it to USENET's discussion groups, and it spread into data science, scientific computing and most of the world's introductory programming courses.
     </p>
 
     <p id="ch7-vanrossum-p2">
-      Python's design choices trace to instincts that Tim Peters wrote down in 1999
-      as the <em>Zen of Python</em>. <strong>Readability counts:</strong>
-      indentation is part of the grammar, so badly indented Python is also
-      syntactically wrong, which enforces consistent layout across every codebase.
-      <strong>Explicit is better than implicit:</strong> no hidden conversions,
-      <code>self</code> spelled out as the first parameter of every method. <strong>There
-      should be one-- and preferably only one --obvious way to do it:</strong> the
-      anti-Perl principle, deliberately the opposite of "many ways to skin a cat."
-      These were aesthetic commitments before they were technical ones.
+      Python's design choices trace to instincts that Tim Peters wrote down in 1999 as the <em>Zen of Python</em>. <strong>Readability counts:</strong> indentation marks each block, as braces do in C, so the layout you see is the structure the interpreter sees. <strong>Explicit is better than implicit:</strong> <code>1 + "a"</code> is an error rather than a guess, and <code>self</code>, the <code>this</code> that C++ hides, is spelled out as every method's first parameter. <strong>There should be one-- and preferably only one --obvious way to do it:</strong> the opposite of Perl's motto, "There's more than one way to do it".
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-2">
@@ -4061,7 +4014,7 @@
 </g>
 <circle class="fx" cx="76" cy="290" r="12" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.734800;0.735000;0.795000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
 </svg>
-      <p id="ch7-vanrossum-p3" class="diagram-caption">From a project van Rossum began over Christmas 1989 to the everyday language of data science. The defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020.</p>
+      <p id="ch7-vanrossum-p3" class="diagram-caption">Python grew from a project van Rossum began over Christmas 1989 into the everyday language of data science. Its defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4079,32 +4032,15 @@
     <h2>Types are properties of values, not variables.</h2>
 
     <p id="ch7-types-p1" class="lead">
-      In C and C++, a variable has a type, declared once and fixed forever. In Python, a
-      variable is just a name that can refer to any value, and a value carries its own
-      type. Write <code>x = 5</code>, then <code>x = "hello"</code>, then <code>x = [1, 2, 3]</code>.
-      All legal. The interpreter checks types at every operation, paying for that check
-      in cycles. The programmer is paid back in fewer declarations and fewer mistakes
-      about them.
+      In C and C++, a variable has a type, declared once and fixed forever. In Python, a variable is just a name that can refer to any value, and a value carries its own type. Write <code>x = 5</code>, then <code>x = "hello"</code>, then <code>x = [1, 2, 3]</code>, and each is legal. The interpreter checks those types at every operation, paying for that check in cycles. The programmer is paid back with fewer declarations to write and get wrong.
     </p>
 
     <p id="ch7-types-p2">
-      Statically typed languages (C, C++, Rust, Go, Java)
-      check types once, at compile time. Hand a string to a function that wants an
-      integer and the compiler refuses; the program never runs at all. Dynamically typed languages
-      (Python, JavaScript, Ruby) check types at runtime. The same mistake compiles fine,
-      runs fine until it doesn't, and dies with a <code>TypeError</code> at the
-      offending statement. The static side is safer; the dynamic side is more fluid.
-      Reasonable people have disagreed about which trade is correct for thirty years.
+      Statically typed languages (C, C++, Rust, Go, Java) check types once, at compile time. Hand a string to a function that wants an integer and the compiler refuses; the program never runs at all. Dynamically typed languages (Python, JavaScript, Ruby) check types at runtime. The same program starts without complaint, runs until it reaches the mistake, and dies there with a <code>TypeError</code>. The static side is safer; the dynamic side is quicker to write.
     </p>
 
     <p id="ch7-types-p3">
-      Python pushes the dynamic side to its logical limit with <strong>duck typing</strong>:
-      "If it walks like a duck and quacks like a duck, it is a duck." Translation: an
-      object is acceptable wherever its <em>methods</em> are acceptable, regardless of
-      its declared class. A function that calls <code>obj.read()</code> works on
-      <em>any</em> object that has a <code>read()</code> method (a file, a network socket, a mock for testing), with no shared base class required. The price is that
-      "acceptable" is checked at runtime; the benefit is that you can compose objects in
-      ways the original designers never anticipated.
+      Python pushes the dynamic side to its logical limit with <strong>duck typing</strong>: "If it walks like a duck and quacks like a duck, it is a duck." An object fits wherever it has the methods the code calls, whatever its class. A function that calls <code>obj.read()</code> works on <em>any</em> object that has a <code>read()</code> method (a file, a network socket, a stand-in for testing), with no shared parent class required. The price is that the fit is checked only at runtime; the benefit is that you can combine objects in ways their designers never anticipated.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-7-3">
@@ -4156,29 +4092,11 @@
     <h2>One Python thread runs at a time. There are reasons. They are running out.</h2>
 
     <p id="ch7-gil-p1" class="lead">
-      Python's threads are real OS threads. But CPython, the reference interpreter,
-      contains a single global lock, the <strong>GIL</strong> (Global Interpreter Lock),
-      that ensures only one thread holds the right to execute Python bytecode at any
-      moment. On an eight-core CPU running a multithreaded Python program, seven cores
-      sit idle. This sounds like a bug. It is the consequence of a deliberate design
-      decision from 1992, whose bill came due only when the cores multiplied.
+      A program can run several threads, streams of instructions that share its memory and can run on separate cores at once. Python's threads are real ones, but CPython has a single global lock, the <strong>GIL</strong> (Global Interpreter Lock), that lets only one thread at a time execute Python bytecode. On an eight-core CPU, a program whose threads all compute in Python leaves seven cores idle, though a thread waiting on the network, or running C code, can let go of the lock. This sounds like a bug, but it follows from a deliberate design decision of 1992, whose bill came due only when the cores multiplied.
     </p>
 
     <p id="ch7-gil-p2">
-      The reason is reference counting. Every Python object carries a count of how many
-      names point to it; when the count drops to zero, the object is freed. Updating
-      the count must be atomic, and here is what happens if it is not: two threads
-      decrement at once, both read 2 and both write 1, and one decrement is simply
-      lost. An object that should be dead now lives forever. Lose an increment
-      instead and the count hits zero early: the object is freed while a thread still
-      holds it, and Chapter 5's use-after-free arrives in a language that promised
-      you would never see one. The GIL is the simplest possible solution: serialise
-      everything Python-level, so refcounts cannot race. Removing the GIL has been
-      attempted many times, and the obstacle is practical: fine-grained locking slows
-      down single-threaded code, which is most code, by 30–50%. PEP 703, accepted in
-      2023, lays out a way to remove the GIL while keeping single-threaded performance
-      acceptable, and Python 3.13 ships an opt-in no-GIL mode. Default-on no-GIL is
-      targeted for the late 2020s.
+      The reason is reference counting. Every Python object carries a count of how many names point to it; when the count drops to zero, the object is freed. Updating the count must be atomic, and here is what happens if it is not: two threads decrement at once, both read 2 and both write 1, and one decrement is simply lost. An object that should be dead now lives forever. Lose an increment instead and the count hits zero early: the object is freed while a thread still holds it, and Chapter 5's use-after-free arrives in a language that promised you would never see one. The GIL is the simplest possible solution: Python code runs one thread at a time, so counts cannot race. Removing it has been tried many times, but a lock on every object slowed single-threaded code, which is most code, by 30–50%. A design accepted in 2023 (PEP 703) has cut that slowdown to about 5–10%. Since Python 3.13 there has been an optional build without the GIL, officially supported from 3.14, and whether it becomes the default is undecided. For thousands of network waits, Python's <code>asyncio</code> shares one thread among many tasks, each handing it over only where it says <code>await</code>, as the Bridge's cooperative programs yielded (Fig 7.5).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-4">
@@ -4296,24 +4214,11 @@
     <h2>CPython is one million lines of C running your script.</h2>
 
     <p id="ch7-cpython-p1" class="lead">
-      "Python" is a language specification. <strong>CPython</strong> is the reference
-      implementation: the interpreter you almost certainly used the last time you typed
-      <code>python</code> at a shell. It is roughly one million lines of C, maintained
-      since 1991 by Guido van Rossum and now a global team of core developers.
+      "Python" is a language specification. <strong>CPython</strong> is the reference implementation, the one other implementations follow and the one that runs when almost anyone types <code>python</code>. It is roughly one million lines of C, maintained since 1991, first by Guido van Rossum and now by a global team of core developers.
     </p>
 
     <p id="ch7-cpython-p2">
-      The pipeline inside CPython is short and unromantic. The
-      <strong>tokeniser</strong> splits the source file into tokens: identifiers, numbers, operators,
-      indents and dedents. The <strong>parser</strong> assembles tokens into an abstract
-      syntax tree. The <strong>compiler</strong> walks the AST and emits a list of
-      <strong>bytecode</strong> instructions for a stack-based virtual machine. The
-      <strong>evaluator</strong> (the famous <code>ceval.c</code>, ten thousand lines
-      long) is a giant <code>switch</code> statement that reads each bytecode and
-      dispatches it to the C handler that carries it out. Bytecode is cached on disk in
-      <code>__pycache__/</code> as <code>.pyc</code> files, so later imports skip the
-      first three steps unless the source has changed; the script you invoke directly
-      is recompiled each run.
+      CPython's pipeline has four stages. The <strong>tokeniser</strong> splits the source file into tokens: names, numbers, operators, and indentation changes. The <strong>parser</strong> assembles tokens into an abstract syntax tree. The <strong>compiler</strong> walks the tree and emits a list of <strong>bytecode</strong> instructions for a stack machine, which computes on the values at the top of a stack (Fig 7.6). The <strong>evaluator</strong>, the loop from Section 01, is ten thousand lines of C in a file called <code>ceval.c</code>, with a case for every bytecode instruction.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-6">
@@ -4446,11 +4351,7 @@
     <h2>The two-language strategy.</h2>
 
     <p id="ch7-datasci-p1" class="lead">
-      Python is slow. Numerical work is the most cycle-hungry thing computers do. By every
-      naive analysis, Python should not be the language of numerical computing,
-      scientific simulation, or machine learning. It is, anyway, thanks to one design pattern, now the unspoken contract of the whole ecosystem: write the
-      human-facing code in Python, write the performance-critical code in C or Fortran,
-      and bridge them with a thin wrapper.
+      Python is slow, and numerical work is the most cycle-hungry thing computers do, yet Python is the everyday language of data science. It got there through one design pattern: write the human-facing code in Python, write the loops that do the arithmetic in C, and call them through the door to C that Python was built with. NumPy, a library for arrays of numbers, is built this way: multiplying two 1000 × 1000 matrices (grids of numbers) takes a billion multiply-adds, and NumPy hands the job to BLAS, a decades-old library of hand-tuned routines (Fig 7.8).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-8">
@@ -4544,21 +4445,11 @@
     <h3>The verdict</h3>
 
     <p id="ch7-datasci-p4">
-      Python beat every "fast" language for data science not because it won a
-      benchmark (it lost every benchmark) but because the people doing the work were
-      not benchmark writers. They were physicists, biologists, traders, machine-learning
-      researchers. They had problems to solve, not loops to tune, and Python let them
-      think about the problem instead of the language. The two-language strategy
-      delegated the parts where cycles mattered to people whose career was making
-      cycles cheap.
+      Python lost to the "fast" languages on speed and won data science anyway, because its users were physicists, biologists, traders and machine-learning researchers with problems to solve rather than loops to tune, and Python let them think about the problem instead of the language.
     </p>
 
     <p id="ch7-datasci-p5">
-      This is, almost exactly, the trade C and C++ refused to make. Stroustrup believed
-      any abstraction must be free; Ritchie believed any abstraction must be simple. Van
-      Rossum believed the cost of an abstraction was paid in human attention, and he was
-      willing to spend a hundred machine cycles to save a programmer five minutes of
-      typing. Three languages, three positions on the same axis.
+      This is, almost exactly, the trade C++ refused to make. Stroustrup held that an abstraction must cost nothing at run time; van Rossum held that its real cost was paid in human attention, and would spend a hundred machine cycles to save a programmer five minutes.
     </p>
 
     <div class="pull-quote">
