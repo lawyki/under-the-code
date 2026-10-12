@@ -1802,3 +1802,139 @@
     .reading-cue, .cue-hit, .place-bar, .mark-menu, .place-toast, .utc-debug { display: none !important; }
     .mark-dot { animation: none !important; }
   }
+
+  /* === Go deeper: optional outside videos (deeper.js, 2026-10-12) ===========
+     Not part of the text. Without script the aside is one quiet line under
+     the passage; with script it leaves the column entirely and becomes a tab
+     at the right edge, shown while its passage is on screen, opening a small
+     panel. Same dark, gold and mono family as the mark menu and place bar. */
+  .deeper { margin: -4px 0 32px; }
+  .deeper-static {
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+    border-left: 2px solid var(--accent); padding: 4px 0 4px 14px;
+    font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--text-muted);
+  }
+  .deeper-static .deeper-kicker { flex-basis: 100%; color: var(--accent-dim); letter-spacing: 0.14em; text-transform: uppercase; font-size: 11px; }
+  .deeper-static .deeper-about { display: none; }
+  .deeper-static a { color: var(--accent-dim); text-underline-offset: 3px; }
+
+  .deeper.is-live { margin: 0; height: 0; }
+  .deeper.is-live .deeper-static { display: none; }
+
+  /* the tab: a pill hugging the right edge */
+  .deeper-tab {
+    position: fixed; right: 0; top: calc(50% + 24px); z-index: 150;
+    display: inline-flex; align-items: center; gap: 10px;
+    height: 44px; padding: 0 16px 0 14px;
+    background: #0a0a0a; color: rgba(255,255,255,0.86);
+    border: 1px solid rgba(212,168,83,0.38); border-right: 0; border-radius: 8px 0 0 8px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    cursor: pointer; touch-action: manipulation;
+    opacity: 0; transform: translate(calc(100% + 8px), -50%); pointer-events: none;
+    transition: opacity 160ms ease-in, transform 160ms ease-in, border-color 0.2s ease, color 0.2s ease;
+  }
+  .deeper.is-shown:not(.is-open) .deeper-tab, .deeper-tab:focus-visible {
+    opacity: 1; transform: translate(0, -50%); pointer-events: auto;
+    transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1), transform 240ms cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, color 0.2s ease;
+  }
+  .deeper-tab:hover { border-color: var(--accent); color: #fff; }
+  .deeper-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .deeper-tab svg { width: 12px; height: 12px; color: var(--accent); flex: none; }
+  .deeper-tab-len { color: rgba(255,255,255,0.58); letter-spacing: 0.06em; }
+
+  /* the panel */
+  .deeper-panel {
+    position: fixed; right: 16px; top: calc(50% + 24px); z-index: 190;
+    width: 336px; max-width: calc(100vw - 32px);   /* clear of the text column at 1440 */
+    max-height: calc(100vh - 80px); max-height: calc(100dvh - 80px); overflow-y: auto; overscroll-behavior: contain;
+    padding: 14px 18px 16px;
+    background: #0a0a0a; color: rgba(255,255,255,0.86);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+    text-align: left;
+    visibility: hidden; opacity: 0; transform: translate(12px, -50%) scale(0.98); transform-origin: right center;
+    transition: opacity 140ms ease-in, transform 140ms ease-in, visibility 0s linear 140ms;
+  }
+  .deeper.is-open .deeper-panel {
+    visibility: visible; opacity: 1; transform: translate(0, -50%);
+    transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+  }
+  .deeper.is-playing .deeper-panel { width: 560px; }
+
+  .deeper-head { display: flex; align-items: center; justify-content: space-between; margin: 0 -10px 4px 0; }
+  .deeper-head .deeper-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+  .deeper-close {
+    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px;
+    background: none; border: 0; border-radius: 6px; color: rgba(255,255,255,0.6); cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .deeper-close:hover { color: #fff; }
+  .deeper-close:focus-visible { outline: 2px solid var(--accent); outline-offset: -6px; }
+  .deeper-close svg { width: 14px; height: 14px; }
+
+  .deeper-panel .deeper-intro { font-family: var(--serif); font-style: italic; font-size: 1.2rem; line-height: 1.35; color: #fff; margin-bottom: 6px; }
+  .deeper-panel .deeper-about { font-family: var(--sans); font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.68); margin-bottom: 14px; }
+
+  .deeper-stage {
+    position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden;
+    background: var(--dark) radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.14) 0%, transparent 65%);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .deeper-poster {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px 20px;
+    background: none; border: 0; color: inherit; cursor: pointer; text-align: center;
+  }
+  .deeper-poster:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; border-radius: 8px; }
+  .deeper-play {
+    display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; margin-bottom: 4px;
+    border: 1.5px solid var(--accent); border-radius: 50%; color: var(--accent);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .deeper-play svg { width: 18px; height: 18px; margin-left: 3px; }
+  .deeper-poster:hover .deeper-play, .deeper-poster:focus-visible .deeper-play { background: var(--accent); color: #0a0a0a; }
+  .deeper-poster:active .deeper-play { transform: scale(0.96); }
+  .deeper-poster-title { font-family: var(--serif); font-size: 15px; line-height: 1.35; color: #fff; max-width: 30ch; }
+  .deeper-poster-meta { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: rgba(255,255,255,0.6); }
+  .deeper-player { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .deeper-consent { font-family: var(--mono); font-size: 11px; line-height: 1.55; color: rgba(255,255,255,0.6); margin-top: 10px; }
+  .deeper-consent a { color: rgba(255,255,255,0.78); text-underline-offset: 3px; }
+  .deeper-panel .deeper-credit { font-family: var(--sans); font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.72); margin-top: 12px; }
+  .deeper-panel .deeper-credit a { color: var(--accent); text-underline-offset: 3px; }
+  .deeper-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 14px; margin-top: 6px; }
+  .deeper-watch {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); text-decoration: none;
+  }
+  .deeper-watch:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .deeper-watch svg { width: 12px; height: 12px; }
+  .deeper-legal { font-family: var(--mono); font-size: 11px; line-height: 1.5; color: rgba(255,255,255,0.55); }
+  .deeper-panel a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  /* tablets and phones: the margin is too narrow for a mid-height tab, so it
+     sits low at the right edge, clear of the sync chip */
+  @media (max-width: 1099px) {
+    .deeper-tab { top: auto; bottom: calc(84px + env(safe-area-inset-bottom)); transform: translateX(calc(100% + 8px)); }
+    .deeper.is-shown:not(.is-open) .deeper-tab, .deeper-tab:focus-visible { transform: none; }
+    .deeper-panel { top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translateY(12px) scale(0.98); transform-origin: right bottom; }
+    .deeper.is-open .deeper-panel { transform: none; }
+  }
+  /* phones: the panel is a sheet across the bottom */
+  @media (max-width: 620px) {
+    .deeper-tab { height: 44px; padding: 0 14px 0 12px; gap: 8px; }
+    .deeper-tab-len { display: none; }
+    .deeper-panel, .deeper.is-playing .deeper-panel { left: 8px; right: 8px; width: auto; max-width: none; bottom: calc(8px + env(safe-area-inset-bottom)); max-height: calc(100dvh - 64px); padding: 12px 16px 14px; }
+    .deeper-panel { transform: translateY(16px); transform-origin: center bottom; }
+  }
+  /* a figure in fullscreen owns the screen */
+  body.has-fullscreen .deeper-tab, body.has-fullscreen .deeper-panel { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .deeper-tab, .deeper.is-shown:not(.is-open) .deeper-tab, .deeper-tab:focus-visible,
+    .deeper-panel, .deeper.is-open .deeper-panel { transition-property: opacity, visibility; transition-duration: 120ms; }
+    .deeper-play { transition: none; }
+  }
+  @media print { .deeper-tab, .deeper-panel { display: none !important; } .deeper.is-live { height: auto; margin: -4px 0 32px; } .deeper.is-live .deeper-static { display: flex; } }
+  @media (forced-colors: active) { .deeper-tab, .deeper-panel { border: 1px solid CanvasText; } }

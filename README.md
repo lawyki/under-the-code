@@ -50,6 +50,21 @@ The book itself is a static site — no framework, no bundler. Everything in `pu
 
 Signed out, your reading position — and any sections you mark — is kept in the browser's `localStorage` only — it never leaves the device. The place is the paragraph you were *reading*: skims, look-ups and detours don't move it, and you can set it by hand from the place button on the bar (Pass 25, `UNDER.md` §4y; `?utc-debug` on a part page shows the tracker). Signing in (a password; the email is used only to confirm the account and to recover it — passkeys follow at the domain move) stores that same single position server-side in D1 so it can follow you between devices. What is stored, why, and for how long is disclosed in the privacy notice at [/account#privacy](https://under.atheric.eu/account#privacy).
 
+## Go deeper videos
+
+Optional outside videos sit beside the text, never in it: the book must teach on its own. Each is an `<aside class="deeper">` placed right after the passage it belongs to, on a page that loads `deeper.js` after `book.js`. With script it becomes a tab at the right edge, shown while that passage is on screen; hover or a tap opens a small panel. Without script it is one quiet line. Copy the Enigma aside in `part-1.html` (ch1-context) and change the data:
+
+- `data-yt`: the 11-character video id, no start time. `data-length`: the length, e.g. `47:41`.
+- `.deeper-intro` introduces it as an outside resource ("An excellent video by Veritasium."); `.deeper-about` says in one line what it shows, using only what the video itself states; `.deeper-title` links the watch URL, `.deeper-channel` the creator's channel.
+- Use no `<p>` or `<li>` inside the aside (they would count as section prose) and no `ch…`/`fig-…` ids (anchor law).
+
+Rules (EU copyright and privacy):
+
+- Only the creator's own upload on their official channel; never a re-upload or mirror. Check the channel and that embedding is allowed (the oEmbed endpoint answers 401 when it is not; then set `data-embed="off"` and only the plain link shows).
+- Never download, re-host, crop or edit a video, its thumbnail or its audio.
+- Nothing loads from Google before the click: the placeholder is drawn locally (no `i.ytimg.com` thumbnail); play inserts the player from `www.youtube-nocookie.com/embed/<id>`. The credit (*"Title" by Creator*, channel linked), the cookie note and the "Watch on YouTube" link always show. If a Content-Security-Policy is ever added to the pages, include `frame-src https://www.youtube-nocookie.com`.
+- Never imply the creator endorses or works with the book. The videos are outside the book's licence (below); the privacy notice at `/account#privacy` covers the embeds.
+
 ## Deploy
 
 Production is **Cloudflare Pages**: pushes to `main` deploy `public/` as the site and `functions/` as the `/api/*` account service (bindings in `wrangler.toml`; apply `schema.sql` to the D1 database once).
@@ -63,6 +78,8 @@ The committed `og-image.png` is rendered from `og-image.svg` in headless Chromiu
 ## License
 
 Licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/). You are free to share and adapt the material non-commercially, with attribution. Commercial use requires permission. © MMXXVI · Yki Lähteenmäki / YDT Holdings Oy.
+
+Embedded and linked third-party videos belong to their creators and are not covered by this licence.
 
 ## Status
 
