@@ -3,7 +3,7 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pass 29/30 at:** Pass 29, Part II, not started. Paused by the owner after Part I (2026-10-11) to save tokens; resume only when the owner writes continue.
+**Pass 29/30 at:** Pass 29, Part II, not started. Paused by the owner after Part I (2026-10-11) to save tokens; resume only when the owner writes continue. Law 4 (teach at the right depth, owner 2026-10-12, `docs/pass-29-language-law.md`) now binds the rest of Pass 29 as its language pass and Pass 30: written down, not yet run; three samples go to the owner before it scales. Recommended order on "continue": Pass 30 figures first (Fig 1.1 is the reference; the frame drops are on its list), then Pass 29 under law 4.
 
 **Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
 

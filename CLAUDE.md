@@ -17,7 +17,7 @@ what you read next, nothing more.
    before doing anything.
 4. `STATE.md` — where we are · what's next · blocked on Tiger.
 
-## The three laws (owner, 2026-10-10)
+## The laws (owner, 2026-10-10; law 4 2026-10-12)
 
 Binding on every pass, every file a reader can see, every future edit.
 
@@ -37,6 +37,13 @@ Binding on every pass, every file a reader can see, every future edit.
    nothing overlapping or clipped, as few words as the idea allows, motion
    where motion is the mechanism (reduced motion respected), a caption of at
    most two sentences. The explanation lives in the prose.
+
+4. **Teach at the right depth** (owner, 2026-10-12; full text `docs/pass-29-language-law.md`).
+   Each passage gives its idea at the depth the book needs, reached from what the
+   reader already knows, with nothing to carry that the next idea does not use.
+   Never too deep (steps only an expert needs) and never too shallow (a slogan in
+   place of the mechanism). Close a gap by making the passage clearer, never by
+   adding expert detail. Figures too: Fig 1.1 is the reference.
 
 ## Before you touch anything
 
