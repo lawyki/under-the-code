@@ -49,8 +49,8 @@ Binding on every pass, every file a reader can see, every future edit.
 
 - **The working laws are law** (`docs/working-laws.md`, 2026-10-12): the result is
   the only measure; one author writes, agents only test blind; no owner review
-  in the loop; one chapter per commit; the text pass for the whole book stays under
-  5 million tokens.
+  in the loop; one chapter per commit. No token cap (removed by the owner,
+  2026-10-12): quality sets the cost.
 
 - **The gate rhythm is law** (as amended 2026-08-06, `BRIDGE.md` §1): proposal
   → owner veto → per-part execution → ledger → next part, with the owner read
