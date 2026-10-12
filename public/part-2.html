@@ -2986,33 +2986,15 @@
     <h2>The crisis that wasn't a crash.</h2>
 
     <p id="ch6-complexity-p1" class="lead">
-      The 1980s software crisis was not a single failure but a slow, systemic
-      realisation. Codebases that had been small enough for one team to keep in their
-      heads were now too large for any human to model. Beyond fifty thousand lines, C
-      codebases became unmaintainable, not because the code was wrong, but because no
-      one could tell when it was right.
+      The 1980s software crisis was a slow, systemic realisation rather than a single failure. Codebases that had been small enough for one team to keep in their heads had grown too large for anyone to hold whole. Past that size, a change in one place could break something far away, and no one could tell whether the program was still right.
     </p>
 
     <p id="ch6-complexity-p2">
-      Frederick Brooks had already named the disease. <em>The Mythical Man-Month</em>,
-      1975, observed that adding people to a late software project makes it later:
-      complexity does not reduce by parallelism, because the cost of communication grows
-      faster than the cost of work. By the late 1970s, Bell Labs and IBM were running
-      projects with hundreds of programmers and millions of lines of code, and watching
-      them fail. IBM's own OS/360, the very project Brooks was writing
-      about, was the canonical case study; Multics, which Bell Labs had walked out of a
-      decade earlier, was the one Bell Labs remembered.
+      Frederick Brooks had already named the disease. <em>The Mythical Man-Month</em>, 1975, observed that adding people to a late software project makes it later: each newcomer must keep in step with everyone already there, so the cost of communication grows faster than the work. By the late 1970s, Bell Labs and IBM were running projects with hundreds of programmers and millions of lines of code, and watching them fail. IBM's OS/360, the very project Brooks was writing about, was the canonical case study; Multics, which Bell Labs had walked out of a decade earlier, was the one Bell Labs remembered.
     </p>
 
     <p id="ch6-complexity-p3">
-      The diagnosis was that C gave the programmer one tool for organising code: the
-      function. Functions could group statements; nothing grouped functions. There was
-      no language-level concept of <em>module</em>, no <em>class</em>, no
-      <em>interface</em>. A header file was a list of declarations and a polite request
-      that callers stick to it. A struct was a list of fields with no associated
-      behaviour. If your subsystem had thirty types and three hundred functions, the
-      language had nothing to say about which functions belonged to which types. You
-      enforced it by convention, in comments, in code review.
+      The diagnosis was that C gave the programmer one tool for organising code: the function. Functions could group statements; nothing grouped functions. There was no language-level concept of <em>module</em>, no <em>class</em>, no <em>interface</em>. A struct was a list of fields with no behaviour attached, and any function that knew its layout could reach in and change them. If your subsystem had thirty types and three hundred functions, the language had nothing to say about which functions belonged to which types. You enforced it by convention, in comments, in code review.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-1">
@@ -3231,14 +3213,7 @@
     </div>
 
     <p id="ch6-complexity-p5">
-      The fix needed two things. First, a way to bind <em>data</em> and <em>code</em>
-      together, to say "these functions operate on this kind of thing, and only on this
-      kind of thing." Second, a way to talk about <em>relationships</em> between kinds:
-      a Circle <em>is a</em> Shape; a TextEditor <em>has a</em> Buffer; a Logger
-      <em>can be</em> any object that exposes a <code>log()</code> method. None of this
-      is hard to <em>do</em> in C, by convention. The point is to make the convention
-      enforceable by the compiler, so the cost of breaking it is paid once, at build
-      time, by the person who broke it, rather than once per bug report by everyone.
+      The fix needed two things. First, a way to bind <em>data</em> and <em>code</em> together, to say "these functions operate on this kind of thing, and only on this kind of thing." Second, a way to talk about <em>relationships</em> between kinds: a Circle <em>is a</em> Shape; a TextEditor <em>has a</em> Buffer; a Logger <em>can be</em> any object with a <code>log()</code> function. None of this is hard to <em>do</em> in C, by convention. The point is to make the convention enforceable by the compiler, so the cost of breaking it is paid once, at build time, by the person who broke it, rather than once per bug report by everyone.
     </p>
 
   </section>
@@ -3248,39 +3223,15 @@
     <h2>Simula's children, raised on C.</h2>
 
     <p id="ch6-stroustrup-p1" class="lead">
-      Bjarne Stroustrup arrived at Bell Labs in 1979, not far down the corridor from
-      Ritchie and Thompson. He had just finished a doctoral thesis on distributed systems
-      whose simulator he had written in a language called Simula 67. He loved Simula's
-      expressiveness and hated its speed. C, in the same building, was the inverse: fast
-      and ugly. The question that organised the next forty years of his life: could he
-      have both?
+      Bjarne Stroustrup arrived at Bell Labs in 1979, not far down the corridor from Ritchie and Thompson. He had just finished a doctoral thesis on distributed systems whose simulator he had written in a language called Simula 67. He loved Simula's classes and hated its speed. C, in the same building, was the inverse: fast and ugly. He spent the next forty years of his life trying to have both.
     </p>
 
     <p id="ch6-stroustrup-p2">
-      Simula 67 was designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the
-      Norwegian Computing Center, expressly for simulating physical systems. It
-      introduced the modern object-oriented vocabulary: the words
-      <strong>class</strong>, <strong>object</strong>, <strong>virtual</strong>, and
-      even <strong>this</strong> (referring to "the
-      current object") all originate there, and so do the ideas of inheritance and
-      virtual methods, though Simula spoke of subclasses and virtual procedures. By 1979 Simula was a niche academic language,
-      but its ideas had spread: Smalltalk had built an entire dynamic system around
-      them. Stroustrup took them the opposite way. He would graft them onto C, imposing
-      no runtime overhead unless you used them. This <em>zero-cost</em> philosophy became the
-      language's defining trait.
+      Simula 67 was designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the Norwegian Computing Center, expressly for writing simulations. It introduced the modern object-oriented vocabulary: the words <strong>class</strong>, <strong>object</strong>, <strong>virtual</strong>, and even <strong>this</strong> (referring to "the current object") all originate there, and so do the ideas of inheritance and virtual methods, though Simula spoke of subclasses and virtual procedures. By 1979 Simula was a niche academic language. Stroustrup would graft its ideas onto C, and a program would pay nothing at runtime for a feature it did not use. This <em>zero-cost</em> philosophy became the language's defining trait.
     </p>
 
     <p id="ch6-stroustrup-p3">
-      The first version, in 1979, was <strong>"C with Classes,"</strong> implemented
-      as a preprocessor that translated the new constructs back to plain C.
-      In 1983 the language was renamed
-      <strong>C++</strong>, a pun on C's increment operator, <code>++</code>,
-      meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and
-      that year's release shipped as Cfront, a compiler that still emitted C. In 1989 ANSI convened a standards
-      committee; the standard itself, C++98, took nine more years. By 2000 it was
-      the dominant language for systems where
-      C alone could not scale: trading platforms, telecommunications switches, browser
-      engines, game runtimes.
+      The first version, in 1979, was <strong>"C with Classes,"</strong> a translator that turned the new constructs back into plain C. In 1983 the language was renamed <strong>C++</strong>, a pun on <code>++</code>, C's operator for adding one, meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and that year's compiler, Cfront, still worked by turning C++ into C. In 1989 ANSI convened a standards committee; the standard itself, C++98, took nine more years. By 2000 it was the dominant language for systems where C alone could not scale: trading platforms, telecommunications switches, browser engines, game runtimes.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-2">
@@ -3358,14 +3309,7 @@
     </div>
 
     <p id="ch6-stroustrup-p5">
-      What Stroustrup built was a deal: <em>you may add abstraction without losing
-      speed</em>. Classes compile to structs with associated functions, at no
-      overhead. Inheritance with virtual methods
-      compiles to a struct containing one extra pointer and an indirect call: the
-      cheapest possible version of dynamic dispatch. Templates compile, per-instantiation,
-      to type-specialised assembly. None of this is magic: it is C with the
-      bookkeeping pushed up into the type system, where the compiler can check it and
-      inline it away.
+      What Stroustrup built was a deal: <em>you may add abstraction without losing speed</em>. A class compiles to a struct plus ordinary functions, its methods, at no extra cost. A virtual method, whose version is chosen while the program runs, costs one hidden pointer in each object and one call through a table. In each case the compiler writes and checks the bookkeeping a C programmer would have written by hand.
     </p>
 
   </section>
@@ -3375,31 +3319,15 @@
     <h2>What "OO" looks like in memory.</h2>
 
     <p id="ch6-classes-p1" class="lead">
-      A class is a struct with associated functions. A virtual method is a function
-      pointer the compiler manages for you. Inheritance is one struct embedded inside
-      another. Polymorphism is dereferencing one of those function pointers at runtime.
-      Each is a layout in memory, and you can draw every one of them on graph paper.
+      A class is a struct with functions attached; an object is one value of that type, such as one Circle. A virtual method is an entry in a table of function pointers the compiler manages for you. Inheritance is one struct embedded inside another: a Circle object begins with a complete Shape. Polymorphism is calling through that table at runtime. Each is a layout in memory you can draw on graph paper.
     </p>
 
     <p id="ch6-classes-p2">
-      Start with a non-virtual class: <code>Point</code>, with two integer fields and an
-      <code>equals</code> method, compiles to exactly the same memory layout as
-      <code>struct { int x; int y; }</code> in C. The method compiles to a free function
-      with an extra hidden argument named <code>this</code>, a pointer to the object.
-      Calling <code>p.equals(q)</code> compiles to <code>Point_equals(&amp;p, &amp;q)</code>.
-      No vtable, no runtime, no overhead. This is what "zero-cost" means at the smallest
-      scale.
+      Start with a class without virtual methods. <code>Point</code>, with two integer fields and an <code>equals</code> method, has exactly the same memory layout as <code>struct { int x; int y; }</code> in C. The method compiles to an ordinary function with an extra hidden argument named <code>this</code>, a pointer to the object. Calling <code>p.equals(q)</code> compiles to <code>Point_equals(&amp;p, &amp;q)</code>. Nothing extra is stored or run. This is what "zero-cost" means at the smallest scale.
     </p>
 
     <p id="ch6-classes-p3">
-      Add the keyword <code>virtual</code> to a method, however, and the compiler must
-      arrange for it to be dispatched <em>at runtime</em>: the function called depends on
-      the dynamic type of the object, not the type of the pointer the caller holds. To
-      support this, the compiler adds one hidden field to every object of a class with
-      virtual methods: a pointer to a per-class array of function pointers, traditionally
-      called the <strong>vtable</strong>. Each virtual method gets a fixed slot in that
-      array. Calling <code>shape-&gt;area()</code> compiles to "load the vtable pointer,
-      index slot 0, jump to that address."
+      Add the keyword <code>virtual</code> to a method, however, and the choice of function moves to runtime. A Shape pointer may hold a Circle or a Square, and <code>shape-&gt;area()</code>, which calls <code>area</code> through the pointer, must run the version for whichever object it points at. To support this, the compiler adds one hidden field to every object of a class with virtual methods: a pointer to a per-class array of function pointers, traditionally called the <strong>vtable</strong>. Each virtual method gets a fixed slot in that array. The call compiles to "load the vtable pointer, index slot 0, jump to that address."
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-3">
@@ -3519,12 +3447,7 @@
     <h3>Encapsulation as a tool</h3>
 
     <p id="ch6-classes-p6">
-      Public, private, protected: classes can hide their state, forcing access through
-      methods. This is enforced at compile time only. At runtime, a private field is just a
-      field, and a determined caller can cast their way to it. Encapsulation in C++ is
-      not a security boundary; it is a discipline the language helps you keep. Used
-      well, it lets you change a class's internals freely, knowing the rest of the
-      codebase cannot have grown to depend on them.
+      The keywords <code>private</code> and <code>public</code> let a class hide its fields, forcing access through its methods. This is enforced at compile time only. At runtime, a private field is just a field, and a determined caller can cast their way to it. This hiding, encapsulation, is a discipline the language helps you keep, not a security boundary. Used well, it lets you change a class's internals freely, knowing the rest of the codebase cannot have grown to depend on them.
     </p>
 
   </section>
@@ -3534,31 +3457,15 @@
     <h2>The signature C++ idiom.</h2>
 
     <p id="ch6-raii-p1" class="lead">
-      Stroustrup's most original contribution was not classes (Simula had those), nor
-      operator overloading, nor templates. It was an idea that sounds obvious once
-      stated: tie the lifetime of every resource to the lifetime of an object on the
-      stack, and let the compiler clean up when the object goes out of scope. The
-      acronym is <strong>RAII</strong>, Resource Acquisition Is Initialisation.
+      Classes came from Simula, but Stroustrup's most original contribution was a rule for resources: the memory, open files and locks a program takes and must give back. Tie each one to an object on the stack, so that initialising the object acquires the resource and the compiler releases it when the object goes out of scope, at the end of the block of code that declared it. The acronym is <strong>RAII</strong>, Resource Acquisition Is Initialisation.
     </p>
 
     <p id="ch6-raii-p2">
-      Recall from <a href="#ch5">Chapter 5</a> that C makes you the bookkeeper. Every <code>malloc</code>
-      needs a <code>free</code>, every <code>fopen</code> an <code>fclose</code>, every
-      <code>pthread_mutex_lock</code> a <code>pthread_mutex_unlock</code>. Each pair must be matched on every exit path from the function, including the paths created by
-      exceptions, which C does not have but which C++ does. The C answer is goto-cleanup
-      style: a single label at the end of the function that frees everything in the
-      right order, with every branch jumping to it. It works, but it does not survive
-      refactoring.
+      Recall from <a href="#ch5">Chapter 5</a> that C makes you the bookkeeper. Every <code>malloc</code> needs a <code>free</code>, every opened file a close, every locked mutex an unlock, on every way out of the function. C++ adds one more way out, the exception: an error that abandons the function, and each caller in turn, until one handles it. C's answer is one cleanup block at the end, with every early exit jumping to it by <code>goto</code>. It works until a later edit adds an exit that skips it.
     </p>
 
     <p id="ch6-raii-p3">
-      The C++ answer is an object whose constructor acquires the resource and whose
-      destructor releases it. Place that object on the stack. The compiler emits a
-      destructor call wherever the object goes out of scope. Function returned normally?
-      Destructor runs. Loop abandoned via <code>break</code>? Destructor runs. Function
-      exited because an exception was thrown three frames down? Destructor runs as the
-      stack unwinds. The bookkeeping cannot be skipped, because there is no human
-      writing it any more.
+      The C++ answer is an object whose constructor (run when the object is created) acquires the resource and whose destructor (run when it is destroyed) releases it. Place that object on the stack and the compiler emits a destructor call at every exit from its scope: a normal return, a <code>break</code> out of its loop, or an exception thrown three frames down, as it unwinds the stack. The bookkeeping can no longer be forgotten, because no human writes it.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-5">
@@ -3617,13 +3524,7 @@
     </div>
 
     <p id="ch6-raii-p5">
-      Once you understand RAII, large parts of C++ become re-readable. <code>std::vector</code>
-      is RAII for a heap-allocated array. <code>std::unique_ptr</code> is RAII for a
-      single heap object. <code>std::lock_guard</code> is RAII for a mutex.
-      <code>std::ifstream</code> is RAII for a file descriptor. The standard library is,
-      to a first approximation, a catalogue of RAII wrappers around C resources, built
-      on one principle: <em>resources are objects, and objects clean up after
-      themselves</em>.
+      <code>std::vector</code> is RAII for a heap-allocated array, <code>std::unique_ptr</code> for a single heap object, <code>std::lock_guard</code> for a mutex and <code>std::ifstream</code> for an open file. The standard library is largely a catalogue of RAII wrappers around C resources, built on one principle: <em>resources are objects, and objects clean up after themselves</em>.
     </p>
 
     <div class="pull-quote">
@@ -3638,23 +3539,11 @@
     <h2>What "zero-cost" actually means.</h2>
 
     <p id="ch6-zerocost-p1" class="lead">
-      C++ makes one promise: you do not pay for what you do not use, and what you
-      do use is as fast as anything you could have written by hand. The slogan is
-      <em>zero-cost abstraction</em>, and it is slightly misleading. There are costs,
-      just not at runtime: compile time, build complexity, and a generation of
-      programmers who have to understand both layers to write C++ at all.
+      C++ makes a two-part promise: you do not pay for what you do not use, and what you do use is as fast as anything you could have written by hand. The slogan is <em>zero-cost abstraction</em>, and it is slightly misleading. Most of the cost falls outside the running program: compile time, build complexity, larger programs, and programmers who must understand both the abstraction and what it compiles to.
     </p>
 
     <p id="ch6-zerocost-p2">
-      Consider <code>std::sort</code>. C's <code>qsort</code> takes a function pointer
-      to a comparator, so every comparison is an indirect call through a pointer the
-      compiler cannot see through. <code>std::sort</code> takes the comparator as a
-      <em>template argument</em>, so the compiler generates a fresh copy of
-      <code>std::sort</code> per comparator type and inlines the comparator directly
-      into the loop. The result is a tight, branch-predictable loop with no indirect
-      calls. Sorting a million integers on a modern CPU, <code>std::sort</code>
-      typically runs about three times faster than <code>qsort</code>, and most of the
-      difference is the dispatch mechanism.
+      Consider <code>std::sort</code>. C's <code>qsort</code> receives its comparator, the function that says which of two items comes first, as a function pointer, so every comparison is a call into code the compiler could not see when it built <code>qsort</code>. <code>std::sort</code> takes the comparator as a <em>template argument</em>: a template is a recipe the compiler fills in afresh for each type or function it is given. Here it builds a copy of <code>std::sort</code> for that comparator and inlines the comparison, writing it into the loop as two instructions instead of a call. Sorting a million integers, <code>std::sort</code> typically runs about three times faster than <code>qsort</code>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-6">
@@ -3720,14 +3609,7 @@
     </div>
 
     <p id="ch6-zerocost-p4">
-      The same logic runs through the entire C++ value system. Templates instead of
-      function pointers, when you can. <code>constexpr</code> instead of runtime
-      computation, when the inputs are known. Move semantics instead of copying, when
-      the source will not be needed again. Each pushes work from runtime to compile
-      time, where the compiler can see everything at once. C++ programmers tend to
-      internalise this trade so completely that they forget they are making it. What a
-      C programmer reads as luxury, a C++ programmer reads as the cost the compiler
-      should obviously pay so the program does not have to.
+      The same trade runs through the whole language. Where C passes a function pointer, C++ prefers a template. Where a value depends only on inputs known before the program runs, <code>constexpr</code> lets the compiler work it out, so the program carries only the answer. Each moves work from the running program into the build, where it is paid once.
     </p>
 
   </section>
@@ -3737,29 +3619,13 @@
     <h2>The language that ate its own complexity.</h2>
 
     <p id="ch6-modern-p1" class="lead">
-      Through the 1990s and 2000s, C++ accumulated a reputation as the language with
-      every feature, none of which were quite right. By 2010, the standard committee had
-      reached the same conclusion. C++11, the first major standard release in thirteen
-      years, added mechanisms that obsoleted most of the patterns the previous
-      generation had hated: smart pointers replaced raw <code>new/delete</code>, move
-      semantics replaced expensive copies, <code>auto</code> replaced verbose type
-      declarations, lambdas replaced function pointers. Almost none of the old features were
-      removed; the new ones were so much better that competent C++ stopped using
-      the old.
+      Through the 1990s and 2000s, C++ accumulated a reputation as the language with every feature, none of which were quite right. C++11, the first major standard in thirteen years, made most of the hated patterns unnecessary. Smart pointers replaced hand-written <code>new</code> and <code>delete</code> (C++'s version of <code>malloc</code> and <code>free</code>), move semantics replaced expensive copies, <code>auto</code> let the compiler work out types, and lambdas let short functions be written where they are used. Almost none of the old features were removed; the new ones were so much better that competent C++ stopped using the old.
     </p>
 
     <h3>Smart pointers</h3>
 
     <p id="ch6-modern-p2">
-      A raw <code>new</code> in modern C++ is rare to the point of suspicion. Three
-      class templates from <code>&lt;memory&gt;</code> handle nearly every heap
-      allocation, each with explicit ownership semantics. <code>std::unique_ptr</code>
-      owns exclusively: one owner, copying forbidden, moving transfers.
-      <code>std::shared_ptr</code> owns jointly: a reference count tracks
-      how many <code>shared_ptr</code>s point to the same object, and the object is
-      deleted when the count drops to zero. <code>std::weak_ptr</code> observes. It
-      does not affect the count, and accessing it requires explicitly upgrading to a
-      <code>shared_ptr</code> (which may fail if the object is gone).
+      A hand-written <code>new</code> in modern C++ is rare to the point of suspicion. Heap objects are held instead by smart pointers, RAII objects whose type says who owns the object, the one responsible for freeing it. A <code>std::unique_ptr</code> is the only owner: it cannot be copied, only handed on, and the object dies with it. A <code>std::shared_ptr</code> shares ownership: a reference count records how many <code>shared_ptr</code>s point at the object, and the object is freed when the count reaches zero. A <code>std::weak_ptr</code> watches without owning; to use the object it must first obtain a <code>shared_ptr</code>, which fails if the object is gone.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-7">
@@ -3806,14 +3672,7 @@
     <h3>Move semantics</h3>
 
     <p id="ch6-modern-p4">
-      For decades, returning a large object from a function meant copying it. C++11
-      added a way to <em>move</em> it instead: to declare "I am done with this; take
-      it" and have the destination object steal the source's internal buffers, leaving
-      the source in a valid-but-empty state. The mechanism is the <strong>rvalue
-      reference</strong>, written <code>T&amp;&amp;</code>: a reference that can only
-      bind to a temporary, signalling that the caller has no further use for the value.
-      A class with a properly written move constructor can transfer ownership of a
-      million-element vector in three pointer assignments.
+      A <code>std::vector</code> is three pointers into a buffer on the heap, so a copy must allocate a second buffer and copy every element into it. C++11 added a way to <em>move</em> it instead: to declare "I am done with this; take it." The new vector copies the three pointers and the old vector's are set to null, so a million elements change hands in three pointer assignments. A function asks for a move with an <strong>rvalue reference</strong>, written <code>T&amp;&amp;</code>, a parameter type that accepts only a value whose owner is done with it: a temporary result, or an object marked with <code>std::move</code>.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-6-8">
@@ -3917,10 +3776,7 @@
     <h3>The seam to <a href="#ch7">Chapter 7</a></h3>
 
     <p id="ch6-modern-p7">
-      C and C++ are both languages that face the machine. They give the programmer
-      enormous power (direct memory access, deterministic destruction, zero-cost
-      abstraction) and demand in return careful attention to what the machine
-      actually does. By the late 1980s these languages ran every system that mattered, and many programmers took this as the trade every language must make. In 1989, over a Christmas holiday in Amsterdam, Guido van Rossum asked the opposite question. <em>What if a language did not face the machine at all?</em>
+      C and C++ are both languages that face the machine. They give the programmer enormous power (direct memory access, predictable cleanup, zero-cost abstraction) and demand in return careful attention to what the machine actually does. By the late 1980s these languages ran most systems that mattered, and many programmers took this as the trade every language must make. In 1989, over a Christmas holiday in Amsterdam, Guido van Rossum asked the opposite question. <em>What if a language did not face the machine at all?</em>
     </p>
 
     <div class="pull-quote">
@@ -3931,7 +3787,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch6-modern-p9" class="insight-text">
-        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three classes survive. Use-after-move: a moved-from object is in a valid but unspecified state, and reading it yields an answer that means nothing. That is legal, silent, and wrong. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code, the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: the moment a vector reallocates, every outstanding iterator is a dangling pointer. The continuing CVE rate in C++ codebases is what motivates the slow migration to Rust in security-critical paths.
+        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three kinds survive. Use-after-move: a moved-from object is in a valid but unspecified state, and reading it is allowed but tells you nothing. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code, the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: an iterator marks a place in a vector, and once the vector outgrows its buffer and takes a bigger one, every iterator points into freed memory. The security flaws still found in C++ codebases drive the slow migration to Rust in security-critical paths.
       </p>
     </div>
 
