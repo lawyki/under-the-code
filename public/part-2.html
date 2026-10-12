@@ -178,13 +178,7 @@
     <h2>The kernel is just a program</h2>
 
     <p id="ch4-anatomy-p1" class="lead">
-      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract
-      authority, a governing law of the machine. It is not. <a href="part-1#chBridge">The Bridge</a>
-      at the close of <a href="part-1">Part I</a> showed the hardware contract that makes a kernel possible at
-      all: the privilege bit, the trap, the MMU, the timer. On the kernel side of that contract is a program: a set of instructions stored in memory, executed by the
-      same CPU that runs everything else. The Linux kernel, as of 2025, is roughly 30 million lines of C, with a small
-      and growing amount of Rust. What makes it the kernel is not what it is made of, but
-      where it sits, in Ring 0, with hardware-enforced privileges no other program has.
+      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract authority, a governing law of the machine. <a href="part-1#chBridge">The Bridge</a> at the close of <a href="part-1">Part I</a> showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.
     </p>
 
     <p id="ch4-anatomy-p2">
@@ -200,33 +194,15 @@
 
 
     <p id="ch4-anatomy-p4">
-      Two philosophies of kernel design have been arguing since the late 1980s.
-      A <span class="key-term">monolithic kernel</span> puts everything in Ring 0:
-      process scheduling, memory management, filesystems, device drivers, network stacks,
-      all of it. Performance is excellent because subsystems can call each other
-      directly, with no boundary crossings. The cost is fragility and security: a bug in
-      any part of the kernel can corrupt the whole machine, and a single device driver
-      with a vulnerability can be the entry point for total compromise. Linux is
-      monolithic. Windows is monolithic. Most kernels in production use are monolithic.
+      Two philosophies of kernel design have been arguing since the late 1980s. A <span class="key-term">monolithic kernel</span> puts everything in Ring 0: scheduling, memory management, filesystems, network code, and the device drivers that operate each piece of hardware. Its parts call each other directly, as functions in one program, so it is fast. The cost is safety: a bug in any part can corrupt the whole machine, and one flawed driver can hand it to an attacker. Linux and most kernels in production use are monolithic.
     </p>
 
     <p id="ch4-anatomy-p5">
-      A <span class="key-term">microkernel</span> puts only the absolute minimum in
-      Ring 0, typically just message passing, basic memory protection, and minimal
-      scheduling. Filesystems, drivers, and network stacks all run as separate
-      user-space processes that communicate via messages. A bug in a driver crashes
-      only the driver, not the kernel. The cost is performance: every interaction
-      crosses the user/kernel boundary, and message passing adds latency. Notable
-      microkernels: MINIX (Andrew Tanenbaum's research OS), L4 (used in many embedded
-      systems), seL4 (formally verified, meaning mathematically proven to have no kernel
-      bugs of certain classes).
+      A <span class="key-term">microkernel</span> puts only the absolute minimum in Ring 0, typically just message passing, basic memory protection, and minimal scheduling. Filesystems, drivers and network code run as separate programs in Ring 3, which ask each other for work through messages the kernel carries. A bug in a driver then crashes only the driver. The cost is speed: every request between those parts crosses into the kernel and out again. Andrew Tanenbaum's MINIX is a microkernel; so is seL4, which is formally verified, meaning mathematically proven to have no kernel bugs of certain classes.
     </p>
 
     <p id="ch4-anatomy-p6">
-      In 1992, Tanenbaum publicly criticised the then-new Linux on a USENET group,
-      calling its monolithic design "obsolete" and "a giant step back into the 1970s."
-      Linus Torvalds responded bluntly, and at length. Tanenbaum was correct in theory.
-      Torvalds was correct in practice. The schism has never closed.
+      In 1992, Tanenbaum criticised the then-new Linux on a USENET newsgroup, calling its monolithic design "obsolete" and "a giant step back into the 1970s." Linus Torvalds, its author, answered bluntly and at length. Tanenbaum was right that a microkernel contains a bug's damage; Torvalds, that a monolithic kernel was simpler and faster, and Linux ran on the machines people had. Neither design has displaced the other.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-1">
@@ -264,7 +240,7 @@
       </details>
     </div>
 
-    <p id="ch4-anatomy-p8">macOS sits in the middle. Its kernel, <strong>XNU</strong>, is a hybrid: a Mach microkernel core wrapped with a BSD UNIX layer that runs in the same address space, so you get message-passing primitives <em>and</em> monolithic-kernel performance. iOS uses the same kernel. Android uses Linux. Windows NT was originally microkernel-influenced but has drifted increasingly monolithic for performance reasons.</p>
+    <p id="ch4-anatomy-p8">macOS sits in the middle. Its kernel, <strong>XNU</strong>, is a hybrid: a Mach microkernel core and a BSD UNIX layer sharing Ring 0, so its parts can pass messages like a microkernel's <em>and</em> call each other directly. iOS uses the same kernel. Android uses Linux. Windows NT began microkernel-influenced and has drifted toward monolithic design for speed.</p>
 
     <div class="diagram-card fig-v2" id="fig-4-2">
       <div class="diagram-label">Fig 4.2&nbsp;· Monolithic vs microkernel&nbsp;· speed against safety</div>
@@ -331,13 +307,7 @@
     <h3>Kernel modules: a third path</h3>
 
     <p id="ch4-anatomy-p10">
-      Linux softens its monolithic stance with <span class="key-term">loadable kernel modules</span>
-      (LKMs): drivers and filesystems compiled separately from the main kernel and loaded
-      or unloaded at runtime with commands like <code>insmod</code> and <code>rmmod</code>.
-      They still run in Ring 0, so a buggy module can crash the kernel, but they don't
-      have to be linked into the main image. Most graphics drivers, filesystem drivers,
-      and hardware support on Linux ship as modules; <code>lsmod</code> on a running
-      system lists hundreds of them.
+      Linux softens its monolithic stance with <span class="key-term">loadable kernel modules</span> (LKMs): drivers and filesystems compiled separately from the main kernel and loaded or unloaded at runtime with commands like <code>insmod</code> and <code>rmmod</code>. A machine can then load only the drivers its hardware needs, though a module still runs in Ring 0, where a buggy one can crash the kernel. Most graphics drivers, filesystem drivers, and hardware support on Linux ship as modules; <code>lsmod</code> on a running system lists hundreds of them.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-3">
@@ -370,7 +340,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.179800;0.179900;0.539950;0.540000;0.839900;0.840000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="200" y="306" width="170" height="16" rx="2" fill="none"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">module_init()</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199900;0.200000;0.259800;0.259900;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">module_exit()</text></g>
 </svg>
-      <p id="ch4-anatomy-p11" class="diagram-caption">insmod links a separately built module into the running kernel: its calls are resolved against the kernel's symbol table, its init function runs, and from then on it is part of Ring 0. rmmod takes it out again, so Linux stays monolithic in speed but modular in practice.</p>
+      <p id="ch4-anatomy-p11" class="diagram-caption">insmod loads a separately built module into the running kernel: each kernel function it calls is looked up by name in the kernel's symbol table, its init function runs, and from then on it is part of Ring 0. rmmod takes it out again, so Linux stays monolithic in speed but modular in practice.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -383,10 +353,7 @@
     </div>
 
     <p id="ch4-anatomy-p12">
-      Linux is a clean theoretical model modified by practical necessity: monolithic <em>but</em> modular. It runs in Ring 0 <em>but</em> increasingly
-      delegates risky work (drivers in user space, eBPF in a verified sandbox, see
-      Section 6) to safer compartments. The history of operating systems is the
-      history of these compromises.
+      Linux also limits the damage risky code can do: a few kinds of driver run as ordinary programs in Ring 3, where a crash takes down only that program, and the small eBPF programs of Section 6 run in the kernel only after a check proves them safe.
     </p>
   </section>
 
@@ -443,18 +410,7 @@
     </table>
 
     <p id="ch4-scheduling-p5">
-      Linux's <strong>CFS</strong> keeps every runnable process in a self-balancing
-      binary tree (a red-black tree), keyed by <em>virtual runtime</em>, a measure of
-      how much CPU time the process has consumed, weighted by its niceness. The next
-      process to run is always the leftmost node of the tree (smallest virtual
-      runtime). When a process runs, its virtual runtime increases; when it blocks,
-      it's removed; when it wakes, it's reinserted with its saved value. The result is
-      approximate fairness: every process tends toward equal CPU usage, and any process
-      behind catches up first. Since kernel 6.6 (2023), Linux's default is CFS's
-      successor <strong>EEVDF</strong> (Earliest Eligible Virtual Deadline First), which
-      keeps the same virtual-runtime bookkeeping but gives every task an explicit
-      deadline, so latency-sensitive work is scheduled on time rather than merely
-      fairly.
+      Linux's <strong>CFS</strong> keeps every runnable process in a tree sorted by <em>virtual runtime</em>, a measure of how much CPU time the process has had, weighted by its priority: a high-priority process's virtual runtime grows more slowly, so it is picked more often. Smaller values sit to the left, and the leftmost process, furthest behind, runs next. After its turn it goes back in further right; one that stops to wait leaves the tree until it is ready. It is a red-black tree, which rebalances itself as processes come and go, so it stays quick even with thousands. Every process thus tends toward its fair share. Since kernel 6.6 (2023), Linux's default is CFS's successor <strong>EEVDF</strong> (Earliest Eligible Virtual Deadline First), which keeps the same bookkeeping but gives every task an explicit deadline, so work that must respond quickly runs on time rather than merely fairly.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-4">
@@ -573,9 +529,9 @@
 
     <div class="math-callout">
       <div class="math-label">Queueing theory and Little's Law</div>
-      <p id="ch4-scheduling-p8">The mathematics underlying scheduling is queueing theory, developed in the early 20th century by Agner Krarup Erlang for telephone networks. Its most important result is <strong>Little's Law</strong>:</p>
+      <p id="ch4-scheduling-p8">The mathematics underlying scheduling is queueing theory, developed in the early 20th century by Agner Krarup Erlang for telephone networks. Its best-known result, proved by John Little in 1961, is <strong>Little's Law</strong>:</p>
       <p id="ch4-scheduling-p9" class="math-formula">L = λ · W</p>
-      <p id="ch4-scheduling-p10">The average number of items in a queueing system (L) equals the average arrival rate (λ) multiplied by the average time each item spends in the system (W). It holds for any stable queue, regardless of arrival distribution or service distribution. It also explains why a slightly oversubscribed system produces explosive wait times: a queue drains at some service rate μ, and the only slack that absorbs a burst of arrivals is the spare capacity μ − λ. As λ climbs toward μ, each burst takes longer to drain than the quiet spell before the next one arrives, so backlog stops clearing between bursts and starts compounding, with the wait growing like 1/(μ − λ), a hyperbola, not a slope. It is why the difference between 95%-loaded and 99%-loaded servers is not 4%: it is often 10× in latency.</p>
+      <p id="ch4-scheduling-p10">The average number of requests in the system (L), waiting or being served, equals their arrival rate (λ) times the average time each spends there (W): 10 requests a second, each inside for 2 seconds, keeps 20 inside at any moment. It holds for any stable queue, one that keeps up with its arrivals, whatever their pattern. W depends on spare capacity: a server finishes μ requests a second, and only the difference μ − λ absorbs a burst of arrivals; as λ nears μ, each burst takes longer to clear than the quiet spell before the next, and backlog piles up. For the simplest queue, one server with random arrivals, W is exactly 1/(μ − λ). Measured in service times, that is 20 at 95% utilisation (the share of capacity in use) and 100 at 99%: five times as long for 4% more load.</p>
     </div>
 
     <div class="diagram-card fig-v2" id="fig-4-6">
@@ -621,14 +577,7 @@
     <h3>Real-time scheduling: when missing a deadline kills</h3>
 
     <p id="ch4-scheduling-p12">
-      General-purpose schedulers like CFS optimise for average performance and make no
-      guarantees about worst-case latency. For most software this is fine; for an
-      anti-lock braking system or a pacemaker it is catastrophic. These systems run on
-      <span class="key-term">real-time kernels</span>: variants of Linux (PREEMPT_RT)
-      or specialised OSes (VxWorks, QNX, FreeRTOS) that guarantee a task will run
-      within a bounded time after it becomes ready, even under load. The mathematical
-      foundation is rate-monotonic scheduling and earliest-deadline-first scheduling,
-      analysed by Liu and Layland in a 1973 paper.
+      General-purpose schedulers like CFS optimise for average performance and guarantee nothing about the worst case. That is fine for most software and catastrophic for an anti-lock braking system or a pacemaker. These systems run on <span class="key-term">real-time kernels</span>: variants of Linux (PREEMPT_RT) or specialised OSes (VxWorks, QNX, FreeRTOS) that guarantee a task will run within a bounded time after it becomes ready, even under load. Liu and Layland analysed the two classic rules in 1973: rate-monotonic scheduling, in which the task that repeats most often gets the highest priority, and earliest-deadline-first.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-7">
@@ -682,12 +631,7 @@
     <h2>The lie of unlimited memory</h2>
 
     <p id="ch4-vm-p1" class="lead">
-      <a href="part-1#ch1">Chapter 1</a> introduced virtual memory as the kernel's mechanism for isolating
-      processes: every process believes it has its own private address space starting at
-      zero. <a href="part-1#chBridge">The Bridge</a> showed the MMU and TLB as the silicon that
-      makes the mechanism enforceable. Here is the machinery that sustains the illusion: page tables built as
-      trees so that 64-bit addressing is tractable at all, the TLB that caches their translations, and the
-      page faults that quietly bring memory into existence on demand.
+      <a href="part-1#ch1">Chapter 1</a> introduced virtual memory, the private address space every process believes it owns, and <a href="part-1#chBridge">the Bridge</a> showed the silicon that enforces it: the MMU walking the page tables, the TLB remembering its answers. The kernel's side is the tables themselves, which it builds and keeps current, and what happens when the MMU finds no usable entry and calls on the kernel.
     </p>
 
     <h3>The translation problem</h3>
@@ -701,31 +645,17 @@
     </p>
 
     <p id="ch4-vm-p3">
-      Memory is divided into fixed-size blocks called <span class="key-term">pages</span>,
-      typically 4 KB: virtual pages in the address space and physical pages (often called
-      "page frames") in RAM. The page table maps one to the other. When a virtual page
-      has no physical page in RAM (it has never been used, has been swapped to disk, or
-      belongs to a memory-mapped file not yet loaded), its entry is marked invalid, and the
-      MMU raises a hardware exception called a <span class="key-term">page fault</span>.
-      The kernel's page-fault handler decides what to do.
+      Memory is divided into fixed-size blocks called <span class="key-term">pages</span>, typically 4 KB: virtual pages in the address space and physical pages in RAM. The page table maps one to the other. When a virtual page has no physical page in RAM (it has never been used, was moved to disk to free RAM, or belongs to a file mapped into memory but not yet read), its entry is marked invalid, and the MMU raises a hardware exception called a <span class="key-term">page fault</span>. The kernel's page-fault handler decides what to do.
     </p>
 
     <h3>Why the page table cannot be flat</h3>
 
     <p id="ch4-vm-p4">
-      A flat page table would hold one entry for every possible virtual page. On 64-bit
-      x86, the architecture defines a 48-bit usable virtual address space (256 terabytes),
-      giving 2<sup>36</sup> pages. At one 8-byte entry per page, the table alone would need
-      512 GB. Per process.
+      A flat page table would hold one entry for every possible virtual page. On 64-bit x86 a virtual address has 48 usable bits, enough for 2<sup>48</sup> bytes (256 terabytes); split into 4 KB (2<sup>12</sup>-byte) pages, that is 2<sup>36</sup> pages. At 8 bytes an entry, the table alone would need 512 GB per process.
     </p>
 
     <p id="ch4-vm-p5">
-      The solution is a <span class="key-term">multi-level page table</span>: a tree.
-      The 48-bit virtual address is split into four 9-bit fields plus a 12-bit page
-      offset, and each 9-bit field indexes one level of a four-level tree. The address
-      space is sparse (a process uses a tiny fraction of the 256 TB), so most branches are
-      empty and never allocated: a real x86-64 process typically maps its memory with a few
-      megabytes of page tables, not 512 gigabytes.
+      The solution, as the Bridge showed, is a <span class="key-term">multi-level page table</span>: a tree of small tables, each one 4 KB page of 512 entries. An address's last 12 bits are the page offset, the byte's place inside its page; the 36 bits above form four 9-bit indexes (2<sup>9</sup> = 512), and each picks an entry on one level that points to the table below, the last to the physical page. Most of a process's 256 TB is unused, and an empty entry near the top means no tables exist beneath it, so a real process needs a few megabytes of tables, not 512 gigabytes.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-8">
@@ -844,52 +774,29 @@
     <h3>The TLB: a cache for translations</h3>
 
     <p id="ch4-vm-p7">
-      Walking all four levels on every access would be ruinously slow: each memory access would become five (four for the table walk, one for the actual data). The fix is the
-      <span class="key-term">Translation Lookaside Buffer</span> (TLB), a small, very fast
-      cache inside the CPU that stores recent virtual-to-physical translations; a typical
-      x86-64 TLB has between 64 and 1500 entries. The CPU checks it first. If the entry is
-      there (a "TLB hit"), translation takes one cycle; if not (a "TLB miss"), the MMU walks
-      the page tables and inserts the result into the TLB.
+      Walking all four levels on every access would turn each memory access into five (four for the table walk, one for the data), so the CPU first checks the <span class="key-term">Translation Lookaside Buffer</span> (TLB), the Bridge's small, very fast cache of recent virtual-to-physical translations. On a hit, translation takes one cycle; on a miss, the MMU walks the page tables and stores the result in the TLB.
     </p>
 
     <p id="ch4-vm-p8">
-      Hit rates on the TLB are typically above 99%. The 1% miss rate, multiplied by
-      billions of memory accesses per second, still matters, which is why CPU designers
-      have steadily grown TLB sizes and added second-level TLBs over the past two
-      decades. When the kernel switches between processes, it must flush parts of the
-      TLB, since the new process has different page tables: one of the hidden costs of
-      context switching.
+      Hit rates above 99% are normal, but each miss costs up to four extra memory reads, so CPU designers keep enlarging TLBs. A process switch drops the old process's translations unless each entry is tagged with its address space (PCID on x86), and even then the processes compete for the same few entries.
     </p>
 
     <h3>Page faults: the productive kind</h3>
 
     <p id="ch4-vm-p9">
-      A page fault sounds like an error. Most are not: the everyday ones are how the
-      kernel implements many of its most useful features. Faults fall into three rough
-      categories:
+      A page fault sounds like an error, but most are not: they are how the kernel implements many of its most useful features. Faults fall into three rough categories:
     </p>
 
     <p id="ch4-vm-p10">
-      A <strong>minor page fault</strong> happens when the page is in physical memory
-      but isn't yet mapped into this process. Example: when a program first reads a
-      page of a file the kernel has cached. The kernel just adds an entry to the page
-      table and returns. Cost: microseconds.
+      A <strong>minor page fault</strong> happens when the data is already in RAM but this process's page table has no entry for it yet: a page of a shared library another program has already loaded, say. The kernel just adds the entry and returns. Cost: microseconds.
     </p>
 
     <p id="ch4-vm-p11">
-      A <strong>major page fault</strong> happens when the page is not in RAM and must
-      be fetched from disk, typically because it was swapped out, or because the
-      program is reading a memory-mapped file for the first time. The kernel issues a
-      disk read, suspends the process, and resumes it when the data arrives. Cost:
-      milliseconds. Roughly a thousand times slower than minor faults.
+      A <strong>major page fault</strong> happens when the data is not in RAM and must be fetched from disk: the page was moved to disk to free RAM, or the program is first reading part of a mapped file. The kernel issues a disk read, suspends the process, and resumes it when the data arrives. Cost: milliseconds, roughly a thousand times slower than a minor fault.
     </p>
 
     <p id="ch4-vm-p12">
-      An <strong>invalid page fault</strong> happens when the access truly is illegal:
-      writing to a read-only page, dereferencing a null pointer, executing data marked
-      non-executable. The kernel sends the offending process a <code>SIGSEGV</code>
-      signal, and unless the process catches it, the program dies with the famous
-      "segmentation fault" message.
+      An <strong>invalid page fault</strong> happens when the access truly is illegal: writing to a read-only page, using an unmapped address such as 0 (NULL), executing data marked non-executable. The kernel sends the offending process a <code>SIGSEGV</code> signal (Section 5 covers signals), which by default ends the program with the famous "segmentation fault" message.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-9">
@@ -980,25 +887,11 @@
     <h3>Two beautiful uses of page faults</h3>
 
     <p id="ch4-vm-p14">
-      <strong>Memory-mapped files</strong>. When you call <code>mmap()</code> on a file,
-      the kernel doesn't read the file. It sets up page table entries marking the
-      relevant virtual addresses as backed by that file, but invalid (not yet present).
-      The first time you touch a page, you take a page fault, and the kernel reads just
-      that one page from disk. Reading a 100 GB file as if it were a contiguous array in
-      memory becomes trivial, because only the pages you touch are loaded. This is how
-      databases and search engines handle large data, and how every shared library loads
-      on Linux.
+      <strong>Memory-mapped files</strong>. When you call <code>mmap()</code> on a file, the kernel doesn't read the file. It sets up page table entries marking the relevant virtual addresses as backed by that file, but invalid (not yet present). The first time you touch a page, you take a page fault, and the kernel reads just that one page from disk. Reading a 100 GB file as if it were one unbroken stretch of memory becomes trivial, because only the pages you touch are loaded. This is how databases and search engines handle large data, and how every shared library loads on Linux.
     </p>
 
     <p id="ch4-vm-p15">
-      <strong>Copy-on-write fork</strong>. When a UNIX process calls <code>fork()</code>
-      to create a child process, the child receives a copy of the parent's entire
-      address space. Naively, this would require duplicating gigabytes of memory. It
-      doesn't. The kernel marks all of the parent's pages as read-only and shares them
-      with the child. Only when one of them tries to write does a page fault occur, and
-      the kernel makes a private copy at that moment. Most pages are never written; most
-      fork-and-exec sequences (the standard way to launch a new program on UNIX) never
-      copy any pages at all. <strong>The cheapest way to make a copy is to lie about having made it.</strong>
+      <strong>Copy-on-write fork</strong>. When a UNIX process calls <code>fork()</code> to create a child process, the child receives a copy of the parent's entire address space, which done naively would mean duplicating gigabytes of memory. Instead the kernel marks all of the parent's pages as read-only and shares them with the child. Only when one of them tries to write does a page fault occur, and the kernel copies that one page at that moment. Most pages are never written: a new program is launched by a fork followed at once by exec, which swaps in the new program's memory, so almost nothing is copied.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-10">
@@ -1061,7 +954,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch4-vm-p17" class="insight-text">
-        <strong>Dirty COW (CVE-2016-5195).</strong> A bug in Linux's copy-on-write logic, present in the kernel for nine years before being discovered, allowed an unprivileged attacker to write to read-only files, including <code>/etc/passwd</code>, by exploiting a race condition between the page fault handler and the kernel's COW machinery. Privilege escalation followed trivially. Much of operating system security depends on subtle correctness in subsystems most users will never see.
+        <strong>Dirty COW (CVE-2016-5195).</strong> For nine years a race in Linux's copy-on-write code let any user write to read-only files such as <code>/etc/passwd</code>, the machine's list of accounts, and so make any account the administrator. The attacker mapped the file privately, so writes should go to a private copy, then ran two loops at once: one wrote, the other kept telling the kernel to discard the copy. A discard that fell between the copy and the write sent the write into the file itself.
       </p>
     </div>
 
@@ -1110,23 +1003,13 @@
     <h2>A tree of names on a flat array of blocks</h2>
 
     <p id="ch4-fs-p1">
-      A disk, at its lowest level, is a flat array of fixed-size blocks. A spinning
-      hard drive presents itself to the OS as billions of 512-byte sectors numbered
-      0, 1, 2, … An SSD presents the same abstraction over a radically different
-      physical reality. From this raw substrate, the filesystem builds the structure you
-      actually use: files with names, organised into directories, organised into a
-      tree, with metadata about ownership and permissions and timestamps. None of this
-      structure exists at the hardware level. It exists because the filesystem code
-      pretends it does.
+      A disk, at its lowest level, is a long row of numbered, fixed-size blocks: a spinning hard drive presents itself to the OS as billions of 512-byte sectors, and an SSD presents the same picture over entirely different hardware. From these blocks the filesystem builds the structure you actually use: named files in directories nested into a tree, each file recording its owner, permissions and timestamps, none of which the disk itself knows about.
     </p>
 
     <h3>The inode: where a file actually lives</h3>
 
     <p id="ch4-fs-p2">
-      In UNIX-derived filesystems (which is most of them), the central data structure
-      is the <span class="key-term">inode</span>, short for "index node." Every file
-      has exactly one inode, and the inode contains everything about the file
-      <em>except</em> its name and its data:
+      In UNIX-derived filesystems, the central data structure is the <span class="key-term">inode</span>, short for "index node." Every file has exactly one inode, and the inode contains everything about the file <em>except</em> its name and its data:
     </p>
 
     <div class="memory-diagram">
@@ -1263,14 +1146,7 @@
     </ul>
 
     <p id="ch4-fs-p7">
-      The same four system calls work on all of them: <code>open</code>, <code>read</code>, <code>write</code>,
-      and <code>close</code> (a socket arrives through a
-      different door, but once you hold its descriptor it is <code>read</code> and
-      <code>write</code> like everything else). This uniformity is one of the reasons
-      UNIX-derived systems became so dominant: tools written for files work unchanged on
-      devices, network connections, and process state. The shell pipeline that counts lines
-      in a text file (<code>cat file | wc -l</code>) counts them just as well in the
-      output of a sensor driver or a debugging tool.
+      The same four system calls work on all of them: <code>open</code>, <code>read</code>, <code>write</code>, and <code>close</code> (a socket arrives through a different door, but once you hold its descriptor it is <code>read</code> and <code>write</code> like everything else). This uniformity is one of the reasons UNIX-derived systems became so dominant: tools written for files work unchanged on devices, network connections, and process state. The command that counts the lines of a text file, <code>wc -l</code>, counts them just as well in a sensor's readings under <code>/sys</code> or a process's records under <code>/proc</code>.
     </p>
 
     <h3>Journaling: the database technique that saved filesystems</h3>
@@ -1286,14 +1162,7 @@
     </p>
 
     <p id="ch4-fs-p9">
-      The modern solution, borrowed from database theory, is the
-      <span class="key-term">journal</span>, a small, dedicated region of the disk
-      where every intended modification is written <em>first</em>, then applied
-      to the main filesystem. After a crash, the kernel only has to replay the journal
-      from where it left off, applying or discarding incomplete operations. Recovery
-      takes seconds instead of hours. ext4 (Linux), NTFS (Windows), and HFS+ (older
-      macOS) all journal. The technique is called <em>write-ahead logging</em>; we'll
-      meet it again in <a href="part-4#ch13">Chapter 13</a> when we get to databases.
+      The modern solution, borrowed from database theory, is the <span class="key-term">journal</span>, a small, dedicated region of the disk where every intended modification is written <em>first</em>, then applied to the main filesystem. Each change in the journal ends with a commit record, written last; after a crash, the kernel replays the changes that have one and discards those that do not. Each change lands whole or not at all, and recovery takes seconds instead of hours. ext4 (Linux), NTFS (Windows), and HFS+ (older macOS) all journal. The technique is called <em>write-ahead logging</em>; we'll meet it again in <a href="part-4#ch13">Chapter 13</a>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-13">
@@ -1358,12 +1227,7 @@
     </div>
 
     <p id="ch4-fs-p11">
-      The newest generation goes further: <span class="key-term">copy-on-write</span>
-      filesystems like ZFS, btrfs, and Apple's APFS never overwrite existing data.
-      Every modification writes new blocks; only after the write succeeds is the
-      metadata updated to point to them. The old version remains until
-      garbage-collected, which gives you essentially-free snapshots, atomic operations
-      on entire directories, and built-in checksumming to detect silent disk corruption.
+      The newest generation goes further: <span class="key-term">copy-on-write</span> filesystems like ZFS, btrfs and (for its metadata) Apple's APFS never overwrite existing data. A change goes to new blocks, and one final pointer switch makes it current, so a crash leaves either the old version or the new one whole. Keeping the old blocks makes snapshots, saved views of the whole filesystem at one moment, nearly free.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-4-14">
@@ -1461,12 +1325,7 @@
     <h3>The pipe: UNIX's most beautiful idea</h3>
 
     <p id="ch4-ipc-p3">
-      The pipe reached UNIX in 1973. Doug McIlroy had been urging the idea for years,
-      and Ken Thompson finally built it in an evening. A pipe is a kernel-allocated ring
-      buffer with two file descriptors attached: one process writes to one end, another
-      reads from the other. The kernel handles flow control: if the buffer is full, the
-      writer blocks; if it is empty, the reader blocks. No shared memory. No locks. No
-      protocol. Just a stream of bytes.
+      The pipe reached UNIX in 1973: Doug McIlroy had been urging the idea for years, and Ken Thompson finally built it in an evening. A pipe is a kernel-allocated ring buffer, a fixed block of memory filled and emptied in a circle, with two file descriptors attached: one process writes to one end, another reads from the other. When the buffer is full the kernel makes the writer wait, and when it is empty the reader; the two programs share nothing but the stream of bytes.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-15">
@@ -1555,12 +1414,7 @@
     </div>
 
     <p id="ch4-ipc-p6">
-      Each program knows nothing about the others: it reads <em>standard input</em> and
-      writes to <em>standard output</em> as if they were ordinary files, and the kernel
-      arranges those file descriptors to be the ends of pipes. All five run in parallel;
-      the output of one streams into the next as fast as either can handle it. That is
-      one reason UNIX produced a culture of small composable tools rather than monolithic
-      applications.
+      Each program knows nothing about the others: it reads its <em>standard input</em> and writes its <em>standard output</em>; these are two file descriptors every program starts with, normally the keyboard and the screen, and the shell points them at the ends of pipes. All five run at once, each streaming into the next as fast as both can go. That is one reason UNIX produced a culture of small composable tools rather than monolithic applications.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-16">
@@ -1714,24 +1568,11 @@
     <h3>Shared memory and semaphores: the no-copy IPC</h3>
 
     <p id="ch4-ipc-p11">
-      Pipes and signals are convenient. They are not fast. Every byte through a pipe is
-      copied: from the writer's userspace into the kernel buffer, then out of the kernel
-      buffer into the reader's userspace. For high-throughput communication
-      (gigabytes per second between two processes on the same machine),
-      <span class="key-term">shared memory</span> is the only viable mechanism. Two
-      processes call into the kernel to <em>map the same physical pages</em> into both
-      their virtual address spaces. After that, the shared region is ordinary memory, no
-      slower than any other: no copy, and no kernel involvement on each access.
+      Pipes are convenient, but every byte through one is copied twice, from the writer's memory into the kernel's buffer and then out into the reader's memory. For two processes on one machine that exchange large amounts of data, <span class="key-term">shared memory</span> is the fastest mechanism, because it skips both copies: the two call into the kernel to <em>map the same physical pages</em> into both their virtual address spaces. After that, the region is ordinary memory, and no access involves the kernel.
     </p>
 
     <p id="ch4-ipc-p12">
-      The cost of zero-copy is a classic concurrency problem: two processes touching the
-      same memory must coordinate so that neither sees the other mid-update. The kernel
-      exposes <span class="key-term">semaphores</span> for this: counters that processes
-      increment and decrement atomically, used as gates. A semaphore initialised to 1 acts
-      as a mutex (one process at a time may pass). Initialised to N, it acts as a resource
-      pool. The mathematics is Edsger Dijkstra's from 1965, formalised in his note
-      "Cooperating Sequential Processes," and underlies every modern concurrent system.
+      The price of sharing is coordination: if two processes each read a shared count of 5, add 1 and write back 6, one addition is lost. <span class="key-term">Semaphores</span> prevent this: counters changed atomically, in one step nothing can interrupt. A process that wants in decrements the counter, or sleeps if it is 0; one that leaves increments it, waking a sleeper. Initialised to 1, a semaphore admits one process at a time, a mutex; initialised to N, it is a pool of N. The idea is Edsger Dijkstra's, from his 1965 note "Cooperating Sequential Processes".
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-18">
@@ -1780,20 +1621,11 @@
     <h3>Sockets: when the other process is on another machine</h3>
 
     <p id="ch4-ipc-p14">
-      A <span class="key-term">socket</span> is a generalisation of the pipe. Instead
-      of a kernel-managed pipe to a process on the same machine, you communicate over a
-      connection, either to another local process (a "UNIX domain socket") or to a
-      process on a different machine entirely (a "network socket," using TCP or UDP).
-      The same system calls apply: <code>read</code>, <code>write</code>, and
-      <code>close</code>. From the application's perspective, the network is just
-      another file. The kernel, the network drivers, the protocol stack, and the wire
-      are all hidden beneath the same few calls.
+      A <span class="key-term">socket</span> is a generalisation of the pipe: a connection either to another process on the same machine (a "UNIX domain socket") or to a process on a different machine entirely (a "network socket," using TCP or UDP). The same system calls apply: <code>read</code>, <code>write</code>, and <code>close</code>. The network drivers, the networking code in the kernel and the wire itself are all hidden beneath those few calls.
     </p>
 
     <p id="ch4-ipc-p15">
-      That is why a web browser, a database client, and an SSH session all use roughly
-      the same code shape: open a socket, write a request, read a reply, close. <a href="part-3">Part III</a> opens up what happens between <em>write</em> and <em>read</em>: ARPANET, packet switching, TCP, DNS, TLS, HTTP. Until then, the kernel makes it look like a file. That, more than anything else, is the
-      kernel's job.
+      That is why a web browser, a database client, and a remote login (SSH) all use roughly the same code shape: open a socket, write a request, read a reply, close. <a href="part-3">Part III</a> opens up what happens between <em>write</em> and <em>read</em>: ARPANET, packet switching, TCP, DNS, TLS, HTTP. Until then, the kernel makes the network look like a file, as it does a disk or a keyboard.
     </p>
   </section>
 
@@ -1819,9 +1651,7 @@
     </p>
 
     <p id="ch4-security-p3">
-      <strong>Vertical escalation</strong>: moving up the privilege ladder. A normal
-      user process exploits a bug to become root, or root exploits a bug to enter Ring 0
-      (kernel mode).
+      <strong>Vertical escalation</strong>: moving up the privilege ladder. A normal user process exploits a bug to become root (the administrator account), or root exploits a bug to enter Ring 0 (kernel mode).
     </p>
 
     <p id="ch4-security-p4">
@@ -1831,22 +1661,13 @@
     </p>
 
     <p id="ch4-security-p5">
-      Kernel privilege-escalation bugs of the last decade include
-      <em>Dirty COW</em> (the copy-on-write race condition mentioned earlier, 2016),
-      <em>DirtyPipe</em> (a flaw in pipe-buffer initialisation that allowed writes to
-      read-only files, 2022), and dozens of bugs in device drivers. Driver code is
-      vast, often less audited than the core kernel, and runs in Ring 0. Most modern
-      kernel exploits chain together <em>multiple</em> bugs: an information leak (to
-      defeat KASLR, the kernel's version of ASLR), then a memory-corruption primitive
-      (to overwrite something useful), then a privilege escalation.
+      Kernel privilege-escalation bugs of the last decade include <em>Dirty COW</em> (the copy-on-write race condition mentioned earlier, 2016), <em>DirtyPipe</em> (a flaw in pipe-buffer initialisation that allowed writes to read-only files, 2022), and dozens of bugs in device drivers. Driver code is vast, often less audited than the core kernel, and runs in Ring 0. Most modern kernel exploits chain together <em>multiple</em> bugs: an information leak to find where the kernel sits in memory, defeating KASLR (the kernel's version of ASLR), then a memory-corruption bug to overwrite whatever grants privilege.
     </p>
 
     <h3>Containers: not virtual machines</h3>
 
     <p id="ch4-security-p6">
-      Containers, the units Docker and Kubernetes run, are often described as
-      "lightweight VMs," which is misleading. A virtual machine emulates an entire
-      computer (its own kernel, its own everything) on top of a hypervisor. A container is a normal Linux process that runs on the one shared kernel: a process the kernel has lied to, using two Linux features:
+      Containers, the units Docker and Kubernetes run, are often described as "lightweight VMs," which is misleading. A virtual machine imitates an entire computer, kernel and all, on a hypervisor, a thin layer of software that lets one machine run several. A container is a normal Linux process that runs on the one shared kernel: a process the kernel has lied to, using two Linux features:
     </p>
 
 
@@ -1927,13 +1748,7 @@
     </div>
 
     <p id="ch4-security-p11">
-      VMs isolate kernels, so a compromise of one guest doesn't
-      affect others. Containers share a kernel, so a kernel privilege-escalation bug
-      can let a malicious container take over the host and every sibling container.
-      Cloud providers running multi-tenant workloads typically use VMs, or
-      containers wrapped in micro-VMs (AWS's Firecracker exists for
-      exactly this). Single-tenant
-      deployments use plain containers because they're far cheaper.
+      Each VM has its own guest kernel, so a kernel bug exposes only that VM unless the hypervisor has a flaw too; containers share one, so a kernel privilege-escalation bug can let a malicious container take over the host and every container beside it. Cloud providers that run strangers' code side by side therefore use VMs, or containers each wrapped in a minimal VM (AWS's Firecracker); machines that run one owner's code use plain containers, which are far cheaper.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-20">
@@ -2058,14 +1873,7 @@
     </p>
 
     <p id="ch4-security-p15">
-      The obvious worry is that this lets user code into the kernel,
-      historically the worst possible security outcome. eBPF answers with a
-      <strong>verifier</strong>: a static analyser in the kernel that examines every
-      uploaded program and refuses to load it unless it can prove the program will
-      always terminate, never read out-of-bounds memory, and never crash. Programs that
-      pass the verifier are then JIT-compiled to native machine code and run essentially
-      as fast as compiled kernel code. (Belt and braces: modern kernels also restrict
-      <em>who</em> may load programs at all.)
+      The obvious worry is that this lets user code into the kernel, historically the worst possible security outcome. eBPF answers with a <strong>verifier</strong>: a checker in the kernel that reads every uploaded program and refuses to load it unless it can prove the program will always terminate, never read out-of-bounds memory, and never crash. Programs that pass are then translated into the CPU's own machine code and run essentially as fast as compiled kernel code. (Belt and braces: modern kernels also restrict <em>who</em> may load programs at all.)
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-22">
@@ -2134,19 +1942,13 @@
     </div>
 
     <p id="ch4-security-p17">
-      eBPF has become the foundation of modern Linux observability and networking:
-      tools like Cilium (high-performance network policy), bpftrace (kernel tracing),
-      and Falco (runtime security monitoring) all build on it. The pattern generalises.
-      Untrusted code runs inside a privileged context under
-      machine-enforced constraints: proved harmless up front in eBPF's case, fenced in
-      at runtime when the browser runs untrusted JavaScript in
-      <a href="part-3#ch12">Chapter 12</a>.
+      eBPF now underlies much of Linux's tracing (bpftrace), networking (Cilium) and security monitoring (Falco). The same pattern recurs elsewhere: untrusted code runs inside a privileged place under constraints the machine enforces, proved harmless before it runs in eBPF's case, fenced in while it runs when the browser executes a web page's JavaScript in <a href="part-3#ch12">Chapter 12</a>.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch4-security-p18" class="insight-text">
-        <strong>The question every layer answers.</strong> What is less-trusted code allowed to do here, and what stops it? Every mechanism in this chapter (the kernel itself, the privilege boundary, virtual memory, filesystem permissions, container isolation, eBPF verification) is a different answer to that one question, and each <em>restricts</em> rather than trusts. Operating system security is the discipline of building such mechanisms and then living with the fact that any one of them can have a bug. The kernel is not a fortress. It is layers of walls, and the guards themselves have to be checked by other guards. There is no bottom, only better and worse layers.
+        <strong>The question every layer answers.</strong> What is less-trusted code allowed to do here, and what stops it? Every mechanism in this chapter (the kernel itself, the privilege boundary, virtual memory, filesystem permissions, container isolation, eBPF verification) is a different answer to that one question, and each <em>restricts</em> rather than trusts. Any one of them can have a bug, so the walls are layered: a container that takes over its kernel inside a Firecracker VM still has the VM's walls around it.
       </p>
     </div>
   </section>
