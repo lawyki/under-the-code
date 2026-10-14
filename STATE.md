@@ -3,7 +3,7 @@
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pass 29/30 at:** Pass 29 language pass under law 4 (owner, 2026-10-12: "redo the entire book"). Parts I and II rewritten and live (2026-10-12; ledger UNDER.md §4ac "Language pass under law 4"). **Part I is not final:** an audit of its 114 owner calls found 68 fixed, 6 obsolete and 40 still open (about 20 prose items, most in Chapter 3, and 14 figures): `docs/pass-29-part1-open.md`. Close the prose items before Part III. **Stopped after Part II at the owner's request ("stop after those finish", 2026-10-12); Part III not started.** Next session: Part III, chapter by chapter, the same way: one author edits, a blind newcomer and a blind expert read, one revision, my own read of every changed sentence; one commit per chapter (`docs/working-laws.md`). No token cap (owner removed it, 2026-10-12: plan around doing it well); about 4.6 million spent on Parts I and II, for the record. Do not start Part III until the owner says so. The quarter-paragraph limit does not apply to this pass (owner ruling); ids and owner text stay fixed. Then Pass 30 (figures, Fig 1.1 the reference, frame drops included).
+**Pass 29/30 at:** Pass 29 language pass under law 4. Parts I, II and III rewritten and live; Part I's 20 open prose items closed (2026-10-15, `docs/pass-29-part1-open.md`); Part III done 2026-10-15 (owner: "gate open, no restrictions until I say so; no token cap but don't waste"). Method from Part III on: I write every edit myself (one author), one blind Sonnet 5.5 newcomer-and-expert check per chapter, every point weighed and applied or rejected, one commit per chapter. Next: Part IV (Ch13 to Ch15), then Part V, then Pass 30 (figures; Part I's 14 figure items are in `docs/pass-29-part1-open.md`). The quarter-paragraph limit does not apply (owner ruling); ids and owner text stay fixed. Word ceilings are not enforced while the owner's "no restrictions" stands: Part I is now 12,807 (ceiling 12,699), Part III 14,597 (ceiling 14,712).
 
 **Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
 
@@ -13,9 +13,9 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 | Part | 02f486b | Ceiling | Pass 28 close (7d56482) | Headroom |
 |---|---|---|---|---|
-| I | 12,095 | 12,699 | 12,098 (after law 4: 12,641) | 58 |
+| I | 12,095 | 12,699 | 12,098 (after law 4 and the Part I close: 12,807) | −108 |
 | II | 10,891 | 11,435 | 10,898 (after law 4: 10,867) | 568 |
-| III | 14,012 | 14,712 | 14,066 | 646 |
+| III | 14,012 | 14,712 | 14,066 (after law 4: 14,597) | 115 |
 | IV | 9,761 | 10,249 | 9,811 | 438 |
 | V | 6,181 | 6,490 | 6,187 | 303 |
 

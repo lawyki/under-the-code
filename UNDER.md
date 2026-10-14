@@ -3781,6 +3781,20 @@ The owner rejected the Part I result above ("merely correct" is not done; detail
 
 **Section prose:** Part I 12,697 → 12,641 (ceiling 12,699), Part II 10,898 → 10,867 (ceiling 11,435). **Owner calls closed by the rewrite:** ch1-memory-p7 (Denning: working set model, for virtual memory) and ch1-context-p10 (Bletchley Park's codebreaking as a whole). **My read changed three Part II drafts:** ch5-pointers-p7 (only a driver reaches device registers, per the Bridge), ch7-gil-p2 (5–10%, sourced; §4g), ch7-cpython-p2 (Section 01 capitalised as elsewhere); and ch7-cpython-p2 recast as "The evaluator, the loop from Section 01, is …" so the glossary keeps the term. **Glossary:** cgroup (CPU, memory, disk I/O, process count; no network bandwidth, per §4g) and virtual runtime (priority, not niceness) rewritten to match the text; template argument authored (the extractor had taken a sentence fragment); Ring 0, Ring 3, System V AMD64 ABI authored with the Bridge. 469 entries, all authored. **Budget:** about 4.6 million tokens spent on Parts I and II against 5 million for the whole text pass. **Tests after Part II:** `npm run check:dashes` clean; `tests/pass25` traces 229/0, parity 40/0, marks 106/0, ui 93/0; invariants 800/12, and all 12 are the Go-deeper feature on Part I (id `deeper-viewer-title` lacks the utc- prefix; the new `button.deeper-note`/`button.deeper-pill` tab stops are not in the d1bbb42 baseline), the video work's to settle, not this pass. **Stopped after Part II at the owner's request; Part III not started.**
 
+### Part I close and Part III under law 4 (2026-10-15)
+
+Owner, 2026-10-15: "gate open. No restrictions for now until I say so. Run the next part. No token cap but at least don't waste them either." **Part I close:** the 20 open prose items of `docs/pass-29-part1-open.md` fixed by me, one blind check (nine points, all applied); glossary array and runtime authored, Boolean algebra and truth values corrected; two §4g rows (7eb1d7a). **Part III:** I wrote every edit myself (working law 2); per chapter one blind Sonnet 5.5 newcomer-and-expert read of the changed paragraphs and the unchanged ones; every point weighed and most applied; one commit per chapter.
+
+| Chapter | Paragraphs changed | Commit | Notable |
+|---|---|---|---|
+| 8 | 18 | f01c84e | decibels, entropy, modulation entered from the known; Gardner quote exact; Alto credited to Thacker and Lampson |
+| 9 | 8 | 10770e3 | prefixes, transit, peering defined; ARPANET for resource sharing, not war survival |
+| 10 | 17 | 8685354 | SYN, ACK, FIN, RST, segment, RTT, ISN, MIMD/AIAD/MIAD named before use |
+| 11 | 25 | 2508430 | FTP, anycast, TTL, proxies, head-of-line blocking explained; HTTP/0.9 a one-line request |
+| 12 | 19 | 537eb28 | closures, prototypes, callbacks, microtasks; libev/libeio then, libuv today; CSP scope exact |
+
+Section prose: Part III 14,066 → 14,597 (ceiling 14,712); Part I 12,807 (over its 12,699 ceiling by 108; ceilings not enforced under the owner's "no restrictions"). Glossary 474 entries, all authored (entropy, port security, anycast, head-of-line blocking added). Locked captions left as they are and queued for Pass 30: Fig 10.10, 10.11 (MSS, "tuple" unexplained), 11.7, 12.9 (template engines, OWASP), 12.10 (Trusted Types).
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em
