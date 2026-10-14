@@ -4636,8 +4636,7 @@
       could embed small Java programs (applets) inside web pages. Each
       applet ran inside a Java Virtual Machine, isolated from the host,
       with a defined API for drawing and user input. On paper it was the
-      right answer: a real, type-safe, sandboxed language with a proper
-      runtime. In practice the JVM took five to ten seconds to start,
+      right answer: a real language that checked its types, walled off from the rest of the computer, with a proper runtime. In practice the JVM took five to ten seconds to start,
       applets were hard to write in small pieces, and the server had to
       host compiled <code>.class</code> files. Each applet was an island:
       Java could not easily reach into the surrounding HTML page, nor the
@@ -4652,8 +4651,7 @@
       Netscape's twenty-three-year-old co-founder, believed the web's killer
       feature would be quick scripts that lived <em>inside the page
       itself</em>: small, untyped snippets that any HTML author could add
-      without compilers, without classpaths, without ten seconds of JVM
-      warm-up. The language should look enough like Java that the buzzword
+      without compilers and without ten seconds of warm-up. The language should look enough like Java that the buzzword
       "Java" could be used in marketing, but be far simpler. It should run
       instantly, fail loudly without crashing the browser, and be easy
       enough for a designer who had learned HTML over a weekend to pick up.
@@ -4713,16 +4711,13 @@
       What he got in his first week was a different brief:
       Marc Andreessen and Bill Joy (Sun co-founder, brought into the
       Netscape-Sun partnership) wanted a language with C-like syntax, so that it looked familiar to working programmers, but with the dynamic,
-      interpreted, untyped flexibility of Scheme or Self underneath. Eich
+      interpreted, untyped flexibility of Scheme underneath. Eich
       had ten working days to produce a prototype.
     </p>
 
     <p id="ch12-eich-p2">
       He delivered. The first version, internally called <strong>Mocha</strong>,
-      was a working interpreter by mid-May 1995. Under the C-like syntax, the language Eich actually designed was a deeply Scheme-influenced
-      lexically-scoped language with first-class functions, closures, and
-      prototypal inheritance taken from David Ungar and Randall Smith's
-      <em>Self</em>. It had no classes (those came twenty years later, as sugar) and no integers (only floating-point numbers, IEEE 754 doubles all the way down), but it did have implicit type coercion that anyone who has used
+      was a working interpreter by mid-May 1995. Under the C-like syntax sat Scheme's ideas: a function was a value that could be stored and passed around like a number, and it kept access to the variables around it even after the code that made them had finished (a <em>closure</em>). Objects inherited straight from other objects, an idea taken from David Ungar and Randall Smith's language <em>Self</em>. There were no classes at first (they came twenty years later, as a shorthand) and no integers (only floating-point numbers, IEEE 754 doubles all the way down), but it did have implicit type coercion (silently turning one type into another) that anyone who has used
       JavaScript has cursed. It was genuine elegance underneath surprising
       syntactic awkwardness: the shape of any language born in ten days
       under the wrong brief.
@@ -4839,11 +4834,9 @@
     <p id="ch12-loop-p1" class="lead">
       JavaScript runs on a single thread: one call stack, no
       <code>fork()</code>, no <code>pthread_create()</code>, no Java-style
-      worker threads sharing variables. That would be a fatal weakness if
-      JavaScript ever blocked. It does not. Every operation that might
+      worker threads sharing variables. That would be a fatal weakness if its slow operations blocked. They are built not to. Every operation that might
       take time (fetching a URL, reading a file, waiting for a timer)
-      returns immediately and arranges to be told when the work is done.
-      The mechanism that hands the freed thread its next ready callback is
+      returns immediately, and you hand it a function, a <em>callback</em>, to run when the work is done. The mechanism that hands the free thread its next ready callback is
       the <span class="key-term">event loop</span>, the design Node.js
       later carried from the browser to the server.
     </p>
@@ -4853,9 +4846,7 @@
       holds the function frames currently executing: the same stack
       <a href="part-1#ch3">Chapter 3</a> dissected, in JavaScript form. The <strong>macrotask
       queue</strong> (also called the <em>callback queue</em>) holds
-      callbacks ready to run from completed I/O, expired timers, and
-      DOM events. The <strong>microtask queue</strong> holds callbacks
-      from settled Promises and from <code>queueMicrotask()</code>. The
+      callbacks ready to run from completed I/O, expired timers, and clicks and other page events. The <strong>microtask queue</strong> holds callbacks that run as soon as the current task ends, before the next task or the render step: chiefly those of Promises (below) and of <code>queueMicrotask()</code>. The
       <strong>render step</strong> is when the browser recomputes layout
       and paints any visual changes. The event loop coordinates them:
       pull one task off the macrotask queue, run it to completion, drain
@@ -4922,14 +4913,13 @@
       function to whoever does the work, and it will call your function
       back when finished. Simple, and the source of the famous
       <em>callback pyramid of doom</em>: three or four callbacks nested
-      inside each other, indentation marching across the screen, error
-      handling impossible. The second era was <strong>Promises</strong>
-      (standardised in ES6, 2015): an object representing a future value,
+      inside each other, indentation marching across the screen, error handling tedious. The second era was <strong>Promises</strong>
+      (standardised in ES6, the 2015 edition of the language's ECMAScript standard): an object representing a future value,
       with <code>.then()</code> and <code>.catch()</code> chained
       horizontally. The third era is <strong>async/await</strong> (ES2017):
-      syntactic sugar that lets you write asynchronous code as if it were
+      a shorthand that lets you write asynchronous code as if it were
       synchronous (<code>const x = await fetch(url);</code>) while the
-      compiler transforms it into a Promise chain underneath. All three
+      engine runs it on Promises underneath. All three
       eras coexist in any modern codebase, because legacy never dies.
     </p>
 
@@ -4994,15 +4984,14 @@
     <p id="ch12-node-p1" class="lead">
       JavaScript was originally interpreted a statement at a time by Netscape's
       engine: Eich's Mocha, soon rewritten as the engine still called
-      <em>SpiderMonkey</em> today. That was fast enough for the small
-      validation scripts and DOM manipulation of 1996, hopelessly slow for
+      <em>SpiderMonkey</em> today. That was fast enough for the small form checks and page changes of 1996, hopelessly slow for
       an actual application. By 2008, when Google released
       <strong>V8</strong> alongside the first Chrome browser, JavaScript
       engines had become aggressive optimising compilers. V8 began by
       compiling everything straight to machine code; today's engines, V8
       included, run a tiered pipeline from source code to native machine
       code: start
-      interpreting at once so nothing waits, watch which functions run hot,
+      interpreting at once so nothing waits, watch which functions run most often,
       and spend the expensive compilation only where the running program
       proves it will pay. A feedback loop re-optimises as the evidence
       changes.
@@ -5057,14 +5046,10 @@
     <p id="ch12-node-p3">
       In 2009 a developer named <strong>Ryan Dahl</strong> watched the
       progress bar on a file upload in a browser and realised the standard
-      server-side approaches (Apache forking a process per request,
-      blocking on disk I/O) were exactly the wrong shape for systems with
+      server-side approaches (servers such as Apache, which gave each connection its own process or thread, which then sat waiting on the disk) were exactly the wrong shape for systems with
       many slow connections. Browsers had already solved this with the
       single-threaded, never-blocking event loop. Why not move that model
-      to the server? He took V8, stripped away the browser, bolted on a C
-      event-loop layer (the libraries libev and libeio, later unified as
-      <em>libuv</em> when the Windows port arrived in 2011) for
-      asynchronous file and network I/O, and bound them together with a
+      to the server? He took V8, stripped away the browser, added a C library layer (libev and libeio then, <em>libuv</em> today) that runs the event loop and keeps file and network work off the JavaScript thread, and bound them together with a
       small JavaScript standard library. He called it
       <strong>Node.js</strong> and showed it at JSConf EU in Berlin that
       November.
@@ -5075,12 +5060,10 @@
       Valley startups; within ten it had eaten enormous amounts of the
       server-side language landscape. The reasons are practical, not
       aesthetic: a single-threaded async-I/O model handles thousands of
-      slow connections (the WebSocket connections of a chat app, say) on a
+      slow connections (the open connections of a chat app, say) on a
       single CPU core where a thread-per-request model would have
-      collapsed; and sharing one language between browser and server cut
-      the cognitive cost of building web applications roughly in half.
-      Node is not the best server for everything (CPU-bound workloads are
-      still better served by Go, Rust, or threaded Java), but for "many
+      collapsed; and sharing one language between browser and server made web applications simpler to build.
+      Node is not the best server for everything (work that keeps the processor busy is still better served by Go, Rust, or threaded Java), but for "many
       connections, mostly waiting on I/O" it is hard to beat.
     </p>
 
@@ -5226,20 +5209,16 @@
     <p id="ch12-dom-p3">
       The DOM is a tree of objects exposed to JavaScript through methods
       like <code>document.querySelector()</code> and
-      <code>element.appendChild()</code>. Modifying a DOM node invalidates
-      the relevant prefix of the pipeline. The browser batches that work:
+      <code>element.appendChild()</code>. Changing a DOM node makes the browser redo the pipeline from the stage the change touches onward. The browser batches that work:
       layout and paint normally run once per frame, however many mutations
       landed. But code that <em>reads</em> a layout measurement between
-      writes (an <code>offsetHeight</code> here, a
-      <code>getBoundingClientRect</code> there) forces the browser to stop
-      and re-lay-out synchronously, mid-frame, once per read. That
+      writes (an element's height here, its position on screen there) forces the browser to stop
+      and re-lay-out synchronously, mid-frame, once for every read that follows a write. That
       interleaving is how naive loop-and-mutate code gets orders of magnitude
       slower than doing all the writes together. React, Vue, Svelte, and the
-      rest of the modern frontend framework family exist primarily to
-      <em>batch</em> DOM changes. The programmer writes declarative rules
+      rest of the modern frontend framework family exist to keep the page in step with your data, and <em>batching</em> DOM changes is a large part of how. The programmer writes declarative rules
       ("the page should look like X"); the framework computes the minimum
-      set of DOM mutations and applies them together, so no read ever lands
-      between the writes.
+      set of DOM mutations and applies them together, so reads rarely land between the writes.
     </p>
   </section>
 
@@ -5254,7 +5233,7 @@
       might be logged into your bank and the same machine might have access
       to your filesystem, your camera, your microphone. The fact that
       visiting a webpage does not automatically compromise everything else
-      you care about is not magic; it is four specific, layered defences
+      you care about is not magic; it is a few specific, layered defences
       invented over thirty years in response to attacks that worked.
     </p>
 
@@ -5358,17 +5337,14 @@
       what if the attacker can <em>inject their own code into origin
       B's page</em>? Then their code is, by definition, same-origin with
       B, and can do everything B's legitimate code can do. This is
-      <strong>cross-site scripting</strong> (XSS), the most common web
-      vulnerability for two decades running. It comes in three flavours.
+      <strong>cross-site scripting</strong> (XSS), one of the most common web vulnerabilities for two decades running. It comes in three flavours.
       <strong>Reflected XSS</strong>: the attacker crafts a URL with
-      malicious script in the query string; the server echoes the query
-      string back into the page; the script executes on whoever visits
+      malicious script in the part after the <code>?</code>; the server echoes that part back into the page; the script executes on whoever visits
       the URL. <strong>Stored XSS</strong>: the attacker submits malicious
       script as a comment or profile field; the server stores it in the
       database; every subsequent visitor's browser executes it.
       <strong>DOM-based XSS</strong>: a similar attack carried out entirely
-      in the browser, by page JavaScript that writes URL parameters into
-      the DOM unsafely.
+      in the browser, by page JavaScript that copies the part of the URL after the <code>?</code> into the page unsafely.
     </p>
 
     <div class="diagram-card" id="fig-12-9">
@@ -5464,7 +5440,7 @@
     <p id="ch12-security-p8">
       The strongest mitigation in the modern web security stack is
       <strong>Content Security Policy</strong> (CSP), first shipped in
-      Firefox 4 in 2011, a W3C Recommendation since 2016 and supported by
+      Firefox 4 in 2011, a web standard since 2016 and supported by
       every major browser by the late 2010s. CSP is a
       response header (<code>Content-Security-Policy: …</code>) in which
       the server declares exactly which origins the browser may load
@@ -5474,7 +5450,7 @@
       <code>script-src 'self' https://cdn.example.com; style-src 'self'</code>
       means: "execute scripts only from the same origin and from
       <code>cdn.example.com</code>; load styles only from the same origin;
-      reject everything else." If an attacker injects a
+      reject other sources for those two." (Adding <code>default-src 'none'</code> closes every other kind of resource too.) If an attacker injects a
       <code>&lt;script src="evil.com/x.js"&gt;</code>, the browser sees
       that <code>evil.com</code> is not in the policy and refuses to load
       the script. The XSS attack from <a href="#fig-12-9">Fig 12.9</a> is neutralised even though
@@ -5537,8 +5513,7 @@
       the early browser is now the dominant concurrency model on the modern
       web. The engines that run it are masterpieces of compiler engineering
       that exist only because the language is everywhere. The security
-      mechanisms that surround it (same-origin policy, CSRF tokens,
-      Content Security Policy, Trusted Types, Subresource Integrity) were
+      mechanisms that surround it (the same-origin policy, CSRF tokens, Content Security Policy and more) were
       retrofitted over thirty years in response to attacks that worked.
       None of this was inevitable. All of it became, by accumulation, the
       shape of the modern web.
