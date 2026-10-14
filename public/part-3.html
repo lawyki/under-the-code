@@ -278,28 +278,21 @@
       one from the other and the shared noise cancels, while the signal, which
       is opposite on the two wires, survives. The twist keeps neither wire
       systematically closer to any noise source, so the two stay balanced along
-      the whole run. Cheap to manufacture, easy to terminate, but
-      attenuates fast: about 20 dB per hundred metres at the ~100 MHz
-      frequencies modern Ethernet uses, which limits a single copper run to
+      the whole run. Copper is cheap and easy to connect, but loses signal fast: at the ~100 MHz frequencies modern Ethernet uses, about 20 dB per hundred metres (decibels count by factors of ten: every 10 dB leaves a tenth of the power, so 20 dB leaves a hundredth), which limits a single copper run to
       roughly 100 metres before a switch or repeater is required. Almost every cable inside a house
       or office is copper.
     </p>
 
     <p id="ch8-substrates-p3">
-      <strong>Fibre</strong> is glass. The signal is light, a carrier at around 200 THz switched on and off to carry the bits. The light is launched into a thin glass core surrounded by
-      a cladding with a slightly lower refractive index, so total internal
-      reflection traps the light inside the core all the way to the receiver.
-      Attenuation is far lower: modern fibres lose about 0.2 dB per
+      <strong>Fibre</strong> is glass. The signal is light, switched on and off to carry the bits. It travels down a hair-thin glass core wrapped in a cladding of glass with a slightly lower refractive index, which reflects light meeting it at a shallow angle back into the core (total internal reflection), so the light stays trapped all the way to the receiver. The loss is far lower: modern fibres lose about 0.2 dB per
       kilometre, allowing tens to hundreds of kilometres between repeaters. Every
       undersea cable, every long-distance internet trunk, every data-centre
       backbone is fibre. The first transatlantic fibre cable, TAT-8, went into
-      service in 1988 and carried 280 megabits per second, which at the time was more
-      than the combined capacity of every previous transatlantic cable.
+      service in 1988 and carried 280 megabits per second.
     </p>
 
     <p id="ch8-substrates-p4">
-      <strong>Wireless</strong> is the absence of any medium at all: the bits are
-      variations in an electromagnetic wave propagating through space. Wi-Fi runs
+      <strong>Wireless</strong> needs no cable at all: the bits are variations in a radio wave travelling through space. Wi-Fi runs
       around 2.4 GHz and 5 GHz; cellular at 700 MHz to several GHz; satellite up
       to tens of GHz. The trade: no wire to install, but every
       receiver in range hears every transmission, the medium is shared with every
@@ -312,8 +305,7 @@
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch8-substrates-p5" class="insight-text">
         <strong>The substrate is the first attack surface.</strong> Copper wires emit small amounts of
-        electromagnetic radiation that a receiver nearby can demodulate back
-        into the original signal. This is the basis of <strong>TEMPEST</strong>, a
+        electromagnetic radiation that a receiver nearby can turn back into the original signal. This is the basis of <strong>TEMPEST</strong>, a
         US classification programme dating to the 1960s for shielding sensitive
         equipment against precisely this. (Van Eck showed in 1985 that an unshielded
         monitor could be reconstructed from across the street; a modern
@@ -394,8 +386,7 @@
       At twenty-one, in his 1937 master's thesis at MIT, he showed that George
       Boole's nineteenth-century algebra of logic could be implemented as
       electrical relay circuits, so any logical proposition could be computed
-      by a network of switches. Howard Gardner later called this "possibly the
-      most important master's thesis of the twentieth century." It is the
+      by a network of switches. Howard Gardner later called this "possibly the most important, and also the most famous, master's thesis of the century." It is the
       bridge between <a href="part-1#ch2">Chapter 2</a> of this book and everything
       that followed it: the moment Boolean logic stopped being philosophy and
       started being engineering.
@@ -417,17 +408,13 @@
     </p>
 
     <p id="ch8-shannon-p4">
-      The key definition in his 1948 paper, called <strong>entropy</strong>
-      after the thermodynamics quantity it resembles, measures how much
-      "surprise" (how much information) is contained in a probability
-      distribution. For a discrete source emitting symbols with
-      probabilities <em>p₁, p₂, …, pₙ</em>, the entropy is:
+      The key definition in his 1948 paper is <strong>entropy</strong> (named after the physics quantity it resembles). It measures how much surprise a source of symbols carries: on average, the fewest well-chosen yes-or-no questions needed to learn each symbol it sends. A fair coin needs one question per flip; a coin that always lands heads needs none, because you already know the answer. For a source whose symbols come with probabilities <em>p₁, p₂, …, pₙ</em>, the entropy is:
     </p>
 
     <div class="math-callout">
       <div class="math-label">Shannon entropy</div>
       <p id="ch8-shannon-p5" class="math-formula">H = −Σ pᵢ log₂(pᵢ)</p>
-      <p id="ch8-shannon-p6">Measured in bits per symbol. A fair coin (½, ½) has H = 1 bit per flip, the maximum surprise. A coin that always lands heads (1, 0) has H = 0: no information. A biased coin (¾, ¼) has H ≈ 0.81 bits. <em>This number is also the shortest average code length</em> any lossless compression scheme can achieve, asymptotically: a source cannot be compressed below its entropy. Every modern lossless compressor, from ZIP to PNG, sits somewhere on Shannon's curve, fighting for the last bit.</p>
+      <p id="ch8-shannon-p6">Measured in bits per symbol. The fair coin (½, ½) gives H = 1, the most a two-sided source can carry; the always-heads coin (1, 0) gives 0. A biased coin (¾, ¼) gives H ≈ 0.81 bits: coding several flips at a time, a long run of them can be stored in about 0.81 bits per flip. <em>This number is also the shortest average code length</em> any lossless compression scheme can achieve on long messages: a source cannot be compressed below its entropy. Every modern lossless compressor, from ZIP to PNG, sits somewhere on Shannon's curve, fighting for the last bit.</p>
     </div>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-8-3">
@@ -545,11 +532,10 @@
     <p id="ch8-encoding-p3">
       <span class="key-term">Manchester encoding</span> solves the synchronisation problem by
       embedding the clock in the data. Every bit is split into two halves; a
-      transition in the middle carries the bit value (high-to-low for one
-      polarity, low-to-high for the other). There is a transition in <em>every
+      transition in the middle carries the bit value (in Ethernet's convention, rising for a 1 and falling for a 0). There is a transition in <em>every
       bit period</em>, no matter what the data is. The receiver locks onto those
       transitions and stays in sync indefinitely. The cost is double bandwidth:
-      every bit needs two half-bit slots. Standardised 10BASE5 Ethernet (10 Mbps over coax)
+      every bit needs two half-bit slots. The first standard Ethernet, 10BASE5 (10 Mbps over coaxial cable),
       used Manchester encoding because it could not afford to
       lose synchronisation on a long run of zeros.
     </p>
@@ -651,14 +637,7 @@
     </div>
 
     <p id="ch8-encoding-p6">
-      When the channel cannot carry baseband signals (radio, DSL, cable
-      modems), the bits ride on a
-      <strong>carrier wave</strong>, a high-frequency sinusoid that the medium
-      can transport. <strong>Modulation</strong> is the process of varying some
-      property of the carrier in step with the data: amplitude (AM), frequency
-      (FM), or phase (PSK). More elaborate schemes combine these: QAM
-      (Quadrature Amplitude Modulation) varies amplitude <em>and</em> phase
-      simultaneously, packing multiple bits per symbol.
+      Radio, DSL and cable modems cannot send bare on-and-off levels like those of Fig 8.6. The bits ride instead on a <strong>carrier wave</strong>, a steady high-frequency wave the medium carries well. <strong>Modulation</strong> changes one property of the carrier in step with the data: its size (amplitude, AM), how fast it oscillates (frequency, FM), or where each cycle starts (phase, PSK). QAM (Quadrature Amplitude Modulation) changes size and phase together, so each symbol, one short stretch of the wave, carries several bits.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-8-7">
@@ -697,7 +676,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.935429;0.935714;1.000000" dur="7s" repeatCount="indefinite"/><text x="342" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">falls</text></g>
 <line y1="34" y2="276" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.085643;0.085714;0.141429;0.142857;0.942857;0.957143;1.000000" dur="7s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch8-encoding-p7" class="diagram-caption">A carrier wave has three things a transmitter can change: its size (AM), its speed (FM) or its phase (PSK), and the receiver reads each bit from whichever one moves. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: 10 in Wi-Fi 6.</p>
+      <p id="ch8-encoding-p7" class="diagram-caption">A carrier wave has three things a transmitter can change: its size (AM), how fast it oscillates (FM) or its phase (PSK), and the receiver reads each bit from whichever one moves. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: 10 in Wi-Fi 6.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -714,9 +693,7 @@
     <h2>Metcalfe, 1973: many computers, one cable.</h2>
 
     <p id="ch8-ethernet-p1" class="lead">
-      In 1973, Bob Metcalfe at Xerox PARC invented <span class="key-term">Ethernet</span>, carrying
-      into a wire the radio idea whose mathematics had just rescued his rejected
-      doctoral thesis. The rule is plain: any number of computers share one
+      In 1973, Bob Metcalfe at Xerox PARC invented <span class="key-term">Ethernet</span>, carrying onto a wire an idea from a radio network in Hawaii. The rule is plain: any number of computers share one
       cable; they all listen; whenever no one else is talking, anyone can send;
       if two start at the same time and the signals collide, both detect it,
       both back off for a random interval, and both try again. That rule is
@@ -733,19 +710,13 @@
       Norm Abramson at the University of Hawaii. ALOHAnet let the islands'
       campuses share one radio frequency by transmitting whenever they had
       data and retransmitting after random delays when collisions occurred.
-      Metcalfe analysed the math on the plane home, realised Abramson had badly
-      under-estimated the achievable utilisation of the protocol with smarter
-      timing, wrote the corrections into a revised thesis, and got his
+      Metcalfe analysed the math on the plane home, realised Abramson had badly underestimated how much of the channel's time could carry data with smarter timing, wrote the corrections into a revised thesis, and got his
       doctorate. Ethernet was the same insight on a wire, improved with
       carrier sensing ("listen before transmit").
     </p>
 
     <p id="ch8-ethernet-p3">
-      The Xerox PARC of 1973 was the densest concentration of computing talent
-      ever assembled in one place. Down the hall from Metcalfe, Alan Kay's
-      group was inventing the personal computer (the Alto of 1973, the machine
-      that taught Steve Jobs what a graphical interface was), and Gary
-      Starkweather had brought the laser printer to life. Metcalfe's job was
+      The Xerox PARC of 1973 held an unusual concentration of computing talent. Down the hall from Metcalfe, Chuck Thacker and Butler Lampson were building the Alto, a personal computer with a screen that drew pictures (the machine that later showed Steve Jobs what a graphical interface could be), and Gary Starkweather had brought the laser printer to life. Metcalfe's job was
       to network these machines together. His original Ethernet sketch, now in
       the Computer History Museum, is a hand-drawn diagram on a piece of yellow paper, dated "May 22, 1973" in the corner. It shows the basic architecture of every wired LAN since.
     </p>
@@ -753,11 +724,10 @@
     <p id="ch8-ethernet-p4">
       PARC's original Ethernet ran at 2.94 megabits per second; the
       standardised <strong>10BASE5</strong> that spread through the industry ran at 10,
-      over a single thick coaxial cable up to 500 metres long: the "thicknet"
-      of the DIX standard in 1980. By the 1990s, switches replaced the shared
+      over a single thick coaxial cable up to 500 metres long: the "thicknet" of the 1980 DIX standard (DEC, Intel and Xerox). By the 1990s, switches replaced the shared
       cable. Each device got its own dedicated cable to the switch; with no one
       else on the wire, collisions stopped happening, and the collision-detection
-      machinery is now mostly vestigial. But every Ethernet frame still carries
+      machinery now mostly sits unused. But every Ethernet frame still carries
       the header structure invented for that shared cable, including the
       48-bit MAC addresses.
     </p>
@@ -819,8 +789,7 @@
       MAC addresses identify devices on the local link; IP addresses, which
       we'll meet in <a href="#ch9">Chapter 9</a>, identify them on the global network.
       <strong>ARP</strong> (Address Resolution Protocol) bridges the two. When
-      a host wants to send a packet to <code>192.168.1.5</code> on its own
-      subnet, it broadcasts a question to every device on the link: "Who has
+      a host wants to send a packet to <code>192.168.1.5</code> on its own local network, it broadcasts a question to every device on the link: "Who has
       192.168.1.5? Tell me your MAC." The owner replies; the asker caches the
       answer for a few minutes; subsequent packets to that IP go straight to
       the matching MAC.
@@ -956,11 +925,9 @@
         it does not know which port a destination MAC sits on:
         <em>broadcast to every port</em>. The switch has been downgraded to a
         hub, and every frame on the LAN is now visible to the attacker. This
-        attack, called <strong>MAC flooding</strong> or <em>CAM-table overflow</em>,
+        attack, called <strong>MAC flooding</strong>,
         was packaged into a point-and-shoot tool, <code>macof</code>, around
-        1999 (later folded into Dug Song's dsniff suite), and is the reason
-        serious networks deploy port security (sticky MAC, max-MACs-per-port)
-        on every access switch. The pattern recurs across networking: the
+        1999 and is the reason serious networks turn on <em>port security</em>, a cap on how many addresses each switch port will learn. The pattern recurs across networking: the
         polite, table-based, learning-by-listening designs of the 1990s assumed
         every participant played fair, and an attacker who declined to could
         turn cooperative infrastructure against its users.
@@ -976,7 +943,7 @@
       The layer model is why network engineers can talk about network problems
       precisely. Each layer does one thing only. Each layer is a customer of
       the layer below and a provider for the layer above. Once you've drawn
-      the layers, every protocol falls into exactly one slot, and every
+      the layers, nearly every protocol falls into one slot, and every
       conversation about networking becomes "which layer is this happening
       at?"
     </p>
@@ -986,9 +953,7 @@
       standardised by the International Organization for Standardization in
       1984. Bottom to top: Physical, Data Link, Network, Transport, Session,
       Presentation, Application. Each layer is named after the abstraction it
-      provides. Physical moves bits over a medium. Data Link moves frames
-      between adjacent nodes. Network moves packets across a global graph of
-      nodes. Transport moves byte streams reliably or messages unreliably end
+      provides. Physical moves bits over a medium. Data Link moves frames between machines joined directly by one cable or radio link. Network moves packets across many networks joined together. Transport moves byte streams reliably or messages unreliably end
       to end. Session, Presentation, and Application are about what the bytes
       mean.
     </p>
@@ -1000,7 +965,7 @@
       below it), and collapses Session, Presentation, and Application into a
       single "Application" layer (since real applications usually handle their
       own session semantics). Even so, the <span class="key-term">OSI model</span> remains the
-      teaching reference because its separations are pedagogically cleaner.
+      teaching reference because its separations are cleaner to teach.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-8-11">
