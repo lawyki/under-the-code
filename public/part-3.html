@@ -1221,9 +1221,7 @@
     </p>
 
     <p id="ch9-circuits-p2">
-      Circuit switching has real virtues. The path is established once, so
-      the latency through the call is constant. There is no congestion mid
-      call: the bandwidth is yours alone for the duration. But it scales
+      Circuit switching has real virtues. The path is established once, so the delay through the call never changes, and nothing can crowd it midway: the capacity is yours alone until you hang up. But it scales
       poorly for computers. A computer-to-computer conversation is not a
       continuous voice signal; it is a burst of activity, a long silence,
       another burst. Holding a dedicated circuit for a connection that is
@@ -1358,18 +1356,11 @@
       arrived at the same architecture in 1965, named it "packet
       switching" and built a small working network at NPL by 1969.
       <strong>Leonard Kleinrock</strong> at MIT, in his 1962 doctoral thesis,
-      had developed the queueing-theoretic mathematics showing that
-      statistical multiplexing on a packet-switched network would utilise
-      bandwidth far more efficiently than circuit switching. Kleinrock then
+      had worked out the mathematics of queues showing that traffic arriving in bursts, sharing one link, gets far more through than the same link split into reserved lines, one per conversation. Kleinrock then
       took a faculty position at UCLA. When Larry Roberts at ARPA (the US
       Advanced Research Projects Agency, not yet renamed DARPA) was tasked in
-      1966 with building an experimental network, he read all three sets of
-      work, and the design that emerged was unmistakably Baran's mesh,
-      Davies's terminology, and Kleinrock's math, with BBN's engineering
-      providing the IMP (Interface Message Processor) routers. The "LO"
-      message was, in some sense, Baran's idea finally going live, seven
-      years after the Cuban Missile Crisis whose survivability question it
-      had answered.
+      1966 with building an experimental network, by 1967 he had read all three sets of work, and the design that emerged was unmistakably Baran's mesh,
+      Davies's terminology, and Kleinrock's math, with the firm Bolt Beranek and Newman (BBN) building the IMPs (Interface Message Processors), the network's first routers. The "LO" message was packet switching going live, though ARPA built it to let universities share expensive computers, not to survive a war.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-9-2">
@@ -1648,8 +1639,7 @@
     </div>
 
     <p id="ch9-ip-p3">
-      A packet larger than the maximum-transmission-unit (MTU) of a link
-      cannot be sent in one piece. Ethernet's standard MTU is 1500 bytes.
+      Every link has a largest packet it can carry, its maximum transmission unit (MTU), and a bigger packet cannot cross it in one piece. Ethernet's standard MTU is 1500 bytes.
       When a 4 KB packet must traverse a 1500-byte link, the router (or
       sometimes the original sender) splits it into
       <strong>fragments</strong>, each a complete IP packet with the same
@@ -1712,10 +1702,7 @@
     <p id="ch9-routing-p2">
       Each independent network is called an <span class="key-term">Autonomous System</span>
       (AS) and gets a number: Cogent is AS 174, Google is AS 15169, your ISP
-      has its own. ASes connect at peering points, forming a graph whose nodes
-      are ASes and whose edges are direct relationships. BGP is how an AS tells
-      its neighbours: "I can reach the following IP prefixes; here is the path
-      of ASes the traffic will take." Each AS that hears the announcement adds
+      has its own. ASes connect where their networks meet, and each link is a business deal: one network pays the other to carry its traffic (<em>transit</em>), or two swap traffic for free (<em>peering</em>). BGP is how an AS tells its neighbours: "I can reach these blocks of addresses; here is the path of ASes the traffic will take." A block is written as a <em>prefix</em>: 198.51.0.0/16 means every address that starts with 198.51 (the first 16 of the 32 bits, two of the four numbers), about 65,000 of them. A longer prefix, such as a /24, covers fewer addresses (256) and is called more specific. Each AS that hears the announcement adds
       itself to the path and re-announces to its own neighbours, propagating
       the route across the whole graph.
     </p>
@@ -1824,8 +1811,7 @@
 
     <p id="ch9-v6-p1" class="lead">
       IPv4 addresses are 32 bits long. That is 4 294 967 296 possible
-      addresses, which sounded like a lot in 1981 and runs out, in practice,
-      well below the count because of subnet-padding and reserved ranges. The
+      addresses, which sounded like a lot in 1981, and fewer are usable, since whole ranges are reserved and blocks are handed out in fixed sizes, so part of each often sits idle. The
       world ran out of fresh IPv4 allocations at IANA's central pool on
       <strong>3 February 2011</strong>, and at the regional registries over the
       years that followed. The successor is <strong>IPv6</strong>, defined in 1995. It uses
@@ -1957,17 +1943,12 @@
         on in <code>sendmail</code>, and weak passwords in <code>rsh</code>.
         Each copy, on landing on a new host, replicated itself to nearby
         hosts. Morris had tried to avoid re-infecting compromised machines,
-        but the check had a one-in-seven false-negative rate by design, so
-        machines were re-infected dozens of times until they collapsed
-        under the load. Within hours, somewhere between five thousand and
+        but one time in seven it copied itself anyway, even onto a machine that said it was already infected, so machines were re-infected dozens of times until they collapsed under the load. Within hours, somewhere between five thousand and
         ten thousand machines (by rough estimates, about ten percent of
         the internet of the time) were unusable. Morris was traced within days and became the first person convicted under the US Computer Fraud and Abuse Act of 1986. Within weeks of the worm's release, DARPA funded the
         <strong>Computer Emergency Response Team</strong> (CERT) at
         Carnegie Mellon, the first organisation tasked with coordinating
-        response to internet security incidents. Every national CERT today
-        traces directly to that decision. The protocols of <a href="#ch9">Chapter 9</a> had been built in an era of
-        institutional trust; the Morris worm was the ten-second proof that
-        the era was over.
+        response to internet security incidents. It became the model for the national CERTs that followed. The protocols of <a href="#ch9">Chapter 9</a> had been built in an era of institutional trust; the Morris worm proved that era over.
       </p>
     </div>
 
@@ -2027,8 +2008,7 @@
       prefixes it can reach, and nothing in the original protocol lets the
       hearer verify that the announcer owns them: an AS can announce
       <em>anything</em> and its neighbours will believe it. If the
-      announcement is more specific than the legitimate one, the hijacker
-      wins the global routing table, because forwarding always prefers the most specific route it knows.
+      announcement is more specific than the legitimate one, the hijacker wins: routers nearly everywhere send the traffic its way, because forwarding always prefers the most specific route it knows.
       This is <strong>BGP hijacking</strong>, and the canonical example
       happened on <strong>24 February 2008</strong>.
     </p>
