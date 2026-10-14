@@ -526,7 +526,7 @@
     <h3>Why semiconductors</h3>
 
     <p id="ch1-transistor-p7">
-      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows until a voltage on the gate, which rests on a thin insulating oxide over the p-type silicon, draws electrons under it into a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
+      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows until a voltage on the gate, which rests on a thin insulating oxide over the p-type silicon, draws free electrons out of the source and drain and under it, where they form a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-5">
@@ -571,7 +571,7 @@
 <text x="200" y="350" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.6)">no path · no current<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.225000;0.225125;0.374938;0.375000;0.762250;0.762375;1.000000" dur="8s" repeatCount="indefinite"/></text>
 <text x="200" y="350" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#d4a853" opacity="0">channel · current flows<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.224875;0.225000;0.374938;0.375000;0.762375;0.762500;1.000000" dur="8s" repeatCount="indefinite"/></text>
 </svg>
-      <p id="ch1-transistor-p8" class="diagram-caption">A positive voltage on the gate pulls electrons up under the oxide until they form a thin channel between source and drain, and current flows. The gate never touches the channel: its field reaches through the insulator, which is why these are called field-effect transistors.</p>
+      <p id="ch1-transistor-p8" class="diagram-caption">A positive voltage on the gate pulls electrons up under the oxide until they form a thin channel between source and drain, and current flows. The gate never touches the electrons: its charge pulls on them through the insulator, as a rubbed balloon lifts hair, and that influence across a gap, an electric field, gives field-effect transistors their name.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1362,7 +1362,7 @@
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or a running program (to the kernel, a <em>process</em>, reached through files under /proc) are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or a running program (to the kernel, a <em>process</em>: on Linux, reading the file /proc/1234/status returns process 1234's name and memory use as text) are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
     </p>
 
     <div class="insight-strip">
@@ -1394,7 +1394,7 @@
         <tr><td>L1 Cache</td><td>On the CPU die</td><td>32–64 KB</td><td>4 cycles (~1 ns)</td><td>CPU hardware</td></tr>
         <tr><td>L2 Cache</td><td>On the CPU die</td><td>256 KB – 1 MB</td><td>12 cycles (~4 ns)</td><td>CPU hardware</td></tr>
         <tr><td>L3 Cache</td><td>On the CPU package</td><td>8–64 MB</td><td>40 cycles (~13 ns)</td><td>CPU hardware</td></tr>
-        <tr><td>RAM (DRAM)</td><td>On the motherboard</td><td>8–128 GB</td><td>~100 cycles (~60 ns)</td><td>OS kernel</td></tr>
+        <tr><td>RAM (DRAM)</td><td>On the motherboard</td><td>8–128 GB</td><td>~200 cycles (~60 ns)</td><td>OS kernel</td></tr>
         <tr><td>SSD (NVMe)</td><td>On the PCIe bus</td><td>256 GB – 4 TB</td><td>~50,000 ns</td><td>OS + filesystem</td></tr>
         <tr><td>HDD (spinning disk)</td><td>SATA bus</td><td>1–20 TB</td><td>~5,000,000 ns</td><td>OS + filesystem</td></tr>
       </tbody>
@@ -1487,7 +1487,7 @@
     </p>
 
     <p id="ch1-memory-p10">
-      This gives three things: <strong>isolation</strong> (no program can read another's memory, because different programs' page tables point to different physical pages), <strong>flexibility</strong> (the kernel can move pages around in RAM, move little-used ones out to disk and back, or load them on demand from a file), and <strong>protection</strong> (the page tables also encode permissions for read, write and execute, and the MMU enforces them).
+      This gives three things: <strong>isolation</strong> (no program can read another's memory, because different programs' page tables point to different physical pages), <strong>flexibility</strong> (the kernel can move pages around in RAM, send little-used ones out to disk, or leave a file's pages unread until needed; when a program touches a page that is not in RAM, the MMU stops it and calls the kernel, which reads the page in, updates the table and lets the program carry on, none the wiser), and <strong>protection</strong> (the page tables also encode permissions for read, write and execute, and the MMU enforces them).
     </p>
 
     <div class="insight-strip">
@@ -1684,7 +1684,7 @@
       Boole died of pneumonia in 1864, aged 49, after lecturing in clothes soaked by a three-mile walk through heavy rain. He never saw electricity used in computing: he died thirty-three years before the electron was discovered. For seventy years his algebra stayed with the logicians, who reshaped it into the Boolean algebra used today.
     </p>
 
-    <h3>Shannon's master's thesis: the most consequential paper of the 20th century</h3>
+    <h3>Shannon's master's thesis: Boole's algebra in the wiring</h3>
 
     <p id="ch2-boole-p6">
       Then, in 1937, a 21-year-old MIT graduate student named Claude Shannon wrote his master's thesis. He was working with relays: switches that an electromagnet opens or closes, so that a current in one circuit controls another. He noticed that relay circuits could be described <em>exactly</em> by Boolean algebra. Call an open relay 0 and a closed one 1. Wire two relays in <em>series</em>, one behind the other, and current can reach the far end only if <em>both</em> are closed: that is AND. Wire them in <em>parallel</em>, side by side, and current gets through if <em>either</em> one is closed: OR. And a relay built to spring open when its control signal arrives passes current only when the signal is absent, which is NOT.
@@ -2067,7 +2067,7 @@
     </p>
 
     <p id="ch2-arithmetic-p7">
-      The ALU in <a href="#ch1">Chapter 1</a>'s CPU diagram is built from gates the same way: an adder that also subtracts (next section), and circuits for multiplication and for bitwise operations, which apply one gate to each pair of matching bits (0101 AND 0011 is 0001). Every calculation comes down to gates.
+      The ALU in <a href="#ch1">Chapter 1</a>'s CPU diagram is built from gates the same way: an adder that also subtracts (next section), and circuits for multiplication and for bitwise operations, which apply one gate to each pair of matching bits (0101 AND 0011 is 0001).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-2-5">
@@ -2388,7 +2388,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch2-twos-p10" class="insight-text">
-        <strong>Overflow and sign bugs.</strong> Adding two large positive numbers can produce a negative result: a carry runs into the top bit, which is 1 in every negative number, rather than off the end (the bottom of Fig 2.8). In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a velocity value was converted to a 16-bit signed integer too small to hold it. A misread sign is a second danger. A program copying data into a buffer, a fixed block of memory, checks that the length is not more than the buffer holds; −1 passes. The copying code then reads the length as <em>unsigned</em>: a plain number with no sign. −1 is all ones, the largest unsigned number its bits can hold, so the copy runs far past the buffer (<a href="#fig-2-9">Fig 2.9</a>): a classic buffer overflow.
+        <strong>Overflow and sign bugs.</strong> Adding two large positive numbers can produce a negative result: a carry runs into the top bit, which is 1 in every negative number, rather than off the end (the bottom of Fig 2.8). In 1996, an Ariane 5 rocket exploded 37 seconds after launch because a velocity value was converted to a 16-bit signed integer too small to hold it. A misread sign is a second danger. A program copying data into a buffer, a fixed block of memory, checks that a length it was handed, perhaps by an attacker, is not more than the buffer holds; −1 passes. The copying code then reads the length as <em>unsigned</em>: a plain number with no sign. −1 is all ones, the largest unsigned number its bits can hold, so the copy runs far past the buffer (<a href="#fig-2-9">Fig 2.9</a>): a classic buffer overflow.
       </p>
     </div>
 
@@ -2821,7 +2821,7 @@
     </p>
 
     <p id="ch3-isa-p2">
-      Three ISAs dominate the world. <strong>x86-64</strong>, the direct descendant of that 1978 Intel line, runs essentially every PC and most servers. It is complex, with thousands of instructions accumulated over four decades of backward compatibility. <strong>ARM</strong>, designed by Acorn in the 1980s and now licensed by nearly every phone manufacturer, is the modern alternative: cleaner, more efficient, and the architecture of every iPhone, every Apple Silicon Mac, and nearly every Android phone. <strong>RISC-V</strong>, from Berkeley in 2010, is an open standard: anyone can build a RISC-V chip without paying licensing fees, and it is gaining ground in academia, embedded systems, and increasingly in industry.
+      Three ISAs dominate the world. <strong>x86-64</strong>, the direct descendant of that 1978 Intel line, runs essentially every PC and most servers. It is complex, with thousands of instructions accumulated over four decades of backward compatibility. <strong>ARM</strong>, designed by Acorn in the 1980s and now licensed to the chip designers behind nearly every phone, is the modern alternative: cleaner, more efficient, and the architecture of every iPhone, every Apple Silicon Mac, and nearly every Android phone. <strong>RISC-V</strong>, from Berkeley in 2010, is an open standard: anyone can build a RISC-V chip without paying licensing fees, and it is gaining ground in academia, embedded systems, and increasingly in industry.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-1">
@@ -3042,7 +3042,7 @@
 <rect class="fx" x="28" y="380" width="354" height="30" rx="5" fill="none" stroke="#9bd89b" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.093267;0.093333;0.706533;0.706667;0.866400;0.866533;1.000000" dur="7.5s" repeatCount="indefinite"/></rect>
 <text x="20" y="436" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.5)">3 instructions in, 6 out</text>
 </svg>
-      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 translated an Intel app's x86 code into ARM code once, on first launch, and cached it. Square brackets mark a memory address. x86 adds 3 to memory in one instruction; ARM must load (<code>ldur</code>), add and store (<code>stur</code>).</p>
+      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 translated an Intel app's x86 code into ARM code once, on first launch, and cached it. Square brackets mean memory: x86 changes it in place, but ARM must load, change and store, so storing 5 takes two lines (put 5 in a register, then <code>stur</code>) and adding 3 takes three (<code>ldur</code>, add, <code>stur</code>).</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3076,7 +3076,7 @@
       By the 2000s the debate was over, and both sides had quietly
       converged. Modern x86 CPUs internally translate complex CISC instructions into
       simpler RISC-like <em>micro-operations</em> (μops) and execute those. They pay the
-      hard variable-length parse once, then serve hot code from a small cache of
+      hard variable-length parse once, then serve the code that runs most often from a small cache of
       already-decoded μops. Modern ARM chips have grown more complex, with specialised
       instructions for cryptography, vector math, and machine learning. What still divides
       x86 and ARM is the binary incompatibility: the patterns of bits mean different things on
@@ -3095,7 +3095,7 @@
     </p>
 
     <p id="ch3-registers-p2">
-      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (<code>push</code> and <code>pop</code> always move RSP); the rest are conventions compilers share so that one function can call another. The chapter uses six rows: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.
+      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the <em>volatile</em> or caller-saved ones) and which it must hand back unchanged. The chapter uses six rows: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-3">
@@ -3171,13 +3171,13 @@
       <thead><tr><th>Register</th><th>Conventional purpose</th><th>Why</th></tr></thead>
       <tbody>
         <tr><td>RAX</td><td>Accumulator: holds return values from function calls</td><td>Historical: x86's earliest predecessor used "A" for arithmetic accumulator</td></tr>
-        <tr><td>RBX</td><td>Base: historically pointed to data segments</td><td>Now mostly general-purpose; preserved across function calls</td></tr>
+        <tr><td>RBX</td><td>Base: historically held the address of data in memory</td><td>Now mostly general-purpose; preserved across function calls</td></tr>
         <tr><td>RCX</td><td>Counter: used for loop counts and shift amounts</td><td>The "rep" loop instruction implicitly uses RCX</td></tr>
         <tr><td>RDX</td><td>Data: second half of multiplication results</td><td>"mul" stores 128-bit results split between RAX and RDX</td></tr>
         <tr><td>RSP</td><td>Stack Pointer: points to the top of the call stack</td><td>Modified by push/pop; we'll see this next section</td></tr>
         <tr><td>RBP</td><td>Base Pointer: points to current function's stack frame</td><td>Lets you find local variables at known offsets</td></tr>
         <tr><td>RDI, RSI, RDX, RCX, R8, R9</td><td>First six function arguments (Linux/Mac)</td><td>System V ABI: the calling convention</td></tr>
-        <tr><td>RIP</td><td>Instruction Pointer: address of next instruction</td><td>Cannot be modified directly; only by jump/call/return instructions</td></tr>
+        <tr><td>RIP</td><td>Instruction Pointer: address of next instruction</td><td>Cannot be written directly; changed by jumps, calls, returns and interrupts</td></tr>
       </tbody>
     </table>
 
@@ -3269,8 +3269,7 @@
       in a specific pattern: its <span class="key-term">virtual address space</span>.
       Among other regions, the OS reserves an area called the <em>stack</em>: a
       last-in-first-out buffer that grows as functions are called and shrinks as they
-      return. By convention on x86-64, the stack lives at a high address and grows
-      <em>downward</em>, toward lower addresses, as items are pushed.
+      return. The operating system places the stack at a high address, and on x86-64 it grows <em>downward</em>, toward lower addresses, as items are pushed.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-5">
@@ -3302,7 +3301,7 @@
 <text x="82" y="406" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">text · machine code</text>
 <text x="70" y="436" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">low addresses</text>
 </svg>
-      <p id="ch3-stack-p2" class="diagram-caption">Every process sees the same layout: machine code (text) and global variables (data) at the bottom; the heap, memory taken with <code>malloc</code> while the program runs, growing up from them; the stack growing down from just under the kernel, one frame of local values per call.</p>
+      <p id="ch3-stack-p2" class="diagram-caption">Every process sees the same layout: machine code (text) and global variables (data) at the bottom; the heap, memory taken with <code>malloc</code> while the program runs and kept until freed, growing up from them; the stack growing down from just under the kernel, one frame of local values per call, gone when the call returns.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3318,13 +3317,11 @@
       The CPU manages the stack with two instructions:
       <code>push</code> decrements RSP by 8 (one 8-byte value on a 64-bit machine),
       then writes the value to the address RSP now points to.
-      <code>pop</code> reads the value at RSP and increments RSP back. The stack is the
-      one data structure the ISA itself understands, built into the silicon rather
-      than offered by a library.
+      <code>pop</code> reads the value at RSP and increments RSP back. Because <code>push</code>, <code>pop</code>, <code>call</code> and <code>ret</code> all move RSP, the stack is built into the silicon rather than offered by a library.
     </p>
 
     <p id="ch3-stack-p4">
-      Each function call creates a <span class="key-term">stack frame</span>: a contiguous region of the stack holding that function's local variables (values only it uses), its return address, and copies of the caller's register values it must restore. A caller waits for the function it called, so the newest frame always leaves first. When a function returns, moving RSP back up discards its frame. Data that must outlive the call goes instead in a block of heap memory, taken with <code>malloc</code> and kept until the program frees it.
+      Each function call creates a <span class="key-term">stack frame</span>: a contiguous region of the stack holding that function's local variables (values only it uses), its return address, and copies of the caller's register values it must restore, since caller and callee share the same sixteen registers. A caller waits for the function it called, so the newest frame always leaves first. When a function returns, moving RSP back up discards its frame. Data that must outlive the call goes instead in a block of heap memory, taken with <code>malloc</code> and kept until the program frees it.
     </p>
   </section>
 
@@ -3510,7 +3507,7 @@ main:
     <h3>From overwrite to code execution</h3>
 
     <p id="ch3-overflow-p5">
-      Overwriting the return address is half the attack; the other half is choosing what to write there. The classic technique, perfected in the 1990s, is called <span class="key-term">shellcode injection</span>: place machine code for a small payload (traditionally one that spawns a shell, a program that runs whatever commands it is typed, hence "shellcode") into the buffer being overflowed, and overwrite the return address with the address of that shellcode. When the function returns, the CPU jumps into the buffer and runs the attacker's instructions.
+      Overwriting the return address is half the attack; the other half is choosing what to write there. The classic technique, perfected in the 1990s, is called <span class="key-term">shellcode injection</span>: place machine code for a small payload (traditionally one that spawns a shell, a program that runs whatever commands it is typed, hence "shellcode") into the buffer being overflowed, and overwrite the return address with the address of that shellcode. When the function returns, the CPU jumps into the buffer and runs the attacker's instructions. It worked because the stack could then hold running code; the NX bit (Defence two, below) took that away.
     </p>
 
     <p id="ch3-overflow-p6">
@@ -3527,8 +3524,7 @@ main:
 
     <p id="ch3-overflow-p8">
       C, which gets its own chapter later, was designed in 1972 as a portable assembler.
-      It exposes raw memory and raw pointers, and by default it does not check that array
-      accesses stay within bounds. <code>strcpy</code>, <code>gets</code>,
+      It exposes raw memory and raw pointers, and by default it does not check that array accesses stay within bounds (an <em>array</em>, a row of same-sized values in memory like the 16-byte buffer above). <code>strcpy</code>, <code>gets</code>,
       <code>scanf("%s")</code>, and many other standard-library functions assume the
       programmer has guaranteed the buffer is large enough. When they're wrong, the
       corruption is silent: bytes get overwritten, the program keeps running, and the
@@ -3538,14 +3534,12 @@ main:
     <p id="ch3-overflow-p9">
       This is the price of <em>memory unsafety</em>. C and C++ are memory-unsafe by
       design, trading safety for performance and control. Modern languages like Rust,
-      Java, Python, and Go are <em>memory-safe</em>: their runtimes or compilers check
-      every array access against the array's real length, and they check <em>before</em>
+      Java, Python, and Go are <em>memory-safe</em>: their compilers, or their <em>runtime</em> (the support code that runs the program, such as the Java virtual machine or the Python interpreter), check every array access against the array's real length, and they check <em>before</em>
       the write lands. An out-of-bounds access becomes a controlled failure (an exception,
       a Rust panic): the program stops loudly at the bad access instead of sailing on with
       a trampled return address, and a crash is not code execution. For Rust this
       guarantee was the whole reason the language exists; for Java, Python, and Go it came
-      bundled with managed runtimes adopted for other reasons. Either way, the classical
-      buffer overflow cannot occur.
+      bundled with runtimes adopted for other reasons. Either way, outside the escape hatches each language keeps (such as unsafe Rust), the classical buffer overflow cannot occur.
     </p>
 
     <div class="insight-strip">
@@ -3813,7 +3807,7 @@ main:
     <h3>Defence four, and the attack that still beat it: ROP</h3>
 
     <p id="ch3-defenses-p8">
-      Hovav Shacham showed in 2007 that DEP and ASLR were not enough. He introduced
+      Return-to-libc can reuse only whole functions. In 2007 Hovav Shacham showed that tiny fragments of existing code are enough, and introduced
       <span class="key-term">Return-Oriented Programming</span> (ROP). Instead of
       injecting new code, the attacker chains together short fragments of <em>existing</em>
       code in the program, fragments ending in a <code>ret</code> instruction. Each

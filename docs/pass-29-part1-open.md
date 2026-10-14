@@ -4,6 +4,8 @@ The 114 owner-call items in `docs/pass-29-owner-calls.md` were checked against t
 
 ## Prose (law-4 work; Chapter 3 carries most of it)
 
+**All closed 2026-10-15** (one author, then a blind expert-and-newcomer check whose nine points were all applied). Glossary: array and runtime authored, Boolean algebra and truth values corrected.
+
 - ch1-transistor-p7: nothing says where the gate's electrons come from (the n-type source and drain).
 - ch1-transistor-p8 (Fig 1.5 caption): "its field reaches through the insulator", but a field is never explained.
 - ch1-kernel-p8: what reading a running program "like a file" means is still unexplained.
