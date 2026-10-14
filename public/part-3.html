@@ -3280,8 +3280,7 @@
       His name was Tim Berners-Lee. The document described a system for linking
       documents across computers using any network, generalising the linked-notes
       program he had already built for himself at CERN. His manager, Mike Sendall, wrote
-      in the margin of the cover page: <em>"Vague but exciting."</em> He approved
-      the project, partly to give Berners-Lee something to do. By Christmas
+      in the margin of the cover page: <em>"Vague but exciting."</em> He let Berners-Lee carry on. By Christmas
       1990 the world's first web server was running on a black NeXT
       workstation in Building 31 at CERN.
     </p>
@@ -3291,8 +3290,7 @@
       thousands of scientists from dozens of countries
       collaborating on experiments that took years to plan and produced terabytes of data. A detector built in
       Italy ran software written in France against data analysed in Sweden.
-      Documents lived everywhere: research papers on FTP servers, calibration
-      tables in flat files on shared disks, equipment manuals on a
+      Documents lived everywhere: research papers on file servers, calibration tables in plain files on shared disks, equipment manuals on a
       secretary's PC, design notes in a little hypertext program Berners-Lee
       had written years earlier for himself, called <em>ENQUIRE</em>. Finding
       anything required knowing where to look; sharing anything new meant
@@ -3321,7 +3319,7 @@
 
     <ul style="margin: 16px 0 24px 28px; line-height: 1.9; font-size: 1.02rem;">
       <li><strong>URL</strong>: Uniform Resource Locator. A way to write down where any document lives, in any system. <code>http://info.cern.ch/hypertext/WWW/TheProject.html</code>: protocol, host, path.</li>
-      <li><strong>HTTP</strong>: HyperText Transfer Protocol. The procedure for one machine to ask another for a document at a URL and receive it back. Originally five lines of text on the wire.</li>
+      <li><strong>HTTP</strong>: HyperText Transfer Protocol. The procedure for one machine to ask another for a document at a URL and receive it back. Originally a one-line request: GET and the path.</li>
       <li><strong>HTML</strong>: HyperText Markup Language. A simple format for documents that includes <em>links to other documents</em> as inline elements rather than appendices.</li>
     </ul>
 
@@ -3422,8 +3420,7 @@
       In Project Xanadu, every link required the target document to formally
       register itself with the link system; if the target moved or
       disappeared, the link broke and the publisher was supposed to update it.
-      In the web, a link is just a URL; if the URL no longer resolves, the
-      click gets a 404 back and the publisher of the link is none the wiser.
+      In the web, a link is just a URL; if the URL no longer resolves, the click gets back a 404, the web's "not found" code, and the publisher of the link is none the wiser.
       This sounds like a flaw, and it produces "link rot" as the web ages,
       but it was the price of decentralisation. A system that demands a working link to every
       published target is a system with a central authority. A system that
@@ -3437,7 +3434,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg></span>
       <p id="ch11-bernerslee-p11" class="insight-text">
-        <strong>The 1993 release.</strong> On 30 April 1993 CERN released the entire web (code, protocols, specifications) into the public domain, with a one-page document declaring no royalties were owed and no patents would be filed. That document, now in the CERN archive, is by some measures the most economically significant piece of paper of the late twentieth century. Releasing the technology rather than licensing it foreclosed the possibility that any single company could capture it, which is why every later attempt to build a "private web" (AOL, MSN, Compuserve in their walled-garden phases) eventually surrendered.
+        <strong>The 1993 release.</strong> On 30 April 1993 CERN released the entire web (code, protocols, specifications) into the public domain, with a one-page document declaring no royalties were owed and no patents would be filed. Releasing the technology rather than licensing it foreclosed the possibility that any single company could capture it, which is why every later attempt to build a "private web" (AOL, MSN, Compuserve in their walled-garden phases) eventually surrendered.
       </p>
     </div>
   </section>
@@ -3451,9 +3448,7 @@
       hand. Open a TCP connection on port 80 to any web server, type
       <code>GET / HTTP/1.0</code>, press Enter twice, and the server will
       reply with a status line, a few headers, and the document. That
-      transcript is HTTP. Three and a half decades of evolution have added
-      persistent connections, multiplexing, compression, and finally a binary
-      wire format, but the conversational shape <em>"client asks, server
+      transcript is HTTP. Three and a half decades of evolution have added connections that stay open between requests, many requests at once on one connection, compression, and finally a binary format, but the conversational shape <em>"client asks, server
       answers"</em> has not changed: HTTP/1.0 from 1996 still works against
       modern servers.
     </p>
@@ -3524,11 +3519,10 @@
 
     <p id="ch11-http-p5">
       Statelessness is inconvenient for any application that needs to
-      remember a logged-in user: every way we fake state on top (cookies,
-      session IDs, JWT tokens, OAuth flows) exists to paper over it. But the
+      remember a logged-in user: every way we fake state on top (the cookie above all, a small value the server hands the browser and the browser sends back with every request) exists to paper over it. But the
       property is what made the web scale. A stateless server can handle
       requests from a million different clients in any order, on any thread,
-      on any of a thousand servers behind a load balancer, without any of
+      on any of a thousand servers behind a load balancer (a front door that spreads requests across them), without any of
       them needing to share memory. It is why the web survived Facebook,
       Wikipedia, and YouTube becoming popular without a fundamental redesign
       of the protocol. Statefulness scales with engineering effort;
@@ -3597,10 +3591,9 @@
       <code>GET</code> (fetch a resource), <code>POST</code> (submit data,
       possibly creating a new resource), <code>PUT</code> (replace a resource
       with the supplied data), and <code>DELETE</code> (remove a resource).
-      The choice is not arbitrary; it is part of the contract with caches,
-      proxies, and CDNs. Two properties matter:
+      The choice is not arbitrary; it is part of the contract with the caches, proxies (machines that relay requests on a client's behalf) and other machines along the path. Two properties matter:
       <strong>safety</strong> (the request does not change the server's state:
-      <code>GET</code> and <code>HEAD</code> are safe) and
+      <code>GET</code> and <code>HEAD</code>, a GET without the body, are safe) and
       <strong>idempotency</strong> (repeating the request has the same effect
       as a single request: <code>GET</code>, <code>PUT</code>, and
       <code>DELETE</code> are idempotent; <code>POST</code> typically is not).
@@ -3710,10 +3703,9 @@
       address: a 32-bit number on the IPv4 internet, 128 bits on IPv6. Humans
       do not remember 93.184.216.34. Humans remember <code>example.com</code>.
       Something has to translate the second into the first, billions of
-      times per second across the planet, with sub-second latency, and almost
+      times per second across the planet, in well under a second, and almost
       never lie. That something is the <strong>Domain
-      Name System</strong>, a hierarchical, replicated, cached, mostly
-      decentralised distributed database, designed by Paul Mockapetris in
+      Name System</strong>, a database spread across thousands of servers, arranged as a tree, and copied and cached everywhere, designed by Paul Mockapetris in
       1983 (RFC 882, RFC 883, then refined into RFC 1034 and RFC 1035 in
       1987). <span class="key-term">DNS</span> is older than the web and older than most readers of
       this book. It is also, structurally, the most fragile critical
@@ -3725,11 +3717,11 @@
       <code>HOSTS.TXT</code> at the Stanford Research Institute, listing every
       machine's name and IP; every machine on the network downloaded it
       periodically. By the early 1980s the file had grown to thousands of
-      entries, was edited by hand, and was distributed by FTP. A typo at SRI
+      entries, was edited by hand, and was copied out over the network. A typo at SRI
       could break name resolution for the entire network. Mockapetris's
       design replaced this with a tree: the responsibility for each piece of
       the name space is delegated to a different organisation, and each
-      organisation runs the servers authoritative for its own piece. So
+      organisation runs the servers that hold the official answers for its own piece. So
       <code>www.example.com</code> is translated not by one machine but by a
       chain of them, each pointing the asker one step closer to the answer.
     </p>
@@ -3747,8 +3739,7 @@
       operators. The root is run jointly by twelve organisations
       (<em>VeriSign, ICANN, university and government bodies</em>) operating
       thirteen logically named servers (<code>a.root-servers.net</code>
-      through <code>m.root-servers.net</code>) replicated across well over a
-      thousand sites worldwide via <em>anycast</em>. The
+      through <code>m.root-servers.net</code>) copied to well over a thousand sites worldwide using <em>anycast</em>: one address, answered by whichever copy is nearest. The
       <code>com</code> servers are run by VeriSign on contract with ICANN.
       The <code>example.com</code> servers are run by whoever owns
       <code>example.com</code>: a hosting company, a corporate IT department,
@@ -3833,7 +3824,7 @@
       <code>com</code> replies, "I don't know, but the
       <code>example.com</code> servers do. Here are theirs." The resolver
       asks one of <em>those</em>; that server is authoritative for
-      <code>example.com</code> and returns the actual IP. The resolver caches the answer for the TTL the authoritative server sets (typically 5 minutes to 24 hours) and returns it to the laptop. Total time:
+      <code>example.com</code> and returns the actual IP. The resolver caches the answer for the time to live (TTL) the authoritative server sets (typically 5 minutes to 24 hours) and returns it to the laptop. Total time:
       usually under 50 milliseconds the first time; until the TTL expires,
       every later lookup costs one short trip to the resolver, or nothing at
       all when the laptop's own cache still holds the answer.
@@ -3963,7 +3954,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch11-dns-p9" class="insight-text">
-        <strong>The 2016 Dyn attack.</strong> On 21 October 2016, the Mirai botnet (~100,000 compromised IoT devices) directed sustained UDP floods at <strong>Dyn</strong>, a major DNS provider that hosted authoritative servers for Twitter, Netflix, Reddit, GitHub, Spotify, and dozens of others. For most of the morning on the US East Coast, those sites were unreachable, not because their own servers were down but because nobody could resolve their names. Dyn's engineers fought the flood through three waves across the day before traffic scrubbing finally held. The lesson, that even a "decentralised" tree has heavy concentration points, drove the modern push toward redundant DNS: a domain's authoritative NS records spread across two or more independent providers, so no single operator going dark takes the name with it.
+        <strong>The 2016 Dyn attack.</strong> On 21 October 2016, the Mirai botnet (about 100,000 hijacked home devices such as cameras and routers) directed sustained UDP floods at <strong>Dyn</strong>, a major DNS provider that hosted authoritative servers for Twitter, Netflix, Reddit, GitHub, Spotify, and dozens of others. For most of the morning on the US East Coast, those sites were unreachable, not because their own servers were down but because nobody could resolve their names. Dyn's engineers fought the flood through three waves across the day before filtering finally held the flood back. The lesson, that even a "decentralised" tree has heavy concentration points, drove the modern push toward redundant DNS: a domain's name servers spread across two or more independent providers, so no single operator going dark takes the name with it.
       </p>
     </div>
   </section>
@@ -4060,7 +4051,7 @@
       produces a completely different output, with no predictable
       relationship). The hash is, in effect, a fingerprint of the data,
       uniquely identifying it without revealing it. SHA-256 is the workhorse:
-      certificate authorities use it, and so does every TLS handshake. (Git
+      the certificates of Section 05 rely on it, and so does every TLS handshake. (Git
       is the exception: it still fingerprints its commits with the older
       SHA-1.)
     </p>
@@ -4105,8 +4096,7 @@
       read everything. The flagship algorithm is <strong>AES</strong>
       (Advanced Encryption Standard, NIST 2001), which encrypts 128-bit blocks
       using a 128, 192, or 256-bit key in ten to fourteen rounds of byte-level
-      mixing. AES is fast: your CPU has hardware instructions for it
-      (<code>AES-NI</code> on Intel/AMD, equivalent on ARM), and a modern
+      mixing. AES is fast: your CPU has instructions built for it, and a modern
       laptop encrypts gigabytes per second per core. The hard part is
       getting the shared key into both parties' hands without anyone watching.
     </p>
@@ -4116,14 +4106,12 @@
       bootstrap problem. Each party has a key <em>pair</em>: a public key
       they share with the world, and a private key they keep secret. Data
       encrypted with the public key can only be decrypted with the matching
-      private key. Two strangers who have never met can then establish a
-      shared secret over a public channel. In Diffie–Hellman (1976), which is
+      private key. A related trick lets two strangers who have never met agree on a shared secret over a public channel. In Diffie–Hellman (1976), which is
       key agreement rather than encryption, they swap public keys; each side
       combines its own private half with the other's public half, both arrive
       at the same number, and no eavesdropper can derive it even with full
       transcripts. Public-key operations are slow (RSA is a thousand times
-      slower than AES for the same data volume, ECDH is faster but still
-      slower), so in practice we use public-key cryptography only to agree
+      slower than AES for the same data volume, elliptic-curve methods are faster than RSA but still far slower than AES), so in practice we use public-key cryptography only to agree
       on a symmetric key, then encrypt the actual conversation with AES.
       That split is what makes TLS practical.
     </p>
@@ -4192,8 +4180,7 @@
       <span class="key-term">TLS</span> (Transport Layer Security) is the protocol that
       turns the cleartext byte stream of TCP into an encrypted, authenticated
       one. It is what the lock icon in your browser refers to, and it runs
-      underneath HTTPS, IMAPS, SMTPS, and roughly every "S"-suffixed protocol
-      since the late 1990s. Its lineage starts with <strong>SSL 1.0</strong>
+      underneath HTTPS, secure email, and roughly every protocol with a secure variant since the late 1990s. Its lineage starts with <strong>SSL 1.0</strong>
       (Netscape, 1994, found broken before it was ever released), through
       SSL 2.0 (1995, broken), SSL 3.0 (1996, eventually broken via POODLE in
       2014), then renamed <strong>TLS</strong> 1.0 (1999), TLS 1.1, TLS 1.2
@@ -4206,13 +4193,13 @@
       should end up sharing a secret key, with the server's identity proven,
       while no third party listening to or manipulating the conversation can
       read or alter the result. TLS 1.3 does it in <em>one round trip</em>
-      (TLS 1.2 needed two) and composes the primitives of §04. The
+      (TLS 1.2 needed two) and uses all three tools of Section 04. The
       client's hello already carries its half of a fresh Diffie–Hellman
       exchange; the server answers with the other half, and from that moment
       both sides hold the same secret, so the server can encrypt the rest of
       its very first reply: certificate, signature and all. The signature,
       made with the certificate's private key, proves the server is who the
-      certificate says; the closing Finished messages each carry a hash of
+      certificate says; the closing messages each carry a hash of
       the entire transcript, so any tampering along the way surfaces as a
       mismatch. Symmetric encryption then carries the data. The whole thing
       costs one round trip: about 20 milliseconds to a nearby server, three
@@ -4398,24 +4385,20 @@
     <p id="ch11-modern-p1" class="lead">
       HTTP/1.1 from 1999 was good enough for nearly two decades. Then mobile
       networks happened, JavaScript-heavy sites happened, the average web
-      page grew from 50 KB to 3 MB, and the protocol's serial-request model
+      page grew from 50 KB to 3 MB, and the protocol's one-request-at-a-time model
       started costing real time. Two new versions followed, HTTP/2 in 2015 and HTTP/3 in 2022, each fixing a bottleneck the previous
       one couldn't. Neither is a new HTTP: the headers, methods, and status
-      codes you saw in §02 are unchanged. What changes underneath is how
-      those messages are serialised onto the network, multiplexed, and
-      transported.
+      codes you saw in Section 02 are unchanged. What changes underneath is how those messages are packed onto the network and carried.
     </p>
 
     <h3>HTTP/2: binary, multiplexed, on the same TCP connection</h3>
 
     <p id="ch11-modern-p2">
-      The headline problem with HTTP/1.1 was <em>head-of-line blocking at
-      the application layer</em>. A browser opening a typical page needed
+      The headline problem with HTTP/1.1 was <em>head-of-line blocking</em>: a slow response at the front of the queue holds up everything behind it. A browser opening a typical page needed
       to fetch dozens of resources: HTML, then 10 stylesheets, then 30
       JavaScript files, then 50 images. HTTP/1.1 sent these one at a time
       down a single TCP connection (with at most six parallel connections
-      per host as a workaround). A slow response held up everything queued
-      behind it. HTTP/2 (RFC 7540, 2015, derived from Google's SPDY) replaced
+      per host as a workaround). HTTP/2 (RFC 7540, 2015, derived from Google's SPDY) replaced
       the text-based wire format with a binary one and introduced
       <em>streams</em>: many independent request/response pairs interleaved
       on the same TCP connection, each chopped into binary frames tagged
@@ -4477,9 +4460,7 @@
 
     <p id="ch11-modern-p5">
       <strong>QUIC</strong> (Quick UDP Internet Connections, RFC 9000, 2021)
-      replaces TCP entirely for HTTP traffic. It runs on top of UDP, the "fire and forget" protocol from §01 of <a href="#ch10">Chapter 10</a>, and reimplements
-      TCP's reliable ordered delivery, flow control and congestion control, TLS's
-      encryption and authentication, and HTTP/2's multiplexing. The difference: each stream is ordered independently, so a lost
+      replaces TCP entirely for HTTP traffic. It runs on top of UDP, the "fire and forget" protocol from Section 01 of <a href="#ch10">Chapter 10</a>, and rebuilds TCP's reliable ordered delivery, flow control and congestion control, and HTTP/2's many streams, with TLS 1.3 encryption built in. The difference: each stream is ordered independently, so a lost
       packet on stream A no longer holds back stream B. QUIC was developed
       by Google starting around 2012, rolled out experimentally in Chrome and on Google's servers from 2013, and reached essentially all Chrome users by 2017, years before the IETF standard. HTTP/3
       (RFC 9114, 2022) is just HTTP semantics over QUIC. As of 2026 it
@@ -4536,7 +4517,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg></span>
       <p id="ch11-modern-p7" class="insight-text">
-        <strong>Protocols earn their shape.</strong> Every protocol in this chapter follows the same arc. Berners-Lee's HTTP was minimal, text-based, perfect for 1991. It was pushed past its limits and replaced with denser, harder, more cryptographic versions. DNS, designed in 1983 with no adversarial model, was patched in turn with port randomisation, DNSSEC, DoH, DoT. TLS was born as Netscape's SSL 1.0, which was never released because it was broken, and went through six numbered versions before reaching the clean 1.3 most browsers now use. None of these protocols was correctly designed at first issue; all of them earned their current shape from twenty-plus years of attacks and patches. This is especially true of network protocols, because their designers cannot iterate quickly: every change has to be deployed across millions of independently operated machines without breaking the existing ones.
+        <strong>Protocols earn their shape.</strong> Every protocol in this chapter follows the same arc. Berners-Lee's HTTP was minimal, text-based, perfect for 1991. It was pushed past its limits and succeeded by denser, harder, more cryptographic versions. DNS, designed in 1983 with no adversarial model, was patched in turn with port randomisation, DNSSEC and encrypted DNS. TLS was born as Netscape's SSL 1.0, which was never released because it was broken, and went through six numbered versions before reaching the clean 1.3 most browsers now use. None of these protocols was correctly designed at first issue; all of them earned their current shape from twenty-plus years of attacks and patches. This is especially true of network protocols, because their designers cannot iterate quickly: every change has to be deployed across millions of independently operated machines without breaking the existing ones.
       </p>
     </div>
 
