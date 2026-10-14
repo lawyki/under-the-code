@@ -2227,11 +2227,11 @@
     <p id="ch10-udp-p1" class="lead">
       Before TCP and its machinery of reliability, there is the simplest
       thing you can do with IP: just send packets. No connection. No
-      retransmission. No ordering. No back-pressure. That is
+      retransmission. No ordering. No way for the receiver to say slow down. That is
       <strong>UDP</strong>, the User Datagram Protocol: RFC 768, 1980, three
       pages long, an eight-byte header on top of IP. And yet UDP carries an
       enormous fraction of modern internet traffic (DNS, every video call,
-      every game, every QUIC connection), because for these applications,
+      every game, every connection over QUIC, the newer transport of Section 05), because for these applications,
       the simplicity is the feature.
     </p>
 
@@ -2244,8 +2244,7 @@
       arrive at all (a lost packet costs only the ~20 milliseconds of audio
       it carried, a gap the ear glides over; a late one stalls the stream,
       and the stall is the hiccup you hear). A DNS lookup is a single small
-      request and a single small response; TCP's three-segment setup would
-      double the lookup's latency to no benefit.
+      request and a single small response; TCP's three-message setup (Section 03) would double the time the lookup takes, for nothing.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-1">
@@ -2304,7 +2303,7 @@
       Network Intercommunication" in the <em>IEEE Transactions on
       Communications</em>. Its protocol, which they called simply TCP, was
       designed to do four things on top of an unreliable packet network:
-      <strong>segment</strong> a long byte stream into manageable chunks,
+      <strong>segment</strong> a long byte stream into manageable chunks, called segments,
       <strong>order</strong> them so the receiver sees them in sequence,
       ensure their <strong>reliable</strong> delivery despite arbitrary loss,
       and apply <strong>flow control</strong> so a fast sender does not
@@ -2344,8 +2343,7 @@
     <h2>Three segments. Two synchronised counters. One conversation.</h2>
 
     <p id="ch10-handshake-p1" class="lead">
-      A TCP connection begins with a three-segment exchange: SYN, SYN-ACK,
-      ACK. When it ends, both sides know each other's starting sequence
+      A TCP connection begins with three messages (TCP calls each one a segment): SYN (synchronise: here is my starting number), SYN-ACK (got yours; here is mine) and ACK (got yours). When it ends, both sides know each other's starting sequence
       numbers, both have allocated a TCB, and both are ready to stream. Why
       three? Two would leave the server's own starting counter
       unacknowledged, so the server would be streaming against a number it
@@ -2381,7 +2379,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.822000;0.822222;1.000000" dur="9s" repeatCount="indefinite"/><line x1="70" y1="250" x2="330" y2="266" stroke="#e07a3f" stroke-width="2" stroke-dasharray="6 4"/><text x="200" y="248" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">first data</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.233278;0.233333;0.276667;0.277222;0.633111;0.633333;1.000000" dur="9s" repeatCount="indefinite"/><path d="M56 90 H48 V166 H56" fill="none" stroke="#e07a3f" stroke-width="1.5"/><text x="42" y="133" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">1 RTT</text></g>
 </svg>
-      <p id="ch10-handshake-p2" class="diagram-caption">The client sends SYN with its starting sequence number; the server answers with its own and acknowledges the client's plus one; the client acknowledges the server's plus one, and both now know both counters. That costs one full round trip before the first byte of data, the tax TCP Fast Open and QUIC set out to cut.</p>
+      <p id="ch10-handshake-p2" class="diagram-caption">The client sends SYN with its starting sequence number; the server answers with its own and acknowledges the client's plus one; the client acknowledges the server's plus one, and both now know both counters. That costs one full round trip before the first byte of data, the tax QUIC (Section 05) sets out to cut.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2393,11 +2391,10 @@
     </div>
 
     <p id="ch10-handshake-p3">
-      Both endpoints run TCP's finite state machine of eleven states through
-      setup, data transfer and teardown. Most connections take one
+      Each end keeps its connection in one of eleven named states. A segment arriving, a call from the program or a timer running out moves it from one state to the next, by fixed rules: a <em>state machine</em> covering setup, data transfer and teardown. Most connections take one
       well-trodden path: CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 →
       FIN_WAIT_2 → TIME_WAIT → CLOSED. The off-path states exist to handle
-      simultaneous opens, simultaneous closes, lost FINs, and the dozen other
+      simultaneous opens, simultaneous closes, lost FINs (the segment that says I have nothing more to send), and the dozen other
       partial-failure modes the protocol was designed to survive.
     </p>
 
@@ -2471,7 +2468,7 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.396750;0.396875;0.462000;0.462188;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: close(): send FIN</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.462375;0.462500;0.527625;0.527813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
 </svg>
-      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven states, as RFC 793 defined them in 1981: the client connects and later closes first, the server listens and closes second, each move triggered by a segment arriving or a call from the program. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.</p>
+      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven states, as RFC 793 defined them in 1981: the client connects and later closes first, the server listens and closes second, each move triggered by a segment arriving, a call from the program or a timer. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2620,16 +2617,16 @@
       the retransmits piled into the same queues; the queues overflowed
       again. Each retransmit produced more retransmits, while neither
       side was, locally, doing anything wrong. <strong>Van Jacobson</strong>
-      at LBL and <strong>Michael Karels</strong> at Berkeley's CSRG, one
+      at LBL and <strong>Michael Karels</strong> in Berkeley's UNIX group, one
       at each end of the collapsed link, spent the better
       part of the next two years finding out why. Their diagnosis,
       published in 1988 as <em>"Congestion Avoidance and Control"</em>,
       was that the receive window accounted for the receiver but said
       nothing about the network in between, and a network without explicit
       congestion feedback would always, eventually, congest itself to death.
-      The paper's fix added two pieces, slow start and <span class="key-term">AIMD</span>, and both became
+      The paper's fix centred on two pieces, explained next: slow start and <span class="key-term">AIMD</span>, and both became
       part of every TCP stack in the world over the next four years.
-      Without that fix, the internet of the 1990s would not have existed.
+      Without that fix, the internet could not have grown as it did in the 1990s.
     </p>
 
     <p id="ch10-aimd-p6">
@@ -2641,7 +2638,7 @@
       vanished while later ones kept arriving), the connection assumes it
       has hit the network's capacity and switches to <strong>congestion
       avoidance</strong>: cwnd is halved, then increases <em>linearly</em>,
-      by one segment per RTT. Another loss triggers another halving, so the
+      by one segment per round trip (RTT). Another loss triggers another halving, so the
       window oscillates around the true capacity in a sawtooth pattern. (A
       full timeout is grimmer news: the window resets to one segment and
       slow start begins again.)
@@ -2684,7 +2681,7 @@
 
     <div class="math-callout">
       <div class="math-label">Why AIMD: Chiu &amp; Jain, 1989</div>
-      <p id="ch10-aimd-p8">AIMD (Additive Increase, Multiplicative Decrease) is not merely a combination that works; <em>it is the only one that does</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). MIMD keeps the ratio between the flows and AIAD keeps the gap, so neither ever gets fairer; MIAD widens the gap. Theirs is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
+      <p id="ch10-aimd-p8">AIMD (Additive Increase, Multiplicative Decrease) is not merely a combination that works; <em>it is the only one that does</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). Multiplicative increase with multiplicative decrease (MIMD) keeps the ratio between the flows and additive with additive (AIAD) keeps the gap, so neither ever gets fairer; multiplicative increase with additive decrease (MIAD) widens the gap. Theirs is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
     </div>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-10-6">
@@ -2744,11 +2741,9 @@
     <p id="ch10-modern-p1" class="lead">
       Classic TCP (Tahoe, Reno, NewReno) was designed for the late-1980s
       internet, where round-trip times were tens of milliseconds and
-      bandwidths a few megabits. The modern internet has flows that span
-      continents (200 ms RTT) between gigabit endpoints, and mobile
+      bandwidths a few megabits. The modern internet has flows that span continents (200 ms round trips) between gigabit endpoints, and mobile
       connections whose radio conditions change every second. Classic TCP
-      loses badly on both counts: its slow linear growth takes too long to
-      fill a fat pipe with a long RTT, and its loss-as-signal model fails on
+      loses badly on both counts: its slow linear growth takes too long to fill a fast path with a long round trip, and its loss-as-signal model fails on
       lossy wireless links, where most loss has nothing to do with
       congestion. The last two decades produced three answers.
     </p>
@@ -2804,7 +2799,7 @@
       and aim for the <em>bandwidth-delay product</em> (BDP), the amount of
       in-flight data that fills the pipe without overflowing buffers. Google
       deploys BBR at its edge for YouTube and Search. On lossy Wi-Fi,
-      transcontinental links and buffer-bloated home routers, BBR can be two
+      transcontinental links and home routers with oversized queues, BBR can be two
       to ten times faster than CUBIC. It is also more aggressive against
       competing CUBIC flows, which remains a source of debate.
     </p>
@@ -2880,13 +2875,9 @@
     <p id="ch10-modern-p6">
       <span class="key-term">QUIC</span> (Google 2012, IETF standard 2021) is the most
       radical answer of all: abandon TCP entirely. QUIC runs over UDP and
-      builds reliability, encryption, multiplexing, and congestion control
-      into one protocol that lives in user space, not the kernel.
-      Connection setup folds into the TLS 1.3 handshake, with zero-RTT setup
-      possible for repeat connections. Loss in one HTTP request stream
-      doesn't block other streams (the "head-of-line blocking" that hampered
-      HTTP/2 over TCP). QUIC is what HTTP/3 runs on. By 2024 it carried
-      well over a quarter of web traffic by volume, and the share is growing.
+      builds reliability, encryption, many independent streams per connection, and congestion control into one protocol that runs inside the application, not the kernel. Connection setup folds into the encryption handshake of TLS 1.3 (Chapter 11), and a returning client can send its request in its very first packet. Loss in one HTTP request stream
+      doesn't block other streams (over TCP, one lost packet stalls every request queued behind it: "head-of-line blocking"). QUIC is what HTTP/3 runs on. By 2024 it carried
+      well over a quarter of web requests, and the share is growing.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-9">
@@ -3051,7 +3042,7 @@
       <strong>SYN cookies</strong>. When the connection table is
       under pressure, the server stops allocating state for incoming SYNs
       <em>at all</em>. Instead, it encodes the necessary state into the
-      Initial Sequence Number it returns in the SYN-ACK: a keyed hash of the
+      Initial Sequence Number (ISN) it returns in the SYN-ACK: a keyed hash of the
       (source IP, source port, destination IP, destination port, time
       bucket), small enough to fit in 32 bits, hard to forge without the
       server's secret key. The third ACK carries the cookie back (its acknowledgement number is the cookie plus one); the server recomputes the hash, and only a
@@ -3130,8 +3121,7 @@
 
     <p id="ch10-attacks-p6">
       Two other classical TCP attacks turn on sequence numbers.
-      <strong>RST injection</strong>: an attacker on the path injects a TCP
-      RST segment with a sequence number in the receiver's window, causing
+      <strong>RST injection</strong>: an attacker on the path injects a TCP RST (reset) segment with a sequence number in the receiver's window, causing
       the receiver to tear down the connection. The Great Firewall of China
       uses this for censorship: when the firewall sees a request it dislikes,
       it sends RST segments to both ends, killing the connection and
@@ -3189,7 +3179,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch10-attacks-p9" class="insight-text">
-        <strong>State is the attack surface.</strong> TCP gives you reliability, ordering, and back-pressure. It pays for each in kernel-side state that an attacker can force it to spend. The defences are nearly all about <em>making the protocol stateless under attack</em>: SYN cookies (state in the wire), random ISNs (state in the unguessable), TLS (state cryptographically authenticated). Every layer of the network stack, from here onward, exhibits the same arc: protocol invented for a reason; protocol exploited; protocol patched in a way that pushes state into harder places.
+        <strong>State is the attack surface.</strong> TCP gives you reliability, ordering, and flow control. It pays for each in kernel-side state that an attacker can force it to spend. The defences are nearly all about <em>making the protocol stateless under attack</em>: SYN cookies (state in the wire), random ISNs (state in the unguessable), TLS (state cryptographically authenticated). Every layer of the network stack, from here onward, exhibits the same arc: protocol invented for a reason; protocol exploited; protocol patched in a way that pushes state into harder places.
       </p>
     </div>
 
@@ -3200,7 +3190,7 @@
       unreliable packet network. <a href="#ch11">Chapter 11</a> puts the web on top:
       HTTP for fetching documents, DNS for finding servers by name, TLS
       for keeping every byte of the conversation private and authenticated.
-      Chapter 11 completes it: voltage on copper (<a href="#ch8">Chapter 8</a>) → IP packet (<a href="#ch9">Chapter 9</a>) →
+      Then the stack is complete: voltage on copper (<a href="#ch8">Chapter 8</a>) → IP packet (<a href="#ch9">Chapter 9</a>) →
       reliable TCP byte stream (<a href="#ch10">Chapter 10</a>) → HTTP request and TLS encryption
       (<a href="#ch11">Chapter 11</a>).
     </p>
