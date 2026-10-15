@@ -72,7 +72,7 @@
   }
   .book-account:hover, .book-account:focus-visible { color: var(--accent); }
   .book-account:focus-visible { outline: 2px solid var(--accent); outline-offset: -6px; border-radius: 4px; }
-  .book-account svg { display: block; width: 15px; height: 15px; overflow: visible; }
+  .book-account svg { display: block; width: 18px; height: 18px; overflow: visible; }
   .book-account.is-signed-in { color: rgba(212,168,83,0.75); }
   .book-account.is-signed-in svg path { fill: currentColor; }
   .book-account-label { display: none; }
@@ -105,6 +105,9 @@
   .chapter-hero { background: var(--black); color: white; min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; position: relative; overflow: hidden; }
   .chapter-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(212,168,83,0.08) 0%, transparent 60%); }
   .chapter-hero-text { padding: 80px 60px 80px 80px; position: relative; z-index: 2; }
+  /* WCAG 1.4.12: with the reader's own letter and word spacing a long word must wrap, not push past a phone screen (Pass 30 Gate 1) */
+  .chapter-hero-text { min-width: 0; }
+  .chapter-hero-text h1, .chapter-hero-text p, .chapter-hero-text .meta-value, .chapter-hero-text span, main.content h2 { overflow-wrap: anywhere; }
   .chapter-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
   .chapter-label::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
   .chapter-hero h1 { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 400; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
@@ -125,6 +128,10 @@
   .chapter-nav::after { right: 0; margin-left: -56px; background: linear-gradient(to left, var(--nav-bg), transparent); }
   .chapter-nav[data-navscroll~="more-left"]::before { opacity: 1; }
   .chapter-nav[data-navscroll~="more-right"]::after { opacity: 1; }
+  /* a visible "more" cue in each fade, so the strip reads as scrollable even when an item ends exactly at the edge (Pass 30 Gate 1) */
+  .chapter-nav::before, .chapter-nav::after { display: flex; align-items: center; font-family: var(--mono); font-size: 22px; color: rgba(255,255,255,0.75); }
+  .chapter-nav::before { content: '\2039'; justify-content: flex-start; padding-left: 8px; box-sizing: border-box; }
+  .chapter-nav::after { content: '\203A'; justify-content: flex-end; padding-right: 8px; box-sizing: border-box; }
   .nav-item { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); padding: 18px 20px; cursor: pointer; transition: color 0.2s; text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; }
   .nav-item:first-child { margin-left: var(--nav-inset); }
   .nav-item:last-child { margin-right: var(--nav-inset); }
@@ -175,6 +182,7 @@
   .code-lang { position: absolute; top: 12px; right: 16px; font-family: var(--mono); font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
   @media (max-width: 400px) { .code-lang { position: static; display: block; margin-bottom: 12px; } }   /* Pass 28 no-clipping: a long label sat on the code */
   .code-block pre { font-family: var(--mono); font-size: 13px; line-height: 1.8; color: rgba(255,255,255,0.78); white-space: pre; }
+  @media (min-width: 1024px) { .code-block pre { white-space: pre-wrap; overflow-wrap: anywhere; } }   /* on desktop a line longer than the column wraps instead of scrolling; phones keep scrolling code (Pass 30 Gate 1) */
   .code-block .kw { color: #d4a853; }
   .code-block .cm { color: rgba(255,255,255,0.35); font-style: italic; }
   .code-block .st { color: #a8d8a0; }
@@ -255,6 +263,7 @@
   .memory-row .addr { color: var(--accent); }
   .memory-row .val { color: white; }
   .memory-row .desc { color: rgba(255,255,255,0.4); font-style: italic; text-align: right; }
+  @media (max-width: 600px) { .memory-row { grid-template-columns: 64px 1fr; row-gap: 2px; } .memory-row .desc { grid-column: 2; text-align: left; } }   /* phones: the note goes under its value, so the block never scrolls sideways (Pass 30 Gate 1) */
 
   .section-intro { font-family: var(--serif); font-size: 1.2rem; font-style: italic; color: var(--text-muted); line-height: 1.6; margin: 0 0 32px 0; padding: 0 0 0 24px; border-left: 2px solid var(--accent-dim); max-width: 680px; }
 
@@ -730,6 +739,7 @@
   .light-diagram.is-fullscreen .fs-button { display: none; }
   .diagram-card.is-fullscreen .fs-close,
   .light-diagram.is-fullscreen .fs-close { display: flex; }
+  .light-diagram.is-fullscreen .fs-close { color: #6b4e14; border-color: rgba(107,78,20,0.6); }   /* 6:1 on the light card (Pass 30 Gate 1) */
 
   /* View Transitions — smooth morph from inline to fullscreen */
   @supports (view-transition-name: x) {

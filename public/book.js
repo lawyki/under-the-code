@@ -148,7 +148,8 @@
   const label = signedIn ? 'Your account: your place is kept across devices' : 'Account: keep your place across devices';
   a.setAttribute('aria-label', label);
   a.title = label;
-  a.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 2.5h8v11l-4-3-4 3z"/></svg>'
+  // a person: the account (Pass 30 Gate 2 read the old bookmark as "save this place"); Pass 21 grammar, 24-unit grid
+  a.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.5 20c1.3-3.9 4.1-5.8 7.5-5.8s6.2 1.9 7.5 5.8"/></svg>'
     + '<span class="book-account-label">' + (signedIn ? 'Account' : 'Sign in') + '</span>';
   if (nav) nav.classList.add('has-account');
   host.appendChild(a);
