@@ -21,18 +21,18 @@ Order follows `docs/pass-29-30-brief.md`. Ticked when committed and live.
 
 - [x] Shared pause and play control for animated figures (book.js, ui.mjs test)
 - [x] Intended messages written and verified for every figure, committed before any describer runs
-- [ ] Describer calibration (planted untaught label in a Ch1 figure)
-- [ ] Part I: Gate 1 + Gate 2, repairs (incl. the 14 figure items in `docs/pass-29-part1-open.md`)
-- [ ] Part II: Gate 1 + Gate 2, repairs
-- [ ] Part III: Gate 1 + Gate 2, repairs (incl. the locked-caption notes in UNDER.md §4ac)
-- [ ] Part IV: Gate 1 + Gate 2, repairs
-- [ ] Part V: Gate 1 + Gate 2, repairs
-- [ ] Heroes, cover, icons: Gate 1 + Gate 2
-- [ ] Frame drops on real devices (owner report)
+- [x] Describer calibration (planted untaught label in a Ch1 figure)
+- [x] Part I: Gate 1 + Gate 2, repairs (incl. the 14 figure items in `docs/pass-29-part1-open.md`)
+- [x] Part II: Gate 1 + Gate 2, repairs
+- [x] Part III: Gate 1 + Gate 2, repairs (the locked captions are kept originals: reported in `docs/pass-30-owner-calls.md` §B)
+- [x] Part IV: Gate 1 + Gate 2, repairs
+- [x] Part V: Gate 1 + Gate 2, repairs
+- [x] Heroes, cover, icons: Gate 1 + Gate 2
+- [x] Frame drops on real devices (owner report)
 
 ## The close
 
 - [ ] Book-wide re-run: figs.mjs (--motion, --fullscreen), clip.mjs, smooth.mjs, tests/pass25
-- [ ] docs/owner-read-map.md
+- [x] docs/owner-read-map.md
 - [ ] Tag v1.0 or v1.0-rc1
 - [ ] STATE.md freeze line

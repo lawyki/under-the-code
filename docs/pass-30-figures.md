@@ -316,7 +316,7 @@ One per figure except the 18 kept originals: 204. Written per part by one agent 
 
 ## Gate 2 intended messages: heroes and the cover (committed 2026-10-15, before any describer runs)
 
-One per chapter hero and one for the cover: the chapter's or the book's promise as its picture draws it, written from the hero's drawing, the chapter title, its lead and its topics line; checked against both by a Sonnet 5.5 verifier (12 kept as written, 8 corrected). From this commit on, changing one is an owner call.
+One per chapter hero and one for the cover: the chapter's or the book's promise as its picture draws it, written from the hero's drawing, the chapter title, its lead and its topics line; checked against both by a Sonnet 5.5 verifier (13 kept as written, 7 corrected; the commit message for f322bf3 says 12 and 8, a miscount). From this commit on, changing one is an owner call.
 
 | Picture | Of | Intended message |
 |---|---|---|
