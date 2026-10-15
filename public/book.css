@@ -149,7 +149,7 @@
 
   .diagram-card { background: var(--dark); border-radius: 16px; padding: 48px; margin: 48px 0; position: relative; overflow: hidden; }
   .diagram-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%); }
-  .diagram-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 32px; position: relative; z-index: 1; }
+  .diagram-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 32px; position: relative; z-index: 1; }
   .diagram-caption { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 24px; position: relative; z-index: 1; line-height: 1.7; }
   /* p strong and default link colors are near-black — restate them for the dark card ground */
   .diagram-caption strong { color: rgba(255,255,255,0.78); font-weight: 500; }
@@ -263,7 +263,7 @@
   .diagram-card.tall svg { min-height: 280px; }
   .scale-shock { background: var(--dark); border-radius: 16px; padding: 48px 40px; margin: 48px 0; position: relative; overflow: hidden; }
   .scale-shock::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%); }
-  .scale-shock .diagram-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 32px; position: relative; z-index: 1; }
+  .scale-shock .diagram-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 32px; position: relative; z-index: 1; }
   .scale-shock svg { width: 100%; height: auto; position: relative; z-index: 1; }
   .scale-shock .diagram-caption { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 24px; position: relative; z-index: 1; line-height: 1.7; }
 
@@ -474,7 +474,6 @@
   .fig-pause svg { width: 16px; height: 16px; display: block; }
   .light-diagram .fig-pause { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: rgba(26,22,20,0.55); }
   .light-diagram .fig-pause:hover, .light-diagram .fig-pause[aria-pressed="true"] { background: rgba(212,168,83,0.18); border-color: rgba(140,98,30,0.55); color: rgba(140,98,30,0.95); }
-  .has-pause > .diagram-label { padding-right: 84px; }
   .diagram-card.is-fullscreen .fig-pause, .light-diagram.is-fullscreen .fig-pause { top: 16px; right: 60px; width: 36px; height: 36px; border-radius: 8px; }
 
   /* Fullscreen state — diagram lifted out of flow with glass-edge frame.
@@ -1824,7 +1823,7 @@
     .diagram-label { margin-bottom: 20px; padding: 0 56px 0 8px; }   /* clear of the fullscreen button */
     .fs-button { width: 40px; height: 40px; top: 10px; right: 10px; }
     .fig-pause { width: 40px; height: 40px; top: 10px; right: 58px; }
-    .has-pause > .diagram-label { padding-right: 104px; }
+    .diagram-card > .diagram-label, .light-diagram > .diagram-label { padding-right: 104px; }   /* clear of the pause and fullscreen buttons */
     /* fullscreen on a phone is the whole screen, so the figure is bigger than in the page, never smaller */
     .diagram-card.is-fullscreen, .light-diagram.is-fullscreen { inset: 0; max-height: none; margin: 0; border-radius: 0; padding: 60px 8px 16px; }
     .diagram-card.is-fullscreen svg, .light-diagram.is-fullscreen svg, .diagram-card.fig-v2.is-fullscreen svg, .light-diagram.fig-v2.is-fullscreen svg { max-width: 100%; max-height: 100%; }
