@@ -309,6 +309,12 @@
       animation-timeline: view();
       animation-range: entry 15% entry 55%;
     }
+    /* Phones and touch screens: no scroll-driven fade on figure cards and callouts. A card that moves
+       while its SVG animates must be re-rastered every frame, the likeliest cause of the frame drops
+       the owner saw on real devices (2026-10-12). */
+    @media (max-width: 620px), (pointer: coarse) {
+      .diagram-card, .light-diagram, .scale-shock, .math-callout, .pull-quote { animation: none; }
+    }
     /* reduced motion: scroll-driven timelines ignore durations, so stop them and show the finished state */
     @media (prefers-reduced-motion: reduce) {
       .diagram-card, .light-diagram, .scale-shock, .math-callout, .pull-quote, .section-number::after, h3::after { animation: none !important; }
@@ -687,6 +693,15 @@
       animation: none;
       transform: none;
       filter: blur(38px) saturate(1.1);
+    }
+  }
+  /* Phones and touch screens (owner, 2026-10-12: frame drops on real devices): the fullscreen
+     background holds still and blurs less, so the GPU's budget goes to the figure's own motion. */
+  @media (max-width: 620px), (pointer: coarse) {
+    .liquid-bg, .liquid-bg::after, body.liquid-active .liquid-bg::before {
+      animation: none;
+      transform: none;
+      filter: blur(24px);
     }
   }
 
