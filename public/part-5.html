@@ -190,8 +190,8 @@
       (<a href="part-2#ch4">Chapter 4</a>). That separation was exactly the problem when the two processes wanted to <em>cooperate</em>.
       A parent that wanted to share a million-element array with its
       child had to copy it across the kernel boundary with every
-      message, or hand-manage an explicitly shared segment.
-      <strong>POSIX 1003.1c</strong>, ratified in 1995, codified the
+      message, or set up by hand a region of memory both could see.
+      <strong>POSIX 1003.1c</strong>, the threads part of the POSIX standard for UNIX-style systems, ratified in 1995, codified the
       alternative, the <strong>thread</strong>: a separate stream of
       execution that can be scheduled onto a different core and
       <em>shares the address space</em> of its parent process, so it can
@@ -275,14 +275,12 @@
       Not every program benefits from more cores. Programs whose work
       naturally divides into independent chunks (image filters
       processing pixels, web servers handling unrelated requests,
-      Monte Carlo simulations running independent samples) are called
+      simulations that run many independent random trials) are called
       <em>embarrassingly parallel</em> and scale almost linearly with
       core count. Programs whose steps depend on each other benefit
-      much less, or not at all. Amdahl's law (§05) gives the
+      much less, or not at all. Amdahl's law (Section 05) gives the
       mathematics; the practical point is that adding cores is no
-      substitute for serial speed. A 64-core laptop runs a
-      pure-sequential program no faster than a 1-core one with the
-      same clock speed.
+      substitute for serial speed. A 64-core server runs a purely sequential program no faster than a 1-core machine with the same clock speed.
     </p>
   </section>
 
@@ -296,8 +294,7 @@
       harmless: two threads each increment a shared counter a million
       times. The expected result is two million. The actual result is
       nearly always well short of it and changes from run to run,
-      depending on scheduling, cache coherence, and luck. The
-      increment that looks <span class="key-term">atomic</span> in source code (<code>counter++</code>) is in fact three
+      depending on how the threads happen to be scheduled. The increment that looks <span class="key-term">atomic</span> (one indivisible step) in source code (<code>counter++</code>) is in fact three
       operations underneath: read the value into a register, add one,
       write it back. If two threads' three-step sequences overlap, the
       writes can stomp on each other.
@@ -355,9 +352,7 @@
       until the holder releases. The region between lock and unlock is
       the <strong>critical section</strong>, and all critical sections
       that touch the same data are serialised. The mutex itself is built
-      on atomic CPU instructions (<code>compare-and-swap</code> or
-      <code>load-link/store-conditional</code>), which the hardware
-      guarantees are indivisible.
+      on atomic CPU instructions (such as <code>compare-and-swap</code>, Section 03), which the hardware guarantees are indivisible.
     </p>
 
     <div class="code-block">
@@ -383,7 +378,7 @@
 <span class="nm">std::atomic</span>&lt;<span class="kw">int</span>&gt; counter = <span class="st">0</span>;
 <span class="kw">void</span> worker() {
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="st">0</span>; i &lt; <span class="st">1'000'000</span>; ++i)
-        counter.fetch_add(<span class="st">1</span>, <span class="nm">std::memory_order_relaxed</span>);
+        counter.fetch_add(<span class="st">1</span>, <span class="nm">std::memory_order_relaxed</span>);   <span class="cm">// relaxed: atomic, with no ordering promise (Section 03)</span>
 }</pre>
     </div>
 
@@ -534,12 +529,7 @@
     <h3>Memory orderings · why the world is not sequentially consistent</h3>
 
     <p id="ch16-lockfree-p3">
-      On modern multi-core CPUs, the order in which one core's writes
-      become visible to another core is <em>not</em> the order they were
-      issued. Out-of-order execution (<a href="part-1#ch1">Chapter 1</a> §04), store
-      buffers, and cache coherence all conspire to let writes appear
-      reordered. A thread that writes <code>x = 1; flag = true;</code> may have
-      another thread on a different core observe <code>flag = true</code>
+      On many modern multi-core CPUs, the order in which one core's writes become visible to another core can differ from the order they were issued. Out-of-order execution (<a href="part-1#ch1">Chapter 1</a>, Section 04) and store buffers (holding areas where a core parks its writes before they reach the cache; a write whose cache line is already at hand can leave before an earlier write still waiting for its line) let writes appear reordered. On a weakly ordered CPU (one that allows this freely), such as ARM, a thread that writes <code>x = 1; flag = true;</code> may have another thread on a different core observe <code>flag = true</code>
       while still reading <code>x = 0</code>. Programs that depend on
       cross-thread ordering must say so, by annotating each atomic
       operation with a <em>memory ordering</em> (a contract about what
@@ -988,11 +978,10 @@
       Instruction, Multiple Data). A SIMD instruction operates on a vector
       of values at once: add these 32 numbers to those 32 numbers in one
       instruction. CPUs have SIMD too (SSE, AVX on x86; NEON on ARM),
-      typically 128 or 256 bits wide, processing 4 or 8 values at once.
+      typically 128 or 256 bits wide, which holds 4 or 8 32-bit numbers at once.
       GPUs take this much further: a CUDA <em>warp</em> is 32 threads
       running in lockstep. Many warps are grouped into a <em>block</em>;
-      many blocks make a <em>grid</em>; the entire grid is dispatched to
-      the GPU as a single kernel launch. The programmer writes code that
+      many blocks make a <em>grid</em>; the entire grid is dispatched to the GPU as a single kernel launch (here a <em>kernel</em> is the function the GPU runs, not the operating system). The programmer writes code that
       looks like it runs on a single thread; the runtime replicates it
       across the grid.
     </p>
@@ -1157,7 +1146,7 @@
       the parallel portion scales, and effective speedup,
       <em>S(N) = N − (1 − p)·(N − 1)</em>, grows nearly
       linearly with cores. This is why GPU-driven workloads (training a
-      bigger neural network on more GPUs) and HPC workloads (simulating
+      bigger neural network on more GPUs) and supercomputer workloads (simulating
       a finer-grained physical model on more nodes) do scale to
       thousands of cores: the problem grew with the resources.
     </p>
@@ -1217,16 +1206,14 @@
 
     <p id="ch16-numa-p1" class="lead">
       On a multi-core server, <strong>memory is not uniformly accessible</strong>.
-      In a machine with two CPU sockets, each socket has its own local
-      DRAM. This is <span class="key-term">NUMA</span> (Non-Uniform Memory
+      In a machine with two CPU sockets (two processor chips, each in its own socket on the motherboard), each socket has its own local DRAM. This is <span class="key-term">NUMA</span> (Non-Uniform Memory
       Access): a thread that runs on socket 0 but accesses memory allocated on
       socket 1 pays a 50–100% latency penalty per access.
       Each core also has its own L1 and L2, and
       <strong>cache coherence</strong> is the property that those private
       caches still agree with one another. A hardware protocol called
       <strong>MESI</strong> (Modified, Exclusive, Shared, Invalid)
-      maintains coherence by tracking the state of every cache line on
-      every core and ensuring that no two cores have conflicting writes
+      maintains coherence by tracking the state of every cache line (the 64-byte block a cache stores and moves as one unit) on every core and ensuring that no two cores have conflicting writes
       to the same line.
     </p>
 
@@ -1350,7 +1337,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch16-numa-p4" class="insight-text">
-        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: speculative loads pulled secret data into the cache; even though the speculation was rolled back at the architectural level, the cache state survived, and an attacker measuring access timings could read out the secret bit by bit. The fix required microcode patches, kernel page-table isolation (KPTI), and a lasting ~5–30% performance regression on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
+        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret bit by bit. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
       </p>
     </div>
 
