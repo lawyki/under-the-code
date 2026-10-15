@@ -1228,7 +1228,7 @@
     <div id="ch14-hero-label" class="chapter-label">Chapter 14</div>
     <h1 id="ch14-hero-title">Cryptography<br>The Math That<br><em>Keeps Secrets</em></h1>
     <p id="ch14-hero-lead" class="chapter-subtitle">
-      <a href="part-3#ch11">Chapter 11</a> §04 introduced cryptography as a black box that the TLS
+      <a href="part-3#ch11">Chapter 11</a>, Section 04, introduced cryptography as a black box that the TLS
       handshake feeds into. This chapter opens the box. We trace the
       arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper, arguably the most important in the history of cryptography, and on through RSA worked in actual numbers, into elliptic curves, and
       out into post-quantum standardisation. The math is dense; it is
@@ -1320,10 +1320,7 @@
       Julius Caesar used a letter-shift cipher around 50 BCE to keep his
       military dispatches private from any interceptor who could read
       Latin: every letter was replaced by the one three positions later,
-      so "VENI" became "YHQL". The cipher worked for a generation; it
-      failed the moment anyone realised the same letter always mapped to
-      the same ciphertext letter, which a contemporary cryptanalyst could
-      break with frequency analysis in an afternoon. The next two
+      so "VENI" became "YHQL". It held only while no one looked closely: each letter always became the same substitute, and letters are not equally common (in Latin as in English, some far outnumber others), so the commonest letters of the message must stand for the commonest letters of the language, and one match gives the shift away. This is frequency analysis, set down by al-Kindi in the ninth century, and it breaks such a cipher in an afternoon. The next two
       thousand years repeated the pattern: a cleverer scheme, in use
       until an adversary noticed its regularity. The 16th-century
       Vigenère cipher (a key-shifted Caesar, where different positions
@@ -1332,7 +1329,7 @@
       published the method in 1863. Enigma, with rotors and a plugboard
       and a daily key, lasted six years before Marian Rejewski's team at
       the Polish Cipher Bureau reconstructed it, a break Bletchley
-      industrialised with the Bombe (<a href="part-1#ch1">Chapter 1</a> §01).
+      industrialised with the Bombe (<a href="part-1#ch1">Chapter 1</a>, Section 01).
     </p>
 
     <p id="ch14-history-p2">
@@ -1343,8 +1340,7 @@
       a battlefield this was hard but feasible: you sent a courier with
       the new keys monthly. For a civilian internet of millions of
       strangers wanting to talk privately to one server they had never
-      met, it was impossible, and until 1976 civilian cryptography was
-      nearly nonexistent. Then <strong>Whitfield Diffie</strong> and
+      met, it was impossible, and until 1976 civilian cryptography was a small field. Then <strong>Whitfield Diffie</strong> and
       <strong>Martin Hellman</strong> published <em>"New Directions in
       Cryptography"</em> in the IEEE Transactions on Information Theory,
       November 1976, and described a way for two strangers to agree on
@@ -1413,17 +1409,15 @@
       under the Arms Export Control Act. In 1995, MIT Press published the
       PGP source code as a printed book, because the export of <em>books</em>
       was protected by the First Amendment in a way the export of
-      <em>software</em> was not. Anyone abroad could buy the book, scan
-      it back into source code with OCR, and compile a copy of PGP. The
+      <em>software</em> was not. Anyone abroad could buy the book, scan the pages, let text-recognition software turn them back into source code, and compile a copy of PGP. The
       investigation was dropped in 1996, the same year cryptography came
       off the US munitions list; the export rules that replaced it were
       liberalised to near-irrelevance in 2000. The principle that hardened
       out of that decade of fights, that source code is protected speech,
       was settled soon after in the Bernstein and Junger appeals, and it is
       why every cryptographic library today can be open source and
-      globally distributed. PGP itself is rarely used now (its UX is
-      famously hostile), but Signal, WhatsApp, and iMessage all descend,
-      ideologically, from the cypherpunk position Zimmermann argued for.
+      globally distributed. PGP itself is rarely used now (its interface is famously hostile), but Signal, WhatsApp, and iMessage all descend,
+      ideologically, from the position Zimmermann argued for: that ordinary people are entitled to strong cryptography (the cypherpunk movement).
     </p>
 
     <div class="pull-quote">
@@ -1434,7 +1428,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg></span>
       <p id="ch14-history-p6" class="insight-text">
-        <strong>The hidden Cocks.</strong> Diffie–Hellman (1976) and RSA (1977) were independently invented, on paper, by British cryptographers at GCHQ: <strong>James Ellis</strong> sketched the idea in 1969, <strong>Clifford Cocks</strong> worked out what is essentially RSA in 1973, and <strong>Malcolm Williamson</strong> essentially Diffie–Hellman in 1974. GCHQ judged the schemes impractical and never deployed them. All three were classified Top Secret by the British government and remained classified until 1997, by which time RSA Inc. and Stanford had built billion-dollar industries on the public re-inventions. The hidden inventors got a footnote in cryptographic history; the public inventors got the Turing Award (Diffie and Hellman, 2015) and patents. The episode is a recurring lesson about classified research: discoveries kept secret are functionally non-discoveries.
+        <strong>The hidden Cocks.</strong> Diffie–Hellman (1976) and RSA (1977) were independently invented, on paper, by British cryptographers at GCHQ, Britain's signals-intelligence agency: <strong>James Ellis</strong> sketched the idea in 1969, <strong>Clifford Cocks</strong> worked out what is essentially RSA in 1973, and <strong>Malcolm Williamson</strong> essentially Diffie–Hellman in 1974. GCHQ judged the schemes impractical and never deployed them. All three were classified Top Secret by the British government and remained classified until 1997, by which time the patents on the public re-inventions (Stanford's on Diffie–Hellman, MIT's on RSA, licensed to RSA Data Security) stood beneath a billion-dollar security industry. The hidden inventors got a footnote in cryptographic history; the public inventors got the Turing Award (Diffie and Hellman, 2015) and patents. The episode is a recurring lesson about classified research: discoveries kept secret are functionally non-discoveries.
       </p>
     </div>
   </section>
@@ -1444,8 +1438,7 @@
     <h2>Three ideas before the algorithms · so the rest of the chapter is grounded.</h2>
 
     <p id="ch14-primer-p1" class="lead">
-      Every primitive in this chapter (hashing, AES, Diffie–Hellman, RSA,
-      elliptic curves, post-quantum lattices) is a different
+      Every primitive in this chapter except AES (hashing, Diffie–Hellman, RSA, elliptic curves, post-quantum lattices) is built on a different
       <span class="key-term">one-way function</span>: a computation that is easy to run
       forward and infeasible to run backward. Modern cryptography is built
       on finding mathematical operations with this asymmetry, and on
@@ -1483,7 +1476,7 @@
       forward. Only a handful of operations whose inverse is
       <em>computationally</em> harder by a practically infinite factor are
       known and broadly trusted in 2026; four of them
-      carry this chapter, and a fifth, the lattice problems of §06, is the hedge standing behind them.
+      carry this chapter, and a fifth, the lattice problems of Section 06, is the hedge standing behind them.
     </p>
 
     <h3>3. "Hard" means what · and what kills it</h3>
@@ -1495,10 +1488,9 @@
       civilization is likely to last, at every key size deemed
       adequate</em>." This is a contingent claim, not a mathematical one.
       When the algorithm changes, as when Shor's algorithm (1994) showed how a sufficiently large quantum
-      computer can factor integers and compute discrete logs in
-      polynomial time, the hardness assumption dies, and the primitives
-      that depended on it (RSA, Diffie–Hellman, ECDSA) become breakable
-      the moment the hardware exists. That is why §06 of this chapter is
+      computer can factor integers and undo modular powers (the discrete logarithm of Section 04) quickly (in polynomial time, explained below), the hardness assumption dies, and the primitives
+      that depended on it (RSA, Diffie–Hellman, and elliptic-curve key exchange and signatures) become breakable
+      the moment the hardware exists. That is why Section 06 of this chapter is
       about post-quantum migration: the cryptographic community is
       already shipping replacements built on different math (lattice
       problems) for which no efficient quantum algorithm is known.
@@ -1558,9 +1550,9 @@
 
     <div class="math-callout">
       <div class="math-label">Why "easy" and "hard" in CS</div>
-      <p id="ch14-primer-p6">In computer science, "easy" and "hard" are measured by how the work scales with the size of the input. <strong>Easy</strong> means <em>polynomial</em> time: <em>O(n)</em>, <em>O(n²)</em>, <em>O(n³)</em>. The work grows as some power of <em>n</em>; double <em>n</em> and the work goes up by a constant factor like 4× or 8×. <strong>Hard</strong>, in the cryptographic sense, means <em>exponential</em> or <em>sub-exponential</em>: roughly <em>O(2<sup>n</sup>)</em>, or in the case of factoring, <em>O(exp((log n)<sup>1/3</sup>))</em>. Add one bit to the key and the work doubles; double the number of bits and it squares. At 256 bits of key, "hard" is several orders of magnitude beyond the entire computational capacity of Earth running until the heat death of the universe.</p>
+      <p id="ch14-primer-p6">In computer science, "easy" and "hard" are measured by how the work scales with the size of the input. <strong>Easy</strong> means <em>polynomial</em> time: <em>O(n)</em>, <em>O(n²)</em>, <em>O(n³)</em>. The work grows as some power of <em>n</em>; double <em>n</em> and the work goes up by a constant factor like 4× or 8×. <strong>Hard</strong>, in the cryptographic sense, means <em>exponential</em>: roughly <em>O(2<sup>n</sup>)</em>. Factoring is kinder, called <em>sub-exponential</em>: each extra bit costs less than a doubling, which is why an RSA key needs thousands of bits where an elliptic-curve key needs 256, yet its cost still outgrows any power of <em>n</em>. Add one bit to the key and the work doubles; double the number of bits and it squares. At 256 bits of key, "hard" is several orders of magnitude beyond the entire computational capacity of Earth running until the heat death of the universe.</p>
       <p id="ch14-primer-p7" class="math-formula">forward time = poly(n)   ·   inverse time = exp(n)</p>
-      <p id="ch14-primer-p8">The sub-discipline of <em>computational complexity</em> studies this gap, and the most famous open problem in computer science, <strong>P vs NP</strong>, asks whether some problems we currently think are hard might actually have hidden efficient algorithms. If P=NP, modern cryptography largely collapses. Almost every cryptographer believes P≠NP; nobody can prove it yet.</p>
+      <p id="ch14-primer-p8">The sub-discipline of <em>computational complexity</em> studies this gap, and the most famous open problem in computer science, <strong>P vs NP</strong>, asks whether every problem whose answer is quick to check (in polynomial time) is also quick to solve; factoring is one such problem, since multiplying the factors back together checks an answer at once. If P=NP, modern cryptography largely collapses. Almost every cryptographer believes P≠NP; nobody can prove it yet.</p>
     </div>
   </section>
 
@@ -1580,8 +1572,7 @@
       <strong>Second-preimage resistance</strong>: given an input, no
       practical algorithm finds a different input with the same hash.
       <strong>Collision resistance</strong>: no practical algorithm finds
-      any two distinct inputs with the same hash. The three are distinct,
-      and breaking one is easier than breaking another.
+      any two distinct inputs with the same hash. They are not equally strong: finding a collision is far easier than finding a preimage (Fig 14.3).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-14-3">
@@ -1699,13 +1690,12 @@
       hash of its parent, the hash of every file's contents and the
       author/message,
       so a tampered commit produces a different hash and breaks every
-      descendant: the log is immutable in practice. <strong>Bitcoin mining</strong>: find a block whose
-      SHA-256 hash starts with N leading zeros. The only way is brute
-      force, and the difficulty (current N) is what regulates the supply.
+      descendant: the log is immutable in practice. <strong>Bitcoin mining</strong>: gather pending payments into a block, then try number after number in it until the block's SHA-256 hash starts with N zeros. The only way is brute
+      force, and the difficulty (current N) sets how fast new blocks, and the new coins they pay out, appear.
       <strong>Merkle trees</strong>: each non-leaf node is
       the hash of its children's hashes, which allows compact proofs that a
       specific leaf belongs to the tree. <strong>Certificate Transparency</strong>
-      (<a href="part-3#ch11">Chapter 11</a> §05) uses Merkle trees so that a CA's issuance log can
+      (Section 06 below) uses Merkle trees so that a certificate authority's (CA's) log of issued certificates can
       be publicly audited without downloading every certificate.
     </p>
 
@@ -1847,8 +1837,7 @@
       plaintext blocks produce identical ciphertext blocks, so any
       structure in the plaintext (an image, repeated headers) survives
       encryption. Encrypt the Linux mascot Tux with ECB and the result is
-      still recognisably a penguin: 16-byte regions of identical pixels
-      become 16-byte regions of identical ciphertext.
+      still recognisably a penguin: 16-byte regions of identical pixels become 16-byte regions of identical ciphertext. The fix is a mode that makes each block's encryption depend on something that changes: the ciphertext of the block before it (CBC) or a running counter. Modern systems use GCM, counter mode plus a tag that detects tampering, as TLS 1.3 does. The figure runs the same test on a padlock.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-14-6">
@@ -1897,8 +1886,7 @@
       mathematical asymmetry: <strong>discrete exponentiation
       is easy to compute, discrete logarithm is hard</strong>. Given a
       large prime <em>p</em>, a base <em>g</em>, and an exponent
-      <em>a</em>, computing <em>g<sup>a</sup> mod p</em> takes
-      microseconds. Given <em>p</em>, <em>g</em>, and the result
+      <em>a</em>, computing <em>g<sup>a</sup> mod p</em> takes microseconds, because repeated squaring (g, g², g⁴, g⁸, …) reaches a huge exponent in about as many steps as it has bits. Given <em>p</em>, <em>g</em>, and the result
       <em>g<sup>a</sup> mod p</em>, recovering <em>a</em> is
       computationally infeasible at adequate sizes.
     </p>
@@ -2026,7 +2014,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18.44 10.56 20.91 10.74 20.91 13.26 18.44 13.44 17.57 15.54 19.19 17.41 17.41 19.19 15.54 17.57 13.44 18.44 13.26 20.91 10.74 20.91 10.56 18.44 8.46 17.57 6.59 19.19 4.81 17.41 6.43 15.54 5.56 13.44 3.09 13.26 3.09 10.74 5.56 10.56 6.43 8.46 4.81 6.59 6.59 4.81 8.46 6.43 10.56 5.56 10.74 3.09 13.26 3.09 13.44 5.56 15.54 6.43 17.41 4.81 19.19 6.59 17.57 8.46z"/><circle cx="12" cy="12" r="2.6"/></svg></span>
       <p id="ch14-publickey-p6" class="insight-text">
-        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. This is why TLS does not use RSA for the actual data: the handshake uses public-key cryptography once, elliptic-curve Diffie–Hellman to agree on an AES key and RSA or ECDSA to sign, and AES handles the rest. <span class="key-term">Diffie–Hellman</span> is in the same performance class as RSA (a few milliseconds per handshake) but adds <em>forward secrecy</em> (<a href="part-3#ch11">Chapter 11</a> §05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. TLS 1.3 mandates ephemeral key exchange (in practice always ECDHE) and uses the long-term RSA or ECDSA key only for signing the handshake.
+        <strong>The performance gap.</strong> RSA is roughly 1000× slower than AES per byte processed. This is why TLS does not use RSA for the actual data: the handshake uses public-key cryptography once, elliptic-curve Diffie–Hellman to agree on an AES key and an RSA or elliptic-curve (ECDSA) signature to prove the server's identity, and AES handles the rest. <span class="key-term">Diffie–Hellman</span> is in the same performance class as RSA (a few milliseconds per handshake) but adds <em>forward secrecy</em> (<a href="part-3#ch11">Chapter 11</a>, Section 05): each session uses ephemeral DH values that are discarded after, so a future compromise of the long-term key cannot retroactively decrypt recorded sessions. TLS 1.3 mandates ephemeral key exchange (in practice on an elliptic curve) and uses the long-term RSA or ECDSA key only for signing the handshake.
       </p>
     </div>
   </section>
@@ -2041,7 +2029,7 @@
       messages) using a different mathematical structure underneath. The
       payoff is dramatic: an elliptic-curve key of 256 bits provides
       security roughly equivalent to an RSA key of 3072 bits, so a TLS
-      server using ECDSA signatures and ECDHE key exchange has handshake
+      server using elliptic-curve signatures (ECDSA) and key exchange (ECDH, Diffie–Hellman on a curve; ECDHE when the keys are fresh for each connection) has handshake
       messages a fraction the size of an RSA-based one. Every modern
       protocol that wants good performance (TLS 1.3, SSH, Bitcoin, Signal,
       WireGuard) has standardised on elliptic curves; RSA survives mostly
@@ -2049,19 +2037,14 @@
     </p>
 
     <p id="ch14-ecc-p2">
-      The mathematical object is an <span class="key-term">elliptic curve</span> over a finite field: the
-      set of points (<em>x</em>, <em>y</em>) satisfying an equation of the
-      form <em>y² = x³ + ax + b</em>. Over the real
-      numbers, the curve looks like the smooth shape in the <a href="#ch14">Chapter 14</a> hero:
-      a closed loop on the left (sometimes) and a curving arm to the
-      right. The curve has a natural
+      The mathematical object is an <span class="key-term">elliptic curve</span>: the set of points (<em>x</em>, <em>y</em>) satisfying an equation of the
+      form <em>y² = x³ + ax + b</em>. Over the real numbers, the curve is a smooth arm opening to the right, sometimes with a separate closed loop on its left (Fig 14.9 shows the arm). The curve has a natural
       <strong>point addition</strong> operation: given any two points P
       and Q on the curve, you can construct a third point P+Q also on
       the curve, by drawing the line through P and Q, finding where it
       meets the curve a third time, and reflecting that intersection
       across the x-axis. This addition is associative, has an identity
-      (a "point at infinity"), and turns the points of the curve into a
-      mathematical group, the same kind of structure integers modulo a
+      (a "point at infinity"), and turns the points of the curve into a <em>group</em>: a set with an addition that obeys the familiar rules (grouping does not matter, and one point acts as zero), the same kind of structure integers modulo a
       prime form under modular addition.
     </p>
 
@@ -2107,10 +2090,8 @@
       and <strong>Ed25519</strong>, used by TLS 1.3, SSH, Signal, and
       WireGuard, came from Daniel J. Bernstein and collaborators (Curve25519
       in 2005, the Ed25519 signature scheme following in 2011). Bitcoin's
-      curve was picked for cheap, rigid, "nothing-up-my-sleeve" parameters;
-      Bernstein's was shaped to make the fast code path and the
-      side-channel-safe code path the same path. An ordinary programmer's correct implementation is then also a constant-time one, which keeps the key from leaking through timing. The trapdoor underneath is the
-      same discrete log; each was hardened against a different thing.
+      curve was picked for constants chosen by a simple public rule, so no one could suspect a hidden backdoor in them ("nothing up my sleeve");
+      Bernstein's was shaped so that the simplest, fastest way to write the code also takes the same time whatever the secret key is. An ordinary programmer's correct implementation is then also a constant-time one, which keeps the key from leaking through timing. The hard problem underneath is the same discrete log; each was hardened against a different thing.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-14-10">
@@ -2167,7 +2148,7 @@
 
     <p id="ch14-tls-pqc-p1" class="lead">
       The previous sections took the primitives one at a time. A real
-      protocol composes them. TLS 1.3, already sketched in <a href="part-3#ch11">Chapter 11</a> §05,
+      protocol composes them. TLS 1.3, already sketched in <a href="part-3#ch11">Chapter 11</a>, Section 05,
       uses every primitive in this chapter in one precise sequence, and we
       now have the math to read its handshake at full depth: which
       operations happen, which keys derive from which, which security
@@ -2229,8 +2210,7 @@
       certificate, and the affected domain had no way to discover it until
       the certificate was used in an attack. <strong>Certificate Transparency</strong> (RFC 6962, 2013; mandatory in Chrome since 2018) closes that hole: every certificate any
       CA issues must be submitted to a public, append-only,
-      cryptographically verifiable log. Because the log is a Merkle tree
-      (§02: every entry's hash combined into a tree whose root becomes the
+      cryptographically verifiable log. Because the log is a Merkle tree (Section 02: every entry's hash combined into a tree whose root becomes the
       log's "head"), anyone can verify it is being maintained honestly
       without downloading all of it. A domain owner can monitor CT logs for
       certificates issued in their name; if one appears that they did not
@@ -2307,14 +2287,13 @@
     <h3>Post-quantum · Shor's algorithm and the slow migration</h3>
 
     <p id="ch14-tls-pqc-p6">
-      Every public-key system in this chapter (Diffie–Hellman, RSA, ECDH,
-      ECDSA) rests on a problem that is hard for <em>classical</em>
+      Every public-key system in this chapter (Diffie–Hellman, RSA, and their elliptic-curve forms ECDH and ECDSA) rests on a problem that is hard for <em>classical</em>
       computers. In 1994, mathematician <strong>Peter Shor</strong>,
       working at Bell Labs, published an algorithm that solves both
       integer factoring and discrete logarithm in polynomial time on a
       sufficiently large quantum computer. Shor's algorithm has not been run
       at cryptographically relevant scales: the quantum computers of 2026
-      have at most a few dozen error-corrected <em>logical</em> qubits,
+      have at most about a hundred error-protected <em>logical</em> qubits (quantum bits),
       each built from many noisy physical ones, and RSA-2048 would need
       thousands. When a machine of that size exists, it breaks all current
       public-key cryptography. The estimated horizon ranges from "within
@@ -2330,10 +2309,7 @@
       <strong>ML-KEM</strong> (formerly "Kyber") replaces RSA / ECDH key
       exchange. <strong>ML-DSA</strong> (formerly "Dilithium") replaces
       RSA / ECDSA signatures. <strong>SLH-DSA</strong> (formerly
-      "SPHINCS+") provides a stateless hash-based signature alternative.
-      The first two rest on the hardness of certain problems on
-      mathematical lattices; SLH-DSA rests only on the hash functions of
-      §02. Neither basis is factoring or discrete log, and no polynomial-time
+      "SPHINCS+") provides a signature alternative built only on hash functions, while the first two rest on lattice problems: a lattice is a regular grid of points extended to hundreds of dimensions, and finding the grid point nearest to a given point is easy in two dimensions and believed infeasible in hundreds, even for a quantum computer; SLH-DSA rests only on the hash functions of Section 02. Neither basis is factoring or discrete log, and no polynomial-time
       quantum algorithm is known for either. SLH-DSA is the conservative
       hedge: if lattices turn out to hide a weakness, a signature that
       needs nothing but a hash function still stands. The cost is real:
@@ -2398,7 +2374,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L19.5 9"/><path d="M19.5 4.5V9H15"/><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4.5 15"/><path d="M4.5 19.5V15H9"/></svg></span>
       <p id="ch14-tls-pqc-p9" class="insight-text">
-        <strong>Every asymmetry has a half-life.</strong> Every cryptographic primitive in this chapter rests on a computational asymmetry that was, at the time of design, believed hard to reverse. Caesar's cipher rested on letter-pattern analysis being beyond an adversary's resources; RSA rests on factoring, ECC on elliptic-curve discrete log, post-quantum schemes on lattice problems. Each generation's "hard" eventually becomes the next generation's "easy", whether through algorithmic insight (Shor for factoring), through precomputation and hardware (rainbow tables, then GPUs, eventually quantum computers), or through deeper mathematical understanding. The system's resilience comes not from any primitive being unbreakable but from migrating to the next primitive before the current one fails: cryptographic engineering is the discipline of keeping ahead of whoever is computing more cleverly than you.
+        <strong>Every asymmetry has a half-life.</strong> Every cryptographic primitive in this chapter rests on a computational asymmetry that was, at the time of design, believed hard to reverse. Caesar's cipher rested on letter-pattern analysis being beyond an adversary's resources; RSA rests on factoring, ECC on elliptic-curve discrete log, post-quantum schemes on lattice problems. Each generation's "hard" eventually becomes the next generation's "easy", whether through algorithmic insight (Shor for factoring), through precomputation and hardware (precomputed tables of password hashes, then graphics processors, eventually quantum computers), or through deeper mathematical understanding. The system's resilience comes not from any primitive being unbreakable but from migrating to the next primitive before the current one fails: cryptographic engineering is the discipline of keeping ahead of whoever is computing more cleverly than you.
       </p>
     </div>
 
@@ -2407,9 +2383,8 @@
     <p id="ch14-tls-pqc-p10">
       <a href="#ch14">Chapter 14</a> has unpacked the math under the rest of the book's
       security claims. TLS works because of the primitives in this
-      chapter; password storage, because of slow KDFs; Bitcoin, because of
-      SHA-256 and ECDSA; Signal, because of curves and the ratcheting
-      protocols built on them; Certificate Transparency, because of Merkle
+      chapter; password storage, because of deliberately slow hashing; Bitcoin, because of
+      SHA-256 and ECDSA; Signal, because of curves and its ratchet, which gives every message a fresh key derived one-way from the last; Certificate Transparency, because of Merkle
       trees. Every layer of
       cryptography is a precise mathematical claim, and every claim has
       a precise <span class="key-term">threat model</span>: the kind of adversary it withstands and
