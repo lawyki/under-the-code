@@ -32,7 +32,7 @@ Order follows `docs/pass-29-30-brief.md`. Ticked when committed and live.
 
 ## The close
 
-- [ ] Book-wide re-run: figs.mjs (--motion, --fullscreen), clip.mjs, smooth.mjs, tests/pass25
+- [x] Book-wide re-run: figs.mjs (--motion, --fullscreen), clip.mjs, smooth.mjs, tests/pass25
 - [x] docs/owner-read-map.md
-- [ ] Tag v1.0 or v1.0-rc1
-- [ ] STATE.md freeze line
+- [x] Tag v1.0 or v1.0-rc1 (v1.0-rc1: 12 owner calls open)
+- [x] STATE.md freeze line

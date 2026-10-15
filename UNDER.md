@@ -3851,6 +3851,10 @@ Per-picture record (verdict, round, the blind reader's words, what changed): `do
 
 `docs/pass-30-owner-calls.md`: §A five figures and three heroes failing Gate 2 after two rounds, §B the kept originals' Gate 1 values and their open fact errors, §C the three Gate 1 findings left open. Screenshots in `docs/pass-30-shots/` (figures at 375 px; heroes and the cover at 1440 px, every one in `heroes/`; the 23 near-misses in `near/`). The owner's read starts from `docs/owner-read-map.md`.
 
+### THE CLOSE (2026-10-15)
+
+Pass 30 committed and live (`0ee4bcc` to `c8cc814`, one commit per part, then the cover and page CSS, the final-run fixes and the docs), the book-wide re-run on that state: `figs.mjs` with `--motion` and `--fullscreen` in both engines at zero apart from the findings in `docs/pass-30-owner-calls.md` §B and §C (the last fixes, Figs 2.6, 5.11 and 12.7, rechecked in both engines); `clip.mjs` at zero in every mode; `smooth.mjs` 0 findings (every page at 375 and 1440 px, reduced motion holds every figure still); `tests/pass25` invariants 812/0, traces 229/0, parity 40/0, marks 106/0, ui 120/0. Glossary unchanged (no section prose touched). Owner calls raised by Passes 29 and 30 remain open (12), so the tag is `v1.0-rc1`; STATE.md carries the freeze line. Next: the owner's read.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em

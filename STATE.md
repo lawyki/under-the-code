@@ -1,5 +1,7 @@
 # under-the-code — STATE
 
+**PROSE AND FIGURES FROZEN 1.0-rc1. Open: 12 owner calls (listed below). Next: the owner's read.** The 12: the eleven Pass 30 calls (`docs/pass-30-owner-calls.md` §A five figures and three heroes, §C three Gate 1 findings) and ch18-intersect-p3 from Pass 29 (owner text), each in BLOCKED ON TIGER. Start the read at `docs/owner-read-map.md`. Tagged `v1.0-rc1` on 2026-10-15.
+
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
