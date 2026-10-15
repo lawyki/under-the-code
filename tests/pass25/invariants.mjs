@@ -137,7 +137,9 @@ async function run() {
               // Plain prose links (bare `a`, outside the nav) follow the text, which Pass 27 cuts by design.
               // Pass 28's "How it works" toggles (a <summary> per redesigned figure) are new stops by design.
               // Pass 30's pause button (one per animated figure, required by the brief, WCAG 2.2.2) likewise.
-              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a' || d === 'summary' || d === 'button.fig-pause';
+              // Go deeper's note (desktop) and pill (phones), one per outside video (owner request, 2026-10-12), likewise.
+              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a' || d === 'summary' || d === 'button.fig-pause'
+                || d === 'button.deeper-note' || d === 'button.deeper-pill';
               const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)));
               const detail = `live ${data.tabbable.length} vs baseline@${BASELINE_REV} ${bd.tabbable.length}; +[${diff.added.join(', ')}] -[${diff.removed.join(', ')}]`;
               const isPart = PARTS.includes(name);

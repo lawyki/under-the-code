@@ -843,10 +843,28 @@
       B = Math.max(200, window.innerHeight - navB);
       Lpx = navB + 0.3 * B;
     }
+    // Sum of the vertical translations on el and its ancestors (the reveal and
+    // scrollFade entrances), or null if any transform is more than a translation.
+    function restDY(el, memo) {
+      let dy = 0;
+      for (let n = el; n && n !== document.body; n = n.parentElement) {
+        let v = memo.get(n);
+        if (v === undefined) {
+          const t = getComputedStyle(n).transform;
+          const m = t && t !== 'none' ? /^matrix\(([^)]+)\)$/.exec(t) : null;
+          const k = m ? m[1].split(',').map(parseFloat) : null;
+          v = !t || t === 'none' ? 0 : (k && k[0] === 1 && k[1] === 0 && k[2] === 0 && k[3] === 1 ? k[5] : null);
+          memo.set(n, v);
+        }
+        if (v === null) return null;
+        dy += v;
+      }
+      return dy;
+    }
     function buildTable() {
       measureConsts();
       const anchors = [], byId = Object.create(null);
-      const sy = window.scrollY;
+      const sy = window.scrollY, dyMemo = new Map();
       candidates().forEach((el, i) => {
         const r = el.getBoundingClientRect();
         const hidden = r.width === 0 && r.height === 0;
@@ -855,9 +873,15 @@
         // offset chain, which is where it comes to rest.
         let top = 0, h = 0;
         if (!hidden) {
-          const off = docTop(el);
-          top = Math.abs(r.top + sy - off) > 2 ? off : r.top + sy;
-          h = Math.abs(r.top + sy - off) > 2 ? el.offsetHeight : r.height;
+          // The entrance transforms are pure vertical translations: take them
+          // off the sub-pixel rect (the offset chain rounds at every level).
+          const dy = restDY(el, dyMemo);
+          if (dy !== null) { top = r.top + sy - dy; h = r.height; }
+          else {
+            const off = docTop(el);
+            top = Math.abs(r.top + sy - off) > 2 ? off : r.top + sy;
+            h = Math.abs(r.top + sy - off) > 2 ? el.offsetHeight : r.height;
+          }
         }
         const isPara = el.tagName === 'P' && /-p\d+$/.test(el.id);
         const a = { el, id: el.id, i, hidden, top, h, bottom: top + h, isPara,

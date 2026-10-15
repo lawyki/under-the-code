@@ -79,7 +79,7 @@
 
   // one shared viewer
   const dlg = el('dialog', 'deeper-viewer');
-  dlg.setAttribute('aria-labelledby', 'deeper-viewer-title');
+  dlg.setAttribute('aria-labelledby', 'utc-deeper-viewer-title');
   const card = el('div', 'dv-card');
   const head = el('div', 'dv-head');
   head.appendChild(el('span', 'dv-kicker', 'Go deeper · outside video'));
@@ -90,7 +90,7 @@
   head.appendChild(closeBtn);
   const stage = el('div', 'dv-stage');
   const credit = el('div', 'dv-credit');
-  credit.id = 'deeper-viewer-title';
+  credit.id = 'utc-deeper-viewer-title';
   const about = el('div', 'dv-about');
   const foot = el('div', 'dv-foot');
   [head, stage, credit, about, foot].forEach(n => card.appendChild(n));
