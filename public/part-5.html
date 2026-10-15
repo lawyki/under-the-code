@@ -2354,7 +2354,7 @@
       the layer below, and the next layer up is another mathematical
       structure realised in <em>this</em> one. Boolean algebra is
       realised in voltages and gates; arithmetic in adders and
-      registers; the instruction set in microcode. The kernel is a
+      registers; the instruction set in the CPU's fetch, decode and execute circuits. The kernel is a
       state machine over processes. The relational model is set theory
       over rows. TLS is number theory over network packets. Distributed
       consensus is quorum arithmetic over asynchronous nodes.
@@ -2421,7 +2421,7 @@
       <em>into your browser and press Enter?"</em> The honest answer
       touches every layer of computing. The book you have just read is
       the long-form answer. This section is the visual one: one figure,
-      one keystroke, every chapter activated at once.
+      one keystroke, nearly every chapter activated at once.
     </p>
 
     <p id="ch18-trace-p2">
@@ -2430,18 +2430,17 @@
       <a href="part-1#ch1">Chapter 1</a> described) through every layer
       of your machine, out across the network, into Google's server
       stack, back through the network, and onto pixels on your screen.
-      Eighteen waypoints, one for each chapter (almost). A reader who
+      Eighteen waypoints, drawn from fourteen of the chapters and the Bridge. A reader who
       has finished the book can name what is happening at every station.
     </p>
 
     <p id="ch18-trace-p3">
-      Two chapters are not numbered stations.
+      Four chapters are not numbered stations. Chapters 6 and 7 (C++ and Python) have none because no step of this path is written in either language: the code in the figure is C and JavaScript.
       <strong><a href="part-4#ch15">Chapter 15</a> (security)</strong>
       is woven across the trace rather than located at one point. Each
       time the journey crosses from less-trusted to more-trusted
       territory (user input → kernel; client → DNS resolver; client →
-      server's TLS endpoint; HTTP query → SQL parser), a threat
-      boundary is crossed and a defence layer applies. The figure marks
+      server's TLS endpoint; HTTP query → SQL parser), a trust boundary is crossed and a defence layer applies. The figure marks
       these transitions with thin red dotted lines.
       <strong><a href="#ch18">Chapter 18</a></strong> is not a station because it
       <em>is</em> this figure: the moment the layers stop being a list
@@ -2542,16 +2541,14 @@
     <h2>The chain of decisions, in time, by people in real places.</h2>
 
     <p id="ch18-civilization-p1" class="lead">
-      Every layer in that diagram is also a piece of history, and none
+      Every layer in the stack of Fig 18.1 is also a piece of history, and none
       of it was inevitable. The Boolean algebra in your CPU was invented by
       a Lincolnshire schoolteacher who died in 1864. The transistor
-      came out of three physicists at Bell Labs in 1947. The kernel
-      structure of Linux, macOS, Android and iOS descends from UNIX,
-      which two engineers wrote on a spare PDP-7 to play a game called
-      <em>Space Travel</em>. The web came out of a particle physics
+      came out of three physicists at Bell Labs in 1947. The kernels of Linux, macOS, Android and iOS follow the design of UNIX,
+      which two engineers began on a discarded PDP-7, partly so that one of them could play a game called <em>Space Travel</em>. The web came out of a particle physics
       lab in 1989 because a researcher wanted a better way to organise
       the lab's tangle of people, projects, and documents. The cloud you deploy your code into is built on
-      virtualization that IBM invented in 1968 to let many users share
+      virtualization that IBM shipped in 1968 to let many users share
       one mainframe. Civilization is the long sequence of these
       decisions, each one made by a real person under real constraints,
       and accumulated over a few decades into the substrate of nearly
@@ -2621,17 +2618,8 @@
     <p id="ch18-future-p1" class="lead">
       Three forces are reshaping the substrate as this book is
       written. <strong>Moore's Law is ending</strong>: the
-      transistor-density doubling we tracked from <a href="part-1#ch1">Chapter 1</a> has slowed
-      to a near-halt below 3 nanometres because we are running into
-      single-atom-width physics. <strong>Quantum computing</strong> is
-      going from laboratory demonstrations to early useful machines,
-      solving the specific problems no classical computer can attack
-      efficiently (factoring, the simulation of quantum systems), with
-      optimisation a more speculative third. <strong>Neuromorphic
-      and analog AI accelerators</strong> are becoming a real
-      alternative substrate for one specific workload (large neural
-      networks) that classical von Neumann hardware is, by 2026,
-      visibly straining to run. None of these will replace the stack
+      transistor-density doubling we tracked from <a href="part-1#ch1">Chapter 1</a> has slowed sharply: the finest parts of a transistor are now only a few nanometres across, a few dozen atoms, and each further shrink leaks more current and costs more. <strong>Quantum computing</strong> is moving from laboratory demonstrations toward early useful machines, aimed at the specific problems for which no efficient classical method is known (factoring, the simulation of quantum systems), with
+      optimisation a more speculative third. <strong>Neuromorphic and analog AI accelerators</strong> (chips that imitate neurons, or do multiplications in the physical currents of memory cells) are being built as an alternative substrate for one specific workload, large neural networks, whose cost on today's chips is mostly the time and energy spent moving weights between memory and processor, the bottleneck of Chapter 1. None of these will replace the stack
       this book described; all of them will sit alongside it as
       additional substrates.
     </p>
@@ -2678,12 +2666,10 @@
       (<a href="part-4#ch14">Chapter 14</a>). They survive because they are
       independent of the substrate that computes them. The architectural
       patterns generally survive (the layered model, the
-      kernel-as-mediator, the request-response cycle, the
-      read-replicate-converge shape of consensus) because they answer
+      kernel-as-mediator, the request-response cycle, the elect, replicate and commit-by-majority shape of consensus) because they answer
       questions about how computation should be organised, not about
       what computes it. The specific implementations are the most
-      fragile: x86 will eventually be a curiosity, RSA will retire when
-      fault-tolerant quantum computers can run Shor's algorithm at
+      fragile: x86 will eventually be a curiosity, RSA will retire when error-corrected quantum computers (the logical qubits of Chapter 14) can run Shor's algorithm at
       scale, and particular libraries will become archaic. The reader
       who has internalised the patterns rather than the products will
       not be inconvenienced by those losses; the reader who has
