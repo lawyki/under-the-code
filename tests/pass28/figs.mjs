@@ -272,6 +272,13 @@ for (const eng of ENGINES) {
           const ps = await page.evaluate(id => { const s = document.getElementById(id).querySelector('svg'), r = s.getBoundingClientRect(), v = s.viewBox.baseVal; return v && v.width && v.height ? Math.min(r.width / v.width, r.height / v.height) : 1; }, id);
           await page.evaluate(id => document.getElementById(id).querySelector('.fs-button').click(), id);
           await page.waitForTimeout(500); await vtDone(page);
+          // WebKit under load can miss the first click (the view transition of the previous card still closing): try once
+          // more, and if the view still is not open, stop with a clear error rather than measure the page as fullscreen
+          if (!await page.evaluate(() => !!document.querySelector('.is-fullscreen'))) {
+            await page.waitForTimeout(800); await page.evaluate(id => document.getElementById(id).querySelector('.fs-button').click(), id);
+            await page.waitForTimeout(800); await vtDone(page);
+            if (!await page.evaluate(() => !!document.querySelector('.is-fullscreen'))) throw new Error(`fullscreen did not open for ${id} (${eng} ${w})`);
+          }
           if (MOTION) await page.evaluate(() => Promise.race([Promise.all(document.querySelector('.is-fullscreen').getAnimations().filter(a => isFinite(a.effect.getComputedTiming().endTime)).map(a => a.finished)), new Promise(r => setTimeout(r, 1500))]));
           for (const [n, fr] of frames('figs').entries()) await pictures(page, 'figs', fr, true, base, tm, n === 0, ps);
           await page.keyboard.press('Escape'); await page.waitForTimeout(350); await vtDone(page);
