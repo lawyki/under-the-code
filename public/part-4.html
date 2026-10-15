@@ -2544,8 +2544,7 @@
       The dominant systematic framework, used at Microsoft and most
       mature security organisations, is <strong>STRIDE</strong>,
       a six-part checklist published by Praerit Garg and Loren Kohnfelder
-      at Microsoft in 1999. Each letter names a class of threat: how
-      could an attacker break this property of the system?
+      at Microsoft in 1999. Each letter names a class of threat: how could an attacker break this property of the system? Repudiation, the least obvious, is someone later denying an action they took ("I never sent that payment"); a system answers it by keeping records that prove who did what.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-15-1">
@@ -2610,11 +2609,11 @@
     <p id="ch15-memory-p1" class="lead">
       <a href="part-1#ch3">Chapter 3</a> introduced the buffer overflow: Aleph One's 1996 Phrack
       essay, the saved return address overwritten, the CPU jumping to
-      attacker-supplied code. <a href="part-1#ch3">Chapter 3</a> §06 traced the arms race from
+      attacker-supplied code. <a href="part-1#ch3">Chapter 3</a>, Section 06, traced the arms race from
       stack canaries through DEP and ASLR to ROP. The race has not stopped
       in nearly forty years. The defences have grown more sophisticated,
       the attacks more inventive, but the underlying problem has not gone
-      away: C and C++ allow memory access without proof of correctness.
+      away: C and C++ let a program read and write past the object it meant to use, without checking that it should.
     </p>
 
     <div class="diagram-card" id="fig-15-2">
@@ -2711,15 +2710,13 @@
     <h3>CFI · Pointer Authentication · the contemporary defences</h3>
 
     <p id="ch15-memory-p3">
-      Two defences protect modern machines against ROP and JOP today.
+      Two defences protect modern machines against ROP and its relatives today.
       <strong>Control-Flow Integrity</strong> (CFI), proposed by
       Martín Abadi and colleagues in 2005 and now shipped in Clang,
-      MSVC, and most major compilers, instruments every indirect call
-      and return with a runtime check: the target address must be one
-      the compiler statically determined was valid for that call site.
+      MSVC, and most major compilers, adds a check before every indirect call (a call made through a function pointer or a virtual method table): the target address must be one the compiler recorded as valid for that call site when it built the program for that call site.
       A function pointer overwritten with a gadget address fails the
       check, because the gadget is not on the call site's allow-list.
-      The check costs a handful of instructions per indirect call;
+      Returns are guarded by the shadow stack and Pointer Authentication below. The check costs a handful of instructions per indirect call;
       production deployment is now common.
     </p>
 
@@ -2736,7 +2733,7 @@
       corner of each core, near-zero runtime cost), PAC is one of the
       most effective ROP defences shipped in the last decade. Intel's
       equivalent, the <strong>CET</strong> (Control-flow Enforcement
-      Technology) shadow stack, has been shipping in 11th-generation
+      Technology) shadow stack (a protected second copy of each return address, compared when the function returns), has been shipping in 11th-generation
       Core CPUs since 2020.
     </p>
   </section>
@@ -2747,8 +2744,8 @@
 
     <p id="ch15-network-p1" class="lead">
       <a href="part-3">Part III</a> made one structural claim about the network: <em>it can
-      never be trusted</em>. Routes can be hijacked (<a href="part-3#ch9">Chapter 9</a> §06).
-      Names can be poisoned (<a href="part-3#ch11">Chapter 11</a> §03). Packets can be intercepted,
+      never be trusted</em>. Routes can be hijacked (<a href="part-3#ch9">Chapter 9</a>, Section 06).
+      Names can be poisoned (<a href="part-3#ch11">Chapter 11</a>, Section 03). Packets can be intercepted,
       modified, or forged at any hop. The defence to all of this is TLS: the
       cryptographic layer of <a href="#ch14">Chapter 14</a> applied at the transport layer.
       Anything below TLS can be lied to. Properly configured, TLS
@@ -2859,7 +2856,7 @@
     <p id="ch15-network-p4">
       For an attacker on the same local network as you, the easiest way
       to become a man in the middle is <strong>ARP spoofing</strong>.
-      ARP, the Address Resolution Protocol from <a href="part-3#ch8">Chapter 8</a> §05, maps
+      ARP, the Address Resolution Protocol from <a href="part-3#ch8">Chapter 8</a>, Section 05, maps
       IP addresses to MAC addresses on a LAN. A laptop broadcasts
       "who has 192.168.1.1?" and the gateway router answers
       "I do, MAC <em>aa:bb:cc:dd:ee:ff</em>." The laptop caches the
@@ -2933,18 +2930,16 @@
 
     <p id="ch15-network-p6">
       The two attacks Part III already met end the same way.
-      <strong>DNS poisoning</strong> (<a href="part-3#ch11">Chapter 11</a> §03,
-      Kaminsky 2008) tricks a recursive resolver into caching a
+      <strong>DNS poisoning</strong> (<a href="part-3#ch11">Chapter 11</a>, Section 03; Kaminsky 2008) tricks a recursive resolver into caching a
       forged answer; combined with no certificate validation, it lets
       an attacker direct a victim to a server they control. Certificate
       verification is the defence: even with a poisoned DNS
       answer, the attacker's server cannot present a valid TLS
       certificate for the legitimate hostname. <strong>BGP hijacking</strong>
-      (<a href="part-3#ch9">Chapter 9</a> §06, Pakistan/YouTube 2008) reroutes entire IP prefixes
+      (<a href="part-3#ch9">Chapter 9</a>, Section 06; Pakistan/YouTube 2008) reroutes entire IP prefixes
       through a malicious autonomous system. Same defence: all your packets
       may now arrive at the attacker's machines, but those machines cannot
-      complete a TLS handshake for the target's hostname. Every
-      network-layer attack ends in TLS and is neutralised there.
+      complete a TLS handshake for the target's hostname. Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through.
     </p>
   </section>
 
@@ -2953,15 +2948,14 @@
     <h2>The application layer · where the trust boundary is most often confused.</h2>
 
     <p id="ch15-web-p1" class="lead">
-      If the network attacks of §03 are mostly solved by TLS, web
+      If the network attacks of Section 03 are mostly solved by TLS, web
       attacks are <em>not</em>. They live above TLS, in the
       application's own logic. An authenticated user with a session
-      cookie clicking a link, a server fetching a URL its application
-      supplied, a backend deserialising data sent in a request: all of
+      cookie clicking a link an attacker planted, a server fetching a URL a visitor typed in, a backend rebuilding objects from data a visitor sent: all of
       these run inside the trust boundary. The attacks here are about
       <em>confused deputies</em>. A confused deputy is code that has
       authority to do something, tricked into using that authority on
-      the attacker's behalf. Most entries on the OWASP Top 10, the
+      the attacker's behalf. Many of the best-known entries on the OWASP Top 10, the
       curated list of the most consequential web vulnerabilities,
       reduce to two of the six shapes this chapter closes on: data
       parsed as code, or a deputy confused.
@@ -2970,7 +2964,7 @@
     <h3>SQL injection in defence-in-depth</h3>
 
     <p id="ch15-web-p2">
-      <a href="#ch13">Chapter 13</a> §06 covered the mechanism and the
+      <a href="#ch13">Chapter 13</a>, Section 06, covered the mechanism and the
       layers. Parameterised queries are necessary but not sufficient, so the discipline is <strong>defence in depth</strong>: assume
       every other layer might be bypassed and design each layer as if
       it were the last one.
@@ -3030,11 +3024,8 @@
       internal admin endpoints, cloud metadata services, internal
       databases. The <strong>Capital One 2019 breach</strong> is the
       canonical modern example: a former AWS engineer exfiltrated 100
-      million customer records by exploiting SSRF against Capital One's
-      web application firewall. The vulnerability turned the firewall
-      into a proxy for fetching AWS IAM credentials from
-      <code>169.254.169.254</code>, the cloud metadata endpoint that
-      every EC2 instance can reach.
+      million customer records by exploiting SSRF against Capital One's web application firewall (software that screens incoming web requests). The vulnerability turned the firewall
+      into a proxy for fetching the server's cloud access keys (its IAM credentials) from <code>169.254.169.254</code>, an address that works only from inside AWS and hands each virtual machine its own settings and keys.
     </p>
 
     <div class="diagram-card" id="fig-15-6">
@@ -3112,11 +3103,8 @@
       parses it as HTML/JavaScript), server-side template injection a
       third (the templating engine parses it as a template expression).
       <strong>Deserialisation</strong> attacks are perhaps the most
-      direct: the application takes a serialised object, calls the language's <code>deserialize()</code>
-      function on it, and that function <em>constructs</em> objects of
-      whatever type the bytes specify, often invoking constructors that
-      the original author never intended a user to control. Java's
-      Apache Commons Collections gadgets, Python's pickle <span class="key-term">attack
+      direct: the application takes bytes that encode an object (a <em>serialised</em> object), calls the language's <code>deserialize()</code> function to rebuild it, and that function <em>constructs</em> objects of
+      whatever type the bytes specify, often triggering code that runs while the object is rebuilt (Java's readObject methods, Python's __reduce__ hook), code the original author never intended a user to control. Java's Apache Commons Collections, whose ordinary classes can be chained into a payload that runs commands (the same gadget idea as ROP), Python's pickle <span class="key-term">attack
       surface</span>, .NET's BinaryFormatter (deprecated 2020 but still in use):
       every popular language has a deserialisation minefield.
     </p>
@@ -3139,18 +3127,15 @@
       <strong>firewall</strong> (1990s) drew a wall around the network
       perimeter and filtered what crossed it. Attackers then sent their
       attack <em>through</em> a port the firewall had to leave open (port
-      80 to the web server), so the wall waved it in. The
-      <strong>intrusion detection system</strong> (early 2000s) answered
+      80 to the web server), so the wall waved it in. The <strong>intrusion detection system</strong> (IDS, early 2000s) answered
       that: inspect the traffic the firewall allowed, and match it against
       signatures of known attacks. It worked until the attacks that
       mattered were the ones with no signature yet, and a single sensor saw
-      only its own slice of the network. So the <strong>SIEM</strong> (mid
-      2000s) pulled every component's logs into one place to catch the
+      only its own slice of the network. So the <strong>SIEM</strong> (security information and event management, mid 2000s) pulled every component's logs into one place to catch the
       cross-cutting pattern no single sensor could ("this account signed in
       from Helsinki and Tokyo thirty seconds apart"). But the decisive
       evidence lived on the endpoint, not in network logs: in which process
-      spawned which. <strong>Endpoint detection and response</strong> (mid
-      2010s) put a behaviour model on every machine to watch exactly that.
+      spawned which. <strong>Endpoint detection and response</strong> (EDR, mid 2010s) put a behaviour model on every machine to watch exactly that.
       Then came the lesson of a decade of breaches: <em>being inside the
       network at all</em> should confer no trust. <strong>Zero-trust
       architecture</strong> (late 2010s) makes that conclusion structural:
@@ -3221,15 +3206,12 @@
       credential thieves, opportunistic exploits of known
       vulnerabilities. Defence in depth is calibrated for them.
       Occasionally a different attacker shows up: a nation-state with
-      effectively unlimited resources, multiple zero-day vulnerabilities
-      held in reserve, and the patience to target a single facility for
+      effectively unlimited resources, several zero-day vulnerabilities held in reserve (flaws the vendor does not yet know about, so no fix exists), and the patience to target a single facility for
       years. The reference example, and the most consequential
       cyberweapon ever publicly disclosed, is <strong>Stuxnet</strong>: a
       500-kilobyte malware package designed to physically damage the
-      centrifuges enriching uranium at the Natanz nuclear facility in
-      Iran. Stuxnet was deployed around 2009, discovered in mid-2010 by an
-      antivirus researcher in Belarus who noticed a customer machine
-      BSODing in unusual ways, and reverse-engineered through 2010–2012 by
+      centrifuges enriching uranium at the Natanz nuclear facility in Iran, by reprogramming the PLCs that set the centrifuges' spin speed while showing the operators normal readings. Stuxnet was deployed around 2009, discovered in mid-2010 by an
+      antivirus researcher in Belarus who noticed a customer's machines crashing in unusual ways, and reverse-engineered through 2010–2012 by
       a small community of malware researchers (notably Symantec and Ralph
       Langner). The widely reported but never officially confirmed
       consensus is that Stuxnet was a joint US–Israeli operation
@@ -3310,7 +3292,7 @@
       Stuxnet's lessons shaped the next decade of defence. Air gaps are
       not absolute: USB drives cross them. Code-signing certificates are
       an attack surface; private keys that signed kernel-mode drivers were
-      stolen and used. Industrial control systems (SCADA, PLCs) had been
+      stolen and used. Industrial control systems (the computers that run factories, pipelines and power plants, built around PLCs, programmable logic controllers, the small computers that drive motors and valves) had been
       treated as low-priority because they were "isolated"; Stuxnet showed
       that "isolated" is a temporary property and the systems must be
       defensible on their own. Above all, any threat model touching
@@ -3338,10 +3320,8 @@
       of a small handful of patterns. Buffer overflow (<a href="part-1#ch3">Chapter 3</a>) is data-as-code in
       the call stack. SQL injection (<a href="#ch13">Chapter 13</a>) is data-as-code in the SQL
       parser. XSS (<a href="part-3#ch12">Chapter 12</a>) is data-as-code in the HTML parser. Prompt
-      injection (this chapter) is data-as-code in an LLM context window.
-      ROP (<a href="part-1#ch3">Chapter 3</a>) and Stuxnet (§05) chain primitives the
-      attacker did not author into payloads the original author never
-      anticipated. CSRF (<a href="part-3#ch12">Chapter 12</a>), SSRF (this chapter), and the Capital
+      injection (this chapter) is data-as-code in a language model's prompt.
+      ROP (<a href="part-1#ch3">Chapter 3</a>) and Stuxnet (Section 05) show a further habit: chaining pieces the attacker did not write (existing code fragments, stolen keys, unpatched flaws) into something their authors never anticipated. CSRF (<a href="part-3#ch12">Chapter 12</a>), SSRF (this chapter), and the Capital
       One breach are all confused-deputy attacks: code with privilege,
       tricked into using its privilege at the attacker's behest.
       Once the patterns have names, every new vulnerability is
@@ -3435,10 +3415,9 @@
       textbooks. It is produced by an ecosystem of people who break
       things, for sport and for pay, report what they break, and fix
       what others have broken. The social contract that holds it together is
-      <span class="key-term">responsible disclosure</span>, the convention that an
+      <span class="key-term">responsible disclosure</span> (today often called coordinated disclosure), the convention that an
       attacker who finds a vulnerability tells the affected vendor,
-      gives them a reasonable window to fix it (typically 90 days,
-      Project Zero's standard), and only then publishes: 30 days after a
+      gives them a reasonable window to fix it (typically 90 days, the standard of Google's Project Zero research team), and only then publishes: 30 days after a
       fix, or at the deadline if there is none. The convention
       is not enforceable; it is sustained by reputation and by the
       mutual understanding that the alternative, public weaponisation
@@ -3450,7 +3429,7 @@
       <strong>Capture The Flag</strong> (CTF): contests in
       which participants find and exploit vulnerabilities in
       deliberately broken software, race to be first, and submit
-      "flags" (short strings hidden inside successfully-pwned systems)
+      "flags" (short strings hidden inside the systems they broke into)
       as proof of solution. CTFs are organised in five canonical
       categories: <em>pwn</em> (binary exploitation, the buffer
       overflows of <a href="part-1#ch3">Chapter 3</a>), <em>web</em> (the SQLi / XSS / SSRF of
@@ -3468,26 +3447,22 @@
     </p>
 
     <p id="ch15-culture-p5">
-      The CTF skill leads to three professional tracks. The
-      <strong>red team</strong> path takes it into corporate
-      environments: penetration testing, adversary emulation, internal
-      red-team operations against your own employer. The
+      The CTF skill leads to three professional tracks. The <strong>red team</strong> path takes it into companies, where the job is to attack their systems on purpose and with permission: penetration testing (probing for holes), adversary emulation (copying a real attacker's methods), internal red-team operations against your own employer. The
       <strong>bug bounty</strong> path is the freelance equivalent:
       <strong>HackerOne</strong>, <strong>Bugcrowd</strong>,
       <strong>YesWeHack</strong> are the major platforms; Apple, Google,
       Microsoft, and most major tech companies pay independent
-      researchers ($1K–$1M per finding, depending on severity) for
+      researchers (from about $1K to $1M or more per finding, depending on severity) for
       vulnerabilities reported through these channels. The
       <strong>blue team</strong> path is defensive: incident response,
-      security operations, threat intelligence, the SIEM-and-EDR work
-      of §05. The boundary between red and blue is permeable; many of
+      security operations, threat intelligence, the SIEM-and-EDR work of Section 05. The boundary between red and blue is permeable; many of
       the best defenders started as offensive researchers, and vice
       versa. Everyone meets on the conference
       circuit: <strong>DEF CON</strong> (Las Vegas, August, the largest
       hacker conference in the world), <strong>Black Hat</strong> (the
       enterprise twin held the same week), <strong>CCC</strong> (Chaos
       Communication Congress, the European centre, late December in
-      Hamburg, sociologically distinct), <strong>Pwn2Own</strong> (where Trend Micro's Zero Day Initiative funds a prize pool, researchers break shipping products live on stage, and ZDI buys the exploits and reports them to the vendors), and <strong>USENIX Security</strong> (academic).
+      Hamburg, run by a hacker club with a more political tone), <strong>Pwn2Own</strong> (where Trend Micro's Zero Day Initiative funds a prize pool, researchers break shipping products live on stage, and ZDI buys the exploits and reports them to the vendors), and <strong>USENIX Security</strong> (academic).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-15-10">
