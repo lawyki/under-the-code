@@ -3,6 +3,8 @@
 
   const ICON_EXPAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
   const ICON_CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>';
+  const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>';
+  const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="8 5 19 12 8 19 8 5"/></svg>';
 
   let activeCard = null;
 
@@ -79,6 +81,43 @@
       exitFullscreen();
     });
     card.appendChild(closeBtn);
+
+    // Pause and play (WCAG 2.2.2): every animated figure loops, so the reader
+    // can stop it. A figure the reader paused stays paused, in the page and in
+    // fullscreen, until the reader plays it again: the off-screen pauser below
+    // checks data-user-paused before it unpauses anything. Under reduced motion
+    // figures start paused and the same button lets a reader play one.
+    const svg = card.querySelector(':scope > svg');
+    if (svg && typeof svg.pauseAnimations === 'function' && svg.querySelector('animate, animateTransform, animateMotion, set')) {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const key = 'utc-fig-paused:' + (card.id || '');
+      let stored = null;
+      try { stored = card.id ? sessionStorage.getItem(key) : null; } catch (err) { stored = null; }
+      const pauseBtn = document.createElement('button');
+      pauseBtn.className = 'fig-pause';
+      pauseBtn.type = 'button';
+      card.classList.add('has-pause');
+      const render = paused => {
+        pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        pauseBtn.setAttribute('aria-label', paused ? 'Play animation' : 'Pause animation');
+        pauseBtn.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+      };
+      const setPaused = paused => {
+        if (paused) { card.dataset.userPaused = '1'; svg.pauseAnimations(); }
+        else { delete card.dataset.userPaused; card.dataset.userPlayed = '1'; svg.unpauseAnimations(); }
+        try { if (card.id) sessionStorage.setItem(key, paused ? '1' : '0'); } catch (err) { /* storage blocked: state lasts for this page view */ }
+        render(paused);
+      };
+      // Stored choice first ('1' paused, '0' played); with none, paused only under reduced motion.
+      if (stored === '1') { card.dataset.userPaused = '1'; svg.pauseAnimations(); }
+      if (stored === '0') card.dataset.userPlayed = '1';
+      render(stored === '1' || (stored !== '0' && reduce));
+      pauseBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        setPaused(pauseBtn.getAttribute('aria-pressed') !== 'true');
+      });
+      card.appendChild(pauseBtn);
+    }
   });
 
   document.addEventListener('keydown', e => {
@@ -277,7 +316,9 @@
 // regardless of where the original card sits in the page.
 //
 // Accessibility: when the user has set `prefers-reduced-motion: reduce` at the
-// OS level, we pause every SVG and never unpause. CSS animations/transitions are
+// OS level, we pause every SVG and never unpause one the reader has not played
+// with its pause button. A figure the reader paused (data-user-paused, set by
+// the figure chrome above) is never unpaused here. CSS animations/transitions are
 // handled by the matching @media block in book.css; SMIL is JS-only because it
 // ignores the CSS media query.
 (function () {
@@ -290,15 +331,20 @@
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  function pauseAll() {
+  const cardOf = svg => svg.closest('.diagram-card, .light-diagram');
+  const readerPaused = svg => { const c = cardOf(svg); return !!(c && c.dataset.userPaused === '1'); };
+  const readerPlayed = svg => { const c = cardOf(svg); return !!(c && c.dataset.userPlayed === '1'); };
+
+  function pauseAll(keepPlayed) {
     allSvgs.forEach(svg => {
+      if (keepPlayed && readerPlayed(svg)) return;
       if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations();
     });
   }
 
   // If the user prefers reduced motion: pause every SVG and do nothing else.
   if (motionQuery.matches) {
-    pauseAll();
+    pauseAll(true);
     // If they later change their preference at runtime, fall back to the
     // intersection-observer behavior by reloading.
     if (motionQuery.addEventListener) {
@@ -317,7 +363,7 @@
       const svg = entry.target;
       const card = svg.closest('.diagram-card, .light-diagram');
       const forcePlay = card && card.classList.contains('is-fullscreen');
-      if (entry.isIntersecting || forcePlay) {
+      if ((entry.isIntersecting || forcePlay) && !readerPaused(svg)) {
         if (typeof svg.unpauseAnimations === 'function') svg.unpauseAnimations();
       } else {
         if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations();
@@ -338,7 +384,7 @@
       const card = m.target;
       const svg = card.querySelector(':scope > svg');
       if (!svg) return;
-      if (card.classList.contains('is-fullscreen')) {
+      if (card.classList.contains('is-fullscreen') && card.dataset.userPaused !== '1') {
         if (typeof svg.unpauseAnimations === 'function') svg.unpauseAnimations();
       }
     });

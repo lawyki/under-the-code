@@ -267,6 +267,68 @@ test('sync shape: solid only after a 200; paused after 2 failures; 401 stops cal
   } finally { await ctx.close(); }
 });
 
+// Pass 30 (brief, Gate 1 motion): one shared pause and play control on every
+// animated figure. A figure the reader paused stays paused off-screen and in
+// fullscreen; the button is a keyboard-reachable tab stop; reduced motion
+// starts paused and the button plays it.
+const FIG_STATE = id => document.querySelector('#' + id + ' > svg').animationsPaused();
+const FIG_BTN = id => { const b = document.querySelector('#' + id + ' > .fig-pause'); return b ? b.getAttribute('aria-pressed') : null; };
+async function firstAnimated(page) {
+  return page.evaluate(() => { const c = document.querySelector('.has-pause[id]'); return c ? c.id : null; });
+}
+test('figure pause: pauses, stays paused off-screen and in fullscreen, plays again; keyboard', BOTH, async (t, b) => {
+  const { ctx } = await newContext(b);
+  try {
+    const page = await openPart(ctx, 'part-1');
+    await settle(page, 600);
+    const id = await firstAnimated(page);
+    if (!id) t.skipTest('no animated figure with an id on part-1');
+    const all = await page.evaluate(() => [...document.querySelectorAll('.diagram-card, .light-diagram')].filter(c => { const s = c.querySelector(':scope > svg'); return s && s.querySelector('animate, animateTransform, animateMotion, set'); }).map(c => !!c.querySelector(':scope > .fig-pause')));
+    t.check(all.length > 0 && all.every(Boolean), 'every animated figure has a pause button', `${all.filter(Boolean).length}/${all.length}`);
+    await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
+    await settle(page, 700);
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'in view: animating');
+    t.eq(await page.evaluate(FIG_BTN, id), 'false', 'aria-pressed false while playing');
+    await page.click('#' + id + ' > .fig-pause');
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'click: paused');
+    t.eq(await page.evaluate(FIG_BTN, id), 'true', 'aria-pressed true; label says play');
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await settle(page, 700);
+    await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
+    await settle(page, 700);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'back in view: still paused (the off-screen pauser did not unpause it)');
+    await page.click('#' + id + ' > .fs-button');
+    await settle(page, 900);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'fullscreen: still paused');
+    const fsBtnVisible = await page.evaluate(id => { const bt = document.querySelector('#' + id + ' > .fig-pause'); return !!(bt && bt.getClientRects().length && getComputedStyle(bt).display !== 'none'); }, id);
+    t.check(fsBtnVisible, 'pause button visible in fullscreen');
+    await page.keyboard.press('Escape');
+    await settle(page, 700);
+    await page.focus('#' + id + ' > .fig-pause');
+    await page.keyboard.press('Enter');
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'keyboard Enter: plays again');
+    t.eq(await page.evaluate(FIG_BTN, id), 'false', 'aria-pressed false again');
+    const tabbable = await page.evaluate(id => document.querySelector('#' + id + ' > .fig-pause').tabIndex >= 0, id);
+    t.check(tabbable, 'pause button is a tab stop');
+    t.check(page.__errors.length === 0, 'no console errors', page.__errors.join(' | '));
+  } finally { await ctx.close(); }
+});
+test('figure pause under reduced motion: starts paused, the button plays it', CHR, async (t, b) => {
+  const { ctx } = await newContext(b, { reducedMotion: 'reduce' });
+  try {
+    const page = await openPart(ctx, 'part-1');
+    await settle(page, 600);
+    const id = await firstAnimated(page);
+    if (!id) t.skipTest('no animated figure with an id on part-1');
+    await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
+    await settle(page, 600);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'reduced motion: paused');
+    t.eq(await page.evaluate(FIG_BTN, id), 'true', 'button offers play');
+    await page.click('#' + id + ' > .fig-pause');
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'reader plays it');
+  } finally { await ctx.close(); }
+});
+
 async function run() {
   for (const bname of browsersFor(['chromium', 'webkit'])) {
     const browser = await launch(bname);

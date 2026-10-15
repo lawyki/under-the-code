@@ -445,6 +445,38 @@
     color: rgba(140,98,30,0.95);
   }
 
+  /* === Pause and play on every animated figure (WCAG 2.2.2) ===
+     Left of the fullscreen button, the same chrome; its icon shows the action it takes. */
+  .fig-pause {
+    position: absolute;
+    top: 14px;
+    right: 54px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 6px;
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    z-index: 5;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .fig-pause::before { content: ''; position: absolute; inset: -6px -4px; }   /* 44 px hit area */
+  .fig-pause:hover { background: rgba(212,168,83,0.14); border-color: rgba(212,168,83,0.5); color: rgba(212,168,83,0.95); }
+  .fig-pause[aria-pressed="true"] { color: rgba(212,168,83,0.95); border-color: rgba(212,168,83,0.5); }
+  .fig-pause:focus-visible, .fs-button:focus-visible, .fs-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .fig-pause svg { width: 16px; height: 16px; display: block; }
+  .light-diagram .fig-pause { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: rgba(26,22,20,0.55); }
+  .light-diagram .fig-pause:hover, .light-diagram .fig-pause[aria-pressed="true"] { background: rgba(212,168,83,0.18); border-color: rgba(140,98,30,0.55); color: rgba(140,98,30,0.95); }
+  .has-pause > .diagram-label { padding-right: 84px; }
+  .diagram-card.is-fullscreen .fig-pause, .light-diagram.is-fullscreen .fig-pause { top: 16px; right: 60px; width: 36px; height: 36px; border-radius: 8px; }
+
   /* Fullscreen state — diagram lifted out of flow with glass-edge frame.
      Flex column layout so the SVG fills available space and the diagram fits without scrolling. */
   .diagram-card.is-fullscreen,
@@ -1266,7 +1298,7 @@
     }
     .reveal { opacity: 1 !important; transform: none !important; }
     .liquid-bg { display: none !important; }
-    .book-nav, .chapter-nav, .section-rail, .fs-button, .fs-close, .cover-cta { display: none !important; }
+    .book-nav, .chapter-nav, .section-rail, .fs-button, .fs-close, .fig-pause, .cover-cta { display: none !important; }
     .colophon { display: none !important; }
     .resume-card { display: none !important; }
     .sync-chip { display: none !important; }
@@ -1791,6 +1823,8 @@
     .diagram-card, .light-diagram { margin-left: -24px; margin-right: -24px; border-radius: 0; padding: 28px 8px 20px; }
     .diagram-label { margin-bottom: 20px; padding: 0 56px 0 8px; }   /* clear of the fullscreen button */
     .fs-button { width: 40px; height: 40px; top: 10px; right: 10px; }
+    .fig-pause { width: 40px; height: 40px; top: 10px; right: 58px; }
+    .has-pause > .diagram-label { padding-right: 104px; }
     /* fullscreen on a phone is the whole screen, so the figure is bigger than in the page, never smaller */
     .diagram-card.is-fullscreen, .light-diagram.is-fullscreen { inset: 0; max-height: none; margin: 0; border-radius: 0; padding: 60px 8px 16px; }
     .diagram-card.is-fullscreen svg, .light-diagram.is-fullscreen svg, .diagram-card.fig-v2.is-fullscreen svg, .light-diagram.fig-v2.is-fullscreen svg { max-width: 100%; max-height: 100%; }

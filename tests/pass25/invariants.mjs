@@ -136,7 +136,8 @@ async function run() {
               // Glossary terms and index entries are tab stops that follow the glossary (Pass 26 changed it by design).
               // Plain prose links (bare `a`, outside the nav) follow the text, which Pass 27 cuts by design.
               // Pass 28's "How it works" toggles (a <summary> per redesigned figure) are new stops by design.
-              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a' || d === 'summary';
+              // Pass 30's pause button (one per animated figure, required by the brief, WCAG 2.2.2) likewise.
+              const gloss = d => /glossary-ref|glossary-entry-anchor/.test(d) || d === 'a' || d === 'summary' || d === 'button.fig-pause';
               const diff = multisetDiff(data.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)), bd.tabbable.map(x => (x.inNav ? 'nav:' : '') + x.d).filter(d => !gloss(d)));
               const detail = `live ${data.tabbable.length} vs baseline@${BASELINE_REV} ${bd.tabbable.length}; +[${diff.added.join(', ')}] -[${diff.removed.join(', ')}]`;
               const isPart = PARTS.includes(name);
