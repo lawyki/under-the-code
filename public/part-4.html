@@ -188,8 +188,7 @@
       they <em>wanted</em>. Codd called the existing approach
       <em>navigational</em>: programmers wrote code that walked pointer to
       pointer through tree-shaped or network-shaped data structures. He proposed
-      replacing all of that with a single abstraction: the
-      <strong>relation</strong>, a mathematical set of tuples, queryable by
+      replacing all of that with a single abstraction: the <strong>relation</strong>, a table of rows in no fixed order (to a mathematician, a set of tuples), queryable by
       a small algebra of operations that returned more relations.
     </p>
 
@@ -243,11 +242,7 @@
       Eugene Wong in 1973. Called <strong>Ingres</strong>, it became the
       basis for the open-source <em>Postgres</em> (1986), which became
       <em>PostgreSQL</em> (1996), and indirectly for <em>Sybase</em>,
-      which Microsoft licensed and turned into <em>SQL Server</em>. So almost
-      every database in production in 2026 (Oracle, SQL Server, DB2,
-      PostgreSQL, MySQL, SQLite, Snowflake, ClickHouse) has one of two 1970s
-      prototypes as its great-grandparent: System R at IBM San Jose, or
-      Ingres at Berkeley.
+      which Microsoft licensed and turned into <em>SQL Server</em>. So the major databases in production in 2026 either descend from one of two 1970s prototypes, System R at IBM San Jose or Ingres at Berkeley (DB2, Oracle, PostgreSQL, SQL Server), or, like MySQL, SQLite, Snowflake and ClickHouse, were written fresh to speak the SQL that System R introduced.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-1">
@@ -303,7 +298,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg></span>
       <p id="ch13-codd-p8" class="insight-text">
-        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. He spent his last decade increasingly frustrated that commercial databases, IBM's included, implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985 he published his twelve rules (two <em>Computerworld</em> pieces asking "Is Your DBMS Really Relational?"), listing properties any system claiming the title must satisfy. Most commercial systems satisfied perhaps eight. The gap between Codd's mathematics and the working systems descended from his idea (index hints, query planner overrides, vendor-specific dialects) has never closed.
+        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. He spent his last decade increasingly frustrated that commercial databases, IBM's included, implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985 he published his twelve rules (thirteen, counting rule 0, in two <em>Computerworld</em> pieces, the first asking "Is Your DBMS Really Relational?"), listing properties any system claiming the title must satisfy. Few commercial systems met them all, and the gap between Codd's mathematics and the working systems descended from his idea (SQL tables that allow duplicate rows, which Codd's sets forbid, among others) has never closed.
       </p>
     </div>
   </section>
@@ -426,11 +421,7 @@
       own it is a firehose, but bolt a selection onto it and you have rebuilt
       the join from parts. <strong>Rename</strong> (ρ) relabels a column or
       relation so a table can be joined to itself (an employee to their
-      manager, both rows drawn from the same table under two names). These
-      six (σ, π, ∪, −, ×, ρ) make the algebra
-      <em>relationally complete</em>: able to express any query the
-      relational calculus can (aggregation and recursion, which SQL later
-      bolts on, sit outside it); the join (⨝) is shorthand for a cross
+      manager, both rows drawn from the same table under two names). These six (σ, π, ∪, −, ×, ρ) are enough: Codd also described a second way to ask for data, by stating in logic which rows you want (the relational calculus), and in 1972 showed that an algebra of this kind can fetch whatever rows any such statement describes. That is what <em>relationally complete</em> means (counting, totals and queries that follow a chain of any length, a manager's manager's manager, which SQL later adds, sit outside it); the join (⨝) is shorthand for a cross
       product followed by a selection.
     </p>
 
@@ -439,19 +430,17 @@
       contrast, works on <em>multisets</em> (bags): duplicates are allowed
       unless you write <code>SELECT DISTINCT</code>. The decision was
       pragmatic: many applications want to count "how many orders have
-      status='paid'," which requires keeping duplicates. Codd considered it
+      status='paid'," which requires keeping duplicates: keep only the status column and ten paid orders are ten identical rows, which a set would collapse into one. Codd considered it
       a flaw, the source of a long-running tension between SQL's behaviour
       and the formal theory underneath; modern SQL standards have largely
       lived with it. Most working SQL programmers never know the distinction
-      exists; query optimisers know it intimately, because converting
-      multiset operations into set operations can dramatically speed up a
-      query.
+      exists; query optimisers (the part of the database that picks how to run a query, Section 03) care, because removing duplicates means sorting the rows or building a lookup table to spot repeats, and when the query already guarantees there are none (its columns include each row's unique id, say) they skip that work.
     </p>
 
     <div class="math-callout">
       <div class="math-label">Why this is the right math</div>
       <p id="ch13-algebra-p5">Relational algebra has the same role in databases that Boolean algebra has in circuits (<a href="part-1#ch2">Chapter 2</a>): it is the smallest mathematical structure that captures the essential operations and is closed under composition. Because every expression yields a relation, the algebra is <em>compositional</em>: expressions nest without bound. That is what lets a query optimiser parse a complex SQL statement into a tree of relational operators and rewrite that tree algebraically into an equivalent but faster one.</p>
-      <p id="ch13-algebra-p6">The optimiser leans heavily on two algebraic identities. <strong>Selection pushdown</strong> says σ<sub>p</sub>(R ⨝ S) = σ<sub>p</sub>(R) ⨝ S whenever the predicate p only mentions attributes from R, which lets the engine filter R before joining, dramatically reducing the work. <strong>Projection pushdown</strong> says π<sub>cols</sub>(R ⨝ S) = π<sub>cols</sub>(π<sub>cols′∩R</sub>(R) ⨝ π<sub>cols′∩S</sub>(S)), where cols′ is the wanted columns together with the join key. It lets the engine throw away unneeded columns early. (The inner projections must keep the join columns, or there is nothing left to match on.) The transformations are correct because the algebra is mathematically rigorous; the speedups are real because they reduce the size of intermediate relations.</p>
+      <p id="ch13-algebra-p6">The optimiser leans heavily on two rewrite rules. <strong>Selection pushdown</strong> says that if a test p uses only the columns of one table, R, the engine can filter R first and join afterwards: σ<sub>p</sub>(R ⨝ S) = σ<sub>p</sub>(R) ⨝ S, the same rows with far fewer of them to join (Fig 13.3 shows it). <strong>Projection pushdown</strong> lets the engine drop the columns the query never uses before the join, but it must keep the join columns, since without them there would be nothing left to match on. The transformations are correct because the algebra is mathematically rigorous; the speedups are real because they reduce the size of intermediate relations.</p>
     </div>
   </section>
 
@@ -666,7 +655,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch13-sql-p6" class="insight-text">
-        <strong>The 1979 Selinger paper.</strong> The optimiser-as-component, with statistics-based cost estimates and dynamic-programming join-order search, was invented for IBM's System R by Patricia Selinger and described in a 1979 SIGMOD paper that is the most-cited paper on query optimisation ever written (<em>"Access Path Selection in a Relational Database Management System"</em>). Every relational query optimiser since (Oracle's, PostgreSQL's, SQL Server's, Snowflake's, BigQuery's) descends from Selinger's design. Forty-seven years on, in 2026, the paper is still required reading in graduate database courses for the same reason Codd's is: both were definitive on first publication.
+        <strong>The 1979 Selinger paper.</strong> The optimiser-as-component, which estimates each plan's cost from statistics about the tables and finds the cheapest order in which to join them by working out the best way to join each small group of tables first and building up from there, was invented for IBM's System R by Patricia Selinger and described in a 1979 paper at SIGMOD, the main database research conference, that is among the most cited on query optimisation (<em>"Access Path Selection in a Relational Database Management System"</em>). Every cost-based optimiser since (Oracle's, PostgreSQL's, SQL Server's, the cloud warehouses') builds on Selinger's central idea: choose the plan by its estimated cost, using statistics about the data. Forty-seven years on, in 2026, the paper is still required reading in graduate database courses for the same reason Codd's is: both were definitive on first publication.
       </p>
     </div>
   </section>
@@ -689,10 +678,9 @@
     </p>
 
     <p id="ch13-acid-p2">
-      <strong>Atomicity</strong>: a transaction either commits all of its
+      <strong>Atomicity</strong>: a transaction (a group of operations the database treats as one unit, ended by a COMMIT that makes it final) either commits all of its
       operations or none of them. <strong>Consistency</strong>: a
-      transaction that begins in a valid database state ends in one, with
-      referential integrity, constraints, and data types intact.
+      transaction that begins in a valid database state ends in one, with its rules intact (every order still belongs to a customer who exists, every amount is a number).
       <strong>Isolation</strong>: concurrent transactions
       execute as if they ran one at a time, in some serial order, even
       though the engine actually overlaps their work.
@@ -758,12 +746,9 @@
       Durability and atomicity look like opposite problems (one wants
       changes <em>persisted</em>, the other wants them <em>reversible</em>),
       but the same mechanism handles both: the
-      <strong>write-ahead log</strong> (WAL). Before touching the data
-      pages on disk, the engine appends a record of the <em>intended</em>
-      change to a sequential log file and flushes it to physical storage
-      with <code>fsync()</code>. Only then does the engine modify the data
-      pages, lazily. If the database crashes, recovery reads the log forward
-      from the last checkpoint, replaying every committed transaction
+      <strong>write-ahead log</strong> (WAL). Before touching the data pages (the fixed-size blocks on disk that hold the tables' rows), the engine appends a record of the <em>intended</em>
+      change to a sequential log file and forces it onto physical storage (the <code>fsync()</code> system call). Only then does the engine modify the data
+      pages, lazily. If the database crashes, recovery reads the log forward from the last checkpoint (a marker in the log: every change before it is already safely in the data pages, so recovery can start there), replaying every committed transaction
       whose changes might not have made it to the data pages, and rolling
       back every uncommitted transaction whose partial changes might have
       escaped to disk. The log is the source of truth; the data pages are
@@ -888,20 +873,11 @@
       these levels, and there are two families. The pessimistic
       family is locking: a transaction takes shared locks on what it
       reads and exclusive locks on what it writes, holds them until commit, and anyone who would conflict
-      waits. The discipline is called two-phase locking. The optimistic family is
-      <span class="key-term">MVCC</span>, multi-version concurrency
-      control: a writer never overwrites a row in place but appends a new
-      version stamped with its transaction id, and every reader is handed
+      waits. The discipline is called two-phase locking, because every lock is taken before any is released. The other family is <span class="key-term">MVCC</span>, multi-version concurrency control: a writer never destroys a version of a row that a reader may still need (PostgreSQL appends a new version stamped with its transaction id; InnoDB updates in place and keeps the old one in an undo log), and every reader is handed
       a snapshot (the set of versions visible as of one instant), so a
       reader takes the old version while a writer adds the new one.
       Readers never block writers and writers never block readers.
-      PostgreSQL is MVCC throughout: Read Committed takes a fresh
-      snapshot per statement, Repeatable Read one per transaction, and
-      Serializable adds a conflict-detection layer (serializable snapshot
-      isolation) that aborts one of any pair of transactions whose
-      overlap could not have happened in some serial order. MySQL's
-      InnoDB mixes the families: MVCC snapshots for reads, plus next-key
-      locks that close the phantom window.
+      PostgreSQL uses MVCC throughout: Read Committed takes a fresh snapshot per statement, Repeatable Read one per transaction, and Serializable also tracks which transactions read data that others wrote, and aborts (cancels and rolls back) one of them whenever their overlap could produce a result that running them one after the other, in any order, could not (sometimes when it strictly did not need to). MySQL's InnoDB mixes the families: MVCC snapshots for reads, plus locks on ranges of rows that stop phantoms appearing.
     </p>
   </section>
 
@@ -912,13 +888,11 @@
     <p id="ch13-indexes-p1" class="lead">
       Without indexes, every <code>WHERE</code> clause is a full-table
       scan. Find one user out of ten million by name? Read all ten
-      million rows. The query is correct; it just takes minutes
-      instead of milliseconds. An <strong>index</strong> is an auxiliary
+      million rows. The query is correct; it just takes seconds instead of milliseconds. (Engineers write this cost O(N): the work grows in step with the number of rows, N. The structures below cut it to O(log N), one more step each time the table multiplies in size, or O(1), about the same whatever the size.) An <strong>index</strong> is an auxiliary
       data structure that maps values of one or more columns to the rows
       where those values appear. It makes lookups, range scans, and sorts
       dramatically faster, at the cost of disk space and slower writes
-      (each insert or update has to keep the index in sync). Two index
-      structures dominate every relational database: the
+      (each insert or update has to keep the index in sync). Two index structures are the classic choices: the
       <span class="key-term">B-tree</span> and the <strong>hash index</strong>.
     </p>
 
@@ -929,14 +903,10 @@
       at Boeing in 1970, is the index of choice for relational databases,
       filesystems, key-value stores, and most other systems that keep
       ordered data on disk. It is a balanced tree designed for the
-      memory hierarchy of <a href="part-1#ch1">Chapter 1</a>: each node holds dozens or hundreds
-      of keys (one disk page, typically 4 to 16 KB), so the tree is
-      shallow (depth O(log<sub>B</sub> N) for branching factor B), and
-      every lookup or insertion reads one page per level from root to
+      memory hierarchy of <a href="part-1#ch1">Chapter 1</a>: each node holds hundreds of keys (one disk page, typically 4 to 16 KB), so the tree is shallow (each extra level lets the tree reach a hundred or more times as many keys), and every lookup or insertion reads one page per level from root to
       leaf. On a billion rows that is typically three or four levels, so
       three or four page reads; once the tree has been in use, most of
-      those pages sit in RAM and a lookup costs almost nothing. Range
-      scans are linear-time in the number of rows returned, because the
+      those pages sit in RAM and a lookup costs almost nothing. A range scan (every key from, say, 20 to 40) costs one descent to the first key plus a walk that grows with the number of rows returned, because the
       leaves are linked left-to-right (the <em>B+ tree</em> variant,
       which every commercial database implements).
     </p>
@@ -1006,11 +976,10 @@
 
     <p id="ch13-indexes-p4">
       A hash index applies a hash function to the key and uses the
-      result as a position in an array. Equality lookups are effectively
-      O(1): one hash, one array access. But the structure has no
+      result as a position in an array. An equality lookup (find the row whose key equals a given value) costs about the same few steps however big the table is: one hash, one array access, and a quick check of whatever else landed in the same slot. But the structure has no
       ordering, so range queries (<code>WHERE id BETWEEN 100 AND 200</code>)
-      become impossible: the hashed positions are scattered across the
-      array, with no way to walk neighbours. Hash indexes win when every query is an equality lookup (a session table read by session ID, Redis and other in-memory key-value stores, hash-join intermediates); B-trees win everywhere else. PostgreSQL has hash indexes, but they are rarely used, because the modern B-tree is so well optimised that its O(log N) cost disappears into the noise.
+      cannot use the index: the hashed positions are scattered across the
+      array, with no way to walk neighbours. Hash indexes win when every query is an equality lookup (a session table read by session ID, Redis and other in-memory key-value stores); B-trees win everywhere else. PostgreSQL has hash indexes, but they are rarely used, because the modern B-tree is so well optimised that its few extra page reads disappear into the noise.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-9">
@@ -1100,9 +1069,7 @@
     <h2>String concatenation as the attack vector that will not die.</h2>
 
     <p id="ch13-injection-p1" class="lead">
-      <span class="key-term">SQL injection</span> is the most consequential vulnerability class in the
-      history of web security and the one with the simplest underlying
-      cause. An application that builds a SQL query by concatenating
+      <span class="key-term">SQL injection</span> is one of the most damaging vulnerability classes in the history of web security, and the one with the simplest cause. An application that builds a SQL query by concatenating
       user input into a string lets the user supply arbitrary SQL. The
       database, having no way to distinguish "code the developer wrote"
       from "code the user supplied," dutifully executes both. The
@@ -1110,7 +1077,7 @@
       take over the database server entirely. The
       vulnerability has been documented since the late 1990s, the fix
       has been universally available since the early 2000s, and SQL
-      injection is still on the OWASP Top 10 in 2026. The reason is
+      injection is still on the OWASP Top 10, the standard list of the worst web risks, in 2026. The reason is
       sociological as much as technical: every new generation of
       programmers has to discover for themselves that string
       concatenation is the wrong tool.
@@ -1229,7 +1196,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 8.5 12 13l8.5-4.5z"/><path d="M3.5 12.5 12 17l8.5-4.5"/><path d="M3.5 16.5 12 21l8.5-4.5"/></svg></span>
       <p id="ch13-injection-p6" class="insight-text">
-        <strong>Defence in depth.</strong> Parameterised queries close the primary vulnerability, but a serious application stacks more layers. <strong>ORMs</strong> (object-relational mappers such as Django ORM and ActiveRecord) wrap parameterisation by default, so programmers using them rarely write raw SQL at all. <strong>Least-privilege database accounts</strong> ensure that even a successful SQLi cannot DROP TABLE, because the application's connection has only SELECT, INSERT, UPDATE on its own tables. <strong>Web Application Firewalls</strong> (Cloudflare, AWS WAF, ModSecurity) try to spot SQL-injection-shaped strings in HTTP requests and block them before they reach the application. <strong>Input validation</strong> rejects requests that don't match the expected shape (numeric IDs are numeric; UUIDs match the UUID regex). None of these alone is sufficient; together they make SQLi rare even when one layer fails.
+        <strong>Defence in depth.</strong> Parameterised queries close the primary vulnerability, but a serious application stacks more layers. <strong>ORMs</strong> (object-relational mappers, libraries such as Django ORM and ActiveRecord that let code read and write rows as ordinary objects while they write the SQL) use parameterised queries by default, so programmers using them rarely write raw SQL at all. <strong>Least-privilege database accounts</strong> ensure that even a successful injection cannot DROP TABLE, because the application's connection has only SELECT, INSERT, UPDATE on its own tables. <strong>Web Application Firewalls</strong> (Cloudflare, AWS WAF, ModSecurity) try to spot SQL-injection-shaped strings in HTTP requests and block them before they reach the application. <strong>Input validation</strong> rejects requests that don't match the expected shape (numeric IDs are numeric, dates are dates). None of these alone is sufficient; together they make SQL injection rare even when one layer fails.
       </p>
     </div>
 
@@ -1237,9 +1204,7 @@
 
     <p id="ch13-injection-p7">
       The relational model is fifty years old and shows no sign of being
-      replaced. NoSQL systems came and went; most of them eventually added
-      schemas and JOINs and ACID. The reasons are not nostalgia: relational
-      algebra is mathematically complete, the transaction model is
+      replaced. NoSQL systems (databases that gave up fixed tables or SQL for speed or flexibility) rose to challenge it, and many of them later added schemas, joins or transactions. The reasons are not nostalgia: relational algebra is relationally complete and composes without limit, the transaction model is
       mathematically precise, and the optimisation tooling (Selinger's
       planner, the WAL, the B-tree) has had fifty years of battle-testing.
     </p>
