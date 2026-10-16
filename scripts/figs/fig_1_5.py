@@ -74,7 +74,7 @@ how = '''<details class="fig-how">
           <li><b>The silicon.</b> The body is p-type silicon, doped with electron-accepting atoms; the source and drain are n-type, rich in free electrons. With the gate off, nothing joins them.</li>
           <li><b>The field.</b> The gate's voltage acts across the oxide as an electric field. No charge crosses the insulator.</li>
           <li><b>The channel.</b> The field gathers electrons under the oxide until that thin layer inverts, from p-type to n-type, and conducts.</li>
-          <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor. Every modern CPU is a stack of these about 3 nanometres wide.</li>
+          <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor. A modern CPU holds billions of them, each a few tens of nanometres across.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-5">

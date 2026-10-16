@@ -60,7 +60,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The same job.</b> Both machines flip switches according to instructions; the distance between them is the history of the integrated circuit.</li>
-          <li><b>The red flashes.</b> A tube burning out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
+          <li><b>The red flashes.</b> As the figure plays, a tube burns out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
           <li><b>The numbers.</b> 28,000,000,000 ÷ 17,468 ≈ 1.6 million. (From the 4004 of 1971 to the M4 the factor is twelve million: Fig 1.6.)</li>
         </ol>
       </details>'''

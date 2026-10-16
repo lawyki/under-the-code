@@ -250,7 +250,7 @@
       <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-3 svgd-part1-3">
 <title id="svgt-part1-3">Fig 1.2 · Enigma · one key, a different lamp every press</title>
 <desc id="svgd-part1-3">The key A is pressed three times. Each press steps the fast rotor one position before the current flows, so the current takes a different path out through three rotors, turns in the reflector, and returns on another wire: the lamps F, then E, then C light. The reflector never sends a letter back to itself.</desc>
-<text x="34" y="40" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">KEY</text>
+<text x="20" y="40" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">KEY · LAMP</text>
 <text x="192" y="40" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">ROTORS</text>
 <text x="343" y="40" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">REFLECTOR</text>
 <rect x="97" y="52" width="26" height="22" rx="3" fill="none" stroke="rgba(212,168,83,0.55)"/>
@@ -519,7 +519,7 @@
 <g><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.23s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.47s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.70s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.93s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-1.17s" repeatCount="indefinite"/></circle></g>
 <text x="296" y="312" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#d4a853">current flows</text>
 </svg>
-      <p id="ch1-transistor-p6" class="diagram-caption">Left, 0 V on the base: the lamp stays dark. Right, 0.7 V: it lights. This is the older kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.</p>
+      <p id="ch1-transistor-p6" class="diagram-caption">Left, 0 V on the base and the lamp stays dark; right, 0.7 V and it lights. This is the older kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -533,7 +533,11 @@
     <h3>Why semiconductors</h3>
 
     <p id="ch1-transistor-p7">
-      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows. Over the p-type silicon, on a thin insulating oxide, sits the third terminal, the gate, which does the base's job: a voltage on it draws free electrons out of the source and drain and in under the gate, where they form a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
+      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type).
+    </p>
+
+    <p id="ch1-transistor-p18">
+      A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows. Over the p-type silicon, on a thin insulating oxide, sits the third terminal, the gate, which does the base's job: a voltage on it draws free electrons out of the source and drain and in under the gate, where they form a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-5">
@@ -584,7 +588,7 @@
           <li><b>The silicon.</b> The body is p-type silicon, doped with electron-accepting atoms; the source and drain are n-type, rich in free electrons. With the gate off, nothing joins them.</li>
           <li><b>The field.</b> The gate's voltage acts across the oxide as an electric field. No charge crosses the insulator.</li>
           <li><b>The channel.</b> The field gathers electrons, drawn in from the source and drain, under the oxide until that thin layer inverts, from p-type to n-type, and conducts.</li>
-          <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor. Every modern CPU is a stack of these about 3 nanometres wide.</li>
+          <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor. A modern CPU holds billions of them, each a few tens of nanometres across.</li>
         </ol>
       </details>
     </div>
@@ -639,7 +643,7 @@
 <text x="372" y="238" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">in 53 years</text>
 <text x="64" y="320" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.45)">transistors per chip, log scale</text>
 </svg>
-      <p id="ch1-transistor-p11" class="diagram-caption">On a log scale, where each gridline is ten times the one below, steady doubling draws a straight line. The chips follow the dashed two-year line for more than forty years, then fall below it: 2,300 transistors in 1971, 28 billion in 2024.</p>
+      <p id="ch1-transistor-p11" class="diagram-caption">On a log scale, where each gridline is ten times the one below (every second one is labelled), steady doubling draws a straight line. The chips follow the dashed two-year line for more than forty years, then fall below it: 2,300 transistors in 1971, 28 billion in 2024.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -747,7 +751,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The same job.</b> Both machines flip switches according to instructions; what changed is the size of the switch, from a glass tube to a speck of silicon.</li>
-          <li><b>The red flashes.</b> A tube burning out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
+          <li><b>The red flashes.</b> As the figure plays, a tube burns out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
           <li><b>The numbers.</b> 28,000,000,000 ÷ 17,468 ≈ 1.6 million. (From the 4004 of 1971 to the M4 the factor is twelve million: Fig 1.6.)</li>
         </ol>
       </details>
@@ -930,14 +934,14 @@
 <text x="276" y="396" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">0x08</text>
 <text x="276" y="413" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">jmp 0x00</text>
 </svg>
-      <p id="ch1-cpu-p3" class="diagram-caption">Follow the program counter: 0x00, then 0x05, then 0x08 (addresses written in hexadecimal, here the same as 0, 5 and 8), where the jump sets it back to 0x00, so the program loops.</p>
+      <p id="ch1-cpu-p3" class="diagram-caption">Follow the program counter: 0x00, then 0x05, then 0x08 (addresses written in hexadecimal, here the same as 0, 5 and 8), because the first instruction takes five bytes and the second three; at 0x08 the jump sets it back to 0x00, so the program loops.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Fetch.</b> Read the bytes at the address in the program counter.</li>
           <li><b>Decode.</b> Work out the operation and its operands from the bit pattern (Fig 1.10 takes one apart).</li>
           <li><b>Execute.</b> The ALU or another unit does the work: an addition, a comparison, an address.</li>
-          <li><b>Writeback.</b> Store the result and move the counter on by the instruction's length: 5 bytes, then 3. A jump sets the counter instead, which is how this program loops.</li>
+          <li><b>Writeback.</b> Store the result and move the counter on by the instruction's length; a jump sets the counter instead.</li>
         </ol>
       </details>
     </div>
@@ -1213,12 +1217,12 @@
 <rect x="20" y="300" width="176" height="50" rx="6" fill="none" stroke="#9bd89b" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099900;0.100000;0.339900;0.340000;0.579800;0.579900;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="32" y="320" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">right · ~95%</text>
 <text x="32" y="340" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.75)">keep the work</text>
-<rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="rgba(255,255,255,0.35)"/>
+<rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="rgba(255,255,255,0.35)"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.099700;0.099800;0.099900;0.100000;0.819900;0.820000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="#ec8d8d" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099700;0.099800;0.099900;0.100000;0.819900;0.820000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="216" y="320" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">wrong · ~5%</text>
 <text x="216" y="340" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.75)">throw it away</text>
 </svg>
-      <p id="ch1-cpu-p10" class="diagram-caption">The guessed path runs before the branch is decided. If the guess is wrong its work is thrown away, but the data it loaded stays in the cache: the trace Spectre and Meltdown read.</p>
+      <p id="ch1-cpu-p10" class="diagram-caption">The guessed path runs before the branch is decided. If the guess is wrong its work is thrown away, but the data it loaded stays in the cache, a trace that the attacks described below, Spectre and Meltdown, read.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1232,7 +1236,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5 20 20"/></svg></span>
       <p id="ch1-cpu-p11" class="insight-text">
-        <strong>Spectre and Meltdown (2018).</strong> Spectre affects nearly every fast processor made since the mid-1990s, Meltdown mainly Intel's; both let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte and uses it to pick one of 256 memory locations to load (a byte has 256 possible values, so each value has its own location). The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. <a href="part-5#ch16-numa">Chapter 16</a> returns to them.
+        <strong>Spectre and Meltdown (2018).</strong> Spectre affects nearly every fast processor made since the mid-1990s, Meltdown mainly Intel's; both let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution. The CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte. That work then loads one of 256 memory locations, the one numbered by the byte's value (a byte has 256 possible values). The work is thrown away, but the loaded location stays cached, so the attacker times a read of each of the 256: the one that answers fast gives away the byte. <a href="part-5#ch16-numa">Chapter 16</a> returns to them.
       </p>
     </div>
   </section>
@@ -1339,7 +1343,7 @@
 <circle cx="150" r="7" fill="#86a8ff" opacity="0"><animate attributeName="cy" values="90;90;300;300;204;204;90;90" keyTimes="0.000000;0.066611;0.066667;0.711111;0.777778;0.822222;0.911111;1.000000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.711000;0.711111;0.933111;0.933222;1.000000" dur="9s" repeatCount="indefinite"/></circle>
 <rect x="108" y="288" width="102" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.633222;0.633333;0.733111;0.733222;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="ch1-kernel-p5" class="diagram-caption">The CPU runs each program at a privilege level, or ring: Ring 3 for programs, Ring 0 for the kernel. The red path, a program reaching straight for the disk, is blocked; the gold one, a system call, is let through.</p>
+      <p id="ch1-kernel-p5" class="diagram-caption">The CPU runs each program at a privilege level, or ring: Ring 3 for programs, Ring 0 for the kernel. The red path, a program reaching straight for the disk, is blocked; the gold one, a request to the kernel called a system call, is let through.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1363,7 +1367,7 @@
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or even a running program are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. To the kernel a running program is a <em>process</em>: on Linux, reading the file /proc/1234/status returns process 1234's name and memory use as text. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or even a running program are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. The kernel calls each running program a <em>process</em>: on Linux, reading the file /proc/1234/status returns process 1234's name and memory use as text. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of C, the language it is written in.
     </p>
 
     <div class="insight-strip">
@@ -1385,7 +1389,7 @@
     </p>
 
     <p id="ch1-memory-p2">
-      Section 03's gap, on one scale: arithmetic takes about 0.3 nanoseconds, a round trip to main memory (RAM) 60 nanoseconds, two hundred times longer, and a read from a fast SSD (solid-state drive) 50,000 nanoseconds, about 167,000 times longer than the arithmetic. Hiding these gaps is the job of the caches: three levels of them, L1 to L3, sit between the CPU and RAM.
+      Section 03's gap, on one scale: arithmetic takes about 0.3 nanoseconds, a round trip to main memory (RAM) 60 nanoseconds, two hundred times longer, and a read from a fast SSD (solid-state drive) 50,000 nanoseconds, about 167,000 times longer than the arithmetic. Hiding the gap to RAM is the job of the caches: three levels of them, L1 to L3, sit between the CPU and RAM.
     </p>
 
     <table class="summary-table dark">
@@ -1474,7 +1478,7 @@
       access roughly <em>fifteen times</em> faster, and the hit rate only has to be
       high, not perfect. The same calculation justifies every layer of the hierarchy.
     </p>
-      <p id="ch1-memory-p7">Peter Denning's <em>working set</em> model (1968) made the idea rigorous for virtual memory (just below), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (<a href="part-2">Part II</a>), recent web-address lookups remembered (<a href="part-3">Part III</a>), a database's busiest data held in memory (<a href="part-4">Part IV</a>).</p>
+      <p id="ch1-memory-p7">Peter Denning's <em>working set</em> model (1968) made the idea rigorous for virtual memory (just below): a program needs in fast memory only the pages it has used recently. Processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (<a href="part-2">Part II</a>), recent web-address lookups remembered (<a href="part-3">Part III</a>), a database's busiest data held in memory (<a href="part-4">Part IV</a>).</p>
     </div>
 
     <h3>Virtual memory: the lie the kernel tells</h3>
@@ -1488,13 +1492,13 @@
     </p>
 
     <p id="ch1-memory-p10">
-      Page tables give three things. <strong>Isolation</strong>: no program can read another's memory, because different programs' page tables point to different physical pages. <strong>Flexibility</strong>: the kernel can move pages around in RAM, send little-used ones out to disk, or read a program's file in from disk only as its pages are first used. When a program touches a page that is not in RAM, the MMU stops it with a <em>page fault</em> and calls the kernel, which reads the page in, updates the table and lets the program carry on, none the wiser. <strong>Protection</strong>: the page tables also encode permissions for read, write and execute, and the MMU enforces them.
+      Page tables give three things. <strong>Isolation</strong>: no program can read another's memory, because different programs' page tables point to different physical pages. <strong>Flexibility</strong>: the kernel can move pages around in RAM, send little-used ones out to disk, or read a program's file in from disk only as its pages are first used. <strong>Protection</strong>: the page tables also encode permissions for read, write and execute, and the MMU enforces them. When a program touches a page that is not in RAM, the MMU stops it with a <em>page fault</em> and calls the kernel, which reads the page in, updates the table and lets the program carry on, none the wiser.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch1-memory-p11" class="insight-text">
-        <strong>Buffer overflow attacks</strong> pass the MMU's write checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in its own slot on the stack (the memory that function calls work in), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. Those instructions run only where the stack is marked executable, so the MMU's execute check stops them once DEP marks it not. <a href="#ch3">Chapter 3</a> shows the defences, among them the <strong>stack canary</strong>, <strong>ASLR</strong> and <strong>DEP</strong>, at the assembly level.
+        <strong>Buffer overflow attacks</strong> pass the MMU's write checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in its own slot on the stack (the memory that function calls work in), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. Those instructions can run only if the stack's pages allow execution, so marking them no-execute (the defence called DEP) lets the MMU's execute check stop them. <a href="#ch3">Chapter 3</a> shows the defences, among them the <strong>stack canary</strong>, <strong>ASLR</strong> and <strong>DEP</strong>, at the assembly level.
       </p>
     </div>
   </section>

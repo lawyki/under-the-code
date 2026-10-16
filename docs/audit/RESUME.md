@@ -1,22 +1,23 @@
-# Pre-read audit · resume note (paused 2026-10-16 at the owner's request)
+# Pre-read audit · resume note
 
-All work so far is committed on branch `pre-read-audit` (pushed to GitHub, not merged; `main` is the live site and stays untouched until the audit is retested and gated). Never push or merge to `main`, never tag, from this branch until the owner's read is ready.
+All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is the live site and stays untouched: never push, merge, rebase onto or tag `main` from this work. Push only to `pre-read-audit` (from a worktree: `git push origin HEAD:pre-read-audit`).
 
-## Done (uncommitted)
-- Outside-audit fixes (docs/audit/outside.json, 157 confirmed): cover, five part openers/leads/closers, account page
-  (+ functions/api/auth/verify.js passkey branch), 85 glossary definitions (scripts/glossary-defs.json; builder now skips
-  part-opener mentions and takes a `home` override), 25 cross-references. Blind retest done (docs/audit/outside-retest-result.json),
-  one revision applied. clip.mjs 0 findings in 84 runs, tests/pass25 all pass, check:dashes clean, anchors unchanged.
-- Chapter 1 round-1 fixes (docs/audit/round1/ch1.json, 54, plus part-1.json items 3, 4, 8, 15, 18): all prose, caption and
-  strip edits applied; Figs 1.3, 1.5, 1.6, 1.7, 1.12, 1.13, 1.15 changed. Gate 1 (figs.mjs --motion) clean on those figures;
-  --fullscreen leaves ONE failure: fig-1-12, the new neutral outline rect behind "wrong · ~5%" (stroke white@0.35) is named
-  by the label "loaded data, still there" and measures 1.66:1 on the red fill in fullscreen. Fix that, rerun fullscreen.
+## Method per chapter (working laws)
+1. Read the chapter's findings (`docs/audit/round1/<ch>.json`, plus the part-N.json items for it) and the whole chapter in `public/part-N.html`.
+2. Decide each finding as author: apply (own wording), adjust, or reject with a one-line reason. Owner-only matters go to `docs/audit/owner-calls.md`. Record in `docs/audit/decisions/<ch>.md`.
+3. Edit (`docs/audit/tools/el.py` prints an element by id; `apply.py` does exact-once replacements). Keep generator text in `scripts/figs/*.py` in step for text-only changes where the string exists (the generators already lagged the published SVGs before the audit; the page is the source of truth).
+4. Blind retest: one newcomer and one expert reader (Sonnet), given only the changed passages, screenshots of changed figures and the page. Results in `docs/audit/retest/<ch>-*.json`. One revision.
+5. Checks: `npm run build:glossary`, `npm run build:sections` (restore sections.json if only its timestamp moved), `npm run check:dashes`; anchors (book.js candidate ids outside SVGs) unchanged except new paragraphs, which take the next unused number; Gate 1 on changed figures (`tests/pass28/figs.mjs --fig=... --fullscreen`, and again with `--motion`), `node clip.mjs --pages=part-N`, `sh tests/pass25/run-all.sh`.
+6. One commit per chapter, push, update this note.
+
+## Done
+- Outside the chapters (docs/audit/outside.json): commit 6a5f607.
+- Chapter 1: round 1 in 6a5f607; fig-1-12 fullscreen contrast fixed; blind retest and one revision; checks green (Gate 1 0/192 still+fs and 0/768 motion+fs on the changed figures, clip 0, pass25 all pass). Commit "Pre-read audit: Chapter 1".
 
 ## Next
-1. Fix fig-1-12 fullscreen; blind retest of Chapter 1's changed paragraphs (newcomer + expert, Sonnet); one revision.
-2. Commit each chapter on the branch as its retest passes. Then chapter by chapter through docs/audit/round1/*.json
-   (1,325 confirmed or owner findings: ch2 54, ch3 69, chBridge 52, ch4 73 ... part-N consistency). Owner verdicts
-   go to an owner-calls list; kept-original figures and owner text are never edited.
-3. Open owner call from the outside audit: privacy notice "D1 database in the European Union" (DB has no EU
-   jurisdiction; recreate with --jurisdiction=eu or reword). Not changed.
-Tools: docs/audit/tools/el.py (print an element by id), apply.py (exact-once replace).
+- Chapter 2 (`ch2.json` 54, part-1.json items 12, 13, 16, 17, 25 counted 1-based). Decisions drafted in `docs/audit/decisions/ch2.md`.
+- Then ch3 (+ part-1 items 1, 5, 6, 19, 23, 24, 26; owner items for Figs 3.7 to 3.11 and the Aleph One quote), chBridge (+ the rest of part-1), ch4–ch7 (+ part-2), ch8–ch12 (+ part-3), ch13–ch15 (+ part-4), ch16–ch18 (+ part-5).
+
+## Pending
+- Owner calls: `docs/audit/owner-calls.md` (privacy notice EU wording so far).
+- Duplicate SVG title ids still present: svgt-part1-30 (Ch3 hero and Fig 3.2), -39 and -40 (Figs 3.9/3.10, kept-original, against BR.1/BR.2): fix with Ch3 and the Bridge.

@@ -61,7 +61,7 @@ o('<desc id="svgd-part1-3">The key A is pressed three times. Each press steps th
 
 # column heads
 mono = 'font-family="DM Mono"'
-o(f'<text x="{KX}" y="40" text-anchor="middle" {mono} font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">KEY</text>')
+o(f'<text x="20" y="40" text-anchor="start" {mono} font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">KEY · LAMP</text>')
 o(f'<text x="{(R[0][0] + R[2][1]) / 2:g}" y="40" text-anchor="middle" {mono} font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">ROTORS</text>')
 o(f'<text x="{FX + FW / 2:g}" y="40" text-anchor="middle" {mono} font-size="14" letter-spacing="0.08em" fill="rgba(255,255,255,0.6)">REFLECTOR</text>')
 
