@@ -363,11 +363,13 @@ function composeDefinition(html, termStart, termEnd) {
 
 function findContainingSection(html, position) {
   const before = html.substring(0, position);
-  const re = /<section class="section" id="([^"]+)">/g;
+  // A part opener or closer (<section class="part-opener">) belongs to no
+  // content section: a name in a closing tagline is not where it is taught.
+  const re = /<section class="(section|part-opener)"(?: id="([^"]+)")?/g;
   let last = null;
   let m;
   while ((m = re.exec(before)) !== null) last = m;
-  return last ? last[1] : null;
+  return last && last[1] === 'section' ? last[2] || null : null;
 }
 
 function getSectionMeta(html, sectionId) {
@@ -810,6 +812,19 @@ if (fs.existsSync(DEFS_PATH)) {
     if (!d) { unauthored.push(k); continue; }
     if (d.drop) { delete out.entries[k]; continue; }
     out.entries[k].definition = d.definition;
+    if (d.term) out.entries[k].term = d.term;
+    // { home: "<section id>" } pins a term whose first scanned use is not
+    // where the book teaches it (a heading or a strip label the scan skips).
+    if (d.home) {
+      const part = PARTS.find(pt => partHtml[pt] && partHtml[pt].includes(`<section class="section" id="${d.home}">`));
+      if (!part) throw new Error(`glossary-defs: home ${d.home} for "${k}" not found`);
+      const meta = getSectionMeta(partHtml[part], d.home);
+      const chapterId = getChapterFromSection(d.home);
+      Object.assign(out.entries[k], {
+        part: part.replace(/\.html$/, ''), section: d.home, chapter: chapterId,
+        chapter_num: formatChapterNum(chapterId), section_label: meta.label, section_title: meta.title,
+      });
+    }
   }
   out.count = Object.keys(out.entries).length;
 }

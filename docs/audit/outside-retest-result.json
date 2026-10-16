@@ -1,0 +1,1312 @@
+{
+  "summary": "Blind newcomer + expert checker over every passage changed by the outside-audit fixes",
+  "agentCount": 14,
+  "logs": [],
+  "result": [
+    {
+      "page": "index",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "index #1",
+          "quote": "CH 1–3 · BRIDGE",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "On the cover shelf, 'BRIDGE' sits beside the chapter range with no hint of what it is. The Contents section further down calls it 'The Boundary' and says 'one Bridge', but a reader meeting the placard first has no meaning for it.",
+          "fix": "Leave it, since the Contents section explains it. Or, if the cover should stand alone, write 'CH 1–3 · THE BOUNDARY'."
+        },
+        {
+          "passage": "index #2",
+          "quote": "and the hardware face of the kernel.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'Kernel' is not defined anywhere before this line, and 'hardware face of' is a metaphor that does not say what Part I covers. It is also the least concrete item in a list that otherwise names real topics. A newcomer stops here, and the word returns in the next blurb as 'the kernel as a real program'.",
+          "fix": "and where the hardware hands over to the operating system."
+        },
+        {
+          "passage": "index #2",
+          "quote": "IEEE 754, the CPU, assembly, buffer overflows",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Four terms in a row a newcomer cannot yet read: a standard's number, assembly, and buffer overflows. As a table-of-contents teaser this is acceptable, but nothing signals that they are previews that the chapters will explain.",
+          "fix": "Transistors, Boolean algebra, how computers store decimal numbers, the CPU, assembly language, and how a program can be broken by data that overflows its buffer."
+        },
+        {
+          "passage": "index #3",
+          "quote": "C's pointers, manual memory and undefined behaviour; C++'s classes and RAII; Python's interpreter and the GIL.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "A dense run of undefined terms (pointers, undefined behaviour, RAII, GIL, interpreter) with no cue that they are previews. A newcomer with school maths cannot parse the sentence and may read it as a prerequisite.",
+          "fix": "How C hands you raw memory and what goes wrong when you misuse it, how C++ and Python each manage that risk differently."
+        },
+        {
+          "passage": "index #3",
+          "quote": "The kernel as a real program: scheduling, virtual memory, filesystems, IPC.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'The kernel' is still undefined, and 'as a real program' implies a contrast with an earlier idea of the kernel that the blurb never gave. 'IPC' is an unexplained abbreviation.",
+          "fix": "The operating system's core as a real program: how it shares the CPU, manages memory, stores files and lets programs talk to each other."
+        },
+        {
+          "passage": "index #4",
+          "quote": "Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript and the browser.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Seven unexpanded acronyms in a row. The next sentence ('From a packet on a wire to a page in a browser tab') is the one that tells the newcomer what the part is about, so the list mostly pads before it.",
+          "fix": "From a packet on a wire to a page in a browser tab: how machines find each other, send data reliably, keep it private and show it as a web page."
+        }
+      ],
+      "clean": [
+        "index #4 second sentence: 'From a packet on a wire to a page in a browser tab.' reads clean and is the best line in the three blurbs."
+      ]
+    },
+    {
+      "page": "index",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "index #3",
+          "quote": "The kernel as a real program: scheduling, virtual memory, filesystems, IPC. C's pointers, manual memory and undefined behaviour; C++'s classes and RAII; Python's interpreter and the GIL.",
+          "kind": "other",
+          "severity": "L",
+          "problem": "True against Part II (Ch4 scheduling, VM, filesystems, IPC; Ch5 pointers, manual memory, UB; Ch6 classes and RAII; Ch7 interpreter and GIL). But OLD named compilers, linkers and system calls; NEW drops compilation/portability, which is the opening of Ch5 ('One source. A thousand binaries.', Topics line leads with Portability). Only a minor loss, since system calls now live in the Bridge and Part I says so, but the blurb no longer mentions why C matters (portability) or that Ch5-7 also compare compiled and interpreted pipelines.",
+          "fix": "The kernel as a real program: scheduling, virtual memory, filesystems, IPC. C's portability, pointers, manual memory and undefined behaviour; C++'s classes and RAII; Python's interpreter and the GIL."
+        }
+      ],
+      "clean": [
+        "index #1 (line 429): 'CH 1–3 · BRIDGE' now matches the stacked shelf (line 552), the shelf label (line 600) and part-1's progress bar; the '+' form is gone from index.html. Fits the 188px SVG column at 12px mono with 0.2em spacing. No dash issue.",
+        "index #2 (line 603): every named topic is in Part I (Ch2 transistors/Boolean/IEEE 754, Ch3 CPU/assembly/buffer overflows, Bridge = hardware face of the kernel). Dropping 'The place where the book has to begin.' removes a filler sentence and loses nothing true.",
+        "index #4 (line 630): 'a page in a browser tab' is correct and fixes OLD's 'a JSON response in a tab' (Ch12 ends at bytes to pixels, JSON is a minor aside). Ch8-12 do cover Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript and the browser. No em dash, no AI-pattern."
+      ]
+    },
+    {
+      "page": "part-1",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "part-1 #12",
+          "quote": "The chapter uses six of these registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The passage says \"these registers\" are the 16 general-purpose ones, then counts RIP among the six. The page's own note below the figure says RIP and RFLAGS \"are not general-purpose\", and the table lists RIP separately. A careful newcomer counts 16, then six of them, then finds RIP outside the 16.",
+          "fix": "The chapter leans on five of these registers and one more: RAX holds a function's result, RDI and RSI its first two arguments, and RSP and RBP its place on the stack (next section). The sixth, RIP, is not one of the 16: it holds the address of the next instruction."
+        },
+        {
+          "passage": "part-1 #6",
+          "quote": "let a program read memory it may not see",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "The sentence says these flaws sit \"in nearly every fast processor made since the mid-1990s\", and that holds for Spectre. Meltdown hit mainly Intel (and some ARM) chips, not nearly all. A reader who later meets this fact elsewhere would catch the overclaim.",
+          "fix": "Together these flaws affect nearly every fast processor made since the mid-1990s (Spectre almost all of them, Meltdown mainly Intel's). Both let a program read memory it may not see, such as another program's passwords."
+        },
+        {
+          "passage": "part-1 #6",
+          "quote": "then loads one of 256 memory locations, picked by the byte's value",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "The 256 arrives with no reason. The book has said a byte is eight bits but has not said it can take 256 values, so a newcomer stops to ask why 256. \"then loads\" also reads as a separate step from the secret read, when both are part of the same discarded work.",
+          "fix": "into work that reads a secret byte and uses it to pick one of 256 memory locations to load (a byte can hold 256 different values, so each value has its own location)."
+        },
+        {
+          "passage": "part-1 #13",
+          "quote": "how those few features combine into the conditions under which one program can be made to own the machine",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "The clause is circular and abstract (\"conditions under which one program can be made to own\"). \"own\" is not defined here, and \"behave\" in the previous clause is a different frame (programs made to behave, then one program owning). The reader cannot tell what the Bridge will show.",
+          "fix": "The Bridge that closes Part I asks why those walls hold: which hardware features the silicon must already provide, and how together they let one program, the kernel, control the machine and keep every other program in check. We do not yet open the kernel and look inside it; that waits for Part II."
+        },
+        {
+          "passage": "part-1 #9",
+          "quote": "This is the substrate. Every chapter that follows builds on it.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Announces and pads. \"This is the substrate\" restates the recap just above, and \"Every chapter that follows builds on it\" teaches nothing. The same chapter-2 pointer (\"Chapter 2 ... By the end of Chapter 2\") is also given twice in one paragraph.",
+          "fix": "Chapter 2 goes deeper into a single layer of this stack: the layer where mathematics and electricity meet. It shows why a computer must be binary, how George Boole invented the logic that runs on those binary signals, and how arithmetic emerges from a few simple gates. By the end you will understand why 0.1 + 0.2 does not equal 0.3 in almost any programming language."
+        },
+        {
+          "passage": "part-1 #9",
+          "quote": "you will understand at a physical level why 0.1 + 0.2 does not equal 0.3",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "\"At a physical level\" overpromises. The cause is that binary numbers cannot hold 0.1 or 0.2 exactly, which is a number-format fact, not a physical one.",
+          "fix": "you will understand why 0.1 + 0.2 does not equal 0.3 in almost any programming language."
+        },
+        {
+          "passage": "part-1 #8",
+          "quote": "You have followed the chain from sand to software.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "The whole paragraph restates the chapter in one run. As an end-of-chapter recap this may be deliberate, but it is the \"summarising what was just said\" the book's own second law cuts. It also names rings and virtual memory but leaves out the timer, which the later Chapter 3 closing (#13) lists as one of the three walls.",
+          "fix": "If kept, add the timer so the recap matches #13: \"...enforcing isolation and security through privilege rings, virtual memory and a hardware timer.\""
+        },
+        {
+          "passage": "part-1 #5",
+          "quote": "enough such rules, wired together, add numbers, hold them and carry out a program like a Turing machine's",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Dense for this point in the book. \"hold them\" (store numbers) is not explained by anything before it. The AND is called a \"rule\", then the parenthesis calls the same thing \"gates\", and a newcomer has not met that word yet. The run of three verbs after a single example (AND) asks for a leap.",
+          "fix": "Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND, and a circuit that applies such a rule is called a gate. Enough gates, wired together, can add numbers, store them and carry out the kind of program a Turing machine follows (Chapter 2 builds the gates, and an adder from them)."
+        },
+        {
+          "passage": "part-1 #10",
+          "quote": "a student showed that relay circuits obey his rules exactly",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "\"relay circuits\" is a new word in the chapter lead and nothing before this line says what a relay is (the chapter explains it a few paragraphs later). A newcomer reads past it, but may stall at \"a reshaped form of them\" too, since it is not clear what was reshaped.",
+          "fix": "In 1937, ninety years after his book, a student showed that circuits of relays, switches worked by an electromagnet, obey his rules exactly, and a reshaped form of those rules became the logic every digital circuit is built from."
+        }
+      ],
+      "clean": [
+        "part-1 #1",
+        "part-1 #2",
+        "part-1 #3",
+        "part-1 #4",
+        "part-1 #7",
+        "part-1 #11",
+        "part-1 #14",
+        "part-1 #15",
+        "part-1 #16"
+      ]
+    },
+    {
+      "page": "part-1",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "part-1 #12",
+          "quote": "The chapter uses six of these registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "\"these registers\" points back to the 16 general-purpose registers, but RIP is not one of them. The book says so itself a few lines later (ch3-registers list: \"RIP, the instruction pointer, and RFLAGS ... are not general-purpose\"). The fix swapped \"six rows\" (which was wrong, since the table has other rows) for a phrase that is now false, because the count of six includes RIP.",
+          "fix": "The chapter uses six registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction."
+        }
+      ],
+      "clean": [
+        "part-1 #1 (TOC: von Neumann's lowercase, matches body usage)",
+        "part-1 #2 (Part I Bridge description, consistent with Bridge content)",
+        "part-1 #3 (1936 Turing, machines built within ten years: ENIAC 1945, consistent with ch1 text)",
+        "part-1 #4 (Era covered 1936 to present, matches ch1 content)",
+        "part-1 #5 (Chapter 2 does build gates and half/full/ripple adders)",
+        "part-1 #6 (Spectre/Meltdown fully treated in Chapter 16, part-5; 'Chapter 16' is correct)",
+        "part-1 #7 (Denning 1968 correct; virtual memory follows directly in ch1-memory-p8, so 'just below' is right)",
+        "part-1 #8 (case change only)",
+        "part-1 #9 ('almost any programming language' is the accurate hedge)",
+        "part-1 #10 (Boole 1847 book, d. 1864, Shannon 1937, ninety years: all correct; 'reshaped form' agrees with ch2-boole-p5; no em dash)",
+        "part-1 #11 (Era covered 1847 to present)",
+        "part-1 #13 (ch1 does name rings, virtual memory and the hardware timer; Bridge and Part II pointers consistent)",
+        "part-1 #14 (five features match the Bridge synthesis, whose caption says take the feature away and the abstraction goes with it)",
+        "part-1 #15 (Chapter 4 opens Part II and covers scheduling, virtual memory, filesystems, IPC, security)",
+        "part-1 #16 (matches the h1 'The substrate is built.')"
+      ]
+    },
+    {
+      "page": "part-2",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "part-2 #7",
+          "quote": "A counter, changed atomically, used to coordinate access to a shared resource.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'Atomically' has not been given anywhere before this point (the only earlier 'atomic' is the journal's commit step, which is not defined as a general term). A newcomer cannot tell what a counter 'changed atomically' means.",
+          "fix": "A counter that the kernel changes in one indivisible step, so two processes can never change it at the same moment; used to make processes wait their turn for a shared resource."
+        },
+        {
+          "passage": "part-2 #7",
+          "quote": "Synchronising without sharing data: \"is it my turn yet?\"",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The left cell says the semaphore coordinates access to a shared resource; this cell says it synchronises 'without sharing data'. A newcomer reads these as opposite claims. 'Synchronising' is also not defined.",
+          "fix": "Taking turns: a process waits until it is safe to use something shared, \"is it my turn yet?\""
+        },
+        {
+          "passage": "part-2 #7",
+          "quote": "Like a network socket, but local: kernel-mediated, with proper authentication.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "It explains the UNIX socket through the network socket, which only gets its row after it and is not explained until Part III. 'Kernel-mediated' is true of every row in the table, so it does not distinguish this one, and 'proper authentication' is left undefined.",
+          "fix": "A two-way connection between processes on the same machine, addressed by a filename; the kernel can tell the receiver which user is on the other end."
+        },
+        {
+          "passage": "part-2 #7",
+          "quote": "Used by Docker, systemd, X11, Wayland.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Four product names the newcomer has not met (containers and Docker come later in Section 06; systemd, X11 and Wayland are never explained). They are offered as the example without saying what any of them is.",
+          "fix": "Used for local services, for example the talk between a graphical program and the display server, or between a container tool and its background service."
+        },
+        {
+          "passage": "part-2 #6",
+          "quote": "using an unmapped address such as 0 (NULL)",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'NULL' appears in the book here for the first time (C and pointers come in Chapter 5), and the newcomer is not told why address 0 is deliberately left unmapped.",
+          "fix": "using an unmapped address such as 0, which the kernel leaves unmapped on purpose so that a program using a missing address fails at once (C calls it NULL)"
+        },
+        {
+          "passage": "part-2 #8",
+          "quote": "does this in O(log N) using a red-black tree of virtual runtimes",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "O(log N) is never explained in prose before this recap (it appears only as a bare label in a figure note), so the recap leans on notation the newcomer does not have.",
+          "fix": "does this with a tree of virtual runtimes (the red-black tree) in a number of steps that grows only slowly, roughly with the number of digits in the count of processes, so thousands of processes cost little more than a handful"
+        },
+        {
+          "passage": "part-2 #8",
+          "quote": "why each new mechanism (containers, eBPF) is layered behind further verification",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "Section 06 presents containers as isolation by namespaces and limits, not as verification; only eBPF is checked by a verifier. 'Verification' overstates the container case and 'entirely' in the same sentence is stronger than the chapter's layered-walls ending.",
+          "fix": "why each new mechanism is layered behind further walls: containers behind namespaces and limits, eBPF behind a verifier that checks every program before it runs"
+        },
+        {
+          "passage": "part-2 #10",
+          "quote": "The cost was civilizational.",
+          "kind": "style",
+          "severity": "M",
+          "problem": "An inflated claim that teaches nothing; the reader does not yet know what was costly (rewriting the whole operating system for each new machine). It announces weight instead of giving the reason.",
+          "fix": "Every new machine meant rewriting the whole system from scratch."
+        },
+        {
+          "passage": "part-2 #10",
+          "quote": "the kernel you used today, the browser rendering this page and the language runtime executing it are all C, or built on something that is.",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "Tense slip ('used today'). The browser is mostly C++ (the book says so in Chapter 6), so 'all C' needs the hedge to carry real meaning, and 'language runtime' has not been defined.",
+          "fix": "the kernel you use today, the browser showing this page and the system that runs its scripts all rest on C, directly or through the operating system beneath them."
+        },
+        {
+          "passage": "part-2 #15",
+          "quote": "you give up one to two orders of magnitude of performance",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'Orders of magnitude' is not explained anywhere earlier in the book, and the same phrase is reused in the Part II close. A school-maths reader may not read it as 'ten to a hundred times'.",
+          "fix": "you give up speed, often a factor of 10 to 100 slower, and you get back code that reads like the plan you would write on paper."
+        },
+        {
+          "passage": "part-2 #15",
+          "quote": "reads like the pseudocode in your head",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Pseudocode' is not defined anywhere earlier.",
+          "fix": "reads like the steps you would write out in plain words"
+        },
+        {
+          "passage": "part-2 #3",
+          "quote": "Listinglines 0001–0790 · cc -c kernel.c",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "This is the first appearance of the 'Listing' label, and it is never explained. 'cc -c kernel.c' is a shell command the newcomer has no way to read here (it is explained only in Chapter 5, if at all). The same applies to the Chapter 5 and 7 metas.",
+          "fix": "Either drop the command from the visible meta, or say once what the label means, for example 'Listing: the chapter as a source file, lines 0001–0790'."
+        },
+        {
+          "passage": "part-2 #17",
+          "quote": "EOF · 3199 lines · 4 modules",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'EOF' is never explained (end of file), and 'modules' here means chapters, which clashes with 'module' used for kernel modules in Chapter 4 (insmod).",
+          "fix": "End of file · 3199 lines · 4 chapters"
+        },
+        {
+          "passage": "part-2 #1",
+          "quote": "Part II opens the program that owns it.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'It' has no clear referent: the nearest noun is 'substrate', which a newcomer takes as the thing owned only after reflection. 'Substrate' itself is a word the book has not taught.",
+          "fix": "Part I built the hardware, from sand to transistor and from gate to instruction. Part II opens the program that owns that hardware."
+        },
+        {
+          "passage": "part-2 #5",
+          "quote": "the small eBPF programs of Section 06",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'eBPF' is named without a gloss, so the newcomer meets an unexplained term before its section. The forward reference does signal that it is explained later.",
+          "fix": "the small eBPF programs of Section 06 (user-written code the kernel runs only after a checker has proved it safe)"
+        }
+      ],
+      "clean": [
+        "part-2 #2 (ch4-hero-lead)",
+        "part-2 #4 (ch4-anatomy-p1)",
+        "part-2 #9 (line 1988)",
+        "part-2 #11 (the Topics and Listing meta, same Listing point as #3 but nothing further)",
+        "part-2 #12 (chapter 5 section nav)",
+        "part-2 #13 (05 Undefined behaviour heading; the lead beneath it defines the optimiser)",
+        "part-2 #14 (ch6-hero-lead)",
+        "part-2 #16 (Topics meta; same Listing point as #3)",
+        "part-2 #18 (The software layer is built.)",
+        "part-2 #19 (Part II close recap)",
+        "part-2 #20 (Part III hand-off)"
+      ]
+    },
+    {
+      "page": "part-2",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "part-2 #2",
+          "quote": "One program stays loaded from power-on to shutdown.",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "The kernel is loaded by a bootloader after firmware has run (the chapter says so a few lines later, line 182, and the recap says 'loaded by a bootloader'). 'From power-on' is slightly loose and is the kind of detail a careful reader trips on.",
+          "fix": "One program stays loaded from boot to shutdown."
+        },
+        {
+          "passage": "part-2 #10",
+          "quote": "the kernel you used today, the browser rendering this page",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Tense mismatch. 'used' is past while the same sentence uses present participles ('rendering', 'executing'), so it reads as a slip. This phrase was in OLD, so it is carried over rather than new.",
+          "fix": "Half a century later, the kernel you are using now, the browser rendering this page and the language runtime executing it are all C, or built on something that is."
+        }
+      ],
+      "clean": [
+        "part-2 #1",
+        "part-2 #3",
+        "part-2 #4",
+        "part-2 #5",
+        "part-2 #6",
+        "part-2 #7",
+        "part-2 #8",
+        "part-2 #9",
+        "part-2 #11",
+        "part-2 #12",
+        "part-2 #13",
+        "part-2 #14",
+        "part-2 #15",
+        "part-2 #16",
+        "part-2 #17",
+        "part-2 #18",
+        "part-2 #19",
+        "part-2 #20"
+      ]
+    },
+    {
+      "page": "part-3",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "part-3 #21",
+          "quote": "typeof null === \"object\" is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag).",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "A newcomer has never seen typeof, === or !== (no JavaScript notation appears before this point; === occurs nowhere in Parts I and II), and 'tagged its values' / 'object tag' is not explained anywhere. The quirk is stated in symbols the reader cannot parse, so the point is lost.",
+          "fix": "Ask JavaScript for the type of the value null and it answers \"object\". That is a bug from the ten-day build: Mocha kept a small type label with every value, and null was given the same label as an object. It became locked in because old pages depend on it."
+        },
+        {
+          "passage": "part-3 #21",
+          "quote": "but the choice to have no integer type at all, with every number a 64-bit float, meant JavaScript could never expose the difference.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'The difference' has no referent (between integers and floats? between 0.3 and the sum?). The sentence also reads as if the quirk is JavaScript's fault while the previous clause says it is just IEEE 754. A newcomer cannot tell what was lost. The 'no integers, only doubles' fact was also already given in the Mocha paragraph.",
+          "fix": "0.1 + 0.2 !== 0.3 is plain IEEE 754 rounding (Chapter 2, Section 06). Other languages hide it by also offering exact whole-number arithmetic; JavaScript had only floats, so every programmer met the rounding at once."
+        },
+        {
+          "passage": "part-3 #21",
+          "quote": "Implicit coercion ([] + {} === \"[object Object]\") is a pragmatic shortcut that did not get a sober second look.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "The example adds an empty list to an empty object with no explanation of what [] and {} are, and 'did not get a sober second look' is a vague claim rather than a mechanism.",
+          "fix": "Implicit coercion silently turns one type into another: adding an empty list to an empty object gives the text \"[object Object]\". It was a shortcut to make loose code keep running, and nobody revisited it."
+        },
+        {
+          "passage": "part-3 #17",
+          "quote": "The resolver caches the answer for the time to live (TTL) the authoritative server sets",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "Chapter 9 already taught TTL as the IP header field that drops by one at every hop. Here TTL is a duration in minutes to hours. A newcomer will think the same field is meant, or wonder why one name has two meanings, and the text does not say they differ.",
+          "fix": "The resolver caches the answer for as long as the authoritative server allows, a lifetime called the TTL (time to live) here, a time in seconds and not the hop count of the IP header (typically 5 minutes to 24 hours)."
+        },
+        {
+          "passage": "part-3 #10",
+          "quote": "for a block meant only for Pakistan to leak out and take YouTube off the air almost everywhere for two hours.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "'A block' is ambiguous (a content block? a block of addresses?). The reader has no way to know a routing announcement is meant, and 'leak out' gives no mechanism. The hero line is a teaser, but as written it cannot be followed at this point.",
+          "fix": "It also made it possible for Pakistan's attempt to block YouTube at home to spread to the whole internet in 2008, and take YouTube offline for most of the world for about two hours."
+        },
+        {
+          "passage": "part-3 #18",
+          "quote": "the \"fire and forget\" protocol from Section 01 of Chapter 10",
+          "kind": "other",
+          "severity": "L",
+          "problem": "The quotation marks suggest the book's own words, but Section 01 of Chapter 10 never uses 'fire and forget'. It describes UDP as 'just send packets, no connection, no retransmission'. A reader who looks back will not find the phrase.",
+          "fix": "UDP, the bare send-and-hope protocol of Section 01 of Chapter 10,"
+        },
+        {
+          "passage": "part-3 #20",
+          "quote": "Bill Joy (Sun co-founder, brought into the Netscape-Sun partnership)",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "The text speaks of a Netscape-Sun partnership in April 1995, but the next-but-one paragraph says Netscape 'announced a partnership with Sun' in December 1995. A newcomer sees the partnership both existing and not yet existing.",
+          "fix": "Bill Joy (a Sun co-founder, in talks with Netscape about the Java tie-in)"
+        },
+        {
+          "passage": "part-3 #19",
+          "quote": "The result was committed to a release branch before it had a stable name",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Committed to a release branch' is version-control jargon the book has not taught (and 'object-literal syntax' two sentences on is also unexplained). The sentence is meant as colour, but the reader stops on it.",
+          "fix": "The result was put into a release of the browser before it had a stable name and shipped before it had a specification. ... Its way of writing objects as lists of named values became JSON, the format most web services use to exchange data."
+        },
+        {
+          "passage": "part-3 #1",
+          "quote": "the physics of the substrate",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Substrate' is used in the part tagline, the Chapter 8 contents card and the chapter hero before the reader is told what it means (Chapter 8 only says later that 'the voltage on a wire is the substrate', and also lists three substrates).",
+          "fix": "the physics of the medium that carries the signal (copper, fibre, radio)"
+        },
+        {
+          "passage": "part-3 #4",
+          "quote": "We follow the signal out of the chip and into the world: copper, fibre, radio.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Near copy of the Part III tagline two screens earlier ('We follow the wire out of the chip and into the world'). It announces rather than teaches, and then the Bridge section says it a third time.",
+          "fix": "Copper, fibre, radio: three ways to carry a bit, and the mathematics of how much information any of them can carry."
+        },
+        {
+          "passage": "part-3 #6",
+          "quote": "Part I closed inside a CPU. Part III leaves the CPU.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Repeats the Part III tagline ('steps off the motherboard') and the Bridge heading just above ('the bit on a transistor extends to the bit across a continent'). The new information starts at 'The bit is unchanged; only what carries it changes'.",
+          "fix": "The same bit that switched a transistor in Chapter 1 now travels: across the motherboard as a voltage step, out a network interface, down a cable, across an ocean as light in glass, into another machine on the other side of the planet."
+        },
+        {
+          "passage": "part-3 #12",
+          "quote": "a buffer overflow in the UNIX fingerd service, a debug feature accidentally left on in sendmail, and weak passwords in rsh",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "fingerd, sendmail and rsh are three unexplained program names; the reader cannot tell what each was for, so the list of three weaknesses is just names.",
+          "fix": "a buffer overflow in fingerd (a service that told others who was logged in), a debug feature accidentally left on in sendmail (the mail server), and weak passwords on rsh (remote login)"
+        },
+        {
+          "passage": "part-3 #14",
+          "quote": "Google deploys BBR at its edge for YouTube and Search.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'At its edge' is undefined for a newcomer.",
+          "fix": "Google runs BBR on the servers closest to its users for YouTube and Search."
+        },
+        {
+          "passage": "part-3 #16",
+          "quote": "the server will reply with a status line, a few headers, and the document",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "Many modern servers answer plain port-80 HTTP/1.0 with a redirect to https (or an error without a Host header), which contradicts both this sentence and the closing claim that 1996 HTTP/1.0 'still works against modern servers' for a reader who tries it.",
+          "fix": "the server will reply with a status line, a few headers, and the document (or, on many sites today, a redirect to the https address)"
+        },
+        {
+          "passage": "part-3 #13",
+          "quote": "For voice and DNS that's fine.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "DNS is only listed in the layer table so far and is not explained until Chapter 11; the reader cannot judge why it tolerates loss. The UDP section later explains it.",
+          "fix": "For a voice call or a quick name lookup that's fine."
+        }
+      ],
+      "clean": [
+        "part-3 #2 (Chapter 8 contents card)",
+        "part-3 #3 (Chapter 10 contents card)",
+        "part-3 #5 (Bridge heading)",
+        "part-3 #7 (Shannon; matches Chapter 2: 1937, age 21, relay thesis)",
+        "part-3 #8 (Chapter 8 to Chapter 9 hand-off; 'Cold War' is supported by Chapter 9's Baran section)",
+        "part-3 #9 (Chapter 9 title; renders with line breaks, no missing space in the page)",
+        "part-3 #11 (hero label)",
+        "part-3 #15 (Chapter 11 hero lead; long but followable)",
+        "part-3 #22 (XSS paragraph)",
+        "part-3 #23 (CSP paragraph; consistent with Fig 12.9 and 12.11)",
+        "part-3 #24 (Part III closing recap)",
+        "part-3 #25 (Part IV teaser; matches the Part IV tagline)"
+      ]
+    },
+    {
+      "page": "part-3",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "part-3 #15",
+          "quote": "three conventions Tim Berners-Lee proposed at a particle physics lab in 1989 (an address, a request, a page format)",
+          "kind": "fact",
+          "severity": "M",
+          "problem": "The March 1989 document proposed a hypertext system for CERN. URLs, HTTP and HTML were designed in 1990, and the first server ran in December 1990. Ch11's own section 01 and Fig 11.1 say this ('a proposal', 'vague but exciting', server by December 1990, announcement August 1991), so the lead contradicts the chapter body. OLD said 'invented in 1989', which was the same slip.",
+          "fix": "three conventions Tim Berners-Lee devised at the CERN particle physics lab between his 1989 proposal and 1991 (an address, a request, a page format)"
+        },
+        {
+          "passage": "part-3 #10",
+          "quote": "a block meant only for Pakistan to leak out and take YouTube off the air almost everywhere for two hours",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Block' reads first as an address block (the book uses 'YouTube's address block' in Fig 9.11). Here it means Pakistan's order to block YouTube, so the noun is ambiguous at the point where the reader has no context. The sentence also leaves the object of 'block' unstated.",
+          "fix": "It also made it possible for Pakistan's attempt to block YouTube at home to leak out and take the site off the air almost everywhere for about two hours."
+        },
+        {
+          "passage": "part-3 #23",
+          "quote": "the injection succeeds, the attack does not.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Aphorism closer: a two-beat 'X, Y does not' reveal that restates the sentence before it. The OLD plain clause ('neutralised even though the injection succeeded') said the same thing without the flourish.",
+          "fix": "...are refused too: the markup still lands in the page, but the browser never runs it."
+        },
+        {
+          "passage": "part-3 #16",
+          "quote": "type GET / HTTP/1.0, press Enter twice, and the server will reply with a status line, a few headers, and the document",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "Not changed by the edit, but still inaccurate for 'any web server' in 2026. Most sites on port 80 answer GET / HTTP/1.0 with a 301 redirect to HTTPS, or with a default virtual host because no Host header was sent. A reader who tries it will not get 'the document'.",
+          "fix": "Open a TCP connection on port 80 to a web server that still answers there, type GET / HTTP/1.0, press Enter twice, and the server will reply with a status line, a few headers, and the document (or, on many sites today, a redirect to HTTPS)."
+        },
+        {
+          "passage": "part-3 #5",
+          "quote": "The bit on a transistor extends to the bit across a continent.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Extends to' is vague: it makes one bit stretch onto another, while the section body (#6) says it is the same bit carried by different physics. As a heading it states the idea loosely.",
+          "fix": "The bit in a transistor is the bit across a continent."
+        }
+      ],
+      "clean": [
+        "part-3 #1 (the 'bit' rewrite and 'page in the tab' ending are accurate and match the end-of-part pointer)",
+        "part-3 #2 (fibre matches the part-3 and part-5 spelling)",
+        "part-3 #3",
+        "part-3 #4",
+        "part-3 #6 (light in glass agrees with the Fig 8.1 row in the fact ledger)",
+        "part-3 #7 (21 years old and the 1937 thesis agree with Ch2; the Gardner quote is exact per the ledger; the Ch2 cross-reference is correct)",
+        "part-3 #8",
+        "part-3 #9 (the single run-together line is only the extractor dropping <br>; the HTML has the breaks)",
+        "part-3 #11",
+        "part-3 #12 (Morris age 23 is an owner ruling and agrees with Part I; the 'internet of 1988' closer is better than the old Chapter 9 reference)",
+        "part-3 #13",
+        "part-3 #14 (BBRv1 'largely set loss aside' is accurate)",
+        "part-3 #17 (reordering is correct: the home router forwards to the ISP or public resolver)",
+        "part-3 #18 (RFC 9000 treats QUIC as a name, not an acronym; the Section 01 UDP reference exists)",
+        "part-3 #19",
+        "part-3 #20",
+        "part-3 #21 (Chapter 2, Section 06 is 'Floating point', so the cross-reference is right)",
+        "part-3 #22 (matches the hash example in Fig 12.9)",
+        "part-3 #23 (CSP claims check out: inline <script> and onerror payloads are blocked by script-src without 'unsafe-inline', and Fig 12.9 does contain both payloads)",
+        "part-3 #24",
+        "part-3 #25 (matches Part IV's chapters)"
+      ]
+    },
+    {
+      "page": "part-4",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "part-4 #3",
+          "quote": "Every language we have looked at so far (C, C++, Python, JavaScript) tells the computer how to compute. SQL is the first language in this book that tells the computer what you want",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "Chapter 12 already showed HTML as a language that describes what the page is and leaves the drawing to the browser, and CSS the same. A reader who remembers 'HTML can describe' will balk at 'the first language'. 'Every language' also covers only four named ones.",
+          "fix": "Every programming language we have used so far (C, C++, Python, JavaScript) tells the computer how to compute, step by step. SQL tells it what you want, and leaves the how to a query planner."
+        },
+        {
+          "passage": "part-4 #3",
+          "quote": "leaves the how to a query planner. The trade is consequential:",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Query planner' has not been given yet at this point (the first definition comes later in the chapter), and 'The trade is consequential' is vague and carries no content before the next clause says what the trade is.",
+          "fix": "leaves the how to the database's query planner, the part that chooses the steps. The trade: the language is more limited, but the runtime is free to be arbitrarily clever underneath."
+        },
+        {
+          "passage": "part-4 #4",
+          "quote": "a table of rows in no fixed order (to a mathematician, a set of tuples)",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Tuples' is a new word here; it is only explained several paragraphs later in the chapter. The sentence also has 'He proposed' following a sentence whose subject is 'programmers', so the pronoun briefly points the wrong way.",
+          "fix": "Codd proposed replacing all of that with a single abstraction: the relation, a table of rows in no fixed order (a mathematician would call it a set), queryable by a small algebra of operations that returned more relations."
+        },
+        {
+          "passage": "part-4 #5",
+          "quote": "introduced cryptography as a black box that the TLS handshake feeds into",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Section 04 of Chapter 11 is a short briefing on three primitives that the handshake uses; the handshake does not 'feed into' it. The direction reads backwards for a newcomer.",
+          "fix": "Chapter 11, Section 04, introduced cryptography as a black box that the TLS handshake uses."
+        },
+        {
+          "passage": "part-4 #6",
+          "quote": "When a machine of that size exists, it breaks all current public-key cryptography.",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "The next paragraph presents lattice-based public-key systems (ML-KEM, ML-DSA) that are standardised and already current and are said to survive quantum computers. 'All current' therefore overclaims; the sentence only means the systems just listed.",
+          "fix": "When a machine of that size exists, it breaks every system just listed."
+        },
+        {
+          "passage": "part-4 #9",
+          "quote": "The race has not stopped in nearly forty years.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The sentence follows 'Aleph One's 1996 Phrack essay', which is 30 years before 2026, and Chapter 3 says the defences have evolved 'for thirty years'. 'Nearly forty' (the 1988 Morris worm) is never tied to the date in view, so it reads as an inconsistency.",
+          "fix": "The race has not stopped in thirty years (nearly forty, counting from the Morris worm of 1988)."
+        },
+        {
+          "passage": "part-4 #10",
+          "quote": "Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "'Ends in TLS' is unclear for a newcomer, and the claim is absolute. The chapter's own opening lists wrongly issued certificates as an attack that defeats TLS's check, and TLS does not hide who you talk to. 'Neutralised' and 'only denial of service' overclaim.",
+          "fix": "Every network-layer attack on the content of what you read or send is stopped by the TLS handshake, provided certificate checking holds; denial of service still gets through."
+        },
+        {
+          "passage": "part-4 #10",
+          "quote": "combined with no certificate validation, it lets an attacker direct a victim to a server they control",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Combined with no certificate validation' is clipped and ungrammatical. It is not clear that it means 'if the victim does not check certificates'. The following sentence then argues the opposite case without a clean pivot.",
+          "fix": "tricks a recursive resolver into caching a forged answer, so the victim is sent to a server the attacker controls. Without certificate checking, the victim would not notice."
+        }
+      ],
+      "clean": [
+        "part-4 #1 (line 56): reads clean",
+        "part-4 #2 (line 74): reads clean (table-of-contents blurb; jargon is previewed, and each term is taught in the chapter)",
+        "part-4 #7 (line 2394): reads clean, a short hand-off that does its job and matches the part structure",
+        "part-4 #8 (line 2412): reads clean; every chapter cross-reference (1, 3, 4, 9, 10) checks out against the earlier parts"
+      ]
+    },
+    {
+      "page": "part-4",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "part-4 #6",
+          "quote": "Every public-key system in this chapter (Diffie–Hellman, RSA, and the elliptic-curve schemes ECDH and ECDSA) rests on a problem that is hard for classical computers.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The very next paragraph (ch14-tls-pqc-p7) introduces ML-KEM, ML-DSA and SLH-DSA, which are public-key systems in this chapter and are not broken by Shor. 'Every public-key system in this chapter' and, later in the paragraph, 'it breaks all current public-key cryptography' both contradict that: the August 2024 NIST standards are current public-key cryptography. The NEW rewrite of the parenthetical did not fix the scope.",
+          "fix": "Every public-key system in wide use today (Diffie–Hellman, RSA, and the elliptic-curve schemes ECDH and ECDSA) rests on a problem that is hard for classical computers. ... When a machine of that size exists, it breaks all of them."
+        },
+        {
+          "passage": "part-4 #6 (neighbour ch14-tls-pqc-p7, line ~2300)",
+          "quote": "SLH-DSA rests only on the hash functions of Section 02.\n      quantum algorithm is known for either.",
+          "kind": "other",
+          "severity": "M",
+          "problem": "Garbled sentence left in the paragraph right after the edited one: a lowercase fragment 'quantum algorithm is known for either.' with its first words missing. The preceding clause also repeats that SLH-DSA is built only on hash functions (said a few words earlier in the same sentence), and the lattice-hardness clause is lost in the run-on.",
+          "fix": "Replace the tail of that sentence with: '...even for a quantum computer. SLH-DSA rests only on the hash functions of Section 02. No quantum algorithm is known that solves either problem efficiently.' (and drop the earlier duplicate 'built only on hash functions' clause)."
+        },
+        {
+          "passage": "part-4 #10",
+          "quote": "Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through.",
+          "kind": "fact",
+          "severity": "M",
+          "problem": "Absolute claim, and the new BGP wording ('those machines cannot complete a TLS handshake for the target's hostname', 'cannot present a valid TLS certificate') ignores the case the book itself teaches in Fig 14.12 (DigiNotar 2011, a CA issuing a false *.google.com certificate) and that the chapter-15 hero lists 'wrongly issued certificates' among the attacks being pulled together. It also ignores that TLS does not hide who is talking to whom. The NEW 'only denial of service gets through' is therefore false as written.",
+          "fix": "Every network-layer attack on what you read or send ends at TLS, which stops the reading and the tampering as long as no certificate authority has issued a false certificate (the DigiNotar case of Chapter 14). What still gets through is denial of service and the metadata of who talks to whom."
+        },
+        {
+          "passage": "part-4 #10",
+          "quote": "combined with no certificate validation, it lets an attacker direct a victim to a server they control.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Unchanged from OLD but now sits beside the reworked BGP sentences: poisoning alone is what sends the victim to the attacker's server; 'combined with no certificate validation' reads as if validation were a precondition of the redirect. Also 'all your packets' switches to second person mid-paragraph.",
+          "fix": "DNS poisoning (Chapter 11, Section 03; Kaminsky 2008) tricks a recursive resolver into caching a forged answer, which sends the victim to a server the attacker controls. ... Against that the defence is the same: every packet for the target may now arrive at the attacker's machines, but those machines cannot complete a TLS handshake for the target's hostname."
+        },
+        {
+          "passage": "part-4 #4",
+          "quote": "He proposed replacing all of that with a single abstraction",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "The change (correct: 'navigational' is Bachman's 1973 label, not Codd's 1970 term) moved the last mention of Codd several sentences back, and the new subject of the previous sentence is 'the existing approach', so 'He' now has a weak antecedent.",
+          "fix": "Codd proposed replacing all of that with a single abstraction: the relation, ..."
+        },
+        {
+          "passage": "part-4 #3",
+          "quote": "Its theory is set theory, and its core is small enough for a working programmer to learn in weeks.",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "Section 02 of the same chapter (line ~432) stresses that SQL works on multisets (bags), not sets, and keeps duplicates. 'Its theory is set theory' is the same simplification the section corrects. The rewrite also dropped nothing needed, but the flat claim is the weakest sentence.",
+          "fix": "Its theory is relational algebra, the algebra of sets and tables, and its core is small enough for a working programmer to learn in weeks."
+        },
+        {
+          "passage": "part-4 #1",
+          "quote": "the relational database that still organises most of the world's structured records",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "Unsupported superlative ('most'); spreadsheets, files, key-value and document stores also hold huge shares of structured records. Better than OLD's 'every record in production' but still a claim the book never backs.",
+          "fix": "the relational database that still holds a very large share of the world's structured records"
+        },
+        {
+          "passage": "part-4 #5",
+          "quote": "and on through RSA worked in actual numbers, into elliptic curves, and out into post-quantum standardisation.",
+          "kind": "regression",
+          "severity": "L",
+          "problem": "The TOC card for Chapter 14 (part-4 #2) now advertises 'TLS 1.3 at full depth', and the chapter does deliver it (Fig 14.11, ch14-tls-pqc-p1), but the chapter's own hero arc omits it, so the two summaries disagree.",
+          "fix": "...and on through RSA worked in actual numbers and elliptic curves, into the TLS 1.3 handshake read at full depth, and out into post-quantum standardisation."
+        }
+      ],
+      "clean": [
+        "part-4 #2 (TOC card for Chapter 14: 'TLS 1.3 at full depth' is true, Fig 14.11 and ch14-tls-pqc-p1 deliver it; dropping 'The math made physical' loses nothing)",
+        "part-4 #4 factual content (June 1970 CACM, eleven pages, 'later came to be called navigational' is correct and fixes OLD's wrong attribution to Codd; consistent with ch13-codd-p2)",
+        "part-4 #7 (Parts I and II = silicon and software layer, Part III network, Chapters 13 and 14 data and cryptography; consistent)",
+        "part-4 #8 (Spectre/Meltdown Ch1, Dirty COW Ch4, SYN floods Ch10, BGP Ch9 all exist; 'wrongly issued certificates' is a clearer phrase than 'TLS misissuance' and DigiNotar is in Ch14)",
+        "part-4 #9 (Ch3 Section 06 does name CFI, shadow stacks and Pointer Authentication, and ch15-memory opens each up; Aleph One 1996 Phrack, 'nearly forty years' from 1988 hold; no §4g conflict)",
+        "part-4 #10 factual anchors (Chapter 11 Section 03 = DNS, Chapter 9 Section 06 = BGP, Pakistan/YouTube traffic 'dropped' matches Fig 9.11, Kaminsky 2008 matches Part III)",
+        "part-4 #6 other facts (Shor 1994 at Bell Labs, factoring and discrete log, RSA-2048 needing thousands of logical qubits)",
+        "part-4 #5 cross-reference (Chapter 11 Section 04 is 'Cryptography intro'; Section 05 is TLS) and removal of the false closer 'only mathematics whose entire purpose is to be hard to reverse'",
+        "part-4 #3 cross-reference (SQL injection is Section 06 of Chapter 13; 'one of the most damaging' agrees with line 1076)",
+        "No em dashes found in any NEW passage"
+      ]
+    },
+    {
+      "page": "part-5",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "part-5 #7",
+          "quote": "Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "Four tool names appear for the first time with no gloss, in one long closing sentence that also introduces 'infrastructure as code'. A newcomer cannot tell what these tools are, and 'run it as a loop' versus 'run only when asked' is hard to follow on a first read. The same names are explained again in the figure's 'Elsewhere' step, so the paragraph repeats what the figure carries.",
+          "fix": "The same pattern runs through the tools that build infrastructure from a written description (infrastructure as code). Some, such as Argo CD and Flux, keep running the loop. Others, such as Terraform and Pulumi, compare and act only when a person asks: they work out the changes needed (the plan) and apply them once."
+        },
+        {
+          "passage": "part-5 #4",
+          "quote": "a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret byte by byte.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "Chapter 1's Spectre and Meltdown box already tells this exact mechanism (secret byte picks one of 256 locations, work is discarded, location stays cached, attacker times reads) and ends by saying Chapter 16 returns to it. Here it is retold at the same depth, so the reader meets a restatement before reaching the new material (the fix and its cost).",
+          "fix": "Chapter 1 showed the trick: discarded speculative work still leaves its target in the cache, and timing reads reveals it. Closing that hole took updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables). It left a lasting ~5–30% slowdown on syscall-heavy workloads."
+        },
+        {
+          "passage": "part-5 #4",
+          "quote": "it is also the most expensive side channel in the machine.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Most expensive' is not backed by anything in the paragraph or earlier. A reader cannot tell if it means cost in slowdown, damage or effort, and no other side channels are compared.",
+          "fix": "The cache is not just a performance mechanism; it is also a side channel, and closing it cost every system call."
+        },
+        {
+          "passage": "part-5 #6",
+          "quote": "10,000 machines · 3 regions · one system",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "Part V's opening says ten thousand machines 'in a region'. This cluster line says 10,000 machines across 3 regions. A careful reader sees two different figures for the same scale.",
+          "fix": "10,000 machines · 3 regions · one system (and in Part V's intro: 'and beyond them ten thousand machines in a data center region' becomes 'beyond them, thousands of machines spread over regions')"
+        },
+        {
+          "passage": "part-5 #1",
+          "quote": "Part V is about that scale-up, mathematically and physically.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "'Scale-up' normally means making one machine bigger, but the paragraph describes many machines working together (scale-out). 'Mathematically and physically' is also vague before the reader has seen either.",
+          "fix": "Part V is about how that scaling works and what limits it: the arithmetic of what parallel work can gain, and the physics of delay between machines."
+        },
+        {
+          "passage": "part-5 #5",
+          "quote": "Each solves a problem the others could not.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "A slogan that teaches nothing. The reader cannot tell which problem each abstraction solves, and the sentence can be dropped without losing any information.",
+          "fix": "Cut the sentence, or replace it with the one fact that links them: each layer hides the failure of the one below it."
+        }
+      ],
+      "clean": [
+        "part-5 #2 (ch16-hero-lead)",
+        "part-5 #3 (Chapter 16 meta line)",
+        "part-5 #8 (ch18-hero-lead)",
+        "part-5 #9 (Chapter 18 meta line)",
+        "part-5 #10 (ch18-trace-p3)"
+      ]
+    },
+    {
+      "page": "part-5",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "part-5 #10",
+          "quote": "Chapters 6 and 7 (C++ and Python) have none: the code in the figure is C and JavaScript, though V8, which runs that JavaScript, is itself written in C++.",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "The fix for the false OLD claim (\"no step is written in either language\") is true but now undercuts its own sentence. \"Have none\" followed by \"though ... C++\" concedes that C++ is on the path, so a reader sees a contradiction. The only reason the chapters have no station is that the figure shows no C++ or Python code, not that none runs.",
+          "fix": "Chapters 6 and 7 (C++ and Python) have none: the code the figure shows is C and JavaScript. C++ is still on the path, since V8 is written in it, but no station shows it."
+        },
+        {
+          "passage": "part-5 #10 (neighbouring caption, line 2502, id ch18-trace-p4)",
+          "quote": "passes through sixteen chapters and the Bridge",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The same section says \"Four chapters are not numbered stations\" and ch18-trace-p2 says \"drawn from fourteen of the chapters and the Bridge\". The figure's own description lists stations from 14 distinct chapters (1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14, 16, 17), so \"sixteen\" is wrong. The caption was not edited, but #10 makes the mismatch obvious.",
+          "fix": "passes through fourteen chapters and the Bridge"
+        },
+        {
+          "passage": "part-5 #5",
+          "quote": "Each solves a problem the others could not.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "OLD said each solves a problem \"the layer below\" could not, which is a true statement of layering. \"The others\" is looser and arguably false: containers and VMs both provide isolation, and a service mesh and an orchestrator both route traffic. It also reads as a closing aphorism.",
+          "fix": "Each answers a limit of the one before it: virtual machines share hardware, containers make them light, orchestration runs thousands of them, consensus keeps their state agreed, and a mesh governs the traffic between them."
+        },
+        {
+          "passage": "part-5 #2",
+          "quote": "Writing code that uses them correctly is hard: its bugs depend on timing, hide in testing and appear under load.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "\"its\" has no clear antecedent (\"code\" is the nearest noun but \"them\" refers to cores), and the three verb phrases form a reflexive triplet. The facts are fine and the sentence is better than OLD.",
+          "fix": "Writing code that uses them correctly is hard, because its bugs depend on timing and so hide in testing and appear under load."
+        }
+      ],
+      "clean": [
+        "part-5 #1 (Part V intro: claims consistent with ch16/17; Chapter 18 does close the book; no em dash)",
+        "part-5 #3 (ch16 era 1967: matches Amdahl 1967 in ch16, no earlier date in the chapter)",
+        "part-5 #4 (\"byte by byte\" is the more accurate wording for Spectre/Meltdown, which leak one byte per probe-array round; rest unchanged and no §4g conflict seen)",
+        "part-5 #6 (ch17 era 1968: matches CP/CMS 1968 at lines 1449 and 2548)",
+        "part-5 #7 (duplicate trailing sentence correctly removed; Argo CD/Flux vs Terraform/Pulumi claim accurate; Chapter 10 does cover TCP congestion control as control theory)",
+        "part-5 #8 (ch1 does draw a transistor, 17 chapters before 18; \"adds little new\" is a safe softening of \"no new teaching\")",
+        "part-5 #9 (\"five parts\" is correct; matches \"Five parts\" at line 2949 and the book's structure)"
+      ]
+    },
+    {
+      "page": "account",
+      "role": "newcomer",
+      "points": [
+        {
+          "passage": "account #4",
+          "quote": "lives in your browser's localStorage",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "\"localStorage\" is never introduced in parts 1 to 5. A newcomer can guess \"some browser storage\" but meets a code-style term in the opening paragraph of a privacy notice.",
+          "fix": "lives in storage inside your browser on this device"
+        },
+        {
+          "passage": "account #2",
+          "quote": "an account from the email-link days",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "A reader who has never used the book before has no idea what the \"email-link days\" were, so cannot tell whether this form applies to them. The sign-in view's \"used email links before?\" shares the problem, but this line is where a reader decides.",
+          "fix": "For a forgotten password, or an account you made when the book signed people in by emailed link only. Once in, you can set a password."
+        },
+        {
+          "passage": "account #5",
+          "quote": "a salted, peppered PBKDF2 hash of it",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "Hash and salt are taught in Part IV, but \"peppered\" and \"PBKDF2\" never appear in the book, and the reader gets no cue that they are the same idea made slower. Two undefined words in one phrase.",
+          "fix": "a salted hash of it (with a server-side secret mixed in and the computation repeated many times to make guessing slow), never the password itself"
+        },
+        {
+          "passage": "account #5",
+          "quote": "for each passkey, its ID, public key, signature counter, a label, and when it was added and last used (the private key never leaves your device)",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The static page offers only password sign-in (passkeys are off), and the book never defines \"passkey\" or \"signature counter\". A reader of the static copy is told about stored passkeys they cannot create, which reads as a mismatch with the sign-in form above.",
+          "fix": "Drop the clause, or say: if passkeys are switched on, for each one its ID, public key, a use counter, a label and its dates (the private key never leaves your device)."
+        },
+        {
+          "passage": "account #5",
+          "quote": "counters keyed by a keyed hash of the address or network, or by your random account ID, never the address itself",
+          "kind": "unclear",
+          "severity": "M",
+          "problem": "\"counters keyed by a keyed hash\" is a hard sentence to parse: two meanings of \"key\" in one clause, and a long list sentence that hides the point (rate-limit counts without storing your address).",
+          "fix": "counts of recent attempts, labelled by a scrambled form of the address or network (or by your random account ID) so the address itself is never stored, cleared after about a day"
+        },
+        {
+          "passage": "account #5",
+          "quote": "What it is for: signing you in and putting you back at your paragraph. Nothing else.",
+          "kind": "style",
+          "severity": "L",
+          "problem": "\"Nothing else.\" ends both the stored-data list and the purpose, and the purpose is stated again at the start of the intro. The repeat reads as emphasis rather than teaching.",
+          "fix": "Keep one \"Nothing else.\" (after the stored list) and let the purpose sentence end at \"your paragraph.\""
+        },
+        {
+          "passage": "account #6",
+          "quote": "a Cloudflare D1 database",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "\"D1\" is a product name the reader has not been given (the book uses D1 for other things), so it may look like a label from a diagram.",
+          "fix": "a Cloudflare database (called D1) in the European Union"
+        },
+        {
+          "passage": "account #10",
+          "quote": "Email links are retiring.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "Shown to a signed-in reader with no password; a reader who never used email links has no context for what is retiring or why they are being asked.",
+          "fix": "Set a password. Signing in by emailed link is being phased out, and your reading position stays exactly where it is."
+        }
+      ],
+      "clean": [
+        "account #1 (create-help)",
+        "account #3 (setup-title and its help)",
+        "account #7 (Retention and Deletion, apart from the tiny word \"swept\")",
+        "account #8 (script; its passkey-only strings are not shown on the live site)",
+        "account #9 (mail-form script and its status messages)",
+        "account #11 (session-actions script and its messages)"
+      ]
+    },
+    {
+      "page": "account",
+      "role": "expert",
+      "points": [
+        {
+          "passage": "account #1 / #3 (server confirm page, functions/api/auth/verify.js GET)",
+          "quote": "Next you choose how you&rsquo;ll sign in: a passkey or a password.",
+          "kind": "contradiction",
+          "severity": "M",
+          "problem": "The page a reader lands on after pressing the emailed confirm link still promises a passkey choice. Passkeys are off in production (PASSKEYS_ENABLED=\"0\"), and the new #1 and #3 copy now says \"then you set a password\". The reader sees the old promise one step before the new copy, and no passkey option follows. The same server-rendered string was missed when the account page was changed.",
+          "fix": "Branch on passkeysOn(env) (already exported from _lib.js): when off, 'Press the button to confirm this address. Next you set a password.'; when on, keep the current passkey-or-password sentence."
+        },
+        {
+          "passage": "account #6 (and the same sentence in #5)",
+          "quote": "Your address receives only the links you yourself request",
+          "kind": "fact",
+          "severity": "M",
+          "problem": "Not exact. /api/auth/recover and /api/auth/signup take any typed address, so anyone can trigger a link to it. login.js also sends a recovery link to a confirmed no-method account after a failed password attempt by anyone (the once-a-day nudge). The new clause admits stranger-triggered mail only for the account-exists notice. The page elsewhere promises an exact notice, so the link case should be stated the same way.",
+          "fix": "Your address receives only the links requested for it on this page (by you, or by anyone who types your address; a link you did not ask for does nothing unless you open it), a short notice whenever your sign-in settings change, and a notice if someone tries to create an account with your address: no announcements, no marketing."
+        },
+        {
+          "passage": "account #5",
+          "quote": "for each passkey, its ID, public key, signature counter, a label, and when it was added and last used",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "The list is followed by \"Nothing else\", but the credentials table also stores `transports` (JSON hints) and `backed_up` (whether the passkey is synced). login_tokens also keeps `next_path`, the page to return to after sign-in. All three are omitted from an inventory that claims to be complete.",
+          "fix": "for each passkey, its ID, public key, signature counter, transport hints, whether it is a synced passkey, a label, and when it was added and last used. In the \"Briefly, the database also holds\" clause: \"hashed one-time sign-in links (with the page to return you to) and passkey challenges\"."
+        },
+        {
+          "passage": "account #9",
+          "quote": "Until you click it, we hold only your address, and we remove it after 14 days.",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "Slightly loose against the notice just below it. Before the click the database also holds the hashed confirm link and hashed-key rate counters. \"it\" can also be read as the link. The 14-day removal happens at the first sweep after 14 days, and a sweep only runs when someone signs in or signs up, so \"after 14 days\" means \"no earlier than\" in practice. The old \"Nothing is created until you click it\" was false, and this wording is a clear improvement.",
+          "fix": "Until you click it, we keep only your address and a hashed copy of the link, and we delete both after 14 days."
+        },
+        {
+          "passage": "account #3",
+          "quote": "Set a password. You can change it any time below.",
+          "kind": "unclear",
+          "severity": "L",
+          "problem": "The reader has not set a password yet, so \"change it\" refers to something that does not exist. \"below\" is vague, and the title and the button that follows both say \"Set a password\". OLD pointed to where the other method could be added.",
+          "fix": "Title \"Set a password.\" with help text \"You can change or remove it later under Sign-in methods.\""
+        },
+        {
+          "passage": "account #8 / #10 (remaining status strings not gated by passkeysOn)",
+          "quote": "You haven’t set a password or passkey yet, so we’ll email you a link.",
+          "kind": "contradiction",
+          "severity": "L",
+          "problem": "The new script block makes the static copy passwords-only for production, but openReauth (account.html line 741), the different_account message (line 754: \"Use this account’s password or passkey.\") and the delete arming message (line 827: \"password, passkeys, sessions\") still mention passkeys for readers who cannot have one. Not wrong, but inconsistent with the stated rule in #8.",
+          "fix": "Use the existing flag: passkeysOn ? 'a password or passkey' : 'a password' in those three strings."
+        },
+        {
+          "passage": "account #4 / delete status (account.html line 828)",
+          "quote": "Deleted. Nothing about you remains on the server.",
+          "kind": "fact",
+          "severity": "L",
+          "problem": "delete.js removes only the user row, position, marks, credentials, challenges, sessions, links and the 'nudge:' counter. Rate-limit counters keyed by a keyed hash of the address (mail-day, pw-email, pw-pair) stay until the next sweep after about a day. The notice discloses this, so the status line overstates it.",
+          "fix": "Deleted. Your email, password, sessions and reading position are gone."
+        }
+      ],
+      "clean": [
+        "account #1 (create-help: true for production; matches signup flow and verify setup mode; no em dash)",
+        "account #2 (recover-help: dropping \"lost passkey\" and \"create a passkey\" is correct while passkeys are off; matches recover mail note)",
+        "account #4 (intro: the old \"exactly one thing\" was false since passwords exist; new wording is accurate and consistent with #5)",
+        "account #7 (retention figures verified against _lib.js: 24 h verify, 30 min recover, 14 days unconfirmed, 180 days sessions; sweep every 6 h on link request or password login; \"Delete account button (shown above)\" matches id acct-delete in the signed-in block)",
+        "account #8 (script block runs after the markup; create-help, recover-help, setup-title and setup-help all exist; passkeysOn logic correct for production meta=off; the innerHTML strings use entities, no em dash)",
+        "account #10 (both passkeysOn branches are correct; the passwords-only strings read well; the button label logic is unchanged)",
+        "account #11 (\"Signed out of N other sessions.\" is accurate against signout-others.js, which returns res.meta.changes)",
+        "account #5 and #6 (other claims verified: PBKDF2 with pepper, password_updated_at, created_at \"requested\", session hash only, position fields part/anchor/fraction/labels, counter key types, change-notice and already-have-an-account mails, Cloudflare Email Sending, deletion scope)"
+      ]
+    }
+  ],
+  "workflowProgress": [
+    {
+      "type": "workflow_phase",
+      "index": 1,
+      "title": "Retest"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 1,
+      "label": "newcomer:index",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "ac5bd008d1accc259",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309522,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open index.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-the…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101329725,
+      "tokens": 51411,
+      "toolCalls": 4,
+      "durationMs": 20201,
+      "resultPreview": "{\"points\":[{\"passage\":\"index #1\",\"quote\":\"CH 1–3 · BRIDGE\",\"kind\":\"unclear\",\"severity\":\"L\",\"problem\":\"On the cover shelf, 'BRIDGE' sits beside the chapter range with no hint of what it is. The Contents section further down calls it 'The Boundary' and says 'one Bridge', but a reader meeting the placard first has no meaning for it.\",\"fix\":\"Leave it, since the Contents section explains it. Or, if the…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 2,
+      "label": "expert:index",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a2585c6e32da8f874",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101360225,
+      "tokens": 61813,
+      "toolCalls": 8,
+      "durationMs": 48792,
+      "resultPreview": "{\"points\":[{\"passage\":\"index #3\",\"quote\":\"The kernel as a real program: scheduling, virtual memory, filesystems, IPC. C's pointers, manual memory and undefined behaviour; C++'s classes and RAII; Python's interpreter and the GIL.\",\"kind\":\"other\",\"severity\":\"L\",\"problem\":\"True against Part II (Ch4 scheduling, VM, filesystems, IPC; Ch5 pointers, manual memory, UB; Ch6 classes and RAII; Ch7 interprete…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 3,
+      "label": "newcomer:part-1",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a4a5740f72a00327f",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open part-1.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-th…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101393392,
+      "tokens": 74707,
+      "toolCalls": 10,
+      "durationMs": 81959,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-1 #12\",\"quote\":\"The chapter uses six of these registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.\",\"kind\":\"contradiction\",\"severity\":\"M\",\"problem\":\"The passage says \\\"these registers\\\" are the 16 general-purpose ones, then counts RIP among the six. The page's own …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 4,
+      "label": "expert:part-1",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "ab7a334a87e089567",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101381788,
+      "tokens": 78813,
+      "toolCalls": 14,
+      "durationMs": 70355,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-1 #12\",\"quote\":\"The chapter uses six of these registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.\",\"kind\":\"contradiction\",\"severity\":\"M\",\"problem\":\"\\\"these registers\\\" points back to the 16 general-purpose registers, but RIP is not one of them. The book says so it…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 5,
+      "label": "newcomer:part-2",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a3bcf752ee08d4255",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open part-2.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-th…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101400801,
+      "tokens": 77395,
+      "toolCalls": 9,
+      "durationMs": 89368,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-2 #7\",\"quote\":\"A counter, changed atomically, used to coordinate access to a shared resource.\",\"kind\":\"unclear\",\"severity\":\"M\",\"problem\":\"'Atomically' has not been given anywhere before this point (the only earlier 'atomic' is the journal's commit step, which is not defined as a general term). A newcomer cannot tell what a counter 'changed atomically' means.\",\"fix\":\"A c…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 6,
+      "label": "expert:part-2",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a9cc631f820d06d8c",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101375774,
+      "tokens": 70361,
+      "toolCalls": 12,
+      "durationMs": 64341,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-2 #2\",\"quote\":\"One program stays loaded from power-on to shutdown.\",\"kind\":\"contradiction\",\"severity\":\"L\",\"problem\":\"The kernel is loaded by a bootloader after firmware has run (the chapter says so a few lines later, line 182, and the recap says 'loaded by a bootloader'). 'From power-on' is slightly loose and is the kind of detail a careful reader trips on.\",\"fix\":\"One …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 7,
+      "label": "newcomer:part-3",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "ae7e442d9a28ad6c4",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open part-3.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-th…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101443797,
+      "tokens": 95188,
+      "toolCalls": 11,
+      "durationMs": 132363,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-3 #21\",\"quote\":\"typeof null === \\\"object\\\" is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag).\",\"kind\":\"unclear\",\"severity\":\"M\",\"problem\":\"A newcomer has never seen typeof, === or !== (no JavaScript notation appears before this point; === occurs nowhere in Parts I and II), and 'tagged its values' / 'object …"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 8,
+      "label": "expert:part-3",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "ac7fcef38a28febea",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309506,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101426805,
+      "tokens": 91083,
+      "toolCalls": 14,
+      "durationMs": 115371,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-3 #15\",\"quote\":\"three conventions Tim Berners-Lee proposed at a particle physics lab in 1989 (an address, a request, a page format)\",\"kind\":\"fact\",\"severity\":\"M\",\"problem\":\"The March 1989 document proposed a hypertext system for CERN. URLs, HTTP and HTML were designed in 1990, and the first server ran in December 1990. Ch11's own section 01 and Fig 11.1 say this ('a pro…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 9,
+      "label": "newcomer:part-4",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "afc74d5990d553ad8",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open part-4.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-th…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101388970,
+      "tokens": 74546,
+      "toolCalls": 11,
+      "durationMs": 77536,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-4 #3\",\"quote\":\"Every language we have looked at so far (C, C++, Python, JavaScript) tells the computer how to compute. SQL is the first language in this book that tells the computer what you want\",\"kind\":\"contradiction\",\"severity\":\"M\",\"problem\":\"Chapter 12 already showed HTML as a language that describes what the page is and leaves the drawing to the browser, and CSS th…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 10,
+      "label": "expert:part-4",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "ae10b13746cb095ad",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101309523,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101424351,
+      "tokens": 82249,
+      "toolCalls": 13,
+      "durationMs": 112917,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-4 #6\",\"quote\":\"Every public-key system in this chapter (Diffie–Hellman, RSA, and the elliptic-curve schemes ECDH and ECDSA) rests on a problem that is hard for classical computers.\",\"kind\":\"contradiction\",\"severity\":\"M\",\"problem\":\"The very next paragraph (ch14-tls-pqc-p7) introduces ML-KEM, ML-DSA and SLH-DSA, which are public-key systems in this chapter and are not bro…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 11,
+      "label": "newcomer:part-5",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "aeb89181fcb086974",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101331581,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open part-5.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-th…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101384575,
+      "tokens": 60050,
+      "toolCalls": 7,
+      "durationMs": 52994,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-5 #7\",\"quote\":\"Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once.\",\"kind\":\"unclear\",\"severity\":\"M\",\"problem\":\"Four tool names appear for the first time with no gloss, in one long closing sentence that also introduces 'infrastructure as code'. A newcomer cannot te…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 12,
+      "label": "expert:part-5",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a5da677ebb5e2439e",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101362073,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101421163,
+      "tokens": 66758,
+      "toolCalls": 8,
+      "durationMs": 59090,
+      "resultPreview": "{\"points\":[{\"passage\":\"part-5 #10\",\"quote\":\"Chapters 6 and 7 (C++ and Python) have none: the code in the figure is C and JavaScript, though V8, which runs that JavaScript, is itself written in C++.\",\"kind\":\"unclear\",\"severity\":\"M\",\"problem\":\"The fix for the false OLD claim (\\\"no step is written in either language\\\") is true but now undercuts its own sentence. \\\"Have none\\\" followed by \\\"though ...…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 13,
+      "label": "newcomer:account",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a32843774293e2a73",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101377639,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are a careful newcomer reading \"Under the Code\", a book that teaches computer science from the transistor up, with no background beyond school maths. The site lives in /Users/yki/Documents/github/atheric/under-the-code/public (open account.html to read any passage in its place; earlier parts are part-1..part-5 in order).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-github-atheric-under-t…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101412188,
+      "tokens": 57077,
+      "toolCalls": 5,
+      "durationMs": 34548,
+      "resultPreview": "{\"points\":[{\"passage\":\"account #4\",\"quote\":\"lives in your browser's localStorage\",\"kind\":\"unclear\",\"severity\":\"L\",\"problem\":\"\\\"localStorage\\\" is never introduced in parts 1 to 5. A newcomer can guess \\\"some browser storage\\\" but meets a code-style term in the opening paragraph of a privacy notice.\",\"fix\":\"lives in storage inside your browser on this device\"},{\"passage\":\"account #2\",\"quote\":\"an acc…"
+    },
+    {
+      "type": "workflow_agent",
+      "index": 14,
+      "label": "expert:account",
+      "phaseIndex": 1,
+      "phaseTitle": "Retest",
+      "agentId": "a53a9f4cdd9fe5553",
+      "model": "claude-sonnet-5-5",
+      "state": "done",
+      "startedAt": 1792101383595,
+      "queuedAt": 1792101309507,
+      "attempt": 1,
+      "lastToolName": "StructuredOutput",
+      "promptPreview": "You are an expert technical reviewer (computer science, its history, and English prose). The book \"Under the Code\" lives in /Users/yki/Documents/github/atheric/under-the-code; its fact ledger is UNDER.md §4g (corrections that must not be reintroduced), its laws are in CLAUDE.md (no em dashes; every paragraph does a job; teach at the right depth).\n\nRead /private/tmp/claude-501/-Users-yki-Documents-…",
+      "promptFramed": true,
+      "lastProgressAt": 1792101510185,
+      "tokens": 105684,
+      "toolCalls": 18,
+      "durationMs": 126590,
+      "resultPreview": "{\"points\":[{\"passage\":\"account #1 / #3 (server confirm page, functions/api/auth/verify.js GET)\",\"quote\":\"Next you choose how you&rsquo;ll sign in: a passkey or a password.\",\"kind\":\"contradiction\",\"severity\":\"M\",\"problem\":\"The page a reader lands on after pressing the emailed confirm link still promises a passkey choice. Passkeys are off in production (PASSKEYS_ENABLED=\\\"0\\\"), and the new #1 and #3…"
+    }
+  ],
+  "totalTokens": 1047135,
+  "totalToolCalls": 144
+}

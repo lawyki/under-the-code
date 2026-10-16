@@ -9,7 +9,7 @@
 // recovery mode after a sign-in link.
 'use strict';
 
-import { json, sha256Hex, safeNextPath, strictOrigin, createSession } from '../_lib.js';
+import { json, sha256Hex, safeNextPath, strictOrigin, createSession, passkeysOn } from '../_lib.js';
 
 function page(inner) {
   return new Response(
@@ -72,7 +72,9 @@ export async function onRequestGet({ request, env }) {
   const confirm = row.purpose === 'verify';
   return page(`<h1>${confirm ? 'Confirm your email.' : 'Continue where you left off.'}</h1>
     <p>${confirm
-      ? 'Press the button to confirm this address. Next you choose how you&rsquo;ll sign in: a passkey or a password.'
+      ? (passkeysOn(env)
+        ? 'Press the button to confirm this address. Next you choose how you&rsquo;ll sign in: a passkey or a password.'
+        : 'Press the button to confirm this address. Next you set a password.')
       : 'Press the button to finish signing in. The link works once.'}</p>
     <form method="POST" action="/api/auth/verify">
       <input type="hidden" name="token" value="${token}">

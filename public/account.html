@@ -223,7 +223,7 @@
 
       <div id="view-create" hidden>
         <div class="acct-label">Create an account</div>
-        <p class="acct-help">Enter your email. We send one link to confirm it; then you choose how you&rsquo;ll sign in.</p>
+        <p class="acct-help" id="create-help">Enter your email. We send one link to confirm it; then you set a password.</p>
         <form class="acct-form" id="create-form" style="margin-top:12px">
           <input type="email" id="cr-email" name="email" autocomplete="username" required aria-label="Email address">
           <button type="submit" class="acct-btn" id="cr-submit">Send confirmation link</button>
@@ -234,7 +234,7 @@
 
       <div id="view-recover" hidden>
         <div class="acct-label">Email me a sign-in link</div>
-        <p class="acct-help">For a forgotten password, a lost passkey, or an account from the email-link days. Once in, you can set a password or create a passkey.</p>
+        <p class="acct-help" id="recover-help">For a forgotten password, or an account made when the book signed readers in by emailed link. Once in, you can set a password.</p>
         <form class="acct-form" id="recover-form" style="margin-top:12px">
           <input type="email" id="rc-email" name="email" autocomplete="username" required aria-label="Email address">
           <button type="submit" class="acct-btn" id="rc-submit">Email me a link</button>
@@ -273,8 +273,8 @@
 
       <!-- Setup: no sign-in method yet, or just arrived from an emailed link -->
       <div class="acct-sub" id="setup" hidden>
-        <h2 class="acct-h" id="setup-title">Choose how you&rsquo;ll <em>sign in</em>.</h2>
-        <p class="acct-help" id="setup-help">Pick one now; you can add the other any time below.</p>
+        <h2 class="acct-h" id="setup-title">Set a <em>password</em>.</h2>
+        <p class="acct-help" id="setup-help">You can change it later under Sign-in methods.</p>
         <div class="acct-row" style="margin-top:12px">
           <button type="button" class="acct-btn" id="setup-passkey" hidden>Create a passkey</button>
           <button type="button" class="acct-btn" id="setup-password">Set a password</button>
@@ -345,26 +345,30 @@
       <p>
         The book itself collects nothing: no analytics, no trackers, no third-party
         requests unless you choose to play an outside video (below). Reading progress for signed-out readers lives in your browser's
-        localStorage and never leaves your device. An account adds exactly one thing:
-        the same reading position, stored server-side so it can follow you between
-        devices. In detail:
+        localStorage and never leaves your device. An account adds a server-side copy of
+        the same reading position, so it can follow you between devices, plus what is
+        needed to sign you in. In detail:
       </p>
       <ul>
-        <li><strong>What is stored:</strong> your email address and when you confirmed
-          it; if you set a password, a salted, peppered PBKDF2 hash of it (never the
-          password itself); for each passkey, its public key, a label, and when it was
-          added and last used (the private key never leaves your device); a session
+        <li><strong>What is stored:</strong> your email address, when the account was
+          requested and when you confirmed it; if you set a password, a salted, peppered
+          PBKDF2 hash of it (never the password itself) and when it last changed; for
+          each passkey, if you have any, its ID, public key, signature counter, transport
+          hints, whether it syncs between your devices, a label, and when it was added and
+          last used (the private key never leaves your device); a session
           identifier (only its hash is kept); and one reading position: which part of
           the book, a paragraph anchor, an offset within it, chapter and section titles,
           and when it was last updated. Briefly, the database also holds hashed one-time
-          sign-in links and passkey challenges until they are used or expire, and, to
+          sign-in links (with the page to return you to) and passkey challenges until they are used or expire, and, to
           slow down password guessing and mail abuse, counters keyed by a keyed hash of
-          the address or network, never the address itself, cleared after about a day.
+          the address or network, or by your random account ID, never the address
+          itself, cleared after about a day.
           Nothing else.</li>
         <li><strong>What it is for:</strong> signing you in and putting you back at your
-          paragraph. Nothing else. Your address receives only the links you yourself
-          request and a short notice whenever your sign-in settings change: no
-          announcements, no marketing. It is never shared or sold.</li>
+          paragraph. Nothing else. Your address receives only the links asked for on
+          this page (a link you did not ask for does nothing unless you open it), a short notice whenever your sign-in settings change, and a notice if
+          someone tries to create an account with your address: no announcements, no
+          marketing. It is never shared or sold.</li>
         <li><strong>Where it lives:</strong> a Cloudflare D1 database in the European
           Union, the same infrastructure that already serves the book. Mail is delivered
           by Cloudflare Email Sending, our host's own service rather than a third-party mail
@@ -373,8 +377,10 @@
           expire after 24 hours, sign-in links after 30 minutes; an account whose email
           is never confirmed is removed after 14 days; sessions expire after 180 days;
           the reading position is overwritten in place as you read and exists only while
-          your account does. Expired records are swept automatically every few hours.</li>
-        <li><strong>Deletion:</strong> the button above removes your email, password,
+          your account does. Expired records are swept the next time anyone signs in or signs
+          up, at most once every six hours.</li>
+        <li><strong>Deletion:</strong> the Delete account button (shown above once
+          you are signed in) removes your email, password,
           passkeys, sessions and position immediately and completely. Or write to
           <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
       </ul>
@@ -406,6 +412,13 @@
   const meta = document.querySelector('meta[name="utc-passkeys"]');
   const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
   const passkeysOn = !!window.PublicKeyCredential && ((meta && meta.content === 'on') || local);
+  // The static copy describes passwords only (production); passkeys add the choice.
+  if (passkeysOn) {
+    $('create-help').innerHTML = 'Enter your email. We send one link to confirm it; then you choose how you&rsquo;ll sign in.';
+    $('recover-help').textContent = 'For a forgotten password, a lost passkey, or an account made when the book signed readers in by emailed link. Once in, you can set a password or create a passkey.';
+    $('setup-title').innerHTML = 'Choose how you&rsquo;ll <em>sign in</em>.';
+    $('setup-help').textContent = 'Pick one now; you can add the other any time below.';
+  }
 
   // Same-origin path only (mirrors the server's check) before any navigation.
   function safeNext(p) {
@@ -571,7 +584,7 @@
     });
   }
   mailForm('create-form', 'cr-email', 'cr-submit', 'cr-status', '/api/auth/signup',
-    'Check your email. The link works for 24 hours. Nothing is created until you click it.');
+    'Check your email. The link works for 24 hours. Until you click it, we keep only your address and a hashed copy of the link, and we delete both after 14 days.');
   mailForm('recover-form', 'rc-email', 'rc-submit', 'rc-status', '/api/auth/recover',
     'If an account exists for that address, a link is on its way. It works once, within 30 minutes.');
 
@@ -610,10 +623,14 @@
     $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup));
     if (params.has('recover') && !noMethod) {
       $('setup-title').innerHTML = 'You&rsquo;re <em>signed in</em>.';
-      $('setup-help').textContent = 'Set a new password, or create a passkey, so next time you won’t need an email.';
+      $('setup-help').textContent = passkeysOn
+        ? 'Set a new password, or create a passkey, so next time you won’t need an email.'
+        : 'Set a new password, so next time you won’t need an email.';
     } else if (noMethod && !arrived) {
       $('setup-title').innerHTML = 'Email links are <em>retiring</em>.';
-      $('setup-help').textContent = 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.';
+      $('setup-help').textContent = passkeysOn
+        ? 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.'
+        : 'Set a password for next time. Your reading position stays exactly where it is.';
     }
     $('setup-passkey').hidden = !passkeysOn;
     $('setup-passkey-help').hidden = !passkeysOn;
@@ -722,7 +739,7 @@
     say('ra-status', '');
     $('reauth-why').textContent = me.hasPassword || me.passkeyCount
       ? 'This change needs a fresh sign-in.'
-      : 'This change needs a fresh sign-in. You haven’t set a password or passkey yet, so we’ll email you a link. After you click it, come back and try again.';
+      : 'This change needs a fresh sign-in. You haven’t set ' + (passkeysOn ? 'a password or passkey' : 'a password') + ' yet, so we’ll email you a link. After you click it, come back and try again.';
     (me.hasPassword ? $('ra-pass') : $('ra-mail')).focus();
   }
   function closeReauth() { $('reauth').hidden = true; $('ra-pass').value = ''; pending = null; }
@@ -735,7 +752,7 @@
         if (res.ok && p.after) p.after(res);
       }
     } else if (res && res.data.error === 'different_account') {
-      say('ra-status', 'That signed in as a different account. Use this account’s password or passkey.');
+      say('ra-status', 'That signed in as a different account. Use this account’s ' + (passkeysOn ? 'password or passkey.' : 'password.'));
     } else if (res) {
       say('ra-status', res.data.error === 'slow_down' ? 'Too many tries. Wait a few minutes.' : 'That didn’t work. Try again.');
     }
@@ -798,7 +815,7 @@
   $('acct-signout-others').addEventListener('click', async () => {
     const res = await api('/api/auth/signout-others', {});
     say('acct-in-status', res.ok
-      ? (res.data.ended ? 'Signed out on ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.')
+      ? (res.data.ended ? 'Signed out of ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.')
       : 'That didn’t work. Please try again.');
   });
 
@@ -808,12 +825,12 @@
     if (!armed) {
       armed = true;
       btn.textContent = 'Press again to delete everything';
-      say('acct-in-status', 'This removes your email, password, passkeys, sessions and reading position immediately.');
+      say('acct-in-status', 'This removes your email, ' + (passkeysOn ? 'password, passkeys' : 'password') + ', sessions and reading position immediately.');
       setTimeout(() => { armed = false; btn.textContent = 'Delete account'; }, 6000);
       return;
     }
     busy(btn, true);
-    const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Nothing about you remains on the server.', 'acct-in-status', true);
+    const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Your email, sign-in methods and reading position are gone from the server.', 'acct-in-status', true);
     busy(btn, false);
     const done = () => { keepMarksLocal(); setTimeout(() => location.replace('/account'), 1600); };
     if (res.ok) done();

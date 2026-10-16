@@ -1,0 +1,730 @@
+[
+ {
+  "file": "public/index.html",
+  "line": 429,
+  "id": "",
+  "new": "CH 1–3 · BRIDGE CH 4–7 CH 8–12 CH 13–15 CH 16–18 each volume is drawn in the style of its own pages",
+  "old": "CH 1–3 + BRIDGE CH 4–7 CH 8–12 CH 13–15 CH 16–18 each volume is drawn in the style of its own pages"
+ },
+ {
+  "file": "public/index.html",
+  "line": 603,
+  "id": "",
+  "new": "Transistors, Boolean algebra, IEEE 754, the CPU, assembly, buffer overflows, and the hardware face of the kernel.",
+  "old": "Transistors, Boolean algebra, IEEE 754, the CPU, assembly, buffer overflows, and the hardware face of the kernel. The place where the book has to begin."
+ },
+ {
+  "file": "public/index.html",
+  "line": 615,
+  "id": "",
+  "new": "The kernel as a real program: scheduling, virtual memory, filesystems, IPC. C's pointers, manual memory and undefined behaviour; C++'s classes and RAII; Python's interpreter and the GIL.",
+  "old": "The Linux kernel, the C/C++ memory model, Python's runtime, and how a program becomes a process. Compilers, linkers, system calls, and the shape of an operating system."
+ },
+ {
+  "file": "public/index.html",
+  "line": 630,
+  "id": "",
+  "new": "Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript and the browser. From a packet on a wire to a page in a browser tab.",
+  "old": "Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript and the browser. From a packet on a wire to a JSON response in a tab."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 62,
+  "id": "",
+  "new": "Transistors, von Neumann's insight, the CPU, and why the kernel had to be invented. CHAPTER 02",
+  "old": "Transistors, Von Neumann's insight, the CPU, and why the kernel had to be invented. CHAPTER 02"
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 77,
+  "id": "",
+  "new": "The hardware face of the kernel. Privilege rings, the trap mechanism, the MMU, the timer, MMIO, and DMA: what the silicon must provide before a kernel can keep programs apart and share the CPU among them.",
+  "old": "The hardware face of the kernel. Privilege rings, the trap mechanism, the MMU, the timer, MMIO, and DMA: what the silicon must provide before any kernel can exist."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 88,
+  "id": "ch1-hero-lead",
+  "new": "In 1936 a mathematician described, on paper, a machine that could follow any rules written down for it. Within ten years such machines were being built. This is the story of computer architecture, told in the order civilization needed it.",
+  "old": "Before there was software, there was sand. Before there was the internet, there was a mathematician who died before seeing what he built. This is the story of computer architecture, told in the order civilization needed it."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 95,
+  "id": "",
+  "new": "Era covered1936 → present",
+  "old": "Era covered1936 → 1974"
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 473,
+  "id": "ch1-transistor-p5",
+  "new": "Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND; enough such rules, wired together, add numbers, hold them and carry out a program like a Turing machine's (Chapter 2 builds the gates, and an adder from them).",
+  "old": "Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND; enough such rules, wired together, add numbers, hold them and carry out a program like a Turing machine's (Chapter 2 builds them)."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1250,
+  "id": "ch1-cpu-p11",
+  "new": "Spectre and Meltdown (2018). These flaws, in nearly every fast processor made since the mid-1990s, let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte, then loads one of 256 memory locations, picked by the byte's value. The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. Chapter 16 returns to them.",
+  "old": "Spectre and Meltdown (2018). These flaws, in nearly every fast processor made since the mid-1990s, let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte, then loads one of 256 memory locations, picked by the byte's value. The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. Chapter 15 returns to them."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1490,
+  "id": "ch1-memory-p7",
+  "new": "Peter Denning's working set model (1968) made the idea rigorous for virtual memory (just below), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (Part II), recent web-address lookups remembered (Part III), a database's busiest data held in memory (Part IV).",
+  "old": "Peter Denning's working set model (1968) made the idea rigorous for virtual memory (the next section), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (Part II), recent web-address lookups remembered (Part III), a database's busiest data held in memory (Part IV)."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1523,
+  "id": "",
+  "new": "You have followed the chain from sand to software. Transistors, silicon switches controlled by voltage, combine into logic gates, then into integrated circuits, then into CPUs. The CPU runs an endless loop: fetch, decode, execute, writeback. It executes instructions encoded as binary patterns drawn from an instruction set architecture like x86 or ARM. Programs and data live together in the same memory, a design choice (von Neumann's) that defines what a modern computer is. The kernel mediates between programs and hardware, enforcing isolation and security through privilege rings and virtual memory.",
+  "old": "You have followed the chain from sand to software. Transistors, silicon switches controlled by voltage, combine into logic gates, then into integrated circuits, then into CPUs. The CPU runs an endless loop: fetch, decode, execute, writeback. It executes instructions encoded as binary patterns drawn from an instruction set architecture like x86 or ARM. Programs and data live together in the same memory, a design choice (Von Neumann's) that defines what a modern computer is. The kernel mediates between programs and hardware, enforcing isolation and security through privilege rings and virtual memory."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1535,
+  "id": "",
+  "new": "This is the substrate. Every chapter that follows builds on it. Chapter 2 goes deeper into a single layer of this stack: the layer where mathematics and electricity meet. We will look at why a computer must be binary, how George Boole invented the logic that runs on those binary signals, and how arithmetic emerges from a few simple gates. By the end of Chapter 2, you will understand at a physical level why 0.1 + 0.2 does not equal 0.3 in almost any programming language.",
+  "old": "This is the substrate. Every chapter that follows builds on it. Chapter 2 goes deeper into a single layer of this stack: the layer where mathematics and electricity meet. We will look at why a computer must be binary, how George Boole invented the logic that runs on those binary signals, and how arithmetic emerges from a few simple gates. By the end of Chapter 2, you will understand at a physical level why 0.1 + 0.2 does not equal 0.3 in any modern programming language."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1547,
+  "id": "ch2-hero-lead",
+  "new": "In 1847, a self-taught English schoolteacher published a book reducing logic to algebra. He died in 1864, long before electricity did any computing. In 1937, ninety years after his book, a student showed that relay circuits obey his rules exactly, and a reshaped form of them became the logic every digital circuit is built from.",
+  "old": "In 1847, a self-taught English schoolteacher published a book reducing logic to algebra. He died before electricity was understood, never imagining a circuit. A century later, his algebra became the only mathematics that machines can do."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 1554,
+  "id": "",
+  "new": "Era covered1847 → present",
+  "old": "Era covered1847 → 1985"
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 3134,
+  "id": "ch3-registers-p2",
+  "new": "x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the volatile or caller-saved ones) and which it must hand back unchanged. The chapter uses six of these registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.",
+  "old": "x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the volatile or caller-saved ones) and which it must hand back unchanged. The chapter uses six rows: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 4017,
+  "id": "",
+  "new": "Chapter 1 named what stops a program from reading another program's memory, writing to a disk it does not own, or holding the CPU until the user gives up: the rings, virtual memory and the timer. The Bridge that closes Part I is about why those walls hold: what hardware features the silicon must already provide before any program can be made to behave, and how those few features combine into the conditions under which one program can be made to own the machine. We do not yet open the kernel and look inside it; that waits for Part II.",
+  "old": "So far every program has been free to do anything the silicon supports. Nothing yet stops a function from reading another program's memory, from writing to a disk it does not own, from monopolising the CPU until the user gives up. On any real machine, those things are not allowed. The Bridge that closes Part I is about why they are not allowed: what hardware features the silicon must already provide before any program can be made to behave, and how those few features combine into the conditions under which one program can be made to own the machine. We do not yet open the kernel and look inside it; that waits for Part II."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 4035,
+  "id": "chBridge-hero-lead",
+  "new": "Five small pieces of hardware let one program, the kernel, own a computer and share it safely among all the others: a privilege bit, a trap, a memory-management unit, a timer, and a way to reach devices. Take any one away and a service every program relies on goes with it.",
+  "old": "Five small pieces of hardware are what separate a computer from a calculator. A privilege bit. A trap. A page-table walker. A timer. A way to talk to the world. Together they are the conditions under which one program can be made to own the machine. Part I cannot end without naming them."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 4888,
+  "id": "chBridge-synthesis-p5",
+  "new": "Everything else is engineering, and it is the subject of Chapter 4, which opens Part II by reading the kernel as a real program: how it schedules processes, organises virtual memory in software on top of the hardware tables, finds a file's data on disk, lets processes talk to each other, and what goes wrong when it has bugs.",
+  "old": "Everything else is engineering, and it is the subject of Part II, which reads the kernel as a real program: how it schedules processes, organises virtual memory in software on top of the hardware tables, finds a file's data on disk, lets processes talk to each other, and what goes wrong when it has bugs."
+ },
+ {
+  "file": "public/part-1.html",
+  "line": 4908,
+  "id": "",
+  "new": "The substrate is built.",
+  "old": "The Substrate is built."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 62,
+  "id": "",
+  "new": "Part I built the substrate: sand to transistor, gate to instruction. Part II opens the program that owns it. The kernel first, examined as a real piece of code. Then the languages people actually write in: C, the portable systems language UNIX itself was written in; C++, the object-oriented answer to programs grown too large for C; Python, the opposite trade that chose humans over machines. Each is a particular set of decisions about which mistakes to make easy and which to make hard.",
+  "old": "Part I built the substrate: sand to transistor, gate to instruction. Part II opens the program that owns it. The kernel first, examined as a real piece of code. Then the languages people actually write in: C, the portable systems language UNIX itself was written in; C++, the object-oriented answer to its complexity; Python, the opposite trade that chose humans over machines. Each is a particular set of decisions about which mistakes to make easy and which to make hard."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 96,
+  "id": "ch4-hero-lead",
+  "new": "One program stays loaded from power-on to shutdown. It owns the CPU, the memory, the disks, the network. Every other program lives at its mercy. Without it, modern computing is impossible: no multitasking, no security, no internet. This is the kernel.",
+  "old": "One program runs always. It owns the CPU, the memory, the disks, the network. Every other program lives at its mercy. Without it, modern computing is impossible: no multitasking, no security, no internet. This is the kernel."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 101,
+  "id": "",
+  "new": "TopicsScheduler · Virtual memory · Filesystems · IPC · Security Era covered1969 → presentListinglines 0001–0790 · cc -c kernel.c",
+  "old": "TopicsScheduler · VM · FS · IPC · Security Era covered1969 → presentListinglines 0001–0790 · cc -c kernel.c"
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 176,
+  "id": "ch4-anatomy-p1",
+  "new": "It is easy, after Chapter 1, to think of the kernel as some abstract authority, a governing law of the machine. The Bridge at the close of Part I showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer, and MMIO with DMA), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.",
+  "old": "It is easy, after Chapter 1, to think of the kernel as some abstract authority, a governing law of the machine. The Bridge at the close of Part I showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 353,
+  "id": "ch4-anatomy-p12",
+  "new": "Linux also limits the damage risky code can do: a few kinds of driver run as ordinary programs in Ring 3, where a crash takes down only that program, and the small eBPF programs of Section 06 run in the kernel only after a check proves them safe.",
+  "old": "Linux also limits the damage risky code can do: a few kinds of driver run as ordinary programs in Ring 3, where a crash takes down only that program, and the small eBPF programs of Section 6 run in the kernel only after a check proves them safe."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 799,
+  "id": "ch4-vm-p12",
+  "new": "An invalid page fault happens when the access truly is illegal: writing to a read-only page, using an unmapped address such as 0 (NULL), executing data marked non-executable. The kernel sends the offending process a SIGSEGV signal (Section 05 covers signals), which by default ends the program with the famous \"segmentation fault\" message.",
+  "old": "An invalid page fault happens when the access truly is illegal: writing to a read-only page, using an unmapped address such as 0 (NULL), executing data marked non-executable. The kernel sends the offending process a SIGSEGV signal (Section 5 covers signals), which by default ends the program with the famous \"segmentation fault\" message."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 1322,
+  "id": "",
+  "new": "SemaphoreA counter, changed atomically, used to coordinate access to a shared resource.Synchronising without sharing data: \"is it my turn yet?\" UNIX socketLike a network socket, but local: kernel-mediated, with proper authentication.Modern desktop IPC. Used by Docker, systemd, X11, Wayland.",
+  "old": "SemaphoreA kernel-managed counter used to coordinate access to a shared resource.Synchronising without sharing data: \"is it my turn yet?\" UNIX socketLike a network socket, but local: kernel-mediated, with proper authentication.Modern desktop IPC. Used by Docker, systemd, X11, Wayland."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 1967,
+  "id": "",
+  "new": "The kernel is a program that owns the hardware and mediates everything every other program does. Written in C and loaded by a bootloader, it stays resident in Ring 0. It comes in two main shapes: monolithic (everything in Ring 0, fast, fragile) and microkernel (minimal Ring 0, message-passing, safer and slower), with most real systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically in queueing theory, decides which process gets the CPU next, hundreds of times a second. Linux's CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual runtimes. Its virtual memory subsystem maintains a four-level page table per process, accelerated by a translation cache (TLB), and uses page faults productively to implement memory-mapped files and copy-on-write fork. Its filesystem turns a flat array of disk blocks into a tree of inodes and names, made crash-safe by journaling or copy-on-write. Its IPC mechanisms (pipes, signals, shared memory, sockets) are the controlled boundary across which isolated processes can still cooperate. And its security depends entirely on its own correctness, which is why kernel bugs are so dangerous, and why each new mechanism (containers, eBPF) is layered behind further verification.",
+  "old": "The kernel is a program that owns the hardware and mediates everything every other program does. Written in C and loaded by a bootloader, it runs forever in Ring 0. It comes in two main shapes: monolithic (everything in Ring 0, fast, fragile) and microkernel (minimal Ring 0, message-passing, safer and slower), with most real systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically in queueing theory, decides which process gets the CPU at each microsecond. Linux's CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual runtimes. Its virtual memory subsystem maintains a four-level page table per process, accelerated by a translation cache (TLB), and uses page faults productively to implement memory-mapped files and copy-on-write fork. Its filesystem turns a flat array of disk blocks into a tree of inodes and names, made crash-safe by journaling or copy-on-write. Its IPC mechanisms (pipes, signals, shared memory, sockets) are the controlled boundary across which isolated processes can still cooperate. And its security depends entirely on its own correctness, which is why kernel bugs are so dangerous, and why each new mechanism (containers, eBPF) is layered behind further verification."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 1971,
+  "id": "",
+  "new": "The kernel is a program that owns the hardware and mediates everything every other program does. Written in C and loaded by a bootloader, it stays resident in Ring 0. It comes in two main shapes: monolithic (everything in Ring 0, fast, fragile) and microkernel (minimal Ring 0, message-passing, safer and slower), with most real systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically in queueing theory, decides which process gets the CPU next, hundreds of times a second. Linux's CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual runtimes. Its virtual memory subsystem maintains a four-level page table per process, accelerated by a translation cache (TLB), and uses page faults productively to implement memory-mapped files and copy-on-write fork. Its filesystem turns a flat array of disk blocks into a tree of inodes and names, made crash-safe by journaling or copy-on-write. Its IPC mechanisms (pipes, signals, shared memory, sockets) are the controlled boundary across which isolated processes can still cooperate. And its security depends entirely on its own correctness, which is why kernel bugs are so dangerous, and why each new mechanism (containers, eBPF) is layered behind further verification.",
+  "old": "The kernel is a program that owns the hardware and mediates everything every other program does. Written in C and loaded by a bootloader, it runs forever in Ring 0. It comes in two main shapes: monolithic (everything in Ring 0, fast, fragile) and microkernel (minimal Ring 0, message-passing, safer and slower), with most real systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically in queueing theory, decides which process gets the CPU at each microsecond. Linux's CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual runtimes. Its virtual memory subsystem maintains a four-level page table per process, accelerated by a translation cache (TLB), and uses page faults productively to implement memory-mapped files and copy-on-write fork. Its filesystem turns a flat array of disk blocks into a tree of inodes and names, made crash-safe by journaling or copy-on-write. Its IPC mechanisms (pipes, signals, shared memory, sockets) are the controlled boundary across which isolated processes can still cooperate. And its security depends entirely on its own correctness, which is why kernel bugs are so dangerous, and why each new mechanism (containers, eBPF) is layered behind further verification."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 1988,
+  "id": "",
+  "new": "With this, the kernel is in view from both sides. The Bridge at the close of Part I showed it as silicon: privilege rings as a CPU bit, the trap as one instruction into an entry point the kernel chose, the MMU as a hardware unit, the timer as the one circuit that makes preemption possible, MMIO and DMA as the kernel's line to the devices. This chapter showed it as code. Same object, two different perspectives, and the kernel becomes legible only when both are visible at once: thirty million lines of C running in Ring 0, sustained by a hardware contract that lets it own the machine.",
+  "old": "With this, the kernel is in view from both sides. The Bridge at the close of Part I showed it as silicon: privilege rings as a CPU bit, the trap as a wire-level mechanism, the MMU as a hardware unit, the timer as the single piece of hardware that makes preemption possible. This chapter showed it as code. Same object, two different perspectives, and the kernel becomes legible only when both are visible at once: thirty million lines of C running in Ring 0, sustained by a hardware contract that lets it own the machine."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 2010,
+  "id": "ch5-hero-lead",
+  "new": "Before C, an operating system was usually written in assembly for one machine, then rewritten for the next. The cost was civilizational. C broke the pattern by being portable: one source, many architectures. UNIX itself was rewritten in it. Half a century later, the kernel you used today, the browser rendering this page and the language runtime executing it are all C, or built on something that is.",
+  "old": "Before C, every operating system was rewritten from scratch for every machine. The cost was civilizational. C broke the pattern by being portable: one source, many architectures. UNIX itself was rewritten in it. Half a century later, the kernel you used today, the browser rendering this page and the language runtime executing it are all C, or built on something that is."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 2017,
+  "id": "",
+  "new": "TopicsPortability · Pointers · Undefined behaviour · The systems contract Era covered1969 → presentListinglines 0791–1608 · cc unix.c",
+  "old": "TopicsPortability · Pointers · UB · The systems contract Era covered1969 → presentListinglines 0791–1608 · cc unix.c"
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 2068,
+  "id": "",
+  "new": "01 · The portability problem 02 · Ritchie & Thompson 03 · Pointers as math 04 · Manual memory 05 · Undefined behaviour 06 · Why C survives",
+  "old": "01 · The portability problem 02 · Ritchie & Thompson 03 · Pointers as math 04 · Manual memory 05 · Undefined behavior 06 · Why C survives"
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 2661,
+  "id": "",
+  "new": "05 · Undefined behaviour The optimiser's cruel logic.",
+  "old": "05 · Undefined behavior The optimiser's cruel logic."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 2921,
+  "id": "ch6-hero-lead",
+  "new": "By 1979, programs were outgrowing what one team could hold in its head, and C offered only the function to organise them with. Bjarne Stroustrup, in the same Bell Labs hallway as Ritchie and Thompson, asked: what if a language gave you all of C's speed but let you think in larger units than functions? His answer was C with classes added on top, in a way that costs you nothing if you don't use them. Renamed C++, it now runs trading systems, game engines, browsers and telephone switches.",
+  "old": "By 1979, C was running million-line systems and the seams were showing. Bjarne Stroustrup, in the same Bell Labs hallway as Ritchie and Thompson, asked: what if a language gave you all of C's speed but let you think in larger units than functions? The answer was not a new language. It was C with classes added on top, in a way that costs you nothing if you don't use them. That language now runs trading systems, game engines, browsers, and most of your operating system's user-space."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 3846,
+  "id": "ch7-hero-lead",
+  "new": "C and C++ are languages designed around the machine. Python is designed around the programmer. The trade is explicit: you give up one to two orders of magnitude of performance, and you get back code that reads like the pseudocode in your head. For most problems most programmers actually have, that trade is the right one.",
+  "old": "C and C++ are languages designed around the machine. Python is designed around the programmer. The trade is explicit: you give up an order of magnitude of performance, and you get back code that reads like the pseudocode in your head. For most problems most programmers actually have, that trade is the right one."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 3851,
+  "id": "",
+  "new": "TopicsInterpretation · Dynamic typing · The global interpreter lock · The two-language strategy Era covered1989 → presentListinglines 2414–3199 · python3 readable.py",
+  "old": "TopicsInterpretation · Dynamic typing · GIL · The two-language strategy Era covered1989 → presentListinglines 2414–3199 · python3 readable.py"
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 4509,
+  "id": "",
+  "new": "End of Part II EOF · 3199 lines · 4 modules",
+  "old": "End of Part Two EOF · 3199 lines · 4 modules"
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 4511,
+  "id": "",
+  "new": "The software layer is built.",
+  "old": "The kernel and the languages."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 4513,
+  "id": "",
+  "new": "Part II read the kernel as code, not silicon, then three languages that strike different deals with the same machine. C stays close to it. C++ scales C up to systems too big for one head. Python gives up orders of magnitude of speed for readability, and hands its fast parts to C. All three are still in production.",
+  "old": "Part I built the substrate; Part II opened the program that owns it and the languages we write on top of it. The kernel as code, not silicon. C, the language UNIX rewrote itself in. C++, scaling C up to systems too big for one human's head. Python, inverting the trade: slower than C by orders of magnitude, but readable, and built so the parts that need to be fast can be fast in someone else's language. Three different deals with the same machine. All three still in production. All three necessary, for different reasons, for different problems."
+ },
+ {
+  "file": "public/part-2.html",
+  "line": 4520,
+  "id": "",
+  "new": "Part III steps out of the box entirely. The wire leaves the CPU, crosses the room, and joins the network, where a voltage on copper becomes light in glass, crossing a continent. It is, once again, a story about people: Shannon, Baran, Davies, Cerf, Kahn, Berners-Lee, Eich.",
+  "old": "Part III steps out of the box entirely. The wire leaves the CPU, crosses the room, and joins the network, where voltage on copper becomes voltage across a continent. It is, once again, a story about people: Shannon, Baran, Davies, Cerf, Berners-Lee, Eich. And it is, once again, a story about silicon and the abstractions we build over it."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 66,
+  "id": "",
+  "new": "Parts I and II built one machine: sand to transistor, kernel to language. Part III steps off the motherboard. The bit that a voltage carries inside a CPU is, at a different scale, the bit that crosses a continent, as light in glass. We follow the wire out of the chip and into the world: the physics of the substrate, the architectural decision to send packets rather than circuits, the protocol that pretends a noisy network is reliable, the conventions that make a \"website\" work, and the language that runs in every browser on Earth. By the end you will be able to read every layer of an HTTPS request from voltage to the page in the tab.",
+  "old": "Parts I and II built one machine: sand to transistor, kernel to language. Part III steps off the motherboard. The voltage that flips a transistor inside a CPU is, at a different scale, the voltage that crosses a continent. We follow the wire out of the chip and into the world: the physics of the substrate, the architectural decision to send packets rather than circuits, the protocol that pretends a noisy network is reliable, the conventions that make a \"website\" work, and the language that runs in every browser on Earth. By the end you will be able to read every layer of an HTTPS request from voltage to JSON."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 72,
+  "id": "",
+  "new": "Parts I and II built one machine: sand to transistor, kernel to language. Part III steps off the motherboard. The bit that a voltage carries inside a CPU is, at a different scale, the bit that crosses a continent, as light in glass. We follow the wire out of the chip and into the world: the physics of the substrate, the architectural decision to send packets rather than circuits, the protocol that pretends a noisy network is reliable, the conventions that make a \"website\" work, and the language that runs in every browser on Earth. By the end you will be able to read every layer of an HTTPS request from voltage to the page in the tab.",
+  "old": "Parts I and II built one machine: sand to transistor, kernel to language. Part III steps off the motherboard. The voltage that flips a transistor inside a CPU is, at a different scale, the voltage that crosses a continent. We follow the wire out of the chip and into the world: the physics of the substrate, the architectural decision to send packets rather than circuits, the protocol that pretends a noisy network is reliable, the conventions that make a \"website\" work, and the language that runs in every browser on Earth. By the end you will be able to read every layer of an HTTPS request from voltage to JSON."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 79,
+  "id": "",
+  "new": "Physics of the substrate: copper, fibre, radio. Shannon's information theory. Encoding. Ethernet. The OSI and TCP/IP layer models that organise everything above. CHAPTER 09",
+  "old": "Physics of the substrate: copper, fiber, radio. Shannon's information theory. Encoding. Ethernet. The OSI and TCP/IP layer models that organise everything above. CHAPTER 09"
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 89,
+  "id": "",
+  "new": "Reliability built on top of an unreliable network. The three-way handshake. Flow and congestion control as control theory. CUBIC, BBR, QUIC. SYN floods. CHAPTER 11",
+  "old": "Reliability built on top of unreliable. The three-way handshake. Flow and congestion control as control theory. CUBIC, BBR, QUIC. SYN floods. CHAPTER 11"
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 110,
+  "id": "ch8-hero-lead",
+  "new": "We follow the signal out of the chip and into the world: copper, fibre, radio. The mathematics of how much information any of them can carry. The encodings that turn ones and zeros into wave shapes. The local-network protocols that share the substrate. And the layer model that lets every conversation about networking refer back to a single picture.",
+  "old": "The voltage that flips a transistor inside a CPU is, at a different scale, the voltage that crosses a continent. We follow the signal out of the chip and into the world: copper, fiber, radio. The mathematics of how much information any of them can carry. The encodings that turn ones and zeros into wave shapes. The local-network protocols that share the substrate. And the layer model that lets every conversation about networking refer back to a single picture."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 188,
+  "id": "",
+  "new": "The bit on a transistor extends to the bit across a continent.",
+  "old": "The voltage on a transistor extends to the voltage on a continent."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 191,
+  "id": "ch8-bridge-p1",
+  "new": "Part I closed inside a CPU. Part III leaves the CPU. The same bit that switched a transistor in Chapter 1 now travels: across the motherboard as a voltage step, out a network interface, down a cable, across an ocean as light in glass, into another machine on the other side of the planet. The bit is unchanged; only what carries it changes. What grows is the discipline required to keep the signal intact over that distance.",
+  "old": "Part I closed inside a CPU. Part III leaves the CPU. The same voltage transition that switched a transistor in Chapter 1 (a small step from one level to another, interpreted by everything downstream as \"the bit changed\") now travels: across the motherboard, out a network interface, down a cable, across an ocean, into another machine on the other side of the planet. The physics is unchanged. What grows is the discipline required to keep the signal intact over that distance."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 383,
+  "id": "ch8-shannon-p2",
+  "new": "Shannon is one of the strangest figures in twentieth-century science. At twenty-one he wrote the 1937 master's thesis, met in Chapter 2, that put Boole's algebra into relay circuits; Howard Gardner later called it \"possibly the most important, and also the most famous, master's thesis of the century.\"",
+  "old": "Shannon is one of the strangest figures in twentieth-century science. At twenty-one, in his 1937 master's thesis at MIT, he showed that George Boole's nineteenth-century algebra of logic could be implemented as electrical relay circuits, so any logical proposition could be computed by a network of switches. Howard Gardner later called this \"possibly the most important, and also the most famous, master's thesis of the century.\" It is the bridge between Chapter 2 of this book and everything that followed it: the moment Boolean logic stopped being philosophy and started being engineering."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 1099,
+  "id": "ch8-layers-p6",
+  "new": "Chapter 8 has been about the physical and link layers: how a single bit makes it across one hop. Chapter 9 climbs to the network layer. Every mechanism so far has moved bits between two devices on one wire, or a few on one Ethernet segment. The internet is billions of devices, on tens of thousands of independently-administered networks, none of them aware of most of the others, and packets that need to find their way across that graph from any source to any destination. The idea that made this work was small, strange, and explicitly Cold War.",
+  "old": "Chapter 8 has been about the physical and link layers: how a single bit makes it across one hop. Chapter 9 climbs to the network layer. Every diagram so far has assumed two devices on one wire, or a few on one Ethernet segment. The internet is billions of devices, on tens of thousands of independently-administered networks, none of them aware of most of the others, and packets that need to find their way across that graph from any source to any destination. The idea that made this work was small, strange, and explicitly Cold War."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 1115,
+  "id": "ch9-hero-title",
+  "new": "Packets: Howthe InternetDecided to Work",
+  "old": "Packets: HowThe InternetDecided to Work"
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 1122,
+  "id": "ch9-hero-lead",
+  "new": "The phone company spent a century building a network where every call got its own dedicated wire. ARPANET, in 1969, made a different bet: chop messages into pieces, label each piece with a destination, and let it find its own way through the graph. That single architectural decision (packets, not circuits) made the modern internet possible. It also made it possible for a block meant only for Pakistan to leak out and take YouTube off the air almost everywhere for two hours.",
+  "old": "The phone company spent a century building a network where every call got its own dedicated wire. ARPANET, in 1969, made a different bet: chop messages into pieces, label each piece with a destination, and let it find its own way through the graph. That single architectural decision (packets, not circuits) made the modern internet possible. It also made it possible for a misconfigured router in Pakistan to take YouTube off the air for the whole world for two hours."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 1132,
+  "id": "ko-hero-ch9-1",
+  "new": "Chapter 09 hero · Packets: How the Internet Decided to Work",
+  "old": "Chapter 09 hero · Packets: How The Internet Decided to Work"
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 1949,
+  "id": "ch9-security-p2",
+  "new": "The Morris worm, 2 November 1988: the moment computer security became a discipline. Robert Tappan Morris, a twenty-three-year-old graduate student at Cornell whose father was the chief scientist at the NSA's National Computer Security Center, released a self-replicating program onto the young internet that exploited three vulnerabilities at once: a buffer overflow in the UNIX fingerd service, a debug feature accidentally left on in sendmail, and weak passwords in rsh. Each copy, on landing on a new host, replicated itself to nearby hosts. Morris had tried to avoid re-infecting compromised machines, but one time in seven it copied itself anyway, even onto a machine that said it was already infected, so machines were re-infected dozens of times until they collapsed under the load. Within hours, somewhere between five thousand and ten thousand machines (by rough estimates, about ten percent of the internet of the time) were unusable. Morris was traced within days and became the first person convicted under the US Computer Fraud and Abuse Act of 1986. Within weeks of the worm's release, DARPA funded the Computer Emergency Response Team (CERT) at Carnegie Mellon, the first organisation tasked with coordinating response to internet security incidents. It became the model for the national CERTs that followed. The internet of 1988 had been built in an era of institutional trust; the Morris worm proved that era over.",
+  "old": "The Morris worm, 2 November 1988: the moment computer security became a discipline. Robert Tappan Morris, a twenty-three-year-old graduate student at Cornell whose father was the chief scientist at the NSA's National Computer Security Center, released a self-replicating program onto the young internet that exploited three vulnerabilities at once: a buffer overflow in the UNIX fingerd service, a debug feature accidentally left on in sendmail, and weak passwords in rsh. Each copy, on landing on a new host, replicated itself to nearby hosts. Morris had tried to avoid re-infecting compromised machines, but one time in seven it copied itself anyway, even onto a machine that said it was already infected, so machines were re-infected dozens of times until they collapsed under the load. Within hours, somewhere between five thousand and ten thousand machines (by rough estimates, about ten percent of the internet of the time) were unusable. Morris was traced within days and became the first person convicted under the US Computer Fraud and Abuse Act of 1986. Within weeks of the worm's release, DARPA funded the Computer Emergency Response Team (CERT) at Carnegie Mellon, the first organisation tasked with coordinating response to internet security incidents. It became the model for the national CERTs that followed. The protocols of Chapter 9 had been built in an era of institutional trust; the Morris worm proved that era over."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 2145,
+  "id": "ch10-hero-lead",
+  "new": "IP delivers packets best-effort: lossy, out-of-order, sometimes duplicated. For voice and DNS that's fine. UDP rides directly on top, and applications cope. For everything else (file transfer, web pages, long-lived connections), somebody has to make an unreliable network behave reliably. TCP is that somebody. Its mathematics is control theory, refined over half a century of engineering, and its handshake is the target of the SYN flood, one of the oldest denial-of-service attacks.",
+  "old": "IP delivers packets best-effort: lossy, out-of-order, sometimes duplicated. For voice and DNS that's fine. UDP rides directly on top, and applications cope. For everything else (file transfer, web pages, long-lived connections), somebody has to make an unreliable network behave reliably. TCP is that somebody. Its mathematics is control theory; its engineering is forty years of careful refinement; its attack surface is the reason every server has a SYN flood story."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 2795,
+  "id": "ch10-modern-p4",
+  "new": "BBR (2016, Google) is more radical: its first version largely set loss aside as a signal. It measures the network directly (bandwidth and round-trip time) and aims for the bandwidth-delay product (BDP), the amount of in-flight data that fills the pipe without overflowing buffers. Google deploys BBR at its edge for YouTube and Search. On lossy Wi-Fi, transcontinental links and home routers with oversized queues, BBR can be two to ten times faster than CUBIC. It is also more aggressive against competing CUBIC flows, which remains a source of debate.",
+  "old": "BBR (2016, Google) is more radical: forget loss as a signal. Measure the network directly (bandwidth and round-trip time) and aim for the bandwidth-delay product (BDP), the amount of in-flight data that fills the pipe without overflowing buffers. Google deploys BBR at its edge for YouTube and Search. On lossy Wi-Fi, transcontinental links and home routers with oversized queues, BBR can be two to ten times faster than CUBIC. It is also more aggressive against competing CUBIC flows, which remains a source of debate."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 3209,
+  "id": "ch11-hero-lead",
+  "new": "The internet is not the web. The internet is the packet network of Chapters 8 through 10 (voltage on copper, IP datagrams, reliable TCP streams). The web is the layer above it: three conventions Tim Berners-Lee proposed at a particle physics lab in 1989 (an address, a request, a page format), plus a naming system and the cryptography that rides beneath HTTPS, that together turn a network of packets into a worldwide library of trustworthy documents.",
+  "old": "The internet is not the web. The internet is the packet network of Chapters 8 through 10 (voltage on copper, IP datagrams, reliable TCP streams). The web is the layer above it: three protocols invented in 1989 at a particle physics lab, plus a handful of cryptographic primitives invented in the 1970s by mathematicians, that together turn a network of packets into a worldwide library of trustworthy documents. By the end of this chapter you will be able to read every byte of an HTTPS request from voltage to JSON."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 3442,
+  "id": "ch11-http-p1",
+  "new": "HTTP is simple enough to speak by hand. Open a TCP connection on port 80 to any web server, type GET / HTTP/1.0, press Enter twice, and the server will reply with a status line, a few headers, and the document. That transcript is HTTP. Three and a half decades of evolution have added connections that stay open between requests, many requests at once on one connection, compression, and finally a binary format, but the conversational shape \"client asks, server answers\" has not changed: HTTP/1.0 from 1996 still works against modern servers.",
+  "old": "HTTP is the simplest protocol in this book, simple enough to speak by hand. Open a TCP connection on port 80 to any web server, type GET / HTTP/1.0, press Enter twice, and the server will reply with a status line, a few headers, and the document. That transcript is HTTP. Three and a half decades of evolution have added connections that stay open between requests, many requests at once on one connection, compression, and finally a binary format, but the conversational shape \"client asks, server answers\" has not changed: HTTP/1.0 from 1996 still works against modern servers."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 3806,
+  "id": "ch11-dns-p5",
+  "new": "When your laptop wants to know example.com's IP, it asks its configured resolver: your ISP's, or a public service like Cloudflare's 1.1.1.1 or Google's 8.8.8.8, usually reached through your home router. If the answer is in the resolver's cache, it comes straight back. If not, the resolver does the actual work, called recursion. It asks one of the root servers for example.com; the root replies, \"I don't know, but the com servers do. Here are their IP addresses.\" The resolver asks one of the com servers; com replies, \"I don't know, but the example.com servers do. Here are theirs.\" The resolver asks one of those; that server is authoritative for example.com and returns the actual IP. The resolver caches the answer for the time to live (TTL) the authoritative server sets (typically 5 minutes to 24 hours) and returns it to the laptop. Total time: usually under 50 milliseconds the first time; until the TTL expires, every later lookup costs one short trip to the resolver, or nothing at all when the laptop's own cache still holds the answer.",
+  "old": "When your laptop wants to know example.com's IP, it asks its configured resolver, usually your home router, your ISP, or a public service like Cloudflare's 1.1.1.1 or Google's 8.8.8.8. If the answer is in the resolver's cache, it comes straight back. If not, the resolver does the actual work, called recursion. It asks one of the root servers for example.com; the root replies, \"I don't know, but the com servers do. Here are their IP addresses.\" The resolver asks one of the com servers; com replies, \"I don't know, but the example.com servers do. Here are theirs.\" The resolver asks one of those; that server is authoritative for example.com and returns the actual IP. The resolver caches the answer for the time to live (TTL) the authoritative server sets (typically 5 minutes to 24 hours) and returns it to the laptop. Total time: usually under 50 milliseconds the first time; until the TTL expires, every later lookup costs one short trip to the resolver, or nothing at all when the laptop's own cache still holds the answer."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 4456,
+  "id": "ch11-modern-p5",
+  "new": "QUIC (RFC 9000, 2021; the name began as Quick UDP Internet Connections, but the standard treats it as just a name) replaces TCP entirely for HTTP traffic. It runs on top of UDP, the \"fire and forget\" protocol from Section 01 of Chapter 10, and rebuilds TCP's reliable ordered delivery, flow control and congestion control, and HTTP/2's many streams, with TLS 1.3 encryption built in. The difference: each stream is ordered independently, so a lost packet on stream A no longer holds back stream B. QUIC was developed by Google starting around 2012, rolled out experimentally in Chrome and on Google's servers from 2013, and reached essentially all Chrome users by 2017, years before the IETF standard. HTTP/3 (RFC 9114, 2022) is just HTTP semantics over QUIC. As of 2026 it carries roughly a third of web traffic by volume (nearly all of Google's own, and a large and growing share of Cloudflare's and Meta's) and is climbing toward HTTP/2's share everywhere else.",
+  "old": "QUIC (Quick UDP Internet Connections, RFC 9000, 2021) replaces TCP entirely for HTTP traffic. It runs on top of UDP, the \"fire and forget\" protocol from Section 01 of Chapter 10, and rebuilds TCP's reliable ordered delivery, flow control and congestion control, and HTTP/2's many streams, with TLS 1.3 encryption built in. The difference: each stream is ordered independently, so a lost packet on stream A no longer holds back stream B. QUIC was developed by Google starting around 2012, rolled out experimentally in Chrome and on Google's servers from 2013, and reached essentially all Chrome users by 2017, years before the IETF standard. HTTP/3 (RFC 9114, 2022) is just HTTP semantics over QUIC. As of 2026 it carries roughly a third of web traffic by volume (nearly all of Google's own, and a large and growing share of Cloudflare's and Meta's) and is climbing toward HTTP/2's share everywhere else."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 4543,
+  "id": "ch12-hero-lead",
+  "new": "In May 1995 Brendan Eich had ten days to build a working prototype of a scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is arguably the most widely deployed programming language in history. It runs in every browser. It runs on servers via Node.js. Its object-literal syntax became JSON, the format most web services use to exchange data. That this happened is a triumph of practical engineering over good taste, and that it works is down to a series of architectural decisions made under deadline that turned out to be unexpectedly durable.",
+  "old": "Brendan Eich was given ten working days, in May 1995, to design a scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is now the most widely deployed programming language in history. It runs in every browser. It runs on servers via Node.js. Its object-literal syntax became JSON, the data language every modern database speaks. That this happened is a triumph of practical engineering over good taste, and that it works is down to a series of architectural decisions made under deadline that turned out to be unexpectedly durable."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 4546,
+  "id": "ch12-hero-lead",
+  "new": "In May 1995 Brendan Eich had ten days to build a working prototype of a scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is arguably the most widely deployed programming language in history. It runs in every browser. It runs on servers via Node.js. Its object-literal syntax became JSON, the format most web services use to exchange data. That this happened is a triumph of practical engineering over good taste, and that it works is down to a series of architectural decisions made under deadline that turned out to be unexpectedly durable.",
+  "old": "Brendan Eich was given ten working days, in May 1995, to design a scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is now the most widely deployed programming language in history. It runs in every browser. It runs on servers via Node.js. Its object-literal syntax became JSON, the data language every modern database speaks. That this happened is a triumph of practical engineering over good taste, and that it works is down to a series of architectural decisions made under deadline that turned out to be unexpectedly durable."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 4702,
+  "id": "ch12-eich-p1",
+  "new": "Brendan Eich joined Netscape in April 1995. He was 33, and had been recruited with the promise that he would bring Scheme (a Lisp dialect) to the Netscape browser. What he got in his first week was a different brief: Marc Andreessen and Bill Joy (Sun co-founder, brought into the Netscape-Sun partnership) wanted a language with C-like syntax, so that it looked familiar to working programmers, but with the dynamic, interpreted, untyped flexibility of Scheme underneath. Eich had ten days to produce a prototype.",
+  "old": "Brendan Eich joined Netscape in April 1995. He was 33, and had been recruited with the promise that he would bring Scheme (a Lisp dialect) to the Netscape browser. What he got in his first week was a different brief: Marc Andreessen and Bill Joy (Sun co-founder, brought into the Netscape-Sun partnership) wanted a language with C-like syntax, so that it looked familiar to working programmers, but with the dynamic, interpreted, untyped flexibility of Scheme underneath. Eich had ten working days to produce a prototype."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 4812,
+  "id": "ch12-eich-p6",
+  "new": "The ten-day legacy. Several JavaScript quirks trace directly to the original ten-day window. typeof null === \"object\" is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). 0.1 + 0.2 !== 0.3 is just IEEE 754 (Chapter 2, Section 06), but the choice to have no integer type at all, with every number a 64-bit float, meant JavaScript could never expose the difference. Implicit coercion ([] + {} === \"[object Object]\") is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable in practice, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything.",
+  "old": "The ten-day legacy. Several JavaScript quirks trace directly to the original ten-day window. typeof null === \"object\" is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). 0.1 + 0.2 !== 0.3 is just IEEE 754 (Chapter 2.6), but the choice to have no integer type at all, with every number a 64-bit float, meant JavaScript could never expose the difference. Implicit coercion ([] + {} === \"[object Object]\") is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable in practice, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 5341,
+  "id": "ch12-security-p4",
+  "new": "The same-origin policy keeps origin A's code out of origin B. But what if the attacker can inject their own code into origin B's page? Then their code is, by definition, same-origin with B, and can do everything B's legitimate code can do. This is cross-site scripting (XSS), one of the most common web vulnerabilities for two decades running. It comes in three flavours. Reflected XSS: the attacker crafts a URL with malicious script in the part after the ?; the server echoes that part back into the page; the script executes on whoever visits the URL. Stored XSS: the attacker submits malicious script as a comment or profile field; the server stores it in the database; every subsequent visitor's browser executes it. DOM-based XSS: a similar attack carried out entirely in the browser, by page JavaScript that copies part of the URL (after the ? or the #) into the page unsafely.",
+  "old": "The same-origin policy keeps origin A's code out of origin B. But what if the attacker can inject their own code into origin B's page? Then their code is, by definition, same-origin with B, and can do everything B's legitimate code can do. This is cross-site scripting (XSS), one of the most common web vulnerabilities for two decades running. It comes in three flavours. Reflected XSS: the attacker crafts a URL with malicious script in the part after the ?; the server echoes that part back into the page; the script executes on whoever visits the URL. Stored XSS: the attacker submits malicious script as a comment or profile field; the server stores it in the database; every subsequent visitor's browser executes it. DOM-based XSS: a similar attack carried out entirely in the browser, by page JavaScript that copies the part of the URL after the ? into the page unsafely."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 5450,
+  "id": "ch12-security-p8",
+  "new": "The strongest mitigation in the modern web security stack is Content Security Policy (CSP), first shipped in Firefox 4 in 2011, a web standard since 2016 and supported by every major browser by the late 2010s. CSP is a response header (Content-Security-Policy: …) in which the server declares exactly which origins the browser may load resources from, separately for scripts, styles, images, frames, fonts, fetch destinations and every other resource type. A typical strict policy: script-src 'self' https://cdn.example.com; style-src 'self' means: \"execute scripts only from the same origin and from cdn.example.com; load styles only from the same origin; reject other sources for those two.\" (Adding default-src 'none' closes every other kind of resource too.) If an attacker injects a <script src=\"evil.com/x.js\">, the browser sees that evil.com is not in the policy and refuses to load the script. The policy admits no inline code either, so the inline <script> and onerror payloads of Fig 12.9 are refused too: the injection succeeds, the attack does not.",
+  "old": "The strongest mitigation in the modern web security stack is Content Security Policy (CSP), first shipped in Firefox 4 in 2011, a web standard since 2016 and supported by every major browser by the late 2010s. CSP is a response header (Content-Security-Policy: …) in which the server declares exactly which origins the browser may load resources from, separately for scripts, styles, images, frames, fonts, fetch destinations and every other resource type. A typical strict policy: script-src 'self' https://cdn.example.com; style-src 'self' means: \"execute scripts only from the same origin and from cdn.example.com; load styles only from the same origin; reject other sources for those two.\" (Adding default-src 'none' closes every other kind of resource too.) If an attacker injects a <script src=\"evil.com/x.js\">, the browser sees that evil.com is not in the policy and refuses to load the script. The XSS attack from Fig 12.9 is neutralised even though the injection succeeded."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 5526,
+  "id": "ch12-security-p11",
+  "new": "Part III is now complete. We started with voltage on a wire (Chapter 8), promoted it into routed packets (Chapter 9), built reliability on top of unreliability (Chapter 10), turned the network into a worldwide library of trustworthy documents (Chapter 11), and made those documents alive (Chapter 12). A reader who has followed all five chapters can now, in principle, read every layer of an HTTPS request, from voltage on copper to a piece of JavaScript modifying the DOM and rendering at 60 frames per second.",
+  "old": "Part III is now complete. We started with voltage on a wire (Chapter 8), promoted it into routed packets (Chapter 9), built reliability on top of unreliability (Chapter 10), turned the network into a worldwide library of trustworthy documents (Chapter 11), and made those documents alive (Chapter 12). A reader who has followed all five chapters can now, in principle, read every layer of an HTTPS request, from voltage on copper to a piece of JavaScript modifying the DOM and rendering at 60 frames per second. Part IV turns to where information lives at rest, and how it stays trustworthy when nobody is watching the connection. The relational database. The cryptographic primitives in mathematical depth. And the unified security chapter that ties together every attack we have foreshadowed in Parts I, II and III into a single working theory of why systems break and how we keep them standing."
+ },
+ {
+  "file": "public/part-3.html",
+  "line": 5544,
+  "id": "",
+  "new": "Part IV turns to where information lives at rest and how it is kept safe: the relational database, cryptography in mathematical depth, and the security chapter that ties every attack of Parts I to III into one working theory.",
+  "old": "Voltage to packets to TCP to HTTP to JavaScript. Five chapters, every layer from copper to pixels. Part IV turns to where information lives at rest: the relational database, real cryptography, and the unified security chapter that ties Parts I through III together."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 56,
+  "id": "",
+  "new": "Parts I, II, and III built the machine that moves bytes (silicon, kernel, network). Part IV is about the bytes themselves: how information is stored so that it can be queried, how cryptography keeps it secret and proves where it came from, and how the systems that hold and move it can be attacked and defended. Three chapters: the relational database that still organises most of the world's structured records, the cryptography that lets a browser trust a server it has never met, and the unified security chapter that turns every attack we have foreshadowed into one working theory.",
+  "old": "Parts I, II, and III built the machine that moves bytes (silicon, kernel, network). Part IV is about the bytes themselves once they stop moving: how information is stored so that it can be queried, how it is encrypted so that it can be trusted, and how the systems that hold it can be attacked and defended. Three chapters: the relational database that organises every record in production, the cryptography that makes the web possible at all, and the unified security chapter that turns every attack we have foreshadowed into one working theory."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 74,
+  "id": "",
+  "new": "Caesar to AES. SHA-256 internals. Diffie–Hellman 1976, the second invention of cryptography. RSA with worked numbers. Elliptic curves. TLS 1.3 at full depth. Post-quantum standardisation. CHAPTER 15",
+  "old": "Caesar to AES. SHA-256 internals. Diffie–Hellman 1976, the second invention of cryptography. RSA with worked numbers. Elliptic curves. Post-quantum standardisation. The math made physical. CHAPTER 15"
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 95,
+  "id": "ch13-hero-lead",
+  "new": "Every language we have looked at so far (C, C++, Python, JavaScript) tells the computer how to compute. SQL is the first language in this book that tells the computer what you want, and leaves the how to a query planner. The trade is consequential: the language is more limited, but the runtime is allowed to be arbitrarily clever underneath. Its theory is set theory, and its core is small enough for a working programmer to learn in weeks. SQL injection (Section 06) remains one of the most damaging attacks on the web.",
+  "old": "Every language we have looked at so far (C, C++, Python, JavaScript) tells the computer how to compute. SQL is the first language in this book that tells the computer what you want, and leaves the how to a query planner. The trade is consequential: the language is more limited, but the runtime is allowed to be arbitrarily clever underneath. The theory is set theory; the practice is fifty years of refinement; the surface area is small enough that a working programmer can master it in weeks. SQL is also the most attacked surface on the modern internet."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 189,
+  "id": "ch13-codd-p1",
+  "new": "In June 1970, in the Communications of the ACM, an IBM researcher named Edgar F. Codd published a paper titled \"A Relational Model of Data for Large Shared Data Banks.\" It was eleven pages long, packed with set-theoretic notation, and proposed something that sounded like a complaint: that the databases of the day were forcing programmers to think about how data was stored when they should only have to think about what data they wanted. The existing approach later came to be called navigational: programmers wrote code that walked pointer to pointer through tree-shaped or network-shaped data structures. He proposed replacing all of that with a single abstraction: the relation, a table of rows in no fixed order (to a mathematician, a set of tuples), queryable by a small algebra of operations that returned more relations.",
+  "old": "In June 1970, in the Communications of the ACM, an IBM researcher named Edgar F. Codd published a paper titled \"A Relational Model of Data for Large Shared Data Banks.\" It was eleven pages long, packed with set-theoretic notation, and proposed something that sounded like a complaint: that the databases of the day were forcing programmers to think about how data was stored when they should only have to think about what data they wanted. Codd called the existing approach navigational: programmers wrote code that walked pointer to pointer through tree-shaped or network-shaped data structures. He proposed replacing all of that with a single abstraction: the relation, a table of rows in no fixed order (to a mathematician, a set of tuples), queryable by a small algebra of operations that returned more relations."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 1240,
+  "id": "ch14-hero-lead",
+  "new": "Chapter 11, Section 04, introduced cryptography as a black box that the TLS handshake feeds into. This chapter opens the box. We trace the arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper, arguably the most important in the history of cryptography, and on through RSA worked in actual numbers, into elliptic curves, and out into post-quantum standardisation. The math is dense; it is also approachable, because the operations underneath are nothing more exotic than modular arithmetic.",
+  "old": "Chapter 11, Section 04, introduced cryptography as a black box that the TLS handshake feeds into. This chapter opens the box. We trace the arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper, arguably the most important in the history of cryptography, and on through RSA worked in actual numbers, into elliptic curves, and out into post-quantum standardisation. The math is dense; it is also approachable, because the operations underneath are nothing more exotic than modular arithmetic. Cryptography is the only mathematics in this book whose entire purpose is to be computationally hard to reverse."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 2288,
+  "id": "ch14-tls-pqc-p6",
+  "new": "Every public-key system in this chapter (Diffie–Hellman, RSA, and the elliptic-curve schemes ECDH and ECDSA) rests on a problem that is hard for classical computers. In 1994, mathematician Peter Shor, working at Bell Labs, published an algorithm that solves both integer factoring and discrete logarithm in polynomial time on a sufficiently large quantum computer. Shor's algorithm has not been run at cryptographically relevant scales: the quantum computers of 2026 have at most about a hundred error-protected logical qubits (quantum bits), each built from many noisy physical ones, and RSA-2048 would need thousands. When a machine of that size exists, it breaks all current public-key cryptography. The estimated horizon ranges from \"within ten years\" (optimistic engineering) to \"fifty or more\" (pessimistic).",
+  "old": "Every public-key system in this chapter (Diffie–Hellman, RSA, and their elliptic-curve forms ECDH and ECDSA) rests on a problem that is hard for classical computers. In 1994, mathematician Peter Shor, working at Bell Labs, published an algorithm that solves both integer factoring and discrete logarithm in polynomial time on a sufficiently large quantum computer. Shor's algorithm has not been run at cryptographically relevant scales: the quantum computers of 2026 have at most about a hundred error-protected logical qubits (quantum bits), each built from many noisy physical ones, and RSA-2048 would need thousands. When a machine of that size exists, it breaks all current public-key cryptography. The estimated horizon ranges from \"within ten years\" (optimistic engineering) to \"fifty or more\" (pessimistic)."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 2394,
+  "id": "ch14-tls-pqc-p11",
+  "new": "Chapter 15, the final chapter of Part IV, takes everything in this book, from the silicon and the software on it (Parts I and II) through the network (Part III) to the data and cryptography (Chapters 13 and 14), and looks at it from one direction: how systems break.",
+  "old": "Chapter 15, the final chapter of Part IV, takes everything in this book, from the silicon (Parts I and II) through the network (Part III) to the data and cryptography (Chapters 13 and 14), and looks at it from one direction: how systems break."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 2412,
+  "id": "ch15-hero-lead",
+  "new": "Attacks have run through this whole book. Spectre and Meltdown in Chapter 1. Buffer overflows in Chapter 3. Dirty COW in Chapter 4. BGP hijacking in Chapter 9. SYN floods in Chapter 10. DNS poisoning, wrongly issued certificates, XSS, CSRF, SQL injection. This chapter pulls them together: every specific exploit becomes an instance of a small handful of structural patterns, and every defence a layer in a stack the reader can now name. Then we close on the culture of the people who break and fix systems for a living.",
+  "old": "Attacks have run through this whole book. Spectre and Meltdown in Chapter 1. Buffer overflows in Chapter 3. Dirty COW in Chapter 4. BGP hijacking in Chapter 9. SYN floods in Chapter 10. DNS poisoning, TLS misissuance, XSS, CSRF, SQL injection. This chapter pulls them together: every specific exploit becomes an instance of a small handful of structural patterns, and every defence a layer in a stack the reader can now name. Then we close on the culture of the people who break and fix systems for a living."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 2613,
+  "id": "ch15-memory-p1",
+  "new": "Chapter 3 introduced the buffer overflow: Aleph One's 1996 Phrack essay, the saved return address overwritten, the CPU jumping to attacker-supplied code. Chapter 3, Section 06, traced the arms race from stack canaries through DEP and ASLR to ROP, and named the three answers (CFI, shadow stacks, Pointer Authentication); this section opens each one up. The race has not stopped in nearly forty years. The defences have grown more sophisticated, the attacks more inventive, but the underlying problem has not gone away: C and C++ let a program read and write past the object it meant to use, without checking that it should.",
+  "old": "Chapter 3 introduced the buffer overflow: Aleph One's 1996 Phrack essay, the saved return address overwritten, the CPU jumping to attacker-supplied code. Chapter 3, Section 06, traced the arms race from stack canaries through DEP and ASLR to ROP. The race has not stopped in nearly forty years. The defences have grown more sophisticated, the attacks more inventive, but the underlying problem has not gone away: C and C++ let a program read and write past the object it meant to use, without checking that it should."
+ },
+ {
+  "file": "public/part-4.html",
+  "line": 2940,
+  "id": "ch15-network-p6",
+  "new": "The two attacks Part III already met end the same way. DNS poisoning (Chapter 11, Section 03; Kaminsky 2008) tricks a recursive resolver into caching a forged answer; combined with no certificate validation, it lets an attacker direct a victim to a server they control. Certificate verification is the defence: even with a poisoned DNS answer, the attacker's server cannot present a valid TLS certificate for the legitimate hostname. BGP hijacking (Chapter 9, Section 06) pulls entire IP prefixes toward whichever autonomous system announces them. In Pakistan/YouTube 2008 the traffic was merely dropped, an outage TLS cannot prevent; a malicious announcer could instead steer it through its own machines. Against that the defence is the same: all your packets may now arrive at the attacker's machines, but those machines cannot complete a TLS handshake for the target's hostname. Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through.",
+  "old": "The two attacks Part III already met end the same way. DNS poisoning (Chapter 11, Section 03; Kaminsky 2008) tricks a recursive resolver into caching a forged answer; combined with no certificate validation, it lets an attacker direct a victim to a server they control. Certificate verification is the defence: even with a poisoned DNS answer, the attacker's server cannot present a valid TLS certificate for the legitimate hostname. BGP hijacking (Chapter 9, Section 06; Pakistan/YouTube 2008) reroutes entire IP prefixes through a malicious autonomous system. Same defence: all your packets may now arrive at the attacker's machines, but those machines cannot complete a TLS handshake for the target's hostname. Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 60,
+  "id": "",
+  "new": "Parts I through IV built one computer. A single CPU, with its kernel, speaking through one network stack to one TLS endpoint, holding bytes in one relational database, defended by a layered stack we can now name. Part V steps back. The machine that runs nearly all code in 2026 is many processors working as one: sixteen cores in your laptop, sixty-four in a cloud server, and beyond them ten thousand machines in a region, tied together by software that must reach agreement despite delay and failure. Part V is about that scale-up, mathematically and physically. Then Chapter 18 closes the book.",
+  "old": "Parts I through IV built one computer. A single CPU, with its kernel, speaking through one network stack to one TLS endpoint, holding bytes in one relational database, defended by a layered stack we can now name. Part V steps back. The machine that runs nearly all code in 2026 is not a computer at all but a great many computers: sixteen cores in your laptop, sixty-four in a cloud server, ten thousand machines in a region, a planetary mesh tied together by software that must reach agreement despite delay and failure. Part V is about that scale-up, mathematically and physically. Then Chapter 18 closes the book."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 93,
+  "id": "ch16-hero-lead",
+  "new": "For most of computing's history, faster software meant faster clocks. Around 2004 the clock speed of consumer CPUs stopped climbing at its old pace (heat density made each further step too costly), and the industry pivoted to putting many cores on the same chip and asking software to use them. Twenty years later, every phone has six to ten cores, every laptop has eight to sixteen, and every cloud server has sixty-four or more. Writing code that uses them correctly is hard: its bugs depend on timing, hide in testing and appear under load.",
+  "old": "For most of computing's history, faster software meant faster clocks. Around 2004 the clock speed of consumer CPUs stopped rising (heat density made it impossible), and the industry pivoted to putting many cores on the same chip and asking software to use them. Twenty years later, every phone has six to ten cores, every laptop has eight to sixteen, and every cloud server has sixty-four or more. Writing code that uses them correctly is one of the deepest skills in programming, and its failure modes are some of the most frustrating bugs ever produced."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 98,
+  "id": "ch16-hero-lead",
+  "new": "For most of computing's history, faster software meant faster clocks. Around 2004 the clock speed of consumer CPUs stopped climbing at its old pace (heat density made each further step too costly), and the industry pivoted to putting many cores on the same chip and asking software to use them. Twenty years later, every phone has six to ten cores, every laptop has eight to sixteen, and every cloud server has sixty-four or more. Writing code that uses them correctly is hard: its bugs depend on timing, hide in testing and appear under load.",
+  "old": "For most of computing's history, faster software meant faster clocks. Around 2004 the clock speed of consumer CPUs stopped rising (heat density made it impossible), and the industry pivoted to putting many cores on the same chip and asking software to use them. Twenty years later, every phone has six to ten cores, every laptop has eight to sixteen, and every cloud server has sixty-four or more. Writing code that uses them correctly is one of the deepest skills in programming, and its failure modes are some of the most frustrating bugs ever produced."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 102,
+  "id": "",
+  "new": "Era covered1967 → presentCluster1 machine · 8 cores · one shared memory",
+  "old": "Era covered~1965 → presentCluster1 machine · 8 cores · one shared memory"
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 1339,
+  "id": "ch16-numa-p4",
+  "new": "The cache as a side channel. In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in Chapter 1, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret byte by byte. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.",
+  "old": "The cache as a side channel. In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in Chapter 1, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret bit by bit. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 1371,
+  "id": "ch17-hero-lead",
+  "new": "Most code in 2026 runs in someone else's datacenter, on hardware its developers will never touch, alongside thousands of other programs they will never know about, coordinating across a network that delays, drops and cuts off messages without warning. The cloud is the substrate of most web services and mobile backends, much of AI training, and a growing share of the world's large databases. It is built from a handful of abstractions: virtualization, containers, orchestration, consensus protocols, service meshes. Each solves a problem the others could not.",
+  "old": "Most code in 2026 runs in someone else's datacenter, on hardware its developers will never touch, alongside thousands of other programs they will never know about, coordinating across a network that is unreliable in ways that look like physics. The cloud is the substrate of nearly every web service, every mobile backend, every AI training run, every database larger than a laptop. It is built from a handful of layered abstractions: virtualization, containers, orchestration, consensus protocols, service meshes. Each of them solves a problem the layer below could not."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 1376,
+  "id": "ch17-hero-lead",
+  "new": "Most code in 2026 runs in someone else's datacenter, on hardware its developers will never touch, alongside thousands of other programs they will never know about, coordinating across a network that delays, drops and cuts off messages without warning. The cloud is the substrate of most web services and mobile backends, much of AI training, and a growing share of the world's large databases. It is built from a handful of abstractions: virtualization, containers, orchestration, consensus protocols, service meshes. Each solves a problem the others could not.",
+  "old": "Most code in 2026 runs in someone else's datacenter, on hardware its developers will never touch, alongside thousands of other programs they will never know about, coordinating across a network that is unreliable in ways that look like physics. The cloud is the substrate of nearly every web service, every mobile backend, every AI training run, every database larger than a laptop. It is built from a handful of layered abstractions: virtualization, containers, orchestration, consensus protocols, service meshes. Each of them solves a problem the layer below could not."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 1381,
+  "id": "",
+  "new": "Era covered1968 → presentCluster10,000 machines · 3 regions · one system",
+  "old": "Era covered~1965 → presentCluster10,000 machines · 3 regions · one system"
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 1689,
+  "id": "ch17-k8s-p3",
+  "new": "Every controller in Kubernetes, meaning every piece of logic that maintains some kind of object, is a reconcile loop: a tight loop that observes the current state of the world, compares it to the desired state, and takes whichever action will move current closer to desired. Run forever. The loop is idempotent: if it runs twice without anything changing, the second run does nothing. The loop is robust: if a command fails, the next run observes that the change still hasn't happened and tries again. The loop is stateless: it does not remember what it did last time; it only looks at what is versus what should be. The pattern of declared desired state, observed actual state, continuous reconciliation is borrowed from control theory (Chapter 10's TCP congestion control is the same shape) and runs through the tools that build infrastructure from a written description (infrastructure as code): Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once.",
+  "old": "Every controller in Kubernetes, meaning every piece of logic that maintains some kind of object, is a reconcile loop: a tight loop that observes the current state of the world, compares it to the desired state, and takes whichever action will move current closer to desired. Run forever. The loop is idempotent: if it runs twice without anything changing, the second run does nothing. The loop is robust: if a command fails, the next run observes that the change still hasn't happened and tries again. The loop is stateless: it does not remember what it did last time; it only looks at what is versus what should be. The pattern of declared desired state, observed actual state, continuous reconciliation is borrowed from control theory (Chapter 10's TCP congestion control is the same shape) and runs through the tools that build infrastructure from a written description (infrastructure as code): Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once. Argo CD and Flux run it as a loop, Terraform and Pulumi as a plan applied on demand."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 2285,
+  "id": "ch18-hero-lead",
+  "new": "Seventeen chapters ago this book drew a single transistor: a switch made of doped silicon, controlled by voltage, doing nothing on its own. Around it we have now built an entire civilization: gates, instructions, kernels, languages, networks, cryptography, security, scale. The computer is no longer a thing. It is a layered system that runs nearly everywhere, stores nearly all the information we record, and increasingly shapes the decisions of every domain it touches. This chapter adds little new: it looks back at the whole, names what's permanent and what isn't, points at where the field is going, and ends.",
+  "old": "Seventeen chapters ago this book began with a single transistor: a switch made of doped silicon, controlled by voltage, doing nothing on its own. Around it we have now built an entire civilization: gates, instructions, kernels, languages, networks, cryptography, security, scale. The computer is no longer a thing. It is a layered system that runs everywhere, holds nearly all knowledge produced by humans, and increasingly shapes the decisions of every domain it touches. This chapter does no new teaching. It looks back at the whole, names what's permanent and what isn't, points at where the field is going, and ends."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 2290,
+  "id": "ch18-hero-lead",
+  "new": "Seventeen chapters ago this book drew a single transistor: a switch made of doped silicon, controlled by voltage, doing nothing on its own. Around it we have now built an entire civilization: gates, instructions, kernels, languages, networks, cryptography, security, scale. The computer is no longer a thing. It is a layered system that runs nearly everywhere, stores nearly all the information we record, and increasingly shapes the decisions of every domain it touches. This chapter adds little new: it looks back at the whole, names what's permanent and what isn't, points at where the field is going, and ends.",
+  "old": "Seventeen chapters ago this book began with a single transistor: a switch made of doped silicon, controlled by voltage, doing nothing on its own. Around it we have now built an entire civilization: gates, instructions, kernels, languages, networks, cryptography, security, scale. The computer is no longer a thing. It is a layered system that runs everywhere, holds nearly all knowledge produced by humans, and increasingly shapes the decisions of every domain it touches. This chapter does no new teaching. It looks back at the whole, names what's permanent and what isn't, points at where the field is going, and ends."
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 2298,
+  "id": "",
+  "new": "Era coveredall of itClusterone curriculum · five parts · one reader",
+  "old": "Era coveredall of itClusterone curriculum · five layers · one reader"
+ },
+ {
+  "file": "public/part-5.html",
+  "line": 2435,
+  "id": "ch18-trace-p3",
+  "new": "Four chapters are not numbered stations. Chapters 6 and 7 (C++ and Python) have none: the code in the figure is C and JavaScript, though V8, which runs that JavaScript, is itself written in C++. Chapter 15 (security) is woven across the trace rather than located at one point. Each time the journey crosses from less-trusted to more-trusted territory (user input → kernel; client → DNS resolver; client → server's TLS endpoint; HTTP query → SQL parser), a trust boundary is crossed and a defence layer applies. The figure marks these transitions with thin red dotted lines. Chapter 18 is not a station because it is this figure: the moment the layers stop being a list and become a system.",
+  "old": "Four chapters are not numbered stations. Chapters 6 and 7 (C++ and Python) have none because no step of this path is written in either language: the code in the figure is C and JavaScript. Chapter 15 (security) is woven across the trace rather than located at one point. Each time the journey crosses from less-trusted to more-trusted territory (user input → kernel; client → DNS resolver; client → server's TLS endpoint; HTTP query → SQL parser), a trust boundary is crossed and a defence layer applies. The figure marks these transitions with thin red dotted lines. Chapter 18 is not a station because it is this figure: the moment the layers stop being a list and become a system."
+ },
+ {
+  "file": "public/account.html",
+  "line": 226,
+  "id": "create-help",
+  "new": "Enter your email. We send one link to confirm it; then you set a password. Send confirmation link",
+  "old": "Enter your email. We send one link to confirm it; then you choose how you’ll sign in. Send confirmation link"
+ },
+ {
+  "file": "public/account.html",
+  "line": 237,
+  "id": "recover-help",
+  "new": "For a forgotten password or an account from the email-link days. Once in, you can set a password. Email me a link",
+  "old": "For a forgotten password, a lost passkey, or an account from the email-link days. Once in, you can set a password or create a passkey. Email me a link"
+ },
+ {
+  "file": "public/account.html",
+  "line": 276,
+  "id": "setup-title",
+  "new": "Set a password. You can change it any time below.",
+  "old": "Choose how you’ll sign in. Pick one now; you can add the other any time below."
+ },
+ {
+  "file": "public/account.html",
+  "line": 348,
+  "id": "",
+  "new": "The book itself collects nothing: no analytics, no trackers, no third-party requests unless you choose to play an outside video (below). Reading progress for signed-out readers lives in your browser's localStorage and never leaves your device. An account adds a server-side copy of the same reading position, so it can follow you between devices, plus what is needed to sign you in. In detail:",
+  "old": "The book itself collects nothing: no analytics, no trackers, no third-party requests unless you choose to play an outside video (below). Reading progress for signed-out readers lives in your browser's localStorage and never leaves your device. An account adds exactly one thing: the same reading position, stored server-side so it can follow you between devices. In detail:"
+ },
+ {
+  "file": "public/account.html",
+  "line": 353,
+  "id": "",
+  "new": "What is stored: your email address, when the account was requested and when you confirmed it; if you set a password, a salted, peppered PBKDF2 hash of it (never the password itself) and when it last changed; for each passkey, its ID, public key, signature counter, a label, and when it was added and last used (the private key never leaves your device); a session identifier (only its hash is kept); and one reading position: which part of the book, a paragraph anchor, an offset within it, chapter and section titles, and when it was last updated. Briefly, the database also holds hashed one-time sign-in links and passkey challenges until they are used or expire, and, to slow down password guessing and mail abuse, counters keyed by a keyed hash of the address or network, or by your random account ID, never the address itself, cleared after about a day. Nothing else. What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request, a short notice whenever your sign-in settings change, and a notice if someone tries to create an account with your address: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept the next time anyone signs in or signs up, at most once every six hours. Deletion: the Delete account button (shown above once you are signed in) removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu.",
+  "old": "What is stored: your email address and when you confirmed it; if you set a password, a salted, peppered PBKDF2 hash of it (never the password itself); for each passkey, its public key, a label, and when it was added and last used (the private key never leaves your device); a session identifier (only its hash is kept); and one reading position: which part of the book, a paragraph anchor, an offset within it, chapter and section titles, and when it was last updated. Briefly, the database also holds hashed one-time sign-in links and passkey challenges until they are used or expire, and, to slow down password guessing and mail abuse, counters keyed by a keyed hash of the address or network, never the address itself, cleared after about a day. Nothing else. What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request and a short notice whenever your sign-in settings change: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept automatically every few hours. Deletion: the button above removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu."
+ },
+ {
+  "file": "public/account.html",
+  "line": 363,
+  "id": "",
+  "new": "What is stored: your email address, when the account was requested and when you confirmed it; if you set a password, a salted, peppered PBKDF2 hash of it (never the password itself) and when it last changed; for each passkey, its ID, public key, signature counter, a label, and when it was added and last used (the private key never leaves your device); a session identifier (only its hash is kept); and one reading position: which part of the book, a paragraph anchor, an offset within it, chapter and section titles, and when it was last updated. Briefly, the database also holds hashed one-time sign-in links and passkey challenges until they are used or expire, and, to slow down password guessing and mail abuse, counters keyed by a keyed hash of the address or network, or by your random account ID, never the address itself, cleared after about a day. Nothing else. What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request, a short notice whenever your sign-in settings change, and a notice if someone tries to create an account with your address: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept the next time anyone signs in or signs up, at most once every six hours. Deletion: the Delete account button (shown above once you are signed in) removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu.",
+  "old": "What is stored: your email address and when you confirmed it; if you set a password, a salted, peppered PBKDF2 hash of it (never the password itself); for each passkey, its public key, a label, and when it was added and last used (the private key never leaves your device); a session identifier (only its hash is kept); and one reading position: which part of the book, a paragraph anchor, an offset within it, chapter and section titles, and when it was last updated. Briefly, the database also holds hashed one-time sign-in links and passkey challenges until they are used or expire, and, to slow down password guessing and mail abuse, counters keyed by a keyed hash of the address or network, never the address itself, cleared after about a day. Nothing else. What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request and a short notice whenever your sign-in settings change: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept automatically every few hours. Deletion: the button above removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu."
+ },
+ {
+  "file": "public/account.html",
+  "line": 368,
+  "id": "",
+  "new": "What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request, a short notice whenever your sign-in settings change, and a notice if someone tries to create an account with your address: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept the next time anyone signs in or signs up, at most once every six hours. Deletion: the Delete account button (shown above once you are signed in) removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu.",
+  "old": "What it is for: signing you in and putting you back at your paragraph. Nothing else. Your address receives only the links you yourself request and a short notice whenever your sign-in settings change: no announcements, no marketing. It is never shared or sold. Where it lives: a Cloudflare D1 database in the European Union, the same infrastructure that already serves the book. Mail is delivered by Cloudflare Email Sending, our host's own service rather than a third-party mail provider. Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept automatically every few hours. Deletion: the button above removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu."
+ },
+ {
+  "file": "public/account.html",
+  "line": 379,
+  "id": "",
+  "new": "Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept the next time anyone signs in or signs up, at most once every six hours. Deletion: the Delete account button (shown above once you are signed in) removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu.",
+  "old": "Retention: emailed links work once. Confirmation links expire after 24 hours, sign-in links after 30 minutes; an account whose email is never confirmed is removed after 14 days; sessions expire after 180 days; the reading position is overwritten in place as you read and exists only while your account does. Expired records are swept automatically every few hours. Deletion: the button above removes your email, password, passkeys, sessions and position immediately and completely. Or write to hello@atheric.eu."
+ },
+ {
+  "file": "public/account.html",
+  "line": 414,
+  "id": "",
+  "new": "const $ = id => document.getElementById(id); const hint = /(?:^|;\\s*)under_signedin=1(?:;|$)/.test(document.cookie); const params = new URLSearchParams(location.search); const meta = document.querySelector('meta[name=\"utc-passkeys\"]'); const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; const passkeysOn = !!window.PublicKeyCredential && ((meta && meta.content === 'on') || local); // The static copy describes passwords only (production); passkeys add the choice. if (passkeysOn) { $('create-help').innerHTML = 'Enter your email. We send one link to confirm it; then you choose how you’ll sign in.'; $('recover-help').textContent = 'For a forgotten password, a lost passkey, or an account from the email-link days. Once in, you can set a password or create a passkey.'; $('setup-title').innerHTML = 'Choose how you’ll sign in.'; $('setup-help').textContent = 'Pick one now; you can add the other any time below.'; }",
+  "old": "const $ = id => document.getElementById(id); const hint = /(?:^|;\\s*)under_signedin=1(?:;|$)/.test(document.cookie); const params = new URLSearchParams(location.search); const meta = document.querySelector('meta[name=\"utc-passkeys\"]'); const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1'; const passkeysOn = !!window.PublicKeyCredential && ((meta && meta.content === 'on') || local);"
+ },
+ {
+  "file": "public/account.html",
+  "line": 586,
+  "id": "",
+  "new": "function mailForm(formId, inputId, btnId, statusId, path, okText) { $(formId).addEventListener('submit', async e => { e.preventDefault(); const email = $(inputId).value.trim(); if (!email) return; busy($(btnId), true); say(statusId, 'Sending…'); const res = await api(path, { email, next: nextPath || '/account' }); busy($(btnId), false); if (res.ok && res.data.devLink) { // Local development only — the API echoes the link instead of mailing it. $(statusId).innerHTML = 'Dev link: open →'; } else if (res.ok) say(statusId, okText); else if (res.data.error === 'slow_down') say(statusId, 'Too many requests from this network. Try again in a few minutes.'); else if (res.data.error === 'bad_email') say(statusId, 'That doesn’t look like an email address.'); else say(statusId, 'That didn’t work. Please try again.'); }); } mailForm('create-form', 'cr-email', 'cr-submit', 'cr-status', '/api/auth/signup', 'Check your email. The link works for 24 hours. Until you click it, we hold only your address, and we remove it after 14 days.'); mailForm('recover-form', 'rc-email', 'rc-submit', 'rc-status', '/api/auth/recover', 'If an account exists for that address, a link is on its way. It works once, within 30 minutes.');",
+  "old": "function mailForm(formId, inputId, btnId, statusId, path, okText) { $(formId).addEventListener('submit', async e => { e.preventDefault(); const email = $(inputId).value.trim(); if (!email) return; busy($(btnId), true); say(statusId, 'Sending…'); const res = await api(path, { email, next: nextPath || '/account' }); busy($(btnId), false); if (res.ok && res.data.devLink) { // Local development only — the API echoes the link instead of mailing it. $(statusId).innerHTML = 'Dev link: open →'; } else if (res.ok) say(statusId, okText); else if (res.data.error === 'slow_down') say(statusId, 'Too many requests from this network. Try again in a few minutes.'); else if (res.data.error === 'bad_email') say(statusId, 'That doesn’t look like an email address.'); else say(statusId, 'That didn’t work. Please try again.'); }); } mailForm('create-form', 'cr-email', 'cr-submit', 'cr-status', '/api/auth/signup', 'Check your email. The link works for 24 hours. Nothing is created until you click it.'); mailForm('recover-form', 'rc-email', 'rc-submit', 'rc-status', '/api/auth/recover', 'If an account exists for that address, a link is on its way. It works once, within 30 minutes.');"
+ },
+ {
+  "file": "public/account.html",
+  "line": 625,
+  "id": "",
+  "new": "const noMethod = !me.hasPassword && !me.passkeyCount; const arrived = params.has('setup') || params.has('recover'); $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup)); if (params.has('recover') && !noMethod) { $('setup-title').innerHTML = 'You’re signed in.'; $('setup-help').textContent = passkeysOn ? 'Set a new password, or create a passkey, so next time you won’t need an email.' : 'Set a new password, so next time you won’t need an email.'; } else if (noMethod && !arrived) { $('setup-title').innerHTML = 'Email links are retiring.'; $('setup-help').textContent = passkeysOn ? 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.' : 'Set a password for next time. Your reading position stays exactly where it is.'; } $('setup-passkey').hidden = !passkeysOn; $('setup-passkey-help').hidden = !passkeysOn; $('setup-password').textContent = me.hasPassword ? 'Set a new password' : 'Set a password';",
+  "old": "const noMethod = !me.hasPassword && !me.passkeyCount; const arrived = params.has('setup') || params.has('recover'); $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup)); if (params.has('recover') && !noMethod) { $('setup-title').innerHTML = 'You’re signed in.'; $('setup-help').textContent = 'Set a new password, or create a passkey, so next time you won’t need an email.'; } else if (noMethod && !arrived) { $('setup-title').innerHTML = 'Email links are retiring.'; $('setup-help').textContent = 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.'; } $('setup-passkey').hidden = !passkeysOn; $('setup-passkey-help').hidden = !passkeysOn; $('setup-password').textContent = me.hasPassword ? 'Set a new password' : 'Set a password';"
+ },
+ {
+  "file": "public/account.html",
+  "line": 630,
+  "id": "",
+  "new": "const noMethod = !me.hasPassword && !me.passkeyCount; const arrived = params.has('setup') || params.has('recover'); $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup)); if (params.has('recover') && !noMethod) { $('setup-title').innerHTML = 'You’re signed in.'; $('setup-help').textContent = passkeysOn ? 'Set a new password, or create a passkey, so next time you won’t need an email.' : 'Set a new password, so next time you won’t need an email.'; } else if (noMethod && !arrived) { $('setup-title').innerHTML = 'Email links are retiring.'; $('setup-help').textContent = passkeysOn ? 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.' : 'Set a password for next time. Your reading position stays exactly where it is.'; } $('setup-passkey').hidden = !passkeysOn; $('setup-passkey-help').hidden = !passkeysOn; $('setup-password').textContent = me.hasPassword ? 'Set a new password' : 'Set a password';",
+  "old": "const noMethod = !me.hasPassword && !me.passkeyCount; const arrived = params.has('setup') || params.has('recover'); $('setup').hidden = !(noMethod || (arrived && !refresh.dismissedSetup)); if (params.has('recover') && !noMethod) { $('setup-title').innerHTML = 'You’re signed in.'; $('setup-help').textContent = 'Set a new password, or create a passkey, so next time you won’t need an email.'; } else if (noMethod && !arrived) { $('setup-title').innerHTML = 'Email links are retiring.'; $('setup-help').textContent = 'Choose how you’ll sign in next time: a passkey or a password. Your reading position stays exactly where it is.'; } $('setup-passkey').hidden = !passkeysOn; $('setup-passkey-help').hidden = !passkeysOn; $('setup-password').textContent = me.hasPassword ? 'Set a new password' : 'Set a password';"
+ },
+ {
+  "file": "public/account.html",
+  "line": 817,
+  "id": "",
+  "new": "// ---- Session actions ---- $('acct-signout').addEventListener('click', () => { api('/api/auth/logout', {}).finally(() => { forgetAccountHere(); location.reload(); }); }); $('acct-signout-others').addEventListener('click', async () => { const res = await api('/api/auth/signout-others', {}); say('acct-in-status', res.ok ? (res.data.ended ? 'Signed out of ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.') : 'That didn’t work. Please try again.'); });",
+  "old": "// ---- Session actions ---- $('acct-signout').addEventListener('click', () => { api('/api/auth/logout', {}).finally(() => { forgetAccountHere(); location.reload(); }); }); $('acct-signout-others').addEventListener('click', async () => { const res = await api('/api/auth/signout-others', {}); say('acct-in-status', res.ok ? (res.data.ended ? 'Signed out on ' + res.data.ended + ' other ' + (res.data.ended === 1 ? 'session' : 'sessions') + '.' : 'No other devices were signed in.') : 'That didn’t work. Please try again.'); });"
+ }
+]

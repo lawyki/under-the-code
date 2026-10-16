@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Under the Code: a transistor on the left, a globe on the right, a thin gold arc between them.">
+<meta property="og:image:alt" content="Under the Code: a gold transistor at the centre of concentric dashed rings, above the title and the line 'From transistor to civilization'.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Under the Code · Part IV: Data and Security">
 <meta name="twitter:description" content="SQL, cryptography, the unified theory of attack and defence. Where information lives and how it stays trustworthy.">
@@ -53,12 +53,13 @@
   <h1>Data and<br>Security</h1>
   <p class="part-tagline">
     Parts I, II, and III built the machine that moves bytes (silicon, kernel,
-    network). Part IV is about the bytes themselves once they stop moving:
-    how information is stored so that it can be queried, how it is encrypted
-    so that it can be trusted, and how the systems that hold it can be
-    attacked and defended. Three chapters: the relational database that
-    organises every record in production, the cryptography that makes the
-    web possible at all, and the unified security chapter that turns every
+    network). Part IV is about the bytes themselves: how information is
+    stored so that it can be queried, how cryptography keeps it secret and
+    proves where it came from, and how the systems that hold and move it can
+    be attacked and defended. Three chapters: the relational database that
+    is still the standard home of structured records, the cryptography
+    that lets a browser trust a server it has never met, and the unified
+    security chapter that turns every
     attack we have foreshadowed into one working theory.
   </p>
   <div class="part-toc">
@@ -70,7 +71,7 @@
     <a href="#ch14" class="toc-card">
       <div class="toc-num">CHAPTER 14</div>
       <div class="toc-title">Cryptography: The Math That Keeps Secrets</div>
-      <div class="toc-desc">Caesar to AES. SHA-256 internals. Diffie–Hellman 1976, the second invention of cryptography. RSA with worked numbers. Elliptic curves. Post-quantum standardisation. The math made physical.</div>
+      <div class="toc-desc">Caesar to AES. SHA-256 internals. Diffie–Hellman 1976, the second invention of cryptography. RSA with worked numbers. Elliptic curves. TLS 1.3 at full depth. Post-quantum standardisation.</div>
     </a>
     <a href="#ch15" class="toc-card">
       <div class="toc-num">CHAPTER 15</div>
@@ -86,15 +87,15 @@
     <div id="ch13-hero-label" class="chapter-label">Chapter 13</div>
     <h1 id="ch13-hero-title">SQL and the<br>Mathematics<br>of <em>Data</em></h1>
     <p id="ch13-hero-lead" class="chapter-subtitle">
-      Every language we have looked at so far (C, C++, Python, JavaScript)
-      tells the computer <em>how to compute</em>. SQL is the first language
-      in this book that tells the computer <em>what you want</em>, and
-      leaves the <em>how</em> to a query planner. The trade is consequential:
-      the language is more limited, but the runtime is allowed to be
-      arbitrarily clever underneath. The theory is set theory; the practice
-      is fifty years of refinement; the surface area is small enough that
-      a working programmer can master it in weeks. SQL is also the most
-      attacked surface on the modern internet.
+      Every programming language we have used so far (C, C++, Python,
+      JavaScript) tells the computer <em>how to compute</em>, step by step.
+      SQL tells it <em>what you want</em>, and leaves the <em>how</em> to a
+      query planner, the part of the database that chooses the steps. The
+      language is more limited, but the runtime is allowed to be arbitrarily
+      clever underneath. Its theory is Codd's relational algebra, and its core
+      is small enough for a working programmer to learn in weeks. SQL
+      injection (Section 06) remains one of the most damaging attacks on
+      the web.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Codd · σ π ⨝ · ACID · WAL · B-trees · SQLi</span></div>
@@ -185,9 +186,9 @@
       proposed something that sounded like a complaint: that the
       databases of the day were forcing programmers to think about how data
       was <em>stored</em> when they should only have to think about what data
-      they <em>wanted</em>. Codd called the existing approach
+      they <em>wanted</em>. The existing approach later came to be called
       <em>navigational</em>: programmers wrote code that walked pointer to
-      pointer through tree-shaped or network-shaped data structures. He proposed
+      pointer through tree-shaped or network-shaped data structures. Codd proposed
       replacing all of that with a single abstraction: the <strong>relation</strong>, a table of rows in no fixed order (to a mathematician, a set of tuples), queryable by
       a small algebra of operations that returned more relations.
     </p>
@@ -1232,13 +1233,11 @@
     <h1 id="ch14-hero-title">Cryptography<br>The Math That<br><em>Keeps Secrets</em></h1>
     <p id="ch14-hero-lead" class="chapter-subtitle">
       <a href="part-3#ch11">Chapter 11</a>, Section 04, introduced cryptography as a black box that the TLS
-      handshake feeds into. This chapter opens the box. We trace the
-      arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper, arguably the most important in the history of cryptography, and on through RSA worked in actual numbers, into elliptic curves, and
-      out into post-quantum standardisation. The math is dense; it is
+      handshake uses. This chapter opens the box. We trace the
+      arc from Caesar's letter shifts to the 1976 Diffie–Hellman paper, arguably the most important in the history of cryptography, and on through RSA worked in actual numbers and elliptic curves, to the
+      TLS 1.3 handshake at full depth, and out into post-quantum standardisation. The math is dense; it is
       also approachable, because the operations underneath are nothing
-      more exotic than modular arithmetic. Cryptography is the only
-      mathematics in this book whose entire purpose is to be
-      computationally hard to reverse.
+      more exotic than modular arithmetic.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Hashing · AES · Diffie–Hellman · RSA · ECC · post-quantum</span></div>
@@ -2286,7 +2285,7 @@
     <h3>Post-quantum · Shor's algorithm and the slow migration</h3>
 
     <p id="ch14-tls-pqc-p6">
-      Every public-key system in this chapter (Diffie–Hellman, RSA, and their elliptic-curve forms ECDH and ECDSA) rests on a problem that is hard for <em>classical</em>
+      Every public-key system in wide use today (Diffie–Hellman, RSA, and the elliptic-curve schemes ECDH and ECDSA) rests on a problem that is hard for <em>classical</em>
       computers. In 1994, mathematician <strong>Peter Shor</strong>,
       working at Bell Labs, published an algorithm that solves both
       integer factoring and discrete logarithm in polynomial time on a
@@ -2294,8 +2293,8 @@
       at cryptographically relevant scales: the quantum computers of 2026
       have at most about a hundred error-protected <em>logical</em> qubits (quantum bits),
       each built from many noisy physical ones, and RSA-2048 would need
-      thousands. When a machine of that size exists, it breaks all current
-      public-key cryptography. The estimated horizon ranges from "within
+      thousands. When a machine of that size exists, it breaks all of
+      them. The estimated horizon ranges from "within
       ten years" (optimistic engineering) to "fifty or more" (pessimistic).
     </p>
 
@@ -2308,7 +2307,7 @@
       <strong>ML-KEM</strong> (formerly "Kyber") replaces RSA / ECDH key
       exchange. <strong>ML-DSA</strong> (formerly "Dilithium") replaces
       RSA / ECDSA signatures. <strong>SLH-DSA</strong> (formerly
-      "SPHINCS+") provides a signature alternative built only on hash functions, while the first two rest on lattice problems: a lattice is a regular grid of points extended to hundreds of dimensions, and finding the grid point nearest to a given point is easy in two dimensions and believed infeasible in hundreds, even for a quantum computer; SLH-DSA rests only on the hash functions of Section 02. Neither basis is factoring or discrete log, and no polynomial-time
+      "SPHINCS+") provides a signature alternative built only on the hash functions of Section 02, while the first two rest on lattice problems: a lattice is a regular grid of points extended to hundreds of dimensions, and finding the grid point nearest to a given point is easy in two dimensions and believed infeasible in hundreds, even for a quantum computer. Neither basis is factoring or discrete log, and no polynomial-time
       quantum algorithm is known for either. SLH-DSA is the conservative
       hedge: if lattices turn out to hide a weakness, a signature that
       needs nothing but a hash function still stands. The cost is real:
@@ -2392,7 +2391,7 @@
 
     <p id="ch14-tls-pqc-p11">
       <a href="#ch15">Chapter 15</a>, the final chapter of Part IV, takes everything in this
-      book, from the silicon (Parts I and II) through the network (<a href="part-3">Part III</a>) to the
+      book, from the silicon and the software on it (Parts I and II) through the network (<a href="part-3">Part III</a>) to the
       data and cryptography (Chapters 13 and 14), and looks at it from
       one direction: <em>how systems break</em>.
     </p>
@@ -2410,7 +2409,7 @@
       Attacks have run through this whole book. Spectre
       and Meltdown in <a href="part-1#ch1">Chapter 1</a>. Buffer overflows in <a href="part-1#ch3">Chapter 3</a>. Dirty
       COW in <a href="part-2#ch4">Chapter 4</a>. BGP hijacking in <a href="part-3#ch9">Chapter 9</a>. SYN floods in <a href="part-3#ch10">Chapter
-      10</a>. DNS poisoning, TLS misissuance, XSS, CSRF, SQL injection. This
+      10</a>. DNS poisoning, wrongly issued certificates, XSS, CSRF, SQL injection. This
       chapter pulls them together: every specific exploit becomes an
       instance of a small handful of structural patterns, and every
       defence a layer in a stack the reader can now name. Then we close
@@ -2611,8 +2610,9 @@
       <a href="part-1#ch3">Chapter 3</a> introduced the buffer overflow: Aleph One's 1996 Phrack
       essay, the saved return address overwritten, the CPU jumping to
       attacker-supplied code. <a href="part-1#ch3">Chapter 3</a>, Section 06, traced the arms race from
-      stack canaries through DEP and ASLR to ROP. The race has not stopped
-      in nearly forty years. The defences have grown more sophisticated,
+      stack canaries through DEP and ASLR to ROP, and named the three answers
+      (CFI, shadow stacks, Pointer Authentication); this section opens each one up. The race has not stopped.
+      The defences have grown more sophisticated,
       the attacks more inventive, but the underlying problem has not gone
       away: C and C++ let a program read and write past the object it meant to use, without checking that it should.
     </p>
@@ -2932,15 +2932,22 @@
     <p id="ch15-network-p6">
       The two attacks Part III already met end the same way.
       <strong>DNS poisoning</strong> (<a href="part-3#ch11">Chapter 11</a>, Section 03; Kaminsky 2008) tricks a recursive resolver into caching a
-      forged answer; combined with no certificate validation, it lets
-      an attacker direct a victim to a server they control. Certificate
+      forged answer, which sends the victim to a server the attacker
+      controls. Certificate
       verification is the defence: even with a poisoned DNS
       answer, the attacker's server cannot present a valid TLS
       certificate for the legitimate hostname. <strong>BGP hijacking</strong>
-      (<a href="part-3#ch9">Chapter 9</a>, Section 06; Pakistan/YouTube 2008) reroutes entire IP prefixes
-      through a malicious autonomous system. Same defence: all your packets
-      may now arrive at the attacker's machines, but those machines cannot
-      complete a TLS handshake for the target's hostname. Every network-layer attack on what you read or send ends in TLS and is neutralised there; only denial of service gets through.
+      (<a href="part-3#ch9">Chapter 9</a>, Section 06) pulls entire IP prefixes toward
+      whichever autonomous system announces them. In Pakistan/YouTube 2008 the
+      traffic was merely dropped, an outage TLS cannot prevent; a malicious
+      announcer could instead steer it through its own machines. Against that
+      the defence is the same: every packet for the target may now reach
+      the attacker's machines, but they cannot complete a TLS handshake for
+      the target's hostname. Every network-layer attack on what you read or
+      send ends at TLS, which stops the reading and the tampering as long as
+      no certificate authority has issued a false certificate (the DigiNotar
+      case of <a href="#ch14">Chapter 14</a>). What still gets through is denial of service,
+      and the record of who talks to whom.
     </p>
   </section>
 

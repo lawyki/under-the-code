@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Under the Code: a transistor on the left, a globe on the right, a thin gold arc between them.">
+<meta property="og:image:alt" content="Under the Code: a gold transistor at the centre of concentric dashed rings, above the title and the line 'From transistor to civilization'.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Under the Code · Part I: The Physical World">
 <meta name="twitter:description" content="Transistors, Boolean algebra, the CPU, assembly. The substrate where software begins.">
@@ -59,7 +59,7 @@
     <a href="#ch1" class="toc-card">
       <div class="toc-num">CHAPTER 01</div>
       <div class="toc-title">The Machine Beneath Everything</div>
-      <div class="toc-desc">Transistors, Von Neumann's insight, the CPU, and why the kernel had to be invented.</div>
+      <div class="toc-desc">Transistors, von Neumann's insight, the CPU, and why the kernel had to be invented.</div>
     </a>
     <a href="#ch2" class="toc-card">
       <div class="toc-num">CHAPTER 02</div>
@@ -74,7 +74,7 @@
     <a href="#chBridge" class="toc-card">
       <div class="toc-num">BRIDGE</div>
       <div class="toc-title">The Boundary</div>
-      <div class="toc-desc">The hardware face of the kernel. Privilege rings, the trap mechanism, the MMU, the timer, MMIO, and DMA: what the silicon must provide before any kernel can exist.</div>
+      <div class="toc-desc">The hardware face of the kernel. Privilege rings, the trap mechanism, the MMU, the timer, MMIO, and DMA: what the silicon must provide before a kernel can keep programs apart and share the CPU among them.</div>
     </a>
   </div>
 </section>
@@ -85,13 +85,14 @@
     <div id="ch1-hero-label" class="chapter-label">Chapter 01</div>
     <h1 id="ch1-hero-title">The Machine<br>Beneath<br><em>Everything</em></h1>
     <p id="ch1-hero-lead" class="chapter-subtitle">
-      Before there was software, there was sand. Before there was the internet,
-      there was a mathematician who died before seeing what he built. This is the
-      story of computer architecture, told in the order civilization needed it.
+      In 1936 a mathematician described, on paper, a machine that could follow any
+      rules written down for it. Within ten years such machines were being built.
+      This is the story of computer architecture, told in the order civilization
+      needed it.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">CPU · Memory · Kernel · OS</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1936 → 1974</span></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1936 → present</span></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -174,7 +175,7 @@
     </p>
 
     <p id="ch1-context-p5">
-      He called it an <em>a-machine</em>, for automatic machine; we now call it a <span class="key-term">Turing machine</span>. He also showed that one machine, with the right rules, can read any other machine's rules from its tape and do whatever that machine would do. He called such a machine <em>universal</em>. It is the first formal description of what we now call a <strong>computer</strong>.
+      He called his imagined device an <em>a-machine</em>, for automatic machine; we now call it a <span class="key-term">Turing machine</span>. He also showed that one machine, with the right rules, can read any other machine's rules from its tape and do whatever that machine would do. He called such a machine <em>universal</em>. It is the first formal description of what we now call a <strong>computer</strong>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-1">
@@ -369,7 +370,7 @@
           <li><b>Out.</b> The current runs through the three rotors, each a fixed scramble of 26 wires.</li>
           <li><b>Turn.</b> The reflector pairs contacts and sends the current back through the rotors on another wire.</li>
           <li><b>Lamp.</b> It arrives at a different letter, and never at the one pressed.</li>
-          <li><b>The settings.</b> Rotor order, start positions and plugboard pairs gave about 158 × 10<sup>18</sup> possible settings, changed daily.</li>
+          <li><b>The settings.</b> Rotor order, start positions and plugboard pairs gave more than 158 × 10<sup>18</sup> possible settings, changed daily.</li>
         </ol>
       </details>
     </div>
@@ -396,19 +397,19 @@
       The first general-purpose electronic computer, ENIAC (1945), was built from
       <span class="key-term">vacuum tubes</span>: glass bulbs that controlled electrical
       current using a heated filament inside a vacuum. ENIAC had 17,468 of them. It
-      filled a room thirty metres long, weighed thirty tons, consumed 150 kilowatts, and
+      had thirty metres of cabinets lining the walls of a room, weighed thirty tons, consumed 150 kilowatts, and
       broke down on average every two days because a tube would burn out.
     </p>
 
     <p id="ch1-transistor-p2">
-      To make computers smaller, faster, more reliable, and affordable, the vacuum tube had to go. Its replacement was invented in 1947 at Bell Labs in New Jersey by John Bardeen and Walter Brattain, physicists in William Shockley's group. They called it the <span class="key-term">transistor</span>, a contraction of <em>transfer resistor</em>.
+      To make computers smaller, faster, more reliable, and affordable, the vacuum tube had to go. Its replacement was invented in 1947 at Bell Labs in New Jersey by John Bardeen and Walter Brattain, physicists in William Shockley's group. Bell Labs named it the <span class="key-term">transistor</span>, a contraction of <em>transfer resistor</em>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-3">
       <div class="diagram-label">Fig 1.3&nbsp;· The replacement&nbsp;· the same switch, without the fire</div>
       <svg viewBox="0 0 400 392" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-4 svgd-part1-4">
-<title id="svgt-part1-4">Fig 1.3 · Vacuum tube and transistor · the same switch</title>
-<desc id="svgd-part1-4">One small control signal drives both devices. When it turns on, electrons flow and both lamps light. In the vacuum tube a filament, kept glowing hot, boils off electrons that the plate catches only when the grid, the switch, lets them through. In the transistor the control goes to the base of a small piece of silicon and current flows through it.</desc>
+<title id="svgt-part1-4">Fig 1.3 · The replacement · the same switch, without the fire</title>
+<desc id="svgd-part1-4">One small control signal drives both devices. When it turns on, electrons flow and both lamps light. In the vacuum tube a filament, kept glowing hot, boils off electrons that the plate catches only when the grid, the switch, lets them through. In the transistor the control goes to the base of a small piece of crystal and current flows through it.</desc>
 <text x="90" y="26" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.75)">VACUUM TUBE</text>
 <text x="90" y="44" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">1906</text>
 <text x="315" y="26" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.75)">TRANSISTOR</text>
@@ -425,6 +426,7 @@
 <path d="M 72 262 l 6 -8 l 6 8 l 6 -8 l 6 8 l 6 -8 l 6 8" fill="none" stroke="#f0a35a" stroke-width="2.4"/>
 <ellipse cx="90" cy="258" rx="30" ry="14" fill="#f0a35a" opacity="0.22"><animate attributeName="opacity" values="0.16;0.3;0.16" dur="1.6s" repeatCount="indefinite"/></ellipse>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1;1" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/><circle cx="83" cy="252" r="3" fill="#86a8ff"><animate attributeName="cy" values="252;140" dur="0.9s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cx="97" cy="252" r="3" fill="#86a8ff"><animate attributeName="cy" values="252;140" dur="0.9s" begin="-0.18s" repeatCount="indefinite"/></circle><circle cx="83" cy="252" r="3" fill="#86a8ff"><animate attributeName="cy" values="252;140" dur="0.9s" begin="-0.36s" repeatCount="indefinite"/></circle><circle cx="97" cy="252" r="3" fill="#86a8ff"><animate attributeName="cy" values="252;140" dur="0.9s" begin="-0.54s" repeatCount="indefinite"/></circle><circle cx="83" cy="252" r="3" fill="#86a8ff"><animate attributeName="cy" values="252;140" dur="0.9s" begin="-0.72s" repeatCount="indefinite"/></circle></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;1;1;1;1;0;0;0" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/><circle cx="83" cy="222" r="3" fill="#86a8ff"><animate attributeName="cy" values="222;216;222" dur="1.3s" repeatCount="indefinite"/></circle><circle cx="97" cy="218" r="3" fill="#86a8ff"><animate attributeName="cy" values="218;224;218" dur="1.1s" repeatCount="indefinite"/></circle><circle cx="90" cy="230" r="3" fill="#86a8ff"><animate attributeName="cy" values="230;225;230" dur="1.5s" repeatCount="indefinite"/></circle></g>
 <text x="132" y="136" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">plate</text>
 <text x="132" y="154" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">catches electrons</text>
 <text x="132" y="211" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">grid</text>
@@ -440,9 +442,9 @@
 <line x1="315" y1="214" x2="315" y2="288" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
 <rect x="299" y="186" width="32" height="28" rx="3" fill="none" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1;1" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-0.20s" repeatCount="indefinite"/></circle><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-0.40s" repeatCount="indefinite"/></circle><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-0.60s" repeatCount="indefinite"/></circle><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-0.80s" repeatCount="indefinite"/></circle><circle cx="315" cy="284" r="3" fill="#86a8ff"><animate attributeName="cy" values="284;98" dur="1.2s" begin="-1.00s" repeatCount="indefinite"/></circle></g>
-<text x="324" y="236" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">silicon</text>
+<text x="324" y="236" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">crystal</text>
 <text x="254" y="192" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">base</text>
-<path d="M 299 200 H 236 V 326" fill="none" stroke="#e8d0a2" stroke-width="2"/>
+<path d="M 299 200 H 236 V 326" fill="none" stroke="rgba(212,168,83,0.53)" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;1;1;1;1;0;0;0" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/></path><path d="M 299 200 H 236 V 326" fill="none" stroke="#e8d0a2" stroke-width="2"><animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1;1" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/></path>
 <path d="M 20 326 H 236" fill="none" stroke="rgba(212,168,83,0.53)" stroke-width="2"/>
 <path d="M 66 206 H 20 V 326 H 236 V 200 H 299" fill="none" stroke="#d4a853" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1;1" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/></path>
 <text x="20" y="356" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">SMALL CONTROL SIGNAL</text>
@@ -451,13 +453,13 @@
 <rect x="268" y="338" width="64" height="26" rx="13" fill="none" stroke="#d4a853" opacity="0"><animate attributeName="opacity" values="1;1;1;0;0;0;0;1;1;1" keyTimes="0.000000;0.316667;0.349800;0.350000;0.499917;0.500000;0.733333;0.733533;0.766667;1.000000" dur="6s" repeatCount="indefinite"/></rect>
 <text x="300" y="356" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853" opacity="0">on<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.333167;0.333333;0.499917;0.500000;0.749833;0.750000;1.000000" dur="6s" repeatCount="indefinite"/></text>
 </svg>
-      <p id="ch1-transistor-p3" class="diagram-caption">A vacuum tube and a transistor do the same job: a small control signal decides whether a much larger current flows. The transistor does it in a sliver of silicon, with no glass, no glowing filament and nothing to burn out.</p>
+      <p id="ch1-transistor-p3" class="diagram-caption">A vacuum tube and a transistor do the same job: a small control signal decides whether a much larger current flows. The transistor does it in a sliver of crystal, with no glass, no glowing filament and nothing to burn out.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Tube.</b> A filament, kept hot, boils electrons off; the plate draws them across the vacuum; the grid between them, set by the control signal, lets them through or holds them back.</li>
-          <li><b>Transistor.</b> The control signal goes to the base, and current flows through the silicon between the other two terminals (the next figures open it).</li>
-          <li><b>Why it won.</b> A tube is hot, fragile and wears out: ENIAC's 17,468 tubes failed about every two days. A transistor has nothing to burn out, and it shrinks.</li>
+          <li><b>Transistor.</b> The control signal goes to the base, and current flows through the crystal between the other two terminals (the next figures open it).</li>
+          <li><b>Why it won.</b> A tube is hot, fragile and wears out: one of ENIAC's 17,468 tubes failed about every two days. A transistor has nothing to burn out, and it shrinks.</li>
         </ol>
       </details>
     </div>
@@ -469,7 +471,7 @@
     </p>
 
     <p id="ch1-transistor-p5">
-      Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND; enough such rules, wired together, add numbers, hold them and carry out a program like a Turing machine's (<a href="#ch2">Chapter 2</a> builds them).
+      Off and on can stand for 0 and 1. Two switches in a row let current through only when both are on, a rule called AND. Circuits that apply such rules, wired together, can add numbers, hold them and carry out a program like a Turing machine's (<a href="#ch2">Chapter 2</a> builds these circuits, called logic gates, up to one that adds).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-4">
@@ -517,12 +519,12 @@
 <g><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.23s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.47s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.70s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-0.93s" repeatCount="indefinite"/></circle><circle cx="310" r="3" fill="#86a8ff"><animate attributeName="cy" values="258;96" dur="1.4s" begin="-1.17s" repeatCount="indefinite"/></circle></g>
 <text x="296" y="312" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#d4a853">current flows</text>
 </svg>
-      <p id="ch1-transistor-p6" class="diagram-caption">With no voltage on the base, no current flows between collector and emitter; with a small one, it does. This is the older kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.</p>
+      <p id="ch1-transistor-p6" class="diagram-caption">Left, 0 V on the base: the lamp stays dark. Right, 0.7 V: it lights. This is the older kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Three terminals.</b> Collector and emitter carry the current; the base controls it.</li>
-          <li><b>The threshold.</b> In this kind of transistor about 0.7 V on the base opens the path; below it, almost nothing flows. In the field-effect transistors of modern chips the base is called the gate.</li>
+          <li><b>The threshold.</b> In this kind of transistor about 0.7 V on the base opens the path; below it, almost nothing flows. In the field-effect transistors of modern chips the control terminal is called the gate (Fig 1.5).</li>
           <li><b>The dots.</b> Electrons, drifting from emitter to collector for as long as the base signal is there.</li>
         </ol>
       </details>
@@ -531,14 +533,14 @@
     <h3>Why semiconductors</h3>
 
     <p id="ch1-transistor-p7">
-      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows until a voltage on the gate, which rests on a thin insulating oxide over the p-type silicon, draws free electrons out of the source and drain and under it, where they form a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
+      A switch with no moving parts cannot open a gap in a wire, so the material itself must stop and start conducting when told. A <em>semiconductor</em>, a material whose conductivity sits between a conductor (like copper) and an insulator (like glass), can be made to. In pure silicon the atoms bond by sharing their outer electrons, so almost none move freely. What changes that is <em>doping</em>: salting the silicon with a trace of another element. An added atom with one more outer electron than silicon has no bond for the extra one, which wanders free (n-type silicon); one with one fewer leaves a gap in a bond, a "hole" (p-type). A field-effect transistor puts p-type silicon between two n-type regions, the source and the drain. Where the kinds meet, free electrons drop into the nearby holes and leave a thin barrier with nothing free to move, so no current flows. Over the p-type silicon, on a thin insulating oxide, sits the third terminal, the gate, which does the base's job: a voltage on it draws free electrons out of the source and drain and in under the gate, where they form a bridge (Fig 1.5). Silicon and oxide both come from sand, which is mostly silicon dioxide: the silicon is refined from it, and the oxide is the same compound.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-5">
       <div class="diagram-label">Fig 1.5&nbsp;· Inside the switch&nbsp;· a field-effect transistor in cross-section</div>
       <svg viewBox="0 0 400 362" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-6 svgd-part1-6">
 <title id="svgt-part1-6">Fig 1.5 · Inside the switch · a field-effect transistor in cross-section</title>
-<desc id="svgd-part1-6">A slab of p-type silicon with two n-type regions, the source and the drain, and between them a gate resting on a thin insulating oxide. With the gate at 0 V there is no path. A positive gate voltage acts through the oxide as a field, pulls electrons (blue dots) up into a thin channel under it, and they flow along it from source to drain.</desc>
+<desc id="svgd-part1-6">A slab of p-type silicon with two n-type regions, the source and the drain, and between them a gate resting on a thin insulating oxide. With the gate at 0 V there is no path. With the gate off, the free electrons (blue dots) sit in the source and drain. A positive gate voltage acts through the oxide as a field and draws them in from both sides into a thin channel under it, and they flow along it from source to drain.</desc>
 <text x="72" y="30" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.7)">source</text>
 <line x1="72" y1="38" x2="72" y2="154" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>
 <text x="328" y="30" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.7)">drain</text>
@@ -559,36 +561,36 @@
 <text x="200" y="119" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#f3e7cc">gate</text>
 <rect x="124" y="134" width="152" height="20" fill="#cfdde6" fill-opacity="0.55"/>
 <text x="200" y="149" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#10151a">oxide</text>
-<circle cx="40" cy="250" r="3.2" fill="#b7cbff"/><text x="50" y="255" text-anchor="start" font-family="DM Mono" font-size="13" fill="#b7cbff">electron</text>
+<circle cx="88" cy="70" r="3.2" fill="#b7cbff"/><text x="98" y="75" text-anchor="start" font-family="DM Mono" font-size="13" fill="#b7cbff">electron</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.175000;0.187500;0.374938;0.375000;0.550000;0.562500;1.000000" dur="8s" repeatCount="indefinite"/><path d="M 146 124 V 152" stroke="#d4a853" stroke-width="2" stroke-dasharray="3 3"/><polygon points="142,148 150,148 146,155" fill="#d4a853"/><path d="M 254 124 V 152" stroke="#d4a853" stroke-width="2" stroke-dasharray="3 3"/><polygon points="250,148 258,148 254,155" fill="#d4a853"/><text x="302" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#d4a853">field</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.187500;0.187600;0.374938;0.375000;0.762400;0.762500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="124" y="157" width="152" height="10" fill="#4d63a6"/></g>
-<circle cx="136" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;244;244;244;244;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.737500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="152" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;284;284;284;284;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.741250;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="168" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;233;233;233;233;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.745000;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="184" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;249;249;249;249;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.748750;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="200" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;265;265;265;265;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.752500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="216" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;227;227;227;227;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.756250;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="232" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;228;228;228;228;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.760000;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="248" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;276;276;276;276;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.763750;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="264" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;258;258;258;258;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.767500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="136" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;167;167;167;167;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.737500;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="136;136;46;46;46;46;136;136" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.737500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="152" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;173;173;173;173;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.741250;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="152;152;62;62;62;62;152;152" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.741250;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="168" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;167;167;167;167;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.745000;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="168;168;78;78;78;78;168;168" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.745000;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="184" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;173;173;173;173;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.748750;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="184;184;94;94;94;94;184;184" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.748750;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="200" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;167;167;167;167;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.752500;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="200;200;110;110;110;110;200;200" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.752500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="216" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;167;167;167;167;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.756250;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="216;216;290;290;290;290;216;216" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.756250;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="232" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;173;173;173;173;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.760000;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="232;232;306;306;306;306;232;232" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.760000;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="248" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;167;167;167;167;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.763750;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="248;248;322;322;322;322;248;248" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.763750;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<circle cx="264" cy="162" r="3.2" fill="#b7cbff"><animate attributeName="cy" values="162;162;173;173;173;173;162;162" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.767500;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="cx" values="264;264;338;338;338;338;264;264" keyTimes="0.000000;0.187500;0.325000;0.374938;0.375000;0.575000;0.767500;1.000000" dur="8s" repeatCount="indefinite"/></circle>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.187500;0.187600;0.374938;0.375000;0.762400;0.762500;1.000000" dur="8s" repeatCount="indefinite"/><circle cy="162" r="3" fill="#b7cbff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-0.00s" repeatCount="indefinite"/></circle><circle cy="162" r="3" fill="#b7cbff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-0.23s" repeatCount="indefinite"/></circle><circle cy="162" r="3" fill="#b7cbff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-0.46s" repeatCount="indefinite"/></circle><circle cy="160" r="3" fill="#b7cbff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-0.69s" repeatCount="indefinite"/></circle><circle cy="160" r="3" fill="#b7cbff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-0.91s" repeatCount="indefinite"/></circle><circle cy="160" r="3" fill="#8bacff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-1.14s" repeatCount="indefinite"/></circle><circle cy="160" r="3" fill="#8aabff"><animate attributeName="cx" values="76;324" dur="1.6s" begin="-1.37s" repeatCount="indefinite"/></circle></g>
 <text x="200" y="350" text-anchor="middle" font-family="DM Mono" font-size="15" fill="rgba(255,255,255,0.6)">no path · no current<animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.225000;0.225125;0.374938;0.375000;0.762250;0.762375;1.000000" dur="8s" repeatCount="indefinite"/></text>
 <text x="200" y="350" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#d4a853" opacity="0">channel · current flows<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.224875;0.225000;0.374938;0.375000;0.762375;0.762500;1.000000" dur="8s" repeatCount="indefinite"/></text>
 </svg>
-      <p id="ch1-transistor-p8" class="diagram-caption">A positive voltage on the gate pulls electrons up under the oxide until they form a thin channel between source and drain, and current flows. The gate never touches the electrons: its charge pulls on them through the insulator, as a rubbed balloon lifts hair, and that influence across a gap, an electric field, gives field-effect transistors their name.</p>
+      <p id="ch1-transistor-p8" class="diagram-caption">A positive voltage on the gate draws electrons in from the source and drain until they form a thin channel under the oxide, and current flows. The gate never touches them: its charge pulls through the insulator, as a rubbed balloon lifts hair, and that influence across a gap, an electric field, names the field-effect transistor.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The silicon.</b> The body is p-type silicon, doped with electron-accepting atoms; the source and drain are n-type, rich in free electrons. With the gate off, nothing joins them.</li>
           <li><b>The field.</b> The gate's voltage acts across the oxide as an electric field. No charge crosses the insulator.</li>
-          <li><b>The channel.</b> The field gathers electrons under the oxide until that thin layer inverts, from p-type to n-type, and conducts.</li>
+          <li><b>The channel.</b> The field gathers electrons, drawn in from the source and drain, under the oxide until that thin layer inverts, from p-type to n-type, and conducts.</li>
           <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor. Every modern CPU is a stack of these about 3 nanometres wide.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch1-transistor-p9">
-      In 1958, Jack Kilby at Texas Instruments made the first <span class="key-term">integrated circuit</span>: a transistor and the other parts of a small circuit, formed in one piece of germanium (another semiconductor) instead of made separately and wired by hand. Within months, Robert Noyce at Fairchild Semiconductor independently did the same on silicon, and his more manufacturable process became the basis of the entire industry. From then on, more parts on a chip meant smaller parts, not more wiring.
+      In 1958, Jack Kilby at Texas Instruments made the first <span class="key-term">integrated circuit</span>: a transistor and the other parts of a small circuit, formed in one piece of germanium (another semiconductor), though still joined by hand with fine wires. Within months, Robert Noyce at Fairchild Semiconductor conceived the same on silicon with the wiring laid on the chip itself, and his more manufacturable process became the basis of the entire industry. From then on, more parts on a chip meant smaller parts, not more wiring.
     </p>
 
     <p id="ch1-transistor-p10">
@@ -610,7 +612,7 @@
 <line x1="64" y1="106.7" x2="372" y2="106.7" stroke="rgba(255,255,255,0.35)"/>
 <line x1="64" y1="79.1" x2="372" y2="79.1" stroke="rgba(255,255,255,0.35)"/>
 <line x1="64" y1="51.6" x2="372" y2="51.6" stroke="rgba(255,255,255,0.35)"/>
-<line x1="64" y1="24.0" x2="372" y2="24.0" stroke="rgba(255,255,255,0.12)"/>
+<line x1="64" y1="24.0" x2="372" y2="24.0" stroke="rgba(255,255,255,0.35)"/>
 <text x="56" y="277" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">100</text>
 <text x="56" y="221.889" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">10 K</text>
 <text x="56" y="166.778" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">1 M</text>
@@ -632,7 +634,7 @@
 <circle cx="331.3" cy="43.7" r="5.5" fill="#86a8ff" stroke="none" stroke-width="1.5"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.137500;0.175000;0.187500;0.587500;0.606250;1.000000" dur="8s" repeatCount="indefinite"/><title>Epyc · 2017 · four chips in one package</title></circle>
 <circle cx="372.0" cy="39.2" r="5.5" fill="#86a8ff" stroke="none" stroke-width="1.5"><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.137500;0.175000;0.187500;0.643750;0.662500;1.000000" dur="8s" repeatCount="indefinite"/><title>M4 · 2024</title></circle>
 <text x="74" y="258.477" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.85)">4004 · 2,300</text>
-<text x="368" y="65.2339" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.85)">M4 · 28 B</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.137500;0.175000;0.187500;0.643750;0.662500;1.000000" dur="8s" repeatCount="indefinite"/><line x1="372" y1="24" x2="372" y2="32" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/><text x="396" y="18" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.85)">M4 · 28 B</text></g>
 <text x="372" y="218" text-anchor="end" font-family="DM Mono" font-size="20" fill="#fff">×12 million</text>
 <text x="372" y="238" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">in 53 years</text>
 <text x="64" y="320" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.45)">transistors per chip, log scale</text>
@@ -662,7 +664,7 @@
       <div class="timeline-item">
         <div class="timeline-year">1965</div>
         <div class="timeline-title">Moore's Law stated</div>
-        <p id="ch1-transistor-p14" class="timeline-text">Gordon Moore predicts the number of transistors per chip doubles every year (later revised to two years).</p>
+        <p id="ch1-transistor-p14" class="timeline-text">Moore's article, "Cramming More Components onto Integrated Circuits", appears in the magazine <em>Electronics</em> in April 1965.</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-year">1971</div>
@@ -672,7 +674,7 @@
       <div class="timeline-item">
         <div class="timeline-year">2024</div>
         <div class="timeline-title">Apple M4 chip</div>
-        <p id="ch1-transistor-p16" class="timeline-text">28 billion transistors. 3-nanometre process. Each transistor smaller than the width of a flu virus. Physical limits are being reached and Moore's Law is slowing.</p>
+        <p id="ch1-transistor-p16" class="timeline-text">Apple's M4 holds 28 billion transistors on a 3-nanometre process, each smaller than the width of a flu virus. The doubling has slowed since about 2015, as physical limits near.</p>
       </div>
     </div>
 
@@ -680,65 +682,49 @@
       <div class="diagram-label">Fig 1.7&nbsp;· ENIAC and the Apple M4&nbsp;· the same job, 79 years apart</div>
       <svg viewBox="0 0 400 452" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-8 svgd-part1-8">
 <title id="svgt-part1-8">Fig 1.7 · ENIAC and the Apple M4 · the same job, 79 years apart</title>
-<desc id="svgd-part1-8">ENIAC, 1945: a U of cabinets around a thirty-metre hall, a person drawn for scale, 17,468 vacuum tubes, 30 tons, 150 kilowatts; now and then a tube burns out. The Apple M4, 2024: a chip under a fingertip with 28 billion transistors, about 1.6 million times as many switches.</desc>
+<desc id="svgd-part1-8">ENIAC, 1945: a U of cabinets, thirty metres of them in all, lining the walls of a room, a person drawn for scale, 17,468 vacuum tubes, 30 tons, 150 kilowatts; now and then a tube burns out. The Apple M4, 2024: a chip under a fingertip with 28 billion transistors, about 1.6 million times as many switches.</desc>
 <text x="20" y="28" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">ENIAC · 1945</text>
-<rect x="20" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="29" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="40" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="49" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="60" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="69" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="80" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="89" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="100" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="100" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="109" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="120" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="120" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="129" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="140" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="140" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="149" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="160" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="160" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="169" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="180" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="180" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="189" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="200" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="200" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="209" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="220" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="220" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="229" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="240" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="240" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="249" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="260" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="260" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="269" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="280" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
+<rect x="280" y="46" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
 <circle cx="289" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="300" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="309" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="320" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="329" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="340" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="349" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="360" y="46" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="369" cy="55" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="20" y="66" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="29" cy="75" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="360" y="66" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="369" cy="75" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="20" y="86" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="29" cy="95" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="360" y="86" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="369" cy="95" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="20" y="106" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="29" cy="115" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="360" y="106" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="369" cy="115" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="20" y="126" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="29" cy="135" r="2.6" fill="#d4a853" opacity="0.8"/>
-<rect x="360" y="126" width="18" height="18" rx="2" fill="#2a241a" stroke="rgba(212,168,83,0.45)"/>
-<circle cx="369" cy="135" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="100" y="66" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="109" cy="75" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="280" y="66" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="289" cy="75" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="100" y="86" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="109" cy="95" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="280" y="86" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="289" cy="95" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="100" y="106" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="109" cy="115" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="280" y="106" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="289" cy="115" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="100" y="126" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="109" cy="135" r="2.6" fill="#d4a853" opacity="0.8"/>
+<rect x="280" y="126" width="18" height="18" rx="2" fill="none" stroke="rgba(212,168,83,0.6)"/>
+<circle cx="289" cy="135" r="2.6" fill="#d4a853" opacity="0.8"/>
 <circle cx="129" cy="55" r="3.4" fill="#ec8d8d" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.125000;0.137500;0.325000;0.350000;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></circle>
 <circle cx="289" cy="55" r="3.4" fill="#ec8d8d" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.425000;0.437500;0.625000;0.650000;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<circle cx="29" cy="95" r="3.4" fill="#ec8d8d" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.725000;0.737500;0.925000;0.950000;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></circle>
-<g transform="translate(200,129.6)" fill="rgba(255,255,255,0.8)"><circle cx="0" cy="2.6" r="2.6"/><rect x="-2.6" y="5.6" width="5.2" height="14.4" rx="2"/></g>
-<text x="212" y="148" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.55)">a person</text>
+<circle cx="109" cy="95" r="3.4" fill="#ec8d8d" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.725000;0.737500;0.925000;0.950000;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></circle>
+<g transform="translate(190,100)" fill="rgba(255,255,255,0.8)"><circle cx="0" cy="2.6" r="2.6"/><rect x="-2.6" y="5.6" width="5.2" height="14.4" rx="2"/></g>
+<text x="202" y="118" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.55)">a person</text>
 <path d="M 20 170 v 6 h 120 v -6" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
 <text x="80" y="196" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">10 m</text>
 <text x="380" y="176" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.8)">17,468 vacuum tubes</text>
@@ -756,11 +742,11 @@
 <text x="380" y="410" text-anchor="end" font-family="DM Mono" font-size="18" letter-spacing="0.06em" fill="#fff">28 billion</text>
 <text x="380" y="432" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">transistors</text>
 </svg>
-      <p id="ch1-transistor-p17" class="diagram-caption">ENIAC filled a thirty-metre hall with 17,468 vacuum tubes; the M4 fits under a fingertip and holds 28 billion transistors, about 1.6 million times as many switches. Each is drawn at its own scale: in life the hall is some two thousand times longer than the chip.</p>
+      <p id="ch1-transistor-p17" class="diagram-caption">ENIAC's thirty metres of cabinets held 17,468 vacuum tubes; the M4 fits under a fingertip and holds 28 billion transistors, about 1.6 million times as many switches. Each is drawn at its own scale: in life ENIAC's row of cabinets is some two thousand times longer than the chip.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The same job.</b> Both machines flip switches according to instructions; the distance between them is the history of the integrated circuit.</li>
+          <li><b>The same job.</b> Both machines flip switches according to instructions; what changed is the size of the switch, from a glass tube to a speck of silicon.</li>
           <li><b>The red flashes.</b> A tube burning out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
           <li><b>The numbers.</b> 28,000,000,000 ÷ 17,468 ≈ 1.6 million. (From the 4004 of 1971 to the M4 the factor is twelve million: Fig 1.6.)</li>
         </ol>
@@ -861,10 +847,10 @@
       </details>
     </div>
 
-    <h3>The Von Neumann bottleneck</h3>
+    <h3>The von Neumann bottleneck</h3>
 
     <p id="ch1-vonneumann-p6">
-      Because instructions and data share one memory, they share one bus, and it carries one transfer at a time: even fetching the next instruction is one. While CPUs got faster over the decades (their clocks went from thousands of ticks a second to billions), main memory became faster much more slowly. A modern CPU performs a basic operation in under a nanosecond (a billionth of a second); a round trip to main memory takes about sixty nanoseconds. Without help, the CPU would spend most of its time waiting.
+      Because instructions and data share one memory, they share one bus, and it carries one transfer at a time: even fetching the next instruction is one. While CPUs got faster over the decades (their clocks went from hundreds of thousands of ticks a second to billions), main memory became faster much more slowly. A modern CPU performs a basic operation in under a nanosecond (a billionth of a second); a round trip to main memory takes about sixty nanoseconds. Without help, the CPU would spend most of its time waiting.
     </p>
 
     <p id="ch1-vonneumann-p7">
@@ -944,7 +930,7 @@
 <text x="276" y="396" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#86a8ff">0x08</text>
 <text x="276" y="413" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="#fff">jmp 0x00</text>
 </svg>
-      <p id="ch1-cpu-p3" class="diagram-caption">Every core runs this loop: fetch the instruction the program counter names, decode it, execute it, write back the result, and move the counter on, billions of times a second.</p>
+      <p id="ch1-cpu-p3" class="diagram-caption">Follow the program counter: 0x00, then 0x05, then 0x08 (addresses written in hexadecimal, here the same as 0, 5 and 8), where the jump sets it back to 0x00, so the program loops.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -963,9 +949,9 @@
     </p>
 
     <p id="ch1-cpu-p5">
-      Assembly language is a human-readable label for these patterns, and the
-      translation is one-to-one. The mnemonic <code>mov eax, 5</code> is the
-      assembler's name for the binary instruction
+      Assembly language gives each pattern a human-readable name, and a program
+      called an assembler translates the names into bits, one for one:
+      <code>mov eax, 5</code> becomes
       <code>10111000 00000101 00000000 00000000 00000000</code> on x86. We will spend
       all of <a href="#ch3">Chapter 3</a> on this.
     </p>
@@ -973,7 +959,7 @@
     <div class="code-block">
       <span class="code-lang">x86 assembly</span>
 <pre><span class="cm">; A simple addition program</span>
-<span class="cm">; This is roughly what C's "int x = 5 + 3;" compiles to</span>
+<span class="cm">; The steps behind an addition like C's "a + b", with a = 5 and b = 3 held in registers</span>
 
 <span class="kw">mov</span>  <span class="nm">eax</span>, <span class="st">5</span>        <span class="cm">; load the value 5 into register EAX</span>
 <span class="kw">mov</span>  <span class="nm">ebx</span>, <span class="st">3</span>        <span class="cm">; load the value 3 into register EBX</span>
@@ -1166,14 +1152,14 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The stages.</b> IF fetch · ID decode · EX execute · MEM memory access · WB writeback.</li>
-          <li><b>The diagonal.</b> Each instruction starts one cycle after the one before, so in any column every stage is busy with a different instruction.</li>
+          <li><b>The diagonal.</b> Each instruction starts one cycle after the one before, so the instructions in a column are always in different stages; in cycle 5 all five stages are busy at once.</li>
           <li><b>Beyond this.</b> Modern CPUs also duplicate stages and finish several instructions in one cycle.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch1-cpu-p9">
-      They also use <span class="key-term">out-of-order execution</span>. If instruction 5 doesn't depend on instruction 4's result, the CPU may execute 5 first while 4 waits for memory. <span class="key-term">Speculative execution</span> goes further. At a branch, a jump taken only if some condition holds (an <code>if</code> in a program), the pipeline must keep fetching before the condition is known, so the CPU guesses which way it will go and runs ahead on that path. A right guess keeps the work and saves the wait; a wrong one throws it away.
+      Modern CPUs also use <span class="key-term">out-of-order execution</span>. If instruction 5 doesn't depend on instruction 4's result, the CPU may execute 5 first while 4 waits for memory. <span class="key-term">Speculative execution</span> goes further. At a branch, a jump taken only if some condition holds (an <code>if</code> in a program), the pipeline must keep fetching before the condition is known, so the CPU guesses which way it will go and runs ahead on that path. A right guess keeps the work and saves the wait; a wrong one throws it away.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-12">
@@ -1227,12 +1213,12 @@
 <rect x="20" y="300" width="176" height="50" rx="6" fill="none" stroke="#9bd89b" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099900;0.100000;0.339900;0.340000;0.579800;0.579900;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="32" y="320" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">right · ~95%</text>
 <text x="32" y="340" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.75)">keep the work</text>
-<rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="none"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.099700;0.099800;0.099900;0.100000;0.819900;0.820000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="rgba(255,255,255,0.35)"/>
 <rect x="204" y="300" width="176" height="50" rx="6" fill="none" stroke="#ec8d8d" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099700;0.099800;0.099900;0.100000;0.819900;0.820000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="216" y="320" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">wrong · ~5%</text>
 <text x="216" y="340" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.75)">throw it away</text>
 </svg>
-      <p id="ch1-cpu-p10" class="diagram-caption">At a branch the CPU guesses which way it will go and runs ahead; a right guess keeps the work, a wrong one throws it away and takes the other path. Thrown-away work can still leave its mark in the cache: the trace that Spectre and Meltdown read.</p>
+      <p id="ch1-cpu-p10" class="diagram-caption">The guessed path runs before the branch is decided. If the guess is wrong its work is thrown away, but the data it loaded stays in the cache: the trace Spectre and Meltdown read.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1246,7 +1232,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="5.5"/><path d="M14.5 14.5 20 20"/></svg></span>
       <p id="ch1-cpu-p11" class="insight-text">
-        <strong>Spectre and Meltdown (2018).</strong> These flaws, in nearly every fast processor made since the mid-1990s, let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte, then loads one of 256 memory locations, picked by the byte's value. The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. <a href="part-4#ch15">Chapter 15</a> returns to them.
+        <strong>Spectre and Meltdown (2018).</strong> Spectre affects nearly every fast processor made since the mid-1990s, Meltdown mainly Intel's; both let a program read memory it may not see, such as another program's passwords. Both exploit speculative execution: the CPU runs ahead (in Meltdown, past a permission check that will fail; in Spectre, down a wrongly guessed branch) into work that reads a secret byte and uses it to pick one of 256 memory locations to load (a byte has 256 possible values, so each value has its own location). The work is thrown away but the location stays cached, so the attacker times a read of each: the fast one reveals the byte. <a href="part-5#ch16-numa">Chapter 16</a> returns to them.
       </p>
     </div>
   </section>
@@ -1281,8 +1267,10 @@
 <rect x="62" y="116" width="316" height="32" rx="3" fill="none" stroke="rgba(255,255,255,0.35)"/>
 <rect x="62.0" y="116" width="47.4" height="32" rx="3" fill="#d4a853" fill-opacity="0.4" stroke="#d4a853"><animate attributeName="opacity" values="1;1;0.12;0.12;0.12;1;1" keyTimes="0.000000;0.087500;0.093750;0.100000;0.162500;0.175000;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 <rect x="146.3" y="116" width="42.1" height="32" rx="3" fill="#d4a853" fill-opacity="0.4" stroke="#d4a853"><animate attributeName="opacity" values="1;1;0.12;0.12;0.12;1;1" keyTimes="0.000000;0.087500;0.093750;0.100000;0.362500;0.375000;1.000000" dur="8s" repeatCount="indefinite"/></rect>
-<rect x="220.0" y="116" width="52.7" height="32" rx="3" fill="#d4a853" fill-opacity="0.85" stroke="#d4a853"><animate attributeName="opacity" values="1;1;0.9;0.9;0.9;1;1" keyTimes="0.000000;0.087500;0.093750;0.100000;0.537500;0.550000;1.000000" dur="8s" repeatCount="indefinite"/></rect>
-<text x="246.333" y="137" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#0e0e0e">yours</text>
+<rect x="220.0" y="116" width="52.7" height="32" rx="3" fill="#d4a853" fill-opacity="0.85" stroke="#d4a853"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.090600;0.090625;0.543725;0.543750;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<rect x="220.0" y="116" width="52.7" height="32" rx="3" fill="none" stroke="#d4a853" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.090600;0.090625;0.543725;0.543750;1.000000" dur="8s" repeatCount="indefinite"/></rect>
+<text x="246.333" y="137" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#0e0e0e"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.090600;0.090625;0.543725;0.543750;1.000000" dur="8s" repeatCount="indefinite"/>yours</text>
+<text x="246.333" y="137" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#d4a853" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.090600;0.090625;0.543725;0.543750;1.000000" dur="8s" repeatCount="indefinite"/>yours</text>
 <rect x="309.5" y="116" width="42.1" height="32" rx="3" fill="#d4a853" fill-opacity="0.4" stroke="#d4a853"><animate attributeName="opacity" values="1;1;0.12;0.12;0.12;1;1" keyTimes="0.000000;0.087500;0.093750;0.100000;0.750000;0.762500;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 <path d="M 64.0 76 Q 64.0 104 220.0 112" fill="none" stroke="rgba(239,227,200,0.5)" stroke-width="1.5" stroke-dasharray="3 3"/>
 <line y1="34" y2="176" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="x1" values="378;378;62;62;378;378" keyTimes="0.000000;0.099938;0.100000;0.162500;0.912500;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="x2" values="378;378;62;62;378;378" keyTimes="0.000000;0.099938;0.100000;0.162500;0.912500;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.099938;0.100000;0.156250;0.162500;0.912500;0.925000;1.000000" dur="8s" repeatCount="indefinite"/></line>
@@ -1292,13 +1280,13 @@
 <text x="46" y="234" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">idle: the next deck loading</text>
 <text x="380" y="256" text-anchor="end" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.47)">an illustrative hour</text>
 </svg>
-      <p id="ch1-kernel-p2" class="diagram-caption">One program had the whole machine: you handed in your cards, the operator ran the jobs one by one, and you came back an hour later for the printout. Between jobs, while the next deck was loaded, the most expensive machine in the building sat idle.</p>
+      <p id="ch1-kernel-p2" class="diagram-caption">An illustrative hour: your job runs for ten minutes of it, and between jobs, while the operator loaded the next deck, the most expensive machine in the building sat idle.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>A job.</b> A deck of punched cards, roughly one line of program per card, carried to the machine room.</li>
           <li><b>The queue.</b> The operator loaded decks one after another; each job had the whole computer while it ran.</li>
-          <li><b>The cost.</b> A bug meant new cards and another hour's wait, and the machine stood idle in the gaps: the waste time-sharing set out to remove.</li>
+          <li><b>The cost.</b> A bug meant new cards and another hour's wait, and the machine stood idle in the gaps.</li>
         </ol>
       </details>
     </div>
@@ -1308,7 +1296,7 @@
     </p>
 
     <p id="ch1-kernel-p4">
-      The answer was time-sharing: programs taking turns on one CPU, so quickly that each user seems to have the machine alone. Running the turns takes something between the programs and the hardware: the <span class="key-term">operating system kernel</span>, the one program that stays loaded. A program that needs something slow (a disk, a keypress, a network reply) must ask the kernel, and asking makes the CPU jump into the kernel's code. While the program waits, the kernel saves where it stopped (its program counter and registers) and gives the CPU to another program with work ready; when the data arrives, it reloads them and the first program carries on. A program that never asks is interrupted anyway: a hardware timer hands the CPU to the kernel every few milliseconds. Programs sharing a machine must not trample each other, so the kernel owns the hardware and every other program must ask its permission to touch it (Fig 1.14).
+      The answer was time-sharing: programs taking turns on one CPU, so quickly that each user seems to have the machine alone. Running the turns takes something between the programs and the hardware: the <span class="key-term">operating system kernel</span>, the one program that stays loaded. A program that needs something slow (a disk, a keypress, a network reply) must ask the kernel, and asking makes the CPU jump into the kernel's code. While the program waits, the kernel saves where it stopped (its program counter and registers) and gives the CPU to another program with work ready; when the data arrives, it reloads that program's counter and registers and the program carries on. A program that never asks is interrupted anyway: a hardware timer hands the CPU to the kernel every few milliseconds. Programs sharing a machine must not trample each other, so the kernel owns the hardware and every other program must ask its permission to touch it (Fig 1.14).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-1-14">
@@ -1351,13 +1339,13 @@
 <circle cx="150" r="7" fill="#86a8ff" opacity="0"><animate attributeName="cy" values="90;90;300;300;204;204;90;90" keyTimes="0.000000;0.066611;0.066667;0.711111;0.777778;0.822222;0.911111;1.000000" dur="9s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.711000;0.711111;0.933111;0.933222;1.000000" dur="9s" repeatCount="indefinite"/></circle>
 <rect x="108" y="288" width="102" height="44" rx="6" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066556;0.066667;0.633222;0.633333;0.733111;0.733222;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="ch1-kernel-p5" class="diagram-caption">The CPU runs each program at a privilege level, or ring: programs in Ring 3 cannot touch the hardware, and a direct attempt is stopped by the CPU itself. To reach the disk a program makes a system call, a controlled jump into the kernel in Ring 0, which does the work and returns the result.</p>
+      <p id="ch1-kernel-p5" class="diagram-caption">The CPU runs each program at a privilege level, or ring: Ring 3 for programs, Ring 0 for the kernel. The red path, a program reaching straight for the disk, is blocked; the gold one, a system call, is let through.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rings.</b> x86 has four privilege levels; operating systems use two: Ring 0 for the kernel, Ring 3 for everything else.</li>
           <li><b>Enforced in silicon.</b> In Ring 3 the CPU itself refuses privileged instructions and the kernel's memory; no software stands in the way to be fooled.</li>
-          <li><b>The way in.</b> A system call jumps to an entry point the kernel registered at boot, so a program can ask but never choose where it lands. The Bridge at the end of this Part opens the mechanism.</li>
+          <li><b>Driver, scheduler.</b> Two parts of the kernel: a driver gives a device its orders; the scheduler decides which program gets the CPU next (the turns of the text).</li>
         </ol>
       </details>
     </div>
@@ -1375,7 +1363,7 @@
     <h3>UNIX and the kernels we still use</h3>
 
     <p id="ch1-kernel-p8">
-      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or a running program (to the kernel, a <em>process</em>: on Linux, reading the file /proc/1234/status returns process 1234's name and memory use as text) are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
+      In 1969, at Bell Labs, Ken Thompson and Dennis Ritchie designed an operating system called UNIX around a four-word creed: <strong>everything is a file</strong>. A file on disk, the keyboard and, in later versions, a network connection or even a running program are all read and written through file descriptors, so once a program holds one, the same read and write calls work on any of them. To the kernel a running program is a <em>process</em>: on Linux, reading the file /proc/1234/status returns process 1234's name and memory use as text. UNIX became the model for most operating systems in use today (Linux, macOS, iOS, Android), and the ideas it spread (processes, file descriptors, the system call interface) define what an operating system <em>is</em>. <a href="part-2#ch5">Chapter 5</a> tells the story of the language it is written in.
     </p>
 
     <div class="insight-strip">
@@ -1397,16 +1385,16 @@
     </p>
 
     <p id="ch1-memory-p2">
-      The CPU performs an arithmetic operation in roughly 0.3 nanoseconds. A round trip to main memory (RAM) takes 60 nanoseconds, two hundred times longer, and a read from a fast SSD (solid-state drive) 50,000 nanoseconds, about 167,000 times longer than the arithmetic. Hiding these gaps is the job of the caches: three levels of them, L1 to L3, sit between the CPU and RAM.
+      Section 03's gap, on one scale: arithmetic takes about 0.3 nanoseconds, a round trip to main memory (RAM) 60 nanoseconds, two hundred times longer, and a read from a fast SSD (solid-state drive) 50,000 nanoseconds, about 167,000 times longer than the arithmetic. Hiding these gaps is the job of the caches: three levels of them, L1 to L3, sit between the CPU and RAM.
     </p>
 
     <table class="summary-table dark">
       <thead><tr><th>Level</th><th>Location</th><th>Typical size</th><th>Access time</th><th>Managed by</th></tr></thead>
       <tbody>
         <tr><td>Registers</td><td>Inside the CPU core</td><td>~1 KB</td><td>1 cycle (~0.3 ns)</td><td>Compiler, CPU</td></tr>
-        <tr><td>L1 Cache</td><td>On the CPU die</td><td>32–64 KB</td><td>4 cycles (~1 ns)</td><td>CPU hardware</td></tr>
-        <tr><td>L2 Cache</td><td>On the CPU die</td><td>256 KB – 1 MB</td><td>12 cycles (~4 ns)</td><td>CPU hardware</td></tr>
-        <tr><td>L3 Cache</td><td>On the CPU package</td><td>8–64 MB</td><td>40 cycles (~13 ns)</td><td>CPU hardware</td></tr>
+        <tr><td>L1 Cache</td><td>On the CPU die</td><td>32–64 KB</td><td>4 cycles (~1.2 ns)</td><td>CPU hardware</td></tr>
+        <tr><td>L2 Cache</td><td>On the CPU die</td><td>1–3 MB</td><td>12 cycles (~3.6 ns)</td><td>CPU hardware</td></tr>
+        <tr><td>L3 Cache</td><td>On the CPU die, shared by cores</td><td>8–64 MB</td><td>40 cycles (~12 ns)</td><td>CPU hardware</td></tr>
         <tr><td>RAM (DRAM)</td><td>On the motherboard</td><td>8–128 GB</td><td>~200 cycles (~60 ns)</td><td>OS kernel</td></tr>
         <tr><td>SSD (NVMe)</td><td>On the PCIe bus</td><td>256 GB – 4 TB</td><td>~50,000 ns</td><td>OS + filesystem</td></tr>
         <tr><td>HDD (spinning disk)</td><td>SATA bus</td><td>1–20 TB</td><td>~5,000,000 ns</td><td>OS + filesystem</td></tr>
@@ -1417,7 +1405,7 @@
       <div class="diagram-label">Fig 1.15&nbsp;· The hierarchy of forgetting&nbsp;· bigger and slower at every step</div>
       <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-16 svgd-part1-16">
 <title id="svgt-part1-16">Fig 1.15 · The hierarchy of forgetting · bigger and slower at every step</title>
-<desc id="svgd-part1-16">Seven levels from registers to hard disk, each bar longer (more capacity, log scale) and slower. If a register access took one second, L1 would take 3 seconds, L2 13, L3 43, RAM 3 minutes, an SSD 2 days and a hard disk 6 months. A first read misses every cache and fetches from RAM, leaving copies in L3, L2 and L1; a second read of the same data stops at L1.</desc>
+<desc id="svgd-part1-16">Seven levels from registers to hard disk, each bar longer (more capacity, log scale) and slower. If a register access took one second, L1 would take 4 seconds, L2 12, L3 40, RAM 3 minutes, an SSD 2 days and a hard disk 6 months. A first read misses every cache and fetches from RAM, leaving copies in L3, L2 and L1; a second read of the same data stops at L1.</desc>
 <text x="20" y="34" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">SIZE →</text>
 <text x="380" y="34" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">0.3 ns = 1 s</text>
 <rect x="20" y="64" width="124.0" height="36" rx="4" fill="none" stroke="#d4a853" stroke-opacity="0.8"/>
@@ -1425,13 +1413,13 @@
 <text x="380" y="88" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">1 s</text>
 <rect x="20" y="110" width="148.9" height="36" rx="4" fill="none" stroke="#d4a853" stroke-opacity="0.8"/>
 <text x="46" y="134" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.04em" fill="#fff">L1 CACHE</text>
-<text x="380" y="134" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">3 s</text>
+<text x="380" y="134" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">4 s</text>
 <rect x="20" y="156" width="165.4" height="36" rx="4" fill="none" stroke="#d4a853" stroke-opacity="0.8"/>
 <text x="46" y="180" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.04em" fill="#fff">L2 CACHE</text>
-<text x="380" y="180" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">13 s</text>
+<text x="380" y="180" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">12 s</text>
 <rect x="20" y="202" width="186.2" height="36" rx="4" fill="none" fill-opacity="0.33" stroke="#d4a853" stroke-opacity="0.8"/>
 <text x="46" y="226" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.04em" fill="#fff">L3 CACHE</text>
-<text x="380" y="226" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">43 s</text>
+<text x="380" y="226" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">40 s</text>
 <rect x="20" y="248" width="223.4" height="36" rx="4" fill="none" fill-opacity="0.30" stroke="#86a8ff" stroke-opacity="0.8"/>
 <text x="46" y="272" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.04em" fill="#fff">RAM</text>
 <text x="380" y="272" text-anchor="end" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="rgba(255,255,255,0.85)">3 min</text>
@@ -1460,7 +1448,7 @@
 <rect x="204" y="428" width="176" height="56" rx="6" fill="none" stroke="rgba(255,255,255,0.35)"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.120000;0.140000;0.199950;0.200000;0.790000;0.810000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="204" y="428" width="176" height="56" rx="6" fill="none" stroke="#d4a853" stroke-width="1.8" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.120000;0.140000;0.199950;0.200000;0.790000;0.810000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="218" y="450" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">2nd read</text>
-<text x="218" y="472" text-anchor="start" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#d4a853">L1 · 3 s</text>
+<text x="218" y="472" text-anchor="start" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#d4a853">L1 · 4 s</text>
 </svg>
       <p id="ch1-memory-p3" class="diagram-caption">Each level down is bigger and far slower: at a scale where a register answers in one second, a hard disk takes six months. A cache keeps a copy of what was just read, so reading it again costs seconds, not minutes.</p>
       <details class="fig-how">
@@ -1469,7 +1457,7 @@
           <li><b>The scale.</b> One register access, about 0.3 ns, becomes one second; every other time keeps its ratio to it. Bar length is size on a log scale.</li>
           <li><b>A miss.</b> The first read looks in L1, L2 and L3, finds nothing, and waits for RAM: about 60 ns.</li>
           <li><b>A copy.</b> On the way back each cache keeps a copy of the data and its neighbours.</li>
-          <li><b>A hit.</b> The next read of the same data, or of data next to it, stops at L1: about 1 ns.</li>
+          <li><b>A hit.</b> The next read of the same data, or of data next to it, stops at L1: about 1.2 ns.</li>
         </ol>
       </details>
     </div>
@@ -1486,7 +1474,7 @@
       access roughly <em>fifteen times</em> faster, and the hit rate only has to be
       high, not perfect. The same calculation justifies every layer of the hierarchy.
     </p>
-      <p id="ch1-memory-p7">Peter Denning's <em>working set</em> model (1968) made the idea rigorous for virtual memory (the next section), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (<a href="part-2">Part II</a>), recent web-address lookups remembered (<a href="part-3">Part III</a>), a database's busiest data held in memory (<a href="part-4">Part IV</a>).</p>
+      <p id="ch1-memory-p7">Peter Denning's <em>working set</em> model (1968) made the idea rigorous for virtual memory (just below), and processor caches rest on the same principle. It returns wherever a small fast store sits in front of a large slow one: recently used file data kept in RAM (<a href="part-2">Part II</a>), recent web-address lookups remembered (<a href="part-3">Part III</a>), a database's busiest data held in memory (<a href="part-4">Part IV</a>).</p>
     </div>
 
     <h3>Virtual memory: the lie the kernel tells</h3>
@@ -1500,13 +1488,13 @@
     </p>
 
     <p id="ch1-memory-p10">
-      This gives three things: <strong>isolation</strong> (no program can read another's memory, because different programs' page tables point to different physical pages), <strong>flexibility</strong> (the kernel can move pages around in RAM, send little-used ones out to disk, or leave a file's pages unread until needed; when a program touches a page that is not in RAM, the MMU stops it and calls the kernel, which reads the page in, updates the table and lets the program carry on, none the wiser), and <strong>protection</strong> (the page tables also encode permissions for read, write and execute, and the MMU enforces them).
+      Page tables give three things. <strong>Isolation</strong>: no program can read another's memory, because different programs' page tables point to different physical pages. <strong>Flexibility</strong>: the kernel can move pages around in RAM, send little-used ones out to disk, or read a program's file in from disk only as its pages are first used. When a program touches a page that is not in RAM, the MMU stops it with a <em>page fault</em> and calls the kernel, which reads the page in, updates the table and lets the program carry on, none the wiser. <strong>Protection</strong>: the page tables also encode permissions for read, write and execute, and the MMU enforces them.
     </p>
 
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch1-memory-p11" class="insight-text">
-        <strong>Buffer overflow attacks</strong> pass the MMU's checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in that call's own memory (the stack), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. <a href="#ch3">Chapter 3</a> shows the defences, among them the <strong>stack canary</strong>, <strong>ASLR</strong> and <strong>DEP</strong>, at the assembly level.
+        <strong>Buffer overflow attacks</strong> pass the MMU's write checks, because they write only into the program's own writable memory. Each call to a function (a reusable piece of the program) keeps its buffers, fixed-size blocks for incoming data, in its own slot on the stack (the memory that function calls work in), beside its return address: the address the CPU jumps back to when the function ends. If a program writes more data than a buffer can hold, the extra bytes spill over that return address, so an attacker who controls the input can fill the buffer with instructions and aim the return address at them. Those instructions run only where the stack is marked executable, so the MMU's execute check stops them once DEP marks it not. <a href="#ch3">Chapter 3</a> shows the defences, among them the <strong>stack canary</strong>, <strong>ASLR</strong> and <strong>DEP</strong>, at the assembly level.
       </p>
     </div>
   </section>
@@ -1519,9 +1507,9 @@
     then into CPUs. The CPU runs an endless loop: fetch, decode, execute, writeback.
     It executes instructions encoded as binary patterns drawn from an instruction set
     architecture like x86 or ARM. Programs and data live together in the same memory,
-    a design choice (Von Neumann's) that defines what a modern computer is. The
+    a design choice (von Neumann's) that defines what a modern computer is. The
     kernel mediates between programs and hardware, enforcing isolation and security
-    through privilege rings and virtual memory.
+    through privilege rings, virtual memory and a hardware timer.
   </p>
 
   <p>
@@ -1530,8 +1518,8 @@
     electricity meet. We will look at why a computer must be binary, how George Boole
     invented the logic that runs on those binary signals, and how arithmetic
     emerges from a few simple gates. By the end
-    of <a href="#ch2">Chapter 2</a>, you will understand at a physical level why <code>0.1 + 0.2</code>
-    does not equal <code>0.3</code> in any modern programming language.
+    of <a href="#ch2">Chapter 2</a>, you will understand why <code>0.1 + 0.2</code>
+    does not equal <code>0.3</code> in almost any programming language.
   </p>
 
 </main>
@@ -1543,12 +1531,14 @@
     <h1 id="ch2-hero-title">The Algebra<br>of <em>Switches</em></h1>
     <p id="ch2-hero-lead" class="chapter-subtitle">
       In 1847, a self-taught English schoolteacher published a book reducing logic
-      to algebra. He died before electricity was understood, never imagining a circuit.
-      A century later, his algebra became the only mathematics that machines can do.
+      to algebra. He died in 1864, long before electricity did any computing. In 1937,
+      ninety years after his book, a student showed that circuits of relays (switches
+      worked by an electromagnet) obey his rules exactly, and a reshaped form of those rules
+      became the logic every digital circuit is built from.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Boolean logic · Binary · Gates · Floats</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1847 → 1985</span></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1847 → present</span></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -3128,7 +3118,7 @@
     </p>
 
     <p id="ch3-registers-p2">
-      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the <em>volatile</em> or caller-saved ones) and which it must hand back unchanged. The chapter uses six rows: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.
+      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the <em>volatile</em> or caller-saved ones) and which it must hand back unchanged. The chapter uses six registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-3">
@@ -4011,13 +4001,12 @@ main:
   </p>
 
   <p>
-    So far every program has been free to do anything the silicon supports. Nothing yet
-    stops a function from reading another program's memory, from writing to a disk it
-    does not own, from monopolising the CPU until the user gives up. On any real machine,
-    those things are not allowed. The Bridge that closes Part I is about <em>why</em>
-    they are not allowed: what hardware features the silicon must already provide before
-    any program can be made to behave, and how those few features combine into the
-    conditions under which one program can be made to own the machine. We do not yet
+    <a href="#ch1">Chapter 1</a> named what stops a program from reading another program's
+    memory, writing to a disk it does not own, or holding the CPU until the user gives up:
+    the rings, virtual memory and the timer. The Bridge that closes Part I asks
+    <em>why</em> those walls hold: which hardware features the silicon must already provide, and
+    how together they let one program, the kernel, control the machine and keep every
+    other program in check. We do not yet
     open the kernel and look inside it; that waits for <a href="part-2">Part II</a>.
   </p>
 
@@ -4030,10 +4019,10 @@ main:
     <div id="chBridge-hero-label" class="chapter-label">Bridge: The Boundary</div>
     <h1 id="chBridge-hero-title">What the Silicon<br>Must <em>Provide</em></h1>
     <p id="chBridge-hero-lead" class="chapter-subtitle">
-      Five small pieces of hardware are what separate a computer from a calculator. A
-      privilege bit. A trap. A page-table walker. A timer. A way to talk to the world.
-      Together they are the conditions under which one program can be made to own the
-      machine. Part I cannot end without naming them.
+      Five small pieces of hardware let one program, the kernel, own a computer and
+      share it safely among all the others: a privilege bit, a trap, a memory-management
+      unit, a timer, and a way to reach devices. Take any one away and a service every
+      program relies on goes with it.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Privilege · Traps · MMU · Timer · MMIO/DMA</span></div>
@@ -4883,7 +4872,7 @@ main:
     </p>
 
     <p id="chBridge-synthesis-p5">
-      Everything else is engineering, and it is the subject of <a href="part-2">Part II</a>, which reads the kernel as a real program: how it schedules processes, organises virtual memory in software on top of the hardware tables, finds a file's data on disk, lets processes talk to each other, and what goes wrong when it has bugs.
+      Everything else is engineering, and it is the subject of <a href="part-2#ch4">Chapter 4</a>, which opens Part II by reading the kernel as a real program: how it schedules processes, organises virtual memory in software on top of the hardware tables, finds a file's data on disk, lets processes talk to each other, and what goes wrong when it has bugs.
     </p>
 
     <p id="chBridge-synthesis-p6">
@@ -4903,7 +4892,7 @@ main:
 
 <section class="part-opener" style="min-height: 60vh;">
   <div class="part-label">End of Part I</div>
-  <h1 style="font-size: clamp(2rem, 4vw, 3.4rem);">The Substrate <em>is built.</em></h1>
+  <h1 style="font-size: clamp(2rem, 4vw, 3.4rem);">The substrate <em>is built.</em></h1>
   <p class="part-tagline" style="margin-bottom: 40px;">
     From sand to gates, from gates to instructions. Part II opens the program
     that owns this hardware, the kernel, and then turns to the languages

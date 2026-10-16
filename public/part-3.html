@@ -6,19 +6,19 @@
 <title>Under the Code · Part III: The Network</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0a0a%22%2F%3E%3Cpath%20d%3D%22M10%208v9a6%206%200%200%200%2012%200V8%22%20fill%3D%22none%22%20stroke%3D%22%23d4a853%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 
-<meta name="description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a JSON response in a tab.">
+<meta name="description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a page in a browser tab.">
 <meta property="og:type" content="book.section">
 <meta property="og:site_name" content="Under the Code">
 <meta property="og:title" content="Under the Code · Part III: The Network">
-<meta property="og:description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a JSON response in a tab.">
+<meta property="og:description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a page in a browser tab.">
 <meta property="og:url" content="https://under.atheric.eu/part-3">
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Under the Code: a transistor on the left, a globe on the right, a thin gold arc between them.">
+<meta property="og:image:alt" content="Under the Code: a gold transistor at the centre of concentric dashed rings, above the title and the line 'From transistor to civilization'.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Under the Code · Part III: The Network">
-<meta name="twitter:description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a JSON response in a tab.">
+<meta name="twitter:description" content="Ethernet, IP, TCP, BGP, DNS, TLS, HTTP, JavaScript. From a packet on a wire to a page in a browser tab.">
 <meta name="twitter:image" content="https://under.atheric.eu/og-image.png">
 <link rel="canonical" href="https://under.atheric.eu/part-3">
 
@@ -63,19 +63,20 @@
   <h1>The<br>Network</h1>
   <p class="part-tagline">
     Parts I and II built one machine: sand to transistor, kernel to language.
-    Part III steps off the motherboard. The voltage that flips a transistor inside
-    a CPU is, at a different scale, the voltage that crosses a continent. We follow
+    Part III steps off the motherboard. The bit that a voltage carries inside a CPU
+    is, at a different scale, the bit that crosses a continent, as light in glass. We follow
     the wire out of the chip and into the world: the physics of the substrate, the
     architectural decision to send packets rather than circuits, the protocol that
     pretends a noisy network is reliable, the conventions that make a "website"
     work, and the language that runs in every browser on Earth. By the end you
-    will be able to read every layer of an HTTPS request from voltage to JSON.
+    will be able to read every layer of an HTTPS request from voltage to the page
+    in the tab.
   </p>
   <div class="part-toc">
     <a href="#ch8" class="toc-card">
       <div class="toc-num">CHAPTER 08</div>
       <div class="toc-title">The Wire</div>
-      <div class="toc-desc">Physics of the substrate: copper, fiber, radio. Shannon's information theory. Encoding. Ethernet. The OSI and TCP/IP layer models that organise everything above.</div>
+      <div class="toc-desc">Physics of the substrate: copper, fibre, radio. Shannon's information theory. Encoding. Ethernet. The OSI and TCP/IP layer models that organise everything above.</div>
     </a>
     <a href="#ch9" class="toc-card">
       <div class="toc-num">CHAPTER 09</div>
@@ -85,7 +86,7 @@
     <a href="#ch10" class="toc-card">
       <div class="toc-num">CHAPTER 10</div>
       <div class="toc-title">TCP: The Problem of Reliability</div>
-      <div class="toc-desc">Reliability built on top of unreliable. The three-way handshake. Flow and congestion control as control theory. CUBIC, BBR, QUIC. SYN floods.</div>
+      <div class="toc-desc">Reliability built on top of an unreliable network. The three-way handshake. Flow and congestion control as control theory. CUBIC, BBR, QUIC. SYN floods.</div>
     </a>
     <a href="#ch11" class="toc-card">
       <div class="toc-num">CHAPTER 11</div>
@@ -106,9 +107,8 @@
     <div id="ch8-hero-label" class="chapter-label">Chapter 08</div>
     <h1 id="ch8-hero-title">The<br><em>Wire</em></h1>
     <p id="ch8-hero-lead" class="chapter-subtitle">
-      The voltage that flips a transistor inside a CPU is, at a different scale,
-      the voltage that crosses a continent. We follow the signal out of the chip
-      and into the world: copper, fiber, radio. The mathematics of how much
+      Copper, fibre and radio carry the signal out of the chip and into the
+      world. The mathematics of how much
       information any of them can carry. The encodings that turn ones and zeros
       into wave shapes. The local-network protocols that share the substrate.
       And the layer model that lets every conversation about networking refer
@@ -185,15 +185,14 @@
 
   <section class="section" id="ch8-bridge">
     <div class="section-number">01 · Bridge from <a href="part-1">Part I</a></div>
-    <h2>The voltage on a transistor extends to the voltage on a continent.</h2>
+    <h2>The bit in a transistor is the bit across a continent.</h2>
 
     <p id="ch8-bridge-p1" class="lead">
-      <a href="part-1">Part I</a> closed inside a CPU. Part III leaves the CPU. The same voltage
-      transition that switched a transistor in <a href="part-1#ch1">Chapter 1</a> (a small step from one
-      level to another, interpreted by everything downstream as "the bit changed")
-      now travels: across the motherboard, out a network interface, down a cable,
-      across an ocean, into another machine on the other side of the planet. The
-      physics is unchanged. What grows is the discipline required to keep the
+      <a href="part-1">Part I</a> closed inside a CPU. Part III leaves the CPU. The same bit
+      that switched a transistor in <a href="part-1#ch1">Chapter 1</a> now travels: across the
+      motherboard as a voltage step, out a network interface, down a cable, across an
+      ocean as light in glass, into another machine on the other side of the planet.
+      The bit is unchanged; only what carries it changes. What grows is the discipline required to keep the
       signal intact over that distance.
     </p>
 
@@ -381,13 +380,10 @@
 
     <p id="ch8-shannon-p2">
       Shannon is one of the strangest figures in twentieth-century science.
-      At twenty-one, in his 1937 master's thesis at MIT, he showed that George
-      Boole's nineteenth-century algebra of logic could be implemented as
-      electrical relay circuits, so any logical proposition could be computed
-      by a network of switches. Howard Gardner later called this "possibly the most important, and also the most famous, master's thesis of the century." It is the
-      bridge between <a href="part-1#ch2">Chapter 2</a> of this book and everything
-      that followed it: the moment Boolean logic stopped being philosophy and
-      started being engineering.
+      At twenty-one he wrote the 1937 master's thesis, met in <a href="part-1#ch2">Chapter 2</a>,
+      that put Boole's algebra into relay circuits; Howard Gardner later called it
+      "possibly the most important, and also the most famous, master's thesis of the
+      century."
     </p>
 
     <p id="ch8-shannon-p3">
@@ -1100,8 +1096,8 @@
     <p id="ch8-layers-p6">
       <a href="#ch8">Chapter 8</a> has been about the <em>physical</em> and <em>link</em> layers:
       how a single bit makes it across one hop. <a href="#ch9">Chapter 9</a> climbs to the
-      <em>network</em> layer. Every diagram so far has assumed two devices
-      on one wire, or a few on one Ethernet segment. The internet is billions
+      <em>network</em> layer. Every mechanism so far has moved bits between
+      two devices on one wire, or a few on one Ethernet segment. The internet is billions
       of devices, on tens of thousands of independently-administered networks,
       none of them aware of most of the others, and packets that need to find
       their way across that graph from any source to any destination. The idea
@@ -1116,15 +1112,15 @@
 <div class="chapter-hero">
   <div class="chapter-hero-text">
     <div id="ch9-hero-label" class="chapter-label">Chapter 09</div>
-    <h1 id="ch9-hero-title">Packets: How<br>The Internet<br>Decided to <em>Work</em></h1>
+    <h1 id="ch9-hero-title">Packets: How<br>the Internet<br>Decided to <em>Work</em></h1>
     <p id="ch9-hero-lead" class="chapter-subtitle">
       The phone company spent a century building a network where every call got
       its own dedicated wire. ARPANET, in 1969, made a different bet: chop
       messages into pieces, label each piece with a destination, and let it find
       its own way through the graph. That single architectural decision (packets,
       not circuits) made the modern internet possible. It also made it possible
-      for a misconfigured router in Pakistan to take YouTube off the air for the
-      whole world for two hours.
+      for Pakistan's attempt to block YouTube at home to leak out and take the site
+      off the air almost everywhere for about two hours.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Packet switching · IP · BGP · IPv4/v6 · spoofing &amp; hijacks</span></div>
@@ -1133,7 +1129,7 @@
   </div>
   <div class="chapter-hero-visual">
     <svg width="480" height="480" viewBox="32 63.5 416 416" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part3-14">
-<defs><clipPath id="ko-hero-ch9-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM406 226h28v28h-28Z"/></clipPath><clipPath id="ko-hero-ch9-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM106 106h28v28h-28Z"/></clipPath></defs><title id="svgt-part3-14">Chapter 09 hero · Packets: How The Internet Decided to Work</title>
+<defs><clipPath id="ko-hero-ch9-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM406 226h28v28h-28Z"/></clipPath><clipPath id="ko-hero-ch9-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM106 106h28v28h-28Z"/></clipPath></defs><title id="svgt-part3-14">Chapter 09 hero · Packets: How the Internet Decided to Work</title>
       <defs><radialGradient id="glow9" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4fc4e6" stop-opacity="0.18"/><stop offset="100%" stop-color="#4fc4e6" stop-opacity="0"/></radialGradient></defs>
 
       <!-- Mesh of nodes -->
@@ -1950,7 +1946,7 @@
         the internet of the time) were unusable. Morris was traced within days and became the first person convicted under the US Computer Fraud and Abuse Act of 1986. Within weeks of the worm's release, DARPA funded the
         <strong>Computer Emergency Response Team</strong> (CERT) at
         Carnegie Mellon, the first organisation tasked with coordinating
-        response to internet security incidents. It became the model for the national CERTs that followed. The protocols of <a href="#ch9">Chapter 9</a> had been built in an era of institutional trust; the Morris worm proved that era over.
+        response to internet security incidents. It became the model for the national CERTs that followed. The internet of 1988 had been built in an era of institutional trust; the Morris worm proved that era over.
       </p>
     </div>
 
@@ -2146,8 +2142,8 @@
       and applications cope. For everything else (file transfer, web pages,
       long-lived connections), somebody has to make an unreliable network
       behave reliably. TCP is that somebody. Its mathematics is control
-      theory; its engineering is forty years of careful refinement; its
-      attack surface is the reason every server has a SYN flood story.
+      theory, refined over half a century of engineering, and its handshake
+      is the target of the SYN flood, one of the oldest denial-of-service attacks.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">UDP · 3-way handshake · AIMD · CUBIC · BBR · QUIC · SYN flood</span></div>
@@ -2796,9 +2792,10 @@
     </div>
 
     <p id="ch10-modern-p4">
-      <strong>BBR</strong> (2016, Google) is more radical: forget loss as a
-      signal. Measure the network directly (bandwidth and round-trip time)
-      and aim for the <em>bandwidth-delay product</em> (BDP), the amount of
+      <strong>BBR</strong> (2016, Google) is more radical: its first version
+      largely set loss aside as a signal. It measures the network directly
+      (bandwidth and round-trip time) and aims for the <em>bandwidth-delay
+      product</em> (BDP), the amount of
       in-flight data that fills the pipe without overflowing buffers. Google
       deploys BBR at its edge for YouTube and Search. On lossy Wi-Fi,
       transcontinental links and home routers with oversized queues, BBR can be two
@@ -3209,12 +3206,11 @@
     <p id="ch11-hero-lead" class="chapter-subtitle">
       The internet is not the web. The internet is the packet network of
       Chapters 8 through 10 (voltage on copper, IP datagrams, reliable TCP
-      streams). The web is the layer above it: three protocols invented in 1989
-      at a particle physics lab, plus a handful of cryptographic primitives
-      invented in the 1970s by mathematicians, that together turn a network
-      of packets into a worldwide library of trustworthy documents. By the
-      end of this chapter you will be able to read every byte of an HTTPS
-      request from voltage to JSON.
+      streams). The web is the layer above it: three conventions Tim Berners-Lee
+      devised at a particle physics lab between his 1989 proposal and 1991 (an
+      address, a request, a page format), plus a naming system and the cryptography that rides beneath
+      HTTPS, that together turn a network of packets into a worldwide library
+      of trustworthy documents.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">HTTP · DNS · TLS · CA chain · HTTP/2 · QUIC</span></div>
@@ -3443,10 +3439,10 @@
     <h2>Five lines of text. Forever.</h2>
 
     <p id="ch11-http-p1" class="lead">
-      HTTP is the simplest protocol in this book, simple enough to speak by
-      hand. Open a TCP connection on port 80 to any web server, type
+      HTTP is simple enough to speak by hand. Open a TCP connection on port 80 to a web server, type
       <code>GET / HTTP/1.0</code>, press Enter twice, and the server will
-      reply with a status line, a few headers, and the document. That
+      reply with a status line, a few headers, and the document (or, on many
+      sites today, a redirect to the HTTPS address). That
       transcript is HTTP. Three and a half decades of evolution have added connections that stay open between requests, many requests at once on one connection, compression, and finally a binary format, but the conversational shape <em>"client asks, server
       answers"</em> has not changed: HTTP/1.0 from 1996 still works against
       modern servers.
@@ -3808,9 +3804,9 @@
 
     <p id="ch11-dns-p5">
       When your laptop wants to know <code>example.com</code>'s IP, it asks
-      its configured <em>resolver</em>, usually your home router, your ISP,
-      or a public service like Cloudflare's <code>1.1.1.1</code> or Google's
-      <code>8.8.8.8</code>. If the
+      its configured <em>resolver</em>: your ISP's, or a public service like
+      Cloudflare's <code>1.1.1.1</code> or Google's <code>8.8.8.8</code>,
+      usually reached through your home router. If the
       answer is in the resolver's cache, it comes straight back. If not, the
       resolver does the actual work, called <em>recursion</em>. It asks one
       of the root servers for <code>example.com</code>; the root replies,
@@ -4458,8 +4454,9 @@
     </p>
 
     <p id="ch11-modern-p5">
-      <strong>QUIC</strong> (Quick UDP Internet Connections, RFC 9000, 2021)
-      replaces TCP entirely for HTTP traffic. It runs on top of UDP, the "fire and forget" protocol from Section 01 of <a href="#ch10">Chapter 10</a>, and rebuilds TCP's reliable ordered delivery, flow control and congestion control, and HTTP/2's many streams, with TLS 1.3 encryption built in. The difference: each stream is ordered independently, so a lost
+      <strong>QUIC</strong> (RFC 9000, 2021; the name began as Quick UDP Internet
+      Connections, but the standard treats it as just a name)
+      replaces TCP entirely for HTTP traffic. It runs on top of UDP, the fire-and-forget protocol from Section 01 of <a href="#ch10">Chapter 10</a>, and rebuilds TCP's reliable ordered delivery, flow control and congestion control, and HTTP/2's many streams, with TLS 1.3 encryption built in. The difference: each stream is ordered independently, so a lost
       packet on stream A no longer holds back stream B. QUIC was developed
       by Google starting around 2012, rolled out experimentally in Chrome and on Google's servers from 2013, and reached essentially all Chrome users by 2017, years before the IETF standard. HTTP/3
       (RFC 9114, 2022) is just HTTP semantics over QUIC. As of 2026 it
@@ -4544,11 +4541,11 @@
     <div id="ch12-hero-label" class="chapter-label">Chapter 12</div>
     <h1 id="ch12-hero-title">JavaScript<br>The Language That<br><em>Shouldn't Have Worked</em></h1>
     <p id="ch12-hero-lead" class="chapter-subtitle">
-      Brendan Eich was given ten working days, in May 1995, to design a
-      scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is now the most widely deployed programming
+      In May 1995 Brendan Eich had ten days to build a working prototype of a
+      scripting language for the Netscape browser. The result was committed to a release branch before it had a stable name and shipped before it had a specification. It is arguably the most widely deployed programming
       language in history. It runs in every browser. It runs on servers
-      via Node.js. Its object-literal syntax became JSON, the data language
-      every modern database speaks. That this happened is a triumph of
+      via Node.js. Its object-literal syntax became JSON, the format most
+      web services use to exchange data. That this happened is a triumph of
       practical engineering over good taste, and that it works is down to a
       series of architectural decisions made under deadline that turned out
       to be unexpectedly durable.
@@ -4703,7 +4700,7 @@
       Marc Andreessen and Bill Joy (Sun co-founder, brought into the
       Netscape-Sun partnership) wanted a language with C-like syntax, so that it looked familiar to working programmers, but with the dynamic,
       interpreted, untyped flexibility of Scheme underneath. Eich
-      had ten working days to produce a prototype.
+      had ten days to produce a prototype.
     </p>
 
     <p id="ch12-eich-p2">
@@ -4813,7 +4810,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5v-4M10 2.5h4M12 2.5v4M17.5 7.5l1.5-1.5"/></svg></span>
       <p id="ch12-eich-p6" class="insight-text">
-        <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2">Chapter 2</a>.6), but the choice to have <em>no integer type at all</em>, with every number a 64-bit float, meant JavaScript could never expose the difference. Implicit coercion (<code>[] + {} === "[object Object]"</code>) is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything.
+        <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2-float">Chapter 2</a>, Section 06), but the choice to have <em>no integer type at all</em>, with every number a 64-bit float, meant JavaScript could never expose the difference. Implicit coercion (<code>[] + {} === "[object Object]"</code>) is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything.
       </p>
     </div>
   </section>
@@ -5342,7 +5339,7 @@
       script as a comment or profile field; the server stores it in the
       database; every subsequent visitor's browser executes it.
       <strong>DOM-based XSS</strong>: a similar attack carried out entirely
-      in the browser, by page JavaScript that copies the part of the URL after the <code>?</code> into the page unsafely.
+      in the browser, by page JavaScript that copies part of the URL (after the <code>?</code> or the <code>#</code>) into the page unsafely.
     </p>
 
     <div class="diagram-card" id="fig-12-9">
@@ -5451,8 +5448,10 @@
       reject other sources for those two." (Adding <code>default-src 'none'</code> closes every other kind of resource too.) If an attacker injects a
       <code>&lt;script src="evil.com/x.js"&gt;</code>, the browser sees
       that <code>evil.com</code> is not in the policy and refuses to load
-      the script. The XSS attack from <a href="#fig-12-9">Fig 12.9</a> is neutralised even though
-      the injection succeeded.
+      the script. The policy admits no inline code either, so the inline
+      <code>&lt;script&gt;</code> and <code>onerror</code> payloads of
+      <a href="#fig-12-9">Fig 12.9</a> are refused too: the markup still lands in
+      the page, but the browser never runs it.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-12-11">
@@ -5525,13 +5524,7 @@
       those documents alive (<a href="#ch12">Chapter 12</a>). A reader who has followed all
       five chapters can now, in principle, read every layer of an HTTPS request, from
       voltage on copper to a piece of JavaScript modifying the DOM and
-      rendering at 60 frames per second. <a href="part-4">Part IV</a> turns to
-      where information <em>lives</em> at rest, and how it stays
-      trustworthy when nobody is watching the connection. The relational
-      database. The cryptographic primitives in mathematical depth. And
-      the unified security chapter that ties together every attack we
-      have foreshadowed in Parts I, II and III into a single working
-      theory of why systems break and how we keep them standing.
+      rendering at 60 frames per second.
     </p>
   </section>
 
@@ -5549,10 +5542,10 @@
   <div class="part-label">End of Part III</div>
   <h1 style="font-size: clamp(2rem, 4vw, 3.4rem);">The network <em>is built.</em></h1>
   <p class="part-tagline" style="margin-bottom: 40px;">
-    Voltage to packets to TCP to HTTP to JavaScript. Five chapters, every layer
-    from copper to pixels. Part IV turns to where information lives at rest:
-    the relational database, real cryptography, and the unified security
-    chapter that ties Parts I through III together.
+    Part IV turns to where information lives at rest and how it is kept safe:
+    the relational database, cryptography in mathematical depth, and the
+    security chapter that ties every attack of Parts I to III into one
+    working theory.
   </p>
   <a href="part-4" class="next-btn"><span>Continue to Part IV: Data and Security</span><span aria-hidden="true">→</span></a>
 

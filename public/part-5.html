@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Under the Code: a transistor on the left, a globe on the right, a thin gold arc between them.">
+<meta property="og:image:alt" content="Under the Code: a gold transistor at the centre of concentric dashed rings, above the title and the line 'From transistor to civilization'.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Under the Code · Part V: The Modern Machine">
 <meta name="twitter:description" content="Parallelism, the cloud, distributed consensus. Where computers actually run today, and where the book closes.">
@@ -57,12 +57,11 @@
     speaking through one network stack to one TLS endpoint, holding
     bytes in one relational database, defended by a layered stack we
     can now name. Part V steps back. The machine that runs nearly all
-    code in 2026 is not a computer at all but <em>a great many</em>
-    computers: sixteen cores in your laptop, sixty-four in a cloud
-    server, ten thousand machines in a region, a planetary mesh tied
-    together by software that
-    must reach agreement despite delay and failure. Part V is about
-    that scale-up, mathematically and physically. Then <a href="#ch18">Chapter 18</a>
+    code in 2026 is many processors working as one: sixteen cores in
+    your laptop, sixty-four in a cloud server, and beyond them thousands
+    of machines in a region, tied together by software that must
+    reach agreement despite delay and failure. Part V is about
+    that scaling, mathematically and physically. Then <a href="#ch18">Chapter 18</a>
     closes the book.
   </p>
   <div class="part-toc">
@@ -91,16 +90,16 @@
     <h1 id="ch16-hero-title">Parallelism<br>When One Core<br><em>Isn't Enough</em></h1>
     <p id="ch16-hero-lead" class="chapter-subtitle">
       For most of computing's history, faster software meant faster
-      clocks. Around 2004 the clock speed of consumer CPUs stopped rising
-      (heat density made it impossible), and the industry pivoted to
+      clocks. Around 2004 the clock speed of consumer CPUs stopped climbing
+      at its old pace (heat density made each further step too costly), and the industry pivoted to
       putting <em>many cores</em> on the same chip and asking software
       to use them. Twenty years later, every phone has six to ten cores,
       every laptop has eight to sixteen, and every cloud server has
-      sixty-four or more. Writing code that uses them correctly is one of the deepest skills in programming, and its failure modes are some of the most frustrating bugs ever produced.
+      sixty-four or more. Writing code that uses them correctly is hard, because its bugs depend on timing and so hide in testing and appear under load.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Threads · races · CAS · GPU · Amdahl · NUMA · MESI</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">~1965 → present</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">1 machine · 8 cores · one shared memory</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1967 → present</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">1 machine · 8 cores · one shared memory</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -1337,7 +1336,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch16-numa-p4" class="insight-text">
-        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret bit by bit. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
+        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret byte by byte. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
       </p>
     </div>
 
@@ -1369,17 +1368,16 @@
       Most code in 2026 runs in someone else's datacenter, on hardware
       its developers will never touch, alongside thousands of other
       programs they will never know about, coordinating across a
-      network that is unreliable in ways that look like physics. The
-      cloud is the substrate of nearly every web service, every mobile
-      backend, every AI training run, every database larger than a
-      laptop. It is built from a handful of layered abstractions:
+      network that delays, drops and cuts off messages without warning.
+      The cloud is the substrate of most web services and mobile
+      backends, much of AI training, and a growing share of the world's
+      large databases. It is built from a handful of abstractions:
       virtualization, containers, orchestration, consensus protocols,
-      service meshes. Each of them solves a problem the layer below
-      could not.
+      service meshes.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Hypervisor · Docker · Kubernetes · Paxos/Raft · CAP · microservices</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">~1965 → present</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">10,000 machines · 3 regions · one system</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1968 → present</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">10,000 machines · 3 regions · one system</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -1687,8 +1685,7 @@
       remember what it did last time; it only looks at what is versus
       what should be. The pattern of <em>declared desired state, observed actual state, continuous reconciliation</em> is borrowed from control theory
       (<a href="part-3#ch10">Chapter 10</a>'s TCP congestion control is the same shape)
-      and runs through the tools that build infrastructure from a written description (<em>infrastructure as code</em>): Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once. Argo CD and Flux
-      run it as a loop, Terraform and Pulumi as a plan applied on demand.
+      and runs through the tools that build infrastructure from a written description (<em>infrastructure as code</em>): Argo CD and Flux run it as a loop, while Terraform and Pulumi run it only when a person asks, working out the changes needed (the plan) and applying them once.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-17-4">
@@ -2284,20 +2281,20 @@
     <div id="ch18-hero-label" class="chapter-label">Chapter 18 · Epilogue</div>
     <h1 id="ch18-hero-title">What You<br><em>Now See</em></h1>
     <p id="ch18-hero-lead" class="chapter-subtitle">
-      Seventeen chapters ago this book began with a single transistor:
+      Seventeen chapters ago this book drew a single transistor:
       a switch made of doped silicon, controlled by voltage, doing
       nothing on its own. Around it we have now built an entire
       civilization: gates, instructions, kernels, languages, networks,
       cryptography, security, scale. The computer is no longer a thing.
-      It is a layered system that runs everywhere, holds nearly all
-      knowledge produced by humans, and increasingly shapes the
-      decisions of every domain it touches. This chapter does no new
-      teaching. It looks back at the whole, names what's permanent
+      It is a layered system that runs nearly everywhere, stores nearly
+      all the information we record, and increasingly shapes the
+      decisions of every domain it touches. This chapter adds little
+      new: it looks back at the whole, names what's permanent
       and what isn't, points at where the field is going, and ends.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Synthesis · history · futures · intersections · reading list</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">all of it</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">one curriculum · five layers · one reader</span></div></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">all of it</span><div class="meta-item"><span class="meta-label">Cluster</span><span class="meta-value">one curriculum · five parts · one reader</span></div></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
@@ -2434,7 +2431,7 @@
     </p>
 
     <p id="ch18-trace-p3">
-      Four chapters are not numbered stations. Chapters 6 and 7 (C++ and Python) have none because no step of this path is written in either language: the code in the figure is C and JavaScript.
+      Four chapters are not numbered stations. Chapters 6 and 7 (C++ and Python) have none: the code the figure shows is C and JavaScript. C++ is still on the path, since V8 is written in it, but no station shows it.
       <strong><a href="part-4#ch15">Chapter 15</a> (security)</strong>
       is woven across the trace rather than located at one point. Each
       time the journey crosses from less-trusted to more-trusted
@@ -2501,7 +2498,7 @@
 <line x1="34" y1="496" x2="50" y2="496" stroke="#f08aa8" stroke-dasharray="2 3"/><text x="56" y="500" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">trust boundary (Ch 15): more trusted below</text>
 <g opacity="0.63"><text x="40" y="522" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.719846;0.720000;1.000000" dur="13s" repeatCount="indefinite"/>the response returns the same way up</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.719846;0.720000;1.000000" dur="13s" repeatCount="indefinite"/><text x="40" y="522" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">the response returns the same way up</text></g>
 </svg>
-      <p id="ch18-trace-p4" class="diagram-caption">One search, followed from a key's contact to Google's ranking and back, passes through sixteen chapters and the Bridge, and crosses four trust boundaries that Chapter 15 defends. Each station keeps the promise the next relies on, and the whole round trip takes well under a second.</p>
+      <p id="ch18-trace-p4" class="diagram-caption">One search, followed from a key's contact to Google's ranking and back, passes through fourteen chapters and the Bridge, and crosses four trust boundaries that Chapter 15 defends. Each station keeps the promise the next relies on, and the whole round trip takes well under a second.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>

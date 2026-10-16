@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://under.atheric.eu/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Under the Code: a transistor on the left, a globe on the right, a thin gold arc between them.">
+<meta property="og:image:alt" content="Under the Code: a gold transistor at the centre of concentric dashed rings, above the title and the line 'From transistor to civilization'.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Under the Code · Part II: The Software Layer">
 <meta name="twitter:description" content="The Linux kernel, C, C++, Python. The languages humans write on top of the silicon.">
@@ -59,7 +59,7 @@
     Part II opens the program that owns it. The kernel first, examined as
     a real piece of code. Then the languages people actually write in: C,
     the portable systems language UNIX itself was written in; C++, the
-    object-oriented answer to its complexity; Python, the opposite trade
+    object-oriented answer to programs grown too large for C; Python, the opposite trade
     that chose humans over machines. Each is a particular set of decisions
     about which mistakes to make easy and which to make hard.
   </p>
@@ -93,12 +93,12 @@
     <div id="ch4-hero-label" class="chapter-label">Chapter 04</div>
     <h1 id="ch4-hero-title">The Code That<br>Owns the<br><em>Machine</em></h1>
     <p id="ch4-hero-lead" class="chapter-subtitle">
-      One program runs always. It owns the CPU, the memory, the disks, the network.
+      One program stays loaded from boot to shutdown. It owns the CPU, the memory, the disks, the network.
       Every other program lives at its mercy. Without it, modern computing is impossible:
       no multitasking, no security, no internet. This is the kernel.
     </p>
     <div class="chapter-meta">
-      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Scheduler · VM · FS · IPC · Security</span></div>
+      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Scheduler · Virtual memory · Filesystems · IPC · Security</span></div>
       <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1969 → present</span><div class="meta-item"><span class="meta-label">Listing</span><span class="meta-value">lines 0001–0790 · cc -c kernel.c</span></div></div>
     </div>
   </div>
@@ -173,7 +173,7 @@
     <h2>The kernel is just a program</h2>
 
     <p id="ch4-anatomy-p1" class="lead">
-      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract authority, a governing law of the machine. <a href="part-1#chBridge">The Bridge</a> at the close of <a href="part-1">Part I</a> showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.
+      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract authority, a governing law of the machine. <a href="part-1#chBridge">The Bridge</a> at the close of <a href="part-1">Part I</a> showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer, and MMIO with DMA), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.
     </p>
 
     <p id="ch4-anatomy-p2">
@@ -350,7 +350,7 @@
     </div>
 
     <p id="ch4-anatomy-p12">
-      Linux also limits the damage risky code can do: a few kinds of driver run as ordinary programs in Ring 3, where a crash takes down only that program, and the small eBPF programs of Section 6 run in the kernel only after a check proves them safe.
+      Linux also limits the damage risky code can do: a few kinds of driver run as ordinary programs in Ring 3, where a crash takes down only that program, and the small eBPF programs of Section 06 run in the kernel only after a check proves them safe.
     </p>
   </section>
 
@@ -796,7 +796,7 @@
     </p>
 
     <p id="ch4-vm-p12">
-      An <strong>invalid page fault</strong> happens when the access truly is illegal: writing to a read-only page, using an unmapped address such as 0 (NULL), executing data marked non-executable. The kernel sends the offending process a <code>SIGSEGV</code> signal (Section 5 covers signals), which by default ends the program with the famous "segmentation fault" message.
+      An <strong>invalid page fault</strong> happens when the access truly is illegal: writing to a read-only page, using an unmapped address such as 0 (NULL), executing data marked non-executable. The kernel sends the offending process a <code>SIGSEGV</code> signal (Section 05 covers signals), which by default ends the program with the famous "segmentation fault" message.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-9">
@@ -1319,7 +1319,7 @@
         <tr><td>Signal</td><td>A small numeric notification sent to a process. <code>SIGTERM</code>, <code>SIGKILL</code>, <code>SIGINT</code> (Ctrl+C).</td><td>Asynchronous control: "stop," "reload config," "we're shutting down."</td></tr>
         <tr><td>Shared memory</td><td>Two processes map the same physical pages into both their address spaces.</td><td>The fastest IPC. No copying. Used by databases and high-performance systems.</td></tr>
         <tr><td>Message queue</td><td>A kernel-managed queue of typed messages between processes.</td><td>Structured communication; less common today.</td></tr>
-        <tr><td>Semaphore</td><td>A kernel-managed counter used to coordinate access to a shared resource.</td><td>Synchronising without sharing data: "is it my turn yet?"</td></tr>
+        <tr><td>Semaphore</td><td>A counter that processes change in one indivisible step, used to coordinate access to a shared resource.</td><td>Synchronising without sharing data: "is it my turn yet?"</td></tr>
         <tr><td>UNIX socket</td><td>Like a network socket, but local: kernel-mediated, with proper authentication.</td><td>Modern desktop IPC. Used by Docker, systemd, X11, Wayland.</td></tr>
         <tr><td>Network socket</td><td>TCP or UDP connection, possibly to another machine.</td><td>Distributed systems. We'll cover these in depth in <a href="part-3">Part III</a>.</td></tr>
       </tbody>
@@ -1964,11 +1964,11 @@
 
   <p>
     The kernel is a program that owns the hardware and mediates everything every other
-    program does. Written in C and loaded by a bootloader, it runs forever in Ring 0.
+    program does. Written in C and loaded by a bootloader, it stays resident in Ring 0.
     It comes in two main shapes: monolithic (everything in Ring 0, fast, fragile) and
     microkernel (minimal Ring 0, message-passing, safer and slower), with most real
     systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically
-    in queueing theory, decides which process gets the CPU at each microsecond. Linux's
+    in queueing theory, decides which process gets the CPU next, hundreds of times a second. Linux's
     CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual
     runtimes. Its virtual
     memory subsystem maintains a four-level page table per process, accelerated by a
@@ -1985,8 +1985,9 @@
   <p>
     With this, the kernel is in view from both sides. <a href="part-1#chBridge">The Bridge</a> at the
     close of <a href="part-1">Part I</a> showed it as silicon: privilege rings as a CPU bit, the trap as
-    a wire-level mechanism, the MMU as a hardware unit, the timer as the single piece
-    of hardware that makes preemption possible. This chapter showed it as code. Same
+    one instruction into an entry point the kernel chose, the MMU as a hardware unit, the
+    timer as the one circuit that makes preemption possible, MMIO and DMA as the kernel's
+    line to the devices. This chapter showed it as code. Same
     object, two different perspectives, and the kernel becomes legible only
     when both are visible at once: thirty million lines of C running in Ring 0,
     sustained by a hardware contract that lets it own the machine.
@@ -2006,14 +2007,14 @@
     <div id="ch5-hero-label" class="chapter-label">Chapter 05</div>
     <h1 id="ch5-hero-title">The Language<br>That Built<br><em>Everything</em></h1>
     <p id="ch5-hero-lead" class="chapter-subtitle">
-      Before C, every operating system was rewritten from scratch for every machine.
-      The cost was civilizational. C broke the pattern by being portable: one source,
+      Before C, an operating system was usually written in assembly for one machine,
+      then rewritten for the next. C broke the pattern by being portable: one source,
       many architectures. UNIX itself was rewritten in it. Half a century later, the
-      kernel you used today, the browser rendering this page and the language runtime
+      kernel you are using now, the browser rendering this page and the language runtime
       executing it are all C, or built on something that is.
     </p>
     <div class="chapter-meta">
-      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Portability · Pointers · UB · The systems contract</span></div>
+      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Portability · Pointers · Undefined behaviour · The systems contract</span></div>
       <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1969 → present</span><div class="meta-item"><span class="meta-label">Listing</span><span class="meta-value">lines 0791–1608 · cc unix.c</span></div></div>
     </div>
   </div>
@@ -2064,7 +2065,7 @@
   <a href="#ch5-bell-labs" class="nav-item">02 · Ritchie &amp; Thompson</a>
   <a href="#ch5-pointers" class="nav-item">03 · Pointers as math</a>
   <a href="#ch5-malloc" class="nav-item">04 · Manual memory</a>
-  <a href="#ch5-ub" class="nav-item">05 · Undefined behavior</a>
+  <a href="#ch5-ub" class="nav-item">05 · Undefined behaviour</a>
   <a href="#ch5-survives" class="nav-item">06 · Why C survives</a>
 </nav>
 
@@ -2657,7 +2658,7 @@
   </section>
 
   <section class="section" id="ch5-ub">
-    <div class="section-number">05 · Undefined behavior</div>
+    <div class="section-number">05 · Undefined behaviour</div>
     <h2>The optimiser's cruel logic.</h2>
 
     <p id="ch5-ub-p1" class="lead">
@@ -2917,13 +2918,13 @@
     <div id="ch6-hero-label" class="chapter-label">Chapter 06</div>
     <h1 id="ch6-hero-title">When C Needed<br>To Think In<br><em>Objects</em></h1>
     <p id="ch6-hero-lead" class="chapter-subtitle">
-      By 1979, C was running million-line systems and the seams were showing. Bjarne
-      Stroustrup, in the same Bell Labs hallway as Ritchie and Thompson, asked: what if
-      a language gave you all of C's speed but let you think in larger units than
-      functions? The answer was not a new language. It was C with classes added on top,
-      in a way that costs you nothing if you don't use them. That language now runs
-      trading systems, game engines, browsers, and most of your operating system's
-      user-space.
+      By 1979, programs were outgrowing what one team could hold in its head, and C
+      offered only the function to organise them with. Bjarne Stroustrup, in the same
+      Bell Labs hallway as Ritchie and Thompson, asked: what if a language gave you all
+      of C's speed but let you think in larger units than functions? His answer was C
+      with classes added on top, in a way that costs you nothing if you don't use them.
+      Renamed C++, it now runs trading systems, game engines, browsers and telephone
+      switches.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Encapsulation · Vtables · RAII · Zero-cost abstraction</span></div>
@@ -3842,12 +3843,12 @@
     <h1 id="ch7-hero-title">The Language<br>That Chose Humans<br>Over <em>Machines</em></h1>
     <p id="ch7-hero-lead" class="chapter-subtitle">
       C and C++ are languages designed around the machine. Python is designed around
-      the programmer. The trade is explicit: you give up an order of magnitude of
-      performance, and you get back code that reads like the pseudocode in your head.
+      the programmer. The trade is explicit: your code runs ten to a hundred times slower,
+      and you get back code that reads like a plan written in plain words.
       For most problems most programmers actually have, that trade is the right one.
     </p>
     <div class="chapter-meta">
-      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Interpretation · Dynamic typing · GIL · The two-language strategy</span></div>
+      <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Interpretation · Dynamic typing · The global interpreter lock · The two-language strategy</span></div>
       <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1989 → present</span><div class="meta-item"><span class="meta-label">Listing</span><span class="meta-value">lines 2414–3199 · python3 readable.py</span></div></div>
     </div>
   </div>
@@ -4505,23 +4506,20 @@
 </section>
 
 <section class="part-opener" style="min-height: 70vh;">
-  <div class="part-label">End of Part Two</div>
+  <div class="part-label">End of Part II</div>
   <div class="gb-eof">EOF · 3199 lines · 4 modules</div>
-  <h1>The kernel <em>and the languages</em>.</h1>
+  <h1>The software layer <em>is built.</em></h1>
   <p class="part-tagline" style="margin-bottom: 40px;">
-    Part I built the substrate; Part II opened the program that owns it and the languages
-    we write on top of it. The kernel as code, not silicon. C, the language UNIX rewrote
-    itself in. C++, scaling C up to systems too big for one human's head. Python,
-    inverting the trade: slower than C by orders of magnitude, but readable, and built
-    so the parts that need to be fast can be fast in someone else's language. Three
-    different deals with the same machine. All three still in production. All three
-    necessary, for different reasons, for different problems.
+    Part II read the kernel as code, not silicon, then three languages that strike
+    different deals with the same machine. C stays close to it. C++ scales C up to
+    systems too big for one head. Python gives up a factor of ten to a hundred in speed for
+    readability, and hands its fast parts to C. All three are still in production.
   </p>
   <p class="part-tagline" style="font-style: italic; opacity: 0.75;">
     Part III steps out of the box entirely. The wire leaves the CPU, crosses the room,
-    and joins the network, where voltage on copper becomes voltage across a continent. It is,
-    once again, a story about people: Shannon, Baran, Davies, Cerf, Berners-Lee, Eich.
-    And it is, once again, a story about silicon and the abstractions we build over it.
+    and joins the network, where a voltage on copper becomes light in glass, crossing a
+    continent. It is, once again, a story about people: Shannon, Baran, Davies, Cerf, Kahn,
+    Berners-Lee, Eich.
   </p>
   <a href="part-3" class="next-btn"><span>Continue to Part III: The Network</span><span aria-hidden="true">→</span></a>
 
