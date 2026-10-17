@@ -48,7 +48,7 @@ def readout(y, seq, reads, t_of):
 t_of = lambda i: 0.5 + (i + 0.6) * 1.0
 B = {'1': 52, '0': 128}
 panel(36, 'BINARY · ONE THRESHOLD', B, [90], ['0', '1', '1', '0', '1'], drift_at=3)   # the same drift, absorbed
-a(text(X0 + 6, 84, 'threshold', size=13, fill=GOLD))
+a(text(X0 + 76, 84, 'threshold', size=13, fill=GOLD))
 readout(172, ['0', '1', '1', '0', '1'], ['0', '1', '1', '0', '1'], t_of)
 TER = {'+1': 222, '0': 258, '−1': 294}
 panel(206, 'TERNARY · TWO THRESHOLDS', TER, [240, 276], ['0', '+1', '−1', '0', '+1'], drift_at=3)
