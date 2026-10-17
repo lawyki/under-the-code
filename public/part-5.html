@@ -250,7 +250,7 @@
 <text x="298" y="218" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">kernel: pipe, socket</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.620200;0.620500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="64.00 0;64.00 0;0.00 0;0.00 0;64.00 0;64.00 0" keyTimes="0.000000;0.059950;0.060000;0.500000;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="234" cy="213" r="6" fill="#4fd8c2"/></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.620200;0.620500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="128.00 0;128.00 0;0.00 0;0.00 0;128.00 0;128.00 0" keyTimes="0.000000;0.059950;0.060000;0.500000;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="234" cy="213" r="6" fill="#4fd8c2"/></g></g>
-<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.439800;0.440000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="206" y="172" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">send</text></g>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.439800;0.440000;0.619200;0.619500;1.000000" dur="10s" repeatCount="indefinite"/><text x="214" y="172" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">send</text></g>
 <text x="10" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">fast: no copy</text>
 <text x="10" y="270" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">one bug hits all</text>
 <text x="206" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">safe: walls</text>
@@ -262,7 +262,7 @@
         <ol>
           <li><b>What is shared.</b> Threads share the heap, globals and open files; each has its own stack and registers. Processes share nothing unless they set up shared memory or talk through the kernel.</li>
           <li><b>The costs.</b> Creating a thread or switching between threads of one process is cheaper than doing the same for processes, which need their own page tables (Chapter 4).</li>
-          <li><b>The standard.</b> POSIX threads (1995) made the shared-memory model portable; C, C++, Java and Rust default to threads, and browsers put each site in its own process for safety.</li>
+          <li><b>Who uses which.</b> C, C++, Java and Rust default to threads; browsers put each site in its own process for safety.</li>
         </ol>
       </details>
     </div>
@@ -287,15 +287,18 @@
     <h2>Two threads · one variable · everything depends on luck.</h2>
 
     <p id="ch16-races-p1" class="lead">
-      The price of shared memory shows up the first time two threads
-      modify the same variable concurrently. The classic example sounds
-      harmless: two threads each increment a shared counter a million
-      times. The expected result is two million. The actual result is
-      nearly always well short of it and changes from run to run,
-      depending on how the threads happen to be scheduled. The increment that looks <span class="key-term">atomic</span> (one indivisible step) in source code (<code>counter++</code>) is in fact three
-      operations underneath: read the value into a register, add one,
-      write it back. If two threads' three-step sequences overlap, the
-      writes can stomp on each other.
+      The price of shared memory is the lost addition of <a href="part-2#ch4">Chapter 4</a>, now
+      between threads: it shows up the first time two threads modify the
+      same variable concurrently. Two threads each increment a shared
+      counter a million times. The expected result is two million. The
+      actual result is nearly always well short of it and changes from run
+      to run, depending on how the threads happen to be scheduled. In
+      source code the increment <code>counter++</code> looks
+      <span class="key-term">atomic</span> (one indivisible step), but underneath it is three
+      operations: read the value into a register, add one, write it back.
+      If two threads' three-step sequences overlap, the writes can stomp on
+      each other. That is a <strong>race condition</strong>: the result
+      depends on which thread gets there first.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-16-2">
@@ -308,17 +311,17 @@
 <text x="70" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">thread 1</text>
 <text x="200" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">counter</text>
 <text x="330" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">thread 2</text>
-<g opacity="0.25"><rect x="14" y="78" width="112" height="22" rx="6" fill="#1d1930" stroke="#a08cff" stroke-opacity="0.8"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/>load  100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="78" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">load  100</text></g>
+<g opacity="1"><rect x="14" y="78" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="78" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">load  100</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.145273;0.145455;0.200000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="76" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0.25"><rect x="274" y="108" width="112" height="22" rx="6" fill="#1d1930" stroke="#4fd8c2" stroke-opacity="0.8"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/>load  100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="108" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">load  100</text></g>
+<g opacity="1"><rect x="274" y="108" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="108" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">load  100</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.245273;0.245455;0.300000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="106" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0.8"><rect x="14" y="138" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/>add  101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="138" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">add  101</text></g>
+<g opacity="1"><rect x="14" y="138" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.345273;0.345455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="138" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">add  101</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.345273;0.345455;0.400000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="136" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0.8"><rect x="14" y="168" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="70" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/>store 101 →</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="168" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">store 101 →</text></g>
+<g opacity="1"><rect x="14" y="168" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.445273;0.445455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="14" y="168" width="112" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8"/><text x="70" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">store 101 →</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.445273;0.445455;0.500000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="12" y="166" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0.8"><rect x="274" y="198" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/>add  101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="198" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">add  101</text></g>
+<g opacity="1"><rect x="274" y="198" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.545273;0.545455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="198" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">add  101</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.545273;0.545455;0.600000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="196" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0.63"><rect x="274" y="228" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/></rect><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/>← store 101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="228" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">← store 101</text></g>
+<g opacity="1"><rect x="274" y="228" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.645273;0.645455;1.000000" dur="11s" repeatCount="indefinite"/><rect x="274" y="228" width="112" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">← store 101</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.645273;0.645455;0.700000;1.000000" dur="11s" repeatCount="indefinite"/><rect x="272" y="226" width="116" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.245273;0.245455;1.000000" dur="11s" repeatCount="indefinite"/><text x="200" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
@@ -332,7 +335,6 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>At scale.</b> Two threads doing a million increments each typically end well short of two million, and the total changes from run to run with the timing.</li>
           <li><b>Why it hides.</b> The bug depends on which instructions interleave, so it rarely shows in testing and appears under load.</li>
           <li><b>The fixes.</b> Make the read-modify-write one indivisible step (an atomic increment, Fig 16.4) or let only one thread in at a time (a mutex, Fig 16.3).</li>
         </ol>
@@ -342,7 +344,7 @@
     <h3>The mutex · serialise the critical section</h3>
 
     <p id="ch16-races-p3">
-      The classic fix is a <span class="key-term">mutex</span> (mutual exclusion lock).
+      The classic fix is a <span class="key-term">mutex</span> (mutual exclusion lock; Chapter 4's semaphore set to 1 is one).
       Each thread, before touching the shared counter, calls
       <code>mutex.lock()</code>; after touching it, calls
       <code>mutex.unlock()</code>. Only one thread can hold the lock at
@@ -355,11 +357,11 @@
 
     <div class="code-block">
       <span class="code-lang">C++: the bug and the fix</span>
-<pre><span class="cm">// the race: counter ends well short of 2,000,000, and differs from run to run</span>
+<pre><span class="cm">// the race (an unoptimised build shows it): counter ends well short of 2,000,000, and differs from run to run</span>
 <span class="kw">int</span> counter = <span class="st">0</span>;
 <span class="kw">void</span> worker() {
     <span class="kw">for</span> (<span class="kw">int</span> i = <span class="st">0</span>; i &lt; <span class="st">1'000'000</span>; ++i)
-        ++counter;                  <span class="cm">// three instructions: LOAD; ADD; STORE</span>
+        ++counter;                  <span class="cm">// three steps: LOAD; ADD; STORE</span>
 }
 
 <span class="cm">// the fix: std::mutex serialises the critical section</span>
@@ -401,7 +403,7 @@
       <div class="diagram-label">Fig 16.3&nbsp;· Mutex protects&nbsp;· deadlock is the new failure mode</div>
       <svg viewBox="0 0 400 278" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-4 svgd-part5-4">
 <title id="svgt-part5-4">Fig 16.3 · Mutex protects · deadlock is the new failure mode</title>
-<desc id="svgd-part5-4">Two threads, A and B, and two locks, L1 and L2, run two ways. Taking them in opposite orders: A holds L1, B holds L2, then A waits for L2 and B waits for L1. The waits form a cycle and both wait for ever. Taking them in the same order, L1 first: B waits for L1 while A takes L2, finishes and releases both; then B takes them in turn. With no cycle there is no deadlock.</desc>
+<desc id="svgd-part5-4">Two threads, A and B, and two locks, L1 and L2, run two ways. Taking them in opposite orders: A holds L1, B holds L2, then A waits for L2 and B waits for L1. The waits form a cycle and both wait forever. Taking them in the same order, L1 first: B waits for L1 while A takes L2, finishes and releases both; then B takes them in turn. With no cycle there is no deadlock.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">opposite order</text>
 <circle cx="44" cy="70" r="22" fill="none" stroke="#a08cff" stroke-width="1.5"/>
 <text x="44" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">A</text>
@@ -415,7 +417,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><line x1="162" y1="92" x2="162" y2="150" stroke="#4fd8c2" stroke-width="3"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266500;0.266667;1.000000" dur="12s" repeatCount="indefinite"/><line x1="44" y1="92" x2="162" y2="150" stroke="#a08cff" stroke-width="1.5" stroke-dasharray="4 3"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.266500;0.266667;1.000000" dur="12s" repeatCount="indefinite"/><line x1="162" y1="92" x2="44" y2="150" stroke="#4fd8c2" stroke-width="1.5" stroke-dasharray="4 3"/></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.399833;0.400000;1.000000" dur="12s" repeatCount="indefinite"/><text x="103" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">cycle: both wait</text><text x="103" y="232" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">for ever</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.399833;0.400000;1.000000" dur="12s" repeatCount="indefinite"/><text x="103" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">cycle: both wait</text><text x="103" y="232" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">forever</text></g>
 <text x="206" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">same order: L1 first</text>
 <circle cx="240" cy="70" r="22" fill="none" stroke="#a08cff" stroke-width="1.5"/>
 <text x="240" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">A</text>
@@ -435,11 +437,10 @@
 <line x1="10" y1="262" x2="34" y2="262" stroke="rgba(232,229,244,0.85)" stroke-width="3"/><text x="40" y="267" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">holds</text>
 <line x1="110" y1="262" x2="134" y2="262" stroke="rgba(232,229,244,0.85)" stroke-width="1.5" stroke-dasharray="4 3"/><text x="140" y="267" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">waits for</text>
 </svg>
-      <p id="ch16-races-p5" class="diagram-caption">A mutex lets one thread in at a time, which fixes the race but creates a new failure: if A holds L1 and waits for L2 while B holds L2 and waits for L1, both wait for ever. If every thread takes locks in the same order, the waits can never form a cycle, and the deadlock cannot happen.</p>
+      <p id="ch16-races-p5" class="diagram-caption">Left, a deadlock: each thread holds one lock and waits for the other's, and the waits close a cycle. Right: both ask for L1 first, so B waits until A has finished with both locks, and no cycle can form.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The wait-for graph.</b> An arrow from each waiting thread to the holder of the lock it wants; deadlock is exactly a cycle in that graph.</li>
           <li><b>Lock ordering.</b> Large codebases such as Linux and PostgreSQL document a hierarchy of locks; taking them out of order is a review red flag, and Linux's lockdep checks for it at run time.</li>
           <li><b>Livelock.</b> The same shape with threads that keep backing off and retrying in step instead of blocking: busy, yet no progress.</li>
         </ol>
@@ -449,7 +450,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 19.5h17z"/><path d="M12 10v4.5"/><circle cx="12" cy="17" r=".75" fill="currentColor" stroke="none"/></svg></span>
       <p id="ch16-races-p6" class="insight-text">
-        <strong>Therac-25, 1985–87.</strong> The first known software-caused medical fatalities were race conditions. The Therac-25 radiation therapy machine used a single computer to control beam intensity and targeting. Its predecessors had hardware interlocks; the engineers had concluded the software was reliable enough to remove them. A specific keystroke sequence, fast enough to interleave with the beam-mode-select state machine, could leave the machine in high-power X-ray mode while the turntable that shapes the beam was set for low-power electron mode. Six patients received radiation overdoses of up to a hundred times the prescribed dose; three died. Any concurrent state machine without explicit synchronisation will eventually be observed in every reachable state, including the states the designer assumed were impossible.
+        <strong>Therac-25, 1985–87.</strong> The first known software-caused medical fatalities were race conditions. The Therac-25 radiation therapy machine used a single computer to control beam intensity and targeting. Its predecessors had hardware interlocks (physical switches that blocked the beam in an unsafe setting); the engineers had concluded the software was reliable enough to remove them. A specific keystroke sequence, fast enough to interleave with the beam-mode-select state machine, could leave the machine in high-power X-ray mode while the turntable that shapes the beam was set for low-power electron mode. Six patients received radiation overdoses of roughly a hundred times the prescribed dose; three died.
       </p>
     </div>
   </section>
@@ -473,42 +474,41 @@
       a single indivisible step. Built carefully, CAS-based data
       structures can be wait-free (every thread always makes progress)
       or lock-free (the system as a whole always makes progress, even
-      if individual threads can starve). The stricter term comes from
-      <strong>Maurice Herlihy</strong>'s 1991 paper <em>Wait-Free
-      Synchronization</em>, which proved a hierarchy of exactly which
-      data structures can be implemented wait-free on which atomic
-      primitives, turning an engineering practice into a mathematical
-      theory. The cost is that the code is hard to write correctly, and
+      if individual threads can starve). <strong>Maurice Herlihy</strong>'s
+      1991 paper <em>Wait-Free Synchronization</em> made the stricter idea
+      precise, proving a hierarchy of which data structures can be
+      implemented wait-free on which atomic primitives and turning an
+      engineering practice into a mathematical theory. The cost is that the code is hard to write correctly, and
       reasoning about it requires understanding <em>memory orderings</em>,
       the rules by which writes from one core become visible to others.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-16-4">
-      <div class="diagram-label">Fig 16.4&nbsp;· Compare-and-swap&nbsp;· the atomic primitive everything else is built on</div>
+      <div class="diagram-label">Fig 16.4&nbsp;· Compare-and-swap&nbsp;· the atomic step lock-free code is built on</div>
       <svg viewBox="0 0 400 298" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-5 svgd-part5-5">
-<title id="svgt-part5-5">Fig 16.4 · Compare-and-swap · the atomic primitive everything else is built on</title>
+<title id="svgt-part5-5">Fig 16.4 · Compare-and-swap · the atomic step lock-free code is built on</title>
 <desc id="svgd-part5-5">The race of Fig 16.2 replayed with compare-and-swap, which stores a new value only if the old one is still there. With the counter at 100, both threads read 100. Thread 1 swaps 100 for 101 and succeeds. Thread 2 tries to swap 100 for 101 and fails, because the counter now holds 101; it reads again and swaps 101 for 102. Two increments, and the counter rose by two, with no lock taken.</desc>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">CAS(addr, expected, new): store new</text>
 <text x="10" y="38" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">only if addr still holds expected</text>
 <text x="70" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">thread 1</text>
 <text x="200" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">counter</text>
 <text x="330" y="66" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">thread 2</text>
-<g opacity="0.25"><rect x="8" y="78" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.85"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/>read 100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="8" y="78" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.85"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">read 100</text></g>
+<g opacity="1"><rect x="8" y="78" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="8" y="78" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.85"/><text x="70" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">read 100</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.183333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="6" y="76" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
-<g opacity="0.25"><rect x="268" y="108" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/>read 100</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="108" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">read 100</text></g>
+<g opacity="1"><rect x="268" y="108" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="108" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">read 100</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.233167;0.233333;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="266" y="106" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="124" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">100</text></g>
-<g opacity="0.8"><rect x="8" y="138" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/>CAS 100→101  ✓</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="8" y="138" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.85"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">CAS 100→101  ✓</text></g>
+<g opacity="1"><rect x="8" y="138" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="8" y="138" width="124" height="22" rx="6" fill="none" stroke="#a08cff" stroke-opacity="0.85"/><text x="70" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">CAS 100→101  ✓</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.333167;0.333333;0.383333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="6" y="136" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.333167;0.333333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="154" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">101</text></g>
-<g opacity="0.73"><rect x="268" y="168" width="124" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="330" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/>CAS 100→101  ✗</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="168" width="124" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-opacity="0.85"/><text x="330" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">CAS 100→101  ✗</text></g>
+<g opacity="1"><rect x="268" y="168" width="124" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="168" width="124" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-opacity="0.85"/><text x="330" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">CAS 100→101  ✗</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.433167;0.433333;0.483333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="266" y="166" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.433167;0.433333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">101 ≠ 100</text></g>
-<g opacity="0.63"><rect x="268" y="198" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/>read 101</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="198" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">read 101</text></g>
+<g opacity="1"><rect x="268" y="198" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="198" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">read 101</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.533167;0.533333;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="266" y="196" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="214" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">101</text></g>
-<g opacity="0.63"><rect x="268" y="228" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/></rect><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/>CAS 101→102  ✓</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="228" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">CAS 101→102  ✓</text></g>
+<g opacity="1"><rect x="268" y="228" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.8" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/></rect></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="268" y="228" width="124" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-opacity="0.85"/><text x="330" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">CAS 101→102  ✓</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.633167;0.633333;0.683333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="266" y="226" width="128" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.633167;0.633333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="244" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">102</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.683167;0.683333;1.000000" dur="12s" repeatCount="indefinite"/><text x="200" y="284" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">two increments, +2: 102, no lock taken</text></g>
@@ -527,7 +527,7 @@
     <h3>Memory orderings · why the world is not sequentially consistent</h3>
 
     <p id="ch16-lockfree-p3">
-      On many modern multi-core CPUs, the order in which one core's writes become visible to another core can differ from the order they were issued. Out-of-order execution (<a href="part-1#ch1">Chapter 1</a>, Section 04) and store buffers (holding areas where a core parks its writes before they reach the cache; a write whose cache line is already at hand can leave before an earlier write still waiting for its line) let writes appear reordered. On a weakly ordered CPU (one that allows this freely), such as ARM, a thread that writes <code>x = 1; flag = true;</code> may have another thread on a different core observe <code>flag = true</code>
+      On many modern multi-core CPUs, the order in which one core's writes become visible to another core can differ from the order they were issued. Out-of-order execution (<a href="part-1#ch1">Chapter 1</a>, Section 04) and store buffers (holding areas where a core parks its writes until the cache takes them, which can let a later write out before an earlier one) let writes appear reordered. On a weakly ordered CPU (one that allows this freely), such as ARM, a thread that writes <code>x = 1; flag = true;</code> may have another thread on a different core observe <code>flag = true</code>
       while still reading <code>x = 0</code>. Programs that depend on
       cross-thread ordering must say so, by annotating each atomic
       operation with a <em>memory ordering</em> (a contract about what
@@ -535,8 +535,9 @@
       broken example: the writer tags its flag store <em>release</em> (a
       promise: every write before it on this thread, the <code>x = 1</code>
       included, is visible by the time the flag is); the reader tags its
-      flag load <em>acquire</em> (the matching demand: everything the
-      releaser promised is visible before any later load runs). Release
+      flag load <em>acquire</em> (the matching demand: no later load on
+      this core, the load of <code>x</code> included, may run ahead of the
+      flag load, so everything the releaser promised is visible by then). Release
       and acquire meet at the flag, and <code>x</code> crosses with it.
       Above the pair sits <em>sequentially consistent</em> (the
       strongest ordering: one global order every thread agrees on,
@@ -549,12 +550,12 @@
       <svg viewBox="0 0 400 268" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-6 svgd-part5-6">
 <title id="svgt-part5-6">Fig 16.5 · Memory orderings · relaxed vs release and acquire</title>
 <desc id="svgd-part5-6">A writer sets x to 1 and then a flag to 1; a reader waits for the flag and then reads x. Run with relaxed ordering on a weakly ordered processor such as ARM, other cores can see the flag before x, so the reader sees the flag but reads x as 0. Run with a release store on the flag and an acquire load on the reader's side, x becomes visible no later than the flag, so the reader reads 1.</desc>
-<defs><clipPath id="ko-fig-16-5-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM268 89h60v22h-60ZM202 89h60v22h-60Z"/></clipPath><clipPath id="ko-fig-16-5-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM136 153h60v22h-60ZM70 153h60v22h-60Z"/></clipPath><clipPath id="ko-fig-16-5-3" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM268 209h60v22h-60ZM334 209h60v22h-60Z"/></clipPath><clipPath id="ko-fig-16-5-4" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM70 33h60v22h-60ZM136 33h60v22h-60Z"/></clipPath><clipPath id="ko-fig-16-5-5" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM136 181h60v22h-60ZM202 181h60v22h-60Z"/></clipPath><clipPath id="ko-fig-16-5-6" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM334 61h60v22h-60ZM136 61h60v22h-60Z"/></clipPath></defs>
+<defs><clipPath id="ko-fig-16-5-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM202 89h126v22h-126Z"/></clipPath><clipPath id="ko-fig-16-5-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM70 153h126v22h-126Z"/></clipPath><clipPath id="ko-fig-16-5-3" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM268 209h126v22h-126Z"/></clipPath><clipPath id="ko-fig-16-5-4" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM70 33h126v22h-126Z"/></clipPath><clipPath id="ko-fig-16-5-5" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM136 181h126v22h-126Z"/></clipPath><clipPath id="ko-fig-16-5-6" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM334 61h60v22h-60ZM136 61h60v22h-60Z"/></clipPath></defs>
 <text x="10" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">relaxed, on ARM or POWER</text>
 <text x="10" y="49" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">write</text>
 <line x1="66" y1="46" x2="396" y2="46" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-4)"/>
 <text x="10" y="77" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">seen</text>
-<line x1="66" y1="74" x2="396" y2="74" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-6)"/>
+<line x1="66" y1="74" x2="394" y2="74" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-6)"/>
 <text x="10" y="105" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">read</text>
 <line x1="66" y1="102" x2="396" y2="102" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-1)"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="70.0" y="33" width="60" height="22" rx="6" fill="none" stroke="#a08cff" stroke-width="1.2"/><text x="100" y="49" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">x=1</text></g>
@@ -567,7 +568,7 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.679800;0.680000;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="332.0" y="59" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="202.0" y="89" width="60" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1.2"/><text x="232" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">flag=1</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.419800;0.420000;0.480000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="200.0" y="87" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.549800;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="268.0" y="89" width="60" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-width="2"/><text x="298" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">x=0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.549800;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="268.0" y="89" width="60" height="22" rx="6" fill="none" stroke="#f08aa8" stroke-width="1.2"/><text x="298" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">x=0</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.549800;0.550000;0.610000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="266.0" y="87" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <text x="10" y="138" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">release / acquire</text>
 <text x="10" y="169" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">write</text>
@@ -575,7 +576,7 @@
 <text x="10" y="197" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">seen</text>
 <line x1="66" y1="194" x2="396" y2="194" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-5)"/>
 <text x="10" y="225" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">read</text>
-<line x1="66" y1="222" x2="396" y2="222" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-3)"/>
+<line x1="66" y1="222" x2="394" y2="222" stroke="rgba(232,229,244,1)" stroke-opacity="0.41" clip-path="url(#ko-fig-16-5-3)"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="70.0" y="153" width="60" height="22" rx="6" fill="none" stroke="#a08cff" stroke-width="1.2"/><text x="100" y="169" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">x=1</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.159800;0.160000;0.220000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="68.0" y="151" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.289800;0.290000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="136.0" y="153" width="60" height="22" rx="6" fill="none" stroke="#a08cff" stroke-width="2"/><text x="166" y="169" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">flag=1</text></g>
@@ -586,7 +587,7 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.419800;0.420000;0.480000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="200.0" y="179" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.549800;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="268.0" y="209" width="60" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-width="2"/><text x="298" y="225" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">flag=1</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.549800;0.550000;0.610000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="266.0" y="207" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.679800;0.680000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="334.0" y="209" width="60" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-width="2"/><text x="364" y="225" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">x=1</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.679800;0.680000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="334.0" y="209" width="60" height="22" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1.2"/><text x="364" y="225" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">x=1</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.679800;0.680000;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="332.0" y="207" width="64" height="26" rx="7" fill="none" stroke="#fff" stroke-width="2"/></g>
 <rect x="10" y="246" width="22" height="12" rx="3" fill="none" stroke="rgba(232,229,244,0.85)" stroke-width="2"/><text x="40" y="257" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">release store / acquire load</text>
 </svg>
@@ -594,8 +595,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The four levels.</b> Relaxed: the operation is atomic, nothing more. Release: earlier writes go out first. Acquire: later reads wait for what the matching release published. Sequentially consistent: all threads agree on one order of every such operation, at the highest cost.</li>
-          <li><b>Hardware differs.</b> x86 keeps stores in order, so this test passes there even with relaxed atomics, and the bug surfaces only on ARM or POWER; the compiler may reorder the two writes on any machine unless told not to.</li>
+          <li><b>Hardware differs.</b> x86 keeps stores in order, so this test passes there even with relaxed atomics, and the bug surfaces only on weakly ordered CPUs such as ARM, POWER or RISC-V; the compiler may reorder the two writes on any machine unless told not to.</li>
           <li><b>Defaults.</b> Java and Go atomics are sequentially consistent; C++ lets the programmer choose per operation and defaults to sequentially consistent; Rust makes every atomic operation name its ordering.</li>
         </ol>
       </details>
@@ -611,15 +611,17 @@
       caches, all the machinery of <a href="part-1#ch1">Chapter 1</a>) is optimised for fast
       <em>sequential</em> execution: do one thing, do it as fast as
       possible, then move to the next. The GPU is the opposite: thousands
-      of small cores running in lockstep, each executing the same
-      instruction on different data. It grew out of 3D graphics, where
+      of small cores (GPU makers call them lanes), grouped so that each
+      group runs in lockstep, executing the same instruction on different
+      data. It grew out of 3D graphics, where
       every pixel on a million-pixel screen needs the same shading
-      calculation applied to different inputs. Around 2007, NVIDIA
+      calculation (working out its colour) applied to different inputs. Around 2007, NVIDIA
       realised that this hardware was useful for any embarrassingly
       parallel computation and exposed it through the
-      <span class="key-term">CUDA</span> programming model. Today GPUs do
-      most of the world's machine learning training and inference, most
-      of its scientific simulation, all of its real-time graphics.
+      <span class="key-term">CUDA</span> programming model. Today GPUs train
+      and run most large machine-learning models, render essentially all
+      real-time graphics, and carry a growing share of scientific
+      simulation.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-16-6">
@@ -977,9 +979,9 @@
       Instruction, Multiple Data). A SIMD instruction operates on a vector
       of values at once: add these 32 numbers to those 32 numbers in one
       instruction. CPUs have SIMD too (SSE, AVX on x86; NEON on ARM),
-      typically 128 or 256 bits wide, which holds 4 or 8 32-bit numbers at once.
-      GPUs take this much further: a CUDA <em>warp</em> is 32 threads
-      running in lockstep. Many warps are grouped into a <em>block</em>;
+      typically 128 or 256 bits wide, which holds four or eight 32-bit numbers at once.
+      GPUs take this much further: a CUDA <em>warp</em> is 32 threads,
+      one per lane, running in lockstep. Many warps are grouped into a <em>block</em>;
       many blocks make a <em>grid</em>; the entire grid is dispatched to the GPU as a single kernel launch (here a <em>kernel</em> is the function the GPU runs, not the operating system). The programmer writes code that
       looks like it runs on a single thread; the runtime replicates it
       across the grid.
@@ -1056,7 +1058,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Blocks.</b> Threads in one block share fast on-chip memory (up to 227 KB per block on an H100) and can wait for each other; in the classic model separate blocks cannot, and share data through slow global memory.</li>
-          <li><b>Memory.</b> Registers are per thread and nearly free; global memory (HBM, 80 GB on an H100) is huge and slow per access. Fast kernels keep data in shared memory and have each warp read neighbouring addresses together (coalesced access).</li>
+          <li><b>Memory.</b> Registers are per thread and nearly free; global memory (HBM, 80 GB on an H100) is huge and slow per access. Fast kernels keep data in the block's on-chip memory (CUDA calls it shared memory) and have each warp read neighbouring addresses together (coalesced access).</li>
           <li><b>The model.</b> The programmer writes one thread's code; the launch runs it for every thread of the grid, each finding its own index.</li>
         </ol>
       </details>
@@ -1071,14 +1073,14 @@
       Adding cores to a computation is not free, and it is not unbounded.
       Two laws govern what you can expect. <span class="key-term">Amdahl's law</span>
       (Gene Amdahl, 1967) says that if a fraction <em>p</em> of a
-      program is parallelisable, the sequential rest sets a hard ceiling on speedup that no number of
-      cores can lift. The ceiling is brutal in practice: a program with
-      90% parallel code maxes out at 10×.
+      program's running time is parallelisable, the sequential rest sets a hard ceiling on speedup that no number of
+      cores can lift. The ceiling is brutal in practice: a program that
+      spends 90% of its time in parallel work maxes out at 10×.
     </p>
 
     <div class="math-callout">
       <div class="math-label">The ceiling, in one equation</div>
-      <p id="ch16-amdahl-p2">If the fraction <em>p</em> parallelises perfectly and the remaining <em>1−p</em> is strictly sequential, the speedup on <em>N</em> cores is:</p>
+      <p id="ch16-amdahl-p2">If a fraction <em>p</em> of the one-core running time parallelises perfectly and the remaining <em>1−p</em> is strictly sequential, count that running time as 1. On <em>N</em> cores the sequential part still takes <em>1−p</em> and the parallel part takes <em>p/N</em>, so the speedup (old time over new time) is:</p>
       <p id="ch16-amdahl-p3" class="math-formula">S(N) = 1 / ((1 − p) + p / N)</p>
       <p id="ch16-amdahl-p4">The <em>p/N</em> term shrinks toward zero as you add cores; the <em>(1−p)</em> term does not move. So <em>S(N) → 1 / (1 − p)</em> as <em>N → ∞</em>. A program that is 95% parallel cannot exceed 20× speedup.</p>
     </div>
@@ -1092,7 +1094,7 @@
       <div class="diagram-label">Fig 16.8&nbsp;· Amdahl's law&nbsp;· the ceiling that won't move</div>
       <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-9 svgd-part5-9">
 <title id="svgt-part5-9">Fig 16.8 · Amdahl's law · the ceiling that won't move</title>
-<desc id="svgd-part5-9">One job whose work is 5% serial and p = 95% parallel. As the number of cores doubles from 1 to 1,024, the parallel 95% of the time bar shrinks as 95 divided by N, but the serial 5% never does, so the bar approaches the serial floor. Below, the speedup curve S(N) = 1 / (0.05 + 0.95/N) rises fast at first and then flattens against its ceiling of 20: 5.9 at 8 cores, 15.4 at 64, 19.6 at 1,024.</desc>
+<desc id="svgd-part5-9">One job whose work is 5% serial and p = 95% parallel. As the number of cores doubles from 1 to 1,024, the parallel 95% of the time bar shrinks as 95 divided by N, but the serial 5% never does, so the bar approaches the serial floor. Below, the speedup curve S(N) = 1 / (0.05 + 0.95/N) climbs steadily on the doubling axis and then flattens against its ceiling of 20: 5.9 at 8 cores, 15.4 at 64, 19.6 at 1,024.</desc>
 <text x="20" y="18" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">time for one job: 5% serial, p = 95% parallel</text>
 <rect x="20" y="28" width="18.0" height="22" rx="3" fill="#f08aa8" fill-opacity="0.9"/>
 <rect x="20" y="28" width="360" height="22" rx="3" fill="none" stroke="rgba(232,229,244,1)" stroke-opacity="0.4" stroke-dasharray="3 3"/>
@@ -1119,16 +1121,14 @@
 <text x="46" y="300" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">1</text>
 <text x="215" y="300" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">32</text>
 <text x="384" y="300" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">1024</text>
-<text x="384" y="320" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">cores, N</text>
+<text x="384" y="320" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">cores, N (doubling)</text>
 <g class="fx"><g><animateTransform attributeName="transform" type="translate" values="338.00 0;338.00 0;338.00 0;338.00 0;0.00 0;0.00 0;33.80 0;33.80 0;67.60 0;67.60 0;101.40 0;101.40 0;135.20 0;135.20 0;169.00 0;169.00 0;202.80 0;202.80 0;236.60 0;236.60 0;270.40 0;270.40 0;304.20 0;304.20 0;338.00 0;338.00 0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.177273;0.200000;0.250000;0.272727;0.322727;0.345455;0.395455;0.418182;0.468182;0.490909;0.540909;0.563636;0.613636;0.636364;0.686364;0.709091;0.759091;0.781818;0.831818;0.854545;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -132.14;0 -132.14;0 -132.14;0 -132.14;0 0.00;0 0.00;0 -6.42;0 -6.42;0 -17.57;0 -17.57;0 -34.93;0 -34.93;0 -57.74;0 -57.74;0 -81.89;0 -81.89;0 -102.26;0 -102.26;0 -116.40;0 -116.40;0 -124.93;0 -124.93;0 -129.65;0 -129.65;0 -132.14;0 -132.14" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.177273;0.200000;0.250000;0.272727;0.322727;0.345455;0.395455;0.418182;0.468182;0.490909;0.540909;0.563636;0.613636;0.636364;0.686364;0.709091;0.759091;0.781818;0.831818;0.854545;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="46.0" cy="272.9" r="6" fill="#fff" stroke="#4fd8c2" stroke-width="2"/></g></g></g>
 </svg>
       <p id="ch16-amdahl-p6" class="diagram-caption">Add cores and only the parallel part of a job shrinks; the serial part stays. With 5% serial work the speedup is 5.9× on 8 cores, 15.4× on 64 and 19.6× on 1,024, and no number of cores can take it past 20×.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The formula.</b> S(N) = 1 / ((1 − p) + p/N): the serial share 1 − p costs the same on any machine, the parallel share p is divided among N cores. As N grows, S approaches 1/(1 − p).</li>
-          <li><b>Other values.</b> 50% parallel tops out at 2×, 90% at 10×, 99% at 100×: going from 95% to 99% parallel buys more than any number of extra cores.</li>
-          <li><b>Who.</b> Gene Amdahl made the argument at the AFIPS conference in 1967; Fig 16.9 shows the answer to a different question.</li>
+          <li><b>Other values.</b> 50% parallel tops out at 2×, 90% at 10×, 99% at 100×: going from 95% to 99% parallel raises the ceiling from 20× to 100×, which no number of extra cores can do.</li>
         </ol>
       </details>
     </div>
@@ -1142,9 +1142,10 @@
       the extra cores can tackle. If problem size grows with the available compute
       (more particles in a physics simulation, more pixels in a
       rendering), the sequential portion stays roughly constant while
-      the parallel portion scales, and effective speedup,
-      <em>S(N) = N − (1 − p)·(N − 1)</em>, grows nearly
-      linearly with cores. This is why GPU-driven workloads (training a
+      the parallel portion scales, so the work done in the same time,
+      compared with one core, is <em>S(N) = (1 − p) + p·N</em>: the
+      serial share is done once, the parallel share on each of the
+      <em>N</em> cores. It grows nearly linearly with cores. This is why GPU-driven workloads (training a
       bigger neural network on more GPUs) and supercomputer workloads (simulating
       a finer-grained physical model on more nodes) do scale to
       thousands of cores: the problem grew with the resources.
@@ -1175,7 +1176,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.739800;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="38.0" y="60" width="5.3" height="20" rx="3" fill="#a08cff" fill-opacity="0.85"/><text x="20" y="102" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">time 0.06 · speedup 15.4×</text></g>
 <text x="380" y="102" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f08aa8">ceiling 20×</text>
 <text x="20" y="148" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">Gustafson: same time, how much more?</text>
-<rect x="20" y="158" width="360" height="20" rx="3" fill="none" fill-opacity="0.18" stroke="#4fd8c2" stroke-opacity="0.5"/>
+<rect x="38.0" y="158" width="342.0" height="20" rx="3" fill="#4fd8c2" fill-opacity="0.85"/>
 <rect x="20" y="158" width="18.0" height="20" rx="3" fill="#f08aa8" fill-opacity="0.9"/>
 <text x="380" y="196" text-anchor="end" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">time fixed</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.239200;0.239500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="210" width="5.9" height="20" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="20" y="252" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">work done 1.0× · grows with N</text></g>
@@ -1192,7 +1193,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The two formulas.</b> Amdahl: S = 1 / ((1 − p) + p/N). Gustafson: S = (1 − p) + p·N, the same as N − (1 − p)(N − 1).</li>
-          <li><b>Which applies.</b> A frame that must render in 16 ms, or one fixed compile, is Amdahl. A bigger simulation, a larger model or more samples in the same hour is Gustafson, which is why supercomputers and GPU clusters keep scaling.</li>
+          <li><b>Which applies.</b> One fixed compile, or one query you want answered sooner, is Amdahl; a bigger simulation or model in the same hour is Gustafson.</li>
           <li><b>Who.</b> John Gustafson made the argument in 1988, after his team at Sandia ran problems scaled to 1,024 processors.</li>
         </ol>
       </details>
@@ -1212,8 +1213,10 @@
       <strong>cache coherence</strong> is the property that those private
       caches still agree with one another. A hardware protocol called
       <strong>MESI</strong> (Modified, Exclusive, Shared, Invalid)
-      maintains coherence by tracking the state of every cache line (the 64-byte block a cache stores and moves as one unit) on every core and ensuring that no two cores have conflicting writes
-      to the same line.
+      maintains coherence by tracking the state of every cache line (the block a cache stores and moves as one unit, usually 64 bytes) on every core and ensuring that no two cores have conflicting writes
+      to the same line. The price is cache-line ping-pong: when two cores
+      keep writing the same line they take turns invalidating each other's
+      copy, and every write waits for the line to cross over.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-16-10">
@@ -1221,31 +1224,31 @@
       <svg viewBox="0 0 400 298" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-11 svgd-part5-11">
 <title id="svgt-part5-11">Fig 16.10 · NUMA · two sockets, two memories, asymmetric latency</title>
 <desc id="svgd-part5-11">Two processor sockets, each with four cores and its own memory, joined by a link. Core 0 sends two reads at the same moment: one to its own socket's memory, one across the link to the other socket's. The local read comes back first; the remote one takes about 1.6 times as long.</desc>
-<rect x="10" y="10" width="176" height="188" rx="12" fill="none" stroke="#a08cff" stroke-opacity="0.6"/>
+<rect x="10" y="10" width="172" height="188" rx="12" fill="none" stroke="#a08cff" stroke-opacity="0.6"/>
 <text x="22" y="30" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">socket 0</text>
 <rect x="22" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="2" stroke-opacity="1"/>
 <text x="39" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#a08cff">0</text>
-<rect x="62" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
-<text x="79" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">1</text>
-<rect x="102" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
-<text x="119" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">2</text>
-<rect x="142" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
-<text x="159" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">3</text>
-<rect x="22" y="130" width="152" height="52" rx="8" fill="none" stroke="#f2c46d" stroke-opacity="0.8"/>
-<text x="98" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">its memory</text>
-<rect x="214" y="10" width="176" height="188" rx="12" fill="none" stroke="#4fd8c2" stroke-opacity="0.5"/>
-<text x="226" y="30" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">socket 1</text>
-<rect x="226" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
-<text x="243" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">4</text>
-<rect x="266" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
-<text x="283" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">5</text>
+<rect x="60" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
+<text x="77" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">1</text>
+<rect x="98" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
+<text x="115" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">2</text>
+<rect x="136" y="42" width="34" height="34" rx="6" fill="none" stroke="#a08cff" stroke-width="1" stroke-opacity="0.6"/>
+<text x="153" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">3</text>
+<rect x="22" y="130" width="148" height="52" rx="8" fill="none" stroke="#f2c46d" stroke-opacity="0.8"/>
+<text x="96" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">its memory</text>
+<rect x="218" y="10" width="172" height="188" rx="12" fill="none" stroke="#4fd8c2" stroke-opacity="0.5"/>
+<text x="230" y="30" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#4fd8c2">socket 1</text>
+<rect x="230" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
+<text x="247" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">4</text>
+<rect x="268" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
+<text x="285" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">5</text>
 <rect x="306" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
 <text x="323" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">6</text>
-<rect x="346" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
-<text x="363" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">7</text>
-<rect x="226" y="130" width="152" height="52" rx="8" fill="none" stroke="#f2c46d" stroke-opacity="0.8"/>
-<text x="302" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">its memory</text>
-<line x1="186" y1="104" x2="214" y2="104" stroke="rgba(232,229,244,0.85)" stroke-width="3" stroke-opacity="0.6"/>
+<rect x="344" y="42" width="34" height="34" rx="6" fill="none" stroke="#4fd8c2" stroke-width="1" stroke-opacity="0.6"/>
+<text x="361" y="64" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">7</text>
+<rect x="230" y="130" width="148" height="52" rx="8" fill="none" stroke="#f2c46d" stroke-opacity="0.8"/>
+<text x="304" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="#f2c46d">its memory</text>
+<line x1="182" y1="104" x2="218" y2="104" stroke="rgba(232,229,244,0.85)" stroke-width="3" stroke-opacity="0.6"/>
 <text x="200" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">link</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.179800;0.180000;0.380200;0.380500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.059950;0.060000;0.180000;0.280000;0.380000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 52.00;0 0.00;0 0.00" keyTimes="0.000000;0.059950;0.060000;0.180000;0.280000;0.380000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="39" cy="78" r="6" fill="#a08cff"/></g></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.179800;0.180000;0.500200;0.500500;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;235.00 0;235.00 0;235.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.059950;0.060000;0.180000;0.194495;0.325505;0.340000;0.354495;0.485505;0.500000;1.000000" dur="10s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 26.00;0 26.00;0 52.00;0 26.00;0 26.00;0 0.00;0 0.00" keyTimes="0.000000;0.059950;0.060000;0.180000;0.194495;0.325505;0.340000;0.354495;0.485505;0.500000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="39" cy="78" r="6" fill="#4fd8c2"/></g></g></g>
@@ -1274,7 +1277,7 @@
 <desc id="svgd-part5-12">Four cores and one cache line; each core's copy is modified, exclusive, shared or invalid. Core A reads it and holds the only copy, exclusive. Core B reads it, and both copies become shared. Core A writes: it sends an invalidate on the bus, B's copy becomes invalid and A's modified. Core C reads: A supplies the new data and writes it back, and A and C become shared, while B stays invalid and D never held the line.</desc>
 <rect x="14" y="14" width="84" height="94" rx="10" fill="none" stroke="rgba(232,229,244,0.77)" stroke-opacity="0.5"/>
 <text x="56" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">core A</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="34" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="56" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="34" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="56" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.319200;0.319500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="34" y="48" width="44" height="44" rx="8" fill="#a08cff" fill-opacity="0.85"/><text x="56" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#1d1930">E</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.200000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="31" y="45" width="50" height="50" rx="9" fill="none" stroke="#fff" stroke-width="2"/></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="34" y="48" width="44" height="44" rx="8" fill="#4fd8c2" fill-opacity="0.85"/><text x="56" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#1d1930">S</text></g>
@@ -1285,7 +1288,7 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.679800;0.680000;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="31" y="45" width="50" height="50" rx="9" fill="none" stroke="#fff" stroke-width="2"/></g>
 <rect x="110" y="14" width="84" height="94" rx="10" fill="none" stroke="rgba(232,229,244,0.77)" stroke-opacity="0.5"/>
 <text x="152" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">core B</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="152" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="152" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.319200;0.319500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="152" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="48" width="44" height="44" rx="8" fill="#4fd8c2" fill-opacity="0.85"/><text x="152" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#1d1930">S</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.380000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="127" y="45" width="50" height="50" rx="9" fill="none" stroke="#fff" stroke-width="2"/></g>
@@ -1294,17 +1297,17 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.679800;0.680000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="152" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <rect x="206" y="14" width="84" height="94" rx="10" fill="none" stroke="rgba(232,229,244,0.77)" stroke-opacity="0.5"/>
 <text x="248" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">core C</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.319200;0.319500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.679200;0.679500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.679800;0.680000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="226" y="48" width="44" height="44" rx="8" fill="#4fd8c2" fill-opacity="0.85"/><text x="248" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#1d1930">S</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.679800;0.680000;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="223" y="45" width="50" height="50" rx="9" fill="none" stroke="#fff" stroke-width="2"/></g>
 <rect x="302" y="14" width="84" height="94" rx="10" fill="none" stroke="rgba(232,229,244,0.77)" stroke-opacity="0.5"/>
 <text x="344" y="34" text-anchor="middle" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.85)">core D</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.139200;0.139500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.139800;0.140000;0.319200;0.319500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,0.58)" fill-opacity="0.25"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="rgba(232,229,244,0.85)">I</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.319800;0.320000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.679200;0.679500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.679800;0.680000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="322" y="48" width="44" height="44" rx="8" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="344" y="77" text-anchor="middle" font-family="JetBrains Mono" font-size="16" letter-spacing="0" fill="#eceaf6">I</text></g>
 <line x1="14" y1="132" x2="386" y2="132" stroke="rgba(232,229,244,0.97)" stroke-width="3" stroke-opacity="0.4"><animate attributeName="opacity" values="1;1;1;1;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.560000;1.000000" dur="10s" repeatCount="indefinite"/></line>
@@ -1322,12 +1325,12 @@
 <rect x="236" y="216" width="16" height="16" rx="3" fill="#4fd8c2" fill-opacity="0.85"/><text x="258" y="229" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">shared</text>
 <rect x="320" y="216" width="16" height="16" rx="3" fill="rgba(232,229,244,1)" fill-opacity="0.4"/><text x="342" y="229" text-anchor="start" font-family="JetBrains Mono" font-size="13" letter-spacing="0" fill="rgba(232,229,244,0.58)">invalid</text>
 </svg>
-      <p id="ch16-numa-p3" class="diagram-caption">Every core's copy of a cache line is modified, exclusive, shared or invalid. A core may write only once every other copy is invalid, so a write broadcasts an invalidate and a later reader must fetch the new value.</p>
+      <p id="ch16-numa-p3" class="diagram-caption">Every core's copy of a cache line is modified (changed here, so memory is out of date), exclusive (the only copy, unchanged), shared or invalid. A core may write only once every other copy is invalid, so a write broadcasts an invalidate and a later reader must fetch the new value.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rule.</b> Many readers or one writer, never both: at most one copy is M or E, and then no other copy is valid.</li>
-          <li><b>Ping-pong.</b> Two cores writing the same line take turns invalidating each other, and every write waits for the line to move. If the two values are unrelated but share one 64-byte line, that is <span class="key-term">false sharing</span>; padding them apart fixes it.</li>
+          <li><b>Ping-pong.</b> Two cores writing the same line take turns invalidating each other, and every write waits for the line to move. If the two values are unrelated but share one cache line, that is <span class="key-term">false sharing</span>; padding them apart fixes it.</li>
           <li><b>Variants.</b> AMD adds an Owned state (MOESI) and Intel a Forward state (MESIF), so a shared line can be passed between cores without going through memory.</li>
         </ol>
       </details>
@@ -1336,7 +1339,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch16-numa-p4" class="insight-text">
-        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown showed that speculative execution (the same machinery that gave us the speed described in <a href="part-1#ch1">Chapter 1</a>, present in essentially every fast CPU since the mid-1990s) could be coerced into reading memory across security boundaries. The trick: a speculative load used the secret to pick which memory location to touch, pulling that location into the cache; even though the CPU threw the speculative work away, the cache kept the location, and an attacker timing reads of the candidate locations could see which one came back fast and so read out the secret byte by byte. The fix needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and it left a lasting ~5–30% slowdown on syscall-heavy workloads. The cache is not just a performance mechanism; it is also the most expensive side channel in the machine.
+        <strong>The cache as a side channel.</strong> In January 2018, Spectre and Meltdown (<a href="part-1#ch1">Chapter 1</a>) turned the cache against itself: it keeps what thrown-away speculative work loaded, so timing reads of it leaks a secret across security boundaries. The mitigations needed updates to the processors' own internal code (microcode) and kernel page-table isolation (KPTI, which keeps the kernel's memory unmapped while a program runs, so every system call must switch page tables), and they left a lasting ~5–30% slowdown on syscall-heavy workloads.
       </p>
     </div>
 
