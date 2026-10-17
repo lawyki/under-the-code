@@ -23,9 +23,15 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - The Bridge: round 1, blind retest, one revision; Figs BR.4, BR.6, BR.7, BR.8 corrected; BR.1 and BR.2 have their own title ids (no duplicate SVG ids left in Part I). Owner calls for Fig BR.3 and its caption. Gate 1 and clip green. Commit "Pre-read audit: the Bridge" (pass25 on 2f771c5: as for Chapter 3).
 - Chapter 4: round 1, blind retest, one revision (Fig 4.4's values redrawn); Figs 4.3, 4.4, 4.16 fixed after Gate 1. Owner call recorded for the Section 03 MMU verdict. Gate 1 and clip green. Commit "Pre-read audit: Chapter 4" (58ddc46).
 - Chapter 8: round 1, blind retest, one revision; three captions trimmed after Gate 1; two glossary side effects fixed in the text. Gate 1 and clip green. Commit "Pre-read audit: Chapter 8" (4db5004).
+- Chapter 5: round 1, blind retest, one revision. Gate 1 and clip green. Commit 700eb9f.
+- Chapter 13: round 1, blind retest, one revision; Figs 13.3, 13.5, 13.6, 13.11 fixed after Gate 1 (merged label, neutral waiting pills, the σ fade made a cut). Two §4g rows. Owner calls for Fig 13.10. Commit 437ad38.
+- Chapter 9: round 1, blind retest, one revision; Figs 9.6, 9.8, 9.12 fixed after Gate 1; a curated Flags definition and the NAT entry kept. Commit 09a469a.
+- Chapter 6: round 1, blind retest, one revision; pre-existing crowding in Figs 6.5, 6.6, 6.9 fixed. Commit 4582f54.
 
 ## Next
-- Chapters are taken in two streams, one page each, so a gate can run on one while the other is edited: part-2 (ch5 applied, retested and revised, Gate 1 running; then ch6, ch7) and part-3 (ch9 applied, retest running; ch10, ch11, ch12 scripted and dry-run). Then ch13–ch15 (+ part-4), ch16–ch18 (+ part-5), then the close step.
+- Chapters run in four streams, one page each: part-2 (ch7 applied, retest running), part-3 (ch10 applied and revised, Gate 1 running; ch11, ch12 scripted), part-4 (ch14 applied and revised, Gate 1 fixes re-gating; ch15 scripted), part-5 (ch16 applied and revised, Gate 1 running; ch17 and ch18 scripted and dry-run). Then the close step.
+- Scratch scripts live in /home/user/sp (not in the repo): `<ch>_apply.py` per chapter, `gate2.sh`, `glcheck.sh`, `prep.sh`, `mk.py`.
+- Gate 1 runs at 360 px in Chromium round glyph advances to whole pixels, so a label that clears its neighbour in WebKit can crowd it there; several pre-existing cases (Figs 6.5, 6.6, 6.9, 10.3) were fixed as found.
 - Glossary for a commit is built in a second worktree holding HEAD plus that chapter's page only, so the other stream's uncommitted page does not leak into it.
 
 ## Running the checks in a cloud container (Linux)
