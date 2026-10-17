@@ -188,7 +188,7 @@
     <h2>The bit in a transistor is the bit across a continent.</h2>
 
     <p id="ch8-bridge-p1" class="lead">
-      <a href="part-1">Part I</a> closed inside a CPU. Part III leaves the CPU. The same bit
+      Parts I and II stayed inside one machine. Part III leaves it. The same bit
       that switched a transistor in <a href="part-1#ch1">Chapter 1</a> now travels: across the
       motherboard as a voltage step, out a network interface, down a cable, across an
       ocean as light in glass, into another machine on the other side of the planet.
@@ -208,11 +208,9 @@
     </p>
 
     <p id="ch8-bridge-p3">
-      How do you keep a voltage signal recognisable after a kilometre of copper?
-      After a hundred kilometres of fibre? Over a wireless link through a forest
-      in the rain? The answers come from physics, mathematics, and practitioner
-      cleverness. The voltage on a wire is the substrate; everything else in
-      the next five chapters is what we build on top of it.
+      How do you keep a signal readable after a kilometre of copper, a hundred kilometres
+      of fibre, or a radio link through a forest in the rain? That is the problem this
+      chapter works on, and the rest of Part III is built on top of the answer.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-8-1">
@@ -243,7 +241,7 @@
 <text x="200" y="248" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">fades, is restored, arrives noisy</text>
 <text x="200" y="270" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">but readable</text>
 </svg>
-      <p id="ch8-bridge-p4" class="diagram-caption">A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing over twelve orders of magnitude apart: a signal guided along a line, in copper or in glass. On the chip it arrives unchanged; under the sea it fades with distance, and repeaters every 50 to 100 km restore it.</p>
+      <p id="ch8-bridge-p4" class="diagram-caption">A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing at scales a trillion times apart: a signal guided along a line, in copper or in glass. On the chip it arrives unchanged; under the sea it fades with distance, and repeaters every 50 to 100 km restore it.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -268,8 +266,8 @@
 
     <p id="ch8-substrates-p2">
       <strong>Copper</strong> is the original. The signal is the voltage
-      <em>difference</em> between two wires, and the receiver reads only that
-      difference. That is the trick behind the twist. Interference from
+      <em>difference</em> between two wires twisted around each other (a twisted
+      pair), and the receiver reads only that difference. Interference from
       outside induces almost the same voltage on both wires at once; subtract
       one from the other and the shared noise cancels, while the signal, which
       is opposite on the two wires, survives. The twist keeps neither wire
@@ -281,7 +279,7 @@
 
     <p id="ch8-substrates-p3">
       <strong>Fibre</strong> is glass. The signal is light, switched on and off to carry the bits. It travels down a hair-thin glass core wrapped in a cladding of glass with a slightly lower refractive index, which reflects light meeting it at a shallow angle back into the core (total internal reflection), so the light stays trapped all the way to the receiver. The loss is far lower: modern fibres lose about 0.2 dB per
-      kilometre, allowing tens to hundreds of kilometres between repeaters. Every
+      kilometre, so repeaters can sit tens of kilometres apart (50 to 100 km on an undersea cable). Every
       undersea cable, every long-distance internet trunk, every data-centre
       backbone is fibre. The first transatlantic fibre cable, TAT-8, went into
       service in 1988 and carried 280 megabits per second.
@@ -289,7 +287,7 @@
 
     <p id="ch8-substrates-p4">
       <strong>Wireless</strong> needs no cable at all: the bits are variations in a radio wave travelling through space. Wi-Fi runs
-      around 2.4 GHz and 5 GHz; cellular at 700 MHz to several GHz; satellite up
+      at 2.4, 5 and 6 GHz; cellular from below 1 GHz to tens of GHz; satellite up
       to tens of GHz. The trade: no wire to install, but every
       receiver in range hears every transmission, the medium is shared with every
       microwave oven and every Bluetooth device, and atmospheric absorption is
@@ -301,10 +299,10 @@
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch8-substrates-p5" class="insight-text">
         <strong>The substrate is the first attack surface.</strong> Copper wires emit small amounts of
-        electromagnetic radiation that a receiver nearby can turn back into the original signal. This is the basis of <strong>TEMPEST</strong>, a
-        US classification programme dating to the 1960s for shielding sensitive
-        equipment against precisely this. (Van Eck showed in 1985 that an unshielded
-        monitor could be reconstructed from across the street; a modern
+        electromagnetic radiation that a receiver nearby can turn back into the original signal. This is the basis of <strong>TEMPEST</strong>, the
+        US codename for standards, dating to the 1960s, for shielding sensitive
+        equipment against it. (Van Eck showed in 1985 that the picture on an unshielded
+        monitor could be rebuilt from its emissions across the street; a modern
         software radio does the same to a leaky cable from across a room.) Optical
         fibres are harder but not immune: bending a fibre slightly leaks a
         small fraction of its light through the cladding, and the Snowden
@@ -314,8 +312,8 @@
         <strong>WEP</strong> (Wired Equivalent Privacy, 1997, broken by
         2001) through <strong>WPA</strong> (2003,
         broken 2008) and <strong>WPA2</strong>
-        (2004, broken 2017 by the KRACK attack) to <strong>WPA3</strong> (2018,
-        still standing), is the engineering response to the fact that on a
+        (2004, broken 2017 by the KRACK attack) to <strong>WPA3</strong> (2018;
+        the flaws found in it in 2019 were patched), is the engineering response to the fact that on a
         radio link, the attacker is always already in the room.
       </p>
     </div>
@@ -324,7 +322,7 @@
       <div class="diagram-label">Fig 8.2&nbsp;· Three substrates, one job</div>
       <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-3 svgd-part3-3">
 <title id="svgt-part3-3">Fig 8.2 · Three substrates, one job</title>
-<desc id="svgd-part3-3">One request's path from a laptop to a data centre across the ocean. From laptop to router it travels as radio, Wi-Fi at 2.4, 5 or 6 GHz through shared air. From router to internet provider it travels on copper (twisted pair: Ethernet, up to 100 m per run) or on fibre. From provider to data centre it travels as light in glass fibre, losing about 0.2 dB per km. Each hop encodes the bits its own way. A white dot, keyed as one request, travels the whole path.</desc>
+<desc id="svgd-part3-3">One request's path from a laptop to a data centre across the ocean. From laptop to router it travels as radio, Wi-Fi at 2.4, 5 or 6 GHz through shared air. From router to internet provider it travels on copper (a telephone or cable-TV line, a few kilometres) or on fibre. From provider to data centre it travels as light in glass fibre, losing about 0.2 dB per km. Each hop encodes the bits its own way. A white dot, keyed as one request, travels the whole path.</desc>
 <rect x="20" y="12" width="112" height="34" rx="3" fill="none" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.5"/>
 <text x="76" y="34" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">laptop</text>
 <circle cx="156" cy="29" r="6" fill="#fff"/><text x="168" y="34" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">= one request, hop by hop</text>
@@ -342,7 +340,7 @@
 <line x1="76.0" y1="138" x2="76.0" y2="196" stroke="#e07a3f" stroke-width="3" stroke-opacity="0.75" stroke-dasharray="none"></line>
 <rect x="150" y="145.0" width="230" height="44" rx="2" fill="none" stroke="#e07a3f" stroke-opacity="0.78"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.215333;0.215833;0.566583;0.566667;0.916333;0.916667;1.000000" dur="6s" repeatCount="indefinite"/></rect>
 <text x="162" y="163" text-anchor="start" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#e2854e">copper</text>
-<text x="162" y="181" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">Ethernet, up to 100 m</text>
+<text x="162" y="181" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">phone line, a few km</text>
 <rect class="fx" x="150" y="145.0" width="230" height="44" rx="2" fill="none" fill-opacity="0.14" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.215333;0.215833;0.566583;0.566667;0.916333;0.916667;1.000000" dur="6s" repeatCount="indefinite"/></rect>
 <line x1="76.0" y1="230" x2="76.0" y2="288" stroke="#4fc4e6" stroke-width="3" stroke-opacity="0.75" stroke-dasharray="10 4"><animate attributeName="stroke-dashoffset" values="0;-14" dur="1.2s" repeatCount="indefinite"/></line>
 <rect x="150" y="237.0" width="230" height="44" rx="2" fill="none" stroke="#4fc4e6" stroke-opacity="0.6"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.216333;0.216667;0.515333;0.515833;0.566583;0.566667;1.000000" dur="6s" repeatCount="indefinite"/></rect>
@@ -351,7 +349,7 @@
 <rect class="fx" x="150" y="237.0" width="230" height="44" rx="2" fill="none" fill-opacity="0.14" stroke="#4fc4e6" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.216333;0.216667;0.515333;0.515833;0.566583;0.566667;1.000000" dur="6s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.515000;0.516667;0.566583;0.566667;0.615000;0.616667;1.000000" dur="6s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 108.20;0 150.00;0 184.00;0 242.00;0 242.00;0 0.00;0 0.00;0 58.00;0 92.00;0 108.20" keyTimes="0.000000;0.215000;0.216667;0.515000;0.566583;0.566667;0.616667;0.915000;0.916667;1.000000" dur="6s" repeatCount="indefinite"/><circle class="fx" cx="76.0" cy="46" r="6" fill="#fff"/></g></g>
 </svg>
-      <p id="ch8-substrates-p6" class="diagram-caption">A request from a laptop to a distant server crosses all three substrates: radio to the router, copper or fibre to the internet provider, and glass across the ocean. Each hop encodes the bits its own way, and the layers above see none of it.</p>
+      <p id="ch8-substrates-p6" class="diagram-caption">A request from a laptop to a distant server crosses all three substrates: radio to the router, copper or fibre to the internet provider, and glass across the ocean. Each hop encodes the bits its own way, and the programs above see none of it.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -371,7 +369,8 @@
       In July and October of 1948, Claude Shannon, a thirty-two-year-old
       mathematician at Bell Labs, published "A Mathematical Theory of
       Communication" in two parts of the <em>Bell System Technical Journal</em>.
-      Before this paper, "amount of information" was a metaphor. After it,
+      Before this paper, "amount of information" was close to a metaphor
+      (Hartley had only counted equally likely messages, in 1928). After it,
       information had units (bits) and a formula (entropy). And Shannon proved
       a result that still defines every modern network: every channel has a
       maximum bit rate, you can send reliably below it, and you cannot send
@@ -408,7 +407,7 @@
     <div class="math-callout">
       <div class="math-label">Shannon entropy</div>
       <p id="ch8-shannon-p5" class="math-formula">H = −Σ pᵢ log₂(pᵢ)</p>
-      <p id="ch8-shannon-p6">Measured in bits per symbol. The fair coin (½, ½) gives H = 1, the most a two-sided source can carry; the always-heads coin (1, 0) gives 0. A biased coin (¾, ¼) gives H ≈ 0.81 bits: coding several flips at a time, a long run of them can be stored in about 0.81 bits per flip. <em>This number is also the shortest average code length</em> any lossless compression scheme can achieve on long messages: a source cannot be compressed below its entropy. Every modern lossless compressor, from ZIP to PNG, sits somewhere on Shannon's curve, fighting for the last bit.</p>
+      <p id="ch8-shannon-p6">Measured in bits per symbol. Each term is the questions one symbol costs: a symbol with chance ⅛ is pinned down by three halving questions (log₂ 8 = −log₂ ⅛), and entropy averages those costs, weighted by how often each symbol comes. The fair coin (½, ½) gives H = 1, the most a two-sided source can carry; the always-heads coin (1, 0) gives 0. A coin that lands heads nine times in ten (0.9, 0.1) gives H ≈ 0.47 bits: if you code several flips at a time, with short codes for the likely runs and longer ones for the rare runs, a long run of them fits in about 0.47 bits per flip. <em>This number is also the shortest average code length</em> any lossless compression scheme can achieve on long messages: a source cannot be compressed below its entropy. Every lossless compressor, ZIP and PNG included, is judged by how close it gets to that floor.</p>
     </div>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-8-3">
@@ -434,7 +433,7 @@
 <text x="340.8" y="242" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#a44c1c">0.9</text>
 <g><animateTransform attributeName="transform" type="translate" values="280.80 0;286.00 0;299.00 0;312.00 0;299.00 0;286.00 0;273.00 0;260.00 0;247.00 0;234.00 0;221.00 0;208.00 0;195.00 0;182.00 0;169.00 0;156.00 0;143.00 0;130.00 0;117.00 0;104.00 0;91.00 0;78.00 0;65.00 0;52.00 0;39.00 0;26.00 0;13.00 0;0.00 0;0.00 0;0.00 0;0.00 0;13.00 0;26.00 0;39.00 0;52.00 0;65.00 0;78.00 0;91.00 0;104.00 0;117.00 0;130.00 0;143.00 0;156.00 0;169.00 0;182.00 0;195.00 0;208.00 0;221.00 0;234.00 0;247.00 0;260.00 0;273.00 0;280.80 0" keyTimes="0.000000;0.007500;0.026250;0.045000;0.063750;0.082500;0.101250;0.120000;0.138750;0.157500;0.176250;0.195000;0.213750;0.232500;0.251250;0.270000;0.288750;0.307500;0.326250;0.345000;0.363750;0.382500;0.401250;0.420000;0.438750;0.457500;0.476250;0.495000;0.544938;0.545000;0.595000;0.613750;0.632500;0.651250;0.670000;0.688750;0.707500;0.726250;0.745000;0.763750;0.782500;0.801250;0.820000;0.838750;0.857500;0.876250;0.895000;0.913750;0.932500;0.951250;0.970000;0.988750;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -83.83;0 -74.49;0 -44.98;0 0.00;0 -44.98;0 -74.49;0 -97.84;0 -117.00;0 -132.89;0 -146.03;0 -156.76;0 -165.29;0 -171.80;0 -176.38;0 -179.10;0 -180.00;0 -179.10;0 -176.38;0 -171.80;0 -165.29;0 -156.76;0 -146.03;0 -132.89;0 -117.00;0 -97.84;0 -74.49;0 -44.98;0 0.00;0 0.00;0 0.00;0 0.00;0 -44.98;0 -74.49;0 -97.84;0 -117.00;0 -132.89;0 -146.03;0 -156.76;0 -165.29;0 -171.80;0 -176.38;0 -179.10;0 -180.00;0 -179.10;0 -176.38;0 -171.80;0 -165.29;0 -156.76;0 -146.03;0 -132.89;0 -117.00;0 -97.84;0 -83.83" keyTimes="0.000000;0.007500;0.026250;0.045000;0.063750;0.082500;0.101250;0.120000;0.138750;0.157500;0.176250;0.195000;0.213750;0.232500;0.251250;0.270000;0.288750;0.307500;0.326250;0.345000;0.363750;0.382500;0.401250;0.420000;0.438750;0.457500;0.476250;0.495000;0.544938;0.545000;0.595000;0.613750;0.632500;0.651250;0.670000;0.688750;0.707500;0.726250;0.745000;0.763750;0.782500;0.801250;0.820000;0.838750;0.857500;0.876250;0.895000;0.913750;0.932500;0.951250;0.970000;0.988750;1.000000" dur="8s" repeatCount="indefinite"/><circle class="fx" cx="60" cy="222" r="7" fill="none" stroke="#122a3f" stroke-width="2"/></g><line class="fx" x1="60" y1="222" x2="60" y2="214" stroke="#0c1d2b" stroke-width="2"/></g>
 </svg>
-      <p id="ch8-shannon-p7" class="diagram-caption">A source that always sends the same symbol carries no information; a fair coin carries one full bit per flip, and the curve is symmetric between them. The curve is also the floor for lossless compression: a 90/10 source cannot be coded in fewer than about 0.47 bits per symbol.</p>
+      <p id="ch8-shannon-p7" class="diagram-caption">Entropy of a two-symbol source against p, the chance of a 1: 0 when every symbol is predictable, 1 bit for the fair coin, symmetric about it. A 90/10 source is marked at 0.47 bits, the least any lossless code can average for it.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -448,22 +447,24 @@
     <p id="ch8-shannon-p8">
       Shannon's second result, the <strong>noisy channel coding theorem</strong>,
       put a number on what a wire can carry. Given a channel of bandwidth
-      <em>B</em> hertz and signal-to-noise ratio <em>SNR</em>, the maximum
+      <em>B</em> hertz (the width of the band of frequencies it passes, not its bit rate) and
+      signal-to-noise ratio <em>SNR</em> (signal power divided by noise power, a plain ratio:
+      30 dB is 1,000), the maximum
       reliable bit rate, the <span class="key-term">channel capacity</span>, is:
     </p>
 
     <div class="math-callout">
       <div class="math-label">Shannon–Hartley channel capacity</div>
       <p id="ch8-shannon-p9" class="math-formula">C = B · log₂(1 + SNR)</p>
-      <p id="ch8-shannon-p12">The shape of the formula can be read straight off the physics. A receiver can only tell two signal levels apart if they differ by more than the noise blurs them: with signal power S and noise power N, the received range spans about √(S+N) and the blur is about √N, so the number of reliably distinguishable levels is their ratio: √(1+SNR). A pulse carrying one of those levels delivers log₂ of that many bits: ½ · log₂(1+SNR). And a channel of bandwidth B can carry at most 2B independent pulses per second, a limit Harry Nyquist had derived in 1928. Multiply the two, and the halves cancel: C = B · log₂(1+SNR). Bandwidth buys pulses per second; signal-to-noise buys bits per pulse; capacity is their product. Even the +1 earns its place, because the receiver's measuring range contains the noise as well as the signal.</p>
-      <p id="ch8-shannon-p10">If you transmit at rate <em>R &lt; C</em>, there exists a coding scheme that achieves arbitrarily low error rate. If <em>R &gt; C</em>, errors are inevitable, no matter how clever the encoding. The proof is non-constructive: Shannon proved good codes <em>exist</em>, decades before anyone knew how to build them. Modern error-correcting codes (LDPC, Polar, Turbo) approach within a fraction of a dB of Shannon's limit.</p>
+      <p id="ch8-shannon-p12">The shape of the formula can be read straight off the physics. A receiver can only tell two signal levels apart if they differ by more than the noise blurs them: with signal power S and noise power N (a voltage grows as the square root of the power it carries), the received range spans about √(S+N) and the blur is about √N, so the number of reliably distinguishable levels is their ratio: √(1+SNR). A pulse carrying one of those levels delivers log₂ of that many bits: ½ · log₂(1+SNR). And a channel of bandwidth B can carry at most 2B independent pulses per second, a limit Harry Nyquist had derived in 1928. Multiply the two, and the halves cancel: C = B · log₂(1+SNR). Bandwidth buys pulses per second; signal-to-noise buys bits per pulse; capacity is their product. Even the +1 earns its place, because the receiver's measuring range contains the noise as well as the signal.</p>
+      <p id="ch8-shannon-p10">If you transmit at rate <em>R &lt; C</em>, there exists a coding scheme (a way of adding redundant bits so the receiver can find and repair what the noise damaged) that achieves arbitrarily low error rate. If <em>R &gt; C</em>, errors are inevitable, no matter how clever the coding. The proof is non-constructive: Shannon proved good codes <em>exist</em>, decades before anyone knew how to build them. Modern error-correcting codes (LDPC, Polar, Turbo) approach within a fraction of a dB of Shannon's limit.</p>
     </div>
 
     <div class="diagram-card fig-v2" id="fig-8-4">
       <div class="diagram-label">Fig 8.4&nbsp;· Channel capacity as a function of SNR</div>
       <svg viewBox="0 0 400 294" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-5 svgd-part3-5">
 <title id="svgt-part3-5">Fig 8.4 · Channel capacity as a function of SNR</title><defs><clipPath id="ko-fig-8-4-curve" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM209.75 148.9a6.25 6.25 0 1 0 12.50 0a6.25 6.25 0 1 0 -12.50 0ZM287.75 101.6a6.25 6.25 0 1 0 12.50 0a6.25 6.25 0 1 0 -12.50 0ZM287.75 104.0a6.25 6.25 0 1 0 12.50 0a6.25 6.25 0 1 0 -12.50 0Z"/></clipPath></defs>
-<desc id="svgd-part3-5">Shannon's limit, in bits per second per hertz of bandwidth, against signal-to-noise ratio in decibels: log₂(1 + SNR). Above the curve no code can transmit without errors. Wi-Fi 6 at about 20 dB is allowed about 6.7 bits per hertz. A phone line at about 30 dB is allowed about 10, which over the 3.4 kHz band V.34 modems used is about 34 kbps; they reached 33.6 kbps, 9.8 bits per hertz, just under the curve.</desc><defs><clipPath id="ko-fig-8-4-v34" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM288.00 104.0a6.0 6.0 0 1 0 12.0 0a6.0 6.0 0 1 0 -12.0 0Z"/></clipPath></defs>
+<desc id="svgd-part3-5">Shannon's limit, in bits per second per hertz of bandwidth, against signal-to-noise ratio in decibels: log₂(1 + SNR). Above the curve no code can transmit without errors. Wi-Fi 6 at about 20 dB is allowed about 6.7 bits per hertz. A phone line at about 30 dB is allowed about 10, which over the 3.43 kHz band V.34 modems used is about 34 kbps; they reached 33.6 kbps, 9.8 bits per hertz, just under the curve.</desc><defs><clipPath id="ko-fig-8-4-v34" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM288.00 104.0a6.0 6.0 0 1 0 12.0 0a6.0 6.0 0 1 0 -12.0 0Z"/></clipPath></defs>
 <polygon clip-path="url(#ko-fig-8-4-curve)" points="60,44 60.0,229.7 62.0,229.1 63.9,228.5 65.8,227.9 67.8,227.2 69.8,226.5 71.7,225.8 73.7,225.1 75.6,224.4 77.5,223.7 79.5,222.9 81.5,222.2 83.4,221.4 85.3,220.6 87.3,219.8 89.2,219.0 91.2,218.1 93.2,217.3 95.1,216.4 97.0,215.5 99.0,214.6 101.0,213.7 102.9,212.8 104.8,211.9 106.8,210.9 108.8,210.0 110.7,209.0 112.7,208.0 114.6,207.0 116.5,206.0 118.5,205.0 120.5,204.0 122.4,203.0 124.3,202.0 126.3,200.9 128.2,199.9 130.2,198.8 132.2,197.8 134.1,196.7 136.1,195.7 138.0,194.6 139.9,193.5 141.9,192.4 143.8,191.3 145.8,190.2 147.8,189.1 149.7,188.0 151.7,186.9 153.6,185.8 155.6,184.7 157.5,183.6 159.4,182.4 161.4,181.3 163.3,180.2 165.3,179.0 167.2,177.9 169.2,176.8 171.2,175.6 173.1,174.5 175.1,173.3 177.0,172.2 178.9,171.0 180.9,169.9 182.8,168.7 184.8,167.6 186.8,166.4 188.7,165.2 190.7,164.1 192.6,162.9 194.6,161.8 196.5,160.6 198.4,159.4 200.4,158.3 202.3,157.1 204.3,155.9 206.2,154.7 208.2,153.6 210.2,152.4 212.1,151.2 214.1,150.1 216.0,148.9 217.9,147.7 219.9,146.5 221.9,145.4 223.8,144.2 225.8,143.0 227.7,141.8 229.6,140.6 231.6,139.5 233.6,138.3 235.5,137.1 237.4,135.9 239.4,134.7 241.4,133.6 243.3,132.4 245.2,131.2 247.2,130.0 249.1,128.8 251.1,127.7 253.1,126.5 255.0,125.3 256.9,124.1 258.9,122.9 260.9,121.7 262.8,120.6 264.8,119.4 266.7,118.2 268.6,117.0 270.6,115.8 272.6,114.6 274.5,113.5 276.4,112.3 278.4,111.1 280.4,109.9 282.3,108.7 284.2,107.5 286.2,106.4 288.1,105.2 290.1,104.0 292.1,102.8 294.0,101.6 295.9,100.4 297.9,99.2 299.9,98.1 301.8,96.9 303.8,95.7 305.7,94.5 307.6,93.3 309.6,92.1 311.6,90.9 313.5,89.8 315.4,88.6 317.4,87.4 319.4,86.2 321.3,85.0 323.2,83.8 325.2,82.6 327.1,81.5 329.1,80.3 331.1,79.1 333.0,77.9 334.9,76.7 336.9,75.5 338.9,74.3 340.8,73.2 342.8,72.0 344.7,70.8 346.6,69.6 348.6,68.4 350.6,67.2 352.5,66.0 354.4,64.8 356.4,63.7 358.4,62.5 360.3,61.3 362.2,60.1 364.2,58.9 366.1,57.7 368.1,56.5 370.1,55.4 372.0,54.2 372,44" fill="none" fill-opacity="0.1" stroke="#e07a3f" stroke-width="1.5"/>
 <text x="74" y="66" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">no code can go here</text>
 <line x1="60" y1="244" x2="372" y2="244" stroke="rgba(223,234,242,0.6)"/>
@@ -488,7 +489,7 @@
 <text x="284" y="91.6111" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">phone line · 10</text>
 <g><animateTransform attributeName="transform" type="translate" values="234.00 0;241.80 0;249.60 0;257.40 0;265.20 0;273.00 0;280.80 0;288.60 0;296.40 0;304.20 0;312.00 0;0.00 0;0.00 0;0.00 0;7.80 0;15.60 0;23.40 0;31.20 0;39.00 0;46.80 0;54.60 0;62.40 0;70.20 0;78.00 0;85.80 0;93.60 0;101.40 0;109.20 0;117.00 0;124.80 0;132.60 0;140.40 0;148.20 0;156.00 0;163.80 0;171.60 0;179.40 0;187.20 0;195.00 0;202.80 0;210.60 0;218.40 0;226.20 0;234.00 0" keyTimes="0.000000;0.021875;0.043750;0.065625;0.087500;0.109375;0.131250;0.153125;0.175000;0.196875;0.218750;0.293687;0.293750;0.343750;0.365625;0.387500;0.409375;0.431250;0.453125;0.475000;0.496875;0.518750;0.540625;0.562500;0.584375;0.606250;0.628125;0.650000;0.671875;0.693750;0.715625;0.737500;0.759375;0.781250;0.803125;0.825000;0.846875;0.868750;0.890625;0.912500;0.934375;0.956250;0.978125;1.000000" dur="8s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -128.10;0 -132.84;0 -137.59;0 -142.33;0 -147.07;0 -151.82;0 -156.56;0 -161.31;0 -166.05;0 -170.80;0 -175.54;0 0.00;0 0.00;0 0.00;0 -2.51;0 -5.29;0 -8.32;0 -11.60;0 -15.11;0 -18.81;0 -22.68;0 -26.71;0 -30.87;0 -35.13;0 -39.49;0 -43.92;0 -48.42;0 -52.96;0 -57.54;0 -62.16;0 -66.80;0 -71.46;0 -76.14;0 -80.83;0 -85.54;0 -90.25;0 -94.97;0 -99.69;0 -104.42;0 -109.15;0 -113.89;0 -118.62;0 -123.36;0 -128.10" keyTimes="0.000000;0.021875;0.043750;0.065625;0.087500;0.109375;0.131250;0.153125;0.175000;0.196875;0.218750;0.293687;0.293750;0.343750;0.365625;0.387500;0.409375;0.431250;0.453125;0.475000;0.496875;0.518750;0.540625;0.562500;0.584375;0.606250;0.628125;0.650000;0.671875;0.693750;0.715625;0.737500;0.759375;0.781250;0.803125;0.825000;0.846875;0.868750;0.890625;0.912500;0.934375;0.956250;0.978125;1.000000" dur="8s" repeatCount="indefinite"/><circle class="fx" cx="60.0" cy="229.7" r="9.5" fill="none" stroke="#fff" stroke-width="2"/></g></g>
 </svg>
-      <p id="ch8-shannon-p11" class="diagram-caption">Shannon's limit: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above the curve errors cannot be avoided. A phone line at 30&nbsp;dB allows about 10 bits per hertz, about 34&nbsp;kbps over the 3.4&nbsp;kHz band a V.34 modem uses; V.34 modems reached 33.6&nbsp;kbps, just under it.</p>
+      <p id="ch8-shannon-p11" class="diagram-caption">Shannon's limit, the curve: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above it errors cannot be avoided. A phone line at 30&nbsp;dB (signal 1,000 times the noise) allows about 10 bits per hertz, about 34&nbsp;kbps over the 3.43&nbsp;kHz band V.34 modems use; they reached 33.6&nbsp;kbps.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -516,11 +517,11 @@
     <p id="ch8-encoding-p2">
       The most naive encoding is <strong>NRZ</strong> (Non-Return to Zero). High
       voltage means 1; low voltage means 0. The signal sits at one of two levels
-      and only changes when a new bit arrives. It is dead simple, with one
+      and changes only when a bit differs from the one before it. It is dead simple, with one
       fatal weakness: a long run of identical bits looks like a flat line. The
       receiver, reading bits at some clock rate, has no way to know when one bit
-      ends and the next begins. Drift even slightly out of sync and the entire
-      stream is corrupted from there onward.
+      ends and the next begins. Drift even slightly out of sync and the
+      receiver counts one bit too many or too few, so every bit after it lands one place out.
     </p>
 
     <p id="ch8-encoding-p3">
@@ -529,7 +530,7 @@
       transition in the middle carries the bit value (in Ethernet's convention, rising for a 1 and falling for a 0). There is a transition in <em>every
       bit period</em>, no matter what the data is. The receiver locks onto those
       transitions and stays in sync indefinitely. The cost is double bandwidth:
-      every bit needs two half-bit slots. The first standard Ethernet, 10BASE5 (10 Mbps over coaxial cable),
+      every bit needs two half-bit slots. The first standard Ethernet (Section 05)
       used Manchester encoding because it could not afford to
       lose synchronisation on a long run of zeros.
     </p>
@@ -567,7 +568,7 @@
 <text x="20" y="184" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">rising mid-bit edge = 1, falling = 0</text>
 <line y1="42" y2="150" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="372;372;50;50;372;372" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="372;372;50;50;372;372" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.085643;0.085714;0.141429;0.142857;0.942857;0.957143;1.000000" dur="7s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch8-encoding-p4" class="diagram-caption">Manchester code puts a transition in the middle of every bit: rising for a 1, falling for a 0. Because an edge arrives every bit period, the receiver recovers the clock from the data itself, at the cost of up to two changes per bit.</p>
+      <p id="ch8-encoding-p4" class="diagram-caption">The bits 1 0 1 1 0 0 1 in Manchester code: each mid-bit edge gives the bit and keeps the receiver's clock in step.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -616,10 +617,12 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.112500;0.113125;0.639036;0.639286;1.000000" dur="8s" repeatCount="indefinite"/><line x1="257.0" y1="120" x2="257.0" y2="156" stroke="#4fc4e6" stroke-width="1.5"/><text x="257" y="176" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#4fc4e6">0</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.112500;0.113125;0.753321;0.753571;1.000000" dur="8s" repeatCount="indefinite"/><line x1="303.0" y1="120" x2="303.0" y2="156" stroke="#4fc4e6" stroke-width="1.5"/><text x="303" y="176" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#4fc4e6">1</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.112500;0.113125;0.867607;0.867857;1.000000" dur="8s" repeatCount="indefinite"/><line x1="349.0" y1="120" x2="349.0" y2="156" stroke="#4fc4e6" stroke-width="1.5"/><text x="349" y="176" text-anchor="middle" font-family="Space Mono" font-size="15" letter-spacing="0" fill="#4fc4e6">1</text></g>
+<text x="20" y="98" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">read</text>
+<text x="20" y="176" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">read</text>
 <text x="20" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">receiver clock 20% fast, exaggerated</text>
 <line y1="34" y2="190" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="372;372;50;50;372;372" keyTimes="0.000000;0.074937;0.075000;0.125000;0.925000;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="x2" values="372;372;50;50;372;372" keyTimes="0.000000;0.074937;0.075000;0.125000;0.925000;1.000000" dur="8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.074937;0.075000;0.123750;0.125000;0.925000;0.937500;1.000000" dur="8s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch8-encoding-p5" class="diagram-caption">Sent to a receiver whose clock runs fast, NRZ's four zeros are one flat stretch with nothing to correct against, so the receiver reads five. Manchester gives it an edge in every bit, so it corrects its clock each time and reads all seven, at the cost of up to twice the signal changes.</p>
+      <p id="ch8-encoding-p5" class="diagram-caption">Sent to a receiver whose clock runs fast, NRZ's four zeros are one flat stretch with nothing to correct against, so the receiver reads five zeros. Manchester gives it an edge in every bit, so it corrects its clock each time and reads all seven bits correctly.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -671,13 +674,12 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.085643;0.085714;0.128571;0.129286;0.935429;0.935714;1.000000" dur="7s" repeatCount="indefinite"/><text x="342" y="268" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">down</text></g>
 <line y1="34" y2="276" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="x2" values="376;376;104;104;376;376" keyTimes="0.000000;0.085643;0.085714;0.142857;0.942857;1.000000" dur="7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.085643;0.085714;0.141429;0.142857;0.942857;0.957143;1.000000" dur="7s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch8-encoding-p7" class="diagram-caption">A carrier wave has three things a transmitter can change: its size (AM), how fast it oscillates (FM) or its phase (PSK), and the receiver reads each bit from whichever one moves. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: 10 in Wi-Fi 6.</p>
+      <p id="ch8-encoding-p7" class="diagram-caption">The bits 1 0 1 0 carried three ways: with each bit the wave's size, its speed or its starting direction changes. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: up to 10 in Wi-Fi 6, but only on a far cleaner signal than the 20 dB point in Fig 8.4.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Noise.</b> Interference mostly disturbs amplitude, so FM and PSK resist it better; Edwin Armstrong patented FM in 1933 for exactly that reason.</li>
-          <li><b>QAM.</b> 16 combinations of size and phase carry 4 bits per symbol; Wi-Fi 6 uses 1024, 10 bits, and Wi-Fi 7 4096, 12 bits, when the signal is clean, dropping to fewer as it degrades.</li>
-          <li><b>The carrier.</b> It moves the signal to a frequency band the medium carries well, such as 2.4 or 5 GHz for Wi-Fi.</li>
+          <li><b>QAM.</b> 16 combinations of size and phase carry 4 bits per symbol; Wi-Fi 6 uses 1024 combinations (10 bits) and Wi-Fi 7 uses 4096 (12 bits) when the signal is clean, dropping to fewer as it degrades.</li>
         </ol>
       </details>
     </div>
@@ -693,7 +695,7 @@
       if two start at the same time and the signals collide, both detect it,
       both back off for a random interval, and both try again. That rule is
       Carrier Sense, Multiple Access, with Collision Detection:
-      <strong>CSMA/CD</strong>. In ever faster versions of itself, it became the
+      <strong>CSMA/CD</strong>. In ever faster versions, Ethernet became the
       dominant local-area networking technology on the planet.
     </p>
 
@@ -705,15 +707,16 @@
       Norm Abramson at the University of Hawaii. ALOHAnet let the islands'
       campuses share one radio frequency by transmitting whenever they had
       data and retransmitting after random delays when collisions occurred.
-      Metcalfe analysed the math on the plane home, realised Abramson had badly underestimated how much of the channel's time could carry data with smarter timing, wrote the corrections into a revised thesis, and got his
+      Metcalfe spent weeks there modelling the system, realised Abramson had badly underestimated how much of the channel's time could carry data with smarter timing, wrote the corrections into a revised thesis, and got his
       doctorate. Ethernet was the same insight on a wire, improved with
       carrier sensing ("listen before transmit").
     </p>
 
     <p id="ch8-ethernet-p3">
       The Xerox PARC of 1973 held an unusual concentration of computing talent. Down the hall from Metcalfe, Chuck Thacker and Butler Lampson were building the Alto, a personal computer with a screen that drew pictures (the machine that later showed Steve Jobs what a graphical interface could be), and Gary Starkweather had brought the laser printer to life. Metcalfe's job was
-      to network these machines together. His original Ethernet sketch, now in
-      the Computer History Museum, is a hand-drawn diagram on a piece of yellow paper, dated "May 22, 1973" in the corner. It shows the basic architecture of every wired LAN since.
+      to network these machines together. His first Ethernet memo, dated May 22, 1973 and
+      full of hand-drawn diagrams, shows the architecture: many machines tapped onto one
+      shared cable, the "ether".
     </p>
 
     <p id="ch8-ethernet-p4">
@@ -722,9 +725,9 @@
       over a single thick coaxial cable up to 500 metres long: the "thicknet" of the 1980 DIX standard (DEC, Intel and Xerox). By the 1990s, switches replaced the shared
       cable. Each device got its own dedicated cable to the switch; with no one
       else on the wire, collisions stopped happening, and the collision-detection
-      machinery now mostly sits unused. But every Ethernet frame still carries
-      the header structure invented for that shared cable, including the
-      48-bit MAC addresses.
+      machinery now mostly sits unused. But every Ethernet frame (the block of bits
+      sent in one go) still starts with a header designed for that shared cable, which
+      names sender and receiver by 48-bit MAC address (below).
     </p>
 
     <div class="pull-quote">
@@ -747,8 +750,8 @@
 <rect class="fx" x="334" y="61" width="0" height="18" fill="#ec6b6b"><animate attributeName="x" values="208.375;166.5;66;66;334;334;334;250.25;208.375" keyTimes="0.000000;0.024272;0.082524;0.149709;0.150000;0.810631;0.810680;0.975728;1.000000" dur="10.3s" repeatCount="indefinite"/><animate attributeName="width" values="83.75;167.5;268;268;0;0;0;0;83.75" keyTimes="0.000000;0.024272;0.082524;0.149709;0.150000;0.810631;0.810680;0.975728;1.000000" dur="10.3s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.149709;0.150000;0.810631;0.810680;0.975534;0.975728;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="200" y="48" text-anchor="middle" font-family="Space Mono" font-size="14" letter-spacing="0" fill="#ec6b6b">collision</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.169709;0.169903;0.780777;0.781068;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="20" y="132" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">A: wait 0 slots</text><text x="380" y="132" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">B: wait 1 slot</text></g>
-<rect mask="url(#ko-fig-8-8-gap)" x="66" y="64" width="0" height="12" fill="#e07a3f" fill-opacity="0.7"><animate attributeName="width" values="0;0;268;268;0;0;0;0" keyTimes="0.000000;0.247573;0.402913;0.673981;0.674272;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/></rect>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.276505;0.276699;0.557476;0.557767;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="380" y="154" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">line busy: B waits</text></g>
+<rect mask="url(#ko-fig-8-8-gap)" x="66" y="64" width="0" height="12" fill="#e07a3f" fill-opacity="0.7"><animate attributeName="width" values="0;0;268;0;0;0;0" keyTimes="0.000000;0.247573;0.402913;0.558252;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><animate attributeName="x" values="66;66;66;334;334;334;334" keyTimes="0.000000;0.247573;0.402913;0.558252;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/></rect>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.402913;0.403107;0.557476;0.557767;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="380" y="154" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">line busy: B waits</text></g>
 <rect mask="url(#ko-fig-8-8-gap)" x="334" y="64" width="0" height="12" fill="#4fc4e6" fill-opacity="0.7"><animate attributeName="x" values="334;334;66;66;334;334;334;334" keyTimes="0.000000;0.558252;0.713592;0.790485;0.790777;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><animate attributeName="width" values="0;0;268;268;0;0;0;0" keyTimes="0.000000;0.558252;0.713592;0.790485;0.790777;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.810631;0.810680;0.868738;0.868932;0.974951;0.975243;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="200" y="182" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">A sends; B has not heard it yet</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.091456;0.091748;0.810631;0.810680;0.975534;0.975728;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="200" y="182" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">the signals overlap: collision</text></g>
@@ -758,24 +761,26 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.558058;0.558252;0.790485;0.790777;0.810631;0.810680;1.000000" dur="10.3s" repeatCount="indefinite"/><text x="200" y="182" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">then B sends</text></g>
 <text x="20" y="214" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">after the k-th collision: 0 to 2ᵏ − 1 slots</text>
 </svg>
-      <p id="ch8-ethernet-p6" class="diagram-caption">Two stations hear a quiet cable and start at almost the same moment; their signals collide, both notice, jam and stop. Each then waits a random number of slots, so one goes first while the other finds the line busy and waits its turn.</p>
+      <p id="ch8-ethernet-p6" class="diagram-caption">Two stations hear a quiet cable and start at almost the same moment; their signals collide, both notice, send a short jamming signal and stop. Each then waits a random number of slots (the time a signal takes to cross the cable and back), so one goes first and the other finds the line busy.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The backoff.</b> In <span class="key-term">truncated binary exponential backoff</span>, after the k-th collision in a row a station waits a random 0 to 2<sup>k</sup> − 1 slot times (k stops growing at 10), and gives up after 16 tries.</li>
           <li><b>Why random.</b> If both waited the same time they would collide again; each further collision doubles the range of waits, so the stations spread out as the line gets busier.</li>
-          <li><b>Today.</b> In switched Ethernet each link joins just two devices, so collisions no longer happen; Wi-Fi uses the same random backoff but tries to avoid collisions rather than detect them.</li>
+          <li><b>Today.</b> Wi-Fi uses the same random backoff but tries to avoid collisions rather than detect them.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch8-ethernet-p7">
-      Every Ethernet device has a <span class="key-term">MAC address</span>, a 48-bit
+      Every Ethernet device has a <span class="key-term">MAC address</span> (Media Access
+      Control; no relation to Apple's Mac), a 48-bit
       identifier burned into the network card at manufacture. The first 24 bits
       are the <strong>OUI</strong> (Organizationally Unique Identifier),
       assigned to the manufacturer by the IEEE; the next 24 are the
       device-specific portion. So the address tells you who built the card:
-      Raspberry Pi devices begin <code>B8:27:EB</code>; Apple's begin
+      older Raspberry Pi boards begin <code>B8:27:EB</code>, newer ones <code>DC:A6:32</code>
+      and other prefixes; Apple's begin
       <code>00:03:93</code> or any of a few hundred other prefixes. Public
       databases map every OUI to its owner.
     </p>
@@ -786,7 +791,7 @@
       <strong>ARP</strong> (Address Resolution Protocol) bridges the two. When
       a host wants to send a packet to <code>192.168.1.5</code> on its own local network, it broadcasts a question to every device on the link: "Who has
       192.168.1.5? Tell me your MAC." The owner replies; the asker caches the
-      answer for a few minutes; subsequent packets to that IP go straight to
+      answer for a while (seconds to minutes, depending on the system); subsequent packets to that IP go straight to
       the matching MAC.
     </p>
 
@@ -831,11 +836,10 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.124938;0.125000;0.499750;0.500000;0.699000;0.699375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#297147">its owner replies with its MAC</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099000;0.099375;0.124938;0.125000;0.699750;0.700000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="328" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#122a3f">cached; the next frame goes direct</text></g>
 </svg>
-      <p id="ch8-ethernet-p9" class="diagram-caption">A MAC address is 48 bits: the first half names the maker (<code>B8:27:EB</code> is the Raspberry Pi Foundation), the second the card. To find the MAC behind an IP address, a host broadcasts "who has 192.168.1.5?", the owner replies, and the answer is cached.</p>
+      <p id="ch8-ethernet-p9" class="diagram-caption">One MAC address split into maker and card, and the ARP exchange that finds it: broadcast the question, the owner replies, the answer is cached.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The halves.</b> The first 24 bits are an OUI, bought by a manufacturer from the IEEE; the maker numbers its cards with the rest.</li>
           <li><b>Expiry.</b> Entries age out after seconds to minutes, depending on the system, so a device that leaves or changes card is soon forgotten.</li>
           <li><b>No proof.</b> ARP checks nothing: any host on the link can answer for any address. <a href="part-4#ch15">Chapter 15</a> returns to what that allows.</li>
         </ol>
@@ -903,7 +907,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Self-configuring.</b> Nobody fills the table in: it builds itself from traffic, and entries expire when a device stops talking.</li>
-          <li><b>No more collisions.</b> With one device per switch port and both directions on separate wire pairs (full duplex), collision detection never fires.</li>
+          <li><b>No more collisions.</b> With one device per switch port and both ends able to send at the same time (full duplex), collision detection never fires.</li>
           <li><b>Broadcasts.</b> Frames addressed to everyone, such as ARP requests, still go out of every port.</li>
         </ol>
       </details>
@@ -916,10 +920,12 @@
         A switch's MAC table has finite size, usually a few thousand entries
         on consumer hardware and tens of thousands on enterprise gear. An
         attacker with access to one port can rapidly send frames with a
-        million different fabricated source MACs. The switch records each
-        one, fills the table to capacity, and falls back to what it does when
-        it does not know which port a destination MAC sits on:
-        <em>broadcast to every port</em>. The switch has been downgraded to a
+        million different fabricated source MACs (the burned-in address is only a
+        default: software writes each frame's source field, and the switch takes it on
+        trust). The switch records each one, fills the table to capacity, and so can no
+        longer keep or relearn the real entries as they expire; with real destinations
+        unknown, it falls back to what it does when it does not know which port a
+        destination MAC sits on: <em>flood the frame out of every port</em>. The switch has been downgraded to a
         hub, and every frame on the LAN is now visible to the attacker. This
         attack, called <strong>MAC flooding</strong>,
         was packaged into a point-and-shoot tool, <code>macof</code>, around
@@ -938,7 +944,9 @@
     <p id="ch8-layers-p1" class="lead">
       The layer model is why network engineers can talk about network problems
       precisely. Each layer does one thing only. Each layer is a customer of
-      the layer below and a provider for the layer above. Once you've drawn
+      the layer below and a provider for the layer above. On the way out, each layer
+      hands its data to the layer below, which wraps it in a header of its own; on
+      arrival each layer removes its header and hands the rest up (Fig 8.11). Once you've drawn
       the layers, nearly every protocol falls into one slot, and every
       conversation about networking becomes "which layer is this happening
       at?"
@@ -946,10 +954,10 @@
 
     <p id="ch8-layers-p2">
       The canonical reference is the <strong>OSI seven-layer model</strong>,
-      standardised by the International Organization for Standardization in
-      1984. Bottom to top: Physical, Data Link, Network, Transport, Session,
+      named for Open Systems Interconnection and standardised by the International Organization for Standardization in
+      1984. Bottom to top: Physical, Data link, Network, Transport, Session,
       Presentation, Application. Each layer is named after the abstraction it
-      provides. Physical moves bits over a medium. Data Link moves frames between machines joined directly by one cable or radio link. Network moves packets across many networks joined together. Transport moves byte streams reliably or messages unreliably end
+      provides. Physical moves bits over a medium. Data link moves frames between machines on the same local network, over cable, switch or radio link. Network moves packets across many networks joined together. Transport moves byte streams reliably or messages unreliably end
       to end. Session, Presentation, and Application are about what the bytes
       mean.
     </p>
@@ -1027,7 +1035,7 @@
 <text x="164" y="265" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">0110 1001 0011…</text>
 <text x="20" y="298" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">Eth: Ethernet header · FCS: checksum</text>
 </svg>
-      <p id="ch8-layers-p4" class="diagram-caption">Each layer serves the one above and adds its own wrapping on the way down: TLS around the request, then a TCP header, an IP header, and an Ethernet header and checksum, until layer 1 sends it as signals. In practice the top three blur into the application, which is why the internet runs on the four layers of TCP/IP.</p>
+      <p id="ch8-layers-p4" class="diagram-caption">Each layer serves the one above, and most add their own wrapping on the way down: TLS (the encryption of Chapter 11) around the request for a page, then a TCP header, an IP header, and an Ethernet header and checksum, until layer 1 sends it as signals.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1080,11 +1088,10 @@
 <rect class="fx" x="204" y="210" width="176" height="64" rx="2" fill="none" fill-opacity="0.18" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.749750;0.750000;0.974000;0.974375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="20" y="210" width="172" height="64" rx="2" fill="none" fill-opacity="0.12" stroke="#e07a3f" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.749750;0.750000;0.974000;0.974375;0.999938;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="ch8-layers-p5" class="diagram-caption">TCP/IP folds OSI's top three layers into one Application layer, because protocols such as HTTP manage their own sessions and formats, and its bottom two into one Link layer, because IP only needs a frame delivered to the next hop. OSI says where a feature belongs; TCP/IP describes what is on the wire.</p>
+      <p id="ch8-layers-p5" class="diagram-caption">Read across: TCP/IP's Application covers OSI's top three layers and its Link the bottom two. OSI says where a feature belongs; TCP/IP describes what is on the wire.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>HTTP as an example.</b> It handles its own connections, content negotiation and compression, the jobs OSI gave to Session and Presentation.</li>
           <li><b>The names.</b> TCP/IP's layers come from RFC 1122 (1989): link, internet, transport, application.</li>
           <li><b>Where TLS sits.</b> It encrypts between the application and TCP, which is one reason neither model places it cleanly.</li>
         </ol>
@@ -1098,9 +1105,9 @@
       how a single bit makes it across one hop. <a href="#ch9">Chapter 9</a> climbs to the
       <em>network</em> layer. Every mechanism so far has moved bits between
       two devices on one wire, or a few on one Ethernet segment. The internet is billions
-      of devices, on tens of thousands of independently-administered networks,
-      none of them aware of most of the others, and packets that need to find
-      their way across that graph from any source to any destination. The idea
+      of devices on tens of thousands of independently administered networks,
+      none aware of most of the others, and a packet must find its way across
+      all of them from any source to any destination. The idea
       that made this work was small, strange, and explicitly Cold War.
     </p>
   </section>

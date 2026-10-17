@@ -1,7 +1,7 @@
 # Fig 8.8 · Two stations collide; both back off (Pass 28, law 3). Chart Room. A shared cable: A starts,
 # B starts before A's signal reaches it; the signals overlap (collision) and each station hears it,
 # both jam and stop, both pick a random number of slots (0 or 1 after a first collision): A picks 0
-# and sends, B picks 1, finds the line busy and waits, then sends. Signals travel continuously.
+# and sends (its frame clears the cable before B sends; pre-read audit: the published SVG is the source of truth for that timing), B picks 1, finds the line busy and waits, then sends. Signals travel continuously.
 # t=0 (shift): the collision on the wire.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
@@ -63,8 +63,7 @@ a(text(20, 214, 'after the k-th collision: 0 to 2ᵏ − 1 slots', size=13, fill
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Two stations hear a quiet cable and start at almost the same moment; their signals collide, both notice, jam and stop. '
-           'Each then waits a random number of slots, so one goes first while the other finds the line busy and waits its turn.')
+caption = ('Two stations hear a quiet cable and start at almost the same moment; their signals collide, both notice, send a short jamming signal and stop. Each then waits a random number of slots (the time a signal takes to cross the cable and back), so one goes first and the other finds the line busy.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
