@@ -1,5 +1,7 @@
 # Pre-read audit · resume note
 
+Full picture first: `docs/audit/HANDOFF.md` (every run, every findings file, the method, the rules). This note is the running progress.
+
 All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is the live site and stays untouched: never push, merge, rebase onto or tag `main` from this work. Push only to `pre-read-audit` (from a worktree: `git push origin HEAD:pre-read-audit`).
 
 ## Method per chapter (working laws)
