@@ -52,13 +52,12 @@ for k, (ins, note, t0, t1) in enumerate((('mov rax, [rdi]', 'load the vptr', S1,
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A class with virtual functions gives each object one hidden pointer, the vptr, to a table shared by the whole class. '
-           'Calling <code>s-&gt;area()</code> loads the vptr, reads slot 0, and jumps there: two instructions, the second an indirect call.')
+caption = ('A class with virtual functions gives each object one hidden pointer, the vptr, to the vtable its whole class shares; <code>s-&gt;area()</code> costs the two instructions at the bottom, the second an indirect call.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Who sets it.</b> The constructor writes the vptr, so a <code>Circle</code> always points at <code>Circle</code>'s table, whatever type of pointer holds it.</li>
-          <li><b>The cost.</b> One extra load and an indirect call; when the processor predicts the target, that is close to a direct call.</li>
+          <li><b>Who sets it.</b> The constructor, the code that runs as <code>new Circle(2.0)</code> builds the object, writes the vptr, so a <code>Circle</code> always points at <code>Circle</code>'s table, whatever type of pointer holds it.</li>
+          <li><b>The cost.</b> One extra load and an indirect call; on a modern processor that is barely slower than a direct call.</li>
           <li><b>The C version.</b> A struct of function pointers, kept by hand, is the same design: the Linux kernel's <code>file_operations</code> is one.</li>
         </ol>
       </details>'''

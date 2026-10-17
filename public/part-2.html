@@ -2952,7 +2952,7 @@
       </g>
       <g transform="translate(310,360)">
         <rect x="0" y="0" width="120" height="60" rx="6" fill="none" stroke="rgba(132,255,178,0.55)"/>
-        <text x="60" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">Polygon</text>
+        <text x="60" y="22" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(132,255,178,0.95)">Hexagon</text>
         <line x1="14" y1="28" x2="106" y2="28" stroke="rgba(132,255,178,0.42)"/>
         <text x="60" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.6" fill="rgba(132,255,178,0.94)">its own area</text>
       </g>
@@ -2996,7 +2996,7 @@
     </p>
 
     <p id="ch6-complexity-p3">
-      The diagnosis was that C gave the programmer one tool for organising code: the function. Functions could group statements; nothing grouped functions. There was no language-level concept of <em>module</em>, no <em>class</em>, no <em>interface</em>. A struct was a list of fields with no behaviour attached, and any function that knew its layout could reach in and change them. If your subsystem had thirty types and three hundred functions, the language had nothing to say about which functions belonged to which types. You enforced it by convention, in comments, in code review.
+      C programs of the 1980s reached the same size and hit the same wall. For C, the diagnosis was that it gave the programmer one tool for organising code: the function. Functions could group statements; nothing but the source file grouped functions. There was no language-level concept of <em>module</em>, no <em>class</em>, no <em>interface</em>. A struct was a list of fields with no behaviour attached, and any function that knew its layout could reach in and change them. If your subsystem had thirty structs and three hundred functions, the language had nothing to say about which functions belonged to which struct. You enforced it by convention, in comments, in code review.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-1">
@@ -3203,13 +3203,12 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.111111;0.111667;0.688667;0.688889;1.000000" dur="9s" repeatCount="indefinite"/><text x="20" y="313" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">16 parts</text><rect x="112" y="300" width="210.0" height="16" rx="2" fill="#d4a853" fill-opacity="0.6"/><text x="330" y="313" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">120</text></g>
 <text x="380" y="214" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">possible interactions</text>
 </svg>
-      <p id="ch6-complexity-p4" class="diagram-caption">Brooks's arithmetic: <em>n</em> parts that can each affect the others have <em>n</em>(<em>n</em>&#8239;−&#8239;1)/2 possible interactions, so doubling the parts roughly quadruples what can go wrong between them. C offered no compiler-enforced way to wall parts off from one another, and the classes and access rules of C++ were the answer.</p>
+      <p id="ch6-complexity-p4" class="diagram-caption">Brooks's arithmetic: <em>n</em> parts that can each affect the others have <em>n</em>(<em>n</em>&#8239;−&#8239;1)/2 possible interactions, so doubling the parts roughly quadruples what can go wrong between them.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The source.</b> Fred Brooks, <em>The Mythical Man-Month</em> (1975), applied the count to people: each pair on a team needs a channel, so adding people to a late project makes it later.</li>
           <li><b>The same for code.</b> When any function may touch any data, every new part can collide with every old one, and the pairs outgrow the parts.</li>
-          <li><b>The wall.</b> A class with private members lets the compiler refuse every touch that bypasses the interface, cutting the lines that may exist.</li>
+          <li><b>The wall.</b> A class with private members (data that only the class's own functions may touch) lets the compiler refuse every ordinary touch from outside, cutting the lines that may exist.</li>
         </ol>
       </details>
     </div>
@@ -3229,11 +3228,11 @@
     </p>
 
     <p id="ch6-stroustrup-p2">
-      Simula 67 was designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the Norwegian Computing Center, expressly for writing simulations. It introduced the modern object-oriented vocabulary: the words <strong>class</strong>, <strong>object</strong>, <strong>virtual</strong>, and even <strong>this</strong> (referring to "the current object") all originate there, and so do the ideas of inheritance and virtual methods, though Simula spoke of subclasses and virtual procedures. By 1979 Simula was a niche academic language. Stroustrup would graft its ideas onto C, and a program would pay nothing at runtime for a feature it did not use. This <em>zero-cost</em> philosophy became the language's defining trait.
+      Simula 67 was designed in 1967 by Ole-Johan Dahl and Kristen Nygaard at the Norwegian Computing Center, widening their simulation language into a general-purpose one. It introduced the modern object-oriented vocabulary: the words <strong>class</strong>, <strong>object</strong>, <strong>virtual</strong>, and even <strong>this</strong> (referring to "the current object") all originate there, and so do the ideas of inheritance and virtual methods, though Simula spoke of subclasses and virtual procedures. By 1979 Simula was a niche academic language. Stroustrup would graft its ideas onto C, and a program would pay nothing at runtime for a feature it did not use. This <em>zero-cost</em> philosophy became the language's defining trait.
     </p>
 
     <p id="ch6-stroustrup-p3">
-      The first version, in 1979, was <strong>"C with Classes,"</strong> a translator that turned the new constructs back into plain C. In 1983 the language was renamed <strong>C++</strong>, a pun on <code>++</code>, C's operator for adding one, meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and that year's compiler, Cfront, still worked by turning C++ into C. In 1989 ANSI convened a standards committee; the standard itself, C++98, took nine more years. By 2000 it was the dominant language for systems where C alone could not scale: trading platforms, telecommunications switches, browser engines, game runtimes.
+      The first version, in 1979, was <strong>"C with Classes,"</strong> a translator that turned the new constructs back into plain C, so that it ran wherever a C compiler did. In 1983 the language was renamed <strong>C++</strong>, a pun on <code>++</code>, C's operator for adding one, meaning "C, but more." In 1985 Stroustrup wrote the language's first book, and that year's compiler, Cfront, still worked by turning C++ into C. In 1989 ANSI convened a standards committee; the standard itself, C++98, took nine more years. By 2000 it was the dominant language for systems where C alone could not scale: trading platforms, telecommunications switches, browser engines, game runtimes.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-2">
@@ -3269,7 +3268,7 @@
 <text x="92" y="125" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,1)">C++ 1.0: Cfront, compiles to C</text>
 </g>
 <circle class="fx" cx="74" cy="120" r="11" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.309800;0.310000;0.370000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
-<g><animate attributeName="opacity" values="1;1;1;1;1;1;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.394800;0.395000;1.000000" dur="10s" repeatCount="indefinite"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.55;0.55;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.394800;0.395000;1.000000" dur="10s" repeatCount="indefinite"/>
 <text x="20" y="159" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,1)">1998</text>
 <circle cx="74" cy="154" r="5" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/>
 <text x="92" y="159" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,1)">C++98: first standard + library</text>
@@ -3301,19 +3300,18 @@
 </g>
 <circle class="fx" cx="74" cy="290" r="11" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.734800;0.735000;0.795000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
 </svg>
-      <p id="ch6-stroustrup-p4" class="diagram-caption">From Simula's classes to C++23: Stroustrup's C with Classes (1979) became C++, standardised in 1998. C++11 is the pivot, adding move semantics, lambdas, <code>auto</code> and smart pointers, and every standard since has added more while keeping almost all older code compiling.</p>
+      <p id="ch6-stroustrup-p4" class="diagram-caption">From Simula's classes to C++23, with the style turning from classic to modern at C++11.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The aim.</b> Stroustrup (1993): "C++ was designed to provide Simula's facilities for program organization together with C's efficiency and flexibility for systems programming."</li>
-          <li><b>Early compilers.</b> C with Classes and Cfront, the first C++ compiler, translated programs into C, so C++ could run wherever a C compiler did.</li>
           <li><b>The rhythm.</b> Since 2011 a new standard has arrived every three years: 14, 17, 20, 23.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch6-stroustrup-p5">
-      What Stroustrup built was a deal: <em>you may add abstraction without losing speed</em>. A class compiles to a struct plus ordinary functions, its methods, at no extra cost. A virtual method, whose version is chosen while the program runs, costs one hidden pointer in each object and one call through a table. In each case the compiler writes and checks the bookkeeping a C programmer would have written by hand.
+      What Stroustrup built was a deal: <em>you may add abstraction without losing speed</em>, because the compiler writes and checks the bookkeeping a C programmer would have written by hand. Section 03 shows what that costs, in memory.
     </p>
 
   </section>
@@ -3331,7 +3329,7 @@
     </p>
 
     <p id="ch6-classes-p3">
-      Add the keyword <code>virtual</code> to a method, however, and the choice of function moves to runtime. A Shape pointer may hold a Circle or a Square, and <code>shape-&gt;area()</code>, which calls <code>area</code> through the pointer, must run the version for whichever object it points at. To support this, the compiler adds one hidden field to every object of a class with virtual methods: a pointer to a per-class array of function pointers, traditionally called the <strong>vtable</strong>. Each virtual method gets a fixed slot in that array. The call compiles to "load the vtable pointer, index slot 0, jump to that address."
+      Add the keyword <code>virtual</code> to a method, however, and the choice of function moves to runtime. A Shape pointer may hold a Circle or a Square, and <code>shape-&gt;area()</code>, which calls <code>area</code> through the pointer, must run the version for whichever object it points at. To support this, the compiler adds one hidden field to every object of a class with virtual methods: a pointer to a per-class array of function pointers, traditionally called the <strong>vtable</strong>. Each virtual method gets a fixed slot in that array. The call compiles to two instructions: load the vtable pointer, then jump through slot 0.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-3">
@@ -3370,24 +3368,27 @@
 <text x="368" y="282" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">through slot 0</text>
 <rect class="fx" x="24" y="267" width="352" height="21" rx="2" fill="none" fill-opacity="0.18" opacity="0" stroke="#86a8ff" stroke-width="1.5"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.314000;0.314286;0.770286;0.770714;0.999929;1.000000" dur="7s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="ch6-classes-p4" class="diagram-caption">A class with virtual functions gives each object one hidden pointer, the vptr, to a table shared by the whole class. Calling <code>s-&gt;area()</code> loads the vptr, reads slot 0, and jumps there: two instructions, the second an indirect call.</p>
+      <p id="ch6-classes-p4" class="diagram-caption">A class with virtual functions gives each object one hidden pointer, the vptr, to the vtable its whole class shares; <code>s-&gt;area()</code> costs the two instructions at the bottom, the second an indirect call.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Who sets it.</b> The constructor writes the vptr, so a <code>Circle</code> always points at <code>Circle</code>'s table, whatever type of pointer holds it.</li>
-          <li><b>The cost.</b> One extra load and an indirect call; when the processor predicts the target, that is close to a direct call.</li>
+          <li><b>Who sets it.</b> The constructor, the code that runs as <code>new Circle(2.0)</code> builds the object, writes the vptr, so a <code>Circle</code> always points at <code>Circle</code>'s table, whatever type of pointer holds it.</li>
+          <li><b>The cost.</b> One extra load and an indirect call; on a modern processor that is barely slower than a direct call.</li>
           <li><b>The C version.</b> A struct of function pointers, kept by hand, is the same design: the Linux kernel's <code>file_operations</code> is one.</li>
         </ol>
       </details>
     </div>
 
     <h3>Inheritance is layout</h3>
+    <p id="ch6-classes-p7">
+      A Circle derives from Shape, so its object begins with everything a Shape has, here just the vptr, followed by Circle's own field <code>r</code>. Code compiled for a Shape therefore finds the vptr in the same place in every shape. Fig 6.4 shows what that buys: one call, three classes.
+    </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-6-4">
-      <div class="diagram-label">Fig 6.4&nbsp;· Inheritance: same vptr slot, different function</div>
+      <div class="diagram-label">Fig 6.4&nbsp;· Inheritance: same vtable slot, different function</div>
       <svg viewBox="0 0 400 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-40 svgd-part2-40">
-<title id="svgt-part2-40">Fig 6.4 · Inheritance: same vptr slot, different function</title>
-<desc id="svgd-part2-40">A function print(Shape* s) calls s-&gt;area(); a note under it reads: s points at a shape, -&gt; calls through s. The pointer s is given a Circle with r = 2, then a Square with side 3, then a Triangle with base 4 and height 3. Each object's vptr leads to its own class's vtable, where slot 0 holds that class's area: Circle area computes π·r·r and prints 12.57, Square area side² and prints 9, Triangle area ½·b·h and prints 6. The caller never changes.</desc>
+<title id="svgt-part2-40">Fig 6.4 · Inheritance: same vtable slot, different function</title>
+<desc id="svgd-part2-40">A function print(Shape* s) calls s-&gt;area(); a note under it reads: s points at a shape, -&gt; calls through s. The pointer s is given a Circle with r = 2, then a Square with side 3, then a Triangle with base 4 and height 3. Each object leads to its own class's vtable, where slot 0 holds that class's area: Circle area computes π·r·r and prints 12.57, Square area side² and prints 9, Triangle area ½·b·h and prints 6. The caller never changes.</desc>
 <rect x="20" y="12" width="360" height="40" rx="3" fill="none" stroke="#1d2b22" stroke-opacity="0.53"/>
 <text x="32" y="28" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">print(Shape* s): s-&gt;area()</text>
 <text x="32" y="44" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.66)">s points at a shape; -&gt; calls through s</text>
@@ -3431,23 +3432,23 @@
 <line x1="322.0" y1="126" x2="322.0" y2="140" stroke="rgba(29,43,34,0.53)" stroke-width="1.4"/>
 <polygon points="318.0,138 326.0,138 322.0,145" fill="rgba(29,43,34,0.53)"/>
 <rect x="264" y="146" width="116" height="40" rx="3" fill="none" stroke="rgba(29,43,34,0.53)"/>
-<rect class="fx" x="264" y="146" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.510889;0.511111;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="264" y="146" width="116" height="40" rx="3" fill="none" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.510889;0.511111;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="322" y="163" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.71)">vtable slot 0</text>
 <text x="322" y="179" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">Triangle area</text>
 <line x1="322.0" y1="186" x2="322.0" y2="200" stroke="rgba(29,43,34,0.53)" stroke-width="1.4"/>
 <polygon points="318.0,198 326.0,198 322.0,205" fill="rgba(29,43,34,0.5)"/>
 <rect x="264" y="206" width="116" height="40" rx="3" fill="none" stroke="rgba(29,43,34,0.53)"/>
-<rect class="fx" x="264" y="206" width="116" height="40" rx="3" fill="#2e6f52" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.555333;0.555556;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
+<rect class="fx" x="264" y="206" width="116" height="40" rx="3" fill="none" fill-opacity="0.15" stroke="#2e6f52" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.555333;0.555556;0.743556;0.743889;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <text x="322" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#2e6f52">½·b·h</text>
 <g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;122.00 0;122.00 0;244.00 0;244.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.122222;0.155556;0.433333;0.466667;0.733333;0.766667;0.777722;0.777778;1.000000" dur="9s" repeatCount="indefinite"/><line x1="78.0" y1="52" x2="78.0" y2="78" stroke="#8a5a00" stroke-width="2"/><polygon points="73.0,76 83.0,76 78.0,85" fill="#8a5a00"/><text x="86" y="72" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">s</text></g>
 </svg>
-      <p id="ch6-classes-p5" class="diagram-caption">One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class's vtable leads to that class's own <code>area()</code>. The caller never changes; that is <span class="key-term">polymorphism</span>, code written against an interface rather than an implementation.</p>
+      <p id="ch6-classes-p5" class="diagram-caption">One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class's vtable leads to that class's own <code>area()</code>. The caller never changes; that is <span class="key-term">polymorphism</span>, code written for the general kind, Shape, not for any one shape's formula.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Same layout.</b> Every class derived from <code>Shape</code> puts <code>area()</code> in the same slot of its vtable, so the call compiles to the same two instructions.</li>
           <li><b>New shapes for free.</b> A <code>Hexagon</code> added next year works with <code>print()</code> unchanged and without recompiling.</li>
-          <li><b>The rule.</b> <code>= 0</code> makes <code>Shape::area</code> pure virtual: <code>Shape</code> itself cannot be created, only its subclasses.</li>
+          <li><b>The rule.</b> Declaring <code>virtual double area() = 0;</code> in <code>Shape</code> gives <code>area</code> no body of its own: <code>Shape</code> itself cannot be created, only its subclasses.</li>
         </ol>
       </details>
     </div>
@@ -3455,7 +3456,7 @@
     <h3>Encapsulation as a tool</h3>
 
     <p id="ch6-classes-p6">
-      The keywords <code>private</code> and <code>public</code> let a class hide its fields, forcing access through its methods. This is enforced at compile time only. At runtime, a private field is just a field, and a determined caller can cast their way to it. This hiding, encapsulation, is a discipline the language helps you keep, not a security boundary. Used well, it lets you change a class's internals freely, knowing the rest of the codebase cannot have grown to depend on them.
+      The keywords <code>private</code> and <code>public</code> let a class hide its fields, forcing access through its methods. This is enforced at compile time only. At runtime, a private field is just a field, and a determined caller can still reach it through a pointer to the object's bytes, as any C function could reach into a struct. This hiding, encapsulation, is a discipline the language helps you keep, not a security boundary. Used well, it lets you change a class's internals freely, knowing the rest of the codebase cannot have grown to depend on them.
     </p>
 
   </section>
@@ -3492,11 +3493,11 @@
 <rect class="fx" x="24" y="60" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.385667;0.385833;0.422667;0.422917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="24" y="80" width="352" height="19" rx="2" fill="#84ffb2" fill-opacity="0.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.423167;0.423333;0.460167;0.460417;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="24" y="100" width="352" height="19" rx="2" fill="none" fill-opacity="0.2" opacity="0" stroke="#ec8d8d" stroke-width="1.5"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.460667;0.460833;0.643500;0.643750;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
-<text x="32" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">int&#160;do_thing()&#160;{</text><text x="368" y="34" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// std:: standard library</text>
-<text x="32" y="54" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::ifstream&#160;f("x");</text><text x="368" y="54" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// opens file x</text>
-<text x="32" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::vector&lt;char&gt;&#160;buf(1024);</text><text x="368" y="74" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// a buffer</text>
-<text x="32" y="94" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::lock_guard&#160;lock(m);</text><text x="368" y="94" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// m: a mutex</text>
-<text x="32" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;parse(buf,&#160;f);</text><text x="368" y="114" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// fills buf; may throw</text>
+<text x="32" y="34" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">int&#160;do_thing()&#160;{</text><text x="374" y="34" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// std:: standard library</text>
+<text x="32" y="54" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::ifstream&#160;f("x");</text><text x="374" y="54" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// opens file x</text>
+<text x="32" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::vector&lt;char&gt;&#160;buf(1024);</text><text x="374" y="74" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// a buffer</text>
+<text x="32" y="94" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;std::lock_guard&#160;lock(m);</text><text x="374" y="94" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// m: a mutex</text>
+<text x="32" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;parse(buf,&#160;f);</text><text x="374" y="114" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">// fills buf; may throw</text>
 <text x="32" y="134" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;write(buf);</text>
 <text x="32" y="154" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">&#160;&#160;return&#160;0;</text>
 <text x="32" y="174" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">}</text>
@@ -3520,13 +3521,11 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.231500;0.231667;0.347667;0.347917;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">return 0: all released, in reverse</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.652333;0.652500;0.781000;0.781250;0.798292;0.798333;1.000000" dur="12s" repeatCount="indefinite"/><text x="20" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">parse() threw: released the same way</text></g>
 </svg>
-      <p id="ch6-raii-p4" class="diagram-caption">Each resource is an object on the stack, acquired as its line runs and released by its destructor when the function exits, in reverse order. A normal return and an exception thrown by <code>parse()</code> unwind the same way, so no cleanup code is written and none can be forgotten.</p>
+      <p id="ch6-raii-p4" class="diagram-caption">Each resource is held by an object on the stack (<code>buf</code>'s 1024 bytes sit on the heap; the vector on the stack owns them), acquired as its line runs and released by its destructor in reverse order. A normal return and an exception thrown by <code>parse()</code> unwind the same way.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The C version.</b> Every early return or error path must unlock, free and close by hand, usually through a shared <code>goto</code> label; one missed line leaks.</li>
           <li><b>Why reverse.</b> Later resources may depend on earlier ones, so the compiler destroys them in the opposite order to construction.</li>
-          <li><b>What builds on it.</b> Containers, smart pointers and lock guards are all RAII types; it is also what makes exceptions safe to use.</li>
         </ol>
       </details>
     </div>
@@ -3551,13 +3550,13 @@
     </p>
 
     <p id="ch6-zerocost-p2">
-      Consider <code>std::sort</code>. C's <code>qsort</code> receives its comparator, the function that says which of two items comes first, as a function pointer, so every comparison is a call into code the compiler could not see when it built <code>qsort</code>. <code>std::sort</code> takes the comparator as a <em>template argument</em>: a template is a recipe the compiler fills in afresh for each type or function it is given. Here it builds a copy of <code>std::sort</code> for that comparator and inlines the comparison, writing it into the loop as two instructions instead of a call. Sorting a million integers, <code>std::sort</code> typically runs about three times faster than <code>qsort</code>.
+      Consider <code>std::sort</code>. C's <code>qsort</code> receives its comparator, the function that says which of two items comes first, as a function pointer, so every comparison is a call into code the compiler could not see when it built <code>qsort</code>. <code>std::sort</code> takes the comparator (by default, <code>&lt;</code>) as a <em>template argument</em>: a template is a recipe the compiler fills in afresh for each type or function it is given. Here it builds a copy of <code>std::sort</code> for that comparator and inlines the comparison, writing it into the loop as two instructions instead of a call. Sorting a million integers, <code>std::sort</code> typically runs about three times faster than <code>qsort</code>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-6-6">
-      <div class="diagram-label">Fig 6.6&nbsp;· qsort vs std::sort, same algorithm, different cost</div>
+      <div class="diagram-label">Fig 6.6&nbsp;· qsort vs std::sort, same job, different cost</div>
       <svg viewBox="0 0 400 258" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-42 svgd-part2-42">
-<title id="svgt-part2-42">Fig 6.6 · qsort vs std::sort, same algorithm, different cost</title>
+<title id="svgt-part2-42">Fig 6.6 · qsort vs std::sort, same job, different cost</title>
 <desc id="svgd-part2-42">The path of one comparison. C's qsort, sorting n ints, calls the comparison function cmp through a pointer, so each comparison is five steps: call, load the two values, compare, return, test the result. C++'s std::sort, sorting all of v, is compiled for the exact comparison, which is inlined, written into the loop: compare and branch, two steps. A note says std:: marks the standard library. A marker stepping through both paths at the same rate completes two comparisons in qsort while std::sort completes five; a count beside each path keeps score, and the still shows the final count.</desc>
 <text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">C · compiled once, in the library</text>
 <text x="20" y="40" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">qsort(v, n, size, cmp);</text>
@@ -3608,7 +3607,7 @@
 <rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0" keyTimes="0.000000;0.199800;0.200000;0.599600;0.600000;0.678400;0.679000;0.999900;1.000000" dur="5s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0" keyTimes="0.000000;0.199800;0.200000;0.759600;0.760000;0.838400;0.839000;0.999900;1.000000" dur="5s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="94" y="174" width="64" height="32" rx="3" fill="none" stroke="#84ffb2" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0;0" keyTimes="0.000000;0.199800;0.200000;0.919600;0.920000;0.998400;0.999000;0.999900;1.000000" dur="5s" repeatCount="indefinite"/></rect>
-<text x="20" y="228" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">2 steps, written into the loop</text>
+<text x="20" y="228" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">2 steps, inside the loop</text>
 <text x="380" y="228" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2" opacity="0">comparisons: 5<animate attributeName="opacity" values="1;1;0;0" keyTimes="0.000000;0.199800;0.200000;1.000000" dur="5s" repeatCount="indefinite"/></text>
 <text x="380" y="228" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2" opacity="0">comparisons: 0<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.199800;0.200000;0.359800;0.360000;1.000000" dur="5s" repeatCount="indefinite"/></text>
 <text x="380" y="228" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2" opacity="0">comparisons: 1<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.359800;0.360000;0.519800;0.520000;1.000000" dur="5s" repeatCount="indefinite"/></text>
@@ -3617,13 +3616,11 @@
 <text x="380" y="228" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2" opacity="0">comparisons: 4<animate attributeName="opacity" values="0;0;1;1" keyTimes="0.000000;0.839800;0.840000;1.000000" dur="5s" repeatCount="indefinite"/></text>
 <text x="20" y="250" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">std:: marks the standard library</text>
 </svg>
-      <p id="ch6-zerocost-p3" class="diagram-caption"><code>qsort</code> reaches the comparison through a function pointer, so every comparison is a call the compiler cannot see into; <code>std::sort</code> is compiled for the exact comparison, which becomes two instructions in the loop. Same algorithm, a shorter path per comparison, paid for with a separate copy of the sort for each comparison type.</p>
+      <p id="ch6-zerocost-p3" class="diagram-caption">One comparison traced on each path: five steps through a pointer against two written into the loop, so in the same time std::sort finishes five comparisons to qsort's two. The price is a separate copy of the sort for each comparison type.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why C cannot inline.</b> <code>qsort</code> was compiled into the C library long before your comparison function existed, so it can only call it.</li>
-          <li><b>Templates.</b> <code>std::sort</code> is compiled at your call site with the comparison's type known, so the optimiser folds it into the loop; on a million integers it typically runs about three times faster.</li>
-          <li><b>A trap in C.</b> The usual comparator <code>return *(int*)a - *(int*)b;</code> overflows for large values; <code>(x &gt; y) - (x &lt; y)</code> is safe.</li>
+          <li><b>Templates.</b> <code>std::sort</code> is compiled at your call site with the comparison's type known, so the optimiser folds the comparison into the loop.</li>
         </ol>
       </details>
     </div>
@@ -3665,8 +3662,8 @@
 <rect x="20" y="152" width="130" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.25)" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.519200;0.519500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.519200;0.519500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="152" width="130" height="34" rx="3" fill="none" stroke="#d4a853"/><text x="85" y="174" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">owner b</text><path d="M150 169 L256 154" stroke="#d4a853" stroke-width="1.5"/><polygon points="254,150 262,153 256,159" fill="#d4a853"/></g>
 <rect x="262" y="132" width="118" height="34" rx="3" fill="none" stroke="rgba(198,222,206,0.42)" stroke-dasharray="3 3"><animate attributeName="opacity" values="0;0;1;1;0;0;1;1;0;0;0" keyTimes="0.000000;0.359200;0.359500;0.359800;0.360000;0.519200;0.519500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.359200;0.359500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">count 2</text></g>
-<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.359800;0.360000;0.519200;0.519500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">count 1</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.359200;0.359500;0.959800;0.960000;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">object</text><text x="380" y="126" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">count 2</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.359800;0.360000;0.519200;0.519500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><rect x="262" y="132" width="118" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#d4a853"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">object</text><text x="380" y="126" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">count 1</text></g>
 <g><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.519800;0.520000;0.959200;0.959500;0.999950;1.000000" dur="10s" repeatCount="indefinite"/><text x="321" y="154" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">freed</text></g>
 <text x="380" y="184" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">then a goes: 1, b goes: 0</text>
 <text x="20" y="218" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">weak_ptr · watches, does not own</text>
@@ -3680,13 +3677,13 @@
 <text x="380" y="322" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">then s goes: freed, w expired</text>
 
 </svg>
-      <p id="ch6-modern-p3" class="diagram-caption">Ownership is part of the type: behind a <code>unique_ptr</code> the object dies with its single owner, behind a <code>shared_ptr</code> when its count of owners reaches zero. A <code>weak_ptr</code> watches without keeping its object alive, and afterwards reports that it has expired.</p>
+      <p id="ch6-modern-p3" class="diagram-caption">Three lifetimes: one owner, counted owners, and an observer left holding an expired pointer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The costs.</b> A <code>unique_ptr</code> is as cheap as a raw pointer; a <code>shared_ptr</code> pays for an atomic count updated on every copy.</li>
-          <li><b>Moving, not copying.</b> A <code>unique_ptr</code> cannot be copied, only moved, so there is never more than one owner.</li>
-          <li><b>Breaking cycles.</b> Two objects holding <code>shared_ptr</code>s to each other never reach zero; making one link a <code>weak_ptr</code> lets both be freed.</li>
+          <li><b>Making one.</b> <code>std::make_unique&lt;T&gt;(...)</code> and <code>std::make_shared&lt;T&gt;(...)</code> create the object and its owner in one step, so no bare <code>new</code> is written.</li>
+          <li><b>Breaking cycles.</b> Two objects holding <code>shared_ptr</code>s to each other keep each other's count above zero; making one link a <code>weak_ptr</code> lets both be freed.</li>
         </ol>
       </details>
     </div>
@@ -3694,13 +3691,13 @@
     <h3>Move semantics</h3>
 
     <p id="ch6-modern-p4">
-      A <code>std::vector</code> is three pointers into a buffer on the heap, so a copy must allocate a second buffer and copy every element into it. C++11 added a way to <em>move</em> it instead: to declare "I am done with this; take it." The new vector copies the three pointers and the old vector's are set to null, so a million elements change hands in three pointer assignments. A function asks for a move with an <strong>rvalue reference</strong>, written <code>T&amp;&amp;</code>, a parameter type that accepts only a value whose owner is done with it: a temporary result, or an object marked with <code>std::move</code>.
+      A <code>std::vector</code> is three pointers into a buffer on the heap (where it begins, where its elements end, and the limit of the space it has reserved), so a copy must allocate a second buffer and copy every element into it. C++11 added a way to <em>move</em> it instead: to declare "I am done with this; take it." The new vector copies the three pointers and the old vector's are set to null, so a million elements change hands by copying three pointers. A function asks for a move with an <strong>rvalue reference</strong>, written <code>T&amp;&amp;</code>, a parameter type that accepts only a value whose owner is done with it: a temporary result, or an object marked with <code>std::move</code>.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-6-8">
-      <div class="diagram-label">Fig 6.8&nbsp;· A move is "I'm done with this, take it"</div>
+      <div class="diagram-label">Fig 6.8&nbsp;· A move is "I am done with this; take it"</div>
       <svg viewBox="0 0 400 306" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-44 svgd-part2-44">
-<title id="svgt-part2-44">Fig 6.8 · A move is &quot;I'm done with this, take it&quot;</title>
+<title id="svgt-part2-44">Fig 6.8 · A move is &quot;I am done with this; take it&quot;</title>
 <desc id="svgd-part2-44">auto v2 = std::move(v1); Two vector objects, v1 the old vector and v2 the new one, each three pointers: begin, end and limit (the capacity), with end and limit 4 MB past begin. Before the move, v1's pointers lead to a heap buffer of one million ints, 4 MB, and v2 is empty. The move copies v1's three pointers into v2 one by one, so v2 now leads to the same buffer, then sets v1's pointers to null. No int is copied and nothing is allocated; v1 is left empty but valid. A note says std:: marks the standard library.</desc>
 <text x="20" y="24" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">auto v2 = std::move(v1);</text>
 <text x="20" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#1d2b22">v1: old vector</text>
@@ -3721,10 +3718,10 @@
 <g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.411500;0.411875;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.68)">end = null</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.412250;0.412500;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="113" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">end = begin+4MB</text></g>
 <rect class="fx" x="222.5" y="94.5" width="155" height="27" rx="2" fill="none" opacity="0" stroke="#2e6f52" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.249938;0.250000;0.412250;0.412500;0.474000;0.474375;1.000000" dur="8s" repeatCount="indefinite"/></rect>
-<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#296349">limit = begin+4MB</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.624000;0.624375;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">limit = begin+4MB</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.624750;0.625000;1.000000" dur="8s" repeatCount="indefinite"/><text x="30" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">limit = null</text></g>
 <g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.199750;0.200000;0.249938;0.250000;0.474000;0.474375;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.68)">limit = null</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.474750;0.475000;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#296349">limit = begin+4MB</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.474750;0.475000;1.000000" dur="8s" repeatCount="indefinite"/><text x="230" y="145" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">limit = begin+4MB</text></g>
 <rect class="fx" x="222.5" y="126.5" width="155" height="27" rx="2" fill="none" opacity="0" stroke="#2e6f52" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.249938;0.250000;0.474750;0.475000;0.536500;0.536875;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 <rect x="20" y="206" width="360" height="40" rx="3" fill="none" stroke="#2e6f52"/>
 <text x="200" y="231" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">heap: 1,000,000 ints, 4 MB</text>
@@ -3733,7 +3730,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.199000;0.199375;0.249938;0.250000;0.674750;0.675000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="276" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#2e6f52">3 pointers copied, 3 nulled, 0 ints moved</text></g>
 <text x="20" y="298" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(29,43,34,0.68)">std:: marks the standard library</text>
 </svg>
-      <p id="ch6-modern-p5" class="diagram-caption">Moving a vector copies its three pointers into the new owner and nulls the old ones; the million ints stay exactly where they are. The cost is the same for ten elements or ten million, and <code>v1</code> is left empty but still valid.</p>
+      <p id="ch6-modern-p5" class="diagram-caption">Before and after <code>std::move</code>: the 4 MB buffer never moves, only the three pointers that lead to it. The cost is the same for ten elements or ten million, and <code>v1</code> is left empty but valid.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3744,15 +3741,16 @@
       </details>
     </div>
 
+    <h3>Seven standards</h3>
     <div class="diagram-card fig-v2" id="fig-6-9">
       <div class="diagram-label">Fig 6.9&nbsp;· C++ standards&nbsp;· the language eating its own complexity</div>
       <svg viewBox="0 0 400 356" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-45 svgd-part2-45">
 <title id="svgt-part2-45">Fig 6.9 · C++ standards · the language eating its own complexity</title>
-<desc id="svgd-part2-45">Adding up a vector in three eras of C++. C++98: an explicit iterator loop over three lines, i pointing at each item. C++11: a range-for, for (int x : v) total += x, x being each item. C++23: auto total = std::ranges::fold_left(v, 0, std::plus{}), 0 plus each item, with no loop at all. Plain notes gloss the notation: ++i moves to the next item, *i is the item i points at, fold_left starts at 0 and adds each item, and :: names a part of a library, std:: being the standard library. Beneath, the seven standards: 98, 03, 11, 14, 17, 20 and 23.</desc>
+<desc id="svgd-part2-45">Adding up a vector in three eras of C++. C++98: an explicit iterator loop over three lines, i pointing at each item. C++11: a range-for, for (int x : v) total += x, x being each item. C++23: auto total = std::ranges::fold_left(v, 0, std::plus{}), 0 plus each item, in one call. Plain notes gloss the notation: ++i moves to the next item, *i is the item i points at, fold_left starts at 0 and adds each item, and :: names a part of a library, std:: being the standard library. Beneath, the seven standards: 98, 03, 11, 14, 17, 20 and 23.</desc>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">one task, three eras: add up a vector</text>
 <rect x="20" y="34" width="360" height="92" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.56"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="20" y="34" width="360" height="92" rx="3" fill="none" fill-opacity="0.12" stroke="#d4a853" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.332444;0.332778;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
-<text x="316" y="52" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">&lt;int&gt;: of ints</text><text x="368" y="52" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">C++98</text>
+<text x="316" y="52" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">&lt;int&gt;: of ints</text><text x="374" y="52" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">C++98</text>
 <text x="30" y="54" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">int&#160;total&#160;=&#160;0;</text>
 <text x="30" y="74" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">for&#160;(vector&lt;int&gt;::iterator&#160;i&#160;=&#160;v.begin();</text>
 <text x="30" y="94" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;&#160;&#160;&#160;i&#160;!=&#160;v.end();&#160;++i)&#160;total&#160;+=&#160;*i;</text>
@@ -3760,12 +3758,12 @@
 <g transform="translate(0,20)">
 <rect x="20" y="116" width="360" height="52" rx="3" fill="none" stroke="#86a8ff" stroke-opacity="0.54"><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="20" y="116" width="360" height="52" rx="3" fill="none" fill-opacity="0.12" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.333111;0.333333;0.665778;0.666111;0.999944;1.000000" dur="9s" repeatCount="indefinite"/></rect>
-<text x="368" y="134" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">C++11</text>
+<text x="374" y="134" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">C++11</text>
 <text x="30" y="136" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">int&#160;total&#160;=&#160;0;</text>
-<text x="30" y="156" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">for&#160;(int&#160;x&#160;:&#160;v)&#160;total&#160;+=&#160;x;</text><text x="368" y="156" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">x is each item</text>
+<text x="30" y="156" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">for&#160;(int&#160;x&#160;:&#160;v)&#160;total&#160;+=&#160;x;</text><text x="374" y="156" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">x is each item</text>
 <rect x="20" y="178" width="360" height="72" rx="3" fill="none" stroke="#84ffb2" stroke-opacity="0.5"/>
 <rect class="fx" x="20" y="178" width="360" height="72" rx="3" fill="none" fill-opacity="0.12" stroke="#84ffb2" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
-<text x="368" y="196" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">C++23</text>
+<text x="374" y="196" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">C++23</text>
 <text x="30" y="198" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">auto&#160;total&#160;=&#160;std::ranges::fold_left(</text>
 <text x="30" y="218" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">&#160;&#160;&#160;&#160;v,&#160;0,&#160;std::plus{});</text>
 <text x="30" y="238" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">fold_left: 0 + each item; plus{} is the +</text>
@@ -3791,13 +3789,13 @@
 <rect class="fx" x="332" y="258" width="46" height="28" rx="3" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.666444;0.666667;0.999111;0.999444;1.000000" dur="9s" repeatCount="indefinite"/></rect>
 </g></g>
 </svg>
-      <p id="ch6-modern-p6" class="diagram-caption">Seven standards in twenty-five years, and the same task keeps getting shorter: an iterator loop in C++98, a range-for in C++11, a single fold with no loop in C++23. The old forms still compile, so the language keeps growing while the recommended way to write it shrinks.</p>
+      <p id="ch6-modern-p6" class="diagram-caption">Seven standards in twenty-five years, and the same task needs less bookkeeping each time: an iterator loop in C++98, a range-for in C++11, one call over the whole vector, with no iterators to name, in C++23.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The two big ones.</b> C++11 (<code>auto</code>, lambdas, move semantics, smart pointers) and C++20 (concepts, modules, ranges, coroutines) each changed what "modern C++" means.</li>
-          <li><b>The books.</b> Scott Meyers wrote <em>Effective Modern C++</em> (2014) because C++11 had overtaken much of his <em>Effective C++</em>.</li>
-          <li><b>Little is removed.</b> <code>auto_ptr</code>, gone in C++17, is a rare exception; that is why the language only grows.</li>
+          <li><b>The two big ones.</b> C++11 and C++20 (concepts, modules, ranges, coroutines) each changed what "modern C++" means.</li>
+          <li><b>The books.</b> Scott Meyers wrote <em>Effective Modern C++</em> (2014) as a companion to his <em>Effective C++</em>, for the features C++11 and C++14 added.</li>
+          <li><b>Little is removed.</b> <code>auto_ptr</code>, gone in C++17, is a rare removal.</li>
         </ol>
       </details>
     </div>
@@ -3805,7 +3803,7 @@
     <h3>The seam to <a href="#ch7">Chapter 7</a></h3>
 
     <p id="ch6-modern-p7">
-      C and C++ are both languages that face the machine. They give the programmer enormous power (direct memory access, predictable cleanup, zero-cost abstraction) and demand in return careful attention to what the machine actually does. By the late 1980s these languages ran most systems that mattered, and many programmers took this as the trade every language must make. In 1989, over a Christmas holiday in Amsterdam, Guido van Rossum asked the opposite question. <em>What if a language did not face the machine at all?</em>
+      C and C++ are both languages that face the machine. They give the programmer enormous power (memory reached directly through pointers, predictable cleanup, zero-cost abstraction) and demand in return careful attention to what the machine actually does. By the late 1980s C was the language of most new systems software, with C++ spreading behind it, and many programmers took this as the trade every language must make. In 1989, over a Christmas holiday in Amsterdam, Guido van Rossum asked the opposite question. <em>What if a language did not face the machine at all?</em>
     </p>
 
     <div class="pull-quote">
@@ -3816,7 +3814,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch6-modern-p9" class="insight-text">
-        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three kinds survive. Use-after-move: a moved-from object is in a valid but unspecified state, and reading it is allowed but tells you nothing. Vtable corruption: a use-after-free on a polymorphic object lets an attacker overwrite the vtable pointer and route every virtual call to attacker-chosen code, the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: an iterator marks a place in a vector, and once the vector outgrows its buffer and takes a bigger one, every iterator points into freed memory. The security flaws still found in C++ codebases drive the slow migration to Rust in security-critical paths.
+        <strong>Where C++ still bleeds.</strong> Smart pointers and RAII closed most of the manual-memory wounds, but three kinds survive. Use-after-move: a moved-from object is left valid but in a state the standard does not fix (Fig 6.8's vector happens to be empty), so code that keeps using it as if it still held its data is wrong, and the compiler does not warn. Vtable corruption: when a polymorphic object is freed and its chunk is refilled with attacker-chosen bytes, the next virtual call through the stale pointer reads those bytes as the vtable pointer and jumps to attacker-chosen code, the modern descendant of the buffer overflow from <a href="part-1#ch3">Chapter 3</a>. Iterator invalidation: an iterator marks a place in a vector, and once the vector outgrows its buffer and takes a bigger one, every iterator points into freed memory. The security flaws still found in C++ codebases drive the slow migration to Rust in security-critical paths.
       </p>
     </div>
 
