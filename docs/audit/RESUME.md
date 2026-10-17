@@ -19,8 +19,11 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Outside fixes and Chapter 1 are LIVE (owner: "deploy", 2026-10-17, commit 5cc3417 on `main`, merged back into this branch).
 - Chapter 2: round 1 from `pre-read-audit-ch2-wip`; blind retest and one revision; Fig 2.3 fullscreen contrast fixed; checks green (`decisions/ch2.md` lists them). Commit "Pre-read audit: Chapter 2".
 
+- Chapter 3: round 1, blind retest, one revision; Figs 3.1, 3.3, 3.6 relabelled; the hero's own title id. Owner calls for Figs 3.7 to 3.11, their captions and the Aleph One quote. Checks green except the two container traces (pass25 on 6e63b69: invariants 812/0, parity 40/0, marks 106/0, ui 120/0, traces 231/2). Commit "Pre-read audit: Chapter 3".
+- The Bridge: round 1, blind retest, one revision; Figs BR.4, BR.6, BR.7, BR.8 corrected; BR.1 and BR.2 have their own title ids (no duplicate SVG ids left in Part I). Owner calls for Fig BR.3 and its caption. Gate 1 and clip green. Commit "Pre-read audit: the Bridge".
+
 ## Next
-- Then ch3 (+ part-1 items 1, 5, 6, 19, 23, 24, 26; owner items for Figs 3.7 to 3.11 and the Aleph One quote), chBridge (+ the rest of part-1), ch4–ch7 (+ part-2), ch8–ch12 (+ part-3), ch13–ch15 (+ part-4), ch16–ch18 (+ part-5).
+- ch4 (edits, retest and one revision done; Gate 1 running), then ch5, ch6, ch7 (+ part-2), ch8–ch12 (+ part-3), ch13–ch15 (+ part-4), ch16–ch18 (+ part-5).
 
 ## Running the checks in a cloud container (Linux)
 - `git fetch --unshallow origin` first: pass25's invariants read their baseline from commit d1bbb42, which a shallow clone lacks (it then compares the page with itself and reports 30 false tab-stop failures).
@@ -30,4 +33,3 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 
 ## Pending
 - Owner calls: `docs/audit/owner-calls.md` (privacy notice EU wording so far).
-- Duplicate SVG title ids still present: svgt-part1-30 (Ch3 hero and Fig 3.2), -39 and -40 (Figs 3.9/3.10, kept-original, against BR.1/BR.2): fix with Ch3 and the Bridge.
