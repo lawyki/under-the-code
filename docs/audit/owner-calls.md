@@ -30,6 +30,14 @@ Fig BR.3 is a kept original; nothing below was changed. Open since Pass 29 (STAT
 
 - **Section 03 teaches the MMU again (ch4-vm-p2 to p8; ch4.json 40, verdict "owner"; part-2.json item 1).** The Bridge and Chapter 1 already teach the MMU, pages, the page-table walk and the TLB. Done in the text: p2 now points at the MMU of Fig BR.4 (its glossary entry homes in Chapter 1), and p7 and p8 keep only what the kernel must manage (the miss and the switch). Kept: p3 to p5 and Fig 4.8, because p4 holds the book's only derivation of the 512 GiB flat-table sum. Options: (a) leave as now; (b) the larger cut the judge proposed, one paragraph treating pages and tables as known (loses that derivation, or moves it to the Bridge). Recommended: (a).
 
+## Chapter 10
+
+Figs 10.10 and 10.11 are kept originals; nothing below was changed.
+
+- **Fig 10.10 caption (ch10-attacks-p3): "the reason every modern OS ships with SYN cookie support and the reason cloud DDoS protection (Cloudflare, AWS Shield) exists"** (ch10.json 25, fact L). Linux and the BSDs ship SYN cookies; Windows documents a different defence (SynAttackProtect: fewer SYN-ACK retries, half-open handshakes in a hash table) and no SYN cookies. Cloud DDoS services absorb many kinds of flood, not this one alone. Recommended: "the reason Linux and the BSDs ship SYN cookies, and one of the floods that cloud DDoS protection (Cloudflare, AWS Shield) absorbs."
+- **Kept captions that retell the prose.** The Fig 10.10 and 10.11 captions run to eight and nine sentences against the two-sentence law, and retell ch10-attacks-p2 and p4. The prose now carries the SYN backlog, the keyed hash and the MSS (findings 6 to 9), so either caption could shrink to naming its picture.
+- **Fig 10.11 against the revised ch10-attacks-p4** (blind retest, expert). The prose now puts the MSS in the cookie's few spare bits beside the hash, which is how SYN cookies work (the server reads it back); the kept-original figure and its caption still draw it inside the hash ("hash(secret, A, p, + time bucket + MSS hint)"). Recommended: the figure's formula as "hash(secret, addresses, ports, time bucket)" with the MSS bits drawn beside it, and the caption to match.
+
 ## Chapter 13
 
 Fig 13.10 is a kept original and the Codd pull-quote is owner text; nothing below was changed.

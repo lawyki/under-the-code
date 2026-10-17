@@ -79,8 +79,7 @@ o.insert(2, '<desc id="svgd-part3-36">Two protocol stacks side by side. On the l
   'a resumed QUIC connection sends the request in its first packet and has the page after one.</desc>')
 svg = '\n'.join(o)
 
-caption = ('Over TCP a browser spends one round trip on TCP\'s handshake and another on TLS\'s before it can ask for the page; QUIC does both in one, and a returning client can send its request in its very first packet. '
-           'QUIC carries TLS 1.3 inside it and runs over UDP, in the application rather than the kernel.')
+caption = ("Over TCP, one round trip goes to TCP's handshake and one to TLS's before the request can go; QUIC's single handshake does both jobs, so the page arrives after two round trips instead of three.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

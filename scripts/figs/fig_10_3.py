@@ -1,7 +1,8 @@
 # Fig 10.3 · TCP's state machine (Pass 28, law 3). Chart Room. All eleven states, unrolled top to bottom
-# (CLOSED drawn at both ends). Two lives play in turn: the client's (active open, active close), then
-# the server's (passive open, passive close); a token walks each path and a status line names each
-# event. t=0 (shift): the client in TIME_WAIT.
+# (CLOSED drawn at both ends). The two lives play interleaved in causal order (pre-read audit, 2026-10-17):
+# server listen, client connect, server SYN in, ... client's wait; a token walks each path and a status
+# line names each event. t=0 (shift): the client in TIME_WAIT. The page's SVG is ahead of this file
+# (labels, viewBox); the audit retimed the page directly to this schedule.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
 figlib.FONT = SPACE
@@ -20,8 +21,8 @@ SERVER = [('CLOSED', 'listen()'), ('LISTEN', 'SYN in: send SYN-ACK'), ('SYN_RCVD
 EXTRA = [('FIN_WAIT_1', 'CLOSING'), ('CLOSING', 'TIME_WAIT')]
 D = 16.0
 STEP = 1.05
-C0, S0 = 0.6, 8.4
-T = Timeline(D, shift=C0 + 5 * STEP + 0.4)
+S0 = 0.6; C0 = S0 + STEP; GAP = 2 * STEP
+T = Timeline(D, shift=C0 + 5 * GAP + 0.4)
 def win(t0, t1):
     return T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
 o = []; a = o.append
@@ -50,24 +51,23 @@ def life(path, t0, col, who):
     (sx, sy) = c(path[0][0])
     kx, ky = [(0.0, 0.0), (t0, 0.0)], [(0.0, 0.0), (t0, 0.0)]
     for i, (n, _) in enumerate(path[1:], 1):
-        x, y = c(n); t = t0 + i * STEP
+        x, y = c(n); t = t0 + (i - 1) * GAP + STEP
         kx += [(t - 0.35, kx[-1][1]), (t, x - sx)]; ky += [(t - 0.35, ky[-1][1]), (t, y - sy)]
         x1, y1, x2, y2 = edge(path[i - 1][0], n)
         a(f'<line class="fx" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{col}" stroke-width="3" opacity="0">{win(t - 0.35, t + 0.5)}</line>')
     kx.append((D, kx[-1][1])); ky.append((D, ky[-1][1]))
-    end = t0 + (len(path) - 1) * STEP + 0.6
+    end = t0 + (len(path) - 2) * GAP + STEP + 0.6
     a(f'<g class="fx" opacity="0">{win(t0 - 0.2, end)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}'
       f'<rect x="{sx - NW / 2 - 3}" y="{sy - NH / 2 - 3}" width="{NW + 6}" height="{NH + 6}" rx="3" fill="none" stroke="{col}" stroke-width="2.5"/></g></g></g>')
     for i, (n, ev) in enumerate(path[:-1]):
-        t = t0 + i * STEP
+        t = t0 + i * GAP
         a(f'<g opacity="0">{win(t, t + STEP)}{text(200, H - 10, f"{who}: {ev}", anchor="middle", size=13, fill=col, ls="0")}</g>')
 life(CLIENT, C0, ROUTE, 'client')
 life(SERVER, S0, CYAN, 'server')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('TCP\'s eleven states, as RFC 793 defined them in 1981: the client connects and later closes first, the server listens and closes second, each move triggered by a segment arriving or a call from the program. '
-           'The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.')
+caption = ("TCP's eleven states (CLOSED is drawn twice, where a connection starts and where it ends), as RFC 793 defined them in 1981: the client connects and closes first, the server listens and closes second. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

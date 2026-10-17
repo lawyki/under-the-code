@@ -2173,7 +2173,7 @@
       <g>
         <line x1="120" y1="160" x2="360" y2="160" stroke="rgba(79,196,230,0.61)" stroke-dasharray="4,3"/>
         <text x="240" y="148" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">SYN · let's connect, I count from X</text><path d="M351 155 L360 160 L351 165" fill="none" stroke="rgba(79,196,230,0.8)" stroke-width="1.5"/>
-        <circle cy="160" cx="120" r="5" fill="rgba(79,196,230,0.95)" opacity="0">
+        <circle cy="160" cx="120" r="5" fill="rgba(150,216,150,0.95)" opacity="0">
           <animate attributeName="cx" values="120;360;360" keyTimes="0;0.3333;1" dur="4.8s" repeatCount="indefinite"/>
           <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.02;0.31;0.3333;1" dur="4.8s" repeatCount="indefinite"/>
         </circle>
@@ -2228,9 +2228,12 @@
       thing you can do with IP: just send packets. No connection. No
       retransmission. No ordering. No way for the receiver to say slow down. That is
       <strong>UDP</strong>, the User Datagram Protocol: RFC 768, 1980, three
-      pages long, an eight-byte header on top of IP. And yet UDP carries an
-      enormous fraction of modern internet traffic (DNS, every video call,
-      every game, every connection over QUIC, the newer transport of Section 05), because for these applications,
+      pages long. Its eight-byte header adds little to IP beyond two port
+      numbers, one naming the program at each end (port 53 is a DNS
+      server's), so a datagram reaches the right program and not just the
+      right machine. And yet UDP carries an
+      enormous fraction of modern internet traffic (DNS, most video calls,
+      most fast-paced games, every connection over QUIC, the newer transport of Section 05), because for these applications,
       the simplicity is the feature.
     </p>
 
@@ -2242,8 +2245,9 @@
       that arrives 200 milliseconds late is worse than a packet that didn't
       arrive at all (a lost packet costs only the ~20 milliseconds of audio
       it carried, a gap the ear glides over; a late one stalls the stream,
-      and the stall is the hiccup you hear). A DNS lookup is a single small
-      request and a single small response; TCP's three-message setup (Section 03) would double the time the lookup takes, for nothing.
+      and the stall is the hiccup you hear). A DNS lookup (asking which address
+      a name such as example.com belongs to, Chapter 11) is a single small
+      request and a single small response; TCP's three-message setup (Section 03) would add a full round trip before the question could even leave, doubling the time the lookup takes, for nothing.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-1">
@@ -2281,12 +2285,11 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.724750;0.725000;1.000000" dur="8s" repeatCount="indefinite"/><text x="24" y="254" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">sender: no idea</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.349938;0.350000;0.400000;0.400625;0.874750;0.875000;1.000000" dur="8s" repeatCount="indefinite"/><text x="24" y="278" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">no resend: retrying is the application's job</text></g>
 </svg>
-      <p id="ch10-udp-p3" class="diagram-caption">UDP is an envelope around your bytes: eight bytes of header with two ports, a length and a checksum, and nothing else. No connection, no order, no retransmission: a lost datagram is simply missing, and the application decides whether to try again.</p>
+      <p id="ch10-udp-p3" class="diagram-caption">Port 51234 asks port 53 a DNS question behind eight bytes of header. Datagram 2 is lost and nothing notices; retrying, if anyone does, is the application's job.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The standard.</b> RFC 768, from August 1980, is three pages long. The checksum is optional over IPv4 and required over IPv6.</li>
-          <li><b>Where it wins.</b> DNS fits a question and an answer into one datagram each; voice, video and games would rather lose a packet than wait for it.</li>
+          <li><b>The checksum.</b> Optional over IPv4, required over IPv6.</li>
           <li><b>Building on it.</b> QUIC, the transport under HTTP/3, runs on UDP and adds its own reliability and encryption on top.</li>
         </ol>
       </details>
@@ -2300,14 +2303,15 @@
     <p id="ch10-why-p1" class="lead">
       In 1974, Vint Cerf and Bob Kahn published "A Protocol for Packet
       Network Intercommunication" in the <em>IEEE Transactions on
-      Communications</em>. Its protocol, which they called simply TCP, was
-      designed to do four things on top of an unreliable packet network:
+      Communications</em>. Its design, the Transmission Control Program
+      (<span class="key-term">TCP</span>; the last word later became Protocol), was meant to do four things on top of an unreliable packet network:
       <strong>segment</strong> a long byte stream into manageable chunks, called segments,
       <strong>order</strong> them so the receiver sees them in sequence,
       ensure their <strong>reliable</strong> delivery despite arbitrary loss,
       and apply <strong>flow control</strong> so a fast sender does not
-      overwhelm a slow receiver. Every piece of machinery TCP carries serves
-      one of those four goals.
+      overwhelm a slow receiver. Everything in the 1974 design serves one of
+      those four goals; the one large later addition, congestion control,
+      came in 1988 and is the subject of Section 04.
     </p>
 
     <p id="ch10-why-p2">
@@ -2318,9 +2322,9 @@
       sent-but-not-yet-acknowledged bytes; if no acknowledgement arrives
       within a timeout, it retransmits. The receiver buffers out-of-order
       arrivals and reassembles them in sequence-number order.
-      Receivers periodically advertise a <strong>window</strong> (how many
-      more bytes they have buffer space to accept), and senders never have
-      more than that many in flight. Each of these is simple on its own.
+      Every acknowledgement also advertises a <strong>window</strong> (how
+      many more bytes the receiver has buffer space to accept), and senders
+      never have more than that many <span class="key-term">in flight</span> (sent but not yet acknowledged). Each of these is simple on its own.
       Together, on a network that loses ten percent of its packets, they
       create the illusion of a reliable byte stream that loses nothing.
     </p>
@@ -2330,10 +2334,9 @@
       and server, every TCP connection keeps a kernel-level data structure called the
       <strong>TCB</strong> (Transmission Control Block) tracking sequence
       numbers, window sizes, retransmit timers, the path's measured
-      round-trip time, the congestion-control state, and a few dozen other
-      values. A Linux server with a million open TCP connections holds a
-      million TCBs in kernel memory. UDP's strength is that it has no state.
-      TCP's strength is that it has all the state that reliability requires.
+      round-trip time, the congestion-control state (Section 04), and a few
+      dozen other values. A Linux server with a million open TCP connections
+      holds a million TCBs in kernel memory.
     </p>
   </section>
 
@@ -2342,13 +2345,15 @@
     <h2>Three segments. Two synchronised counters. One conversation.</h2>
 
     <p id="ch10-handshake-p1" class="lead">
-      A TCP connection begins with three messages (TCP calls each one a segment): SYN (synchronise: here is my starting number), SYN-ACK (got yours; here is mine) and ACK (got yours). When it ends, both sides know each other's starting sequence
+      A TCP connection begins with the <span class="key-term">three-way handshake</span>, three messages (TCP calls each one a segment): SYN (synchronise: here is my starting number), SYN-ACK (got yours; here is mine) and ACK (got yours). When the exchange is complete, both sides know each other's starting sequence
       numbers, both have allocated a TCB, and both are ready to stream. Why
       three? Two would leave the server's own starting counter
       unacknowledged, so the server would be streaming against a number it
       could never confirm the client had received. Three is exactly enough
       for each side to prove the other reachable and acknowledge the other's
-      starting counter. Four would be redundant.
+      starting counter. A fourth is not needed, because the server's
+      acknowledgement and its own starting number travel together in the
+      SYN-ACK.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-2">
@@ -2383,18 +2388,21 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Random starts.</b> Each side picks its initial sequence number unpredictably, so an outsider cannot guess the numbers needed to inject into the connection.</li>
-          <li><b>Plus one.</b> SYN counts as one byte of sequence space, which is why the acknowledgements are 4171 and 9013.</li>
+          <li><b>Plus one.</b> An acknowledgement names the next byte expected, and SYN counts as one byte of sequence space, so the acknowledgements are 4171 and 9013.</li>
           <li><b>Data early.</b> The third segment may already carry data, but nothing can leave before it.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch10-handshake-p3">
-      Each end keeps its connection in one of eleven named states. A segment arriving, a call from the program or a timer running out moves it from one state to the next, by fixed rules: a <em>state machine</em> covering setup, data transfer and teardown. Most connections take one
-      well-trodden path: CLOSED → SYN_SENT → ESTABLISHED → FIN_WAIT_1 →
-      FIN_WAIT_2 → TIME_WAIT → CLOSED. The off-path states exist to handle
-      simultaneous opens, simultaneous closes, lost FINs (the segment that says I have nothing more to send), and the dozen other
-      partial-failure modes the protocol was designed to survive.
+      Each end keeps its connection in one of eleven named states. A segment arriving, a call from the program or a timer running out moves it from one state to the next, by fixed rules: a <em>state machine</em> covering setup, data transfer and teardown. Two paths carry almost every connection. The side
+      that connects and closes first walks CLOSED → SYN_SENT → ESTABLISHED →
+      FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT → CLOSED; the side that listens and
+      closes second walks CLOSED → LISTEN → SYN_RCVD → ESTABLISHED →
+      CLOSE_WAIT → LAST_ACK → CLOSED. Each side closes by sending a FIN (the
+      segment that says I have nothing more to send). The eleventh state,
+      CLOSING, and the remaining moves handle simultaneous opens and closes
+      and the other partial failures the protocol was designed to survive.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-3">
@@ -2403,17 +2411,17 @@
 <title id="svgt-part3-30">Fig 10.3 · TCP's state machine</title>
 <desc id="svgd-part3-30">TCP's eleven connection states. A client goes from CLOSED to SYN_SENT when it connects, to ESTABLISHED when the SYN-ACK arrives, to FIN_WAIT_1 when it closes, FIN_WAIT_2 when its FIN is acknowledged, TIME_WAIT when the other side's FIN arrives, and back to CLOSED after waiting twice the maximum segment lifetime. A server goes from CLOSED to LISTEN, to SYN_RCVD (SYN received) when a SYN arrives, to ESTABLISHED on the ACK, to CLOSE_WAIT when the client's FIN arrives, to LAST_ACK when it closes too, and to CLOSED when its FIN is acknowledged. CLOSING, dimmed and joined by dashed lines, is reached only when both sides close at once. Each move lights up while the event that causes it is named below.</desc>
 <line x1="200.0" y1="46.0" x2="71.0" y2="70.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
-<line x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.609344;0.609375;0.712375;0.712500;0.777625;0.777813;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.215594;0.215625;0.493625;0.493750;0.546375;0.546563;1.000000" dur="16s" repeatCount="indefinite"/></line>
 <line x1="200.0" y1="214.0" x2="71.0" y2="238.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
 <line x1="71.0" y1="270.0" x2="71.0" y2="294.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
 <line x1="71.0" y1="326.0" x2="71.0" y2="350.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
-<line x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.040125;0.040312;0.609344;0.609375;0.974875;0.975000;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.018625;0.018750;0.071375;0.071562;0.215594;0.215625;1.000000" dur="16s" repeatCount="indefinite"/></line>
 <line x1="200.0" y1="46.0" x2="329.0" y2="70.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
-<line x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.199875;0.200000;0.265125;0.265313;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.215594;0.215625;0.428000;0.428125;0.480750;0.480938;1.000000" dur="16s" repeatCount="indefinite"/></line>
 <line x1="329.0" y1="158.0" x2="200.0" y2="182.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
 <line x1="200.0" y1="214.0" x2="329.0" y2="238.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
 <line x1="329.0" y1="270.0" x2="329.0" y2="294.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"/>
-<line x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.462375;0.462500;0.527625;0.527813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.39" stroke-width="1.5"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.005750;0.005937;0.215594;0.215625;0.953000;0.953125;1.000000" dur="16s" repeatCount="indefinite"/></line>
 <line x1="71.0" y1="270.0" x2="200.0" y2="294.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.41" stroke-width="1.5" stroke-dasharray="3 3"/>
 <line x1="200.0" y1="326.0" x2="71.0" y2="350.0" stroke="rgba(223,234,242,1)" stroke-opacity="0.41" stroke-width="1.5" stroke-dasharray="3 3"/>
 <rect x="141" y="14" width="118" height="32" rx="2" fill="none" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
@@ -2443,36 +2451,36 @@
 <text x="71" y="371" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">TIME_WAIT</text>
 <rect x="141" y="404" width="118" height="32" rx="2" fill="none" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.6"/>
 <text x="200" y="425" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">CLOSED</text>
-<line class="fx" x1="200.0" y1="46.0" x2="71.0" y2="70.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.646750;0.646875;0.712000;0.712187;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.712375;0.712500;0.777625;0.777813;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="200.0" y1="214.0" x2="71.0" y2="238.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.778000;0.778125;0.843250;0.843438;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="71.0" y1="270.0" x2="71.0" y2="294.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.843625;0.843750;0.908875;0.909063;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="71.0" y1="326.0" x2="71.0" y2="350.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.909250;0.909375;0.974500;0.974687;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.040125;0.040312;0.609344;0.609375;0.974875;0.975000;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.077625;0.077813;0.609344;0.609375;0.634250;0.634375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-129.00 0;-129.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0" keyTimes="0.000000;0.018750;0.040625;0.609344;0.609375;0.646875;0.690625;0.712500;0.756250;0.778125;0.821875;0.843750;0.887500;0.909375;0.953125;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 336.00;0 336.00;0 390.00;0 390.00;0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 336.00;0 336.00" keyTimes="0.000000;0.018750;0.040625;0.609344;0.609375;0.646875;0.690625;0.712500;0.756250;0.778125;0.821875;0.843750;0.887500;0.909375;0.953125;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#e07a3f" stroke-width="2.5"/></g></g></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.646750;0.646875;0.712000;0.712187;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: connect(): send SYN</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.712375;0.712500;0.777625;0.777813;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: SYN-ACK in: send ACK</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.778000;0.778125;0.843250;0.843438;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: close(): send FIN</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.843625;0.843750;0.908875;0.909063;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: ACK in</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609344;0.609375;0.909250;0.909375;0.974500;0.974687;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: FIN in: send ACK</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.040125;0.040312;0.609344;0.609375;0.974875;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: wait 2 × max segment lifetime</text></g>
-<line class="fx" x1="200.0" y1="46.0" x2="329.0" y2="70.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.134250;0.134375;0.199500;0.199688;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199875;0.200000;0.265125;0.265313;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="329.0" y1="158.0" x2="200.0" y2="182.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.265500;0.265625;0.330750;0.330937;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="200.0" y1="214.0" x2="329.0" y2="238.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.331125;0.331250;0.396375;0.396563;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="329.0" y1="270.0" x2="329.0" y2="294.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.396750;0.396875;0.462000;0.462188;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<line class="fx" x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.462375;0.462500;0.527625;0.527813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/></line>
-<g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.121750;0.121875;0.565125;0.565312;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.134375;0.178125;0.200000;0.243750;0.265625;0.309375;0.331250;0.375000;0.396875;0.440625;0.462500;0.506250;0.528125;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 112.00;0 112.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 390.00;0 390.00;0 0.00;0 0.00" keyTimes="0.000000;0.134375;0.178125;0.200000;0.243750;0.265625;0.309375;0.331250;0.375000;0.396875;0.440625;0.462500;0.506250;0.528125;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#4fc4e6" stroke-width="2.5"/></g></g></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.134250;0.134375;0.199500;0.199688;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: listen()</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199875;0.200000;0.265125;0.265313;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: SYN in: send SYN-ACK</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.265500;0.265625;0.330750;0.330937;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.331125;0.331250;0.396375;0.396563;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: FIN in: send ACK</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.396750;0.396875;0.462000;0.462188;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: close(): send FIN</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.462375;0.462500;0.527625;0.527813;0.609344;0.609375;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
-<text x="20" y="490" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">FIN: done sending · LAST_ACK: wait for last ACK</text>
-<text x="20" y="508" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">CLOSE_WAIT: the other side closed first</text>
+<line class="fx" x1="200.0" y1="46.0" x2="71.0" y2="70.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.362375;0.362500;0.415125;0.415312;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="102.0" x2="200.0" y2="182.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.493625;0.493750;0.546375;0.546563;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="200.0" y1="214.0" x2="71.0" y2="238.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.624875;0.625000;0.677625;0.677812;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="270.0" x2="71.0" y2="294.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.756125;0.756250;0.808875;0.809062;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="326.0" x2="71.0" y2="350.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.887375;0.887500;0.940125;0.940312;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="71.0" y1="382.0" x2="200.0" y2="404.0" stroke="#e07a3f" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.018625;0.018750;0.071375;0.071562;0.215594;0.215625;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.077625;0.077812;0.215594;0.215625;0.306125;0.306250;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-129.00 0;-129.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;0.00 0;0.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0;-129.00 0" keyTimes="0.000000;0.040425;0.040625;0.215594;0.215625;0.318750;0.384175;0.384375;0.515425;0.515625;0.646675;0.646875;0.756250;0.778125;0.887500;0.909375;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 336.00;0 336.00;0 390.00;0 390.00;0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 336.00;0 336.00" keyTimes="0.000000;0.040425;0.040625;0.215594;0.215625;0.318750;0.384175;0.384375;0.515425;0.515625;0.646675;0.646875;0.777925;0.778125;0.909175;0.909375;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#e07a3f" stroke-width="2.5"/></g></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.318625;0.318750;0.383875;0.384062;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: connect(): send SYN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.449875;0.450000;0.515125;0.515313;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: SYN-ACK in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.581125;0.581250;0.646375;0.646562;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: close(): send FIN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.712375;0.712500;0.777625;0.777812;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: ACK in</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.843625;0.843750;0.908875;0.909062;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: FIN in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.040125;0.040312;0.215594;0.215625;0.974875;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#e07a3f">client: wait 2 × max segment lifetime</text></g>
+<line class="fx" x1="200.0" y1="46.0" x2="329.0" y2="70.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.296750;0.296875;0.349500;0.349687;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="102.0" x2="329.0" y2="126.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.428000;0.428125;0.480750;0.480938;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="158.0" x2="200.0" y2="182.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.559250;0.559375;0.612000;0.612187;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="200.0" y1="214.0" x2="329.0" y2="238.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.690500;0.690625;0.743250;0.743437;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="270.0" x2="329.0" y2="294.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.821750;0.821875;0.874500;0.874687;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<line class="fx" x1="329.0" y1="326.0" x2="200.0" y2="404.0" stroke="#4fc4e6" stroke-width="3" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.005750;0.005937;0.215594;0.215625;0.953000;0.953125;1.000000" dur="16s" repeatCount="indefinite"/></line>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.012000;0.012187;0.215594;0.215625;0.240500;0.240625;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0;129.00 0;129.00 0;129.00 0;129.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.215594;0.215625;0.253125;0.318550;0.318750;0.428125;0.450000;0.581050;0.581250;0.712300;0.712500;0.821875;0.843750;0.974800;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 390.00;0 390.00;0 0.00;0 0.00;0 0.00;0 56.00;0 56.00;0 112.00;0 112.00;0 168.00;0 168.00;0 224.00;0 224.00;0 280.00;0 280.00;0 390.00;0 390.00" keyTimes="0.000000;0.215594;0.215625;0.253125;0.318550;0.318750;0.449800;0.450000;0.581050;0.581250;0.712300;0.712500;0.843550;0.843750;0.974800;0.975000;1.000000" dur="16s" repeatCount="indefinite"/><rect x="138.0" y="11.0" width="124" height="38" rx="3" fill="none" stroke="#4fc4e6" stroke-width="2.5"/></g></g></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.253000;0.253125;0.318250;0.318437;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: listen()</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.384250;0.384375;0.449500;0.449688;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: SYN in: send SYN-ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.515500;0.515625;0.580750;0.580937;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.646750;0.646875;0.712000;0.712187;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: FIN in: send ACK</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.778000;0.778125;0.843250;0.843437;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: close(): send FIN</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.215594;0.215625;0.909250;0.909375;0.974500;0.974687;1.000000" dur="16s" repeatCount="indefinite"/><text x="200" y="460" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">server: ACK in</text></g>
+<text x="10" y="490" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">FIN: done sending · LAST_ACK: wait for last ACK</text>
+<text x="10" y="508" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">CLOSE_WAIT: the other side closed first</text>
 </svg>
-      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven states, as RFC 793 defined them in 1981: the client connects and closes first, the server listens and closes second, each move triggered by an arriving segment, a program call or a timer. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.</p>
+      <p id="ch10-handshake-p4" class="diagram-caption">TCP's eleven states (CLOSED is drawn twice, where a connection starts and where it ends), as RFC 793 defined them in 1981: the client connects and closes first, the server listens and closes second. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2500,10 +2508,9 @@
     </p>
 
     <p id="ch10-aimd-p2">
-      The first piece is the <strong>sliding window</strong>. In every ACK,
-      the receiver advertises how much of its receive buffer remains free:
-      the <em>receive window</em>. The sender never has more than that many
-      bytes in flight (sent but not yet acknowledged). As ACKs arrive, the
+      The first piece is the <strong>sliding window</strong>, built on the
+      <em>receive window</em> that every ACK restates as the receiver's buffer
+      fills and drains. As ACKs arrive, the
       trailing edge of the window advances and new bytes can be sent at the
       leading edge, so the window slides forward through the byte stream.
       That is flow control: the sender never overwhelms the receiver's
@@ -2575,7 +2582,7 @@
 <rect x="356" y="54" width="22" height="34" rx="2" fill="none" stroke="rgba(223,234,242,0.4)"><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="356" y="54" width="22" height="34" rx="2" fill="#4fc4e6" fill-opacity="0.0" stroke="#4fc4e6" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0" keyTimes="0.000000;0.249800;0.250000;0.609200;0.609500;0.610000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="367" y="76" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">14</text>
-<g><animateTransform attributeName="transform" type="translate" values="72.00 0;72.00 0;72.00 0;72.00 0;216.00 0;216.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;72.00 0;72.00 0" keyTimes="0.000000;0.060000;0.090000;0.220000;0.250000;0.580000;0.609950;0.610000;0.740000;0.770000;0.900000;0.930000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="17" y="47" width="148" height="48" rx="3" fill="none" stroke="#fff" stroke-width="2"/><text x="18" y="41" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">window</text></g>
+<g><animateTransform attributeName="transform" type="translate" values="72.00 0;72.00 0;216.00 0;216.00 0;0.00 0;0.00 0;72.00 0;72.00 0" keyTimes="0.000000;0.250000;0.280000;0.609950;0.610000;0.930000;0.960000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="17" y="47" width="148" height="48" rx="3" fill="none" stroke="#fff" stroke-width="2"/><text x="18" y="41" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#fff">window</text></g>
 <g opacity="1"><animate attributeName="opacity" values="0;0;1;1;1;0;0" keyTimes="0.000000;0.609200;0.609500;0.610000;0.769200;0.769500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">4 in flight, 2 more allowed</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.609950;0.610000;0.769800;0.770000;0.929200;0.929500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">window full: wait for an ACK</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.089200;0.089500;0.609950;0.610000;0.929800;0.930000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="130" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">ACK 103: the window slides by 3</text></g>
@@ -2591,7 +2598,7 @@
 <text x="224" y="197" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">not yet</text>
 <text x="20" y="226" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">cells show the last two digits</text>
 </svg>
-      <p id="ch10-aimd-p3" class="diagram-caption">The sender may have at most a window's worth of bytes <span class="key-term">in flight</span>, sent but not yet acknowledged; each ACK names the next byte expected, the window's left edge moves up to it, and room opens on the right. The receiver sets the window size in every ACK, so a slow reader throttles a fast writer with no extra messages.</p>
+      <p id="ch10-aimd-p3" class="diagram-caption">Bytes 100 to 114 with a six-byte window: ACK 103 says bytes 100 to 102 arrived, so the window moves up to 103 and three more bytes may go; ACK 109 moves it on by six.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2612,7 +2619,7 @@
     <p id="ch10-aimd-p5">
       In October 1986, the throughput between Lawrence Berkeley National
       Laboratory and UC Berkeley (two sites four hundred yards apart, three
-      network hops between them) collapsed from its design capacity of 32
+      network hops between them) collapsed from its usual 32
       kilobits per second to roughly 40 bits per second. A factor of <em>eight
       hundred</em>. The collapse was sudden, no hardware had failed, and no
       one knew why. The two endpoints
@@ -2635,15 +2642,20 @@
 
     <p id="ch10-aimd-p6">
       The algorithm has two phases. <strong>Slow start</strong> begins
-      cautiously, with a tiny congestion window (cwnd) of one segment, and
-      <em>doubles</em> on every successful round trip: exponential growth
+      cautiously. The sender keeps a second limit of its own, the
+      <em>congestion window</em> (cwnd), its guess at what the network can
+      carry, and obeys whichever of it and the receive window is smaller.
+      cwnd starts at one segment and <em>doubles</em> on every successful
+      round trip: exponential growth
       probes the network's capacity quickly. When packet loss is detected
       (three duplicate ACKs, the receiver's way of saying one segment
       vanished while later ones kept arriving), the connection assumes it
       has hit the network's capacity and switches to <strong>congestion
       avoidance</strong>: cwnd is halved, then increases <em>linearly</em>,
       by one segment per round trip (RTT). Another loss triggers another halving, so the
-      window oscillates around the true capacity in a sawtooth pattern. (A
+      window oscillates around the true capacity in a sawtooth pattern.
+      Adding a constant on the way up and halving on the way down is what
+      AIMD names: additive increase, multiplicative decrease. (A
       full timeout is grimmer news: the window resets to one segment and
       slow start begins again.)
     </p>
@@ -2672,20 +2684,19 @@
 <text x="100.925" y="41.25" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#297147">slow start: ×2</text>
 <text x="130.5" y="170.625" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#a44c1c">+1 per RTT, halve on loss</text>
 </svg>
-      <p id="ch10-aimd-p7" class="diagram-caption">Slow start doubles the window every round trip until the first loss; after that TCP adds one segment per round trip and halves the window at each loss. The result is a sawtooth around a capacity TCP never measures directly: it finds the limit by overshooting it.</p>
+      <p id="ch10-aimd-p7" class="diagram-caption">On a path that carries 24 segments, slow start overshoots to 32 before the first loss halves the window; from then on it saws between about 12 and 25. TCP never measures the capacity: it finds the limit by overshooting it.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The rule.</b> Additive increase, multiplicative decrease: AIMD. Classic Reno halves on a loss signalled by repeated ACKs and falls back to one segment on a timeout.</li>
+          <li><b>Reno.</b> The variant drawn here. Tahoe, its 1988 predecessor, fell back to one segment on every loss, not only on a timeout.</li>
           <li><b>The signal.</b> Here loss is the only signal; ECN lets routers mark packets instead of dropping them, and BBR (Fig 10.8) watches delay as well.</li>
-          <li><b>This run.</b> Capacity 24 segments: the window settles into a cycle between 12 and 25.</li>
         </ol>
       </details>
     </div>
 
     <div class="math-callout">
       <div class="math-label">Why AIMD: Chiu &amp; Jain, 1989</div>
-      <p id="ch10-aimd-p8">AIMD (Additive Increase, Multiplicative Decrease) is not merely a combination that works; <em>it is the only one that does</em>. Chiu and Jain proved in 1989 that, of the four possible combinations of additive/multiplicative increase paired with additive/multiplicative decrease, only AIMD converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). Multiplicative increase with multiplicative decrease (MIMD) keeps the ratio between the flows and additive with additive (AIAD) keeps the gap, so neither ever gets fairer; multiplicative increase with additive decrease (MIAD) widens the gap. Theirs is one of those rare results in engineering where the right answer is forced by the mathematics, not chosen by taste.</p>
+      <p id="ch10-aimd-p8">Chiu and Jain proved in 1989 that AIMD is the only one of the four combinations of additive or multiplicative increase with additive or multiplicative decrease that converges to both <strong>efficiency</strong> (the network is fully utilised) <em>and</em> <strong>fairness</strong> (every flow gets an equal share). Multiplicative increase with multiplicative decrease (MIMD) keeps the ratio between the flows and additive with additive (AIAD) keeps the gap, so neither ever gets fairer; multiplicative increase with additive decrease (MIAD) widens the gap.</p>
     </div>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-10-6">
@@ -2744,12 +2755,12 @@
 
     <p id="ch10-modern-p1" class="lead">
       Classic TCP (Tahoe, Reno, NewReno) was designed for the late-1980s
-      internet, where round-trip times were tens of milliseconds and
-      bandwidths a few megabits. The modern internet has flows that span continents (200 ms round trips) between gigabit endpoints, and mobile
+      internet, whose links ran at tens of kilobits to a few megabits per
+      second. The modern internet has flows that span continents (200 ms round trips) between gigabit endpoints, and mobile
       connections whose radio conditions change every second. Classic TCP
       loses badly on both counts: its slow linear growth takes too long to fill a fast path with a long round trip, and its loss-as-signal model fails on
       lossy wireless links, where most loss has nothing to do with
-      congestion. The last two decades produced three answers.
+      congestion.
     </p>
 
     <p id="ch10-modern-p2">
@@ -2757,8 +2768,8 @@
       detection but replaces the linear additive-increase phase with a
       cubic function. After a loss the window climbs fast at first, then
       eases into a plateau as it nears the size that last caused trouble,
-      and only then accelerates past it to probe for new capacity. It is
-      what the great majority of internet TCP traffic runs.
+      and only then accelerates past it to probe for new capacity. Of the
+      congestion controls web servers run, it is the most common.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-7">
@@ -2790,9 +2801,9 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The path.</b> 1 Gbit/s × 100 ms = 12.5 MB in flight, about 8,600 segments of 1,460 bytes: the <em>W_max</em> both flows had reached when the loss came.</li>
+          <li><b>The path.</b> 1 Gbit/s × 100 ms = 12.5 MB in flight, about 8,600 segments of 1,460 bytes: the <em>W</em><sub>max</sub> both flows had reached when the loss came.</li>
           <li><b>Reno.</b> Halves to 4,300 and gains one segment per 100 ms round trip: 4,300 round trips, about 430 seconds, to get back.</li>
-          <li><b>CUBIC.</b> W(t) = C(t − K)³ + W_max with C = 0.4 and a cut to 0.7 (RFC 9438). K = ∛(W_max × 0.3 / C) ≈ 18.6 s is when it reaches W_max again; growth is set by the clock, not by round trips. Linux's default since kernel 2.6.19 (2006).</li>
+          <li><b>CUBIC.</b> W(t) = C(t − K)³ + W<sub>max</sub> with C = 0.4 and a cut to 0.7 (RFC 9438). K = ∛(W<sub>max</sub> × 0.3 / C) ≈ 18.6 s is when it reaches W<sub>max</sub> again; growth is set by the clock, not by round trips. Linux's default since kernel 2.6.19 (2006).</li>
         </ol>
       </details>
     </div>
@@ -2803,9 +2814,10 @@
       (bandwidth and round-trip time) and aims for the <em>bandwidth-delay
       product</em> (BDP), the amount of
       in-flight data that fills the pipe without overflowing buffers. Google
-      deploys BBR at its edge for YouTube and Search. On lossy Wi-Fi,
-      transcontinental links and home routers with oversized queues, BBR can be two
-      to ten times faster than CUBIC. It is also more aggressive against
+      deploys BBR at its edge for YouTube and Search. On long paths that lose
+      packets for reasons other than congestion, BBR can move many times more
+      data than CUBIC; behind home routers with oversized queues its gain is
+      shorter delay, because it keeps the queue nearly empty where CUBIC fills it. It is also more aggressive against
       competing CUBIC flows, which remains a source of debate.
     </p>
 
@@ -2881,8 +2893,7 @@
       <span class="key-term">QUIC</span> (Google 2012, IETF standard 2021) is the most
       radical answer of all: abandon TCP entirely. QUIC runs over UDP and
       builds reliability, encryption, many independent streams per connection, and congestion control into one protocol that runs inside the application, not the kernel. Connection setup folds into the encryption handshake of TLS 1.3 (Chapter 11), and a returning client can send its request in its very first packet. Loss in one HTTP request stream
-      doesn't block other streams (over TCP, one lost packet stalls every request queued behind it: "head-of-line blocking"). QUIC is what HTTP/3 runs on. By 2024 it carried
-      well over a quarter of web requests, and the share is growing.
+      doesn't block other streams (over TCP, one lost packet stalls every request queued behind it: "head-of-line blocking"). QUIC is what HTTP/3 runs on: the newest version of HTTP, the web's request-and-reply protocol, in which a browser's GET asks for a page (Chapter 11).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-10-9">
@@ -2941,12 +2952,12 @@
 <text x="380" y="370" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">3</text>
 <text x="380" y="390" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">round trips</text>
 </svg>
-      <p id="ch10-modern-p7" class="diagram-caption">Over TCP a browser spends one round trip on TCP's handshake and another on TLS's before it can ask for the page; QUIC does both in one, and a returning client can send its request in its very first packet. QUIC carries TLS 1.3 inside it and runs over UDP, in the application rather than the kernel.</p>
+      <p id="ch10-modern-p7" class="diagram-caption">Over TCP, one round trip goes to TCP's handshake and one to TLS's before the request can go; QUIC's single handshake does both jobs, so the page arrives after two round trips instead of three.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The stacks.</b> HTTP/3 runs on QUIC, which builds reliability, ordering, congestion control and TLS 1.3 into one protocol over UDP. Because it ships with the browser or server, not the operating system, it can change as fast as they do: its <strong>iterability</strong>.</li>
-          <li><b>The round trips.</b> TCP with TLS 1.3 gets the page after three (four with TLS 1.2); QUIC after two. <span class="key-term">0-RTT resumption</span> sends the request with the first packet to a server the client has met before, so one.</li>
+          <li><b>The stacks.</b> QUIC ships with the browser or server, not the operating system, so it can change as fast as they do: its <strong>iterability</strong>.</li>
+          <li><b>The round trips.</b> With TLS 1.2 over TCP it takes four. <span class="key-term">0-RTT resumption</span> sends the request with the first packet to a server the client has met before, so the page arrives after one.</li>
           <li><b>Beyond the handshake.</b> <strong>Per-stream multiplexing</strong>: a lost packet stalls only its own stream, not every request behind it as on TCP. <strong>Connection migration</strong>: a connection ID, not the address pair, names the connection, so a phone moving from Wi-Fi to mobile data keeps it.</li>
         </ol>
       </details>
@@ -2967,14 +2978,15 @@
     </p>
 
     <p id="ch10-attacks-p2">
-      The attack uses one feature of the <span class="key-term">three-way handshake</span>: the server
+      The attack uses one feature of the <strong>three-way handshake</strong>: the server
       allocates a TCB the moment it receives a SYN, well before the third
       ACK arrives. An attacker sends thousands of SYN packets per second,
       each with a different (often spoofed) source IP. The server replies
       with SYN-ACK to each spoofed source (which goes nowhere or to an
       uninvolved third party) and waits for the third ACK that never
-      arrives. Each half-open connection holds a TCB slot for tens of
-      seconds (the SYN_RCVD timeout); at a high enough SYN rate the table
+      arrives. Each half-open connection holds a slot in the SYN backlog, a
+      short queue kept apart from established connections, for tens of
+      seconds (the SYN_RCVD timeout); at a high enough SYN rate the backlog
       fills and legitimate clients cannot connect.
     </p>
 
@@ -3046,13 +3058,18 @@
       The defence, invented by Daniel J. Bernstein in 1996, is
       <strong>SYN cookies</strong>. When the connection table is
       under pressure, the server stops allocating state for incoming SYNs
-      <em>at all</em>. Instead, it encodes the necessary state into the
-      Initial Sequence Number (ISN) it returns in the SYN-ACK: a keyed hash of the
-      (source IP, source port, destination IP, destination port, time
-      bucket), small enough to fit in 32 bits, hard to forge without the
-      server's secret key. The third ACK carries the cookie back (its acknowledgement number is the cookie plus one); the server recomputes the hash, and only a
-      match (which requires having actually received the SYN-ACK) earns a
-      reconstructed connection and a TCB. Legitimate clients pass; the flood's
+      <em>at all</em>. Instead, it hides what it needs in the Initial
+      Sequence Number (ISN) it returns in the SYN-ACK. The number is a keyed
+      hash: the two addresses, the two ports and a time bucket, scrambled
+      together with a secret only the server knows into most of its 32 bits.
+      The same inputs always give the same number, and without the secret
+      nobody can produce it. The few bits left carry the MSS (the largest
+      segment the client said it can take), the one setting the server would
+      otherwise have had to remember. The third ACK repeats the addresses and
+      ports and carries the cookie back (its acknowledgement number is the
+      cookie plus one); the server recomputes the hash from them, and a match
+      proves the ACK answers a SYN-ACK the server really sent. Only then does
+      it build the connection and its TCB. Legitimate clients pass; the flood's
       spoofed connections never send an ACK at all.
     </p>
 
@@ -3126,13 +3143,17 @@
 
     <p id="ch10-attacks-p6">
       Two other classical TCP attacks turn on sequence numbers.
-      <strong>RST injection</strong>: an attacker on the path injects a TCP RST (reset) segment with a sequence number in the receiver's window, causing
-      the receiver to tear down the connection. The Great Firewall of China
+      <strong>RST injection</strong>: an attacker on the path, who can read
+      the live sequence numbers off the passing traffic, injects a TCP RST
+      (reset) segment numbered inside the receiver's window (a receiver
+      ignores anything outside it), causing the receiver to tear down the
+      connection. The Great Firewall of China
       uses this for censorship: when the firewall sees a request it dislikes,
       it sends RST segments to both ends, killing the connection and
-      blaming the network. <strong><span class="key-term">TCP</span> hijacking</strong>: when an attacker
-      can predict the sequence numbers of an existing connection, they can
-      inject data into it pretending to be one of the endpoints. The attack
+      blaming the network. <strong>TCP hijacking</strong>: an attacker who
+      can predict the sequence numbers a host will use can forge segments in
+      another machine's name, opening a connection that seems to come from a
+      trusted host or injecting data into one already open. The attack
       had been described by <strong>Robert T. Morris</strong>
       (later of the worm) in a 1985 Bell Labs technical report, and was
       considered theoretical for a decade, until <strong>Kevin
@@ -3146,37 +3167,36 @@
       on cellular phone security. Shimomura's home network ran on trusted
       <code>rsh</code>, a UNIX command that, on the assumption that the
       source IP could not be forged, granted login access without a
-      password to authorised hosts. The trick: <em>the source IP
-      could</em> be forged, if you also knew TCP's sequence numbers. And
-      Shimomura's machines' ISN generator was barely random at all: minutes
+      password to authorised hosts. But the source IP <em>could</em> be
+      forged, if you also knew TCP's sequence numbers. And Shimomura's
+      machines' ISN generator was not random at all: minutes
       of probing on Christmas afternoon showed each new connection's ISN
       stepping up by a fixed 128,000, so the next one was predictable.
-      Mitnick SYN-flooded a trusted host on Shimomura's network
-      to take it out of the conversation, then opened a TCP connection to
-      Shimomura's main workstation while spoofing the source IP of the
+      Mitnick SYN-flooded a trusted host on Shimomura's network so that it
+      could not answer the SYN-ACK it had never asked for with a RST, which
+      would have torn the forged connection down. Then he opened a TCP
+      connection to one of Shimomura's workstations while spoofing the source IP of the
       now-incapacitated trusted host. Predicting the ISN, Mitnick blind-sent
       the third ACK plus an immediate <code>echo + + &gt;&gt; /.rhosts</code>
       command, adding a wildcard entry to the trust file that would let
       him log in normally afterward. Shimomura
       discovered the intrusion two days later, traced Mitnick's activity
-      across multiple sites (some of it through cellular networks
-      Shimomura himself had earlier helped secure), and led the FBI to
+      across multiple sites, and led the FBI to
       Mitnick's apartment in Raleigh, North Carolina, on 15 February
       1995. A book (Shimomura and Markoff's <em>Takedown</em>) and, later, a
       film based on it followed.
     </p>
 
     <p id="ch10-attacks-p8">
-      The <strong>random ISN</strong> requirement (Bellovin's RFC 1948)
-      followed about a year after Mitnick's arrest, though the stacks took the
-      rest of the decade to adopt it. Modern
-      stacks generate ISNs cryptographically (RFC 6528, 2012) so that
-      sequence numbers cannot be predicted even with full knowledge of
-      previous connections. Sequence-number-based hijacking, which had
-      been one of the canonical TCP attacks for fifteen years, became
-      mostly historical. The deeper lesson is that the network can
-      never authenticate <em>who you are</em>, only <em>what you say</em>,
-      so applications must authenticate cryptographically on top.
+      The fix came from Steven Bellovin's RFC 1948, about a year after
+      Mitnick's arrest: start each connection's ISN at a clock plus a keyed
+      hash of its addresses and ports, so one connection's numbers reveal
+      nothing about the next. The stacks took the rest of the decade to adopt
+      it, and RFC 6528 made it the standard in 2012. Sequence-number-based
+      hijacking, which had been one of the canonical TCP attacks for fifteen
+      years, became mostly historical. The deeper lesson is that a packet's
+      source address is only a claim, which the network carries but never
+      checks, so applications must authenticate cryptographically on top.
       That lesson produced TLS (<a href="#ch11">Chapter 11</a>), certificates,
       and the modern HTTPS web.
     </p>
@@ -3184,7 +3204,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch10-attacks-p9" class="insight-text">
-        <strong>State is the attack surface.</strong> TCP gives you reliability, ordering, and flow control. It pays for each in kernel-side state that an attacker can force it to spend. The defences are nearly all about <em>making the protocol stateless under attack</em>: SYN cookies (state in the wire), random ISNs (state in the unguessable), TLS (state cryptographically authenticated). Every layer of the network stack, from here onward, exhibits the same arc: protocol invented for a reason; protocol exploited; protocol patched in a way that pushes state into harder places.
+        <strong>State is the attack surface.</strong> TCP gives you reliability, ordering, and flow control. It pays for each in kernel-side state that an attacker can force it to spend. The defences mostly move that state where an attacker cannot reach or forge it: SYN cookies (state in the wire), unpredictable ISNs (state an outsider cannot guess), TLS (state cryptographically authenticated).
       </p>
     </div>
 

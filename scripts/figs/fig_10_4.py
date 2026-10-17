@@ -72,8 +72,7 @@ a(text(X0, 226, 'cells show the last two digits', size=13, fill=CMUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The sender may have at most a window\'s worth of bytes <span class="key-term">in flight</span>, sent but not yet acknowledged; each ACK names the next byte expected, the window\'s left edge moves up to it, and room opens on the right. '
-           'The receiver sets the window size in every ACK, so a slow reader throttles a fast writer with no extra messages.')
+caption = ('Bytes 100 to 114 with a six-byte window: ACK 103 says bytes 100 to 102 arrived, so the window moves up to 103 and three more bytes may go; ACK 109 moves it on by six.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

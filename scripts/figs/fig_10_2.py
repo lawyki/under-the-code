@@ -53,8 +53,7 @@ a(f'<g>{held(T0[1] + FLY)}<path d="M{CX - 14} 90 H{CX - 22} V166 H{CX - 14}" fil
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The client sends SYN with its starting sequence number; the server answers with its own and acknowledges the client\'s plus one; the client acknowledges the server\'s plus one, and both now know both counters. '
-           'That costs one full round trip before the first byte of data, the tax TCP Fast Open and QUIC set out to cut.')
+caption = ("The client sends SYN with its starting sequence number; the server answers with its own and acknowledges the client's plus one; the client acknowledges the server's plus one, and both now know both counters. That costs one full round trip before the first byte of data, the tax QUIC (Section 05) sets out to cut.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

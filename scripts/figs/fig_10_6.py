@@ -82,8 +82,7 @@ for k, g in enumerate(GAPS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Adding one segment to each flow per round trip keeps the gap between them; halving both on a loss halves it. '
-           'Every loss brings the pair closer to equal shares while each peak still fills the link, though neither flow knows the other exists.')
+caption = ('Adding one segment to each flow per round trip keeps the gap between them; halving both on a loss halves it. Every loss brings the pair closer to equal shares while each peak still fills the link, though neither flow knows the other exists.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
