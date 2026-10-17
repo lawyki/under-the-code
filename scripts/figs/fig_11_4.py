@@ -72,8 +72,7 @@ o.insert(2, '<desc id="svgd-part3-43">A table of HTTP methods. GET and HEAD are 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A method is a promise to every cache, proxy and retry loop on the path: a safe one changes nothing, an idempotent one has the same effect sent once or twice. '
-           'When a reply is lost and the client sends again, a PUT leaves the quantity at 3, but a POST places a second order.')
+caption = ('A method is a promise to every cache, proxy and retry loop on the path: a safe one changes nothing, an idempotent one has the same effect sent once or twice. When a reply is lost and the client sends again, a PUT leaves the quantity at 3, but a POST places a second order.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

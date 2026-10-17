@@ -62,8 +62,7 @@ assert TA[1] < D - 1.0
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The laptop asks its resolver once; on a cold cache the resolver walks the tree, asking the root, then the <code>com</code> servers, then <code>example.com</code>\'s own servers, each pointing it one step closer. '
-           'The resolver caches the answer for its TTL, so the next asker skips the walk.')
+caption = ("Only the resolver walks the tree; the laptop asks once and gets one answer. Held in the resolver's cache for an hour, that answer spares the next asker the whole walk.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

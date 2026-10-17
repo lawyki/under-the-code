@@ -65,8 +65,7 @@ o.insert(2, '<desc id="svgd-part3-54">Nine packets from three streams, A, B and 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('TCP hands the application one ordered byte stream, so when a packet of stream A is lost, the packets of B and C that arrive after it wait too. '
-           'QUIC orders each stream on its own: B and C are delivered as they arrive, and only A waits for the resent packet.')
+caption = ('TCP hands the application one ordered byte stream, so when a packet of stream A is lost, the packets of B and C that arrive after it wait too. QUIC orders each stream on its own: B and C are delivered as they arrive, and only A waits for the resent packet.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

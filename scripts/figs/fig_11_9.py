@@ -55,8 +55,7 @@ o.insert(2, f'<desc id="svgd-part3-48">Two sentences one bit apart, ending lazy 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Change one bit of the input (<code>g</code> is 01100111, <code>e</code> is 01100101) and about half of SHA-256\'s 256 output bits flip, here 124, in no visible pattern. '
-           'That is what makes a hash a fingerprint: any change at all, however small, gives a completely different one.')
+caption = ("Change one bit of the input (<code>g</code> is 01100111, <code>e</code> is 01100101) and about half of SHA-256's 256 output bits flip, here 124, in no visible pattern. That is what makes a hash a fingerprint: any change at all, however small, gives a completely different one.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

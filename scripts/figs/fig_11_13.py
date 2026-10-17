@@ -61,8 +61,7 @@ a(f'<g class="fx"><g>{T.translate([(0.0, 320), (0.3, 320), (0.305, 0.0), (0.5, 0
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('If the session key crosses the wire sealed with the server\'s long-term key, whoever records the traffic and steals that key later can open every past session. '
-           'With ephemeral Diffie–Hellman the long-term key only signs, and each session\'s secret is erased when it ends, so the stolen key opens nothing recorded.')
+caption = ("If the session key crosses the wire sealed with the server's long-term key, whoever records the traffic and steals that key later can open every past session. With ephemeral Diffie–Hellman the long-term key only signs, and each session's secret is erased when it ends, so the stolen key opens nothing recorded.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

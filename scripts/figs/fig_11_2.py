@@ -66,8 +66,7 @@ message('response · server to client', ROUTE, B2, L2, RES, RES_K, TR)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('An HTTP/1.1 message is lines of text, each ending in a carriage return and a line feed: a first line, the headers, a blank line, then the body. '
-           'The response has the same shape, with a status code where the request had its method and path.')
+caption = ('One request and its response, byte for byte; every line ends in a carriage return and a line feed, drawn as <code>\\r\\n</code>.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
