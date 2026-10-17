@@ -60,8 +60,7 @@ for i, (yr, ev, lang) in enumerate(EVENTS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('UNIX began in 1969 as PDP-7 assembly and moved to the PDP-11 still in assembly; in 1973, with C ready, Ritchie and Thompson rewrote the kernel in it. '
-           'Four years later it ran on an Interdata 8/32, a machine of a different design, carried over largely by recompiling.')
+caption = ('UNIX began in 1969 as PDP-7 assembly and moved to the PDP-11 still in assembly; in 1973, with C ready, Ritchie and Thompson rewrote the kernel in it. Four years later it ran on an Interdata 8/32, a machine of a different design, carried over largely by recompiling.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

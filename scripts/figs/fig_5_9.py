@@ -44,12 +44,11 @@ o.extend(body)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A write through a NULL pointer crosses every layer: the MMU finds no mapping for address 0 and faults, and the kernel, finding the address in no region the process owns, sends <code>SIGSEGV</code>. '
-           'The default action for that signal ends the process, which the shell reports as a segmentation fault.')
+caption = ("One write through NULL, followed from user code through the MMU, the kernel and the signal to the shell's message.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why address 0 faults.</b> Operating systems leave the lowest pages unmapped on purpose (Linux's <code>mmap_min_addr</code>), so a NULL access always traps.</li>
+          <li><b>Why address 0 faults.</b> Operating systems leave the lowest pages unmapped on purpose (Linux's <code>mmap_min_addr</code>), so a NULL access that reaches the processor traps instead of reading data.</li>
           <li><b>The same path.</b> This is the "invalid" exit of the page-fault tree in Fig 4.9; only the outcome differs from a minor fault.</li>
           <li><b>The core file.</b> "Core dumped" appears only when the system allows it; the dump is a snapshot of memory for a debugger to open.</li>
         </ol>

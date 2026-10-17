@@ -73,14 +73,13 @@ o.insert(2, '<desc id="svgd-part2-31">Two ways to get malloc and free wrong. A l
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A leak loses the last pointer to memory that is still allocated, so the heap only grows until the OS ends the process. '
-           'A use-after-free keeps a pointer to memory already given back: the allocator hands that chunk to the next caller, and every write through the old pointer overwrites their data.')
+caption = ("In the leak, three chunks lose their only pointer and the heap only grows. In the use-after-free, <code>p</code> outlives <code>free(p)</code>, the same chunk goes to <code>q</code>, and a write through <code>p</code> lands in <code>q</code>'s data.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Why the same chunk.</b> Allocators reuse recently freed chunks of the right size first, because they are likely still in the cache, so the next <code>malloc(64)</code> often gets exactly the chunk just freed.</li>
           <li><b>Finding them.</b> Valgrind and AddressSanitizer track every allocation: they report leaks when the program exits and a use-after-free when it happens, as long as the freed chunk has not yet been reused.</li>
-          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; in safe Rust, the ownership rules reject use-after-free at compile time.</li>
+          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; in safe Rust, the compiler gives every value one owner, which frees it, and rejects any use after that at compile time.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-5-7">

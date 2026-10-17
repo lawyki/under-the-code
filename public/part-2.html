@@ -2082,7 +2082,7 @@
       <div class="diagram-label">Fig 5.1&nbsp;· One C source, many targets</div>
       <svg viewBox="0 0 400 444" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-25 svgd-part2-25">
 <title id="svgt-part2-25">Fig 5.1 · One C source, many targets</title>
-<desc id="svgd-part2-25">The C function int add(int a, int b) { return a + b; } compiled for three processors, each holding a and b in its own registers. x86-64, with a in rdi and b in rsi: lea eax,[rdi+rsi], which adds them, then ret, encoded as the 3 bytes 8D 04 37 and the 1 byte C3. ARM64, with a in w0 and b in w1: add w0,w0,w1 then ret, two fixed 4-byte words, 0B010000 and D65F03C0. 64-bit RISC-V, with a in a0 and b in a1: addw a0,a0,a1 then ret, two 4-byte words, 00B5053B and 00008067. Different instructions, registers and encodings; identical behaviour. A key below contrasts x86's variable lengths with the fixed 4 bytes of ARM and RISC-V, and explains base 16 and the bracket sum.</desc>
+<desc id="svgd-part2-25">The C function int add(int a, int b) { return a + b; } compiled for three processors, each holding a and b in its own registers. x86-64, with a in rdi and b in rsi: lea eax,[rdi+rsi], which adds them, then ret, encoded as the 3 bytes 8D 04 37 and the 1 byte C3. ARM64, with a in w0 and b in w1: add w0,w0,w1 then ret, two fixed 4-byte words, 0B010000 and D65F03C0. 64-bit RISC-V, with a in a0 and b in a1: addw a0,a0,a1 then ret, two 4-byte words, 00B5053B and 00008067. Different instructions, registers and encodings; identical behaviour. A key below contrasts x86's variable lengths with the 4-byte words of ARM and RISC-V (RISC-V also has 2-byte compressed forms), and explains base 16 and the bracket sum.</desc>
 <rect x="20" y="12" width="360" height="52" rx="3" fill="none" stroke="rgba(132,255,178,0.45)"/>
 <text x="32" y="31" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">C source</text>
 <text x="32" y="52" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">int add(int a, int b) { return a + b; }</text>
@@ -2120,16 +2120,16 @@
 <rect x="196" y="348" width="96" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.42)" stroke-dasharray="2 3"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><rect x="196" y="348" width="96" height="22" rx="2" fill="none" fill-opacity="0.22" stroke="#86a8ff"/><text x="244" y="364" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">00008067</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.074937;0.075000;0.125000;0.125625;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="302" y="364" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">4 bytes</text></g>
-<text x="20" y="396" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">x86: 1 to 15 bytes each · ARM, RISC-V: always 4</text>
+<text x="20" y="396" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">x86: 1 to 15 bytes · ARM64: 4 · RISC-V: 4 or 2</text>
 <text x="20" y="416" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">bytes written in base 16: digits 0–9, A–F</text>
 <text x="20" y="436" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">[rdi+rsi]: the sum of rdi and rsi</text>
 </svg>
-      <p id="ch5-portability-p4" class="diagram-caption">One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the fixed 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: the same source, compiled separately for each processor.</p>
+      <p id="ch5-portability-p4" class="diagram-caption">One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: the same source, compiled separately for each processor.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Calling conventions.</b> Each platform's ABI says where arguments arrive (<code>edi</code>/<code>esi</code>, <code>w0</code>/<code>w1</code>, <code>a0</code>/<code>a1</code>) and where the result goes back.</li>
-          <li><b>The <code>lea</code> trick.</b> x86 compilers borrow <code>lea</code>, an address-arithmetic instruction, to add two registers into a third in one step.</li>
+          <li><b>Calling conventions.</b> Each platform's ABI says where arguments arrive (<code>rdi</code>/<code>rsi</code>, <code>w0</code>/<code>w1</code>, <code>a0</code>/<code>a1</code>) and where the result goes back.</li>
+          <li><b>The <code>lea</code> trick.</b> x86 compilers borrow <code>lea</code>, an address-arithmetic instruction, to add two registers into a third in one step. The brackets look like Fig 3.2's memory, but <code>lea</code> only works out the address and never reads it, so here the address is the sum.</li>
           <li><b>The <code>w</code> in <code>addw</code>.</b> On 64-bit RISC-V it adds 32-bit <code>int</code>s. With the compressed extension both instructions shrink to 2 bytes each.</li>
         </ol>
       </details>
@@ -2142,13 +2142,13 @@
     </p>
 
     <p id="ch5-portability-p6">
-      C meets all three by building only on what processors have in common and leaving the rest to the compiler. Its types are the byte and the processor's own word, its <code>if</code> statements and loops become conditional jumps, and its data structures are byte layouts you could draw on graph paper. Translating that is simple: a competent compiler-writer can target a new ISA in a few months, and C written for the PDP-11 half a century ago still compiles, with small changes, on a 2026 ARM Mac. The price falls on the programmer, who handles the machine's memory directly.
+      C meets all three by building only on what processors have in common and leaving the rest to the compiler. Its types are the byte and an integer of the machine's natural size, its <code>if</code> statements and loops become conditional jumps, and its data structures are byte layouts you could draw on graph paper. Translating that is simple: a competent compiler-writer can target a new ISA in a few months, and C written for the PDP-11 half a century ago still compiles, with small changes, on a 2026 ARM Mac. The price falls on the programmer, who handles the machine's memory directly.
     </p>
 
     <h3>BCPL → B → C</h3>
 
     <p id="ch5-portability-p7">
-      <strong>BCPL</strong> (Martin Richards, Cambridge, 1967) was typeless: every value was a machine word, whether it held a number, a letter or an address. <strong>B</strong> (Ken Thompson at Bell Labs, 1969), a smaller BCPL, was just as typeless and ran on early UNIX. But the PDP-11 that arrived at Bell Labs in 1970 was <em>byte-addressable</em>, every byte with its own address, and B, which saw only words, had no direct way to reach one. In 1972 Ritchie added types, so the compiler knew a <code>char</code> (one byte) from an <code>int</code> (a word), and called the result <strong>C</strong>: the language that comes after B.
+      <strong>BCPL</strong> (Martin Richards, Cambridge, 1967) was typeless: every value was a machine word, whether it held a number, a letter or an address. <strong>B</strong> (Ken Thompson at Bell Labs, 1969), a smaller BCPL, was just as typeless and ran on early UNIX. But the PDP-11 that arrived at Bell Labs in 1970 was <em>byte-addressable</em>, every byte with its own address, and B, which saw only words, had no direct way to reach one. By 1972 Ritchie had added types, so the compiler knew a <code>char</code> (one byte) from an <code>int</code> (a word), and he called the result <strong>C</strong>: the language that comes after B.
     </p>
 
     <div class="insight-strip">
@@ -2159,18 +2159,18 @@
 
   <section class="section" id="ch5-bell-labs">
     <div class="section-number">02 · Ritchie and Thompson at Bell Labs</div>
-    <h2>Two men, a discarded minicomputer, four years.</h2>
+    <h2>Two men, a spare minicomputer, four years.</h2>
 
     <p id="ch5-bell-labs-p1" class="lead">
-      In a windowless room at Bell Labs in 1969, Ken Thompson found a discarded PDP-7 and started writing a programming environment for himself. His friend Dennis Ritchie joined. Within four years they had built UNIX, written the C language to write more UNIX in, and laid the foundations of most operating systems you use today.
+      At Bell Labs in 1969, Ken Thompson found a little-used PDP-7 and started writing a programming environment for himself. His friend Dennis Ritchie joined. Within four years they had built UNIX, written the C language to write more UNIX in, and laid the foundations of most operating systems you use today.
     </p>
 
     <p id="ch5-bell-labs-p2">
-      Bell Labs had been one of three institutions building <strong>Multics</strong>, a vast time-sharing operating system meant to be a "computing utility" for hundreds of simultaneous users. Multics was technically remarkable and managerially catastrophic. By 1969 Bell Labs had pulled out. Thompson and Ritchie, who had been Multics contributors, were left with the appetite for that kind of system but no machine, no team, and no permission.
+      Bell Labs had been one of three institutions building <strong>Multics</strong>, a vast time-sharing operating system meant to be a "computing utility" for hundreds of simultaneous users. Multics was technically remarkable and managerially catastrophic. By 1969 Bell Labs had pulled out. Thompson and Ritchie, who had been Multics contributors, still wanted that kind of system but had no machine to build it on and no approved project to build it in.
     </p>
 
     <p id="ch5-bell-labs-p3">
-      Thompson salvaged an unused PDP-7, an 18-bit minicomputer already old by 1969; DEC had stopped selling it. He started writing a small operating system for it, partly to play a space-travel game he had ported from Multics, partly to have an environment to work in. By the end of 1969 there was a kernel, a shell, an editor, and a primitive filesystem. Brian Kernighan, noting that the system was a stripped-down Multics, quipped that they should call it "UNICS" (UNiplexed Information and Computing Service), a pun on Multics, the MULTiplexed Information and Computing Service. The name became <strong>UNIX</strong>.
+      Thompson took over a little-used PDP-7, an 18-bit minicomputer already old by 1969; DEC had stopped selling it. He and Ritchie first rewrote a space-travel game of his, written on Multics, to run on it. Then Thompson began a small operating system there, to have a better environment to work in. By the end of 1969 there was a kernel, a shell, an editor, and a primitive filesystem. Brian Kernighan, noting that the system was a stripped-down Multics, quipped that they should call it "UNICS" (UNiplexed Information and Computing Service), a pun on Multics, the MULTiplexed Information and Computing Service. The name became <strong>UNIX</strong>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-2">
@@ -2206,7 +2206,7 @@
 <text x="92" y="125" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,1)">PDP-11 arrives: byte-addressed</text>
 </g>
 <circle class="fx" cx="74" cy="120" r="11" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.309800;0.310000;0.370000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
-<g><animate attributeName="opacity" values="1;1;1;1;1;1;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.394800;0.395000;1.000000" dur="10s" repeatCount="indefinite"/>
+<g><animate attributeName="opacity" values="1;1;1;1;0.55;0.55;1;1" keyTimes="0.000000;0.059950;0.060000;0.100000;0.100500;0.394800;0.395000;1.000000" dur="10s" repeatCount="indefinite"/>
 <text x="20" y="159" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,1)">1971</text>
 <circle cx="74" cy="154" r="5" fill="none" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/>
 <text x="92" y="159" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,1)">First Edition: PDP-11 assembly</text>
@@ -2242,9 +2242,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why C.</b> B had one type, the machine word. The PDP-11 addressed bytes, so the language needed types; Ritchie added them, and structs, to make C.</li>
           <li><b>The rewrite.</b> The 1973 Fourth Edition was the first UNIX with its kernel mostly in C; a small machine-dependent part stayed in assembly.</li>
-          <li><b>The book.</b> Kernighan and Ritchie's <em>The C Programming Language</em> (1978) served as the language's definition until the ANSI standard of 1989.</li>
         </ol>
       </details>
     </div>
@@ -2252,19 +2250,9 @@
     <h3>The PDP-11</h3>
 
     <p id="ch5-bell-labs-p5">
-      The PDP-11 was a 16-bit minicomputer that DEC sold from 1970 onwards: small (the size of a refrigerator, not a room), with eight general-purpose registers, byte-addressable memory and a clean, regular instruction set. C was shaped around it. A C pointer, a variable that holds an address (Section 03 explains them), steps by the size of what it points at: 1 byte for a character, 2 for an integer (Fig 5.3). To a first approximation, C is a portable PDP-11 assembler.
+      The PDP-11 was a 16-bit minicomputer: small (the size of a refrigerator, not a room), with eight general-purpose registers, byte-addressable memory and a clean, regular instruction set. C was shaped around it. A C pointer, a variable that holds an address (Section 03 explains them), steps by the size of what it points at: on the PDP-11, 1 byte for a character and 2 for an integer (Fig 5.3). To a first approximation, C is a portable PDP-11 assembler.
     </p>
 
-    <h3>K&amp;R, 1978</h3>
-
-    <p id="ch5-bell-labs-p6">
-      Brian Kernighan and Dennis Ritchie published <em>The C Programming Language</em> with Prentice-Hall in 1978: 228 pages, every example a few lines you could compile and run, starting on page 6 with a program that prints <code>hello, world</code>. K&amp;R, as the book is known, defined the language until ANSI standardised it in 1989. It is short and exact, and it assumes an intelligent reader: someone could plausibly read it in an afternoon and write working code that night.
-    </p>
-
-    <div class="pull-quote">
-      <p id="ch5-bell-labs-p7">"C is quirky, flawed, and an enormous success."</p>
-      <span class="attr">Dennis Ritchie</span>
-    </div>
 
     <div class="diagram-card fig-v2" id="fig-5-3">
       <div class="diagram-label">Fig 5.3&nbsp;· PDP-7 to PDP-11&nbsp;· the machines that shaped C</div>
@@ -2307,11 +2295,22 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The PDP-7.</b> Bell Labs' machine had 8K words of 18 bits. B, its language, had a single type, the word; reaching one character meant shifting and masking.</li>
-          <li><b>The PDP-11.</b> A 16-bit design with byte addresses, eight registers and regular addressing modes. Its bytes are what forced types into the language.</li>
+          <li><b>The PDP-7.</b> Bell Labs' machine had 8K words of 18 bits. B, its language, had a single type, the word; reaching one character meant extra instructions to pull it out of its word.</li>
+          <li><b>The PDP-11.</b> A 16-bit design with byte addresses, eight registers and regular addressing modes.</li>
           <li><b>The legacy.</b> Flat byte-addressed memory and pointers that scale by the size of what they point at are C's model, and nearly every processor since provides it.</li>
         </ol>
       </details>
+    </div>
+
+    <h3>K&amp;R, 1978</h3>
+
+    <p id="ch5-bell-labs-p6">
+      Brian Kernighan and Dennis Ritchie published <em>The C Programming Language</em> with Prentice-Hall in 1978: 228 pages, every example a few lines you could compile and run, starting on page 6 with a program that prints <code>hello, world</code>. K&amp;R, as the book is known, defined the language until ANSI standardised it in 1989. It is short and exact, and it assumes an intelligent reader: someone could plausibly read it in an afternoon and write working code that night.
+    </p>
+
+    <div class="pull-quote">
+      <p id="ch5-bell-labs-p7">"C is quirky, flawed, and an enormous success."</p>
+      <span class="attr">Dennis Ritchie</span>
     </div>
 
   </section>
@@ -2336,7 +2335,7 @@
       <div class="diagram-label">Fig 5.4&nbsp;· A pointer walks down memory</div>
       <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-28 svgd-part2-28">
 <title id="svgt-part2-28">Fig 5.4 · A pointer walks down memory</title>
-<desc id="svgd-part2-28">Thirty-two bytes of memory from address 0x100, holding eight 4-byte ints: 17, 42, 99, −7, 23, 8, 61, 12. Three pointers start at 0x100 and each is incremented together. The char pointer moves one byte per step, the int pointer four, the double pointer eight. Each pointer's block is as wide as what it reads, and a label gives its step: 1, 4 or 8 bytes.</desc>
+<desc id="svgd-part2-28">Thirty-two bytes of memory from address 0x100, holding eight 4-byte ints: 17, 42, 99, −7, 23, 8, 61, 12. Three pointers start at 0x100 and each is incremented together. The char pointer moves one byte per step, the int pointer four, the double pointer eight. Each pointer's block is as wide as what it reads, and a label gives its step: 1, 4 or 8 bytes. The double pointer stops at 0x118, the last double that fits in the 32 bytes, while the others finish.</desc>
 <rect x="96.0" y="30" width="35.0" height="34" fill="none" stroke="rgba(132,255,178,0.45)"/>
 <line x1="104.8" y1="57" x2="104.8" y2="64" stroke="rgba(132,255,178,0.39)"/>
 <line x1="113.5" y1="57" x2="113.5" y2="64" stroke="rgba(132,255,178,0.39)"/>
@@ -2413,15 +2412,15 @@
 <g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.762250;0.762500;0.787438;0.787500;0.949000;0.949375;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x100</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.061500;0.061875;0.787438;0.787500;0.949750;0.950000;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x108</text></g>
 <g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.062250;0.062500;0.174000;0.174375;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x110</text></g>
-<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.761500;0.761875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x118</text></g>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.174750;0.175000;0.761500;0.761875;0.787438;0.787500;1.000000" dur="8s" repeatCount="indefinite"/><text x="20" y="230" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">= 0x118 (last double)</text></g>
 <text x="376" y="20" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">each ++ (+ 1) moves one element</text>
 </svg>
-      <p id="ch5-pointers-p4" class="diagram-caption">Three pointers start at 0x100 and take the same step, <code>++</code>: the <code>char</code> pointer moves 1 byte, the <code>int</code> pointer 4, the <code>double</code> pointer 8. The compiler scales pointer arithmetic by the size of the type, so <code>p + 1</code> always means the next element, never the next byte.</p>
+      <p id="ch5-pointers-p4" class="diagram-caption">Three pointers start at 0x100 and take the same step, <code>++</code>: the <code>char</code> pointer moves 1 byte, the <code>int</code> pointer 4, the <code>double</code> pointer 8, until the next <code>double</code> would leave the 32 bytes shown.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The sizes.</b> A <code>char</code> is 1 byte by definition; <code>int</code> is 4 and <code>double</code> 8 on today's common machines, though the standard only sets minimums.</li>
-          <li><b>What <code>*p</code> reads.</b> The bracket under each pointer is the span a dereference loads: one, four or eight bytes from its address.</li>
+          <li><b>What <code>*p</code> reads.</b> The block in each pointer's track is as wide as the span a dereference loads: one, four or eight bytes from its address.</li>
           <li><b>Where it leads.</b> Strings are <code>char</code> pointers walking to a zero byte, and arrays are the same arithmetic in disguise, as the next figure shows.</li>
         </ol>
       </details>
@@ -2430,7 +2429,7 @@
     <h3>Arrays are pointers in disguise</h3>
 
     <p id="ch5-pointers-p5">
-      The C standard defines <code>a[i]</code>, element <code>i</code> of the array <code>a</code>, to mean exactly <code>*(a + i)</code>: indexing is shorthand for pointer arithmetic. It works in both directions: with a pointer <code>p</code>, <code>p[3]</code> means <code>*(p + 3)</code>, and with an array <code>a</code>, <code>*a</code> is <code>a[0]</code>.
+      The C standard defines <code>a[i]</code>, element <code>i</code> of the array <code>a</code> (counting from 0, so <code>a[0]</code> is the first), to mean exactly <code>*(a + i)</code>: indexing is shorthand for pointer arithmetic. It works in both directions: with a pointer <code>p</code>, <code>p[3]</code> means <code>*(p + 3)</code>, and with an array <code>a</code>, <code>*a</code> is <code>a[0]</code>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-5">
@@ -2469,13 +2468,13 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199833;0.200000;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="180" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">= *(a + 2)</text><text x="380" y="180" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">addition commutes</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.266500;0.266667;0.499333;0.499583;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="36" y="210" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#d4a853">= 99</text><text x="380" y="210" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">legal, never written</text></g>
 </svg>
-      <p id="ch5-pointers-p6" class="diagram-caption">The C standard defines <code>a[i]</code> as <code>*(a&nbsp;+&nbsp;i)</code>: add <code>i</code> elements to the address, then read what is there. Because addition commutes, <code>2[a]</code> is the same expression and reads the same 99; arrays in C are a notation over pointer arithmetic.</p>
+      <p id="ch5-pointers-p6" class="diagram-caption"><code>a[2]</code> rewritten step by step down to the 99 stored at 0x108. <code>2[a]</code>, legal but never written, reads the same 99, because addition commutes.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rule.</b> C99 §6.5.2.1: "<code>E1[E2]</code> is identical to <code>(*((E1)+(E2)))</code>."</li>
           <li><b>The decay.</b> In most expressions an array's name turns into a pointer to its first element, which is why <code>a + 2</code> means an address at all.</li>
-          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour; in practice it reads whatever lies beyond it.</li>
+          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour (Section 05); in practice it reads whatever lies beyond it.</li>
         </ol>
       </details>
     </div>
@@ -2489,7 +2488,7 @@
     <h3>What this lets you screw up</h3>
 
     <p id="ch5-pointers-p8">
-      A pointer that points outside its valid range will write anywhere your process is allowed to write, and nothing checks. If <code>arr</code> holds <code>int</code>s and <code>i</code> is too large, <code>arr[i] = x</code> stores <code>x</code> into whatever lies 4×<em>i</em> bytes past the start of <code>arr</code>. If that is the saved return address on the stack, you have the buffer overflow of <a href="part-1#ch3">Chapter 3</a>, and because C itself checks no bounds, a few lines are enough to cause it.
+      A pointer that points outside its valid range will write anywhere your process is allowed to write, and nothing checks. If <code>arr</code> holds <code>int</code>s and <code>i</code> is too large, <code>arr[i] = x</code> stores <code>x</code> into whatever lies 4×<em>i</em> bytes past the start of <code>arr</code>. If that is the saved return address on the stack, you have the buffer overflow of <a href="part-1#ch3">Chapter 3</a>.
     </p>
 
     <div class="insight-strip">
@@ -2503,11 +2502,11 @@
     <h2>You allocated it. You free it.</h2>
 
     <p id="ch5-malloc-p1" class="lead">
-      Every byte of dynamic memory your C program uses, you allocated. Every byte you
+      Every byte of heap memory your C program uses, you allocated. Every byte you
       allocated, you must free. Forget to free, and your program leaks until the OS kills
       it. Free twice, or use a freed pointer, and your program corrupts itself in ways
-      that may not show up for hours. C makes you the bookkeeper. There is no garbage
-      collector.
+      that may not show up for hours. C makes you the bookkeeper: nothing in the language
+      frees memory for you.
     </p>
 
     <p id="ch5-malloc-p2">
@@ -2515,7 +2514,7 @@
     </p>
 
     <p id="ch5-malloc-p3">
-      Behind these two functions lives an entire algorithm, the <strong>allocator</strong>. The kernel hands the process one big chunk of address space, and the allocator cuts it into pieces as <code>malloc</code> calls ask for them and joins neighbouring free pieces back together as <code>free</code> calls return them. Over time the heap becomes a patchwork of chunks, each marked in use or free, with the free ones linked into the allocator's free list, which it searches for room.
+      Behind these two functions lives an entire algorithm, the <strong>allocator</strong>. The kernel hands the process one big chunk of address space, and the allocator cuts it into pieces as <code>malloc</code> calls ask for them and joins neighbouring free pieces back together as <code>free</code> calls return them. Over time the heap becomes a patchwork of chunks, each marked in use or free (a chunk in use never moves, because the program holds its address), with the free ones linked into the allocator's free list, which it searches for room.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-6">
@@ -2526,24 +2525,24 @@
 <text x="20" y="20" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">HEAP · 560 bytes</text>
 <rect x="20" y="64" width="360" height="40" fill="none" stroke="rgba(132,255,178,0.39)"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.283167;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20.0" y="64" width="41.1" height="40" fill="none" fill-opacity="0.3" stroke="#84ffb2"/><text x="40.5714" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p1</text></g>
-<text x="40.5714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.283167;0.283333;1.000000" dur="12s" repeatCount="indefinite"/><text x="40.5714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text></g>
 <g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.316500;0.316667;0.499333;0.499583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="61.1" y="64" width="82.3" height="40" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2"/><text x="102.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p2</text></g>
-<text x="102.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">128</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.316500;0.316667;1.000000" dur="12s" repeatCount="indefinite"/><text x="102.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">128</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.499833;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="62.1" y="65" width="80.3" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.499833;0.500000;1.000000" dur="12s" repeatCount="indefinite"/><text x="102.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text></g>
 <rect class="fx" x="61.1" y="61" width="82.3" height="46" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.666500;0.666667;0.741000;0.741250;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.349833;0.350000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="143.4" y="64" width="20.6" height="40" fill="none" fill-opacity="0.3" stroke="#84ffb2"/><text x="153.714" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p3</text></g>
-<text x="153.714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">32</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.349833;0.350000;1.000000" dur="12s" repeatCount="indefinite"/><text x="153.714" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">32</text></g>
 <g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.383167;0.383333;0.549333;0.549583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="164.0" y="64" width="61.7" height="40" fill="none" fill-opacity="0.3" stroke="#84ffb2"/><text x="194.857" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p4</text></g>
-<text x="194.857" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">96</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.383167;0.383333;1.000000" dur="12s" repeatCount="indefinite"/><text x="194.857" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">96</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="165.0" y="65" width="59.7" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.549833;0.550000;1.000000" dur="12s" repeatCount="indefinite"/><text x="194.857" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text></g>
 <rect class="fx" x="164.0" y="61" width="61.7" height="46" fill="none" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.749833;0.750000;0.824333;0.824583;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="225.7" y="64" width="41.1" height="40" fill="none" fill-opacity="0.3" stroke="#84ffb2"/><text x="246.286" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p5</text></g>
-<text x="246.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text>
-<text x="323.429" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">176</text>
-<g><animate attributeName="opacity" values="1;1;1;1" keyTimes="0.000000;0.233292;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="267.9" y="65" width="111.1" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
-<text x="323.429" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><text x="246.286" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">64</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><text x="323.429" y="98" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">176</text></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="267.9" y="65" width="111.1" height="38" fill="none" stroke="#d4a853" stroke-width="1.5" stroke-dasharray="4 3"/></g>
+<g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.416500;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><text x="323.429" y="81" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free</text></g>
 <rect class="fx" x="266.9" y="61" width="113.1" height="46" fill="#ec8d8d" fill-opacity="0.18" stroke="#ec8d8d" stroke-width="2.5" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.233292;0.233333;0.833167;0.833333;0.907667;0.907917;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.232667;0.232917;0.233333;0.599833;0.600000;1.000000" dur="12s" repeatCount="indefinite"/>
 <text x="20" y="46" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free list</text>
@@ -2623,19 +2622,18 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.615231;0.615385;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,245 H150 V262 H196" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-dasharray="5 4"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.722923;0.723077;1.000000" dur="13s" repeatCount="indefinite"/><path d="M64,291 H150 V276 H196" fill="none" stroke="#84ffb2" stroke-width="2"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.830615;0.830769;0.876923;1.000000" dur="13s" repeatCount="indefinite"/><rect x="194" y="248" width="188" height="42" rx="5" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d" stroke-width="2"/></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.507077;0.507308;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p = malloc(64)</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.507538;0.507692;0.614769;0.615000;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">p = malloc(64)</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.615231;0.615385;0.722462;0.722692;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">free(p): p still points here</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.046115;0.046154;0.722923;0.723077;0.830154;0.830385;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">q = malloc(64): the same chunk</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.046115;0.046154;0.069231;0.069615;0.830615;0.830769;1.000000" dur="13s" repeatCount="indefinite"/><text x="20" y="334" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">write through p: q is hit</text></g>
 </svg>
-      <p id="ch5-malloc-p6" class="diagram-caption">A leak loses the last pointer to memory that is still allocated, so the heap only grows until the OS ends the process. A use-after-free keeps a pointer to memory already given back: the allocator hands that chunk to the next caller, and every write through the old pointer overwrites their data.</p>
+      <p id="ch5-malloc-p6" class="diagram-caption">In the leak, three chunks lose their only pointer and the heap only grows. In the use-after-free, <code>p</code> outlives <code>free(p)</code>, the same chunk goes to <code>q</code>, and a write through <code>p</code> lands in <code>q</code>'s data.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Why the same chunk.</b> Allocators reuse recently freed chunks of the right size first, because they are likely still in the cache, so the next <code>malloc(64)</code> often gets exactly the chunk just freed.</li>
           <li><b>Finding them.</b> Valgrind and AddressSanitizer track every allocation: they report leaks when the program exits and a use-after-free when it happens, as long as the freed chunk has not yet been reused.</li>
-          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; in safe Rust, the ownership rules reject use-after-free at compile time.</li>
+          <li><b>Defences.</b> Setting <code>p = NULL</code> after <code>free(p)</code> turns a later use into an immediate crash; hardened allocators delay reuse; in safe Rust, the compiler gives every value one owner, which frees it, and rejects any use after that at compile time.</li>
         </ol>
       </details>
     </div>
@@ -2682,7 +2680,7 @@
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.469800;0.470000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">4</text><text x="40" y="234" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">so abort() is dead code</text></g>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.619800;0.620000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="262" width="360" height="56" rx="3" fill="none" stroke="#84ffb2" stroke-opacity="0.7"/><text x="32" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">lea eax,[rdi+1]</text><text x="32" y="306" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">ret</text><text x="368" y="284" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">i + 1 (i is in rdi)</text><text x="368" y="306" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">no check left</text><text x="20" y="342" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">lea: works out the sum in [ ]</text></g>
 </svg>
-      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is <span class="key-term">undefined behaviour</span>, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code, code that can never run. With optimisation switched on (<code>-O2</code>), the gcc compiler deletes it, leaving only an add and a return.</p>
+      <p id="ch5-ub-p4" class="diagram-caption">Signed overflow is <span class="key-term">undefined behaviour</span> (UB in the figure), so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code, code that can never run. With optimisation switched on (<code>-O2</code>), the gcc compiler deletes it, leaving only an add and a return.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -2696,7 +2694,7 @@
     <h3>NULL dereference</h3>
 
     <p id="ch5-ub-p5">
-      A pointer with the value <code>0</code> (or <code>NULL</code>, C's name for it) is conventionally "the address that points nowhere." The kernel arranges for the very first page of every process's virtual address space to be unmapped. Touching that page raises a hardware fault. The kernel intercepts the fault and converts it into a signal called <code>SIGSEGV</code> ("segmentation violation"), which by default kills the process. This is the <code>Segmentation fault (core dumped)</code> message that has greeted C programmers for fifty years.
+      A pointer with the value <code>0</code> (or <code>NULL</code>, C's name for it) points nowhere: the kernel leaves the lowest pages of every process unmapped, so touching one takes the "invalid" exit of Fig 4.9 and ends in <code>SIGSEGV</code>, the <code>Segmentation fault (core dumped)</code> message that has greeted C programmers for fifty years. That crash is the operating system's doing, not a promise of C. The dereference is undefined, so an optimiser that sees <code>*p</code> may assume <code>p</code> is not NULL and delete a later <code>if (p == NULL)</code> check, as Fig 5.8 deleted the overflow test; that is why Linux builds with <code>-fno-delete-null-pointer-checks</code>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-5-9">
@@ -2737,11 +2735,11 @@
 <text x="32" y="338" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">shell:</text>
 <g><animate attributeName="opacity" values="1;1;0;0;1;1;1" keyTimes="0.000000;0.044444;0.045000;0.599778;0.600000;0.999944;1.000000" dur="9s" repeatCount="indefinite"/><text x="88" y="338" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">Segmentation fault (core dumped)</text></g>
 </svg>
-      <p id="ch5-ub-p6" class="diagram-caption">A write through a NULL pointer crosses every layer: the MMU finds no mapping for address 0 and faults, and the kernel, finding the address in no region the process owns, sends <code>SIGSEGV</code>. The default action for that signal ends the process, which the shell reports as a segmentation fault.</p>
+      <p id="ch5-ub-p6" class="diagram-caption">One write through NULL, followed from user code through the MMU, the kernel and the signal to the shell's message.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why address 0 faults.</b> Operating systems leave the lowest pages unmapped on purpose (Linux's <code>mmap_min_addr</code>), so a NULL access always traps.</li>
+          <li><b>Why address 0 faults.</b> Operating systems leave the lowest pages unmapped on purpose (Linux's <code>mmap_min_addr</code>), so a NULL access that reaches the processor traps instead of reading data.</li>
           <li><b>The same path.</b> This is the "invalid" exit of the page-fault tree in Fig 4.9; only the outcome differs from a minor fault.</li>
           <li><b>The core file.</b> "Core dumped" appears only when the system allows it; the dump is a snapshot of memory for a debugger to open.</li>
         </ol>
@@ -2751,11 +2749,11 @@
     <h3>The optimiser's contract, the programmer's homework</h3>
 
     <p id="ch5-ub-p7">
-      Modern optimisers take "trust the programmer" to its logical limit, removing code on assumptions you never knowingly made. The Linux kernel compiles with a handful of GCC options (<code>-f</code> flags) that switch specific deductions off. Careful C projects also test under UndefinedBehaviorSanitizer, which compiles in checks for many of these promises, signed overflow among them, and reports each one the running program breaks.
+      Careful C projects test under UndefinedBehaviorSanitizer, which compiles in checks for many of these promises, signed overflow among them, and reports each one the running program breaks.
     </p>
 
     <div class="insight-strip">
-      <p id="ch5-ub-p8"><strong>The right way to think about undefined behaviour:</strong> not "the program might crash" but "the program's behaviour is no longer governed by the source you wrote." This is the cost of C's performance.</p>
+      <p id="ch5-ub-p8"><strong>The right way to think about undefined behaviour:</strong> once a program breaks one of these promises, its behaviour is no longer governed by the source you wrote, and the optimiser is entitled to act on that.</p>
     </div>
 
   </section>
@@ -2765,7 +2763,7 @@
     <h2>Half a century later, still in the foundation.</h2>
 
     <p id="ch5-survives-p1" class="lead">
-      Every five years, someone writes a clickbait piece announcing that C is dying. Every five years, more C runs in production than ever before. Linux is C. macOS XNU and Windows NT are mostly C. The Python interpreter is C. The browser rendering this page is C++, C's best-known descendant. The TLS library that secured your connection is C. C is so deep in the foundations that it has become invisible.
+      Every five years, someone writes a clickbait piece announcing that C is dying, and every five years more C runs in production than ever before. Linux is written in C, macOS's XNU kernel and Windows NT mostly so, and the browser rendering this page in C++, C's best-known descendant. Fig 5.10 follows one Python program down through the C beneath it.
     </p>
 
     <p id="ch5-survives-p2">
@@ -2818,7 +2816,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why it stays.</b> No garbage collector, a simple calling convention every other language can call into, and a compiler for nearly every chip ever made.</li>
+          <li><b>Why others lean on it.</b> C's simple calling convention is the one every other language can call into.</li>
           <li><b>The price.</b> Microsoft and Google's Chromium team have each reported that about 70% of their serious security bugs are memory-safety bugs.</li>
           <li><b>The successor.</b> Rust has been accepted in the Linux kernel since 2022 and is entering Windows and Android, one layer at a time.</li>
         </ol>
@@ -2832,16 +2830,16 @@
 <desc id="svgd-part2-35">C, from Bell Labs in 1972, at the root of three waves of descendants. Keeping C's speed and adding objects: Objective-C (1984) and C++ (1985). Keeping C's syntax on a managed runtime: Perl (1987), Java, JavaScript and PHP (all 1995), C# (2000) and Kotlin (2011). Keeping C's speed and adding safety: Go (2009), Rust (2010) and Swift (2014), which are memory-safe, and Zig (2016), which keeps manual control with fewer traps. A key says each box is a language and the year it appeared.</desc>
 <rect x="20" y="12" width="360" height="38" rx="3" fill="none" stroke="#84ffb2" stroke-width="1.5"/>
 <text x="32" y="36" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">C · 1972 · Bell Labs</text>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.331652;0.331818;0.346303;0.346553;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">1984</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.346803;0.346970;0.376606;0.376856;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">1985</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.377106;0.377273;0.497818;0.498068;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">1987</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.498318;0.498485;0.573576;0.573826;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">1995</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.574076;0.574242;0.709939;0.710189;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2000</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.710439;0.710606;0.725091;0.725341;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2009</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.725591;0.725758;0.740242;0.740492;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2010</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.740742;0.740909;0.785697;0.785947;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2011</text></g>
-<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.786197;0.786364;0.816000;0.816250;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2014</text></g>
-<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066625;0.066667;0.100000;0.100417;0.816500;0.816667;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">2016</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.331652;0.331818;0.346303;0.346553;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 1984</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.346803;0.346970;0.376606;0.376856;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 1985</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.377106;0.377273;0.497818;0.498068;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 1987</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.498318;0.498485;0.573576;0.573826;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 1995</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.574076;0.574242;0.709939;0.710189;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 2000</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.710439;0.710606;0.725091;0.725341;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 2009</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.725591;0.725758;0.740242;0.740492;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 2010</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.740742;0.740909;0.785697;0.785947;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 2011</text></g>
+<g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.066625;0.066667;0.786197;0.786364;0.816000;0.816250;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">year 2014</text></g>
+<g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066625;0.066667;0.100000;0.100417;0.816500;0.816667;1.000000" dur="12s" repeatCount="indefinite"/><text x="368" y="36" text-anchor="end" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">to 2016</text></g>
 <text x="40" y="76" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">keep the speed, add objects</text>
 <line x1="26" y1="71" x2="34" y2="71" stroke="rgba(198,222,206,0.4)" stroke-width="1.5"/>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066625;0.066667;0.100000;0.100417;0.331652;0.331818;1.000000" dur="12s" repeatCount="indefinite"/><rect x="40" y="86" width="108" height="40" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.7"/><text x="50" y="103" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">Objective-C</text><text x="50" y="119" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">1984</text></g>
@@ -2880,9 +2878,9 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>First wave.</b> Objective-C is a strict superset of C, and C++ nearly one: both compile C code almost unchanged.</li>
+          <li><b>First wave.</b> An object bundles data with the functions that work on it (Chapter 6). Objective-C is a strict superset of C, and C++ nearly one: both compile C code almost unchanged.</li>
           <li><b>Second wave.</b> Java, C# and Kotlin run on virtual machines with garbage collection; Perl, JavaScript and PHP borrowed C's look for scripting.</li>
-          <li><b>Third wave.</b> Rust proves memory safety at compile time through ownership; Go and Swift manage memory for you; Zig keeps manual control with fewer traps.</li>
+          <li><b>Third wave.</b> Rust rules out use-after-free and data races (two threads changing the same memory at once) at compile time, by giving every value one owner that the compiler tracks, and checks array bounds as the program runs; Go and Swift compile to machine code, as C does, but manage memory for you; Zig keeps manual control with fewer traps.</li>
         </ol>
       </details>
     </div>
@@ -2895,7 +2893,7 @@
     <h3>The seam to <a href="#ch6">Chapter 6</a></h3>
 
     <p id="ch5-survives-p6">
-      Stroustrup, who said that, was reflecting on his own creation. In 1979 he began work on spreading an operating system's services across a network, a job too large for plain C: it gave him speed and portability, but no tools to manage <em>complexity at that scale</em>. He set out to make C scale without giving up anything it did well.
+      Stroustrup, who said that, was reflecting on his own creation, C++. In 1979 he began work on spreading an operating system's services across a network, a job too large for plain C: it gave him speed and portability, but no tools to manage <em>complexity at that scale</em>. He set out to make C scale without giving up anything it did well.
     </p>
 
   </section>

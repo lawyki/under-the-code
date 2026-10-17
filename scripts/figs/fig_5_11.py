@@ -54,8 +54,7 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Many major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C\'s speed, C\'s syntax on a managed runtime, and C\'s speed with more safety. '
-           'The braces, semicolons and <code>for</code> loops of much of today\'s code are C\'s.')
+caption = ("Many major languages since 1972 grew out of C or were built as answers to it, in three waves: objects on top of C's speed, C's syntax on a managed runtime, and C's speed with more safety. The braces, semicolons and <code>for</code> loops of much of today's code are C's.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

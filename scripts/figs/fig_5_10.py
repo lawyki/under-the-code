@@ -36,12 +36,11 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Underneath a Python program the work soon runs in C: its request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. '
-           'C holds the layers where cycles and predictability matter most, and pays for it in memory-safety bugs.')
+caption = ('Underneath a Python program the work soon runs in C: its request passes through the CPython interpreter, OpenSSL and SQLite, libc and the Linux kernel, all written in C. C holds the layers where cycles and predictability matter most, and pays for it in memory-safety bugs.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why it stays.</b> No garbage collector, a simple calling convention every other language can call into, and a compiler for nearly every chip ever made.</li>
+          <li><b>Why others lean on it.</b> C's simple calling convention is the one every other language can call into.</li>
           <li><b>The price.</b> Microsoft and Google's Chromium team have each reported that about 70% of their serious security bugs are memory-safety bugs.</li>
           <li><b>The successor.</b> Rust has been accepted in the Linux kernel since 2022 and is entering Windows and Android, one layer at a time.</li>
         </ol>

@@ -61,8 +61,7 @@ a(text(380, BY + 136, 'i + 1: next word', anchor='end', size=13, fill=BLUE, ls='
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('On the PDP-7 an address named a whole 18-bit word, two characters at a time; on the PDP-11 every byte had its own address. '
-           'A pointer to a character must then step by 1 and a pointer to an integer by 2, which is why C, unlike B, gave its pointers types.')
+caption = ('On the PDP-7 an address named a whole 18-bit word, two characters at a time; on the PDP-11 every byte had its own address. A pointer to a character must then step by 1 and a pointer to an integer by 2, which is why C, unlike B, gave its pointers types.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

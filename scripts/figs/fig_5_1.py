@@ -53,13 +53,12 @@ o.extend(body)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86\'s variable-length bytes against the fixed 4-byte words of ARM and RISC-V. '
-           'The behaviour is identical, which is what portable means for C: not one binary everywhere, but one source that compiles to each.')
+caption = ("One C function compiled for three processors: different instructions, different registers (<code>eax</code>, <code>w0</code>, <code>a0</code>) and different encodings, x86's variable-length bytes against the 4-byte words of ARM and RISC-V. The behaviour is identical, which is what portable means for C: the same source, compiled separately for each processor.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Calling conventions.</b> Each platform's ABI says where arguments arrive (<code>edi</code>/<code>esi</code>, <code>w0</code>/<code>w1</code>, <code>a0</code>/<code>a1</code>) and where the result goes back.</li>
-          <li><b>The <code>lea</code> trick.</b> x86 compilers borrow <code>lea</code>, an address-arithmetic instruction, to add two registers into a third in one step.</li>
+          <li><b>Calling conventions.</b> Each platform's ABI says where arguments arrive (<code>rdi</code>/<code>rsi</code>, <code>w0</code>/<code>w1</code>, <code>a0</code>/<code>a1</code>) and where the result goes back.</li>
+          <li><b>The <code>lea</code> trick.</b> x86 compilers borrow <code>lea</code>, an address-arithmetic instruction, to add two registers into a third in one step. The brackets look like Fig 3.2's memory, but <code>lea</code> only works out the address and never reads it, so here the address is the sum.</li>
           <li><b>The <code>w</code> in <code>addw</code>.</b> On 64-bit RISC-V it adds 32-bit <code>int</code>s. With the compressed extension both instructions shrink to 2 bytes each.</li>
         </ol>
       </details>'''
