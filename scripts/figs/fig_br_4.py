@@ -1,11 +1,13 @@
 # Fig BR.4 · The MMU · silicon between the CPU and the RAM (Pass 28, law 3, conceptual pass). Two accesses through the
-# MMU, top to bottom (each to its own page, so each misses the TLB). A load of 0x7fff_a3c4_0010: the TLB misses, the walker reads the four page-table levels from CR3
-# down, the permission bits allow it, and the physical address 0x4_a200_0010 (same low 12 bits, the offset in the page)
+# Pre-read audit: the published SVG now shows both CPU lines (inactive one at 0.55), the RAM box shows the load's address in the
+# still, and level 3 is filled on the load pass; the page is the source of truth for those changes.
+# MMU, top to bottom (each to its own page, so each misses the TLB). A load of 0x7fff_fa3c_4010: the TLB misses, the walker reads the four page-table levels from CR3
+# down, the permission bits allow it, and the physical address 0x4a20_0010 (same low 12 bits, the offset in the page)
 # goes to RAM. Then a store to a read-only page: the walk succeeds but the check fails, and the MMU raises a page fault
 # for the kernel instead of touching RAM. t=0 (shift): both outcomes shown.
 from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
 
-VA, PA = 0x7fffa3c40010, 0x4a2000010
+VA, PA = 0x7ffffa3c4010, 0x4a200010
 assert VA & 0xfff == PA & 0xfff == 0x010
 W = 400
 D = 12.0
@@ -21,8 +23,8 @@ def box(x, y, w, h, col, op=0.6):
 # CPU
 box(20, 14, 360, 54, BLUE)
 a(text(32, 36, 'CPU', size=13, fill=BLUE, ls='0'))
-a(f'<g opacity="0">{lit(0.31, T2["ask"])}{text(32, 56, "load  0x7fff_a3c4_0010", size=13, fill="#fff", ls="0")}</g>')
-a(f'<g opacity="0">{win(T2["ask"])}{text(32, 56, "store 0x7fff_a3c5_0010", size=13, fill="#fff", ls="0")}</g>')
+a(f'<g opacity="0">{lit(0.31, T2["ask"])}{text(32, 56, "load  0x7fff_fa3c_4010", size=13, fill="#fff", ls="0")}</g>')
+a(f'<g opacity="0">{win(T2["ask"])}{text(32, 56, "store 0x7fff_fa3c_5010", size=13, fill="#fff", ls="0")}</g>')
 # MMU
 MY = 90
 box(20, MY, 360, 196, GOLD, 0.8)
@@ -37,7 +39,7 @@ for k, (lx, lab) in enumerate(zip(LX, ('L4', 'L3', 'L2', 'L1'))):
     a(f'<rect x="{lx}" y="{MY + 100}" width="72" height="30" rx="5" fill="none" stroke="{GOLD}" stroke-opacity="0.6"/>')
     a(text(lx + 36, MY + 120, lab, anchor='middle', size=13, fill='#fff', ls='0'))
     for t0 in (T1['walk'][k], T2['walk'][k]):
-        a(f'<g class="fx" opacity="0">{lit(t0, t0 + 0.4)}<rect x="{lx}" y="{MY + 100}" width="72" height="30" rx="5" fill="{GOLD}" fill-opacity="0.35" stroke="{GOLD}" stroke-width="2"/></g>')
+        a(f'<g class="fx" opacity="0">{lit(t0, t0 + 0.4)}<rect x="{lx}" y="{MY + 100}" width="72" height="30" rx="5" fill="{GOLD}" fill-opacity="0.55" stroke="{GOLD}" stroke-width="2"/></g>')
     if k < 3:
         a(f'<path d="M{lx + 72},{MY + 115} h12 m-5,-4 l5,4 l-5,4" fill="none" stroke="{MUTED}"/>')
 a(text(44, MY + 162, 'check: present, user, writable?', size=13, fill=MUTED, ls='0'))
@@ -47,7 +49,7 @@ a(f'<g opacity="0">{win(T2["bad"])}{text(44, MY + 182, "store to a read-only pag
 EY = MY + 216
 box(20, EY, 170, 52, GREEN)
 a(text(32, EY + 21, 'RAM', size=13, fill=GREEN, ls='0'))
-a(f'<g opacity="0">{win(T1["ram"])}{text(32, EY + 41, "0x4_a200_0010", size=13, fill="#fff", ls="0")}</g>')
+a(f'<g opacity="0">{win(T1["ram"])}{text(32, EY + 41, "0x4a20_0010", size=13, fill="#fff", ls="0")}</g>')
 box(210, EY, 170, 52, RED)
 a(text(222, EY + 21, 'page fault', size=13, fill=RED, ls='0'))
 a(f'<g opacity="0">{win(T2["bad"] + 0.3)}{text(222, EY + 41, "kernel decides", size=13, fill="#fff", ls="0")}</g>')
@@ -57,8 +59,8 @@ a(text(20, EY + 76, 'offset 0x010 unchanged: only the page moves', size=13, fill
 H = EY + 88
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46">')
 o.insert(1, '<title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>')
-o.insert(2, '<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_a3c4_0010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4_a200_0010 goes to RAM, keeping the same offset within the page. '
-  'Then a store to the next page up, 0x7fff_a3c5_0010: it misses the TLB too, the walk succeeds, but that page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>')
+o.insert(2, '<desc id="svgd-part1-46">Two memory accesses through the MMU. A load from virtual address 0x7fff_fa3c_4010 misses the TLB, so the walker reads the four page-table levels starting from CR3; the permission bits allow the load, and the physical address 0x4a20_0010 goes to RAM, keeping the same offset within the page. '
+  'Then a store to the next page up, 0x7fff_fa3c_5010: it misses the TLB too, the walk succeeds, but that page is read-only, so instead of touching RAM the MMU raises a page fault and the kernel decides what happens next.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
