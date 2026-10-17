@@ -46,6 +46,16 @@ Fig 11.7 is a kept original, and the Berners-Lee pull-quote is owner text; nothi
 - **Fig 11.7 label "(duplicate response, wrong source)"** (10, 61, 86). The real reply comes from the right source, the one the attacker spoofed; it is dropped only because the query was already answered. Recommended: "(arrives second: query already answered)"; and the box label "real bank.com name server" for the unexplained "NS".
 - **Fig 11.7 caption retells ch11-dns-p7** (60): the race, caching for the TTL, Kaminsky, port randomisation and the 65,000-fold figure; only the DNSSEC sentences are new, and it runs to eight sentences. Recommended: "The attacker races the real answer with forged replies; source-port randomisation multiplies the guesses needed about 65,000-fold. DNSSEC, which signs every record, is the deeper fix but still covers under half the namespace."
 
+## Chapter 12
+
+Figs 12.9 and 12.10 are kept originals, and the Eich pull-quote is owner text; nothing below was changed.
+
+- **Fig 12.9, reflected row step 3: "same-origin with example.com"** (ch12.json 35, 48, 62, 82). The attack URL is https://search.example.com, a different origin by the rule Fig 12.8 has just taught. Recommended: "same-origin with search.example.com" (or make the attack URL https://example.com/?q=…, matching the DOM-based row).
+- **Fig 12.9 caption (ch12-security-p5): "XSS still appears every year on the OWASP Top 10"** (34, 47, 80, 87). The list is revised every three or four years (2017, 2021, 2025) and since 2021 XSS sits inside Injection. Recommended: "Even so, XSS has stayed in every edition of the OWASP Top 10, since 2021 as part of Injection." The caption is also six sentences; the prose (ch12-security-p4) now explains output encoding, which it leans on (15).
+- **Fig 12.10 caption (ch12-security-p7): "SameSite=Lax means: do not attach this cookie to cross-site POST requests; only to top-level navigations"** (16, 24, 50). A cross-site form POST is also a top-level navigation and gets no Lax cookie; Lax sends it only on top-level navigations that use GET. Recommended: "on a cross-site request, attach this cookie only when it is a top-level navigation that uses GET, such as following a link; never on a cross-site POST."
+- **Fig 12.10 step 3: `<form action="bank.com/transfer">`** (49). Without a scheme it is a relative URL that resolves under evil.com. Recommended: `action="https://bank.com/transfer"`.
+- **Fig 12.9 caption (ch12-security-p5): "without proper output encoding"** (15). The term is used before Chapter 12 explains it anywhere a newcomer would meet it. Recommended: "without proper output encoding (turning characters such as `<` and `>` into codes the browser shows as text instead of running)".
+
 ## Chapter 13
 
 Fig 13.10 is a kept original and the Codd pull-quote is owner text; nothing below was changed.

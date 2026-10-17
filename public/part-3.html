@@ -4611,7 +4611,7 @@
       <!-- 10-DAYS badge top right -->
       <g transform="translate(330,80)">
         <rect x="0" y="0" width="120" height="50" rx="6" fill="none" stroke="rgba(79,196,230,0.85)" stroke-width="1.5"/>
-        <text x="60" y="18" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">SHIPPED IN</text>
+        <text x="60" y="18" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">WRITTEN IN</text>
         <text x="60" y="43" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="18" fill="rgba(79,196,230,0.95)">10 days</text>
       </g>
 
@@ -4657,33 +4657,34 @@
       could embed small Java programs (applets) inside web pages. Each
       applet ran inside a Java Virtual Machine, isolated from the host,
       with a defined API for drawing and user input. On paper it was the
-      right answer: a real language that checked its types, walled off from the rest of the computer, with a proper runtime. In practice the JVM took five to ten seconds to start,
-      applets were hard to write in small pieces, and the server had to
+      right answer: a real language that checked its types before running, walled off from the rest of the computer, with a proper runtime. In practice the JVM took five to ten seconds to start,
+      applets were heavy for small jobs (even a few lines of page logic
+      meant a whole compiled Java program), and the server had to
       host compiled <code>.class</code> files. Each applet was an island:
       Java could not easily reach into the surrounding HTML page, nor the
       page into Java. Applets shipped, carried games and animation, and
-      slowly died: a niche by 2000, obsolete by 2010, removed from browsers
-      entirely by 2017.
+      slowly died: a niche by 2000, obsolete by 2010, dropped by the major
+      browsers between 2015 and 2018.
     </p>
 
     <p id="ch12-browser-p3">
-      Netscape, whose browser had become the market-share leader through
-      1994 and 1995, wanted something different. Marc Andreessen,
+      Netscape, whose browser had overtaken Mosaic as the market leader by
+      early 1995, wanted something different. Marc Andreessen,
       Netscape's twenty-three-year-old co-founder, believed the web's killer
       feature would be quick scripts that lived <em>inside the page
-      itself</em>: small, untyped snippets that any HTML author could add
-      without compilers and without ten seconds of warm-up. The language should look enough like Java that the buzzword
+      itself</em>: small snippets with no type declarations that any HTML
+      author could add without compilers and without ten seconds of warm-up. The language should look enough like Java that the buzzword
       "Java" could be used in marketing, but be far simpler. It should run
-      instantly, fail loudly without crashing the browser, and be easy
+      instantly, fail without taking the browser down with it, and be easy
       enough for a designer who had learned HTML over a weekend to pick up.
       Netscape needed it shipped in the Netscape 2.0 release, whose first
       beta was due that September.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-12-1">
-      <div class="diagram-label">Fig 12.1&nbsp;· The web of 1994–95&nbsp;· static documents and a tab-out to Java</div>
+      <div class="diagram-label">Fig 12.1&nbsp;· The web of 1994–95&nbsp;· static pages and a walled-off Java box</div>
       <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-56 svgd-part3-56">
-<title id="svgt-part3-56">Fig 12.1 · The web of 1994–95 · static documents and a tab-out to Java</title>
+<title id="svgt-part3-56">Fig 12.1 · The web of 1994–95 · static pages and a walled-off Java box</title>
 <desc id="svgd-part3-56">Two browser windows from 1995. In the first, an HTML form: abc is typed into an age field and Send is pressed. The request goes to the server, the whole page goes blank while a new one loads, and the new page says age must be a number. In the second, a Java applet sits in a box on the page: it shows starting Java while a bar fills, and only then runs, inside its box, unable to reach or change the page text around it.</desc>
 <defs><clipPath id="ko-fig-12-1-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM24 186h190v90h-190Z"/></clipPath></defs>
 <rect x="10" y="10" width="280" height="118" rx="5" fill="none" stroke="#e07a3f" stroke-opacity="0.7"/>
@@ -4716,7 +4717,7 @@
         <ol>
           <li><b>The form.</b> Every check, even "is this a number?", meant a request to the server and a whole new page back.</li>
           <li><b>The applet.</b> Java ran in its own virtual machine, sandboxed from the computer and walled off from the page; the machine had to start before the first pixel.</li>
-          <li><b>What came next.</b> JavaScript (Fig 12.2) shipped inside the page in Netscape 2.0. Applets faded, and browsers had dropped the plugin interface they needed by 2017.</li>
+          <li><b>What came next.</b> JavaScript (Fig 12.2) shipped inside the page in Netscape 2.0. Applets faded, and the major browsers dropped the plugin interface they needed between 2015 and 2018.</li>
         </ol>
       </details>
     </div>
@@ -4730,26 +4731,26 @@
       Brendan Eich joined Netscape in April 1995. He was 33, and had been
       recruited with the promise that he would bring
       <strong>Scheme</strong> (a Lisp dialect) to the Netscape browser.
-      What he got in his first week was a different brief:
-      Marc Andreessen and Bill Joy (Sun co-founder, brought into the
-      Netscape-Sun partnership) wanted a language with C-like syntax, so that it looked familiar to working programmers, but with the dynamic,
-      interpreted, untyped flexibility of Scheme underneath. Eich
-      had ten days to produce a prototype.
+      What he got instead was a different brief. Marc Andreessen and Bill
+      Joy (Sun co-founder, one of the project's sponsors) wanted a small
+      companion to Java that looked like Java, so that it seemed familiar
+      to working programmers, and was easy enough for anyone writing HTML.
+      What went underneath was left to Eich, and he chose the dynamic,
+      interpreted flexibility of Scheme. He had ten days to produce a
+      prototype.
     </p>
 
     <p id="ch12-eich-p2">
       He delivered. The first version, internally called <strong>Mocha</strong>,
-      was a working interpreter by mid-May 1995. Under the C-like syntax sat Scheme's ideas: a function was a value that could be stored and passed around like a number, and it kept access to the variables around it even after the code that made them had finished (a <em>closure</em>). Objects inherited straight from other objects, an idea taken from David Ungar and Randall Smith's language <em>Self</em>. There were no classes at first (they came twenty years later, as a shorthand) and no integers (only floating-point numbers, IEEE 754 doubles all the way down), but it did have implicit type coercion (silently turning one type into another) that anyone who has used
-      JavaScript has cursed. It was genuine elegance underneath surprising
-      syntactic awkwardness: the shape of any language born in ten days
-      under the wrong brief.
+      was a working interpreter by mid-May 1995. Under the C-like syntax sat Scheme's ideas, some of them finished only in the next two releases: a function was a value that could be stored and passed around like a number, and once functions could nest (1997) it kept access to the variables around it even after the code that made them had finished (a <em>closure</em>). From 1996 objects inherited straight from other objects (an object that lacks a property looks it up on the object it is linked to), an idea taken from David Ungar and Randall Smith's language <em>Self</em>. There were no classes (they came twenty years later, as a shorthand for making that link) and no integers (only floating-point numbers, IEEE 754 doubles all the way down), but it did have implicit type coercion (silently turning one type into another) that anyone who has used
+      JavaScript has cursed.
     </p>
 
     <p id="ch12-eich-p3">
       In September 1995, shortly before launch, Netscape renamed Mocha
-      <strong>LiveScript</strong>. In December 1995 Netscape announced a
-      partnership with Sun Microsystems and renamed it again, to
-      <strong>JavaScript</strong>. The name change was pure marketing:
+      <strong>LiveScript</strong>. In December 1995 Netscape and Sun, by then
+      partners over Java, announced the language jointly and renamed it
+      again, to <strong>JavaScript</strong>. The name change was pure marketing:
       Netscape wanted to ride Sun's Java publicity. The two languages were
       and remain unrelated, sharing little beyond the C-derived syntax that
       hundreds of languages share. But the name stuck, and three decades
@@ -4825,12 +4826,12 @@
 <g opacity="0.65"><text x="100" y="324" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.628752;0.628952;1.000000" dur="10s" repeatCount="indefinite"/>2016 to 2026 · one a year</text><text x="100" y="341" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,1)">a new edition each June</text></g><g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.628752;0.628952;1.000000" dur="10s" repeatCount="indefinite"/><text x="100" y="324" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#9bd89b">2016 to 2026 · one a year</text><text x="100" y="341" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">a new edition each June</text></g>
 <g class="fx"><g><animateTransform attributeName="transform" type="translate" values="0 319.00;0 319.00;0 319.00;0 319.00;0 0.00;0 0.00;0 319.00;0 319.00" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.110000;0.860000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M44,28 L52,34 L44,40 Z" fill="#fff"/></g></g>
 </svg>
-      <p id="ch12-eich-p4" class="diagram-caption">JavaScript was written in ten days in 1995 and renamed twice for marketing; a standard followed in 1997, then a decade's stall when the ambitious ES4 was abandoned. ES2015 finally brought classes and modules, and since then the language has shipped one edition a year.</p>
+      <p id="ch12-eich-p4" class="diagram-caption">JavaScript was written in ten days in 1995 and renamed twice for marketing; a standard followed in 1997, then a decade's stall over the ambitious ES4 until it was abandoned in 2008. ES2015 finally brought classes and modules, and since then the language has shipped one edition a year.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The axis.</b> Dots sit at their dates on a scale of 31 years; the labels are spaced evenly so they can be read.</li>
-          <li><b>The names.</b> Mocha in May, LiveScript in September, JavaScript in December 1995, after Netscape's deal with Sun, which held the Java trademark. The standard had to be called ECMAScript for the same reason.</li>
+          <li><b>The names.</b> Sun held the Java trademark, which is why the 1997 standard had to be called ECMAScript.</li>
           <li><b>The stall and the cadence.</b> ES4 grew to include classes, static types and packages; Microsoft and Yahoo objected, and it was dropped in 2008 for the smaller ES5. Since 2015 the TC39 committee ships whatever proposals are ready each June.</li>
         </ol>
       </details>
@@ -4844,7 +4845,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5v-4M10 2.5h4M12 2.5v4M17.5 7.5l1.5-1.5"/></svg></span>
       <p id="ch12-eich-p6" class="insight-text">
-        <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2-float">Chapter 2</a>, Section 06), but the choice to have <em>no integer type at all</em>, with every number a 64-bit float, meant JavaScript could never expose the difference. Implicit coercion (<code>[] + {} === "[object Object]"</code>) is a pragmatic shortcut that did not get a sober second look. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything.
+        <strong>The ten-day legacy.</strong> Several JavaScript quirks trace directly to the original ten-day window. <code>typeof null === "object"</code> is a bug that became compatibility-locked: an artefact of how Mocha tagged its values (null shared the object tag). <code>0.1 + 0.2 !== 0.3</code> is just IEEE 754 (<a href="part-1#ch2-float">Chapter 2</a>, Section 06), but with every number a 64-bit float, early JavaScript had no exact integer type to fall back on. Implicit coercion is a pragmatic shortcut that did not get a sober second look: adding an empty array to an empty object, <code>[] + {}</code>, turns both into text (<code>""</code> and <code>"[object Object]"</code>) and joins them, so the sum is <code>"[object Object]"</code>. None of these is unfixable in principle; all of them are unfixable <em>in practice</em>, because billions of pages on the live web rely on the exact existing behaviour. JavaScript can grow by careful additions; it cannot remove anything.
       </p>
     </div>
   </section>
@@ -4858,7 +4859,8 @@
       <code>fork()</code>, no <code>pthread_create()</code>, no Java-style
       worker threads sharing variables. That would be a fatal weakness if its slow operations blocked. They are built not to. Every operation that might
       take time (fetching a URL, reading a file, waiting for a timer)
-      returns immediately, and you hand it a function, a <em>callback</em>, to run when the work is done. The mechanism that hands the free thread its next ready callback is
+      returns immediately, because the browser and the operating system do
+      the waiting outside the JavaScript thread; you hand it a function, a <em>callback</em>, to run when the work is done, and they queue it once it is. The mechanism that hands the free thread its next ready callback is
       the <span class="key-term">event loop</span>, the design Node.js
       later carried from the browser to the server.
     </p>
@@ -4868,7 +4870,7 @@
       holds the function frames currently executing: the same stack
       <a href="part-1#ch3">Chapter 3</a> dissected, in JavaScript form. The <strong>macrotask
       queue</strong> (also called the <em>callback queue</em>) holds
-      callbacks ready to run from completed I/O, expired timers, and clicks and other page events. The <strong>microtask queue</strong> holds callbacks that run as soon as the current task ends, before the next task or the render step: chiefly those of Promises (below) and of <code>queueMicrotask()</code>. The
+      callbacks ready to run from completed I/O, expired timers, and clicks and other page events. The <strong>microtask queue</strong> holds callbacks that run as soon as the current task ends, before the next task or the render step: chiefly those of Promises (below; for now, an object standing for a value that has not arrived yet, whose <code>.then(f)</code> queues <code>f</code> as a microtask once the value has arrived, or "settled") and of <code>queueMicrotask()</code>. The
       <strong>render step</strong> is when the browser recomputes layout
       and paints any visual changes. The event loop coordinates them:
       pull one task off the macrotask queue, run it to completion, drain
@@ -4923,7 +4925,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>One turn of the loop.</b> Take one task, run it to the end, run every microtask, render if a frame is due (about every 16 ms on a 60 Hz screen), repeat.</li>
+          <li><b>The render step.</b> The browser renders only when a frame is due, about every 16 ms on a 60 Hz screen.</li>
           <li><b>Why 0 ms still waits.</b> <code>setTimeout(…, 0)</code> only queues a task; it cannot run until the current script and every microtask have finished.</li>
           <li><b>The catch.</b> Anything long on the stack, a heavy <code>JSON.parse</code> or a tight loop, stops the loop: no clicks, no rendering. A frozen page and Node.js event-loop lag are the same bug.</li>
         </ol>
@@ -4933,16 +4935,16 @@
     <h3>Three eras of asynchrony</h3>
 
     <p id="ch12-loop-p4">
-      The event loop's shape has been the same since 1995; microtasks arrived with Promises. What has changed,
+      The event loop's shape has been the same since 1995; microtasks arrived in the 2010s, and Promises are now their main user. What has changed,
       across three eras, is the way JavaScript code <em>spells</em> "do
       this when the I/O is done." The first era was <strong>callbacks</strong>: pass a
       function to whoever does the work, and it will call your function
       back when finished. Simple, and the source of the famous
       <em>callback pyramid of doom</em>: three or four callbacks nested
       inside each other, indentation marching across the screen, error handling tedious. The second era was <strong>Promises</strong>
-      (standardised in ES6, the 2015 edition of the language's ECMAScript standard): an object representing a future value,
-      with <code>.then()</code> and <code>.catch()</code> chained
-      horizontally. The third era is <strong>async/await</strong> (ES2017):
+      (standardised in ES2015, Fig 12.2): an object representing a future value,
+      with <code>.then()</code> and <code>.catch()</code> chained one after
+      another at the same depth. The third era is <strong>async/await</strong> (ES2017):
       a shorthand that lets you write asynchronous code as if it were
       synchronous (<code>const x = await fetch(url);</code>) while the
       engine runs it on Promises underneath. All three
@@ -4951,7 +4953,7 @@
 
     <div class="diagram-card fig-v2" id="fig-12-4">
       <div class="diagram-label">Fig 12.4&nbsp;· The same fetch&nbsp;· three eras of async syntax</div>
-      <svg viewBox="0 0 400 506" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-59 svgd-part3-59">
+      <svg viewBox="0 0 400 524" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-59 svgd-part3-59">
 <title id="svgt-part3-59">Fig 12.4 · The same fetch · three eras of async syntax</title>
 <desc id="svgd-part3-59">The same job written three ways: get a user, then their orders, then the invoice, then render it. With callbacks each step nests inside the previous one, the code stepping further right. With promises the steps form a flat chain of then calls with one catch at the end. With async and await the steps read like ordinary straight-line code inside a try block. The matching lines light together in all three.</desc>
 <text x="10" y="22" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">callbacks, from 1995</text>
@@ -4981,7 +4983,7 @@
 <text x="22" y="303" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;.catch(showError);</text>
 <text x="200" y="303" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">// if any step fails</text>
 <text x="10" y="346" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">async/await, ES2017</text>
-<rect x="10" y="356" width="380" height="136" rx="5" fill="none" stroke="rgba(223,234,242,0.88)" stroke-opacity="0.45"/>
+<rect x="10" y="356" width="380" height="154" rx="5" fill="none" stroke="rgba(223,234,242,0.88)" stroke-opacity="0.45"/>
 <text x="22" y="375" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">async&#160;function&#160;show(id)&#160;{</text>
 <text x="22" y="393" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;try&#160;{</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.177556;0.177778;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="398" width="376" height="17" rx="2" fill="none" fill-opacity="0.16" stroke="#4fc4e6" stroke-width="1.5"/><rect x="12" y="398" width="3" height="17" fill="#4fc4e6"/></g>
@@ -4990,11 +4992,13 @@
 <g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.333111;0.333333;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="416" width="376" height="17" rx="2" fill="none" fill-opacity="0.16" stroke="#9bd89b" stroke-width="1.5"/><rect x="12" y="416" width="3" height="17" fill="#9bd89b"/></g>
 <text x="22" y="429" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;const&#160;orders&#160;=&#160;await&#160;getOrders(user);</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.488667;0.488889;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="434" width="376" height="17" rx="2" fill="none" fill-opacity="0.16" stroke="#d4a853" stroke-width="1.5"/><rect x="12" y="434" width="3" height="17" fill="#d4a853"/></g>
-<text x="22" y="447" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;render(await&#160;getInvoice(orders));</text>
-<text x="22" y="465" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;}&#160;catch&#160;(error)&#160;{&#160;showError(error);&#160;}</text>
-<text x="22" y="483" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">}</text>
+<text x="22" y="447" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;const&#160;invoice&#160;=&#160;await&#160;getInvoice(orders);</text>
+<g class="fx" opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.066611;0.066667;0.100000;0.100556;0.644222;0.644444;1.000000" dur="9s" repeatCount="indefinite"/><rect x="12" y="452" width="376" height="17" rx="2" fill="none" fill-opacity="0.16" stroke="#e07a3f" stroke-width="1.5"/><rect x="12" y="452" width="3" height="17" fill="#e07a3f"/></g>
+<text x="22" y="465" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;&#160;&#160;render(invoice);</text>
+<text x="22" y="483" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">&#160;&#160;}&#160;catch&#160;(error)&#160;{&#160;showError(error);&#160;}</text>
+<text x="22" y="501" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">}</text>
 </svg>
-      <p id="ch12-loop-p5" class="diagram-caption">The same three steps (the user, then the orders, then the invoice) spelled three ways: callbacks nested inside callbacks, a flat chain of promises, and async/await that reads like straight-line code. The event loop underneath is the same; only the shape on the page changed.</p>
+      <p id="ch12-loop-p5" class="diagram-caption">The same four steps (the user, then the orders, then the invoice, then render) spelled three ways: callbacks nested inside callbacks, a flat chain of promises, and async/await that reads like straight-line code.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -5011,15 +5015,15 @@
     <h2>An interpreter that pretended to be a compiler · then a runtime that escaped the browser.</h2>
 
     <p id="ch12-node-p1" class="lead">
-      JavaScript was originally interpreted a statement at a time by Netscape's
-      engine: Eich's Mocha, soon rewritten as the engine still called
+      JavaScript was originally compiled to simple bytecode and interpreted,
+      slowly, by Netscape's engine: Eich's Mocha, soon rewritten as the engine still called
       <em>SpiderMonkey</em> today. That was fast enough for the small form checks and page changes of 1996, hopelessly slow for
       an actual application. By 2008, when Google released
       <strong>V8</strong> alongside the first Chrome browser, JavaScript
-      engines had become aggressive optimising compilers. V8 began by
-      compiling everything straight to machine code; today's engines, V8
-      included, run a tiered pipeline from source code to native machine
-      code: start
+      engines had begun turning into compilers. V8 began by compiling
+      everything straight to machine code and added its first optimising
+      compiler in 2010; today's engines, V8 included, run a tiered pipeline
+      from source code to native machine code: start
       interpreting at once so nothing waits, watch which functions run most often,
       and spend the expensive compilation only where the running program
       proves it will pay. A feedback loop re-optimises as the evidence
@@ -5059,13 +5063,13 @@
 <g class="fx"><g><animateTransform attributeName="transform" type="translate" values="0 62.00;0 62.00;0 62.00;0 62.00;0 0.00;0 0.00;0 0.00;0 62.00;0 62.00;0 124.00;0 124.00;0 186.00;0 186.00;0 248.00;0 248.00;0 62.00;0 62.00" keyTimes="0.000000;0.049950;0.050000;0.080000;0.080500;0.110000;0.120000;0.170000;0.260000;0.310000;0.400000;0.450000;0.540000;0.590000;0.770000;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="243.0" y="20.0" width="38" height="22" rx="4" fill="#dfeaf2" stroke="#fff" stroke-width="1.5"/><text x="262" y="36" text-anchor="middle" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#0a1c2d">add</text></g></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049950;0.050000;0.769800;0.770000;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="258" width="290" height="42" rx="5" fill="#ec8d8d" fill-opacity="0.25" stroke="#ec8d8d" stroke-width="2"/></g>
 </svg>
-      <p id="ch12-node-p2" class="diagram-caption">V8 runs every function first in its interpreter, which records the types it sees; as the function gets hotter it moves on to compilers that make ever faster code, betting on those types. Break the bet, a string where only numbers came, and the optimised code is thrown away: back to the interpreter.</p>
+      <p id="ch12-node-p2" class="diagram-caption">V8 runs every function first in its interpreter, which records the types it sees; as the function gets hotter it moves on to compilers that make ever faster code, betting on those types. If a string arrives where only numbers came before, the bet fails: the optimised code is thrown away and the function goes back to the interpreter.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The tiers.</b> Each costs more to compile and runs faster: Ignition interprets, Sparkplug (since 2021) translates bytecode straight to machine code, Maglev (since 2023) and TurboFan optimise. The optimising compilers, Maglev and TurboFan, work on background threads while the program runs.</li>
           <li><b>The bet.</b> Optimised code is built for the types seen so far, guarded by cheap checks. When a check fails, V8 rebuilds the interpreter's state and carries on there: <span class="key-term">deoptimisation</span>.</li>
-          <li><b>Then and now.</b> The first V8, in 2008, had no interpreter and compiled everything straight to machine code. SpiderMonkey and JavaScriptCore also run tiers of interpreters and compilers today.</li>
+          <li><b>Elsewhere.</b> SpiderMonkey and JavaScriptCore also run tiers of interpreters and compilers today.</li>
         </ol>
       </details>
     </div>
@@ -5073,10 +5077,13 @@
     <h3>Node.js: V8 outside the browser</h3>
 
     <p id="ch12-node-p3">
-      In 2009 a developer named <strong>Ryan Dahl</strong> watched the
-      progress bar on a file upload in a browser and realised the standard
-      server-side approaches (servers such as Apache, which gave each connection its own process or thread, which then sat waiting on the disk) were exactly the wrong shape for systems with
-      many slow connections. Browsers had already solved this with the
+      In 2009 a developer named <strong>Ryan Dahl</strong> watched a
+      browser's file-upload progress bar, which works by asking the server
+      again and again how much has arrived, and realised that the standard
+      server-side approach was exactly the wrong shape for systems with
+      many slow connections: servers such as Apache gave each connection
+      its own process or thread, and that thread then sat idle while it
+      waited. Browsers had already solved this with the
       single-threaded, never-blocking event loop. Why not move that model
       to the server? He took V8, stripped away the browser, added a C library layer (libev and libeio then, <em>libuv</em> today) that runs the event loop and keeps file and network work off the JavaScript thread, and bound them together with a
       small JavaScript standard library. He called it
@@ -5085,21 +5092,26 @@
     </p>
 
     <p id="ch12-node-p4">
-      Within five years Node had become the default backend for Silicon
-      Valley startups; within ten it had eaten enormous amounts of the
-      server-side language landscape. The reasons are practical, not
+      Within five years Node had become a mainstream backend for startups;
+      within ten it was one of the most widely used server-side platforms.
+      The reasons are practical, not
       aesthetic: a single-threaded async-I/O model handles thousands of
       slow connections (the open connections of a chat app, say) on a
-      single CPU core where a thread-per-request model would have
-      collapsed; and sharing one language between browser and server made web applications simpler to build.
+      single CPU core, because a waiting connection costs Node almost
+      nothing, while a thread-per-request server pays a stack of memory and
+      a scheduler slot for every waiting connection and would have
+      collapsed. The operating system reports which sockets are ready, so
+      waiting on the network takes no thread at all; only file work borrows
+      one of a few shared pool threads (Fig 12.6). And sharing one language
+      between browser and server made web applications simpler to build.
       Node is not the best server for everything (work that keeps the processor busy is still better served by Go, Rust, or threaded Java), but for "many
       connections, mostly waiting on I/O" it is hard to beat.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-12-6">
-      <div class="diagram-label">Fig 12.6&nbsp;· Node.js&nbsp;· V8 + libuv + a JavaScript stdlib</div>
+      <div class="diagram-label">Fig 12.6&nbsp;· Node.js&nbsp;· V8 + libuv + a JavaScript standard library</div>
       <svg viewBox="0 0 400 262" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-61 svgd-part3-61">
-<title id="svgt-part3-61">Fig 12.6 · Node.js · V8 + libuv + a JavaScript stdlib</title>
+<title id="svgt-part3-61">Fig 12.6 · Node.js · V8 + libuv + a JavaScript standard library</title>
 <desc id="svgd-part3-61">Node's layers: your JavaScript on top, Node's standard library (files, http, net, crypto) below it, then V8, which runs the JavaScript on one thread, beside libuv, a C library that holds the event loop and a pool of four threads, and the operating system at the bottom. A file read travels down into libuv, takes a pool thread and goes to the disk. Meanwhile V8's thread is free and serves other requests. When the read completes, libuv's loop queues the callback and V8 runs it.</desc>
 <rect x="10" y="10" width="380" height="44" rx="5" fill="none" stroke="rgba(223,234,242,0.85)" stroke-opacity="0.7"/>
 <text x="20" y="28" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">your JavaScript</text>
@@ -5132,8 +5144,8 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The layers.</b> Your code calls Node's standard library, written partly in JavaScript and partly in C++ on top of V8 and libuv.</li>
-          <li><b>Two kinds of waiting.</b> Sockets need no threads: libuv asks the OS which ones are ready (epoll on Linux, kqueue on macOS and BSD, IOCP on Windows). Files, DNS lookups and some crypto run on the pool, four threads by default.</li>
-          <li><b>History.</b> Ryan Dahl showed Node at JSConf EU in November 2009; libuv was written for it in 2011, to bring it to Windows.</li>
+          <li><b>Two kinds of waiting.</b> Sockets need no threads: libuv asks the OS to say when they are ready or done (epoll on Linux, kqueue on macOS and BSD, IOCP on Windows). Files, DNS lookups and some crypto run on the pool, four threads by default.</li>
+          <li><b>History.</b> libuv was written for Node in 2011, to bring it to Windows.</li>
         </ol>
       </details>
     </div>
@@ -5144,18 +5156,23 @@
     <h2>From bytes to pixels in five steps.</h2>
 
     <p id="ch12-dom-p1" class="lead">
-      Loading a web page does not "show" the HTML. The browser runs the
+      To show a web page, the browser runs the
       fetched bytes through a five-stage pipeline called the
-      <strong>critical rendering path</strong>. The HTML is parsed into a
-      tree (the <span class="key-term">DOM</span>). The CSS is parsed into another tree (the
-      <em>CSSOM</em>). Together those two parses are the parse stage; the
-      style stage then combines the trees into a <em>render tree</em>
+      <strong>critical rendering path</strong>. The HTML, which marks each
+      piece of the page (a heading, a paragraph, an image) as an element
+      nested inside other elements, is parsed into a tree with one node per
+      element (the <span class="key-term">DOM</span>). The CSS, the page's
+      style rules for colour, size, font and position, is parsed into
+      another tree (the <em>CSSOM</em>). Together those two parses are the
+      parse stage; the style stage then works out which rules apply to each
+      element and combines the trees into a <em>render tree</em>
       describing what actually gets drawn. Layout computes where each box
-      goes. Paint draws the pixels. Composite assembles the painted layers
-      into the frame you see. JavaScript can intervene at any stage:
+      goes. Paint draws the pixels, and the browser may paint parts of the
+      page into separate images called layers. Composite stacks the layers
+      into the frame you see, without redrawing them. JavaScript can intervene at any stage:
       modifying the DOM or the CSSOM, forcing a re-layout, triggering a
-      repaint. Understanding this pipeline is the difference between a page
-      that holds 60 frames per second and a page that stutters.
+      repaint. Which stages a change re-runs decides whether the page holds
+      60 frames per second (Fig 12.7).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-12-7">
@@ -5177,42 +5194,42 @@
 <rect x="12" y="82" width="69" height="16" rx="3" fill="none" stroke="#e2824b" stroke-opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.099833;0.100000;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.099833;0.100000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="12" y="82" width="69" height="16" rx="3" fill="#ab653f"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.099833;0.100000;0.129167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="10" y="80" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="90" y="82" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.95"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="82" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.133167;0.133333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="82" width="69" height="16" rx="3" fill="#d4a853" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.133167;0.133333;0.162500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="88" y="80" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="168" y="82" width="69" height="16" rx="3" fill="none" stroke="#ec8d8d" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.166500;0.166667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="168" y="82" width="69" height="16" rx="3" fill="none" stroke="#ec8d8d" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.166500;0.166667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="168" y="82" width="69" height="16" rx="3" fill="#ec8d8d" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.166500;0.166667;0.195833;1.000000" dur="12s" repeatCount="indefinite"/><rect x="166" y="80" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="246" y="82" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="82" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.199833;0.200000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="82" width="69" height="16" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.199833;0.200000;0.229167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="244" y="80" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="324" y="82" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="82" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.233167;0.233333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="82" width="69" height="16" rx="3" fill="#4fc4e6" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.233167;0.233333;0.262500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="322" y="80" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
 <text x="9" y="122" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">new width</text>
 <line x1="22" y1="138" x2="71" y2="138" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
-<rect x="90" y="130" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.95"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.358167;0.358333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="130" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.358167;0.358333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="130" width="69" height="16" rx="3" fill="#d4a853" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.358167;0.358333;0.387500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="88" y="128" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="168" y="130" width="69" height="16" rx="3" fill="none" stroke="#ec8d8d" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.391500;0.391667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="168" y="130" width="69" height="16" rx="3" fill="none" stroke="#ec8d8d" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.391500;0.391667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="168" y="130" width="69" height="16" rx="3" fill="#ec8d8d" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.391500;0.391667;0.420833;1.000000" dur="12s" repeatCount="indefinite"/><rect x="166" y="128" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="246" y="130" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.424833;0.425000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="130" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.424833;0.425000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="130" width="69" height="16" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.424833;0.425000;0.454167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="244" y="128" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="324" y="130" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.458167;0.458333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="130" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.458167;0.458333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="130" width="69" height="16" rx="3" fill="#4fc4e6" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.458167;0.458333;0.487500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="322" y="128" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
 <text x="9" y="170" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">new colour</text>
 <line x1="22" y1="186" x2="71" y2="186" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
-<rect x="90" y="178" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.95"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.583167;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="178" width="69" height="16" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.583167;0.583333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="90" y="178" width="69" height="16" rx="3" fill="#d4a853" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.583167;0.583333;0.612500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="88" y="176" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
 <line x1="178" y1="186" x2="227" y2="186" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
-<rect x="246" y="178" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.649833;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="178" width="69" height="16" rx="3" fill="none" stroke="#9bd89b" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.649833;0.650000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="246" y="178" width="69" height="16" rx="3" fill="#9bd89b" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.649833;0.650000;0.679167;1.000000" dur="12s" repeatCount="indefinite"/><rect x="244" y="176" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
-<rect x="324" y="178" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.683167;0.683333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="178" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.683167;0.683333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="178" width="69" height="16" rx="3" fill="#4fc4e6" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.683167;0.683333;0.712500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="322" y="176" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
 <text x="9" y="218" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.85)">animate transform</text>
@@ -5220,11 +5237,11 @@
 <line x1="100" y1="234" x2="149" y2="234" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
 <line x1="178" y1="234" x2="227" y2="234" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
 <line x1="256" y1="234" x2="305" y2="234" stroke="rgba(223,234,242,0.6)" stroke-opacity="0.45" stroke-dasharray="2 4"/>
-<rect x="324" y="226" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.35"/>
+<g opacity="1"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.908167;0.908333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="226" width="69" height="16" rx="3" fill="none" stroke="#4fc4e6" stroke-opacity="0.6"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.908167;0.908333;1.000000" dur="12s" repeatCount="indefinite"/><rect x="324" y="226" width="69" height="16" rx="3" fill="#4fc4e6" fill-opacity="0.75"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.049958;0.050000;0.908167;0.908333;0.937500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="322" y="224" width="73" height="20" rx="4" fill="none" stroke="#fff" stroke-width="2"/></g>
 </svg>
-      <p id="ch12-dom-p2" class="diagram-caption">A change re-runs only the stages it touches: a new width means style, layout, paint and composite again; a new colour skips layout; an animated transform on its own layer needs only composite. That is why smooth animations move transform and opacity, not width or height.</p>
+      <p id="ch12-dom-p2" class="diagram-caption">A change re-runs only the stages it touches: a new width means style, layout, paint and composite again; a new colour skips layout; an animated transform (moving, turning or scaling a layer that is already painted) needs only composite. That is why smooth animations move transform and opacity (a fade), not width or height.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -5246,8 +5263,8 @@
       interleaving is how naive loop-and-mutate code gets orders of magnitude
       slower than doing all the writes together. React, Vue, Svelte, and the
       rest of the modern frontend framework family exist to keep the page in step with your data, and <em>batching</em> DOM changes is a large part of how. The programmer writes declarative rules
-      ("the page should look like X"); the framework computes the minimum
-      set of DOM mutations and applies them together, so reads rarely land between the writes.
+      ("the page should look like X"); the framework works out only the DOM
+      changes the new data needs and applies them together, so reads rarely land between the writes.
     </p>
   </section>
 
@@ -5258,7 +5275,7 @@
     <p id="ch12-security-p1" class="lead">
       The browser executes JavaScript from arbitrary websites with no
       pre-arranged trust. You visit <code>news.example.com</code> and it
-      runs a hundred kilobytes of code on your machine, while another tab
+      runs hundreds of kilobytes of code on your machine, while another tab
       might be logged into your bank and the same machine might have access
       to your filesystem, your camera, your microphone. The fact that
       visiting a webpage does not automatically compromise everything else
@@ -5273,8 +5290,9 @@
       <span class="key-term">same-origin policy</span>, introduced in Netscape 2.0,
       the same release that shipped JavaScript itself. The rule:
       code loaded from one origin can read and modify only resources from
-      that same origin. An <em>origin</em> is the triple <em>(scheme, host,
-      port)</em>, and two URLs share an origin if and only if all three
+      that same origin. An <em>origin</em> is the triple (scheme, host,
+      port), the scheme being the protocol at the front of the URL,
+      <code>https</code> or <code>http</code>, and two URLs share an origin if and only if all three
       match exactly. So <code>https://a.example.com</code> and
       <code>https://b.example.com</code> are different origins; so are
       <code>http://example.com</code> and <code>https://example.com</code>;
@@ -5348,13 +5366,13 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.862909;0.863182;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="300" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="rgba(223,234,242,0.6)">?</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.863455;0.863636;1.000000" dur="11s" repeatCount="indefinite"/><text x="390" y="300" text-anchor="end" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">other</text></g>
 </svg>
-      <p id="ch12-security-p3" class="diagram-caption">An origin is a scheme, a host and a port, and two URLs share one only if all three match; the path never counts. Change any one, <code>http</code> for <code>https</code>, <code>shop</code> for <code>www</code>, 8443 for 443, and the browser treats the page as a stranger whose responses and DOM it may not read.</p>
+      <p id="ch12-security-p3" class="diagram-caption">The origin <code>https://www.example.com</code> split into scheme, host and port, and four other URLs each compared with it: the path never counts, so only the first is the same origin.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Default ports.</b> A URL without a port uses its scheme's default, 443 for https and 80 for http, so <code>http://www.example.com</code> differs in two places.</li>
           <li><b>The opt-ins.</b> A server can let named origins read its responses with <span class="key-term">CORS</span> headers (<code>Access-Control-Allow-Origin</code>); two pages can agree to talk with <code>postMessage</code>.</li>
-          <li><b>History.</b> The policy arrived with JavaScript itself, in Netscape Navigator 2.0. Cookies follow older, looser rules: they ignore the port, for one.</li>
+          <li><b>Cookies.</b> Cookies follow older, looser rules than the same-origin policy: they ignore the port, for one.</li>
         </ol>
       </details>
     </div>
@@ -5366,14 +5384,14 @@
       what if the attacker can <em>inject their own code into origin
       B's page</em>? Then their code is, by definition, same-origin with
       B, and can do everything B's legitimate code can do. This is
-      <strong>cross-site scripting</strong> (XSS), one of the most common web vulnerabilities for two decades running. It comes in three flavours.
+      <strong><span class="key-term">cross-site scripting</span></strong> (<span class="key-term">XSS</span>), one of the most common web vulnerabilities for two decades running. It comes in three flavours.
       <strong>Reflected XSS</strong>: the attacker crafts a URL with
       malicious script in the part after the <code>?</code>; the server echoes that part back into the page; the script executes on whoever visits
       the URL. <strong>Stored XSS</strong>: the attacker submits malicious
       script as a comment or profile field; the server stores it in the
       database; every subsequent visitor's browser executes it.
       <strong>DOM-based XSS</strong>: a similar attack carried out entirely
-      in the browser, by page JavaScript that copies part of the URL (after the <code>?</code> or the <code>#</code>) into the page unsafely.
+      in the browser, by page JavaScript that copies part of the URL (after the <code>?</code> or the <code>#</code>; the part after <code>#</code> is never even sent to the server) into the page unsafely. The first defence is <em>output encoding</em>: before user text goes into a page, characters such as <code>&lt;</code> and <code>&gt;</code> are turned into codes the browser shows as text instead of reading as tags.
     </p>
 
     <div class="diagram-card" id="fig-12-9">
@@ -5475,12 +5493,12 @@
       the server declares exactly which origins the browser may load
       resources from, separately for scripts, styles, images, frames,
       fonts, fetch destinations and every other resource type. A typical
-      strict policy:
+      allowlist policy:
       <code>script-src 'self' https://cdn.example.com; style-src 'self'</code>
       means: "execute scripts only from the same origin and from
       <code>cdn.example.com</code>; load styles only from the same origin;
       reject other sources for those two." (Adding <code>default-src 'none'</code> closes every other kind of resource too.) If an attacker injects a
-      <code>&lt;script src="evil.com/x.js"&gt;</code>, the browser sees
+      <code>&lt;script src="https://evil.com/x.js"&gt;</code>, the browser sees
       that <code>evil.com</code> is not in the policy and refuses to load
       the script. The policy admits no inline code either, so the inline
       <code>&lt;script&gt;</code> and <code>onerror</code> payloads of
@@ -5523,7 +5541,7 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.618286;0.618571;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="20" y="344" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#4fc4e6">each script checked on its own</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.047571;0.047619;0.076190;0.076667;0.618857;0.619048;1.000000" dur="10.5s" repeatCount="indefinite"/><text x="20" y="344" text-anchor="start" font-family="Space Mono" font-size="13" letter-spacing="0" fill="#ec6b6b">injected, yet refused</text></g>
 </svg>
-      <p id="ch12-security-p9" class="diagram-caption">The browser checks each script against the header on its own: the page's own and the listed origin run, and everything else is refused, even when an <span class="key-term">XSS</span> injection has already put it in the page. Inline code counts as everything else unless the policy admits it by nonce or hash.</p>
+      <p id="ch12-security-p9" class="diagram-caption">The browser checks each script against the header on its own: the page's own and the listed origin run, and everything else is refused, even when an XSS injection has already put it in the page. Inline code counts as everything else unless the policy admits it by nonce or hash.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -5538,16 +5556,15 @@
 
     <p id="ch12-security-p10">
       JavaScript was designed in ten days by one person under the wrong
-      brief, given an unrelated marketing name to ride a competitor's hype,
-      shipped before specification, and exported from the browser to the
-      server fourteen years after birth. The event loop it inherited from
+      brief, given an unrelated marketing name to ride Java's hype,
+      shipped before specification, and carried to the server in earnest
+      by Node.js fourteen years after birth. The event loop it inherited from
       the early browser is now the dominant concurrency model on the modern
       web. The engines that run it are masterpieces of compiler engineering
       that exist only because the language is everywhere. The security
-      mechanisms that surround it (the same-origin policy, CSRF tokens, Content Security Policy and more) were
-      retrofitted over thirty years in response to attacks that worked.
-      None of this was inevitable. All of it became, by accumulation, the
-      shape of the modern web.
+      mechanisms that surround it began with the same-origin policy, which
+      shipped with the language itself; CSRF tokens, Content Security
+      Policy and the rest were added one attack at a time over thirty years.
     </p>
 
     <p id="ch12-security-p11">
