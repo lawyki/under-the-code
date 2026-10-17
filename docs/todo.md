@@ -39,9 +39,9 @@ Order follows `docs/pass-29-30-brief.md`. Ticked when committed and live.
 
 ## Pre-read audit (owner, 2026-10-15: "verify the passes ... so I come back as little as possible")
 
-- [ ] Read: newcomer per section (116), facts, craft and figures per chapter (19 each), consistency per part (5)
-- [ ] Judge: every finding by a Sonnet 5.5 skeptic
-- [ ] Fix what is confirmed (one author), chapter by chapter, glossary regenerated after prose edits
-- [ ] Retest the fixes blind; Gate 1 on any changed figure; tests/pass25, check:dashes, clip
-- [ ] Ledger, owner calls, commit per chapter, push, tag
+- [x] Read: newcomer per section (116), facts, craft and figures per chapter (19 each), consistency per part (5)
+- [x] Judge: every finding by a Sonnet 5.5 skeptic
+- [x] Fix what is confirmed (one author), chapter by chapter, glossary regenerated after prose edits
+- [x] Retest the fixes blind; Gate 1 on any changed figure; tests/pass25, check:dashes, clip
+- [x] Ledger, owner calls, commit per chapter, push, tag
 

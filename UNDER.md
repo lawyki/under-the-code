@@ -3857,6 +3857,28 @@ Per-picture record (verdict, round, the blind reader's words, what changed): `do
 
 Pass 30 committed and live (`0ee4bcc` to `c8cc814`, one commit per part, then the cover and page CSS, the final-run fixes and the docs), the book-wide re-run on that state: `figs.mjs` with `--motion` and `--fullscreen` in both engines at zero apart from the findings in `docs/pass-30-owner-calls.md` §B and §C (the last fixes, Figs 2.6, 5.11 and 12.7, rechecked in both engines); `clip.mjs` at zero in every mode; `smooth.mjs` 0 findings (every page at 375 and 1440 px, reduced motion holds every figure still); `tests/pass25` invariants 812/0, traces 229/0, parity 40/0, marks 106/0, ui 120/0. Glossary unchanged (no section prose touched). Owner calls raised by Passes 29 and 30 remain open (12), so the tag is `v1.0-rc1`; STATE.md carries the freeze line. Next: the owner's read.
 
+## 4ae. The pre-read audit (2026-10-15 → 2026-10-17): verify the passes
+
+Owner, 2026-10-15: "verify the passes ... so I come back as little as possible". Method and every raw output: `docs/audit/HANDOFF.md`; running note: `docs/audit/RESUME.md`. Round 1 read the frozen 1.0-rc1 book blind (a newcomer per section, a fact checker, a craft reader and a figure checker per chapter, a consistency reader per part) and a Sonnet 5.5 skeptic judged every finding (`docs/audit/round1/`). One author then decided each confirmed finding chapter by chapter (apply in own wording, adjust, or reject with a reason), and a fresh blind newcomer and expert read only the changed passages and figures; one revision followed. Nothing on owner ground was edited: the thesis set, the authorship line, owner epigraphs and pull-quotes, the colophon, Ch18's closing note, Fig 18.6's caption and the 18 kept-original figures. Findings on them went to `docs/audit/owner-calls.md`.
+
+### Per chapter
+Each chapter's decisions, retest and checks: `docs/audit/decisions/<ch>.md`; the readers' raw retest output: `docs/audit/retest/`. One commit per chapter on `pre-read-audit`: outside the chapters and Ch1 (dc2ebbd, live at 5cc3417), Ch2 (9ba87ec), Ch3 (6e63b69), the Bridge (2f771c5), Ch4 (58ddc46), Ch8 (4db5004), Ch5 (700eb9f), Ch13 (437ad38), Ch9 (09a469a), Ch6 (4582f54), Ch14 (2502963), Ch10 (dfbdec9), Ch7 (b0f02e8), Ch16 (4175fb6), Ch15 (c655f00), Ch17 (ae60b58), Ch11 (9f0f39d), Ch12 (6b840ea), Ch18 (b337f1f); tagged `v1.0-rc2`.
+
+### Facts corrected (§4g rows added)
+DB2's 1983 announcement and 1985 release; Postgres as Stonebraker's new code base; Herlihy's 1991 paper "made the stricter idea precise". Also fixed in the prose without new rows (each sourced in its decisions file): VT-x's real gain (clean traps, not near-native speed), EC2's one region at launch, SolarWinds as a build-time file swap in both Ch15 and Ch17, Kaminsky's attack figures, HTTP/1.1's 1997 date, DNS lookups "millions" per second, Therac-25's "roughly a hundred times", Boole's Lincolnshire-to-Cork path, RSA already being retired ahead of quantum machines.
+
+### Gate 1 on every changed figure
+Still and motion, with fullscreen, in Chromium and WebKit; every chapter ends at zero. The fixes it forced fall in three kinds: captions that round 1 had lengthened past 60 words (Figs 8.1, 8.4, 8.8, 9.8, 9.12, 14.2, 15.1); marks that a redraw left under 3:1 or seen through a later mark (Figs 9.6, 11.10, 11.15, 12.7, 13.11, 14.5, 16.9, 18.5); and labels that crowd or overrun only at 360 px in Chromium, whose whole-pixel glyph advances run wider than WebKit's (Figs 6.5, 6.6, 6.9, 10.3, 18.3, all present before the audit). Fig 14.6's close-up bytes were lifted into a range that stands 3:1 off the card.
+
+### Glossary
+Rebuilt per chapter from HEAD plus that chapter's page only. Curated definitions added where a newly marked term took a sentence fragment (Flags, congestion window, digital signature, ENQUIRE, confused deputy, output encoding); homes pinned where a first mention would have stolen them (Thompson, move semantics, SHA-256); Moore's Law now has its entry at Chapter 1 and the "Moore's Law is ending" cue is skipped.
+
+### Anchors
+No anchor id removed. New paragraphs took the next unused number: `ch6-classes-p7`, `ch7-gil-p5`. pass25 on the final head: invariants 812/0, marks 106/0, ui 120/0, traces 231/2 (the container's two timing checks); parity 39/1, a near-tie at Chapter 13's hero top (live `ch13-hero-label` against cached `ch13`, a few pixels apart) that one sampled position hits only at some page lengths; not a moved anchor.
+
+### Open
+The owner calls in `docs/audit/owner-calls.md`, chapter by chapter, plus those already open from Passes 29 and 30.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em

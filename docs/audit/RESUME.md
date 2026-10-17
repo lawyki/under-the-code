@@ -27,12 +27,13 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Chapter 13: round 1, blind retest, one revision; Figs 13.3, 13.5, 13.6, 13.11 fixed after Gate 1 (merged label, neutral waiting pills, the σ fade made a cut). Two §4g rows. Owner calls for Fig 13.10. Commit 437ad38.
 - Chapter 9: round 1, blind retest, one revision; Figs 9.6, 9.8, 9.12 fixed after Gate 1; a curated Flags definition and the NAT entry kept. Commit 09a469a.
 - Chapter 6: round 1, blind retest, one revision; pre-existing crowding in Figs 6.5, 6.6, 6.9 fixed. Commit 4582f54.
+- Chapter 14 (2502963), Chapter 10 (dfbdec9), Chapter 7 (b0f02e8), Chapter 16 (4175fb6), Chapter 15 (c655f00), Chapter 17 (ae60b58), Chapter 11 (9f0f39d), Chapter 12 (6b840ea), Chapter 18 (b337f1f): each round 1, blind retest, one revision where the readers found something (Chapters 12 and 15 none; Chapter 18 only the owner's Fig 18.6 caption), Gate 1 fixes re-gated to zero, clip and glossary green. Details in each `decisions/<ch>.md`.
+- pass25 on b337f1f: invariants 812/0, marks 106/0, ui 120/0; traces 231/2 (the two container timing checks); parity 39/1: one of the 50 sampled positions in part-4 lands within a few pixels of Chapter 13's hero top, where the live reading-line anchor names `ch13-hero-label` and the cached table names `ch13` (fractions 0.032 and 0.004). It comes and goes with page length (also at 437ad38 in Chromium 375, absent at 700eb9f and 2502963), so it is a near-tie the sampling hits, not a moved anchor; anchor ids are unchanged. Left for a `book.js` tie rule if wanted, not changed here (anchor law).
+- Close: owner calls collected (`owner-calls.md`), ledger `UNDER.md` §4ae, STATE.md freeze line (1.0-rc2), `docs/todo.md` ticked, owner read map refreshed, tag `v1.0-rc2` on `pre-read-audit`.
 
 ## Next
-- Chapters run in four streams, one page each: part-2 (ch7 applied, retest running), part-3 (ch10 applied and revised, Gate 1 running; ch11, ch12 scripted), part-4 (ch14 applied and revised, Gate 1 fixes re-gating; ch15 scripted), part-5 (ch16 applied and revised, Gate 1 running; ch17 and ch18 scripted and dry-run). Then the close step.
-- Scratch scripts live in /home/user/sp (not in the repo): `<ch>_apply.py` per chapter, `gate2.sh`, `glcheck.sh`, `prep.sh`, `mk.py`.
-- Gate 1 runs at 360 px in Chromium round glyph advances to whole pixels, so a label that clears its neighbour in WebKit can crowd it there; several pre-existing cases (Figs 6.5, 6.6, 6.9, 10.3) were fixed as found.
-- Glossary for a commit is built in a second worktree holding HEAD plus that chapter's page only, so the other stream's uncommitted page does not leak into it.
+- The pre-read audit is done. Nothing goes live until the owner says "deploy" (merge `pre-read-audit` into `main` then); the owner's read starts at `docs/owner-read-map.md`.
+- Scratch scripts of this run lived in /home/user/sp (not in the repo): `<ch>_apply.py` per chapter, `gate2.sh`, `glcheck.sh`, `prep.sh`, `mk.py`. Gate 1 at 360 px in Chromium rounds glyph advances to whole pixels, so a label that clears its neighbour in WebKit can crowd it there.
 
 ## Running the checks in a cloud container (Linux)
 - `git fetch --unshallow origin` first: pass25's invariants read their baseline from commit d1bbb42, which a shallow clone lacks (it then compares the page with itself and reports 30 false tab-stop failures).
