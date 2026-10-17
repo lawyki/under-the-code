@@ -30,7 +30,7 @@ a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" ari
 a('<title id="svgt-part1-29">Fig 3.1 · Same operation · three ISAs · three encodings</title>')
 a('<desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, as the 32 bits each one uses. x86-64 add rax, 5 is the bytes 48 83 C0 05: a prefix, the opcode, a byte naming rax, and 5. '
   'ARM64 add x0, x0, #5 is 0x91001400: the opcode first, then 5, then the two register numbers. RISC-V addi a0, a0, 5 is 0x00550513: 5 first and the opcode last. '
-  'The same three ingredients sit in different places, so each pattern means nothing to the other two chips.</desc>')
+  'The same three ingredients sit in different places, so the other chips read each pattern differently.</desc>')
 for r, (name, asm, hx, fields) in enumerate(ROWS):
     y = 20 + r * 112
     a(text(20, y + 14, name, size=15, fill='#fff', ls='0'))

@@ -2775,18 +2775,17 @@
     <div id="ch3-hero-label" class="chapter-label">Chapter 03</div>
     <h1 id="ch3-hero-title">The Language<br>the CPU<br><em>Speaks</em></h1>
     <p id="ch3-hero-lead" class="chapter-subtitle">
-      Below every Python script, every JavaScript framework, every neural network,
-      there is a sequence of instructions written in the only language a processor
-      truly understands. This chapter is about what your code becomes when it
-      finally meets the machine.
+      Below every program, whatever language it is written in, lies a sequence of
+      instructions in the only language a processor understands. This chapter follows
+      your code down to them.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Assembly · Stack · ABI · Exploits</span></div>
-      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1949 → present</span></div>
+      <div class="meta-item"><span class="meta-label">Era covered</span><span class="meta-value">1972 → present</span></div>
     </div>
   </div>
   <div class="chapter-hero-visual">
-    <svg width="480" height="480" viewBox="46 16 393 393" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part1-30"><title id="svgt-part1-30">Chapter 03 hero · The Language the CPU Speaks</title>
+    <svg width="480" height="480" viewBox="46 16 393 393" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.92;" role="img" aria-labelledby="svgt-part1-ch3-hero"><title id="svgt-part1-ch3-hero">Chapter 03 hero · The Language the CPU Speaks</title>
       <defs><radialGradient id="glow3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#d4a853" stop-opacity="0.15"/><stop offset="100%" stop-color="#d4a853" stop-opacity="0"/></radialGradient></defs>
       <g transform="translate(160,80)">
         <text x="80" y="-15" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.77)" letter-spacing="0.15em">THE STACK</text>
@@ -2833,27 +2832,26 @@
     <h2>An instruction is a contract</h2>
 
     <p id="ch3-isa-p1" class="lead">
-      In 1978, Intel released the 8086, a 16-bit chip whose instruction set no
-      descendant has ever removed. Every x86-64 processor sold today still
-      recognises the same core binary patterns Intel encoded that year. A processor
-      doesn't run C, or Python, or JavaScript.
-      It runs a sequence of binary patterns drawn from a specific menu: the
-      <em>instruction set architecture</em>, or ISA. The ISA is the contract between
-      hardware and software: hardware promises to execute every pattern in the menu
-      correctly; software promises to use only patterns from the menu. Everything
-      else (every compiler, every operating system, every program) sits on top
-      of this contract.
+      In 1978, Intel released the 8086, a 16-bit chip whose instruction set its
+      descendants have extended but never replaced: every x86-64 processor sold today
+      still recognises the core binary patterns Intel encoded that year. Whatever
+      language a program is written in, the processor runs it as a sequence of binary
+      patterns drawn from a fixed menu, the instruction set architecture (ISA) of
+      Chapter 1. The ISA is the contract between hardware and software: hardware
+      promises to execute every pattern in the menu correctly; software promises to use
+      only patterns from the menu. Everything else, from compilers to applications,
+      sits on top of this contract.
     </p>
 
     <p id="ch3-isa-p2">
-      Three ISAs dominate the world. <strong>x86-64</strong>, the direct descendant of that 1978 Intel line, runs essentially every PC and most servers. It is complex, with thousands of instructions accumulated over four decades of backward compatibility. <strong>ARM</strong>, designed by Acorn in the 1980s and now licensed to the chip designers behind nearly every phone, is the modern alternative: cleaner, more efficient, and the architecture of every iPhone, every Apple Silicon Mac, and nearly every Android phone. <strong>RISC-V</strong>, from Berkeley in 2010, is an open standard: anyone can build a RISC-V chip without paying licensing fees, and it is gaining ground in academia, embedded systems, and increasingly in industry.
+      Three ISAs dominate the world. <strong>x86-64</strong>, the direct descendant of that 1978 Intel line, runs most PCs and most servers. It is complex, with thousands of instructions accumulated over four decades of backward compatibility. <strong>ARM</strong>, designed by Acorn in the 1980s and licensed to chip designers such as Apple and Qualcomm, is the modern alternative: cleaner, more efficient, and the architecture of every iPhone, every Apple Silicon Mac, and nearly every Android phone. <strong>RISC-V</strong>, from Berkeley in 2010, is an open standard: anyone can build a RISC-V chip without paying licensing fees, and it is gaining ground in academia, embedded systems, and increasingly in industry.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-1">
       <div class="diagram-label">Fig 3.1&nbsp;· Same operation&nbsp;· three ISAs&nbsp;· three encodings</div>
       <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29">
 <title id="svgt-part1-29">Fig 3.1 · Same operation · three ISAs · three encodings</title>
-<desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, as the 32 bits each one uses. x86-64 add rax, 5 is the bytes 48 83 C0 05: a 64-bit prefix, the opcode, a byte naming the register rax, and 5. ARM64 add x0, x0, 5 is 0x91001400: the opcode first, then 5, then the two register numbers. RISC-V addi a0, a0, 5 (addi: add a number) is 0x00550513: 5 first and the opcode last. Grey fields hold other bits. Each pattern is also written in hex. The same three ingredients sit in different places, so each pattern means nothing to the other chips.</desc>
+<desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, as the 32 bits each one uses. x86-64 add rax, 5 is the bytes 48 83 C0 05: a 64-bit prefix, the opcode, a byte naming the register rax, and 5. ARM64 add x0, x0, 5 is 0x91001400: the opcode first, then 5, then the two register numbers. RISC-V addi a0, a0, 5 (addi: add a number) is 0x00550513: 5 first and the opcode last. Grey fields hold other bits. Each pattern is also written in hex. The same three ingredients sit in different places, so the other chips read each pattern differently.</desc>
 <text x="20" y="34" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#fff">x86-64</text>
 <text x="380" y="34" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.8)">add rax, 5</text>
 <rect x="24" y="46" width="86" height="30" rx="3" fill="none" fill-opacity="0.18" stroke="#9a9a9a" stroke-opacity="0.75"/>
@@ -3005,13 +3003,13 @@
 <text x="160" y="366" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">register name</text>
 <rect x="284" y="354" width="14" height="14" rx="2" fill="#9bd89b" fill-opacity="0.5" stroke="#9bd89b"/>
 <text x="304" y="366" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">the 5</text>
-<text x="200" y="392" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.8)">each pattern means nothing to the other chips</text>
+<text x="200" y="392" text-anchor="middle" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.8)">other chips read these bits differently</text>
 </svg>
-      <p id="ch3-isa-p3" class="diagram-caption">"Add 5 to a register" in the three instruction sets that run the world: the same three ingredients, an opcode, a register and the number 5, packed into 32 bits in three different orders. Each pattern is meaningless to the other two chips.</p>
+      <p id="ch3-isa-p3" class="diagram-caption">"Add 5 to a register" in the three instruction sets that run the world: the same three ingredients, an opcode, a register and the number 5, packed into 32 bits in three different orders.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>x86-64.</b> Variable length, 1 to 15 bytes. Here a prefix (64-bit), the opcode, a byte naming rax, and the 5 itself, an <em>immediate</em> (a number written into the instruction), in one byte. A number too big for one byte takes four, and the instruction grows to 6 bytes.</li>
+          <li><b>x86-64.</b> Variable length, 1 to 15 bytes. Here a prefix (64-bit), the opcode, a byte naming rax, and the 5 itself, an <em>immediate</em> (a number written into the instruction), in one byte. A number too big for one byte takes four; rax has a shorter form of its own with no register byte, so this add then grows to 6 bytes.</li>
           <li><b>ARM64.</b> Every instruction is exactly 32 bits; this one is opcode, a shift bit, the 12-bit immediate, then source and destination registers.</li>
           <li><b>RISC-V.</b> Also 32 bits, in another order: immediate first, opcode last. The base ISA has only six formats.</li>
           <li><b>The order of the bits.</b> x86 is shown byte by byte as stored; ARM64 and RISC-V as 32-bit words, high bit on the left.</li>
@@ -3078,7 +3076,7 @@
 <text x="20" y="482" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">rbp, x29: an address · w8, w0: registers</text>
 <text x="20" y="502" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">dword: 4 bytes · #: a number</text>
 </svg>
-      <p id="ch3-isa-p5" class="diagram-caption">Rosetta 2 translated an Intel app's x86 code into ARM code once, on first launch, and cached it. Square brackets mean memory: x86 changes it in place, but ARM must load, change and store, so storing 5 takes two lines (put 5 in a register, then <code>stur</code>) and adding 3 takes three (<code>ldur</code>, add, <code>stur</code>).</p>
+      <p id="ch3-isa-p5" class="diagram-caption">Three lines of an Intel app and the six ARM lines Rosetta 2 turns them into: storing 5 takes two (<code>mov</code>, <code>stur</code>) and adding 3 takes three (<code>ldur</code>, <code>add</code>, <code>stur</code>), because ARM cannot add in memory.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3114,9 +3112,7 @@
       simpler RISC-like <em>micro-operations</em> (μops) and execute those. They pay the
       hard variable-length parse once, then serve the code that runs most often from a small cache of
       already-decoded μops. Modern ARM chips have grown more complex, with specialised
-      instructions for cryptography, vector math, and machine learning. What still divides
-      x86 and ARM is the binary incompatibility: the patterns of bits mean different things on
-      different chips.
+      instructions for cryptography, vector math, and machine learning.
     </p>
   </section>
 
@@ -3131,13 +3127,13 @@
     </p>
 
     <p id="ch3-registers-p2">
-      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack, next section); the rest are conventions compilers share so that one function can call another, including which registers a called function may overwrite (the <em>volatile</em> or caller-saved ones) and which it must hand back unchanged. The chapter uses six registers: RAX holds a function's result, RDI and RSI its first two arguments, RSP and RBP its place on the stack (next section), and RIP the next instruction.
+      x86-64 has 16 general-purpose registers, each 64 bits wide. A few roles in the table below are built into instructions (RSP always marks the top of the stack); the rest belong to the calling convention (Section 04), the rules compilers share so that one function can call another, including which registers a called function may overwrite (the <em>volatile</em> or caller-saved ones) and which it must hand back unchanged. Six of them matter most here: RAX holds a function's result, RDI and RSI its first two arguments (the values handed to it when it is called), RSP and RBP its place on the stack (next section), and RIP the next instruction.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-3">
-      <div class="diagram-label">Fig 3.3&nbsp;· The x86-64 register file&nbsp;· one register, four names</div>
+      <div class="diagram-label">Fig 3.3&nbsp;· The x86-64 register file&nbsp;· one register, five names</div>
       <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31">
-<title id="svgt-part1-31">Fig 3.3 · The x86-64 register file · one register, four names</title>
+<title id="svgt-part1-31">Fig 3.3 · The x86-64 register file · one register, five names</title>
 <desc id="svgd-part1-31">RAX holds eight bytes. Its lower four bytes are also called EAX (1985), the lower two AX (1978), and those two bytes AH and AL. Starting from 11 22 33 44 55 66 77 88, mov al, 0xFF changes only the lowest byte (only AL changes). mov eax, 1 writes the lower half and clears the upper half too: 00 00 00 00 00 00 00 01. Below, the sixteen general-purpose registers: eight 8086 names, now 64-bit, and eight new in x86-64 in 2003.</desc>
 <text x="20" y="22" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">RAX · 64 BITS · 2003</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.622222;0.622333;0.666611;0.666667;0.822000;0.822111;1.000000" dur="9s" repeatCount="indefinite"/><rect x="20" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="41.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">11</text><rect x="65" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="86.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">22</text><rect x="110" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="131.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">33</text><rect x="155" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="176.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">44</text><rect x="200" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="221.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">55</text><rect x="245" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="266.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">66</text><rect x="290" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="311.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">77</text><rect x="335" y="32" width="42" height="34" rx="3" fill="none" fill-opacity="0.15" stroke="#86a8ff" stroke-opacity="0.8"/><text x="356.0" y="55" text-anchor="middle" font-family="DM Mono" font-size="16" fill="#fff">88</text></g>
@@ -3192,7 +3188,7 @@
 <rect x="240.75" y="380.75" width="12.5" height="12.5" rx="2" fill="none" stroke="#9bd89b" stroke-width="1.5"/>
 <text x="260" y="392" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">new in x86-64</text>
 </svg>
-      <p id="ch3-registers-p3" class="diagram-caption">One register, four names: RAX (2003) contains EAX (1985), which contains AX (1978), split into AH and AL. Writing AL changes only that byte; writing EAX also clears the upper half, a rule of x86-64.</p>
+      <p id="ch3-registers-p3" class="diagram-caption">One register, five names: RAX (2003) contains EAX (1985), which contains AX (1978), split into AH and AL. Writing AL changes only that byte; writing EAX also clears the upper half, a rule of x86-64.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3208,21 +3204,20 @@
       <tbody>
         <tr><td>RAX</td><td>Accumulator: holds return values from function calls</td><td>Historical: x86's earliest predecessor used "A" for arithmetic accumulator</td></tr>
         <tr><td>RBX</td><td>Base: historically held the address of data in memory</td><td>Now mostly general-purpose; preserved across function calls</td></tr>
-        <tr><td>RCX</td><td>Counter: used for loop counts and shift amounts</td><td>The "rep" loop instruction implicitly uses RCX</td></tr>
+        <tr><td>RCX</td><td>Counter: used for loop counts and shift amounts</td><td>The <code>rep</code> prefix and the <code>loop</code> instruction take their count from RCX</td></tr>
         <tr><td>RDX</td><td>Data: second half of multiplication results</td><td>"mul" stores 128-bit results split between RAX and RDX</td></tr>
-        <tr><td>RSP</td><td>Stack Pointer: points to the top of the call stack</td><td>Modified by push/pop; we'll see this next section</td></tr>
-        <tr><td>RBP</td><td>Base Pointer: points to current function's stack frame</td><td>Lets you find local variables at known offsets</td></tr>
+        <tr><td>RSP</td><td>Stack Pointer: points to the top of the call stack</td><td>Moves as values go on and come off the stack (next section)</td></tr>
+        <tr><td>RBP</td><td>Base Pointer (the frame pointer): points to the current function's stack frame</td><td>Lets a function find its own values at fixed distances</td></tr>
         <tr><td>RDI, RSI, RDX, RCX, R8, R9</td><td>First six function arguments (Linux/Mac)</td><td>System V ABI: the calling convention</td></tr>
         <tr><td>RIP</td><td>Instruction Pointer: address of next instruction</td><td>Cannot be written directly; changed by jumps, calls, returns and interrupts</td></tr>
       </tbody>
     </table>
 
     <p id="ch3-registers-p4">
-      <code>RIP</code> (the Program Counter, the address of the next instruction to
-      execute) is itself a register, so changing what it points to changes what the
-      CPU does next. That is the entire mechanism behind a function call, a loop, an
-      if/else branch, an interrupt, and (as we'll see) a memory corruption exploit.
-      <strong>If you control RIP, you control the program.</strong>
+      <code>RIP</code>, the instruction pointer, is x86's name for Chapter 1's program
+      counter, and it is itself a register, so changing it changes what the CPU does
+      next. That is the entire mechanism behind a function call, a loop, an if/else
+      branch, an interrupt, and (as we'll see) a memory corruption exploit.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-3-4">
@@ -3304,7 +3299,7 @@
       When a program starts, the operating system gives it a chunk of memory laid out
       in a specific pattern: its <span class="key-term">virtual address space</span>.
       Among other regions, the OS reserves an area called the <em>stack</em>: a
-      last-in-first-out buffer that grows as functions are called and shrinks as they
+      last-in-first-out region that grows as functions are called and shrinks as they
       return. The operating system places the stack at a high address, and on x86-64 it grows <em>downward</em>, toward lower addresses, as items are pushed.
     </p>
 
@@ -3342,7 +3337,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Virtual.</b> These are virtual addresses: each process gets the whole picture to itself (the MMU of the Bridge maps it to real RAM).</li>
+          <li><b>Virtual.</b> These are virtual addresses: each process gets the whole picture to itself (the MMU from Chapter 1, opened up in the Bridge, maps it to real RAM).</li>
           <li><b>Kernel.</b> On x86-64 Linux the top half of the address space belongs to the kernel and is off limits in Ring 3.</li>
           <li><b>Text.</b> The machine code is read-only and executable; data and the heap are writable but not executable.</li>
           <li><b>Toward each other.</b> Stack and heap grow into the unused gap between them.</li>
@@ -3358,7 +3353,7 @@
     </p>
 
     <p id="ch3-stack-p4">
-      Each function call creates a <span class="key-term">stack frame</span>: a contiguous region of the stack holding that function's local variables (values only it uses), its return address, and copies of the caller's register values it must restore, since caller and callee share the same sixteen registers. A caller waits for the function it called, so the newest frame always leaves first. When a function returns, moving RSP back up discards its frame. Data that must outlive the call goes instead in a block of heap memory, taken with <code>malloc</code> and kept until the program frees it.
+      Each function call creates a <span class="key-term">stack frame</span>: a contiguous region of the stack holding that function's local variables (values only it uses), its return address, and copies of the caller's register values it must restore, since caller and callee share the same sixteen registers. A caller waits for the function it called, so the newest frame always leaves first. When a function returns, moving RSP back up discards its frame. Data that must outlive the call goes on the heap instead (Fig 3.5).
     </p>
   </section>
 
@@ -3370,7 +3365,7 @@
 
 
     <p id="ch3-call-p2">
-      Take the C line <code>int result = add(5, 3);</code>: call <code>add</code> with 5 and 3 and keep the whole number (<code>int</code>) it returns. The compiler must follow a <span class="key-term">calling convention</span>, a contract between caller and callee about who puts arguments where, who saves which registers, and how return values are delivered. On Linux and macOS x86-64, that is the <strong>System V AMD64 ABI</strong> (application binary interface) drawn in Fig 3.4; on Windows, the <strong>Microsoft x64 calling convention</strong>. They use different argument registers, so calling from one to the other needs a wrapper that moves each argument over.
+      Take the C line <code>int result = add(5, 3);</code>: call <code>add</code> with 5 and 3 and keep the whole number (<code>int</code>) it returns. The compiler must follow the <span class="key-term">calling convention</span>, the contract between caller and callee about who puts arguments where, who saves which registers, and how return values are delivered. On Linux and macOS x86-64, that is the <strong>System V AMD64 ABI</strong> (application binary interface) drawn in Fig 3.4; on Windows, the <strong>Microsoft x64 calling convention</strong>. They use different argument registers, so calling from one to the other needs a wrapper that moves each argument over.
     </p>
 
     <p id="ch3-call-p3">
@@ -3420,15 +3415,15 @@ main:
       <div class="diagram-label">Fig 3.6&nbsp;· The stack during a function call</div>
       <svg viewBox="0 0 400 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34">
 <title id="svgt-part1-34">Fig 3.6 · The stack during a function call</title>
-<desc id="svgd-part1-34">main's frame (its variables and saved rbp) sits on the stack. call add, in main, pushes the return address (the next line of main) and jumps into add. add pushes main's frame pointer and begins its own frame. On the way out, pop rbp removes it, and ret pops the return address into RIP, the register that holds the next instruction to run, so execution continues in main at the next instruction. RSP, the stack pointer, follows the top of the stack.</desc>
+<desc id="svgd-part1-34">main's frame (the saved rbp of main's caller, then main's variables) sits on the stack. call add, in main, pushes the return address (the next line of main) and jumps into add. add pushes main's frame pointer and begins its own frame. On the way out, pop rbp removes it, and ret pops the return address into RIP, the register that holds the next instruction to run, so execution continues in main at the next instruction. RSP, the stack pointer, follows the top of the stack.</desc>
 <text x="120" y="26" text-anchor="start" font-family="DM Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">THE STACK · GROWS DOWN</text>
 <rect x="120" y="46" width="190" height="36" rx="4" fill="none" stroke="rgba(255,255,255,0.38)"/>
 <rect x="120" y="86" width="190" height="36" rx="4" fill="none" stroke="rgba(255,255,255,0.38)"/>
 <rect x="120" y="126" width="190" height="36" rx="4" fill="none" stroke="rgba(255,255,255,0.52)"/>
 <rect x="120" y="166" width="190" height="36" rx="4" fill="none" stroke="rgba(255,255,255,0.53)"/>
 <rect x="120" y="206" width="190" height="36" rx="4" fill="#141414" stroke="rgba(255,255,255,0.15)"/>
-<rect x="120" y="46" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="rgba(255,255,255,0.75)" stroke-opacity="0.7"/><text x="132" y="70" font-family="DM Mono" font-size="14" fill="#fff">main's variables</text>
-<rect x="120" y="86" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="rgba(255,255,255,0.75)" stroke-opacity="0.7"/><text x="132" y="110" font-family="DM Mono" font-size="14" fill="#fff">main's rbp</text>
+<rect x="120" y="46" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="rgba(255,255,255,0.75)" stroke-opacity="0.7"/><text x="132" y="70" font-family="DM Mono" font-size="14" fill="#fff">caller's rbp, saved</text>
+<rect x="120" y="86" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="rgba(255,255,255,0.75)" stroke-opacity="0.7"/><text x="132" y="110" font-family="DM Mono" font-size="14" fill="#fff">main's variables</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.279800;0.279900;0.539950;0.540000;0.699900;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="120" y="126" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="#d4a853" stroke-opacity="0.7"/><text x="132" y="150" font-family="DM Mono" font-size="14" fill="#fff">return: main, next</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.099800;0.099900;0.539950;0.540000;0.899900;0.900000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="120" y="166" width="190" height="36" rx="4" fill="none" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.7"/><text x="132" y="190" font-family="DM Mono" font-size="14" fill="#fff">main's rbp, saved</text></g>
 <path d="M 318 46 h 6 V 122 h -6" fill="none" stroke="rgba(255,255,255,0.5)"/>
@@ -3445,14 +3440,14 @@ main:
 <text x="86" y="290" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">main, next line<animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.359900;0.360000;0.499800;0.499900;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/></text>
 <text class="fx" font-family="DM Mono" font-size="14" fill="#d4a853" opacity="0">main, next<animate attributeName="x" values="132;132;86;86;132;132" keyTimes="0.000000;0.280000;0.360000;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="y" values="150;150;290;290;150;150" keyTimes="0.000000;0.280000;0.360000;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.279900;0.280000;0.360000;0.360100;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/></text>
 </svg>
-      <p id="ch3-call-p5" class="diagram-caption">One call, start to finish: call pushes the return address and jumps; add saves main's frame pointer and builds its own frame; on the way out the frame is unwound and ret pops the return address into RIP, so main resumes at the next instruction.</p>
+      <p id="ch3-call-p5" class="diagram-caption">The stack and RIP through one call of <code>add</code>, from <code>call</code> to <code>ret</code>.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>RSP.</b> The stack pointer always marks the top of the stack; on x86-64 that is the lowest address in use.</li>
-          <li><b>call.</b> Pushes the address of the next instruction (main+19), then jumps. Neither function sees the handoff.</li>
+          <li><b>call.</b> Pushes the address of the next instruction in main (its <code>pop rbp</code>), then jumps to <code>add</code>.</li>
           <li><b>The chain.</b> Each saved rbp points at the frame before it, so the frames form a list back through every call: what a debugger walks to print a stack trace.</li>
-          <li><b>ret.</b> Pops whatever is at the top of the stack into RIP. If something has overwritten that slot, ret jumps there instead: the next section's attack.</li>
+          <li><b>ret.</b> Pops whatever is at the top of the stack into RIP.</li>
         </ol>
       </details>
     </div>
@@ -3460,7 +3455,7 @@ main:
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1 1"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1-1"/></svg></span>
       <p id="ch3-call-p6" class="insight-text">
-        <strong>Why this matters.</strong> The return address is just a number stored in memory. The CPU has no way to verify it is the same number that was pushed there originally. If anything at all overwrites it between the <code>call</code> and the <code>ret</code>, the CPU will obediently jump wherever the new value points.
+        <strong>Why this matters.</strong> The return address is just a number stored in memory, and a plain <code>ret</code> does not check it. If anything at all overwrites it between the <code>call</code> and the <code>ret</code>, the CPU will obediently jump wherever the new value points (Section 06 shows the hardware that later learned to check).
       </p>
     </div>
   </section>
@@ -3472,7 +3467,7 @@ main:
     <h2>The bug that defined three decades of security</h2>
 
     <p id="ch3-overflow-p1" class="lead">
-      In November 1988, a 23-year-old Cornell graduate student named Robert Tappan Morris released a small program onto the early internet. It was meant to count machines. Within hours it had brought down roughly ten percent of every computer connected to the network (about six thousand machines). One vulnerability it exploited was a buffer overflow in the UNIX <em>fingerd</em> daemon. Morris became the first person convicted under the Computer Fraud and Abuse Act. The attack class he made famous is still, decades later, among the most exploited bugs in computing. To see why, trace what happens when a tiny C function's input doesn't fit.
+      In November 1988, a 23-year-old Cornell graduate student named Robert Tappan Morris released a small program onto the early internet. It was meant to count machines. Within hours it had brought down roughly ten percent of the computers then connected to the network (about six thousand machines). One vulnerability it exploited was a buffer overflow in <em>fingerd</em>, a UNIX background program that answered queries about a machine's users. Morris became the first person convicted under the Computer Fraud and Abuse Act. The attack class he made famous is still, decades later, among the most exploited bugs in computing. To see why, trace what happens when a tiny C function's input doesn't fit.
     </p>
 
 
@@ -3494,6 +3489,8 @@ main:
       stack grows downward, so the values pushed before <code>buffer</code> sit at higher
       addresses, but the copy fills <code>buffer</code> from its lowest address up and runs
       on into them: the saved RBP, and just past it, the <strong>return address</strong>.
+      Fig 3.7 lists memory with the lowest address at the top, the reverse of Fig 3.6,
+      so there the copy runs down the page.
     </p>
 
     <div class="diagram-card" id="fig-3-7">
@@ -3545,7 +3542,7 @@ main:
     <h3>From overwrite to code execution</h3>
 
     <p id="ch3-overflow-p5">
-      Overwriting the return address is half the attack; the other half is choosing what to write there. The classic technique, perfected in the 1990s, is called <span class="key-term">shellcode injection</span>: place machine code for a small payload (traditionally one that spawns a shell, a program that runs whatever commands it is typed, hence "shellcode") into the buffer being overflowed, and overwrite the return address with the address of that shellcode. When the function returns, the CPU jumps into the buffer and runs the attacker's instructions. It worked because the stack could then hold running code; the NX bit (Defence two, below) took that away.
+      Overwriting the return address is half the attack; the other half is choosing what to write there. The classic technique, perfected in the 1990s, is called <span class="key-term">shellcode injection</span>: place machine code for a small payload (traditionally one that spawns a shell, a program that runs whatever commands are typed into it, hence "shellcode") into the buffer being overflowed, and overwrite the return address with the address of that shellcode. (In Fig 3.7 the A's stand where that code would go.) When the function returns, the CPU jumps into the buffer and runs the attacker's instructions. It worked because the stack could then hold running code; the NX bit (Defence two, below) took that away.
     </p>
 
     <p id="ch3-overflow-p6">
@@ -3583,7 +3580,7 @@ main:
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14" rx="1.5"/><path d="M4 9.5h16M8.5 3.5v4M15.5 3.5v4M8 13h2M11 13h2M14 13h2M8 16h2M11 16h2"/></svg></span>
       <p id="ch3-overflow-p10" class="insight-text">
-        <strong>Famous buffer overflow incidents.</strong> The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). The Blaster worm (2003, RPC). Heartbleed (2014, OpenSSL), technically a buffer over-<em>read</em> rather than overflow. The server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer, which could include the server's private key. For decades, memory-corruption bugs accounted for the majority of critical CVEs (Common Vulnerabilities and Exposures). Microsoft, Google, and others have published data showing that around 70% of severe security bugs in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels, Linux itself included as of 2022.
+        <strong>Famous buffer overflow incidents.</strong> The Code Red worm (2001, IIS, infected 359,000 hosts in 14 hours). The SQL Slammer worm (2003, infected 75,000 servers in 10 minutes). Heartbleed (2014, OpenSSL), technically a buffer over-<em>read</em> rather than an overflow. The server trusted an attacker-supplied length field and copied back that many bytes from its own memory, so each reply spilled whatever happened to sit next to the buffer, which could include the server's private key. Microsoft, Google, and others have published data showing that around 70% of severe security bugs (CVEs, Common Vulnerabilities and Exposures) in their large C/C++ codebases trace back to memory unsafety. This is why Rust adoption is growing inside operating system kernels, Linux itself included as of 2022.
       </p>
     </div>
   </section>
@@ -3611,7 +3608,7 @@ main:
     </p>
 
     <p id="ch3-defenses-p3">
-      This works as long as the attacker cannot guess the canary value. The compiler adds the check, and the program picks a random canary each time it starts, so guessing is statistically infeasible. An attacker who can read process memory through a separate information leak, however, can sometimes recover it.
+      This works only while the attacker cannot guess the canary, and the program picks a fresh random one each time it starts. An attacker who can read process memory through a separate information leak, however, can sometimes recover it.
     </p>
 
     <div class="diagram-card" id="fig-3-8">
@@ -3714,8 +3711,9 @@ main:
       Shellcode injection depends on the CPU executing bytes that sit in a buffer on
       the stack. The defence is to mark stack pages as <em>non-executable</em>. The
       CPU's MMU refuses to execute instructions from a page marked NX, raising a
-      hardware exception instead. AMD added this to x86 in 2003 as the "NX bit"
-      (No-eXecute); Intel followed; Windows calls it <strong>DEP</strong> (Data
+      hardware exception instead. Software patches for Linux made the stack
+      non-executable from 1997; AMD put it into x86 hardware in 2003 as the "NX bit"
+      (No-eXecute), and Intel followed; Windows calls it <strong>DEP</strong> (Data
       Execution Prevention), Linux keeps the name NX bit. Stack-injected shellcode
       immediately stopped working on systems with DEP enabled.
     </p>
@@ -3725,16 +3723,16 @@ main:
     <p id="ch3-defenses-p6">
       Even without injecting shellcode, attackers could redirect execution by
       overwriting the return address with the address of an existing function, such as
-      the C library's <code>system()</code> called with <code>"/bin/sh"</code>, which
-      starts the shell, the program that runs whatever the attacker types. This is
+      <code>system()</code> from the C library (libc, the ready-made code every C program
+      loads), called with <code>"/bin/sh"</code>, which starts a shell. This is
       called a <em>return-to-libc</em> attack. The countermeasure is
       <span class="key-term">ASLR</span>, Address Space Layout Randomization. At each
       program launch, the operating system loads code, libraries, the heap, and the
       stack at random addresses, so the attacker no longer knows where to point the
       return address. Like the canary, ASLR holds only while the addresses stay secret:
       a library loads as one block, so one leaked address locates all of it. ASLR
-      debuted in PaX (a Linux patch) in 2001, and became default on most operating
-      systems by the late 2000s.
+      debuted in PaX (a Linux patch) in 2001, two years before the NX bit reached x86
+      hardware, and became default on most operating systems by the late 2000s.
     </p>
 
     <div class="diagram-card" id="fig-3-9">
@@ -3842,22 +3840,21 @@ main:
       <p id="ch3-defenses-p7" class="diagram-caption">Three launches of the same executable, on the same machine, within seconds of each other. The .text segment, the heap, the libraries, and the stack each load at a different random address every time. An attacker who has overwritten a return address must guess where to redirect it. On 64-bit Linux the entropy is high enough (typically 28–30 bits for libraries, 24–28 bits for the heap, 30–32 bits for the stack) that brute-force guessing crashes the program long before a successful guess. ASLR is not perfect. Small entropy pockets, leaks of address fragments and partial overwrites can sometimes be exploited. Still, it raises the cost of every memory-corruption attack. It is, in a real sense, the reason modern software is roughly survivable.</p>
     </div>
 
-    <h3>Defence four, and the attack that still beat it: ROP</h3>
+    <h3>Return-Oriented Programming, and defence four</h3>
 
     <p id="ch3-defenses-p8">
-      Return-to-libc can reuse only whole functions. In 2007 Hovav Shacham showed that tiny fragments of existing code are enough, and introduced
+      Return-to-libc can reuse only whole functions, one at a time, and on x86-64 it cannot even hand <code>system()</code> its argument, which must sit in RDI (Fig 3.4), not on the stack. In 2007 Hovav Shacham showed that tiny fragments of existing code are enough, and introduced
       <span class="key-term">Return-Oriented Programming</span> (ROP). Instead of
-      injecting new code, the attacker chains together short fragments of <em>existing</em>
-      code in the program, fragments ending in a <code>ret</code> instruction. Each
-      fragment, called a "gadget," does some tiny operation (load a register, increment
-      a counter, write a byte). By stacking up the right sequence of return addresses
-      on the stack, the attacker can build arbitrary computation out of the program's
-      own code without executing anything new, which defeats DEP. Given large enough
-      libraries, useful gadgets always exist somewhere.
+      injecting new code, the attacker chains fragments that end in a <code>ret</code>
+      instruction. Each fragment, called a "gadget," does some tiny operation (load a
+      register, increment a counter, write a byte). By stacking up the right sequence of
+      return addresses on the stack, the attacker can build arbitrary computation out of
+      the program's own code without executing anything new, which defeats DEP. Given
+      large enough libraries, useful gadgets always exist somewhere.
     </p>
 
     <p id="ch3-defenses-p9">
-      The leaks above undid the canary and ASLR, and ROP undid DEP, which forced another layer. A <code>ret</code> is an indirect jump: its destination is read from memory as the program runs. In <strong>Control Flow Integrity</strong> (CFI), the compiler records where indirect jumps may legally land and the runtime refuses any transfer to an address off that list. Two further defences guard the return address itself. A shadow stack keeps a second copy of each return address out of reach of ordinary writes, and <code>ret</code> halts the program if the copies differ; recent Intel CPUs build it in as CET (Control-flow Enforcement Technology). ARM Pointer Authentication, in Apple Silicon, tags each return address with a code computed from it and a key the program cannot read, checked before <code>ret</code>.
+      The leaks above undid the canary and ASLR, and ROP undid DEP, which forced another layer. A <code>ret</code> is an indirect jump: its destination is read from memory as the program runs. In <strong>Control Flow Integrity</strong> (CFI), the compiler records where indirect jumps may legally land and the runtime refuses any transfer to an address off that list. Two further defences guard the return address itself. A shadow stack keeps a second copy of each return address out of reach of ordinary writes, and <code>ret</code> halts the program if the copies differ; recent Intel CPUs build it in as CET (Control-flow Enforcement Technology). ARM Pointer Authentication (PAC), in Apple Silicon, tags each return address with a code computed from it and a key the program cannot read, checked before <code>ret</code>.
     </p>
 
     <div class="diagram-card" id="fig-3-10">
