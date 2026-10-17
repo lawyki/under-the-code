@@ -158,7 +158,7 @@
       <!-- Math formula at bottom -->
       <text x="240" y="380" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="20" fill="rgba(207,141,120,0.95)">π<tspan font-size="13" baseline-shift="sub">name</tspan>(σ<tspan font-size="13" baseline-shift="sub">age &gt; 18</tspan>(users))</text>
       <text x="240" y="398" text-anchor="middle" font-family="Courier Prime" font-size="9" fill="rgba(230,217,189,0.8)">σ picks the rows · π picks the column</text>
-      <text x="240" y="418" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.85)">SQL is shorthand for set mathematics</text>
+      <text x="240" y="418" text-anchor="middle" font-family="Playfair Display" font-style="italic" font-size="13" fill="rgba(207,141,120,0.85)">SQL is built on set mathematics</text>
     </svg>
   </div>
 </div>
@@ -203,10 +203,10 @@
       a "set" relationship from customer to orders, following pointers. Both
       worked well enough; neither would define the era that followed. IBM
       still ships IMS in 2026, but as a niche survivor, not the
-      model everyone else built on. Codd's complaint was
-      not that they were slow but that they were <em>brittle</em>: the
-      schema, the queries, and the storage layout were entangled, and
-      changing any one broke the others.
+      model everyone else built on. Codd's complaint was that they were
+      <em>brittle</em>: the schema (which kinds of records exist and which
+      fields each has), the queries, and the storage layout were entangled,
+      and changing any one broke the others.
     </p>
 
     <div class="pull-quote">
@@ -240,17 +240,17 @@
     <p id="ch13-codd-p6">
       A second prototype, separate from IBM, was started at the University
       of California, Berkeley by <strong>Michael Stonebraker</strong> and
-      Eugene Wong in 1973. Called <strong>Ingres</strong>, it became the
-      basis for the open-source <em>Postgres</em> (1986), which became
-      <em>PostgreSQL</em> (1996), and indirectly for <em>Sybase</em>,
-      which Microsoft licensed and turned into <em>SQL Server</em>. So the major databases in production in 2026 either descend from one of two 1970s prototypes, System R at IBM San Jose or Ingres at Berkeley (DB2, Oracle, PostgreSQL, SQL Server), or, like MySQL, SQLite, Snowflake and ClickHouse, were written fresh to speak the SQL that System R introduced.
+      Eugene Wong in 1973. Called <strong>Ingres</strong>, it led to
+      Stonebraker's successor project, <em>Postgres</em> (1986), which became
+      the open-source <em>PostgreSQL</em> (1996), and, through its alumni, to
+      <em>Sybase</em>, which Microsoft licensed and turned into <em>SQL Server</em>. So DB2, PostgreSQL and SQL Server, major databases in production in 2026, descend from one of two 1970s prototypes, System R at IBM San Jose or Ingres at Berkeley, and Oracle was built from IBM's published papers on System R; others, like MySQL, SQLite, Snowflake and ClickHouse, were written fresh to speak the SQL that System R introduced.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-1">
       <div class="diagram-label">Fig 13.1&nbsp;· Codd 1970 to PostgreSQL 18&nbsp;· two lineages, fifty years</div>
       <svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-2 svgd-part4-2">
 <title id="svgt-part4-2">Fig 13.1 · Codd 1970 to PostgreSQL 18 · two lineages, fifty years</title>
-<desc id="svgd-part4-2">Codd's 1970 paper on the relational model, and the two prototypes it inspired. At IBM in San Jose, System R in 1974, which IBM shipped as SQL/DS in 1981 and DB2 in 1983; Oracle, in 1979, built its product from the SQL that IBM had published. At UC Berkeley, Ingres in 1973, which led to Postgres in 1986 and PostgreSQL in 1996; people from Ingres founded Sybase in 1984, which Microsoft licensed for SQL Server in 1989. DB2, Oracle, PostgreSQL and SQL Server are all still running.</desc>
+<desc id="svgd-part4-2">Codd's 1970 paper on the relational model, and the two prototypes it inspired. At IBM in San Jose, System R in 1974, which IBM shipped as SQL/DS in 1981 and announced as DB2 in 1983 (on sale 1985); Oracle, in 1979, built its product from the SQL that IBM had published. At UC Berkeley, Ingres in 1973, which led to Postgres in 1986 and PostgreSQL in 1996; people from Ingres founded Sybase in 1984, which Microsoft licensed for SQL Server in 1989. DB2, Oracle, PostgreSQL and SQL Server are all still running.</desc>
 <defs><clipPath id="ko-fig-13-1-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM28 78h104v38h-104ZM28 214h104v38h-104Z"/></clipPath></defs>
 <rect x="28" y="8" width="348" height="34" rx="3" fill="none" stroke="#e6d9bd" stroke-opacity="0.8"/>
 <text x="202" y="30" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">Codd, 1970: the relational model</text>
@@ -291,8 +291,8 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>IBM's side.</b> System R produced SQL; IBM shipped it as SQL/DS (1981) and DB2 (1983), after Oracle had shipped its own version, built from IBM's published papers, in 1979.</li>
-          <li><b>Berkeley's side.</b> Ingres led to Postgres and PostgreSQL (version 18 in 2025); Ingres alumni founded Sybase, which Microsoft licensed for SQL Server. MySQL and SQLite were written fresh, but speak the same SQL.</li>
+          <li><b>IBM's side.</b> System R produced SQL; IBM shipped it as SQL/DS (1981) and announced DB2 in 1983 (on sale from 1985), after Oracle had shipped its own version, built from IBM's published papers, in 1979.</li>
+          <li><b>Berkeley's side.</b> Ingres led to Postgres and PostgreSQL (version 18 in 2025); Ingres alumni founded Sybase, which Microsoft licensed for SQL Server.</li>
         </ol>
       </details>
     </div>
@@ -300,7 +300,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4"/><path d="M9.5 12h6M9.5 15.5h6"/></svg></span>
       <p id="ch13-codd-p8" class="insight-text">
-        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. He spent his last decade increasingly frustrated that commercial databases, IBM's included, implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985 he published his twelve rules (thirteen, counting rule 0, in two <em>Computerworld</em> pieces, the first asking "Is Your DBMS Really Relational?"), listing properties any system claiming the title must satisfy. Few commercial systems met them all, and the gap between Codd's mathematics and the working systems descended from his idea (SQL tables that allow duplicate rows, which Codd's sets forbid, among others) has never closed.
+        <strong>Codd, IBM, and the Turing Award.</strong> Codd received the ACM Turing Award in 1981 for the relational model, the same year IBM finally shipped a relational product. In the years that followed he grew increasingly frustrated that commercial databases, IBM's included, implemented incomplete versions of his model and used "relational" as a marketing term for systems that were not quite. In 1985, in two <em>Computerworld</em> pieces (the first asking "Is Your DBMS Really Relational?"), he published twelve rules, thirteen counting rule 0, listing properties any system claiming the title must satisfy. Few commercial systems met them all, and the gap between Codd's mathematics and the working systems descended from his idea (SQL tables that allow duplicate rows, which Codd's sets forbid, among others) has never closed.
       </p>
     </div>
   </section>
@@ -318,7 +318,7 @@
       crucial property, the one that makes SQL composable, is
       <em>closure</em>: the result of any operation is itself a relation,
       and so can be the input to the next. The algebra needs only six fundamental
-      operators, and most working SQL is built almost entirely from three
+      operators, and most working SQL is built from three
       operations: selection (σ), projection (π) and join (⨝), the last of
       them derived from the others.
     </p>
@@ -405,8 +405,6 @@
         <summary>How it works</summary>
         <ol>
           <li><b>In SQL.</b> σ is the <code>WHERE</code> clause, π the column list after <code>SELECT</code>, ⨝ a <code>JOIN … ON</code>.</li>
-          <li><b>Sets and bags.</b> In the algebra a relation is a set, so π drops duplicate rows; SQL keeps them unless you write <code>DISTINCT</code>.</li>
-          <li><b>The rest of the algebra.</b> Its fundamental operators are selection, projection, union, difference, Cartesian product and rename; a join is a product followed by a selection, common enough to get its own symbol.</li>
         </ol>
       </details>
     </div>
@@ -423,8 +421,7 @@
       own it is a firehose, but bolt a selection onto it and you have rebuilt
       the join from parts. <strong>Rename</strong> (ρ) relabels a column or
       relation so a table can be joined to itself (an employee to their
-      manager, both rows drawn from the same table under two names). These six (σ, π, ∪, −, ×, ρ) are enough: Codd also described a second way to ask for data, by stating in logic which rows you want (the relational calculus), and in 1972 showed that an algebra of this kind can fetch whatever rows any such statement describes. That is what <em>relationally complete</em> means (counting, totals and queries that follow a chain of any length, a manager's manager's manager, which SQL later adds, sit outside it); the join (⨝) is shorthand for a cross
-      product followed by a selection.
+      manager, both rows drawn from the same table under two names). These six (σ, π, ∪, −, ×, ρ) are enough: Codd also described a second way to ask for data, by stating in logic which rows you want (the relational calculus), and in 1972 showed that an algebra of this kind can fetch whatever rows any such statement describes. That is what <em>relationally complete</em> means. Counting, totals and chains of unknown length (every manager above someone, however many levels up) sit outside it; SQL added them later.
     </p>
 
     <p id="ch13-algebra-p4">
@@ -441,8 +438,8 @@
 
     <div class="math-callout">
       <div class="math-label">Why this is the right math</div>
-      <p id="ch13-algebra-p5">Relational algebra has the same role in databases that Boolean algebra has in circuits (<a href="part-1#ch2">Chapter 2</a>): it is the smallest mathematical structure that captures the essential operations and is closed under composition. Because every expression yields a relation, the algebra is <em>compositional</em>: expressions nest without bound. That is what lets a query optimiser parse a complex SQL statement into a tree of relational operators and rewrite that tree algebraically into an equivalent but faster one.</p>
-      <p id="ch13-algebra-p6">The optimiser leans heavily on two rewrite rules. <strong>Selection pushdown</strong> says that if a test p uses only the columns of one table, R, the engine can filter R first and join afterwards: σ<sub>p</sub>(R ⨝ S) = σ<sub>p</sub>(R) ⨝ S, the same rows with far fewer of them to join (Fig 13.3 shows it). <strong>Projection pushdown</strong> lets the engine drop the columns the query never uses before the join, but it must keep the join columns, since without them there would be nothing left to match on. The transformations are correct because the algebra is mathematically rigorous; the speedups are real because they reduce the size of intermediate relations.</p>
+      <p id="ch13-algebra-p5">Relational algebra has the same role in databases that Boolean algebra has in circuits (<a href="part-1#ch2">Chapter 2</a>): it is the smallest mathematical structure that captures the essential operations and is closed under composition. Because every expression yields a relation, the algebra is <em>compositional</em>: expressions nest without bound. That is what lets the database parse a complex SQL statement into a tree of relational operators, and lets the optimiser rewrite that tree algebraically into an equivalent but faster one.</p>
+      <p id="ch13-algebra-p6">The optimiser leans heavily on two rewrite rules. <strong>Selection pushdown</strong> says that if a test p uses only the columns of one table, R, the engine can filter R first and join afterwards: σ<sub>p</sub>(R ⨝ S) = σ<sub>p</sub>(R) ⨝ S, the same rows with far fewer of them to join (Fig 13.3, in Section 03, shows it). <strong>Projection pushdown</strong> lets the engine drop the columns the query never uses before the join, but it must keep the join columns, since without them there would be nothing left to match on. The transformations are correct because the algebra is mathematically rigorous; the speedups are real because they reduce the size of intermediate relations.</p>
     </div>
   </section>
 
@@ -458,8 +455,7 @@
       algebra but a deliberately English-shaped declarative language, meant
       to be writable by analysts, not just programmers. The compiler parses
       the English into a relational-algebra tree, runs an optimiser over the
-      tree, and produces an execution plan. The English is the contract; the
-      plan is private to the engine.
+      tree, and produces an execution plan.
     </p>
 
     <p id="ch13-sql-p2">
@@ -467,7 +463,7 @@
       Language) changes the <em>schema</em>: <code>CREATE TABLE</code>,
       <code>ALTER TABLE</code>, <code>DROP TABLE</code>,
       <code>CREATE INDEX</code>. <strong>DML</strong> (Data Manipulation
-      Language) changes the <em>data</em>: <code>SELECT</code>,
+      Language) reads and changes the <em>data</em>: <code>SELECT</code>,
       <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>. An
       application runs DDL at deployment, when the schema changes (which
       should be rare), and DML on every request it handles. A typical
@@ -478,19 +474,19 @@
       <div class="diagram-label">Fig 13.3&nbsp;· Same query, three forms&nbsp;· SQL → relational algebra → execution plan</div>
       <svg viewBox="0 0 400 403.0" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-4 svgd-part4-4">
 <title id="svgt-part4-4">Fig 13.3 · Same query, three forms · SQL → relational algebra → execution plan</title>
-<desc id="svgd-part4-4">The query SELECT name, product FROM users JOIN orders ON id = user_id WHERE age > 18. Parsed, it becomes a tree: a projection of name and product over a selection of age greater than 18 over the join of users and orders. The optimiser moves the selection below the join, onto users, because the test uses only users' columns. Then the plan is chosen: a full scan of users with the age test applied as rows stream by, a full scan of orders, and a hash join.</desc>
+<desc id="svgd-part4-4">The query SELECT name, item FROM users JOIN orders ON id = user_id WHERE age > 18. Parsed, it becomes a tree: a projection of name and item over a selection of age greater than 18 over the join of users and orders. The optimiser moves the selection below the join, onto users, because the test uses only users' columns. Then the plan is chosen: a full scan of users with the age test applied as rows stream by, a full scan of orders, and a hash join.</desc>
 <rect x="10" y="8" width="380" height="84" rx="2" fill="none" stroke="rgba(230,217,189,0.69)" stroke-opacity="0.6"/>
-<text x="20" y="26" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)"><tspan fill="#cf8d78">SELECT</tspan> name, product</text>
+<text x="20" y="26" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)"><tspan fill="#cf8d78">SELECT</tspan> name, item</text>
 <text x="20" y="44" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)"><tspan fill="#cf8d78">FROM</tspan> users JOIN orders</text>
 <text x="20" y="62" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)"><tspan fill="#cf8d78"></tspan>  ON id = user_id</text>
 <text x="20" y="80" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)"><tspan fill="#cf8d78">WHERE</tspan> age &gt; 18;</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.381091;0.381364;1.000000" dur="11s" repeatCount="indefinite"/><line x1="200" y1="147.0" x2="200" y2="167.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="197.0" x2="200" y2="217.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="247.0" x2="110" y2="315.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.381636;0.381818;1.000000" dur="11s" repeatCount="indefinite"/><line x1="200" y1="147.0" x2="200" y2="217.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="247.0" x2="110" y2="267.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="110" y1="297.0" x2="110" y2="315.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.082545;0.082727;0.299818;0.300000;1.000000" dur="11s" repeatCount="indefinite"/><line x1="200" y1="147.0" x2="200" y2="167.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="197.0" x2="200" y2="217.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="247.0" x2="110" y2="315.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.300000;0.300182;1.000000" dur="11s" repeatCount="indefinite"/><line x1="200" y1="147.0" x2="200" y2="217.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="200" y1="247.0" x2="110" y2="267.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/><line x1="110" y1="297.0" x2="110" y2="315.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/></g>
 <line x1="200" y1="247.0" x2="290" y2="315.0" stroke="rgba(230,217,189,0.6)" stroke-width="1.5"/>
-<rect x="105.0" y="117.0" width="190" height="30" rx="3" fill="none" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="137" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">π keep name, product</text>
+<rect x="105.0" y="117.0" width="190" height="30" rx="3" fill="none" stroke="#e6d9bd" stroke-width="1.5"/><text x="200" y="137" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">π keep name, item</text>
 <rect x="105.0" y="217.0" width="190" height="30" rx="3" fill="none" stroke="#c05a48" stroke-width="1.5"/><text x="200" y="237" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c86e5e">⨝ join on id = user_id</text>
 <rect x="40.0" y="315.0" width="140" height="30" rx="3" fill="none" stroke="#c9a25a" stroke-width="1.5"/><text x="110" y="335" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">users</text>
 <rect x="220.0" y="315.0" width="140" height="30" rx="3" fill="none" stroke="#c9a25a" stroke-width="1.5"/><text x="290" y="335" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">orders</text>
-<g class="fx"><g><animateTransform attributeName="transform" type="translate" values="-90.00 0;-90.00 0;-90.00 0;-90.00 0;0.00 0;0.00 0;-90.00 0;-90.00 0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.236364;0.381818;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 100.00;0 100.00;0 100.00;0 100.00;0 0.00;0 0.00;0 100.00;0 100.00" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.236364;0.381818;1.000000" dur="11s" repeatCount="indefinite"/><rect x="120.0" y="167.0" width="160" height="30" rx="3" fill="none" stroke="#cf8d78" stroke-width="1.5"/><text x="200" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">σ filter age &gt; 18</text></g></g></g>
+<g class="fx"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.250000;0.250182;0.300000;0.300182;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-90.00 0;-90.00 0;-90.00 0;-90.00 0;0.00 0;0.00 0;-90.00 0;-90.00 0" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.282000;0.282182;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 100.00;0 100.00;0 100.00;0 100.00;0 0.00;0 0.00;0 100.00;0 100.00" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.282000;0.282182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="120.0" y="167.0" width="160" height="30" rx="3" fill="none" stroke="#cf8d78" stroke-width="1.5"/><text x="200" y="187" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">σ filter age &gt; 18</text></g></g></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.472545;0.472727;1.000000" dur="11s" repeatCount="indefinite"/><text x="110" y="363" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">full scan + filter</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.472545;0.472727;0.517982;0.518182;1.000000" dur="11s" repeatCount="indefinite"/><rect x="37.0" y="312.0" width="146" height="36" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.527091;0.527273;1.000000" dur="11s" repeatCount="indefinite"/><text x="290" y="363" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">full scan</text></g>
@@ -505,8 +501,7 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The rewrite.</b> Filtering first gives the same answer with fewer rows to join: σ(R ⨝ S) = σ(R) ⨝ S whenever the test uses only R's columns.</li>
-          <li><b>The choices.</b> Statistics on table sizes and value spread decide each step: an index on age only if few rows pass (here nearly everyone is an adult, so scanning wins), a hash join when both inputs are large (Fig 13.4).</li>
+          <li><b>The choices.</b> Statistics on table sizes and value spread decide each step: an index on age (a lookup shortcut, Section 05) pays only if few rows pass, because each match costs a separate jump (when most rows pass, as in a typical users table, scanning wins), and a hash join is chosen when both inputs are large (Fig 13.4).</li>
           <li><b>Seeing it.</b> <code>EXPLAIN</code> in PostgreSQL or MySQL prints the plan the engine chose.</li>
         </ol>
       </details>
@@ -519,7 +514,7 @@
       executed three ways, and the gap between them is not small: the naïve
       strategy (for every row of one table, scan the whole other table)
       costs N×M row-comparisons, which on two million-row tables is a
-      trillion of them, minutes of work. The other two strategies buy their way
+      trillion of them, hours of work. The other two strategies buy their way
       out of that multiplication, one with a hash table and one with a sort, and
       the optimiser's job is to pick the cheapest for the tables in front of it.
     </p>
@@ -648,9 +643,9 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Nested loop.</b> O(|R| × |S|), yet the right choice when one side is tiny or the inner side has an index on the join key, so each outer row costs one index lookup.</li>
-          <li><b>Hash join.</b> O(|R| + |S|) for equality joins, if the smaller side's hash table fits in memory; otherwise it is split into partitions on disk.</li>
-          <li><b>Merge join.</b> O(|R| + |S|) after sorting, so it wins when the inputs already arrive sorted, for example from an index. The optimiser picks among the three from table sizes, indexes and the join condition.</li>
+          <li><b>Nested loop.</b> Work grows with the product of the two table sizes, yet it is the right choice when one side is tiny or the inner side has an index on the join key (Section 05), so each outer row costs one index lookup.</li>
+          <li><b>Hash join.</b> Work grows with the sum of the two sizes, for equality joins, if the smaller side's hash table fits in memory; otherwise it is split into partitions on disk.</li>
+          <li><b>Merge join.</b> Also the sum, after sorting, so it wins when the inputs already arrive sorted, for example from an index (Section 05). The optimiser picks among the three from table sizes, indexes and the join condition.</li>
         </ol>
       </details>
     </div>
@@ -658,7 +653,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/></svg></span>
       <p id="ch13-sql-p6" class="insight-text">
-        <strong>The 1979 Selinger paper.</strong> The optimiser-as-component, which estimates each plan's cost from statistics about the tables and finds the cheapest order in which to join them by working out the best way to join each small group of tables first and building up from there, was invented for IBM's System R by Patricia Selinger and described in a 1979 paper at SIGMOD, the main database research conference, that is among the most cited on query optimisation (<em>"Access Path Selection in a Relational Database Management System"</em>). Every cost-based optimiser since (Oracle's, PostgreSQL's, SQL Server's, the cloud warehouses') builds on Selinger's central idea: choose the plan by its estimated cost, using statistics about the data. Forty-seven years on, in 2026, the paper is still required reading in graduate database courses for the same reason Codd's is: both were definitive on first publication.
+        <strong>The 1979 Selinger paper.</strong> Patricia Selinger and her colleagues at IBM designed the cost-based optimiser for System R. It estimates each plan's cost from statistics about the tables, and finds the cheapest join order by working out the best way to join each small group of tables first and building up from there. Their 1979 paper at SIGMOD, the main database research conference (<em>"Access Path Selection in a Relational Database Management System"</em>), is among the most cited on query optimisation, and every cost-based optimiser since (Oracle's, PostgreSQL's, SQL Server's, the cloud warehouses') builds on it. Forty-seven years on, in 2026, the paper is still required reading in graduate database courses for the same reason Codd's is: both were definitive on first publication.
       </p>
     </div>
   </section>
@@ -699,9 +694,9 @@
       <svg viewBox="0 0 400 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6">
 <title id="svgt-part4-6">Fig 13.5 · A bank transfer · atomicity: all of it or none of it</title>
 <desc id="svgd-part4-6">A transfer of 100 euros from Alice, who has 200, to Bob, who has 50, interrupted by a power cut after Alice is debited and before Bob is paid. Without a transaction the restarted database shows Alice at 100 and Bob at 50: 100 euros have vanished. Inside BEGIN and COMMIT, the restart finds no commit record in the log and undoes the debit: Alice is back at 200 and the total is still 250.</desc>
-<g opacity="0.3"><rect x="10" y="6" width="120" height="24" rx="12" fill="none" stroke="#cf8d78" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="70" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/>debit Alice</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="6" width="120" height="24" rx="12" fill="none" stroke="#cf8d78" stroke-width="1.5"/><text x="70" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">debit Alice</text></g>
-<g opacity="1"><rect x="140" y="6" width="120" height="24" rx="12" fill="none" stroke="#b93b33" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="200" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c96761"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/>power cut</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="140" y="6" width="120" height="24" rx="12" fill="none" stroke="#bb3f37" stroke-width="1.5"/><text x="200" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c96761">power cut</text></g>
-<g opacity="0.74"><rect x="270" y="6" width="120" height="24" rx="12" fill="none" stroke="#c9a25a" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="330" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/>restart</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="270" y="6" width="120" height="24" rx="12" fill="none" stroke="#c9a25a" stroke-width="1.5"/><text x="330" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">restart</text></g>
+<g opacity="0.56"><rect x="10" y="6" width="120" height="24" rx="12" fill="none" stroke="rgba(230,217,189,1)" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="70" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,1)"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/>debit Alice</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.159800;0.160000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="10" y="6" width="120" height="24" rx="12" fill="none" stroke="#cf8d78" stroke-width="1.5"/><text x="70" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">debit Alice</text></g>
+<g opacity="0.56"><rect x="140" y="6" width="120" height="24" rx="12" fill="none" stroke="rgba(230,217,189,1)" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="200" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,1)"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/>power cut</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.319800;0.320000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="140" y="6" width="120" height="24" rx="12" fill="none" stroke="#bb3f37" stroke-width="1.5"/><text x="200" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c96761">power cut</text></g>
+<g opacity="0.56"><rect x="270" y="6" width="120" height="24" rx="12" fill="none" stroke="rgba(230,217,189,1)" stroke-width="1.5"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="330" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,1)"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/>restart</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="270" y="6" width="120" height="24" rx="12" fill="none" stroke="#c9a25a" stroke-width="1.5"/><text x="330" y="23" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">restart</text></g>
 <text x="10" y="52" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c46655">no transaction</text>
 <rect x="10" y="62" width="120" height="44" rx="3" fill="none" stroke="rgba(230,217,189,0.69)" stroke-opacity="0.6"/>
 <text x="20" y="79" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Alice</text>
@@ -730,7 +725,8 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.090800;0.091000;1.000000" dur="10s" repeatCount="indefinite"/><text x="150" y="209" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€50</text></g>
 <rect x="270" y="172" width="120" height="44" rx="3" fill="none" stroke="rgba(230,217,189,0.69)" stroke-opacity="0.6"/>
 <text x="280" y="189" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">total</text>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.090800;0.091000;1.000000" dur="10s" repeatCount="indefinite"/><text x="280" y="209" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="rgba(230,217,189,0.85)">€250</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.159800;0.160000;0.479800;0.480000;1.000000" dur="10s" repeatCount="indefinite"/><text x="280" y="209" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="rgba(230,217,189,0.85)">€250</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.159800;0.160000;0.479200;0.479500;1.000000" dur="10s" repeatCount="indefinite"/><text x="280" y="209" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="rgba(230,217,189,0.6)">€150?</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><text x="10" y="238" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">no COMMIT in the log: undone</text></g>
 </svg>
       <p id="ch13-acid-p3" class="diagram-caption">A transfer is two updates. If the power fails between them, a database without transactions wakes up with Alice debited and Bob unpaid; inside a <span class="key-term">transaction</span>, <code>BEGIN</code> to <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.</p>
@@ -762,16 +758,16 @@
       <div class="diagram-label">Fig 13.6&nbsp;· Write-ahead log&nbsp;· log first, mutate later, replay on crash</div>
       <svg viewBox="0 0 400 256" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-7 svgd-part4-7">
 <title id="svgt-part4-7">Fig 13.6 · Write-ahead log · log first, mutate later, replay on crash</title>
-<desc id="svgd-part4-7">A write-ahead log and two data pages. Transaction 42 moves Alice from 200 to 100 and commits; both records are forced to disk before the application is told OK, but Alice's page still says 200. Transaction 43 moves Bob from 50 to 150 without committing, and Bob's page is written early. The power fails. Recovery reads the log, redoes transaction 42 so Alice's page says 100, and undoes transaction 43 so Bob's says 50 again.</desc>
+<desc id="svgd-part4-7">A write-ahead log and two data pages. Transaction 42 raises Cara from 80 to 130 and commits; both records are forced to disk before the application is told OK, but Cara's page still says 80. Transaction 43 raises Dan from 20 to 70 without committing, and Dan's page is written early. The power fails. Recovery reads the log, redoes transaction 42 so Cara's page says 130, and undoes transaction 43 so Dan's says 20 again.</desc>
 <text x="10" y="18" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">write-ahead log, forced to disk</text>
 <rect x="10" y="28" width="240" height="22" rx="2" fill="none" stroke="rgba(230,217,189,0.91)" stroke-opacity="0.45"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.119800;0.120000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="44" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">T42  Alice 200 → 100</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.119800;0.120000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="44" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">T42  Cara 80 → 130</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.119800;0.120000;0.170000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="26" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <rect x="10" y="54" width="240" height="22" rx="2" fill="none" stroke="rgba(230,217,189,0.91)" stroke-opacity="0.45"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.179800;0.180000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="70" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">T42  commit</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.179800;0.180000;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="52" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <rect x="10" y="80" width="240" height="22" rx="2" fill="none" stroke="rgba(230,217,189,0.91)" stroke-opacity="0.45"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.279800;0.280000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="96" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c86e5e">T43  Bob 50 → 150</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.279800;0.280000;1.000000" dur="10s" repeatCount="indefinite"/><text x="18" y="96" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c86e5e">T43  Dan 20 → 70</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.279800;0.280000;0.330000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="78" width="244" height="26" rx="3" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <rect x="266" y="28" width="124" height="48" rx="3" fill="none" stroke="rgba(230,217,189,0.69)" stroke-opacity="0.6"/>
 <text x="276" y="46" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">application</text>
@@ -779,22 +775,22 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.229800;0.230000;1.000000" dur="10s" repeatCount="indefinite"/><text x="276" y="66" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">T42: OK</text></g>
 <text x="10" y="124" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c9a25a">data pages, written later</text>
 <rect x="10" y="134" width="180" height="46" rx="3" fill="none" stroke="#c9a25a" stroke-opacity="0.7"/>
-<text x="20" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Alice</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.539200;0.539500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€200</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€100</text><text x="180" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">redo</text></g>
+<text x="20" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Cara</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.539200;0.539500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€80</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.539800;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€130</text><text x="180" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">redo</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.539800;0.540000;0.590000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <rect x="210" y="134" width="180" height="46" rx="3" fill="none" stroke="#c9a25a" stroke-opacity="0.7"/>
-<text x="220" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Bob</text>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.339200;0.339500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€50</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.659200;0.659500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#c46655">€150</text></g>
+<text x="220" y="152" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">Dan</text>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.339200;0.339500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#e6d9bd">€20</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.659200;0.659500;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#c46655">€70</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.339800;0.340000;0.390000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="208" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.659800;0.660000;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€50</text><text x="380" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">undo</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.659800;0.660000;1.000000" dur="10s" repeatCount="indefinite"/><text x="220" y="172" text-anchor="start" font-family="Courier Prime" font-size="16" letter-spacing="0" fill="#a9bf8e">€20</text><text x="380" y="172" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">undo</text></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.659800;0.660000;0.710000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="208" y="132" width="184" height="50" rx="4" fill="none" stroke="#b8372f" stroke-width="2.5"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.599200;0.599500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="26" width="244" height="26" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.619800;0.620000;0.719200;0.719500;1.000000" dur="10s" repeatCount="indefinite"/><rect x="8" y="78" width="244" height="26" rx="3" fill="none" stroke="#a9bf8e" stroke-width="2.5"/></g>
-<g opacity="1"><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="#b8372f" stroke-width="2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c7615b"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/>power cut</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="#bb3f37" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c7615b">power cut</text></g>
+<g opacity="0.56"><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="rgba(230,217,189,1)" stroke-width="2"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/></rect><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,1)"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/>power cut</text></g><g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.419800;0.420000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="130" y="192" width="140" height="24" rx="12" fill="none" stroke="#bb3f37" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c7615b">power cut</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090800;0.091000;0.419200;0.419500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">running: log first, pages later</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.419800;0.420000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Alice's page stale, Bob's dirty</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.419800;0.420000;0.499200;0.499500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c05a48">Cara's page stale, Dan's dirty</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.499800;0.500000;0.759200;0.759500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#cf8d78">recovery: redo T42, undo T43</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.759800;0.760000;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="242" text-anchor="middle" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">consistent: T42 kept, T43 gone</text></g>
 </svg>
@@ -803,7 +799,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>Why it is fast.</b> Appending to one file is sequential; updating data pages means writes scattered across the disk. A commit costs one log flush, and the pages catch up in the background, at checkpoints.</li>
-          <li><b>Redo and undo.</b> This is the ARIES scheme (IBM, 1992), the model for DB2 and SQL Server; InnoDB follows the same redo-and-undo shape. PostgreSQL's log is redo-only: an aborted transaction's row versions simply stay invisible.</li>
+          <li><b>Redo and undo.</b> This is the ARIES scheme (IBM, 1992), the model for DB2 and SQL Server; MySQL's InnoDB engine follows the same redo-and-undo shape. PostgreSQL's log is redo-only: it keeps old and new versions of each row (MVCC, explained below), so an aborted transaction's versions simply stay invisible.</li>
           <li><b>The same idea elsewhere.</b> Journaling file systems (Chapter 4) and the replicated logs of Raft and Paxos (Chapter 17) write the intent before doing the deed.</li>
         </ol>
       </details>
@@ -814,9 +810,11 @@
     <p id="ch13-acid-p6">
       Isolation as defined above, with transactions appearing to run one
       at a time, is called <em>serializable</em>. It is the easiest to reason about and the most expensive to enforce.
-      The SQL standard defines four isolation levels in decreasing order of
-      strictness, each permitting more <em>anomalies</em> in exchange for
-      more concurrency.
+      The SQL standard defines four isolation levels; each step down from
+      serializable permits more <em>anomalies</em> in exchange for more
+      concurrency: a dirty read sees another transaction's uncommitted
+      change, a non-repeatable read sees a row change between two reads of
+      it, and a phantom sees new rows appear.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-7">
@@ -861,13 +859,12 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.519800;0.520000;1.000000" dur="10s" repeatCount="indefinite"/><text x="170" y="256" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">read committed:</text><text x="180" y="256" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#c46453">50</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.549800;0.550000;1.000000" dur="10s" repeatCount="indefinite"/><text x="170" y="276" text-anchor="end" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.85)">repeatable read:</text><text x="180" y="276" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">100</text></g>
 </svg>
-      <p id="ch13-acid-p7" class="diagram-caption">Each isolation level is defined by the anomalies it allows: a dirty read sees another transaction's uncommitted change, a non-repeatable read (re-read) sees a row change between two reads, a phantom sees new rows appear. Run once, the same re-read returns 50 under read committed and 100 under repeatable read.</p>
+      <p id="ch13-acid-p7" class="diagram-caption">Which anomalies each level allows, and one re-read run: the same read returns 50 under read committed and 100 under repeatable read.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The defaults.</b> PostgreSQL runs at read committed, MySQL's InnoDB at repeatable read; serializable is kept for code where an anomaly costs more than lost throughput.</li>
-          <li><b>The table is a minimum.</b> PostgreSQL's repeatable read is snapshot isolation and blocks phantoms too; snapshot isolation still allows write skew, which only serializable prevents.</li>
-          <li><b>How.</b> Engines either lock what a transaction reads, or keep old versions of rows so each transaction reads its own snapshot (MVCC).</li>
+          <li><b>The table is a minimum.</b> PostgreSQL's repeatable read blocks phantoms too: it gives each transaction one snapshot of the data (explained below). Only serializable also stops write skew: two transactions each check a rule against the same snapshot and both act, so together they break it (two doctors each go off call, each seeing the other still on duty).</li>
         </ol>
       </details>
     </div>
@@ -876,12 +873,13 @@
       What the standard does not say is how an engine <em>provides</em>
       these levels, and there are two families. The pessimistic
       family is locking: a transaction takes shared locks on what it
-      reads and exclusive locks on what it writes, holds them until commit, and anyone who would conflict
+      reads (other readers may share them; a writer must wait) and exclusive
+      locks on what it writes (everyone else waits), holds them until commit, and anyone who would conflict
       waits. The discipline is called two-phase locking, because every lock is taken before any is released. The other family is <span class="key-term">MVCC</span>, multi-version concurrency control: a writer never destroys a version of a row that a reader may still need (PostgreSQL appends a new version stamped with its transaction id; InnoDB updates in place and keeps the old one in an undo log), and every reader is handed
       a snapshot (the set of versions visible as of one instant), so a
       reader takes the old version while a writer adds the new one.
       Readers never block writers and writers never block readers.
-      PostgreSQL uses MVCC throughout: Read Committed takes a fresh snapshot per statement, Repeatable Read one per transaction, and Serializable also tracks which transactions read data that others wrote, and aborts (cancels and rolls back) one of them whenever their overlap could produce a result that running them one after the other, in any order, could not (sometimes when it strictly did not need to). MySQL's InnoDB mixes the families: MVCC snapshots for reads, plus locks on ranges of rows that stop phantoms appearing.
+      PostgreSQL uses MVCC throughout: read committed takes a fresh snapshot per statement, repeatable read one per transaction, and serializable also watches for concurrent transactions that read data another was changing. When two of them overlap in a way that might give a result no one-after-the-other order could, it aborts (cancels and rolls back) one, even when the overlap was harmless. MySQL's InnoDB mixes the families: MVCC snapshots for reads, plus locks on ranges of rows that stop phantoms appearing.
     </p>
   </section>
 
@@ -891,8 +889,8 @@
 
     <p id="ch13-indexes-p1" class="lead">
       Without indexes, every <code>WHERE</code> clause is a full-table
-      scan. Find one user out of ten million by name? Read all ten
-      million rows. The query is correct; it just takes seconds instead of milliseconds. (Engineers write this cost O(N): the work grows in step with the number of rows, N. The structures below cut it to O(log N), one more step each time the table multiplies in size, or O(1), about the same whatever the size.) An <strong>index</strong> is an auxiliary
+      scan. To find one user out of ten million by name, the engine reads
+      all ten million rows. The query is correct; it just takes seconds instead of milliseconds. (Engineers write this cost O(N): the work grows in step with the number of rows, N. The structures below cut it to O(log N), one more step each time the table grows by a fixed factor (about a hundredfold, for the B-tree below), or O(1), about the same whatever the size.) An <strong>index</strong> is an auxiliary
       data structure that maps values of one or more columns to the rows
       where those values appear. It makes lookups, range scans, and sorts
       dramatically faster, at the cost of disk space and slower writes
@@ -908,7 +906,9 @@
       filesystems, key-value stores, and most other systems that keep
       ordered data on disk. It is a balanced tree designed for the
       memory hierarchy of <a href="part-1#ch1">Chapter 1</a>: each node holds hundreds of keys (one disk page, typically 4 to 16 KB), so the tree is shallow (each extra level lets the tree reach a hundred or more times as many keys), and every lookup or insertion reads one page per level from root to
-      leaf. On a billion rows that is typically three or four levels, so
+      leaf, the keys in each upper page acting as signposts (below this key
+      go left, at or above it go right), with the real keys and their rows in
+      the leaves. On a billion rows that is typically three or four levels, so
       three or four page reads; once the tree has been in use, most of
       those pages sit in RAM and a lookup costs almost nothing. A range scan (every key from, say, 20 to 40) costs one descent to the first key plus a walk that grows with the number of rows returned, because the
       leaves are linked left-to-right (the <em>B+ tree</em> variant,
@@ -983,7 +983,8 @@
       result as a position in an array. An equality lookup (find the row whose key equals a given value) costs about the same few steps however big the table is: one hash, one array access, and a quick check of whatever else landed in the same slot. But the structure has no
       ordering, so range queries (<code>WHERE id BETWEEN 100 AND 200</code>)
       cannot use the index: the hashed positions are scattered across the
-      array, with no way to walk neighbours. Hash indexes win when every query is an equality lookup (a session table read by session ID, Redis and other in-memory key-value stores); B-trees win everywhere else. PostgreSQL has hash indexes, but they are rarely used, because the modern B-tree is so well optimised that its few extra page reads disappear into the noise.
+      array, with no way to walk neighbours (and a range can hold values
+      nobody could look up one by one, such as every name from Al to Am). Hash indexes win when every query is an equality lookup (a session table read by session ID, Redis and other in-memory key-value stores); B-trees win everywhere else. PostgreSQL has hash indexes, but they are rarely used, because the modern B-tree is so well optimised that its few extra page reads disappear into the noise.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-9">
@@ -1061,8 +1062,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>B-tree.</b> O(log N) to find a key, plus k to read k neighbours; it also serves <code>ORDER BY</code> and prefix matches such as <code>LIKE 'Al%'</code>.</li>
-          <li><b>Hash.</b> O(1) on average for equality, nothing for ranges or order (the toy hash here is 37 × id mod 8; real ones scramble harder). PostgreSQL's hash indexes are crash-safe (WAL-logged) since version 10, yet almost every index people create is a B-tree.</li>
-          <li><b>The cost of any index.</b> Every insert and update must keep each index in step, so too many indexes slow every write.</li>
+          <li><b>Hash.</b> O(1) on average for equality, nothing for ranges or order (the toy hash here is 37 × id mod 8; real ones scramble harder). PostgreSQL's hash indexes have been crash-safe (WAL-logged) since version 10.</li>
         </ol>
       </details>
     </div>
@@ -1088,8 +1088,11 @@
     </p>
 
     <p id="ch13-injection-p2">
-      Suppose a login form takes a username and password and constructs
-      the query by string concatenation:
+      Suppose a login form takes a username and password and builds the
+      query by string concatenation. SQL writes a text value between
+      apostrophes (<code>name='alice'</code>) and reads it up to the next
+      apostrophe; once the pieces are glued together, the database receives
+      one line and cannot tell which apostrophes the user typed:
     </p>
 
     <div class="diagram-card" id="fig-13-10">
@@ -1144,8 +1147,7 @@
       data values are sent to the database as separate things. The
       database parses the SQL once, with placeholder slots, then
       receives the values through a channel that does not touch the
-      parser. Whatever the attacker sends as a value (an apostrophe, a SQL keyword, a multi-statement payload) stays data and is never parsed as code. The predicate is
-      always exactly what the developer wrote.
+      parser. Whatever the attacker sends as a value (an apostrophe, a SQL keyword, a multi-statement payload) stays data and is never parsed as code.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-13-11">
@@ -1170,8 +1172,7 @@
 <text x="220" y="209" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">never parsed</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.189800;0.190000;0.250000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="17" y="181" width="186" height="46" rx="3" fill="none" stroke="#c05a48" stroke-width="2.5"/></g>
 <rect x="20" y="254" width="360" height="44" rx="2" fill="none" stroke="#c9a25a" stroke-opacity="0.9"/>
-<text x="32" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">plan: users,</text>
-<text x="133.4" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">name =</text>
+<text x="32" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#e6d9bd">plan: users, name =</text>
 <rect x="214" y="262" width="150" height="28" rx="2" fill="none" stroke="#a9bf8e" stroke-dasharray="4 3"/>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.469200;0.469500;1.000000" dur="10s" repeatCount="indefinite"/><text x="226" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="rgba(230,217,189,0.6)">?</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.469800;0.470000;0.789200;0.789500;1.000000" dur="10s" repeatCount="indefinite"/><text x="226" y="281" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">O'Brien</text></g>
@@ -1186,11 +1187,11 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.379800;0.380000;0.699200;0.699500;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">bound as data: the ' is only a letter</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.059950;0.060000;0.090000;0.090500;0.699800;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="324" text-anchor="start" font-family="Courier Prime" font-size="13" letter-spacing="0" fill="#a9bf8e">new value, same statement</text></g>
 </svg>
-      <p id="ch13-injection-p5" class="diagram-caption">With a parameterised query the SQL text, a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.</p>
+      <p id="ch13-injection-p5" class="diagram-caption">With a parameterised query the SQL text, with a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>On the wire.</b> PostgreSQL's extended query protocol and MySQL's prepared statements send the statement and its parameters as separate messages; a driver that only emulates this must escape every value correctly instead.</li>
+          <li><b>On the wire.</b> PostgreSQL's extended query protocol and MySQL's prepared statements send the statement and its parameters as separate messages; a database library that only emulates this has to escape every value itself (mark each apostrophe so the parser reads it as a letter).</li>
           <li><b>Values only.</b> A placeholder can hold a value but not a table or column name, so code that varies those must pick from a fixed list.</li>
           <li><b>Reuse.</b> The parsed statement can be kept and run again for each new value, which saves the parse.</li>
         </ol>
@@ -1200,7 +1201,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 8.5 12 13l8.5-4.5z"/><path d="M3.5 12.5 12 17l8.5-4.5"/><path d="M3.5 16.5 12 21l8.5-4.5"/></svg></span>
       <p id="ch13-injection-p6" class="insight-text">
-        <strong>Defence in depth.</strong> Parameterised queries close the primary vulnerability, but a serious application stacks more layers. <strong>ORMs</strong> (object-relational mappers, libraries such as Django ORM and ActiveRecord that let code read and write rows as ordinary objects while they write the SQL) use parameterised queries by default, so programmers using them rarely write raw SQL at all. <strong>Least-privilege database accounts</strong> ensure that even a successful injection cannot DROP TABLE, because the application's connection has only SELECT, INSERT, UPDATE on its own tables. <strong>Web Application Firewalls</strong> (Cloudflare, AWS WAF, ModSecurity) try to spot SQL-injection-shaped strings in HTTP requests and block them before they reach the application. <strong>Input validation</strong> rejects requests that don't match the expected shape (numeric IDs are numeric, dates are dates). None of these alone is sufficient; together they make SQL injection rare even when one layer fails.
+        <strong>Defence in depth.</strong> Parameterised queries close the primary vulnerability, but a serious application stacks more layers, because one query still built by hand anywhere in the program reopens the hole. <strong>ORMs</strong> (object-relational mappers, libraries such as Django ORM and ActiveRecord that let code read and write rows as ordinary objects while they write the SQL) use parameterised queries by default, so programmers using them rarely write raw SQL at all. <strong>Least-privilege database accounts</strong> ensure that even a successful injection cannot DROP TABLE, because the application's connection has only SELECT, INSERT, UPDATE on its own tables. <strong>Web Application Firewalls</strong> (Cloudflare, AWS WAF, ModSecurity) try to spot SQL-injection-shaped strings in HTTP requests and block them before they reach the application. <strong>Input validation</strong> rejects requests that don't match the expected shape (numeric IDs are numeric, dates are dates). None of these replaces parameterised queries; they catch what slips through when a query somewhere was built by concatenation after all.
       </p>
     </div>
 
@@ -1208,9 +1209,10 @@
 
     <p id="ch13-injection-p7">
       The relational model is fifty years old and shows no sign of being
-      replaced. NoSQL systems (databases that gave up fixed tables or SQL for speed or flexibility) rose to challenge it, and many of them later added schemas, joins or transactions. The reasons are not nostalgia: relational algebra is relationally complete and composes without limit, the transaction model is
-      mathematically precise, and the optimisation tooling (Selinger's
-      planner, the WAL, the B-tree) has had fifty years of battle-testing.
+      replaced. NoSQL systems (databases that gave up fixed tables or SQL for speed or flexibility) rose to challenge it, and many of them later added schemas, joins or transactions. Relational algebra is relationally complete and composes without limit, the transaction model is
+      mathematically precise, and the machinery underneath (Selinger's
+      planner, the write-ahead log, the B-tree) has been tested in
+      production for decades.
     </p>
 
     <p id="ch13-injection-p8">

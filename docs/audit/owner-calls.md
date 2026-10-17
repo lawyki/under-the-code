@@ -29,3 +29,10 @@ Fig BR.3 is a kept original; nothing below was changed. Open since Pass 29 (STAT
 ## Chapter 4
 
 - **Section 03 teaches the MMU again (ch4-vm-p2 to p8; ch4.json 40, verdict "owner"; part-2.json item 1).** The Bridge and Chapter 1 already teach the MMU, pages, the page-table walk and the TLB. Done in the text: p2 now points at the MMU of Fig BR.4 (its glossary entry homes in Chapter 1), and p7 and p8 keep only what the kernel must manage (the miss and the switch). Kept: p3 to p5 and Fig 4.8, because p4 holds the book's only derivation of the 512 GiB flat-table sum. Options: (a) leave as now; (b) the larger cut the judge proposed, one paragraph treating pages and tables as known (loses that derivation, or moves it to the Bridge). Recommended: (a).
+
+## Chapter 13
+
+Fig 13.10 is a kept original and the Codd pull-quote is owner text; nothing below was changed.
+
+- **Fig 13.10 caption (ch13-injection-p3): Sony PlayStation Network "(77 million)"** (ch13.json 16, 21). Standing after "130 million payment cards", the bare number reads as 77 million cards; they were accounts. Separately, Sony never confirmed that the 2011 PSN breach was SQL injection (the LulzSec breach of Sony Pictures that year was); this is the open call already in `docs/pass-30-figures.md` and §4g. Options: (a) "(77 million accounts)"; (b) replace PSN with Sony Pictures 2011 ("about a million accounts", confirmed SQL injection); (c) leave. Recommended: (b), or at least (a).
+- **Fig 13.10 payload line "exfiltrates every password hash"** (22, 51). The vulnerable query compares `pw` with the typed password, so the column as drawn holds plaintext. Recommended: "exfiltrates every stored password".
