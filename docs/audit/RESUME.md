@@ -20,10 +20,13 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Chapter 2: round 1 from `pre-read-audit-ch2-wip`; blind retest and one revision; Fig 2.3 fullscreen contrast fixed; checks green (`decisions/ch2.md` lists them). Commit "Pre-read audit: Chapter 2".
 
 - Chapter 3: round 1, blind retest, one revision; Figs 3.1, 3.3, 3.6 relabelled; the hero's own title id. Owner calls for Figs 3.7 to 3.11, their captions and the Aleph One quote. Checks green except the two container traces (pass25 on 6e63b69: invariants 812/0, parity 40/0, marks 106/0, ui 120/0, traces 231/2). Commit "Pre-read audit: Chapter 3".
-- The Bridge: round 1, blind retest, one revision; Figs BR.4, BR.6, BR.7, BR.8 corrected; BR.1 and BR.2 have their own title ids (no duplicate SVG ids left in Part I). Owner calls for Fig BR.3 and its caption. Gate 1 and clip green. Commit "Pre-read audit: the Bridge".
+- The Bridge: round 1, blind retest, one revision; Figs BR.4, BR.6, BR.7, BR.8 corrected; BR.1 and BR.2 have their own title ids (no duplicate SVG ids left in Part I). Owner calls for Fig BR.3 and its caption. Gate 1 and clip green. Commit "Pre-read audit: the Bridge" (pass25 on 2f771c5: as for Chapter 3).
+- Chapter 4: round 1, blind retest, one revision (Fig 4.4's values redrawn); Figs 4.3, 4.4, 4.16 fixed after Gate 1. Owner call recorded for the Section 03 MMU verdict. Gate 1 and clip green. Commit "Pre-read audit: Chapter 4" (58ddc46).
+- Chapter 8: round 1, blind retest, one revision; three captions trimmed after Gate 1; two glossary side effects fixed in the text. Gate 1 and clip green. Commit "Pre-read audit: Chapter 8" (4db5004).
 
 ## Next
-- ch4 (edits, retest and one revision done; Gate 1 running), then ch5, ch6, ch7 (+ part-2), ch8–ch12 (+ part-3), ch13–ch15 (+ part-4), ch16–ch18 (+ part-5).
+- Chapters are taken in two streams, one page each, so a gate can run on one while the other is edited: part-2 (ch5 applied, retested and revised, Gate 1 running; then ch6, ch7) and part-3 (ch9 applied, retest running; ch10, ch11, ch12 scripted and dry-run). Then ch13–ch15 (+ part-4), ch16–ch18 (+ part-5), then the close step.
+- Glossary for a commit is built in a second worktree holding HEAD plus that chapter's page only, so the other stream's uncommitted page does not leak into it.
 
 ## Running the checks in a cloud container (Linux)
 - `git fetch --unshallow origin` first: pass25's invariants read their baseline from commit d1bbb42, which a shallow clone lacks (it then compares the page with itself and reports 30 false tab-stop failures).
