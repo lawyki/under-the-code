@@ -75,8 +75,7 @@ a(f'<g>{held(max(ARR.values()) + 0.4)}{text(380, 312, "in order: 1 2 3", anchor=
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('<span class="key-term">Circuit switching</span> reserves one path for the whole call, even through the silences; a packet network shares every link, and each packet finds its own way, sometimes arriving out of order. '
-           'Computers talk in bursts, which is why the ARPANET was built on packets.')
+caption = ('The same call both ways: <span class="key-term">circuit switching</span> holds one path through every silence, while three packets cross a shared mesh by three paths, arrive 2, 1, 3 and are put back in order by B. Computers talk in bursts, which is why the ARPANET was built on packets.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

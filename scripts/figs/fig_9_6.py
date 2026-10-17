@@ -52,8 +52,7 @@ for i, (t0, _, col, s) in enumerate(STEPS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('BGP routes by passing announcements: the origin announces its prefix, and each network adds its own AS number before passing the route on, so every route carries the list of networks it crossed. '
-           'Seeing its own number in that list is how an AS spots a loop and drops it.')
+caption = ('Each AS adds its number as the announcement spreads (steps 1 to 3). When a copy comes back to AS 65001 carrying its own number, it knows the route has looped and drops it (step 4).')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

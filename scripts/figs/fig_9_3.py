@@ -89,8 +89,7 @@ a('</svg>')
 svg = '\n'.join(o)
 svg = svg.replace('<animate attributeName="fill" values="#10719d;#10719d" dur="1s"/>', '')
 
-caption = ('Paul Baran\'s 1964 RAND memoranda compared three shapes under attack: a star dies with its centre, a set of hubs loses whole regions, and a mesh with no hubs routes around its losses. '
-           'His case for the third, packets finding their own way through redundant links, became the design argument of the ARPANET.')
+caption = ("Paul Baran's 1964 RAND memoranda compared three shapes under attack: a star dies with its centre, a set of hubs loses whole regions, and a mesh with no hubs routes around its losses. His third shape, packets finding their own way through redundant links, became the ARPANET's design, though survival was never its purpose.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

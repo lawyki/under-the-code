@@ -75,8 +75,7 @@ for t0, t1, s in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Twenty bytes in front of every IPv4 packet, laid out as RFC 791 set them in 1981. '
-           'At each hop a router reads the destination to pick the next link, lowers the time to live by one and recomputes the checksum; the rest travels untouched.')
+caption = ('Twenty bytes in front of every IPv4 packet, laid out as RFC 791 set them in 1981. At each hop a router reads the destination to pick the next link, lowers the time to live by one and recomputes the checksum; the rest travels untouched.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

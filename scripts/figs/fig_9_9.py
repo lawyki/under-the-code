@@ -46,8 +46,7 @@ a(text(372, y + 18, 'device · 64 bits', anchor='end', size=13, fill=ROUTE_D, ls
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('IPv4 writes its 32 bits as four decimal octets; IPv6 writes 128 bits as eight hexadecimal groups, shortened by dropping leading zeros and collapsing one run of zero groups into <code>::</code>. '
-           'The first 64 bits name the network and the last 64 the device, a split the abundance makes affordable.')
+caption = ('IPv4 writes its 32 bits as four decimal octets; IPv6 writes 128 bits as eight hexadecimal groups, shortened by dropping leading zeros and collapsing one run of zero groups into <code>::</code>. The first 64 bits name the network and the last 64 the device, a split the abundance makes affordable.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

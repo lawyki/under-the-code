@@ -56,8 +56,7 @@ a(f'<g>{held(INC + 0.6)}{text(12, TY + 78, "from outside: no entry, dropped", si
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Since the free pool of IPv4 addresses ran out in 2011, many ISPs put customers behind carrier-grade NAT (<span class="key-term">CGNAT</span>): thousands of homes share one public address, each outgoing connection given its own port in a translation table. '
-           'A connection started from outside matches no entry and is dropped, so hosting anything from behind it fails.')
+caption = ('Many ISPs put customers behind carrier-grade NAT (<span class="key-term">CGNAT</span>), network address translation at ISP scale: hundreds of homes share one public address, and a translation table gives each outgoing connection its own port number (a label that tells conversations apart, Chapter 10). A connection started from outside matches no entry and is dropped, so nothing can be hosted from behind it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

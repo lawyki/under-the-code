@@ -58,8 +58,7 @@ a(f'<g opacity="0">{win(R2 + 0.6 + FALL + 0.6, D - 0.3)}{text(20, 326, "one miss
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A 4000-byte packet meets a link that carries at most 1500, so it is cut into three fragments, each with the same ID, its offset (in 8-byte units) and a more-fragments flag. '
-           'Lose any one and the receiver must throw the whole packet away, since IP cannot ask for a single fragment again.')
+caption = ('A packet carrying 4000 bytes of data meets a link that carries at most 1500 bytes, so it is cut into three fragments. Lose any one and the receiver must throw the whole packet away, since IP cannot ask for a single fragment again.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
