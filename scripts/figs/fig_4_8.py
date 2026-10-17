@@ -29,7 +29,7 @@ def lit(t0, t1):  # only during one step
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-9 svgd-part2-9">')
 a('<title id="svgt-part2-9">Fig 4.8 · x86-64 four-level page table walk</title>')
-a(f'<desc id="svgd-part2-9">The 48-bit virtual address {VA_TXT} split into four 9-bit table indices (255, 488, 81, 300) and a 12-bit page offset (1512). '
+a(f'<desc id="svgd-part2-9">The 48-bit virtual address {VA_TXT} split into four 9-bit table indexes (255, 488, 81, 300) and a 12-bit page offset (1512). '
   'The CR3 register holds the address of the top table. Entry 255 of the level-4 table points to a level-3 table, its entry 488 to a level-2 table, entry 81 to a level-1 table, '
   'and entry 300 to the physical page, where the offset picks the byte. Four table reads and then the data: five memory reads for one load.</desc>')
 a(text(FX0, 22, f'VIRTUAL ADDRESS {VA_TXT}', size=13, fill=MUTED))
@@ -85,12 +85,11 @@ for k in range(5):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The CPU splits a 48-bit address into four 9-bit indices and a 12-bit offset, then follows CR3 down a tree of four tables, one index per level. '
-           'Four table reads come before the data itself: five memory reads for one load, unless the TLB already holds the answer.')
+caption = ('The CPU splits a 48-bit address into four 9-bit indexes and a 12-bit offset, then follows CR3 down a tree of four tables, one index per level. Four table reads come before the data itself: five memory reads for one load, unless the TLB already holds the answer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why 9 bits.</b> A table is one 4 KB page of 8-byte entries, so it holds 512 of them, and 2<sup>9</sup> = 512. The last 12 bits address a byte inside a 4 KB page.</li>
+          <li><b>Why 9 bits.</b> A table is one 4 KiB page of 8-byte entries, so it holds 512 of them, and 2<sup>9</sup> = 512. The last 12 bits address a byte inside a 4 KiB page.</li>
           <li><b>The pointers.</b> CR3 holds the physical address of the top table; each entry holds the physical address of the next table down, plus permission bits.</li>
           <li><b>Sparse by design.</b> Tables exist only for regions the process uses, so a few megabytes of tables map a whole program. Newer CPUs can add a fifth level for 57-bit addresses.</li>
         </ol>

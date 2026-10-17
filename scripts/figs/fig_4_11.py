@@ -46,12 +46,11 @@ a(f'<g class="fx" opacity="0">{T.anim("opacity", [(0.0, 0.0), (TT[2005] - 0.002,
 H = Y[2017] + 26
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-12 svgd-part2-12">')
 o.insert(1, '<title id="svgt-part2-12">Fig 4.11 · Dirty COW: the race that broke Linux</title>')
-o.insert(2, '<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a first fix for the race is made and later undone; from Linux 2.6.22 in 2007 the flaw ships in every kernel, for nine years; in October 2016 it is seen in use and patched within hours; in 2017 a related flaw turns up in the huge-page code.</desc>')
+o.insert(2, '<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a fix for the race is made and undone within days; Linux 2.6.22 of 2007 is the oldest kernel the advisories list, and the flaw is in every kernel for nine years or more; in October 2016 it is seen in use and patched within hours; in 2017 a related flaw turns up in the huge-page code.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Dirty COW broke copy-on-write\'s one promise, that a write lands in a private copy and never in the file. '
-           'It shipped in Linux for nine years, was patched within hours of being seen in use in October 2016, and a related flaw followed in the huge-page code a year later.')
+caption = ("Dirty COW broke copy-on-write's one promise, that a write lands in a private copy and never in the file. It shipped in Linux for at least nine years, was patched within hours of being seen in use in October 2016, and a related flaw followed in the huge-page code a year later.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

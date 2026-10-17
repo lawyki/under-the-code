@@ -48,8 +48,7 @@ for x, lines in ((VX, ['a kernel per VM', 'gigabytes each', 'boots in seconds'])
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A virtual machine runs its own guest kernel on a hypervisor; a container is an ordinary process whose system calls go to the one host kernel, fenced by namespaces (what it can see) and cgroups (what it can use). '
-           'That shared kernel is why containers are light, and why one kernel bug can reach every container on the host.')
+caption = ('A virtual machine runs its own guest kernel on a hypervisor; a container is an ordinary process whose system calls go to the one host kernel, fenced by namespaces (what it can see) and cgroups (what it can use).')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

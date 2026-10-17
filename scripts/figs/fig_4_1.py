@@ -13,7 +13,7 @@ a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" ari
 a('<title id="svgt-part2-1">Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992</title>')
 a('<desc id="svgd-part2-1">A newsgroup thread on comp.os.minix, 29 January 1992. Andrew Tanenbaum posts "LINUX is obsolete": a monolithic kernel is a giant step back into the 1970s. '
   'Linus Torvalds replies: "Your job is being a professor and researcher: that\'s one hell of a good excuse for some of the brain-damages of minix." '
-  'Below, where the two designs ended up: microkernels such as seL4 and QNX in safety-critical systems, the monolithic Linux nearly everywhere else.</desc>')
+  'Below, where the two designs ended up: microkernels such as seL4 and QNX in safety-critical systems, the monolithic Linux across servers, phones and supercomputers.</desc>')
 a(text(20, 22, '$ comp.os.minix · 29 Jan 1992', size=14, fill=PHOS))
 # post 1
 a(f'<rect x="20" y="34" width="360" height="110" rx="4" fill="{PLATE}" stroke="rgba(132,255,178,0.4)"/>')
@@ -34,15 +34,14 @@ a(f'<rect x="300" y="280" width="9" height="14" fill="{PHOS}" opacity="0">'
   f'<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.5;0.51" dur="1s" repeatCount="indefinite"/></rect>')
 # where each design went
 a(text(20, 332, 'THIRTY YEARS ON', size=13, fill=MUTED))
-for k, (head, sub) in enumerate((('microkernels', 'seL4, QNX: safety-critical'), ('monolithic', 'Linux: nearly everywhere'))):
+for k, (head, sub) in enumerate((('microkernels', 'seL4, QNX: safety-critical'), ('monolithic', 'Linux: servers, phones'))):
     y = 342 + k * 30
     a(f'<g opacity="0">{line_at(6.4 + k * 0.6)}<rect x="20" y="{y}" width="360" height="26" rx="4" fill="{PANEL}" stroke="rgba(132,255,178,0.35)"/>'
       f'{text(30, y + 18, head, size=14, fill=PHOS, ls="0")}{text(370, y + 18, sub, anchor="end", size=13, fill=PHOS_SOFT, ls="0")}</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('In January 1992 Andrew Tanenbaum told comp.os.minix that Linux\'s monolithic design was obsolete; Linus Torvalds, twenty-two, answered at length. '
-           'Three decades on both were right: microkernels are strong in safety-critical systems, and Linux runs nearly everything else.')
+caption = ("The thread itself: Tanenbaum's opening post of 29 January 1992 and the reply from Torvalds, then twenty-two. Below, where each design runs today: microkernels in safety-critical systems, Linux in most servers, phones and supercomputers.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -60,13 +60,12 @@ for k, rho in enumerate(LOADS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Little\'s Law ties a queue\'s length to its arrival rate and wait: L = λW, for any stable queue. '
-           'As utilisation nears 100% the time in the system grows like <span style="white-space:nowrap">1/(1 − ρ)</span>: five times the bare service time at 80% load, twenty times at 95%.')
+caption = ('Little\'s Law ties a queue\'s length to its arrival rate and wait: L = λW, for any stable queue. As utilisation nears 100% the time in the system grows like <span style="white-space:nowrap">1/(1 − ρ)</span>: five times the bare service time at 80% load, twenty times at 95%.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The law.</b> Average number in the system = arrival rate × average time in it. It needs no assumption about how arrivals or service times are distributed.</li>
-          <li><b>The curve.</b> For the simplest queue (random arrivals, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
+          <li><b>The curve.</b> For the simplest queue (random arrivals and service times, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
           <li><b>The cliff.</b> From 50% to 60% load the time in the system grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
         </ol>
       </details>'''

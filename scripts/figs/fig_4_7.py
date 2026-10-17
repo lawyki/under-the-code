@@ -59,7 +59,7 @@ caption = ('A real-time task must finish each job inside its period: here every 
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Hard real time.</b> Real-time kernels (PREEMPT_RT Linux, VxWorks, QNX, FreeRTOS) guarantee a ready task runs within a bounded time, even under load.</li>
+          
           <li><b>The guarantee.</b> Rate-monotonic scheduling meets every deadline if total utilisation stays under about 69%; earliest-deadline-first, up to 100% (Liu and Layland, 1973).</li>
           <li><b>The overrun.</b> A job that takes longer than its budget breaks the arithmetic, which is why real-time code is written to bounded, measured worst cases.</li>
         </ol>

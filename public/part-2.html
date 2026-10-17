@@ -93,9 +93,9 @@
     <div id="ch4-hero-label" class="chapter-label">Chapter 04</div>
     <h1 id="ch4-hero-title">The Code That<br>Owns the<br><em>Machine</em></h1>
     <p id="ch4-hero-lead" class="chapter-subtitle">
-      One program stays loaded from boot to shutdown. It owns the CPU, the memory, the disks, the network.
-      Every other program lives at its mercy. Without it, modern computing is impossible:
-      no multitasking, no security, no internet. This is the kernel.
+      One program stays loaded from boot to shutdown. It owns the CPU, the memory, the disks
+      and the network, and every other program reaches them only through it. This chapter
+      opens that program, the kernel.
     </p>
     <div class="chapter-meta">
       <div class="meta-item"><span class="meta-label">Topics</span><span class="meta-value">Scheduler · Virtual memory · Filesystems · IPC · Security</span></div>
@@ -173,7 +173,7 @@
     <h2>The kernel is just a program</h2>
 
     <p id="ch4-anatomy-p1" class="lead">
-      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract authority, a governing law of the machine. <a href="part-1#chBridge">The Bridge</a> at the close of <a href="part-1">Part I</a> showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer, and MMIO with DMA), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.
+      It is easy, after <a href="part-1#ch1">Chapter 1</a>, to think of the kernel as some abstract authority, a governing law of the machine. <a href="part-1#chBridge">The Bridge</a> at the close of <a href="part-1">Part I</a> showed otherwise: the hardware supplies a contract (the privilege bit, the trap, the MMU, the timer, and MMIO with DMA), and on the kernel side of it is a program: instructions stored in memory and executed by the same CPU as everything else. The Linux kernel, as of 2025, is roughly 30 million lines of code, nearly all of it C. What makes it the kernel is not what it is made of but where it sits: in Ring 0, with hardware-enforced privileges no other program has.
     </p>
 
     <p id="ch4-anatomy-p2">
@@ -181,8 +181,8 @@
       address in the motherboard's built-in firmware, historically called the <strong>BIOS</strong> and now usually <strong>UEFI</strong>. The firmware initialises hardware, finds the boot device, and loads
       a small program called a <em>bootloader</em> (GRUB on Linux, Windows Boot Manager,
       iBoot on Apple devices). The bootloader's only job is to find the kernel image on
-      disk, load it into memory, and jump to its entry point. From that moment, the
-      kernel runs until the machine shuts down.
+      disk, load it into memory, and jump to its entry point. From that moment the
+      kernel stays in memory, in charge of the machine, until it shuts down.
     </p>
 
     <h3>Monolithic vs microkernel: the great schism</h3>
@@ -193,18 +193,18 @@
     </p>
 
     <p id="ch4-anatomy-p5">
-      A <span class="key-term">microkernel</span> puts only the absolute minimum in Ring 0, typically just message passing, basic memory protection, and minimal scheduling. Filesystems, drivers and network code run as separate programs in Ring 3, which ask each other for work through messages the kernel carries. A bug in a driver then crashes only the driver. The cost is speed: every request between those parts crosses into the kernel and out again. Andrew Tanenbaum's MINIX is a microkernel; so is seL4, which is formally verified, meaning mathematically proven to have no kernel bugs of certain classes.
+      A <span class="key-term">microkernel</span> puts only the absolute minimum in Ring 0, typically just message passing, basic memory protection, and minimal scheduling. Filesystems, drivers and network code run as separate programs in Ring 3 (the kernel maps just a driver's own device registers into it and passes on its device's interrupts as messages), which ask each other for work through messages the kernel carries. A bug in a driver then crashes only the driver. The cost is speed: every request between those parts crosses into the kernel and out again. Andrew Tanenbaum's MINIX is a microkernel; so is seL4, which is formally verified, meaning mathematically proven to have no kernel bugs of certain classes.
     </p>
 
     <p id="ch4-anatomy-p6">
-      In 1992, Tanenbaum criticised the then-new Linux on a USENET newsgroup, calling its monolithic design "obsolete" and "a giant step back into the 1970s." Linus Torvalds, its author, answered bluntly and at length. Tanenbaum was right that a microkernel contains a bug's damage; Torvalds, that a monolithic kernel was simpler and faster, and Linux ran on the machines people had. Neither design has displaced the other.
+      In 1992, Tanenbaum criticised the then-new Linux on a Usenet newsgroup, calling its monolithic design "obsolete" and "a giant step back into the 1970s." Linus Torvalds, its author, answered bluntly and at length. Tanenbaum was right that a microkernel contains a bug's damage; Torvalds, that a monolithic kernel was simpler and faster, and Linux ran on the machines people had. Neither design has displaced the other.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-1">
       <div class="diagram-label">Fig 4.1&nbsp;· The Tanenbaum–Torvalds debate, January 1992</div>
       <svg viewBox="0 0 400 402" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-1 svgd-part2-1">
 <title id="svgt-part2-1">Fig 4.1 · The Tanenbaum–Torvalds debate, January 1992</title>
-<desc id="svgd-part2-1">A newsgroup thread on comp.os.minix, 29 January 1992. Andrew Tanenbaum posts "LINUX is obsolete": "LINUX is a monolithic style system. … a giant step back into the 1970s." Linus Torvalds replies: "Your job is being a professor and researcher: that's one hell of a good excuse for some of the brain-damages of minix." Below, where the two designs ended up: microkernels such as seL4 in safety-critical systems, the monolithic Linux nearly everywhere else.</desc>
+<desc id="svgd-part2-1">A newsgroup thread on comp.os.minix, 29 January 1992. Andrew Tanenbaum posts "LINUX is obsolete": "LINUX is a monolithic style system. … a giant step back into the 1970s." Linus Torvalds replies: "Your job is being a professor and researcher: that's one hell of a good excuse for some of the brain-damages of minix." Below, where the two designs ended up: microkernels such as seL4 in safety-critical systems, the monolithic Linux across servers, phones and supercomputers.</desc>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0.06em" fill="#84ffb2">$ comp.os.minix · 29 Jan 1992</text>
 <rect x="20" y="34" width="360" height="110" rx="4" fill="none" stroke="rgba(132,255,178,0.4)"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.139900;0.140000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="58" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">From: ast (Andrew Tanenbaum)</text></g>
@@ -222,9 +222,9 @@
 <rect x="300" y="280" width="9" height="14" fill="#84ffb2" opacity="0"><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.5;0.51" dur="1s" repeatCount="indefinite"/></rect>
 <text x="20" y="332" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">THIRTY YEARS ON</text>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.739900;0.740000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="342" width="360" height="26" rx="4" fill="none" stroke="rgba(132,255,178,0.39)"/><text x="30" y="360" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">microkernels</text><text x="370" y="360" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">seL4: safety-critical</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.799900;0.800000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="372" width="360" height="26" rx="4" fill="none" stroke="rgba(132,255,178,0.39)"/><text x="30" y="390" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">monolithic</text><text x="370" y="390" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">Linux: nearly everywhere</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.070000;0.070100;0.099950;0.100000;0.799900;0.800000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="20" y="372" width="360" height="26" rx="4" fill="none" stroke="rgba(132,255,178,0.39)"/><text x="30" y="390" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">monolithic</text><text x="370" y="390" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">Linux: servers, phones</text></g>
 </svg>
-      <p id="ch4-anatomy-p7" class="diagram-caption">In January 1992 Andrew Tanenbaum told comp.os.minix that Linux's monolithic design was obsolete; Linus Torvalds, twenty-two, answered at length. Three decades on both were right: microkernels are strong in safety-critical systems, and Linux runs nearly everything else.</p>
+      <p id="ch4-anatomy-p7" class="diagram-caption">The thread itself: Tanenbaum's opening post of 29 January 1992 and the reply from Torvalds, then twenty-two. Below, where each design runs today: microkernels in safety-critical systems, Linux in most servers, phones and supercomputers.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -241,7 +241,7 @@
       <div class="diagram-label">Fig 4.2&nbsp;· Monolithic vs microkernel&nbsp;· speed against safety</div>
       <svg viewBox="0 0 400 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-2 svgd-part2-2">
 <title id="svgt-part2-2">Fig 4.2 · Monolithic vs microkernel · speed against safety</title>
-<desc id="svgd-part2-2">Two kernels serve the same file read. In the monolithic kernel the program crosses into the kernel once, the file system and the disk driver run inside it, and the answer crosses back: two crossings. In the microkernel the file system and the driver are separate user programs, so the request hops through the kernel's message passing four times each way: eight crossings. Then a driver bug: in the monolithic kernel it brings down the whole machine; in the microkernel only the driver process fails and is restarted.</desc>
+<desc id="svgd-part2-2">Two kernels serve the same file read. In the monolithic kernel the program crosses into the kernel once, the filesystem and the disk driver run inside it, and the answer crosses back: two crossings. In the microkernel the filesystem and the driver are separate user programs, so the request hops through the kernel's message passing four times each way: eight crossings. Then a driver bug: in the monolithic kernel it brings down the whole machine; in the microkernel only the driver process fails and is restarted.</desc>
 <defs><clipPath id="ko-fig-4-2-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM136 262h118v30h-118ZM270 262h100v30h-100ZM40 262h76v30h-76Z"/></clipPath><clipPath id="ko-fig-4-2-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM40 54h76v30h-76Z"/></clipPath></defs>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#84ffb2">MONOLITHIC · Linux</text>
 <rect x="20" y="32" width="360" height="62" rx="4" fill="none" stroke="rgba(132,255,178,0.39)" clip-path="url(#ko-fig-4-2-2)"/>
@@ -272,8 +272,8 @@
 <text x="370" y="369" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">message passing</text>
 <circle class="fx" r="7" fill="#84ffb2" stroke="none" stroke-width="2"><animate attributeName="cx" values="104;104;104;104;104;198;198;294;294;198;198;104;104" keyTimes="0.000000;0.533292;0.533333;0.558333;0.649917;0.650000;0.741583;0.741667;0.833250;0.833333;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><animate attributeName="cy" values="69;69;69;69;69;145;145;145;145;145;145;69;69" keyTimes="0.000000;0.533292;0.533333;0.558333;0.649917;0.650000;0.741583;0.741667;0.833250;0.833333;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.024833;0.024917;0.533292;0.533333;0.558250;0.558333;1.000000" dur="12s" repeatCount="indefinite"/></circle>
 <circle class="fx" r="7" fill="#84ffb2" stroke="#0c120e" stroke-width="2"><animate attributeName="cx" values="104;104;104;104;104;104;104;242;242;242;242;358;358;358;358;242;242;242;242;104;104" keyTimes="0.000000;0.533292;0.533333;0.558333;0.604083;0.604167;0.649917;0.650000;0.695750;0.695833;0.741583;0.741667;0.787417;0.787500;0.833250;0.833333;0.879083;0.879167;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><animate attributeName="cy" values="277;277;277;277;277;348;348;277;277;348;348;277;277;348;348;277;277;348;348;277;277" keyTimes="0.000000;0.533292;0.533333;0.558333;0.604083;0.604167;0.649917;0.650000;0.695750;0.695833;0.741583;0.741667;0.787417;0.787500;0.833250;0.833333;0.879083;0.879167;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.024833;0.024917;0.533292;0.533333;0.558250;0.558333;1.000000" dur="12s" repeatCount="indefinite"/></circle>
-<text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 1<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.533292;0.533333;0.649917;0.650000;0.833167;0.833250;1.000000" dur="12s" repeatCount="indefinite"/></text>
-<text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 2<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.524833;0.524917;0.533292;0.533333;0.833250;0.833333;1.000000" dur="12s" repeatCount="indefinite"/></text>
+<text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 1<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.533292;0.533333;0.649917;0.650000;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/></text>
+<text x="380" y="22" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 2<animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.524833;0.524917;0.533292;0.533333;0.924917;0.925000;1.000000" dur="12s" repeatCount="indefinite"/></text>
 <text x="380" y="230" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 1<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.533292;0.533333;0.604083;0.604167;0.649833;0.649917;1.000000" dur="12s" repeatCount="indefinite"/></text>
 <text x="380" y="230" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 2<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.533292;0.533333;0.649917;0.650000;0.695667;0.695750;1.000000" dur="12s" repeatCount="indefinite"/></text>
 <text x="380" y="230" text-anchor="end" font-family="IBM Plex Mono" font-size="14" fill="#84ffb2" opacity="0">crossings: 3<animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.533292;0.533333;0.695750;0.695833;0.741500;0.741583;1.000000" dur="12s" repeatCount="indefinite"/></text>
@@ -289,12 +289,12 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.066583;0.066667;0.249833;0.249917;0.533292;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="320" y="256" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">driver fails</text></g>
 <text x="20" y="402" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">speed: fewer crossings · safety: smaller blast</text>
 </svg>
-      <p id="ch4-anatomy-p9" class="diagram-caption">A monolithic kernel runs everything in Ring 0, so a file read crosses the boundary twice; a microkernel runs file systems and drivers as separate programs, so the same read crosses eight times. The price buys safety: a driver bug takes down one process, not the machine.</p>
+      <p id="ch4-anatomy-p9" class="diagram-caption">A monolithic kernel runs everything in Ring 0, so a file read crosses the boundary twice; a microkernel runs filesystems and drivers as separate programs, so the same read crosses eight times. The price buys safety: a driver bug takes down one process, not the machine.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Monolithic.</b> Scheduler, memory, file systems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
-          <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that talks by IPC.</li>
+          <li><b>Monolithic.</b> Scheduler, memory, filesystems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
+          <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that sends its requests as messages through the kernel.</li>
           <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; a bug in any component outside Ring 0 cannot corrupt the kernel, so microkernels are safer.</li>
         </ol>
       </details>
@@ -337,11 +337,11 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.179800;0.179900;0.539950;0.540000;0.839900;0.840000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="200" y="306" width="170" height="16" rx="2" fill="none"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">init function runs</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.199900;0.200000;0.259800;0.259900;0.539950;0.540000;1.000000" dur="10s" repeatCount="indefinite"/><text x="372" y="318" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">exit function runs</text></g>
 </svg>
-      <p id="ch4-anatomy-p11" class="diagram-caption">insmod loads a separately built module into the running kernel: each kernel function it calls is looked up by name in the kernel's symbol table, its init function runs, and from then on it is part of Ring 0. rmmod takes it out again, so Linux stays monolithic in speed but modular in practice.</p>
+      <p id="ch4-anatomy-p11" class="diagram-caption">The command <code>insmod</code> loads a separately built module into the running kernel, and <code>rmmod</code> takes it out again. The module cannot know where the kernel's functions sit, so each one it calls is looked up by name in the symbol table, which pairs names with addresses; then its init function runs inside Ring 0.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Load.</b> The kernel allocates memory for the module, copies its code in, and resolves every kernel function it calls by name in the symbol table.</li>
+          <li><b>Load.</b> The kernel allocates memory for the module, copies its code in, and finds the address of every kernel function it calls in the symbol table, by name.</li>
           <li><b>Start.</b> It calls the module's module_init(); a driver registers itself with the subsystem it serves.</li>
           <li><b>Still Ring 0.</b> A loaded module has the kernel's full power, so a buggy one can crash the machine (Fig 4.2).</li>
           <li><b>Unload.</b> rmmod calls module_exit(), frees the memory and forgets the module. lsmod lists what is loaded.</li>
@@ -373,19 +373,17 @@
     <h3>Cooperative vs preemptive: who interrupts whom</h3>
 
     <p id="ch4-scheduling-p2">
-      The earliest multi-tasking systems were <em>cooperative</em>: each running program
-      voluntarily yielded control back to the scheduler when it had nothing useful to
-      do. Mac OS through version 9 worked this way, as did 16-bit Windows. The model is
-      simple and lightweight, but one misbehaving program that never yields freezes the
-      entire machine.
+      Many early personal-computer systems were <em>cooperative</em>, the model the Bridge
+      described: each running program yielded the CPU back to the scheduler when it chose,
+      so one that never yielded froze the entire machine. Mac OS through version 9 worked
+      this way, as did 16-bit Windows.
     </p>
 
     <p id="ch4-scheduling-p3">
-      Modern systems are <em>preemptive</em>: the kernel forcibly takes the CPU back
-      from a running process at regular intervals, ready or not. The mechanism is the
-      hardware <strong>timer interrupt</strong>: a timer on the CPU core itself,
-      introduced in the Bridge, programmed by the kernel to fire at a set rate
-      (typically 100–1000 times per second on Linux). Each interrupt forces the CPU into
+      Modern systems are <em>preemptive</em>: the kernel takes the CPU back from a
+      running process at regular intervals, ready or not. The mechanism is the
+      hardware <strong>timer interrupt</strong>: the Bridge's timer in each core,
+      which Linux sets to fire 100–1000 times a second. Each interrupt forces the CPU into
       Ring 0, where the scheduler runs and either resumes the current process or
       switches to a different one.
     </p>
@@ -398,48 +396,48 @@
       <thead><tr><th>Algorithm</th><th>How it works</th><th>Trade-off</th></tr></thead>
       <tbody>
         <tr><td>FCFS</td><td>First-come, first-served. Run processes in arrival order until they finish.</td><td>Simple. Terrible response time: one long process blocks all the short ones (the "convoy effect").</td></tr>
-        <tr><td>SJF</td><td>Shortest Job First. Pick the process with the shortest remaining time.</td><td>Provably optimal for average wait when every job is ready at the start. Requires knowing job length in advance, which you usually don't.</td></tr>
+        <tr><td>SJF</td><td>Shortest Job First. When the CPU is free, pick the waiting job with the least work and run it to the end.</td><td>Provably optimal for average wait when every job is ready at the start. Requires knowing job length in advance, which you usually don't.</td></tr>
         <tr><td>Round Robin</td><td>Each process gets a fixed time slice ("quantum"). When it expires, move to the next.</td><td>Fair. Responsive. Doesn't optimise for total throughput.</td></tr>
         <tr><td>Priority</td><td>Each process has a priority number. Higher priority runs first.</td><td>Lets the system favor critical work. Risk: low-priority processes can be <em>starved</em> indefinitely.</td></tr>
-        <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length. Windows and classic UNIX schedulers descend from it.</td></tr>
-        <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default 2007–2023. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." O(log N) per scheduling decision via a red-black tree.</td></tr>
+        <tr><td>MLFQ</td><td>Multilevel Feedback Queue. Multiple priority levels; processes that use a lot of CPU drift to lower priorities, processes that wait often rise.</td><td>Approximates SJF without knowing job length, when short jobs mix with long ones. Windows and classic UNIX schedulers descend from it.</td></tr>
+        <tr><td>CFS</td><td>Completely Fair Scheduler. Linux's default 2007–2023. Tracks how much CPU each process has used; always runs whichever has used the least.</td><td>Approximates "everyone runs at exactly 1/N speed on N processes." A red-black tree makes each decision take one more step each time the number of processes doubles, written O(log N).</td></tr>
       </tbody>
     </table>
 
     <p id="ch4-scheduling-p5">
-      Linux's <strong>CFS</strong> keeps every runnable process in a tree sorted by <em>virtual runtime</em>, a measure of how much CPU time the process has had, weighted by its priority: a high-priority process's virtual runtime grows more slowly, so it is picked more often. Smaller values sit to the left, and the leftmost process, furthest behind, runs next. After its turn it goes back in further right; one that stops to wait leaves the tree until it is ready. It is a red-black tree, which rebalances itself as processes come and go, so it stays quick even with thousands. Every process thus tends toward its fair share. Since kernel 6.6 (2023), Linux's default is CFS's successor <strong>EEVDF</strong> (Earliest Eligible Virtual Deadline First), which keeps the same bookkeeping but gives every task an explicit deadline, so work that must respond quickly runs on time rather than merely fairly.
+      Linux's <strong>CFS</strong> keeps every runnable process in a tree sorted by <em>virtual runtime</em>, a measure of how much CPU time the process has had, weighted by its priority: a high-priority process's virtual runtime grows more slowly, so it is picked more often. Smaller values sit to the left, and the leftmost process, furthest behind, runs next. After its turn it goes back in further right; one that stops to wait leaves the tree until it is ready. It is a red-black tree: each step down from the top rules out about half the processes still in play, so even thousands are reached in a dozen or so steps, and after each change the tree rearranges a few nodes so that no branch grows much longer than the rest. Every process thus tends toward its fair share. Since kernel 6.6 (2023), Linux's default is CFS's successor <strong>EEVDF</strong> (Earliest Eligible Virtual Deadline First), which keeps the same bookkeeping but gives every task a virtual deadline set by the slice it asks for, so a task that asks for short slices gets the CPU sooner without taking more than its share.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-4">
       <div class="diagram-label">Fig 4.4&nbsp;· CFS chooses the leftmost node of a red-black tree</div>
       <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-4 svgd-part2-4">
 <title id="svgt-part2-4">Fig 4.4 · CFS chooses the leftmost node of a red-black tree</title>
-<desc id="svgd-part2-4">Seven runnable processes in a balanced search tree, keyed by how much CPU time each has had, its virtual runtime. The leftmost, 3.2, is the furthest behind, so it runs next. While it runs its virtual runtime grows to 13.0; when its turn ends it goes back into the tree on the right, and the new leftmost, 8.1, runs next.</desc>
+<desc id="svgd-part2-4">Six runnable processes in a balanced search tree, keyed by how much CPU time each has had, its virtual runtime. The leftmost, 3.2, is the furthest behind, so it runs next. While it runs its virtual runtime grows until it is a little past the others, to 8.9; when its turn ends it goes back into the tree after 8.6, as a new leaf, and the new leftmost, 8.1, runs next.</desc>
 <defs><clipPath id="ko-fig-4-4-1" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM138 142h44v44h-44ZM88 82h44v44h-44Z"/></clipPath><clipPath id="ko-fig-4-4-2" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM318 142h44v44h-44ZM268 82h44v44h-44Z"/></clipPath><clipPath id="ko-fig-4-4-3" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM218 142h44v44h-44ZM268 82h44v44h-44Z"/></clipPath><clipPath id="ko-fig-4-4-4" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM178 22h44v44h-44ZM88 82h44v44h-44Z"/></clipPath><clipPath id="ko-fig-4-4-5" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM178 22h44v44h-44ZM268 82h44v44h-44Z"/></clipPath><clipPath id="ko-fig-4-4-6" clipPathUnits="userSpaceOnUse"><path clip-rule="evenodd" d="M-2000 -2000H4000V4000H-2000ZM88 82h44v44h-44Z"/></clipPath></defs>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.2" y1="56.54" x2="128.81" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.8" y1="56.54" x2="271.19" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="95.53" y1="121.36" x2="74.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="275.53" y1="121.36" x2="254.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">12.4</text><circle cx="110" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="60" cy="164" r="22" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="60" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">3.2</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">10.0</text><circle cx="240" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="240" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">15.5</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099900;0.100000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.2" y1="56.54" x2="128.81" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.8" y1="56.54" x2="271.19" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="275.53" y1="121.36" x2="254.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">12.4</text><circle cx="110" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">10.0</text><circle cx="240" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="240" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">15.5</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.2" y1="56.54" x2="128.81" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.8" y1="56.54" x2="271.19" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="95.53" y1="121.36" x2="74.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="275.53" y1="121.36" x2="254.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">13.0</text><circle cx="110" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">10.0</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="60" cy="164" r="22" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="60" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">12.4</text><circle cx="240" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="240" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">15.5</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.2" y1="56.54" x2="128.81" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.8" y1="56.54" x2="271.19" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="95.53" y1="121.36" x2="74.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.6</text><circle cx="110" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="60" cy="164" r="22" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="60" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">3.2</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.4</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099900;0.100000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.2" y1="56.54" x2="128.81" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.8" y1="56.54" x2="271.19" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.6</text><circle cx="110" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.4</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><line x1="181.20" y1="56.54" x2="128.80" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="218.80" y1="56.54" x2="271.20" y2="91.46" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="124.47" y1="121.36" x2="145.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="275.53" y1="121.36" x2="254.47" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><line x1="304.47" y1="121.36" x2="325.53" y2="146.64" stroke="rgba(132,255,178,0.4)" stroke-width="1.5"/><circle cx="200" cy="44" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="200" y="49" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.6</text><circle cx="110" cy="104" r="22" fill="none" stroke="#84ffb2" stroke-width="2"/><text x="110" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.1</text><circle cx="290" cy="104" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="290" y="109" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">17.2</text><circle cx="160" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="160" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.4</text><circle cx="240" cy="164" r="22" fill="none" stroke="#84ffb2" stroke-width="2" stroke-dasharray="4 3"/><text x="240" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.9</text><circle cx="340" cy="164" r="22" fill="none" fill-opacity="1" stroke="rgba(198,222,206,0.85)" stroke-width="1.2"/><text x="340" y="169" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">19.8</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="208" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">leftmost: runs next</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="208" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">leftmost: runs next</text></g>
 <rect x="20" y="230" width="360" height="86" rx="6" fill="none" stroke="rgba(132,255,178,0.45)"/>
 <text x="32" y="252" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">ON THE CPU</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099900;0.100000;0.159800;0.159900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">3.2</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.159900;0.160000;0.219800;0.219900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">5.2</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.219900;0.220000;0.279800;0.279900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">7.1</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.279900;0.280000;0.339800;0.339900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">9.1</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339900;0.340000;0.399800;0.399900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">11.0</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.399900;0.400000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">13.0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.159900;0.160000;0.219800;0.219900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">4.3</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.219900;0.220000;0.279800;0.279900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="none" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">5.4</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.279900;0.280000;0.339800;0.339900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">6.6</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339900;0.340000;0.399800;0.399900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">7.7</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.399900;0.400000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><circle cx="70" cy="286" r="22" fill="#84ffb2" fill-opacity="0.3" stroke="#84ffb2" stroke-width="2"/><text x="70" y="291" text-anchor="middle" font-family="IBM Plex Mono" font-size="14" fill="#fff">8.9</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.099900;0.100000;0.479800;0.479900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="108" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">virtual runtime grows</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">13.0 goes back in, after 12.4</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">idle for an instant</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.479900;0.480000;0.879800;0.879900;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">8.9 goes back in, after 8.6</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1;1;1" keyTimes="0.000000;0.099800;0.099900;0.880000;0.880100;0.939950;0.940000;1.000000" dur="10s" repeatCount="indefinite"/><text x="32" y="291" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">scheduler picks 3.2</text></g>
 </svg>
-      <p id="ch4-scheduling-p6" class="diagram-caption">CFS keeps runnable processes in a tree ordered by virtual runtime, the CPU time each has had. The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in among the larger values.</p>
+      <p id="ch4-scheduling-p6" class="diagram-caption">The leftmost, 3.2, has had the least CPU, so it runs until its virtual runtime is a little past the others, at 8.9. It goes back in after 8.6, as a new leaf; now 8.1 is the leftmost.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Virtual runtime.</b> CPU time received, weighted by priority. Whoever has had least is owed the CPU.</li>
-          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process are both O(log N), even with thousands runnable.</li>
-          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so latency-sensitive work runs on time.</li>
+          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process each take a few dozen steps at most, even with thousands runnable.</li>
+          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so tasks that ask for short slices are served sooner, though without the guarantee a real-time kernel gives.</li>
         </ol>
       </details>
     </div>
@@ -487,7 +485,7 @@
 <g opacity="0.12"><animate attributeName="opacity" values="1;1;0.56;0.56;0.56;0.56;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.611413;0.611538;1.000000" dur="8s" repeatCount="indefinite"/><rect x="262.2" y="198" width="23.8" height="26" fill="none" stroke="#ec8d8d" stroke-width="1.5"/><text x="274.5" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#fff">D</text></g>
 <g opacity="0.12"><animate attributeName="opacity" values="1;1;0.47;0.47;0.47;0.47;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.669106;0.669231;1.000000" dur="8s" repeatCount="indefinite"/><rect x="286.9" y="198" width="23.8" height="26" fill="none" stroke="#84ffb2" stroke-width="1.5"/><text x="299.3" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#fff">C</text></g>
 <g opacity="0.12"><animate attributeName="opacity" values="1;1;0.53;0.53;0.53;0.53;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.726798;0.726923;1.000000" dur="8s" repeatCount="indefinite"/><rect x="311.7" y="198" width="23.8" height="26" fill="none" stroke="#d4a853" stroke-width="1.5"/><text x="324.1" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#fff">A</text></g>
-<g opacity="0.12"><animate attributeName="opacity" values="1;1;0.56;0.56;0.56;0.56;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.784490;0.784615;1.000000" dur="8s" repeatCount="indefinite"/><rect x="336.5" y="198" width="11.4" height="26" fill="none" stroke="#ec8d8d" stroke-width="1.5"/></g>
+<g opacity="0.12"><animate attributeName="opacity" values="1;1;0.56;0.56;0.56;0.56;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.784490;0.784615;1.000000" dur="8s" repeatCount="indefinite"/><rect x="336.5" y="198" width="11.4" height="26" fill="none" stroke="#ec8d8d" stroke-width="1.5"/><text x="342.2" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#fff">D</text></g>
 <g opacity="0.12"><animate attributeName="opacity" values="1;1;0.47;0.47;0.47;0.47;1;1" keyTimes="0.000000;0.062500;0.062625;0.099938;0.100000;0.813337;0.813462;1.000000" dur="8s" repeatCount="indefinite"/><rect x="348.8" y="198" width="36.2" height="26" fill="none" stroke="#84ffb2" stroke-width="1.5"/><text x="367.4" y="216" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" fill="#fff">C</text></g>
 <text x="64" y="244" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">avg wait 12.75</text>
 <text x="386" y="244" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">first run after 2</text>
@@ -518,11 +516,11 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU.</li>
+          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU. A job's wait is all the time it is ready but not running, gaps between its turns included; "first run after" counts only up to its first turn.</li>
           <li><b>FCFS.</b> First come, first served: A's eight units hold up everyone behind it, the convoy effect.</li>
           <li><b>SJF.</b> Shortest job first: the lowest average wait of the four here, and provably optimal when every job is ready at the start, but it needs to know job lengths in advance.</li>
           <li><b>Round robin.</b> Each job runs for a quantum of 2, then goes to the back of the queue: responsive, at the cost of many switches.</li>
-          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers descend from this idea.</li>
+          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Here every job uses up its slices, so none stays on top and MLFQ behaves much like round robin.</li>
         </ol>
       </details>
     </div>
@@ -531,7 +529,7 @@
       <div class="math-label">Queueing theory and Little's Law</div>
       <p id="ch4-scheduling-p8">The mathematics underlying scheduling is queueing theory, developed in the early 20th century by Agner Krarup Erlang for telephone networks. Its best-known result, proved by John Little in 1961, is <strong>Little's Law</strong>:</p>
       <p id="ch4-scheduling-p9" class="math-formula">L = λ · W</p>
-      <p id="ch4-scheduling-p10">The average number of requests in the system (L), waiting or being served, equals their arrival rate (λ) times the average time each spends there (W): 10 requests a second, each inside for 2 seconds, keeps 20 inside at any moment. It holds for any stable queue, one that keeps up with its arrivals, whatever their pattern. W depends on spare capacity: a server finishes μ requests a second, and only the difference μ − λ absorbs a burst of arrivals; as λ nears μ, each burst takes longer to clear than the quiet spell before the next, and backlog piles up. For the simplest queue, one server with random arrivals, W is exactly 1/(μ − λ). Measured in service times, that is 20 at 95% utilisation (the share of capacity in use) and 100 at 99%: five times as long for 4% more load.</p>
+      <p id="ch4-scheduling-p10">The average number of requests in the system (L), waiting or being served, equals their arrival rate (λ) times the average time each spends there (W): 10 requests a second, each inside for 2 seconds, keeps 20 inside on average. It holds for any stable queue, one that keeps up with its arrivals, whatever their pattern. W depends on spare capacity: a server finishes μ requests a second, and only the difference μ − λ absorbs a burst of arrivals; as λ nears μ, each burst takes longer to clear than the quiet spell before the next, and backlog piles up. For the simplest queue, one server with random arrivals and random service times, W is exactly 1/(μ − λ). Divided by the service time, 1/μ, that becomes 1/(1 − ρ), where ρ = λ/μ is the utilisation, the share of capacity in use: 20 service times at 95%, 100 at 99%, five times as long for four points more load.</p>
     </div>
 
     <div class="diagram-card fig-v2" id="fig-4-6">
@@ -568,7 +566,7 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The law.</b> Average number in the system = arrival rate × average time in it. It needs no assumption about how arrivals or service times are distributed.</li>
-          <li><b>The curve.</b> For the simplest queue (random arrivals, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
+          <li><b>The curve.</b> For the simplest queue (random arrivals and service times, one server, called M/M/1) the time in the system is the service time divided by 1 − ρ.</li>
           <li><b>The cliff.</b> From 50% to 60% load the time in the system grows by a quarter; from 90% to 95% it doubles; at 100% (the dashed line) the queue never drains. That is why operators worry once a server stays above about 80%.</li>
         </ol>
       </details>
@@ -577,7 +575,7 @@
     <h3>Real-time scheduling: when missing a deadline kills</h3>
 
     <p id="ch4-scheduling-p12">
-      General-purpose schedulers like CFS optimise for average performance and guarantee nothing about the worst case. That is fine for most software and catastrophic for an anti-lock braking system or a pacemaker. These systems run on <span class="key-term">real-time kernels</span>: variants of Linux (PREEMPT_RT) or specialised OSes (VxWorks, QNX, FreeRTOS) that guarantee a task will run within a bounded time after it becomes ready, even under load. Liu and Layland analysed the two classic rules in 1973: rate-monotonic scheduling, in which the task that repeats most often gets the highest priority, and earliest-deadline-first.
+      General-purpose schedulers like CFS and EEVDF optimise for average performance and guarantee nothing about the worst case. That is fine for most software and catastrophic for an anti-lock braking system or a pacemaker. These systems run on <span class="key-term">real-time kernels</span>: variants of Linux (PREEMPT_RT) or specialised OSes (VxWorks, QNX, FreeRTOS) that guarantee a task will run within a bounded time after it becomes ready, even under load. Liu and Layland analysed the two classic rules in 1973: rate-monotonic scheduling, in which the task that repeats most often gets the highest priority, and earliest-deadline-first.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-7">
@@ -618,7 +616,6 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Hard real time.</b> Real-time kernels (PREEMPT_RT Linux, VxWorks, QNX, FreeRTOS) guarantee a ready task runs within a bounded time, even under load.</li>
           <li><b>The guarantee.</b> Rate-monotonic scheduling meets every deadline if total utilisation stays under about 69%; earliest-deadline-first, up to 100% (Liu and Layland, 1973).</li>
           <li><b>The overrun.</b> A job that takes longer than its budget breaks the arithmetic, which is why real-time code is written to bounded, measured worst cases.</li>
         </ol>
@@ -637,32 +634,30 @@
     <h3>The translation problem</h3>
 
     <p id="ch4-vm-p2">
-      Every memory access a program makes uses a <em>virtual address</em>, but physical RAM
-      is addressed by <em>physical addresses</em>. The
-      <span class="key-term">Memory Management Unit</span> (MMU), built into the CPU,
-      translates virtual to physical on every load and store, using a translation table the
-      kernel maintains: the <strong>page table</strong>.
+      Every load and store uses a <em>virtual address</em>, which the MMU of Fig BR.4
+      translates to a <em>physical address</em> through the <strong>page table</strong> the
+      kernel builds and keeps current.
     </p>
 
     <p id="ch4-vm-p3">
-      Memory is divided into fixed-size blocks called <span class="key-term">pages</span>, typically 4 KB: virtual pages in the address space and physical pages in RAM. The page table maps one to the other. When a virtual page has no physical page in RAM (it has never been used, was moved to disk to free RAM, or belongs to a file mapped into memory but not yet read), its entry is marked invalid, and the MMU raises a hardware exception called a <span class="key-term">page fault</span>. The kernel's page-fault handler decides what to do.
+      Memory is divided into fixed-size blocks called <span class="key-term">pages</span>, typically 4 KiB: virtual pages in the address space and physical pages in RAM. The page table maps one to the other. When a virtual page has no physical page in RAM (it has never been used, was moved to disk to free RAM, or belongs to a file mapped into memory but not yet read), its entry is marked invalid, and the MMU raises a hardware exception called a <span class="key-term">page fault</span>. The kernel's page-fault handler decides what to do.
     </p>
 
     <h3>Why the page table cannot be flat</h3>
 
     <p id="ch4-vm-p4">
-      A flat page table would hold one entry for every possible virtual page. On 64-bit x86 a virtual address has 48 usable bits, enough for 2<sup>48</sup> bytes (256 terabytes); split into 4 KB (2<sup>12</sup>-byte) pages, that is 2<sup>36</sup> pages. At 8 bytes an entry, the table alone would need 512 GB per process.
+      A flat page table would hold one entry for every possible virtual page. On 64-bit x86 a virtual address has 48 usable bits, enough for 2<sup>48</sup> bytes (256 TiB); split into 4 KiB (2<sup>12</sup>-byte) pages, that is 2<sup>36</sup> pages. At 8 bytes an entry, the table alone would need 512 GiB per process.
     </p>
 
     <p id="ch4-vm-p5">
-      The solution, as the Bridge showed, is a <span class="key-term">multi-level page table</span>: a tree of small tables, each one 4 KB page of 512 entries. An address's last 12 bits are the page offset, the byte's place inside its page; the 36 bits above form four 9-bit indexes (2<sup>9</sup> = 512), and each picks an entry on one level that points to the table below, the last to the physical page. Most of a process's 256 TB is unused, and an empty entry near the top means no tables exist beneath it, so a real process needs a few megabytes of tables, not 512 gigabytes.
+      The solution, as the Bridge showed, is a <span class="key-term">multi-level page table</span>: a tree of small tables, each one 4 KiB page of 512 entries. An address's last 12 bits are the page offset, the byte's place inside its page; the 36 bits above form four 9-bit indexes (2<sup>9</sup> = 512), and each picks an entry on one level that points to the table below, the last to the physical page. Most of a process's 256 TiB is unused, and an empty entry near the top means no tables exist beneath it, so a real process needs a few megabytes of tables, not 512 GiB.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-8">
       <div class="diagram-label">Fig 4.8&nbsp;· x86-64 four-level page table walk</div>
       <svg viewBox="0 0 400 432" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-9 svgd-part2-9">
 <title id="svgt-part2-9">Fig 4.8 · x86-64 four-level page table walk</title>
-<desc id="svgd-part2-9">The 48-bit virtual address 0x7FFA_0A32_C5E8 split into four 9-bit table indices (255, 488, 81, 300) and a 12-bit page offset (1512). The CR3 register holds the address of the top table. Entry 255 of the level-4 table points to a level-3 table, its entry 488 to a level-2 table, entry 81 to a level-1 table, and entry 300 to the physical page, where the offset picks the byte. Four table reads and then the data: five memory reads for one load.</desc>
+<desc id="svgd-part2-9">The 48-bit virtual address 0x7FFA_0A32_C5E8 split into four 9-bit table indexes (255, 488, 81, 300) and a 12-bit page offset (1512). The CR3 register holds the address of the top table. Entry 255 of the level-4 table points to a level-3 table, its entry 488 to a level-2 table, entry 81 to a level-1 table, and entry 300 to the physical page, where the offset picks the byte. Four table reads and then the data: five memory reads for one load.</desc>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">VIRTUAL ADDRESS 0x7FFA_0A32_C5E8</text>
 <rect x="20.0" y="34" width="63.5" height="46" rx="3" fill="none" stroke="#84ffb2" stroke-opacity="0.45"/>
 <rect class="fx" x="20.0" y="34" width="63.5" height="46" rx="3" fill="none" fill-opacity="0.18" stroke="#84ffb2" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.145364;0.145455;0.290818;0.290909;1.000000" dur="11s" repeatCount="indefinite"/></rect>
@@ -760,11 +755,11 @@
 <rect x="318" y="396" width="54" height="24" rx="2" fill="none" stroke="rgba(132,255,178,0.3)"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.090909;0.091000;0.754455;0.754545;1.000000" dur="11s" repeatCount="indefinite"/></rect>
 <g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.090909;0.091000;0.754455;0.754545;1.000000" dur="11s" repeatCount="indefinite"/><rect x="318" y="396" width="54" height="24" rx="2" fill="none" fill-opacity="0.3" stroke="#86a8ff"/><text x="345" y="413" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">data</text></g>
 </svg>
-      <p id="ch4-vm-p6" class="diagram-caption">The CPU splits a 48-bit address into four 9-bit indices and a 12-bit offset, then follows CR3 down a tree of four tables, one index per level. Four table reads come before the data itself: five memory reads for one load, unless the TLB already holds the answer.</p>
+      <p id="ch4-vm-p6" class="diagram-caption">The CPU splits a 48-bit address into four 9-bit indexes and a 12-bit offset, then follows CR3 down a tree of four tables, one index per level. Four table reads come before the data itself: five memory reads for one load, unless the TLB already holds the answer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why 9 bits.</b> A table is one 4 KB page of 8-byte entries, so it holds 512 of them, and 2<sup>9</sup> = 512. The last 12 bits address a byte inside a 4 KB page.</li>
+          <li><b>Why 9 bits.</b> A table is one 4 KiB page of 8-byte entries, so it holds 512 of them, and 2<sup>9</sup> = 512. The last 12 bits address a byte inside a 4 KiB page.</li>
           <li><b>The pointers.</b> CR3 holds the physical address of the top table; each entry holds the physical address of the next table down, plus permission bits.</li>
           <li><b>Sparse by design.</b> Tables exist only for regions the process uses, so a few megabytes of tables map a whole program. Newer CPUs can add a fifth level for 57-bit addresses.</li>
         </ol>
@@ -774,11 +769,11 @@
     <h3>The TLB: a cache for translations</h3>
 
     <p id="ch4-vm-p7">
-      Walking all four levels on every access would turn each memory access into five (four for the table walk, one for the data), so the CPU first checks the <span class="key-term">Translation Lookaside Buffer</span> (TLB), the Bridge's small, very fast cache of recent virtual-to-physical translations. On a hit, translation takes one cycle; on a miss, the MMU walks the page tables and stores the result in the TLB.
+      Walking all four levels on every access would turn each load into five memory reads, so the Bridge's <span class="key-term">Translation Lookaside Buffer</span> (TLB) answers first, and a hit skips the walk. The cost the kernel has to manage is the miss: up to four extra memory reads, after which the MMU stores the result in the TLB.
     </p>
 
     <p id="ch4-vm-p8">
-      Hit rates above 99% are normal, but each miss costs up to four extra memory reads, so CPU designers keep enlarging TLBs. A process switch drops the old process's translations unless each entry is tagged with its address space (PCID on x86), and even then the processes compete for the same few entries.
+      A switch to another process drops the old translations unless each entry is tagged with its address space (PCID on x86), and even tagged, the processes compete for the same few entries.
     </p>
 
     <h3>Page faults: the productive kind</h3>
@@ -788,7 +783,7 @@
     </p>
 
     <p id="ch4-vm-p10">
-      A <strong>minor page fault</strong> happens when the data is already in RAM but this process's page table has no entry for it yet: a page of a shared library another program has already loaded, say. The kernel just adds the entry and returns. Cost: microseconds.
+      A <strong>minor page fault</strong> happens when no disk read is needed: the data is already in RAM but this process's page table has no entry for it yet (a page of a shared library another program has already loaded, say), or the page has never been used and the kernel simply hands over a fresh page of zeros. The kernel just adds the entry and returns. Cost: microseconds.
     </p>
 
     <p id="ch4-vm-p11">
@@ -890,11 +885,11 @@
     <h3>Two beautiful uses of page faults</h3>
 
     <p id="ch4-vm-p14">
-      <strong>Memory-mapped files</strong>. When you call <code>mmap()</code> on a file, the kernel doesn't read the file. It sets up page table entries marking the relevant virtual addresses as backed by that file, but invalid (not yet present). The first time you touch a page, you take a page fault, and the kernel reads just that one page from disk. Reading a 100 GB file as if it were one unbroken stretch of memory becomes trivial, because only the pages you touch are loaded. This is how databases and search engines handle large data, and how every shared library loads on Linux.
+      <strong>Memory-mapped files</strong>. When you call <code>mmap()</code> on a file, the kernel doesn't read the file. It sets up page table entries marking the relevant virtual addresses as backed by that file, but invalid (not yet present). The first time you touch a page, you take a page fault, and the kernel reads just that one page from disk. Reading a 100 GB file as if it were one unbroken stretch of memory becomes trivial, because only the pages you touch are loaded. This is how some databases (LMDB) and search engines (Lucene) handle large data, and how every shared library loads on Linux.
     </p>
 
     <p id="ch4-vm-p15">
-      <strong>Copy-on-write fork</strong>. When a UNIX process calls <code>fork()</code> to create a child process, the child receives a copy of the parent's entire address space, which done naively would mean duplicating gigabytes of memory. Instead the kernel marks all of the parent's pages as read-only and shares them with the child. Only when one of them tries to write does a page fault occur, and the kernel copies that one page at that moment. Most pages are never written: a new program is launched by a fork followed at once by exec, which swaps in the new program's memory, so almost nothing is copied.
+      <strong>Copy-on-write fork</strong>. When a UNIX process calls <code>fork()</code> to create a child process, the child receives a copy of the parent's entire address space, which done naively would mean duplicating gigabytes of memory. Instead the kernel marks all of the parent's pages read-only in the page tables, keeps its own note that they are really writable, and shares them with the child. Only when one of them tries to write does a page fault occur, and because of that note the kernel copies that one page instead of ending the process. Most pages are never written: a new program is launched by a fork followed at once by exec, which swaps in the new program's memory, so almost nothing is copied.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-10">
@@ -957,7 +952,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 3 7.6 7 9 4-1.4 7-4.8 7-9V6z"/></svg></span>
       <p id="ch4-vm-p17" class="insight-text">
-        <strong>Dirty COW (CVE-2016-5195).</strong> For nine years a race in Linux's copy-on-write code let any user write to read-only files such as <code>/etc/passwd</code>, the machine's list of accounts, and so make any account the administrator. The attacker mapped the file privately, so writes should go to a private copy, then ran two loops at once: one wrote, the other kept telling the kernel to discard the copy. A discard that fell between the copy and the write sent the write into the file itself.
+        <strong>Dirty COW (CVE-2016-5195).</strong> For at least nine years a race in Linux's copy-on-write code let any user write to read-only files such as <code>/etc/passwd</code>, the machine's list of accounts, and so make any account the administrator. The attacker mapped the file privately, so writes should go to a private copy, then ran two loops at once: one wrote, the other kept telling the kernel to discard the copy. The writes went through <code>/proc/self/mem</code>, a file through which the kernel writes into a process's own memory for it, and a discard that fell between the copy and the write made it look the page up again and find the file's own page, so the write went into the file.
       </p>
     </div>
 
@@ -965,7 +960,7 @@
       <div class="diagram-label">Fig 4.11&nbsp;· Dirty COW: the race that broke Linux</div>
       <svg viewBox="0 0 400 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-12 svgd-part2-12">
 <title id="svgt-part2-12">Fig 4.11 · Dirty COW: the race that broke Linux</title>
-<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a first fix for the race is made and later undone; from Linux 2.6.22 in 2007 the flaw ships in every kernel, for nine years; in October 2016 it is seen in use and patched within hours; in 2017 a related flaw turns up in the huge-page code.</desc>
+<desc id="svgd-part2-12">Copy-on-write promises that a write lands in a private copy and never in the file underneath. A timeline from 2005 to 2017: in 2005 a fix for the race is made and undone within days; Linux 2.6.22 of 2007 is the oldest kernel the advisories list, and the flaw is in every kernel for nine years or more; in October 2016 it is seen in use and patched within hours; in 2017 a related flaw turns up in the huge-page code.</desc>
 <rect x="20" y="14" width="360" height="72" rx="6" fill="none" stroke="rgba(132,255,178,0.5)"/>
 <text x="32" y="36" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">copy-on-write promises:</text>
 <text x="32" y="56" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">a write lands in a private copy,</text>
@@ -973,10 +968,10 @@
 <line x1="70" y1="114" x2="70" y2="414" stroke="rgba(255,255,255,0.6)"/>
 <text x="20" y="133" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2005</text>
 <circle cx="70" cy="128" r="4" fill="rgba(255,255,255,0.6)"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="128" r="6" fill="rgba(255,255,255,0.6)"/><text x="88" y="133" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">a first fix, later undone</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145273;0.145455;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="128" r="6" fill="rgba(255,255,255,0.6)"/><text x="88" y="133" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">a fix for this race, undone</text></g>
 <text x="20" y="177" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2007</text>
 <circle cx="70" cy="172" r="4" fill="rgba(255,255,255,0.6)"/>
-<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.246722;0.246904;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="172" r="6" fill="#d4a853"/><text x="88" y="177" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">Linux 2.6.22: flaw ships</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.246722;0.246904;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="172" r="6" fill="#d4a853"/><text x="88" y="177" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">2.6.22: oldest in the advisories</text></g>
 <text x="20" y="373" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">2016</text>
 <circle cx="70" cy="368" r="4" fill="rgba(255,255,255,0.6)"/>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.698632;0.698814;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="368" r="6" fill="#84ffb2"/><text x="88" y="373" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">seen in use: patched in hours</text></g>
@@ -985,11 +980,11 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.781636;0.781818;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="70" cy="404" r="6" fill="#d4a853"/><text x="88" y="409" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">a related flaw, huge pages</text></g>
 <rect x="85.5" y="187.5" width="15" height="165" rx="4" fill="none" stroke="#ef9f9f"/>
 <rect x="88" y="190" width="10" height="160" rx="3" fill="#ec8d8d" fill-opacity="0.8"><animate attributeName="height" values="160;160;160;160;0;0;160;160" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.288406;0.657312;1.000000" dur="11s" repeatCount="indefinite"/></rect>
-<text x="112" y="266" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">nine years in</text>
-<text x="112" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">every kernel after</text>
+<text x="112" y="266" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">nine years or more,</text>
+<text x="112" y="284" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">in every kernel</text>
 <g class="fx" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.054500;0.054545;0.145273;0.145455;0.809091;0.810909;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 276.00;0 276.00;0 0.00;0 0.00;0 0.00;0 0.00;0 276.00;0 276.00" keyTimes="0.000000;0.054500;0.054545;0.081818;0.082273;0.145455;0.781818;1.000000" dur="11s" repeatCount="indefinite"/><rect x="54" y="126" width="8" height="4" rx="2" fill="#cfcfcf"/></g></g>
 </svg>
-      <p id="ch4-vm-p18" class="diagram-caption">Dirty COW broke copy-on-write's one promise, that a write lands in a private copy and never in the file. It shipped in Linux for nine years, was patched within hours of being seen in use in October 2016, and a related flaw followed in the huge-page code a year later.</p>
+      <p id="ch4-vm-p18" class="diagram-caption">Dirty COW broke copy-on-write's one promise, that a write lands in a private copy and never in the file. It shipped in Linux for at least nine years, was patched within hours of being seen in use in October 2016, and a related flaw followed in the huge-page code a year later.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1006,7 +1001,7 @@
     <h2>A tree of names on a flat array of blocks</h2>
 
     <p id="ch4-fs-p1">
-      A disk, at its lowest level, is a long row of numbered, fixed-size blocks: a spinning hard drive presents itself to the OS as billions of 512-byte sectors, and an SSD presents the same picture over entirely different hardware. From these blocks the filesystem builds the structure you actually use: named files in directories nested into a tree, each file recording its owner, permissions and timestamps, none of which the disk itself knows about.
+      A disk, at its lowest level, is a long row of numbered, fixed-size blocks: a spinning hard drive presents itself to the OS as billions of 512-byte sectors, and an SSD presents the same picture over entirely different hardware; the filesystem groups them into blocks, typically 4 KiB. From these blocks the filesystem builds the structure you actually use: named files in directories nested into a tree, each file recording its owner, permissions and timestamps, none of which the disk itself knows about.
     </p>
 
     <h3>The inode: where a file actually lives</h3>
@@ -1136,26 +1131,27 @@
     <h3>The everything-is-a-file principle</h3>
 
     <p id="ch4-fs-p6">
-      UNIX took the inode concept beyond regular files. <em>Every</em>
-      kernel-managed resource is exposed as a file:
+      Chapter 1's creed, <em>everything is a file</em>, rests on the inode idea: UNIX gave
+      devices and the kernel's own state names in the same tree. Most kernel-managed
+      resources are reached this way:
     </p>
 
     <ul style="margin: 16px 0 24px 32px; line-height: 2;">
-      <li>Your keyboard is <code>/dev/input/event0</code>.</li>
+      <li>Your keyboard is one of the <code>/dev/input/event*</code> files.</li>
       <li>Random numbers come from <code>/dev/urandom</code>.</li>
       <li>The state of every running process lives under <code>/proc/&lt;pid&gt;</code>.</li>
-      <li>Network connections are accessed through file descriptors with <code>read</code> and <code>write</code>.</li>
       <li>Hardware sensors expose temperature and voltage as files in <code>/sys</code>.</li>
     </ul>
 
     <p id="ch4-fs-p7">
-      The same four system calls work on all of them: <code>open</code>, <code>read</code>, <code>write</code>, and <code>close</code> (a socket arrives through a different door, but once you hold its descriptor it is <code>read</code> and <code>write</code> like everything else). This uniformity is one of the reasons UNIX-derived systems became so dominant: tools written for files work unchanged on devices, network connections, and process state. The command that counts the lines of a text file, <code>wc -l</code>, counts them just as well in a sensor's readings under <code>/sys</code> or a process's records under <code>/proc</code>.
+      None of these has data blocks on the disk: a read or write on one runs kernel code (a driver, for a device) that supplies or accepts the bytes. The same four system calls work on all of them: <code>open</code>, <code>read</code>, <code>write</code>, and <code>close</code>. This uniformity is one of the reasons UNIX-derived systems became so dominant: tools written for files work unchanged on devices and process state. The command that counts the lines of a text file, <code>wc -l</code>, counts them just as well in a sensor's readings under <code>/sys</code> or a process's records under <code>/proc</code>.
     </p>
 
     <h3>Journaling: the database technique that saved filesystems</h3>
 
     <p id="ch4-fs-p8">
-      A filesystem that simply writes data and metadata to disk wherever convenient has
+      A filesystem that simply writes data and metadata (the inodes, directories and
+      free-block lists that keep track of it) to disk wherever convenient has
       a fatal weakness: power loss. If the machine crashes between writing data and
       updating its corresponding metadata (or vice versa), the filesystem becomes
       inconsistent: files exist whose blocks are still listed as free, or directory
@@ -1165,7 +1161,7 @@
     </p>
 
     <p id="ch4-fs-p9">
-      The modern solution, borrowed from database theory, is the <span class="key-term">journal</span>, a small, dedicated region of the disk where every intended modification is written <em>first</em>, then applied to the main filesystem. Each change in the journal ends with a commit record, written last; after a crash, the kernel replays the changes that have one and discards those that do not. Each change lands whole or not at all, and recovery takes seconds instead of hours. ext4 (Linux), NTFS (Windows), and HFS+ (older macOS) all journal. The technique is called <em>write-ahead logging</em>; we'll meet it again in <a href="part-4#ch13">Chapter 13</a>.
+      The modern solution, borrowed from database theory, is the <span class="key-term">journal</span>, a small, dedicated region of the disk where every change to the filesystem's own bookkeeping (inodes, the free list, directories) is written <em>first</em>, then applied to the main filesystem. Each change in the journal ends with a commit record, written last; after a crash, the kernel replays the changes that have one and discards those that do not. By default ext4 writes file contents to their place before the commit, so a committed change never points at missing data. Each change lands whole or not at all, and recovery takes seconds instead of hours. ext4 (Linux), NTFS (Windows), and HFS+ (older macOS) all journal. The technique is called <em>write-ahead logging</em>; we'll meet it again in <a href="part-4#ch13">Chapter 13</a>.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-13">
@@ -1218,19 +1214,18 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.149846;0.150000;0.226308;0.226538;0.503808;0.503846;1.000000" dur="13s" repeatCount="indefinite"/><text x="200" y="246" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">power cut before commit</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.226769;0.226923;0.480154;0.480385;0.503808;0.503846;1.000000" dur="13s" repeatCount="indefinite"/><text x="200" y="246" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#ec8d8d">boot: no commit, discard v3, keep v2</text></g>
 </svg>
-      <p id="ch4-fs-p10" class="diagram-caption">The change goes to the journal first, sealed by a commit record, and only then to its home in the filesystem. After a crash, boot replays every committed change and discards any without a commit, so the disk is consistent in seconds.</p>
+      <p id="ch4-fs-p10" class="diagram-caption">One change is committed and replayed after the power cut, taking the filesystem from version 1 to 2; the next loses power before its commit record and is discarded, so the filesystem stays at version 2.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The atomic step.</b> The commit record is one small block, written after the rest of the entry has reached the disk. Whether it exists decides the outcome.</li>
-          <li><b>What is logged.</b> By default ext4 and NTFS journal metadata only (inodes, bitmaps, directories); ext4's <code>data=journal</code> mode also logs file contents, writing them twice.</li>
-          <li><b>The lineage.</b> This is write-ahead logging, taken from databases (Chapter 13). Before journals, <code>fsck</code> had to scan the whole disk after a crash, which took hours.</li>
+          <li><b>What is logged.</b> By default ext4 and NTFS journal metadata only (inodes, the free list, directories); ext4's <code>data=journal</code> mode also logs file contents, writing them twice.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch4-fs-p11">
-      The newest generation goes further: <span class="key-term">copy-on-write</span> filesystems like ZFS, btrfs and (for its metadata) Apple's APFS never overwrite existing data. A change goes to new blocks, and one final pointer switch makes it current, so a crash leaves either the old version or the new one whole. Keeping the old blocks makes snapshots, saved views of the whole filesystem at one moment, nearly free.
+      The newest generation goes further: <span class="key-term">copy-on-write</span> filesystems like ZFS, btrfs and (for its metadata) Apple's APFS never overwrite existing data. Their blocks hang in a tree from one root, each block holding the addresses of the blocks below it, so a change goes to new blocks, with a new parent for each (the parent holds the address that changed), up to a new root; one final pointer switch to that root makes it current, so a crash leaves either the old version or the new one whole. Keeping the old blocks makes snapshots, saved views of the whole filesystem at one moment, nearly free.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-4-14">
@@ -1301,14 +1296,13 @@
     <p id="ch4-ipc-p1">
       Processes are isolated by design: virtual memory and privilege separation exist so
       that one process cannot read or modify another's memory. But isolation taken to its
-      extreme produces a useless system: programs that share nothing cannot compose into
-      pipelines, cannot coordinate, cannot even tell each other when work is done. The kernel therefore exposes a controlled set of mechanisms for processes to communicate,
+      extreme produces a useless system: programs that share nothing cannot pass each other data,
+      or even say when a job is done. The kernel therefore exposes a controlled set of mechanisms for processes to communicate,
       collectively called <span class="key-term">inter-process communication</span>, or IPC.
     </p>
 
     <p id="ch4-ipc-p2">
-      Each IPC mechanism is a different point on the trade-off between
-      <em>convenience</em>, <em>performance</em>, and <em>flexibility</em>.
+      The kernel offers eight mechanisms:
     </p>
 
     <table class="summary-table">
@@ -1392,13 +1386,12 @@
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.244312;0.244482;0.274363;0.274618;0.621350;0.621392;1.000000" dur="11.78s" repeatCount="indefinite"/><line x1="71.2" y1="194.1" x2="90.0" y2="231.0" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="90.0,231.0 84.2,227.0 90.2,224.0" fill="rgba(198,222,206,0.85)"/><text x="44.2756" y="192.449" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">read</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.274873;0.275042;0.304924;0.305178;0.621350;0.621392;1.000000" dur="11.78s" repeatCount="indefinite"/><line x1="135.0" y1="113.8" x2="122.2" y2="153.2" stroke="rgba(198,222,206,0.85)" stroke-width="1.5"/><polygon points="122.2,153.2 120.9,146.3 127.3,148.4" fill="rgba(198,222,206,0.85)"/><text x="121.461" y="97.8101" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">read</text></g>
 </svg>
-      <p id="ch4-ipc-p4" class="diagram-caption">A pipe is a ring buffer in the kernel with a write end and a read end. When the ring is full the writer blocks until the reader frees space, and when it is empty the reader blocks until bytes arrive: flow control with no locks in either program.</p>
+      <p id="ch4-ipc-p4" class="diagram-caption"><code>cat</code> writes at one pointer and <code>grep</code> reads at the other; the ring fills when <code>grep</code> falls behind and empties when it catches up, and the kernel makes whichever side is ahead wait.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Two descriptors.</b> <code>pipe()</code> returns one file descriptor for each end; the shell wires the writer's standard output to one and the reader's standard input to the other.</li>
+          <li><b>Two descriptors.</b> <code>pipe()</code> returns one file descriptor for each end; the shell connects <code>cat</code>'s output to one and <code>grep</code>'s input to the other.</li>
           <li><b>The size.</b> A Linux pipe holds 64 KB by default, so a fast writer runs ahead of a slow reader by at most that much.</li>
-          <li><b>The lineage.</b> Doug McIlroy pressed for pipes for years; Ken Thompson added them to UNIX in 1973, and every shell pipeline since runs on this mechanism.</li>
         </ol>
       </details>
     </div>
@@ -1430,7 +1423,7 @@
 <text x="30" y="31" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">cat server.log</text>
 <text x="30" y="49" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">read the file</text>
 <rect x="176" y="12" width="204" height="106" rx="3" fill="none" stroke="rgba(132,255,178,0.39)"/>
-<line x1="160" y1="35.0" x2="176" y2="35.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<line x1="160" y1="35.0" x2="176" y2="35.0" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.149750;0.150000;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="33" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.6)">INFO start</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.212250;0.212500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="51" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.274750;0.275000;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="69" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
@@ -1448,7 +1441,7 @@
 <text x="30" y="161" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">grep ^ERROR</text>
 <text x="30" y="179" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">keep ERROR lines</text>
 <rect x="176" y="142" width="204" height="70" rx="3" fill="none" stroke="rgba(132,255,178,0.39)"/>
-<line x1="160" y1="165.0" x2="176" y2="165.0" stroke="rgba(132,255,178,0.39)" stroke-width="1.2"/>
+<line x1="160" y1="165.0" x2="176" y2="165.0" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.243500;0.243750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="163" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.306000;0.306250;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="181" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.431000;0.431250;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="199" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
@@ -1462,7 +1455,7 @@
 <text x="30" y="255" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">sort</text>
 <text x="30" y="273" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">waits for end</text>
 <rect x="176" y="236" width="204" height="70" rx="3" fill="none" stroke="rgba(132,255,178,0.39)"/>
-<line x1="160" y1="259.0" x2="176" y2="259.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<line x1="160" y1="259.0" x2="176" y2="259.0" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="257" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="275" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.512250;0.512500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="293" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
@@ -1476,7 +1469,7 @@
 <text x="30" y="349" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">uniq</text>
 <text x="30" y="367" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">drop repeats</text>
 <rect x="176" y="330" width="204" height="52" rx="3" fill="none" stroke="rgba(132,255,178,0.39)"/>
-<line x1="160" y1="353.0" x2="176" y2="353.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<line x1="160" y1="353.0" x2="176" y2="353.0" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.562250;0.562500;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="351" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR disk</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.593500;0.593750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="369" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">ERROR net</text></g>
 <line x1="50" y1="376" x2="50" y2="404" stroke="rgba(132,255,178,0.5)" stroke-width="2"/>
@@ -1488,7 +1481,7 @@
 <text x="30" y="425" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#fff">wc -l</text>
 <text x="30" y="443" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">count lines</text>
 <rect x="176" y="406" width="204" height="46" rx="3" fill="none" stroke="rgba(132,255,178,0.39)"/>
-<line x1="160" y1="429.0" x2="176" y2="429.0" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>
+<line x1="160" y1="429.0" x2="176" y2="429.0" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.074000;0.074375;0.075000;0.668500;0.668750;1.000000" dur="8s" repeatCount="indefinite"/><text x="188" y="427" text-anchor="start" font-family="IBM Plex Mono" font-size="15" letter-spacing="0" fill="#84ffb2">2</text></g>
 </svg>
       <p id="ch4-ipc-p7" class="diagram-caption">Five small programs joined by four pipes run at once, each reading standard input and writing standard output with no idea what is on the other end. Lines stream through as they arrive, except at <code>sort</code>, which must see the last line before it can print the first.</p>
@@ -1497,7 +1490,6 @@
         <ol>
           <li><b>The wiring.</b> The shell calls <code>pipe()</code> four times and <code>fork()</code> five, then points each program's standard output at the next one's standard input.</li>
           <li><b>Streaming.</b> <code>grep</code> and <code>uniq</code> work a line at a time; <code>sort</code> and <code>wc</code> must reach the end of their input before they can answer.</li>
-          <li><b>The philosophy.</b> Doug McIlroy's summary: write programs that do one thing well, and write them to work together.</li>
         </ol>
       </details>
     </div>
@@ -1558,12 +1550,12 @@
 <line y1="48" y2="208" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="384;384;90;90;384;384" keyTimes="0.000000;0.499962;0.500000;0.576923;0.961538;1.000000" dur="13s" repeatCount="indefinite"/><animate attributeName="x2" values="384;384;90;90;384;384" keyTimes="0.000000;0.499962;0.500000;0.576923;0.961538;1.000000" dur="13s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0;0;0.6;0.6;0;0" keyTimes="0.000000;0.499962;0.500000;0.576769;0.576923;0.961538;0.969231;1.000000" dur="13s" repeatCount="indefinite"/></line>
 <line y1="48" y2="208" stroke="#fff" stroke-width="1.2" opacity="0"><animate attributeName="x1" values="90;90;216;216;90;90" keyTimes="0.000000;0.053846;0.218681;0.499962;0.500000;1.000000" dur="13s" repeatCount="indefinite"/><animate attributeName="x2" values="90;90;216;216;90;90" keyTimes="0.000000;0.053846;0.218681;0.499962;0.500000;1.000000" dur="13s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;0.6;0.6;0;0;0;0" keyTimes="0.000000;0.053692;0.053846;0.218681;0.226374;0.499962;0.500000;1.000000" dur="13s" repeatCount="indefinite"/></line>
 </svg>
-      <p id="ch4-ipc-p10" class="diagram-caption">Ctrl+C makes the kernel mark SIGINT pending; the program runs on until its next return from the kernel, where it is diverted into its handler and then resumed where it stopped. SIGKILL never reaches the program: the kernel ends the process without running any of its code.</p>
+      <p id="ch4-ipc-p10" class="diagram-caption">Ctrl+C makes the kernel mark SIGINT pending; the program runs on until its next return from the kernel (the end of its next system call or timer interrupt), where it is diverted into its handler and then resumed where it stopped. SIGKILL never reaches the program: at that same point the kernel ends the process instead, and no handler runs.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate (sometimes with a core dump), stop, continue, or nothing.</li>
-          <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that has trapped everything else.</li>
+          <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that handles or ignores every other signal.</li>
           <li><b>Crude by design.</b> A signal is just a number. A second signal of the same kind arriving while the first is still pending merges with it.</li>
         </ol>
       </details>
@@ -1576,7 +1568,7 @@
     </p>
 
     <p id="ch4-ipc-p12">
-      The price of sharing is coordination: if two processes each read a shared count of 5, add 1 and write back 6, one addition is lost. <span class="key-term">Semaphores</span> prevent this: counters changed atomically, in one step nothing can interrupt. A process that wants in decrements the counter, or sleeps if it is 0; one that leaves increments it, waking a sleeper. Initialised to 1, a semaphore admits one process at a time, a mutex; initialised to N, it is a pool of N. The idea is Edsger Dijkstra's, from his 1965 note "Cooperating Sequential Processes".
+      The price of sharing is coordination: if two processes each read a shared count of 5, add 1 and write back 6, one addition is lost. <span class="key-term">Semaphores</span> prevent this. A semaphore is a counter changed atomically, in one step that nothing can interrupt. A process that wants in decrements the counter, or sleeps if it is 0; one that leaves increments it, waking a sleeper. Initialised to 1, a semaphore admits one process at a time, a mutex; initialised to N, it is a pool of N. The idea is Edsger Dijkstra's, set out in his 1965 note "Cooperating Sequential Processes".
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-18">
@@ -1619,8 +1611,8 @@
         <summary>How it works</summary>
         <ol>
           <li><b>The mapping.</b> <code>shm_open()</code> and <code>mmap()</code> put the same physical pages into both address spaces; after that the region is ordinary memory.</li>
-          <li><b>The fast path.</b> On Linux, <code>sem_wait()</code> and <code>sem_post()</code> are atomic instructions on a counter in shared memory; the kernel is called only when someone must sleep or be woken.</li>
-          <li><b>Counting.</b> A semaphore started at N admits N at once, a pool rather than a lock. The idea is Dijkstra's, from 1965.</li>
+          <li><b>The fast path.</b> On Linux, <code>sem_wait()</code> and <code>sem_post()</code> use atomic instructions on a counter in shared memory; the kernel is called only when someone must sleep or be woken.</li>
+          <li><b>Counting.</b> A semaphore started at N admits N at once, a pool rather than a lock. The idea is Dijkstra's, set out in 1965.</li>
         </ol>
       </details>
     </div>
@@ -1632,7 +1624,7 @@
     </p>
 
     <p id="ch4-ipc-p15">
-      That is why a web browser, a database client, and a remote login (SSH) all use roughly the same code shape: open a socket, write a request, read a reply, close. <a href="part-3">Part III</a> opens up what happens between <em>write</em> and <em>read</em>: ARPANET, packet switching, TCP, DNS, TLS, HTTP. Until then, the kernel makes the network look like a file, as it does a disk or a keyboard.
+      That is why a web browser, a database client, and a remote login (SSH) all use roughly the same code shape: open a socket, write a request, read a reply, close. <a href="part-3">Part III</a> opens up what happens between <em>write</em> and <em>read</em>: ARPANET, packet switching, TCP, DNS, TLS, HTTP.
     </p>
   </section>
 
@@ -1658,7 +1650,7 @@
     </p>
 
     <p id="ch4-security-p3">
-      <strong>Vertical escalation</strong>: moving up the privilege ladder. A normal user process exploits a bug to become root (the administrator account), or root exploits a bug to enter Ring 0 (kernel mode).
+      <strong>Vertical escalation</strong>: moving up the privilege ladder. A normal user process exploits a bug to become root (the administrator account), or root, on a system that walls even root off from the kernel (Secure Boot's lockdown mode, say), exploits a bug to enter Ring 0 (kernel mode).
     </p>
 
     <p id="ch4-security-p4">
@@ -1683,7 +1675,7 @@
       different processes see different views. There are namespaces for process IDs
       (a containerised process believes it is PID 1, even though to the host it might
       be PID 8472), for the network (the container has its own virtual network interface),
-      for mounts (its own root filesystem), for user IDs, for hostnames, and more.
+      for mounts (its own tree of files from <code>/</code> down, unpacked from a container <em>image</em>, not the host's), for user IDs, for hostnames, and more.
       Inside its namespaces, the container looks like a complete isolated system.
     </p>
 
@@ -1743,7 +1735,7 @@
 <text x="208" y="258" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">megabytes each</text>
 <text x="208" y="278" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">starts like a process</text>
 </svg>
-      <p id="ch4-security-p10" class="diagram-caption">A virtual machine runs its own guest kernel on a hypervisor; a container is an ordinary process whose system calls go to the one host kernel, fenced by namespaces (what it can see) and cgroups (what it can use). That shared kernel is why containers are light, and why one kernel bug can reach every container on the host.</p>
+      <p id="ch4-security-p10" class="diagram-caption">A virtual machine runs its own guest kernel on a hypervisor; a container is an ordinary process whose system calls go to the one host kernel, fenced by namespaces (what it can see) and cgroups (what it can use).</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -1800,13 +1792,13 @@
 <rect x="20" y="252" width="360" height="32" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.7"/>
 <text x="200" y="273" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">one kernel answers all three</text>
 </svg>
-      <p id="ch4-security-p12" class="diagram-caption">Ask the same five questions from inside container A, inside B and on the host, and one kernel gives three sets of answers: each container sees its own PID 1, hostname, network and root filesystem. Namespaces are translation tables, not copies: to the host, A's PID 1 is just process 8472.</p>
+      <p id="ch4-security-p12" class="diagram-caption">Ask the same five questions from inside container A, inside B and on the host, and one kernel gives three sets of answers: each container sees its own PID 1, hostname, network and root filesystem. A PID namespace is a translation table, not a copy: to the host, A's PID 1 is just process 8472.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Eight kinds.</b> Mount, UTS (hostname), IPC, PID, network, user, cgroup and, since Linux 5.6, time. Each can be set separately.</li>
-          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> gives a new process (or, for PID, the caller's next children) a fresh namespace, which its children inherit.</li>
-          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, on a bridge the host routes from.</li>
+          <li><b>Making one.</b> <code>clone()</code> with a flag such as <code>CLONE_NEWPID</code> starts a new process in a fresh namespace; <code>unshare()</code> moves the caller itself into one (for PID, only its next children). Children inherit the namespace.</li>
+          <li><b>The network.</b> A container's network namespace gets its own virtual network card, joined by a virtual cable to the host, which passes its traffic on. Part III opens up networking.</li>
         </ol>
       </details>
     </div>
@@ -1846,11 +1838,11 @@
 <rect x="84" y="198" width="240" height="18" rx="2" fill="none" stroke="rgba(29,43,34,0.53)"/>
 <rect x="84" y="198" width="60.0" height="18" rx="2" fill="none" stroke="#1d2b22" stroke-width="1.6"/>
 <text x="332" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">16</text>
-<rect x="84" y="87" width="15.0" height="16" fill="none" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="width" values="180;180;0;15;15;15;15;180;180" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.900000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<rect x="84" y="89" width="15.0" height="12" fill="#2e6f52" fill-opacity="1"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="width" values="60;60;0;15;15;15;15;60;60" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.827000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="84" y="87" width="15.0" height="16" fill="none" stroke="#8a5a00" stroke-width="1.5" stroke-dasharray="4 3"><animate attributeName="width" values="180;180;0;0;0;15;15;180;180" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.900000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="84" y="89" width="15.0" height="12" fill="#2e6f52" fill-opacity="1"><animate attributeName="opacity" values="0;0;1;1;1;1;0;0" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><animate attributeName="width" values="60;60;0;0;0;15;15;60;60" keyTimes="0.000000;0.400000;0.401000;0.500000;0.699950;0.700000;0.800000;0.827000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="84" y="89" width="60.0" height="12" fill="#8a5a00" fill-opacity="1" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.399200;0.399500;0.699950;0.700000;0.829800;0.830000;1.000000" dur="10s" repeatCount="indefinite"/><text x="154" y="100" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#8a5a00">wants 12</text></g>
-<rect x="84" y="201" width="15.0" height="12" fill="#2e6f52" fill-opacity="0.75"><animate attributeName="width" values="15;15;60;60;0;0;7.5;7.5;15;15" keyTimes="0.000000;0.100000;0.340000;0.360000;0.361000;0.440000;0.540000;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="84" y="201" width="15.0" height="12" fill="#2e6f52" fill-opacity="0.75"><animate attributeName="width" values="15;15;60;60;0;0;0;0;15;15" keyTimes="0.000000;0.100000;0.340000;0.360000;0.361000;0.440000;0.540000;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="82" y="196" width="64.0" height="22" rx="3" fill="#b3261e" fill-opacity="0.25" stroke="#b3261e" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.339800;0.340000;0.399200;0.399500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0;0;0" keyTimes="0.000000;0.359800;0.360000;0.459200;0.459500;0.699950;0.700000;1.000000" dur="10s" repeatCount="indefinite"/><text x="152" y="212" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#b3261e">killed</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.699950;0.700000;0.729800;0.730000;0.829200;0.829500;1.000000" dur="10s" repeatCount="indefinite"/><text x="200" y="248" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#1d2b22">batch asks for more CPU</text></g>
@@ -1865,7 +1857,7 @@
         <ol>
           <li><b>The interface.</b> Cgroup v2 is a filesystem at <code>/sys/fs/cgroup</code>. Writing <code>400000 100000</code> to <code>cpu.max</code> allows 4 CPUs' worth of time in every 100 ms period.</li>
           <li><b>Memory.</b> Past <code>memory.max</code> the kernel first reclaims the group's own pages; if that fails, the OOM killer picks a process inside the group.</li>
-          <li><b>Who writes them.</b> Docker's <code>--cpus</code> and <code>--memory</code>, Kubernetes resource limits and systemd's services all set these files, as do <code>io.max</code> and <code>pids.max</code> for disk and process counts.</li>
+          <li><b>Who writes them.</b> Docker's <code>--cpus</code> and <code>--memory</code>, Kubernetes resource limits and systemd's services all write these files; <code>io.max</code> and <code>pids.max</code> are further files, for disk and process counts.</li>
         </ol>
       </details>
     </div>
@@ -1880,7 +1872,7 @@
     </p>
 
     <p id="ch4-security-p15">
-      The obvious worry is that this lets user code into the kernel, historically the worst possible security outcome. eBPF answers with a <strong>verifier</strong>: a checker in the kernel that reads every uploaded program and refuses to load it unless it can prove the program will always terminate, never read out-of-bounds memory, and never crash. Programs that pass are then translated into the CPU's own machine code and run essentially as fast as compiled kernel code. (Belt and braces: modern kernels also restrict <em>who</em> may load programs at all.)
+      The obvious worry is that this lets user code into the kernel, historically the worst possible security outcome. eBPF answers with a <strong>verifier</strong>: a checker in the kernel that reads every uploaded program and refuses to load it unless it can prove the program will always terminate, never read out-of-bounds memory, and never crash. Turing showed in <a href="part-1#ch1">Chapter 1</a> that no checker can decide whether every program ends, so the verifier settles for less: it accepts only programs simple enough to prove, such as loops with a known bound, and refuses everything else, even some programs that would have ended. Programs that pass are then translated into the CPU's own machine code and run essentially as fast as compiled kernel code. (Belt and braces: modern kernels also restrict <em>who</em> may load programs at all.)
     </p>
 
     <div class="diagram-card fig-v2" id="fig-4-22">
@@ -1937,19 +1929,18 @@
 <g><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.145409;0.145455;0.581636;0.581818;0.635636;0.635909;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 3×</text></g>
 <g><animate attributeName="opacity" values="1;1;0;0;0;1;1" keyTimes="0.000000;0.144727;0.145000;0.145455;0.636182;0.636364;1.000000" dur="11s" repeatCount="indefinite"/><text x="380" y="316" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#84ffb2">A ran 4×</text></g>
 </svg>
-      <p id="ch4-security-p16" class="diagram-caption">Before an eBPF program may run in the kernel, the verifier must prove that it ends and never reads outside its bounds: a packet counter passes, is compiled to native code and runs on every packet. A loop the verifier cannot bound is refused with an error, so it never runs at all.</p>
+      <p id="ch4-security-p16" class="diagram-caption">Program A, a packet counter, is proven to end and stay in bounds, so it is compiled to native code and runs on every packet; program B, an endless loop, is refused and never runs.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The toolchain.</b> <code>clang</code> compiles restricted C to eBPF bytecode, and the <code>bpf()</code> system call hands it to the kernel.</li>
           <li><b>The proof.</b> The verifier walks every path through the program, tracking the range of every register. Loops pass only when it can bound them (allowed since Linux 5.3), and its effort is capped.</li>
-          <li><b>A second guard.</b> Most systems also let only privileged users load programs, so the verifier is not the only line of defence.</li>
         </ol>
       </details>
     </div>
 
     <p id="ch4-security-p17">
-      eBPF now underlies much of Linux's tracing (bpftrace), networking (Cilium) and security monitoring (Falco). The same pattern recurs elsewhere: untrusted code runs inside a privileged place under constraints the machine enforces, proved harmless before it runs in eBPF's case, fenced in while it runs when the browser executes a web page's JavaScript in <a href="part-3#ch12">Chapter 12</a>.
+      eBPF now underlies much of Linux's tracing (bpftrace), networking (Cilium) and security monitoring (Falco). The same pattern recurs elsewhere: untrusted code runs inside a privileged place under constraints the machine enforces. eBPF proves the code harmless before it runs; the browser of <a href="part-3#ch12">Chapter 12</a> fences a web page's JavaScript in while it runs.
     </p>
 
     <div class="insight-strip">
@@ -1969,7 +1960,7 @@
     microkernel (minimal Ring 0, message-passing, safer and slower), with most real
     systems sitting somewhere on that spectrum. Its scheduler, anchored mathematically
     in queueing theory, decides which process gets the CPU next, hundreds of times a second. Linux's
-    CFS, and EEVDF after it, does this in O(log N) using a red-black tree of virtual
+    CFS, and EEVDF after it, does this in O(log N) steps using a red-black tree of virtual
     runtimes. Its virtual
     memory subsystem maintains a four-level page table per process, accelerated by a
     translation cache (TLB), and uses page faults productively to implement
@@ -1995,7 +1986,7 @@
 
   <p>
     The next chapter climbs out of the kernel and into the language it was written in.
-    C (Ritchie at Bell Labs, 1972) is still the language of every production kernel. Pointers turn out to be the addresses we just walked through: the source of C's power, and of every memory bug we met in <a href="part-1#ch3">Chapter 3</a>.
+    C (Ritchie at Bell Labs, 1972) is still the language of Linux and most production kernels. Pointers turn out to be the addresses we just walked through: the source of C's power, and of every memory bug we met in <a href="part-1#ch3">Chapter 3</a>.
   </p>
 
 </main>
