@@ -36,3 +36,7 @@ Fig 13.10 is a kept original and the Codd pull-quote is owner text; nothing belo
 
 - **Fig 13.10 caption (ch13-injection-p3): Sony PlayStation Network "(77 million)"** (ch13.json 16, 21). Standing after "130 million payment cards", the bare number reads as 77 million cards; they were accounts. Separately, Sony never confirmed that the 2011 PSN breach was SQL injection (the LulzSec breach of Sony Pictures that year was); this is the open call already in `docs/pass-30-figures.md` and §4g. Options: (a) "(77 million accounts)"; (b) replace PSN with Sony Pictures 2011 ("about a million accounts", confirmed SQL injection); (c) leave. Recommended: (b), or at least (a).
 - **Fig 13.10 payload line "exfiltrates every password hash"** (22, 51). The vulnerable query compares `pw` with the typed password, so the column as drawn holds plaintext. Recommended: "exfiltrates every stored password".
+
+## Chapter 14
+
+- **The closing paragraph (ch14-tls-pqc-p10), verdict "owner"** (ch14.json 64). It lists where each primitive lands (TLS, password storage, Bitcoin, Signal, CT) before the threat-model hand-off to Chapter 15; Signal's ratchet appears there for the first time. Options: (a) keep it as the chapter's coda (the §4w question of a Ch14 consolidation); (b) cut the list, so the paragraph is the hand-off alone: "Every layer of cryptography in this chapter is a precise mathematical claim, and every claim has a precise threat model: the kind of adversary it withstands and the kind that breaks it." Recommended: (a) if a coda is wanted there, else (b). Left as it is.

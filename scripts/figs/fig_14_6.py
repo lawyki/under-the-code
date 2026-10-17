@@ -88,8 +88,7 @@ o.insert(2, '<desc id="svgd-part4-19">A small picture of a padlock, in which eac
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('In ECB mode every 16-byte block is encrypted on its own, so equal plaintext blocks come out as equal ciphertext and the padlock is still there to see. '
-           '<span class="key-term">CBC</span> mixes each block with the ciphertext before it, and the same picture becomes noise: AES is sound, but the mode decides what leaks.')
+caption = ('In ECB mode every 16-byte block is encrypted on its own, so equal plaintext blocks come out as equal ciphertext and the padlock is still there to see. <span class="key-term">CBC</span> mixes each block with the ciphertext before it, and the same picture becomes noise: AES is sound, but the mode decides what leaks.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
