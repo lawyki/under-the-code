@@ -50,8 +50,7 @@ a(f'<g>{T.translate(pts, "x")}<line x1="{xs[0]}" y1="66" x2="{xs[0]}" y2="88" st
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('<code>announce</code> works on any object that has a <code>speak</code> method: Python looks the name up on the object, at the moment of the call. '
-           'A Duck and an unrelated Robot both answer; an int has no <code>speak</code>, and the mistake surfaces only when that call runs, as <code>AttributeError</code>.')
+caption = ('<code>announce</code> works on any object that has a <code>speak</code> method: Python looks the name up on the object, at the moment of the call. A Duck and an unrelated Robot both answer; an int has no <code>speak</code>, and the mistake surfaces only when that call runs, as <code>AttributeError</code>.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

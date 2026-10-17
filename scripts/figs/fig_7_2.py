@@ -55,8 +55,7 @@ for i, (yr, ev) in enumerate(EVENTS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('From a project van Rossum began over Christmas 1989 to the everyday language of data science. '
-           'The defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020.')
+caption = ("Python's defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020; in 2024 Python 3.13 first offered a build without the lock of Section 04.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

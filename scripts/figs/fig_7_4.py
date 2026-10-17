@@ -59,8 +59,7 @@ a(f'<line y1="24" y2="198" stroke="#fff" stroke-width="1.2" opacity="0">'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('With the GIL, two CPU-bound threads take turns, the lock passing between them every 5 ms, so only one runs at a time; a thread waiting on I/O releases it, and then the other gets real work done. '
-           'Python 3.13\'s optional free-threaded build removes the lock, and both threads run at once.')
+caption = ("With the GIL, two CPU-bound threads take turns, the lock passing between them every 5 ms, so only one runs at a time; a thread waiting on I/O releases it, and then the other gets real work done. Python 3.13's optional free-threaded build removes the lock, and both threads run at once.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

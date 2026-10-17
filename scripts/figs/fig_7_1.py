@@ -57,8 +57,7 @@ a(text(380, y + 54, 'every run', anchor='end', size=13, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('C pays for translation once, on the developer\'s machine, and every run executes native code; Python translates on the user\'s machine, caches an imported module\'s bytecode in a <code>.pyc</code> file, and interprets it on every run. '
-           'Python ships source that runs wherever there is an interpreter, and pays in cycles each time it runs.')
+caption = ("C pays for translation once, on the developer's machine, and every run executes native code; Python translates on the user's machine, caches an imported module's bytecode in a <code>.pyc</code> file, and interprets it on every run. Python ships source that runs wherever there is an interpreter, and pays in cycles each time it runs.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

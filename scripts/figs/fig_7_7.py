@@ -45,8 +45,7 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('C\'s compiler knows both values are ints and emits one add; CPython learns what they are only at run time, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. '
-           'Many programs spend most of their time waiting on disks, networks or libraries written in C, and there the gap does not show.')
+caption = ("C's compiler knows both values are ints and emits one add; CPython learns what they are only at runtime, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. Many programs spend most of their time waiting on disks, networks or libraries written in C, and there the gap does not show.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

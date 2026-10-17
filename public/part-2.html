@@ -3847,8 +3847,8 @@
       <rect x="90" y="60" width="300" height="84" rx="8" fill="none" stroke="rgba(132,255,178,0.85)" stroke-width="2"/>
       <text x="240" y="84" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(132,255,178,1)" letter-spacing="0.12em">Python code</text>
       <line x1="110" y1="92" x2="370" y2="92" stroke="rgba(132,255,178,0.5)"/>
-      <text x="240" y="110" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">for x in numbers:</text>
-      <text x="240" y="124" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">    print(x * x)</text>
+      <text x="189" y="110" text-anchor="start" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">for x in numbers:</text>
+      <text x="189" y="124" text-anchor="start" font-family="IBM Plex Mono" font-size="10" fill="rgba(198,222,206,0.85)">&#160;&#160;&#160;&#160;print(x * x)</text>
       <text x="240" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.1" fill="rgba(150,216,150,0.7)">reads almost like English</text>
 
       <!-- Middle: interpreter -->
@@ -3856,7 +3856,7 @@
       <text x="240" y="222" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="rgba(100,150,255,0.95)" letter-spacing="0.12em">INTERPRETER</text>
       <text x="240" y="240" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.1" fill="rgba(198,222,206,0.7)">runs your code step by step</text>
       <text x="240" y="256" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.1" fill="rgba(198,222,206,0.7)">~1M lines of C underneath</text>
-      <text x="240" y="272" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.1" fill="rgba(255,255,255,0.62)">slow but predictable</text>
+      <text x="240" y="272" text-anchor="middle" font-family="IBM Plex Mono" font-size="9.1" fill="rgba(255,255,255,0.62)">10 to 100 times slower than C</text>
 
       <!-- Bottom: native libs -->
       <g transform="translate(60,340)">
@@ -3902,7 +3902,7 @@
     <h2>Two pipelines, two trades.</h2>
 
     <p id="ch7-interpret-p1" class="lead">
-      The first Lisp interpreter ran on an IBM 704 at MIT in 1959. John McCarthy had written a paper defining a new language in terms of itself (its core function, <code>eval</code>, evaluated Lisp expressions in Lisp) but had not implemented it. A research assistant named Steve Russell, who had been transcribing the paper, realised that <code>eval</code> looked like working code rather than mathematical theory, and spent a few weeks turning it into machine code by hand. The result was the first interpreter that mattered: a program that read each Lisp expression at runtime and executed it directly, without ever producing a separate binary. The BASIC of the first microcomputers, a decade and a half later, arrived the same way: an interpreter squeezed into ROM, translating each line as it ran. So the question of <em>when</em> to translate a program into machine instructions is older than C: once, in advance, or every time it runs.
+      The first Lisp interpreter ran on an IBM 704 at MIT around the turn of 1959. John McCarthy had written a paper defining a new language in terms of itself (its core function, <code>eval</code>, evaluated Lisp expressions in Lisp) but had not implemented it. A research assistant named Steve Russell, who had spent months hand-translating Lisp functions into machine code, realised that <code>eval</code> looked like working code rather than mathematical theory, and spent a few weeks turning it into machine code by hand. The result was a working interpreter: a program that read each Lisp expression at runtime and executed it directly, without ever producing a separate binary. The BASIC of the first microcomputers, a decade and a half later, arrived the same way: an interpreter squeezed into the machine's read-only memory, translating each line as it ran. So the question of <em>when</em> to translate a program into machine instructions is older than C: once, in advance, or every time it runs.
     </p>
 
     <p id="ch7-interpret-p2">
@@ -3910,7 +3910,7 @@
     </p>
 
     <p id="ch7-interpret-p3">
-      An interpreted language runs most of the same pipeline, but at runtime, on the user's machine. Python source becomes tokens, then an AST, then <em>bytecode</em>: a sequence of small, simple opcodes for an imaginary processor. Imported modules keep their bytecode in a cache until their source changes; the interpretation is paid for on every run. CPython, the standard interpreter, is a loop in C that reads each opcode and runs the C code for it. The CPU executes the interpreter; the interpreter executes your code. Every Python statement becomes hundreds of CPU instructions in that loop, plus the actual work. In return, a changed line runs at once, with no build to wait for.
+      An interpreted language runs most of the same pipeline, but at runtime, on the user's machine. Python source becomes tokens, then an AST, then <em>bytecode</em>: a sequence of small, simple opcodes for an imaginary processor. Imported modules (code files that a program loads with <code>import</code>) keep their bytecode in a cache until their source changes; the interpretation is paid for on every run. CPython, the standard interpreter, is a loop in C that reads each opcode and runs the C code for it. The CPU executes the interpreter; the interpreter executes your code. Every Python statement becomes dozens to hundreds of CPU instructions in that loop, plus the actual work. In return, a changed line runs at once, with no build to wait for.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-1">
@@ -3937,7 +3937,7 @@
 <text x="20" y="114" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">once, before shipping</text>
 <text x="380" y="114" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">every run</text>
 <text x="20" y="146" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">Python · an imported module</text>
-<g><animate attributeName="opacity" values="0;0;1;1;1;1;0;0;1;1;0;0" keyTimes="0.000000;0.058167;0.058333;0.258292;0.258333;0.674333;0.674583;0.808167;0.808333;0.924333;0.924583;1.000000" dur="12s" repeatCount="indefinite"/>
+<g><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.674333;0.674583;1.000000" dur="12s" repeatCount="indefinite"/>
 <rect x="20" y="160" width="80" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-opacity="0.6"/>
 <text x="60" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">parse</text>
 <rect x="108" y="160" width="88" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-opacity="0.6"/>
@@ -3947,8 +3947,8 @@
 <text x="301" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">eval loop</text>
 <rect class="fx" x="20" y="160" width="80" height="34" rx="3" fill="#86a8ff" fill-opacity="0.3" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.424833;0.425000;0.474333;0.474583;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="108" y="160" width="88" height="34" rx="3" fill="#86a8ff" fill-opacity="0.3" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.449833;0.450000;0.499333;0.499583;1.000000" dur="12s" repeatCount="indefinite"/></rect>
-<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.674833;0.675000;0.807667;0.807917;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="176" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-dasharray="4 3"/><text x="108" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">from .pyc cache</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.057667;0.057917;0.258292;0.258333;0.924833;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="176" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-dasharray="4 3"/><text x="108" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">from .pyc cache</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.674833;0.675000;0.924333;0.924583;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="176" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-dasharray="4 3"/><text x="108" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">from .pyc cache</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;1;0;0;1;1" keyTimes="0.000000;0.258292;0.258333;0.924833;0.925000;1.000000" dur="12s" repeatCount="indefinite"/><rect x="20" y="160" width="176" height="34" rx="3" fill="none" stroke="#86a8ff" stroke-dasharray="4 3"/><text x="108" y="182" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">from .pyc cache</text></g>
 <rect class="fx" x="222" y="160" width="158" height="34" rx="3" fill="none" fill-opacity="0.3" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.499833;0.500000;0.557667;0.557917;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="222" y="160" width="158" height="34" rx="3" fill="none" fill-opacity="0.3" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.258292;0.258333;0.708167;0.708333;0.807667;0.807917;1.000000" dur="12s" repeatCount="indefinite"/></rect>
 <rect class="fx" x="222" y="160" width="158" height="34" rx="3" fill="none" fill-opacity="0.3" stroke="#86a8ff" stroke-width="2.2" opacity="0"><animate attributeName="opacity" values="1;1;0;0;0;0;1;1" keyTimes="0.000000;0.057667;0.057917;0.258292;0.258333;0.958167;0.958333;1.000000" dur="12s" repeatCount="indefinite"/></rect>
@@ -3962,7 +3962,7 @@
         <ol>
           <li><b>C.</b> The compiler parses, optimises and emits machine code; the linker joins the pieces into one executable for one kind of machine.</li>
           <li><b>Python.</b> CPython parses a module to a syntax tree, compiles it to bytecode and caches that in <code>__pycache__</code> when it is imported (a script run directly is recompiled each time); its eval loop runs one bytecode instruction at a time.</li>
-          <li><b>In between.</b> Just-in-time compilers (PyPy, and CPython 3.13's experimental JIT) turn hot bytecode into machine code while the program runs.</li>
+          <li><b>In between.</b> Just-in-time compilers (PyPy, and CPython 3.13's experimental JIT) turn hot bytecode (the parts that run most often) into machine code while the program runs.</li>
         </ol>
       </details>
     </div>
@@ -3974,11 +3974,11 @@
     <h2>A Christmas hobby that ate the world.</h2>
 
     <p id="ch7-vanrossum-p1" class="lead">
-      Christmas 1989, at the Centrum Wiskunde &amp; Informatica in Amsterdam, the Dutch programmer Guido van Rossum was bored. He had spent three years on a research language called ABC, which had failed to gain traction outside CWI. Over the holiday break, working from home, he started writing an interpreter for a new language that borrowed ABC's clarity and added the things ABC had refused: modules, exceptions, and a way to call code written in C. He named it Python, after the British comedy troupe Monty Python. In 1991 he posted it to USENET's discussion groups, and it spread into data science, scientific computing and most of the world's introductory programming courses.
+      Over Christmas 1989 the Dutch programmer Guido van Rossum, who worked at the Centrum Wiskunde &amp; Informatica (CWI) in Amsterdam, wanted a hobby project for the week his office was closed. He had spent four years on ABC, a language CWI built for teaching, which had failed to gain traction outside CWI. Working at home over the break, he started writing an interpreter for a new language that borrowed ABC's clarity and added the things ABC had refused: modules, exceptions, and a way to call code written in C. He named it Python, after the British comedy troupe Monty Python. In 1991 he posted it to Usenet's discussion groups, and it spread into data science, scientific computing and many of the world's introductory programming courses.
     </p>
 
     <p id="ch7-vanrossum-p2">
-      Python's design choices trace to instincts that Tim Peters wrote down in 1999 as the <em>Zen of Python</em>. <strong>Readability counts:</strong> indentation marks each block, as braces do in C, so the layout you see is the structure the interpreter sees. <strong>Explicit is better than implicit:</strong> <code>1 + "a"</code> is an error rather than a guess, and <code>self</code>, the <code>this</code> that C++ hides, is spelled out as every method's first parameter. <strong>There should be one-- and preferably only one --obvious way to do it:</strong> the opposite of Perl's motto, "There's more than one way to do it".
+      Python's design choices trace to instincts that Tim Peters wrote down in 1999 as the <em>Zen of Python</em>. <strong>Readability counts:</strong> indentation marks each block, as braces do in C, so the layout you see is the structure the interpreter sees. <strong>Explicit is better than implicit:</strong> <code>1 + "a"</code> is an error rather than a guess, and <code>self</code>, the <code>this</code> that C++ hides, is spelled out as every method's first parameter.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-2">
@@ -4036,12 +4036,12 @@
 </g>
 <circle class="fx" cx="76" cy="290" r="12" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;0;0" keyTimes="0.000000;0.059950;0.060000;0.734800;0.735000;0.795000;1.000000" dur="10s" repeatCount="indefinite"/></circle>
 </svg>
-      <p id="ch7-vanrossum-p3" class="diagram-caption">Python grew from a project van Rossum began over Christmas 1989 into the everyday language of data science. Its defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020.</p>
+      <p id="ch7-vanrossum-p3" class="diagram-caption">Python's defining event is the split: Python 3 broke compatibility in 2008, and Python 2 lived beside it for twelve years before it was retired in 2020; in 2024 Python 3.13 first offered a build without the lock of Section 04.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The name.</b> van Rossum (1996): "I chose Python as a working title for the project, being in a slightly irreverent mood (and a big fan of Monty Python's Flying Circus)."</li>
-          <li><b>What 3.0 fixed.</b> Text became Unicode, <code>1/2</code> became 0.5, and <code>print</code> became a function: each one broke old code.</li>
+          <li><b>The name.</b> Van Rossum (1996): "I chose Python as a working title for the project, being in a slightly irreverent mood (and a big fan of Monty Python's Flying Circus)."</li>
+          <li><b>What 3.0 fixed.</b> Text became Unicode (characters from any alphabet, where Python 2 text was plain bytes), <code>1/2</code> became 0.5 (it was 0), and <code>print "x"</code> became <code>print("x")</code>: each one broke old code.</li>
           <li><b>The inheritance.</b> From ABC, Python took indentation as structure and a taste for being easy to read.</li>
         </ol>
       </details>
@@ -4058,11 +4058,11 @@
     </p>
 
     <p id="ch7-types-p2">
-      Statically typed languages (C, C++, Rust, Go, Java) check types once, at compile time. Hand a string to a function that wants an integer and the compiler refuses; the program never runs at all. Dynamically typed languages (Python, JavaScript, Ruby) check types at runtime. The same program starts without complaint, runs until it reaches the mistake, and dies there with a <code>TypeError</code>. The static side is safer; the dynamic side is quicker to write.
+      Statically typed languages (C, C++, Rust, Go, Java) check types once, at compile time. Hand a string to a function that wants an integer and the compiler refuses; the program never runs at all. Dynamically typed languages (Python, Ruby, Lisp) check types at runtime. The same program starts without complaint, runs until it reaches the mistake, and dies there with a <code>TypeError</code>.
     </p>
 
     <p id="ch7-types-p3">
-      Python pushes the dynamic side to its logical limit with <strong>duck typing</strong>: "If it walks like a duck and quacks like a duck, it is a duck." An object fits wherever it has the methods the code calls, whatever its class. A function that calls <code>obj.read()</code> works on <em>any</em> object that has a <code>read()</code> method (a file, a network socket, a stand-in for testing), with no shared parent class required. The price is that the fit is checked only at runtime; the benefit is that you can combine objects in ways their designers never anticipated.
+      Python pushes dynamic typing to its logical limit with <strong>duck typing</strong>: "If it walks like a duck and quacks like a duck, it is a duck." An object fits wherever it has the methods the code calls, whatever its class. A function that calls <code>obj.read()</code> works on <em>any</em> object that has a <code>read()</code> method (a file, an HTTP response, a stand-in for testing), with no shared parent class required. The price is that the fit is checked only at runtime; the benefit is that you can combine objects in ways their designers never anticipated.
     </p>
 
     <div class="diagram-card light-diagram fig-v2" id="fig-7-3">
@@ -4103,7 +4103,7 @@
         <ol>
           <li><b>The strength.</b> Any object with the right method fits, including ones from libraries written after the function was.</li>
           <li><b>The weakness.</b> The contract "must have <code>speak()</code>" is checked by running the code, not by a compiler beforehand.</li>
-          <li><b>The middle way.</b> Type hints with <code>typing.Protocol</code> let a checker such as mypy verify the contract before the program runs, without any shared parent class.</li>
+          <li><b>The middle way.</b> Type hints are optional type labels written in the code. Python ignores them when the program runs, but a checker such as mypy reads them first; a <code>typing.Protocol</code> lists the methods an object must have, so the contract "must have <code>speak()</code>" is checked beforehand, without any shared parent class.</li>
         </ol>
       </details>
     </div>
@@ -4112,21 +4112,21 @@
 
   <section class="section" id="ch7-gil">
     <div class="section-number">04 · The GIL and concurrency</div>
-    <h2>One Python thread runs at a time. There are reasons. They are running out.</h2>
+    <h2>One Python thread runs at a time, for reasons that are running out.</h2>
 
     <p id="ch7-gil-p1" class="lead">
-      A program can run several threads, streams of instructions that share its memory and can run on separate cores at once. Python's threads are real ones, but CPython has a single global lock, the <strong>GIL</strong> (Global Interpreter Lock), that lets only one thread at a time execute Python bytecode. On an eight-core CPU, a program whose threads all compute in Python leaves seven cores idle, though a thread waiting on the network, or running C code, can let go of the lock. This sounds like a bug, but it follows from a deliberate design decision of 1992, whose bill came due only when the cores multiplied.
+      A program can run several threads, streams of instructions that share its memory and can run on separate cores at once. Python's threads are real ones, but CPython has a single global lock, the <strong>GIL</strong> (Global Interpreter Lock), that lets only one thread at a time execute Python bytecode. On an eight-core CPU, a program whose threads all compute in Python leaves seven cores idle, though a thread waiting on the network, or calling a C library that works on its own data, can let go of the lock. This sounds like a bug, but it follows from a deliberate design decision of 1992, whose bill came due only when the cores multiplied.
     </p>
 
     <p id="ch7-gil-p2">
-      The reason is reference counting. Every Python object carries a count of how many names point to it; when the count drops to zero, the object is freed. Updating the count must be atomic, and here is what happens if it is not: two threads decrement at once, both read 2 and both write 1, and one decrement is simply lost. An object that should be dead now lives forever. Lose an increment instead and the count hits zero early: the object is freed while a thread still holds it, and Chapter 5's use-after-free arrives in a language that promised you would never see one. The GIL is the simplest possible solution: Python code runs one thread at a time, so counts cannot race. Removing it has been tried many times, but a lock on every object slowed single-threaded code, which is most code, by 30–50%. A design accepted in 2023 (PEP 703) has cut that slowdown to about 5–10%. Since Python 3.13 there has been an optional build without the GIL, officially supported from 3.14, and whether it becomes the default is undecided. For thousands of network waits, Python's <code>asyncio</code> shares one thread among many tasks, each handing it over only where it says <code>await</code>, as the Bridge's cooperative programs yielded (Fig 7.5).
+      The reason is reference counting. Every Python object carries a count of how many references point to it (names, list slots, attributes); when the count drops to zero, the object is freed. Updating the count must be atomic, and here is what happens if it is not: two threads decrement at once, both read 2 and both write 1, and one decrement is simply lost. An object that should be dead now lives forever. Lose an increment instead and the count hits zero early: the object is freed while a thread still holds it, and Chapter 5's use-after-free arrives in a language that promised you would never see one. The GIL is the simplest possible solution: Python code runs one thread at a time, so counts cannot race. Removing it has been tried many times, but earlier attempts made every count update atomic or locked, and slowed single-threaded code, which is most code, by a large margin. PEP 703, accepted in 2023, lets the thread that owns an object update its count without atomic instructions, which has cut that slowdown to about 5–10%. Since Python 3.13 there has been an optional build without the GIL, officially supported from 3.14, and whether it becomes the default is undecided.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-4">
       <div class="diagram-label">Fig 7.4&nbsp;· Two Python threads, one GIL</div>
       <svg viewBox="0 0 400 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-50 svgd-part2-50">
 <title id="svgt-part2-50">Fig 7.4 · Two Python threads, one GIL</title>
-<desc id="svgd-part2-50">Thirty milliseconds of two Python threads. With the global interpreter lock, only the thread holding it runs: thread 1 runs for 5 ms, then thread 2, then thread 1, the lock passing at the 5 ms switch interval. From 15 ms thread 1 waits on I/O and releases the lock, so thread 2 runs for those 10 ms; at 25 ms thread 1 takes the lock back. In Python 3.13's optional free-threaded build there is no such lock: both threads run at the same time, except while thread 1 waits on I/O.</desc>
+<desc id="svgd-part2-50">Thirty milliseconds of two Python threads. With the global interpreter lock, only the thread holding it runs: thread 1 runs for 5 ms, then thread 2, then thread 1, the lock passing at the 5 ms switch interval. From 15 ms thread 1 waits on I/O and releases the lock, so thread 2 runs for those 10 ms; at 25 ms thread 1's I/O is done and it waits for the lock, which thread 2 hands over when its 5 ms interval runs out, at 30 ms. In Python 3.13's optional free-threaded build there is no such lock: both threads run at the same time, except while thread 1 waits on I/O.</desc>
 <text x="20" y="18" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">default build: one lock</text>
 <text x="20" y="44" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
 <rect x="92" y="28" width="288" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.76)"/>
@@ -4134,15 +4134,15 @@
 <rect x="140.0" y="28" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.42)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.276667;0.393333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="188.0" y="28" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.393333;0.510000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="236.0" y="28" width="95.0" height="22" rx="2" fill="#d4a853" fill-opacity="0.55"><animate attributeName="width" values="95;95;95;95;0;0;95;95" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.510000;0.743333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<rect x="332.0" y="28" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<rect x="332.0" y="28" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.42)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <text x="20" y="72" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T2</text>
 <rect x="92" y="56" width="288" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.76)"/>
 <rect x="92.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.42)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.160000;0.276667;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="140.0" y="56" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.276667;0.393333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="188.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.42)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.393333;0.510000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
 <rect x="236.0" y="56" width="95.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="95;95;95;95;0;0;95;95" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.510000;0.743333;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<rect x="332.0" y="56" width="47.0" height="22" rx="2" fill="rgba(198,222,206,0.42)" fill-opacity="1"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 28.00;0 28.00;0 0.00;0 0.00;0 28.00;0 28.00;0 0.00;0 0.00" keyTimes="0.000000;0.060000;0.099950;0.100000;0.266667;0.276667;0.383333;0.393333;0.500000;0.510000;0.733333;0.743333;1.000000" dur="10s" repeatCount="indefinite"/><rect x="44" y="28" width="42" height="22" rx="3" fill="none" fill-opacity="0.25" stroke="#d4a853"/><text x="65" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">GIL</text></g>
+<rect x="332.0" y="56" width="47.0" height="22" rx="2" fill="#84ffb2" fill-opacity="0.55"><animate attributeName="width" values="47;47;47;47;0;0;47;47" keyTimes="0.000000;0.099950;0.100000;0.140000;0.140500;0.743333;0.860000;1.000000" dur="10s" repeatCount="indefinite"/></rect>
+<g><animateTransform attributeName="transform" type="translate" values="0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 28.00;0 28.00;0 0.00;0 0.00;0 28.00;0 28.00;0 28.00;0 28.00" keyTimes="0.000000;0.060000;0.099950;0.100000;0.266667;0.276667;0.383333;0.393333;0.500000;0.510000;0.733333;0.743333;1.000000" dur="10s" repeatCount="indefinite"/><rect x="44" y="28" width="42" height="22" rx="3" fill="none" fill-opacity="0.25" stroke="#d4a853"/><text x="65" y="44" text-anchor="middle" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#d4a853">GIL</text></g>
 <text x="20" y="132" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">3.13 free-threaded build</text>
 <text x="20" y="158" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(198,222,206,0.85)">T1</text>
 <rect x="92" y="142" width="288" height="22" rx="2" fill="none" stroke="rgba(198,222,206,0.76)"/>
@@ -4168,13 +4168,15 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Why one lock.</b> CPython's reference counts and internal structures were never safe to update from two threads at once; a single lock made them safe and kept the interpreter simple.</li>
           <li><b>The interval.</b> <code>sys.getswitchinterval()</code> is 0.005 seconds by default: after that, the running thread is asked to hand the lock over.</li>
-          <li><b>Removing it.</b> PEP 703's free-threaded build uses per-object locks and biased reference counting; in 3.13 it is optional, and single-threaded code runs somewhat slower in it.</li>
+          <li><b>Removing it.</b> PEP 703's free-threaded build gives each object an owner thread that updates its count cheaply; other threads use slower atomic updates, and per-object locks guard only lists, dicts and sets. In 3.13 single-threaded code runs about 40% slower in it, in 3.14 about 5–10%.</li>
         </ol>
       </details>
     </div>
 
+    <p id="ch7-gil-p5">
+      A thread that is waiting needs no core, so a program that spends its time on network replies loses little to the GIL. For thousands of such waits, where a thread apiece would cost too much memory and too many switches, Python's <code>asyncio</code> shares one thread among many tasks, each handing it over only where it says <code>await</code>, as the Bridge's cooperative programs yielded (Fig 7.5).
+    </p>
     <div class="diagram-card fig-v2" id="fig-7-5">
       <div class="diagram-label">Fig 7.5&nbsp;· asyncio: cooperative scheduling on one thread</div>
       <svg viewBox="0 0 400 206" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-51 svgd-part2-51">
@@ -4241,7 +4243,7 @@
     </p>
 
     <p id="ch7-cpython-p2">
-      CPython's pipeline has four stages. The <strong>tokeniser</strong> splits the source file into tokens: names, numbers, operators, and indentation changes. The <strong>parser</strong> assembles tokens into an abstract syntax tree. The <strong>compiler</strong> walks the tree and emits a list of <strong>bytecode</strong> instructions for a stack machine, which computes on the values at the top of a stack (Fig 7.6). The <strong>evaluator</strong>, the loop from Section 01, is ten thousand lines of C in a file called <code>ceval.c</code>, with a case for every bytecode instruction.
+      CPython's pipeline has four stages. The <strong>tokeniser</strong> splits the source file into tokens: names, numbers, operators, and indentation changes. The <strong>parser</strong> assembles tokens into an abstract syntax tree. The <strong>compiler</strong> walks the tree and emits a list of <strong>bytecode</strong> instructions for a stack machine, which computes on the values at the top of a stack (Fig 7.6). The <strong>evaluator</strong>, the loop from Section 01, lives in a C file called <code>ceval.c</code> and has a case for every bytecode instruction.
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-6">
@@ -4290,9 +4292,9 @@
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>See it yourself.</b> <code>import dis; dis.dis("a + b * c")</code> prints this bytecode.</li>
-          <li><b>Since 3.11.</b> One <code>BINARY_OP</code> with an argument replaced <code>BINARY_ADD</code>, <code>BINARY_MULTIPLY</code> and the rest, and the interpreter specialises hot instructions once it has seen their types, such as <code>BINARY_OP_ADD_INT</code>.</li>
-          <li><b>The loop.</b> <code>ceval.c</code> jumps from each instruction to its C handler, using computed gotos where the compiler supports them.</li>
+          <li><b>See it yourself.</b> <code>import dis; dis.dis("a + b * c")</code> prints this bytecode, between a <code>RESUME</code> and a <code>RETURN_VALUE</code>.</li>
+          <li><b>Since 3.11.</b> One <code>BINARY_OP</code> with an argument replaced <code>BINARY_ADD</code>, <code>BINARY_MULTIPLY</code> and the rest, and the interpreter swaps a faster, specialised instruction in for one that keeps meeting the same types, such as <code>BINARY_OP_ADD_INT</code>.</li>
+          <li><b>The loop.</b> <code>ceval.c</code> jumps straight from each instruction to its C handler.</li>
         </ol>
       </details>
     </div>
@@ -4301,7 +4303,7 @@
       <div class="diagram-label">Fig 7.7&nbsp;· Why Python is slow (and why nobody minds)</div>
       <svg viewBox="0 0 400 364" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-53 svgd-part2-53">
 <title id="svgt-part2-53">Fig 7.7 · Why Python is slow (and why nobody minds)</title>
-<desc id="svgd-part2-53">The work behind a + b. In C, where the compiler knows both are ints, it is one instruction: add eax, esi. In CPython's generic path it is a list of steps, each several machine instructions: dispatch to the opcode handler, pop two object pointers, find the type's add function, check both are ints, read the digits out of both, add them, make an int object for the result, update reference counts, push the result.</desc>
+<desc id="svgd-part2-53">The work behind a + b. In C, where the compiler knows both are ints, it is one instruction: add eax, esi. In CPython's generic path it is a list of steps, each several machine instructions: dispatch to the opcode handler, pop two object pointers, find the type's add function, check both are ints, read the values out of both, add them, make an int object for the result, update reference counts, push the result.</desc>
 <text x="20" y="22" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">the work behind  a + b</text>
 <text x="20" y="48" text-anchor="start" font-family="IBM Plex Mono" font-size="14" letter-spacing="0" fill="#d4a853">C</text>
 <rect x="60" y="32" width="320" height="26" rx="3" fill="none" stroke="#d4a853" stroke-opacity="0.7"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.189950;0.190000;0.249800;0.250000;0.329200;0.329500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
@@ -4332,7 +4334,7 @@
 <rect x="60" y="204" width="320" height="22" rx="2" fill="none" stroke="rgba(134,168,255,0.6)"/>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.189950;0.190000;0.230000;0.230500;0.569800;0.570000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="60" y="204" width="320" height="22" rx="2" fill="none" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.6"/></g>
 <rect class="fx" x="60" y="204" width="320" height="22" rx="2" fill="none" stroke="#fff" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;0;0;1;1;0;0" keyTimes="0.000000;0.189950;0.190000;0.569800;0.570000;0.649200;0.649500;1.000000" dur="10s" repeatCount="indefinite"/></rect>
-<text x="72" y="220" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">read the digits out of both</text>
+<text x="72" y="220" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#fff">read the values out of both</text>
 <text x="42" y="220" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">5</text>
 <rect x="60" y="230" width="320" height="22" rx="2" fill="none" stroke="rgba(134,168,255,0.6)"/>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.189950;0.190000;0.230000;0.230500;0.649800;0.650000;1.000000" dur="10s" repeatCount="indefinite"/><rect x="60" y="230" width="320" height="22" rx="2" fill="none" fill-opacity="0.18" stroke="#86a8ff" stroke-opacity="0.6"/></g>
@@ -4356,12 +4358,12 @@
 <text x="42" y="324" text-anchor="end" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="rgba(255,255,255,0.6)">9</text>
 <g><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.189950;0.190000;0.230000;0.230500;0.969800;0.970000;1.000000" dur="10s" repeatCount="indefinite"/><text x="20" y="352" text-anchor="start" font-family="IBM Plex Mono" font-size="13" letter-spacing="0" fill="#86a8ff">each step is several instructions, every time</text></g>
 </svg>
-      <p id="ch7-cpython-p4" class="diagram-caption">C's compiler knows both values are ints and emits one add; CPython learns what they are only at run time, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. Many programs spend most of their time waiting on disks, networks or libraries written in C, and there the gap does not show.</p>
+      <p id="ch7-cpython-p4" class="diagram-caption">C's compiler knows both values are ints and emits one add; CPython learns what they are only at runtime, so every <code>+</code> unpacks two objects, checks their types, adds, and packs a new object. Many programs spend most of their time waiting on disks, networks or libraries written in C, and there the gap does not show.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Boxes.</b> Every Python value is an object on the heap with a type and a reference count; even a small int is a pointer to one.</li>
-          <li><b>Since 3.11.</b> The interpreter notices that a <code>+</code> keeps seeing ints and swaps in a specialised instruction that skips the lookup, though not the boxes.</li>
+          <li><b>Since 3.11.</b> The specialised <code>BINARY_OP_ADD_INT</code> of Fig 7.6 skips step 3's lookup once a <code>+</code> has kept seeing ints, though not the boxes.</li>
           <li><b>JIT compilers.</b> PyPy compiles hot loops to machine code with the types it has observed, removing most of the steps.</li>
         </ol>
       </details>
@@ -4374,7 +4376,7 @@
     <h2>The two-language strategy.</h2>
 
     <p id="ch7-datasci-p1" class="lead">
-      Python is slow, and numerical work is the most cycle-hungry thing computers do, yet Python is the everyday language of data science. It got there through one design pattern: write the human-facing code in Python, write the loops that do the arithmetic in C, and call them through the door to C that Python was built with. NumPy, a library for arrays of numbers, is built this way: multiplying two 1000 × 1000 matrices (grids of numbers) takes a billion multiply-adds, and NumPy hands the job to BLAS, a decades-old library of hand-tuned routines (Fig 7.8).
+      Python is slow, and numerical work is the most cycle-hungry thing computers do, yet Python is the everyday language of data science. It got there through one design pattern: write the human-facing code in Python, write the loops that do the arithmetic in C, and call them through the door to C that Python was built with. NumPy, a library for arrays of numbers, is built this way: multiplying two 1000 × 1000 matrices (grids of numbers) takes a billion multiply-adds, because each of the million cells of the answer is 1000 products added up, and NumPy hands the job to BLAS, a decades-old library of hand-tuned routines (Fig 7.8).
     </p>
 
     <div class="diagram-card fig-v2" id="fig-7-8">
@@ -4472,7 +4474,7 @@
     </p>
 
     <p id="ch7-datasci-p5">
-      This is, almost exactly, the trade C++ refused to make. Stroustrup held that an abstraction must cost nothing at run time; van Rossum held that its real cost was paid in human attention, and would spend a hundred machine cycles to save a programmer five minutes.
+      This is, almost exactly, the trade C++ refused to make. Stroustrup held that an abstraction must cost no more at runtime than the code you would have written by hand; van Rossum held that its real cost was paid in human attention, and would let the machine do a hundred times the work to save a programmer five minutes.
     </p>
 
     <div class="pull-quote">
@@ -4483,7 +4485,7 @@
     <div class="insight-strip">
       <span class="insight-icon" aria-hidden="true"><svg class="insight-svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8.5 10.5v-3a3.5 3.5 0 0 1 7 0v3"/><path d="M12 14.5V17"/></svg></span>
       <p id="ch7-datasci-p7" class="insight-text">
-        <strong>The sharpest edge is one line long.</strong> <code>pickle.loads(data)</code> looks like a parser and is an interpreter: a pickle is a small program for a stack machine, and the machine can construct any Python object, including one whose construction calls <code>os.system()</code>. Unpickling attacker-controlled bytes is therefore arbitrary code execution by design, not by bug. Every web framework that accepted pickled session cookies has been bitten by this; the only real fix is to never deserialise pickled data you didn't sign. Python's other edges are the same property (data becoming code with almost no friction) met at different doors: <code>eval()</code> and <code>exec()</code> on user input repeat the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name, and a PyPI package named <code>request</code>, one keystroke from <code>requests</code>, runs whatever it likes the moment someone installs it. Dynamism is convenience; dynamism is also attack surface.
+        <strong>The sharpest edge is one line long.</strong> <code>pickle.loads(data)</code>, which rebuilds a Python object from the bytes <code>pickle</code> saved it as, looks like a parser and is an interpreter: a pickle is a small program for a stack machine, and the machine can construct any Python object, including one whose construction calls <code>os.system()</code>, which runs a command on the computer. Unpickling attacker-controlled bytes is therefore arbitrary code execution by design, not by bug. Several web frameworks that accepted pickled session cookies have been bitten by this; the only real fix is to never deserialise pickled data you didn't sign. Python's other edges are the same property (data becoming code with almost no friction) met at different doors: <code>eval()</code> and <code>exec()</code> on user input repeat the same data-as-code mistake that gives <a href="part-4#ch13">Chapter 13</a>'s SQL injection its name, and a package named <code>request</code> on PyPI, the public index Python libraries are installed from, one keystroke from the popular <code>requests</code>, runs whatever it likes the moment someone installs it, since installing runs the package's own setup code. Dynamism is convenience; dynamism is also attack surface.
       </p>
     </div>
 
