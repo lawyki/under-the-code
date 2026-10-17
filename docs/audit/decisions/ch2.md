@@ -38,3 +38,17 @@ Round 1: `docs/audit/round1/ch2.json` (54 confirmed) and part-1.json items 12, 1
 
 ## Rejected
 - None.
+
+## Blind retest (Sonnet 5.5): `docs/audit/retest/ch2-newcomer.json`, `ch2-expert.json`
+
+Applied (one revision):
+- ch2-float-p4 and Fig 2.10 (newcomer): the word "mantissa" named both 6.5 and the stored digits after the point. The paragraph now says the 52 stored bits are only the digits after the point and that Fig 2.10 writes the whole value as 1.mantissa; the figure's readouts say "1.mantissa = 1.101 (binary)" and "1.mantissa = 1.1 (binary)".
+- Fig 2.1 strip (expert): "Engineering, not mathematics, decided it." cut (an aphorism after the point was made).
+- Fig 2.1 (expert): the reading cursor was one line from the top box to the bottom row, so it crossed the TERNARY heading and the digit row. It is now two segments, one inside each wire's box, on the same timing.
+
+Gate 1 leftover (pre-existing, also at dc2ebbd): Fig 2.3 in fullscreen, the neutral output wires measured 1.19 to 1.66:1 against the gold lit wire drawn over them. Fixed as in Fig 1.12: each neutral output wire is hidden while its gold one shows (the input wires already worked this way).
+
+## Checks (cloud session, Linux; Playwright 1.61.1, Chromium 149, WebKit 26.5)
+- `build:glossary` (no change but the timestamp), `build:sections` (timestamp only, restored), `check:dashes` clean; anchor ids outside SVGs unchanged against dc2ebbd.
+- Gate 1 on Figs 2.1, 2.2, 2.3, 2.4, 2.6, 2.7, 2.8, 2.9, 2.10, 2.11: still with fullscreen 0/120 (Chromium) and 0/120 (WebKit); motion with fullscreen 0/480 (Chromium); motion 0/240 (WebKit, cards only); hero-ch2 0/4. Run with Chromium's overlay scrollbars (`--enable-features=OverlayScrollbar`), as on a phone or a Mac: with Linux's classic scrollbar, `scrollbar-gutter: stable` takes 15 px off a 360 px viewport and every 13 px label in the book (Chapter 1's included) reads 10.7 px; that is the test machine, not a reader's phone.
+- clip (part-1, both engines, four widths): 0 findings. pass25: invariants 812/0 (after `git fetch --unshallow`, so the d1bbb42 baseline exists), parity 40/0, marks 106/0, ui 120/0, traces 231/2. The two trace failures (a CDP flick classed EXCURSION, long tasks of 50 to 82 ms under 4× CPU throttle) fail identically on dc2ebbd in this container, so they are the container's timing, not this chapter.
