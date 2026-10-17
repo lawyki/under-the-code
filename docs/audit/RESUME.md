@@ -16,9 +16,17 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Outside the chapters (docs/audit/outside.json): commit 6a5f607.
 - Chapter 1: round 1 in 6a5f607; fig-1-12 fullscreen contrast fixed; blind retest and one revision; checks green (Gate 1 0/192 still+fs and 0/768 motion+fs on the changed figures, clip 0, pass25 all pass). Commit "Pre-read audit: Chapter 1".
 
+- Outside fixes and Chapter 1 are LIVE (owner: "deploy", 2026-10-17, commit 5cc3417 on `main`, merged back into this branch).
+- Chapter 2: round 1 from `pre-read-audit-ch2-wip`; blind retest and one revision; Fig 2.3 fullscreen contrast fixed; checks green (`decisions/ch2.md` lists them). Commit "Pre-read audit: Chapter 2".
+
 ## Next
-- Chapter 2 (`ch2.json` 54, part-1.json items 12, 13, 16, 17, 25 counted 1-based). Decisions drafted in `docs/audit/decisions/ch2.md`.
 - Then ch3 (+ part-1 items 1, 5, 6, 19, 23, 24, 26; owner items for Figs 3.7 to 3.11 and the Aleph One quote), chBridge (+ the rest of part-1), ch4–ch7 (+ part-2), ch8–ch12 (+ part-3), ch13–ch15 (+ part-4), ch16–ch18 (+ part-5).
+
+## Running the checks in a cloud container (Linux)
+- `git fetch --unshallow origin` first: pass25's invariants read their baseline from commit d1bbb42, which a shallow clone lacks (it then compares the page with itself and reports 30 false tab-stop failures).
+- `npm ci` at the root (check:dashes needs esbuild); `cd tests/pass25 && npm i --no-save playwright`; browsers with `PLAYWRIGHT_BROWSERS_PATH=<dir> npx playwright install --with-deps chromium webkit`, and export the same variable for every run.
+- Run Chromium with overlay scrollbars (`--enable-features=OverlayScrollbar`, as phones and Macs have): Linux's classic scrollbar plus `scrollbar-gutter: stable` takes 15 px off the viewport and fails every 13 px label at 360 px. The session used uncommitted copies `tests/pass28/figs.local.mjs` and `clip.local.mjs` that differ from the originals only in that launch argument.
+- traces.mjs fails two timing checks (a CDP flick, long tasks over 50 ms under 4× throttle) in the container on dc2ebbd too: the container, not the book.
 
 ## Pending
 - Owner calls: `docs/audit/owner-calls.md` (privacy notice EU wording so far).
