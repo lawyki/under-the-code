@@ -1,6 +1,6 @@
 # Pre-read audit · owner calls
 
-Findings the author may not settle alone: owner text (epigraphs, pull-quotes, the thesis set, the colophon, Ch18's closing note, Fig 18.6's caption), the 18 kept-original figures, verdicts the judge marked "owner", and the account page's legal wording. One entry each: what, options, recommendation. Nothing here was changed in the text.
+Findings the author may not settle alone: owner text (epigraphs, pull-quotes, the thesis set, the colophon, Ch18's closing note, Fig 18.6's caption), the 18 kept-original figures, verdicts the judge marked "owner", and the account page's legal wording. One entry each: what, options, recommendation. Nothing here was changed in the text. To decide them in one place: the private decision page https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15 (with the seven Pass 30 calls still open).
 
 ## Outside the chapters
 
@@ -42,7 +42,7 @@ Figs 10.10 and 10.11 are kept originals; nothing below was changed.
 
 Fig 11.7 is a kept original, and the Berners-Lee pull-quote is owner text; nothing below was changed.
 
-- **Fig 11.7 caption (ch11-dns-p8): "pushed the practical attack from minutes to years"** (ch11.json 16, fact M). Unpatched resolvers fell to Kaminsky's attack in seconds; in August 2008 Polyakov poisoned a patched BIND in under ten hours (exploit-db 6236). The prose (ch11-dns-p7) now says "from seconds of flooding to hours", so the caption contradicts it. Recommended: "...practical against unpatched resolvers in seconds. The fix ... multiplied the attacker's search space ~65,000-fold and pushed the practical attack from seconds to hours."
+- **Fig 11.7 caption (ch11-dns-p8): "pushed the practical attack from minutes to years"** (ch11.json 16, fact M). Unpatched resolvers fell to Kaminsky's attack in seconds; in August 2008 Polyakov poisoned a patched BIND in under ten hours (exploit-db 6236). The prose (ch11-dns-p7) now gives only the guessing space (2¹⁶ to about 2³²), so the caption's timing is the one claim left wrong. Recommended: "...practical against unpatched resolvers in seconds. The fix ... multiplied the attacker's search space ~65,000-fold and pushed the practical attack from seconds to hours."
 - **Fig 11.7 label "(duplicate response, wrong source)"** (10, 61, 86). The real reply comes from the right source, the one the attacker spoofed; it is dropped only because the query was already answered. Recommended: "(arrives second: query already answered)"; and the box label "real bank.com name server" for the unexplained "NS".
 - **Fig 11.7 caption retells ch11-dns-p7** (60): the race, caching for the TTL, Kaminsky, port randomisation and the 65,000-fold figure; only the DNSSEC sentences are new, and it runs to eight sentences. Recommended: "The attacker races the real answer with forged replies; source-port randomisation multiplies the guesses needed about 65,000-fold. DNSSEC, which signs every record, is the deeper fix but still covers under half the namespace."
 
