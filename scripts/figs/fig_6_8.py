@@ -52,8 +52,7 @@ a(f'<g opacity="0">{win(NULLED + 0.4, RESET)}{text(20, 276, "3 pointers copied, 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Moving a vector copies its three pointers into the new owner and nulls the old ones; the million ints stay exactly where they are. '
-           'The cost is the same for ten elements or ten million, and <code>v1</code> is left empty but still valid.')
+caption = ('Before and after <code>std::move</code>: the 4 MB buffer never moves, only the three pointers that lead to it. The cost is the same for ten elements or ten million, and <code>v1</code> is left empty but valid.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -49,7 +49,7 @@ for k, (x, lab, mb, mdec, scale, sc) in enumerate(EX):
     E = int(e, 2)
     lines = [(0.6, RED, f'sign {s}', '+' if s == '0' else '−'),
              (1.6, BLUE, f'exponent {E} − 1023 = {E - 1023}'.replace('= -', '= −'), sc),
-             (2.6, GOLD, f'mantissa 1.{mb[2:]} (binary)', f'= {mdec}')]
+             (2.6, GOLD, f'1.mantissa = 1.{mb[2:]} (binary)', f'= {mdec}')]
     for j, (td, col, l, r) in enumerate(lines):
         y = 236 + j * 28
         a(f'<g opacity="0">{win(t0 + td, t0 + HALF)}<text x="20" y="{y}" {MONO} font-size="15" fill="{col}">{l}</text>'

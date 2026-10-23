@@ -7,9 +7,9 @@ from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
 
 REG = [  # (label, address shown, height, colour)
     ('firmware ROM', '0xFF00_0000', 46, MUTED), ('local APIC', '0xFEE0_0000', 46, GOLD), ('IO-APIC', '0xFEC0_0000', 46, GOLD),
-    ('network card', '0xC010_0000', 46, BLUE), ('GPU frame buffer', '0xC000_0000', 46, BLUE), ('RAM', '0x0000_0000', 70, GREEN)]
+    ('network card', '0xD000_0000', 46, BLUE), ('GPU frame buffer', '0xC000_0000', 46, BLUE), ('RAM', '0x0000_0000', 70, GREEN)]
 STORES = [(5, '0x0040_1000', 'stored, nothing else', GREEN), (4, '0xC000_0400', 'a pixel changes', BLUE),
-          (3, '0xC010_0018', 'a packet is sent', BLUE), (1, '0xFEE0_0380', 'timer rate set', GOLD)]
+          (3, '0xD000_0018', 'a packet is sent', BLUE), (1, '0xFEE0_0380', 'timer rate set', GOLD)]
 W = 400
 D = 12.0
 T = Timeline(D, shift=11.4)

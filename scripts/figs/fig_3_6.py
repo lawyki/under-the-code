@@ -21,10 +21,10 @@ def win(t0, t1):
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34">')
 a('<title id="svgt-part1-34">Fig 3.6 · The stack during a function call</title>')
-a('<desc id="svgd-part1-34">main\'s frame sits on the stack. call add pushes the return address, main+5, and jumps into add. add pushes main\'s frame pointer and begins its own frame. '
+a('<desc id="svgd-part1-34">main\'s frame (the saved rbp of main\'s caller, then main\'s variables) sits on the stack. call add pushes the return address, main+5, and jumps into add. add pushes main\'s frame pointer and begins its own frame. '
   'On the way out, pop rbp removes it, and ret pops the return address into RIP, so execution continues in main at the next instruction. RSP, the stack pointer, follows the top of the stack.</desc>')
 a(text(SX, 26, 'THE STACK · GROWS DOWN', size=13, fill=MUTED))
-SLOTS = [("main's locals", 'rgba(255,255,255,0.75)', None), ("main's rbp", 'rgba(255,255,255,0.75)', None),
+SLOTS = [("caller's rbp, saved", 'rgba(255,255,255,0.75)', None), ("main's variables", 'rgba(255,255,255,0.75)', None),
          ('return → main+5', GOLD, (1.6, 7.4)), ("main's rbp, saved", BLUE, (3.6, 5.6))]
 for i in range(5):
     a(f'<rect x="{SX}" y="{slot_y(i)}" width="{SW}" height="{SH - 4}" rx="4" fill="#141414" stroke="rgba(255,255,255,0.15)"/>')

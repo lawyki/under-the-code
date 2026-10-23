@@ -68,8 +68,7 @@ o.insert(2, '<desc id="svgd-part3-24">A packet\'s header has a source and a dest
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The sender writes the source address itself and routers forward on the destination alone, so a forged source gets through and any reply goes to the address it names. '
-           'Source address validation closes the gap at the edge: the ISP drops packets whose source is not one of the customer\'s own addresses.')
+caption = ("The same forged packet twice: with no filter at the ISP's edge it gets through and any reply goes to the address it names; with the BCP 38 check on, the edge router drops it, because the source is not one of the customer's own addresses.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

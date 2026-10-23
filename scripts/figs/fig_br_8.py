@@ -30,6 +30,8 @@ a(f'<g opacity="0">{win(TI)}{text(222, 62, "done", size=13, fill="#fff", ls="0")
 RY = 120
 box(20, RY, 360, 74, GREEN)
 a(text(32, RY + 22, 'RAM: buffer at 0x4a20_0000', size=13, fill=GREEN, ls='0'))
+a(f'<rect x="250" y="{RY + 7}" width="118" height="22" rx="4" fill="none" stroke="{GOLD}" stroke-opacity="0.7"/>')  # the queue, its own small box
+a(text(309, RY + 22, 'command queue', anchor='middle', size=13, fill=GOLD, ls='0'))
 BW = (336 - (NB - 1) * 4) / NB
 for b in range(NB):
     x = 32 + b * (BW + 4)
@@ -46,7 +48,7 @@ for b in range(NB):                                             # 2: data, block
     fly(295, 84, x, RY + 48, t0, t0 + (TS1 - TS0) / NB, GREEN)
 fly(210, 70, 190, 70, TI, TI + 0.6, RED)                        # 3: interrupt
 LY = RY + 100
-STEPS = [('1', 'kernel queues a command', GOLD, TC), ('2', 'the SSD fills RAM on its own', GREEN, TS0), ('3', 'an interrupt says done', RED, TI)]
+STEPS = [('1', 'command queued, doorbell rung', GOLD, TC), ('2', 'the SSD fills RAM on its own', GREEN, TS0), ('3', 'an interrupt says done', RED, TI)]
 for k, (n, s, col, t0) in enumerate(STEPS):
     body = text(20, LY + k * 22, f'{n}  {s}', size=13, fill=col, ls='0')
     a(f'<g opacity="0.3">{body}</g><g opacity="0">{win(t0)}{body}</g>')

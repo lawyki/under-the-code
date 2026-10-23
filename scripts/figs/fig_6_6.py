@@ -42,8 +42,7 @@ lane(140, 'C++ · compiled for this comparison', 'std::sort(v.begin(), v.end());
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('<code>qsort</code> reaches the comparison through a function pointer, so every comparison is a call the compiler cannot see into; <code>std::sort</code> is compiled for the exact comparison, which becomes two instructions in the loop. '
-           'Same algorithm, a shorter path per comparison, paid for with a separate copy of the sort for each comparison type.')
+caption = ("One comparison traced on each path: five steps through a pointer against two written into the loop, so in the same time std::sort finishes five comparisons to qsort's two. The price is a separate copy of the sort for each comparison type.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -55,14 +55,13 @@ for t0, t1, s in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Both processes map the same physical page at different virtual addresses, so what one stores the other can load, with no copy and no system call. '
-           'A semaphore holding 1 lets one in at a time: A takes the 1, B finds 0 and sleeps, and A\'s <code>sem_post()</code> wakes it.')
+caption = ("Both processes map the same physical page at different virtual addresses, so what one stores the other can load, with no copy and no system call. A semaphore holding 1 lets one in at a time: A takes the 1, B finds 0 and sleeps, and A's <code>sem_post()</code> wakes it.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The mapping.</b> <code>shm_open()</code> and <code>mmap()</code> put the same physical pages into both address spaces; after that the region is ordinary memory.</li>
-          <li><b>The fast path.</b> On Linux, <code>sem_wait()</code> and <code>sem_post()</code> are atomic instructions on a counter in shared memory; the kernel is called only when someone must sleep or be woken.</li>
-          <li><b>Counting.</b> A semaphore started at N admits N at once, a pool rather than a lock. The idea is Dijkstra's, from 1965.</li>
+          <li><b>The fast path.</b> On Linux, <code>sem_wait()</code> and <code>sem_post()</code> use atomic instructions on a counter in shared memory; the kernel is called only when someone must sleep or be woken.</li>
+          <li><b>Counting.</b> A semaphore started at N admits N at once, a pool rather than a lock. The idea is Dijkstra's, set out in 1965.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-18">

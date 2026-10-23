@@ -42,8 +42,7 @@ a(f'<g opacity="0">{win(UP[-1], D - 0.3)}{text(20, H - 8, "back in Python: one a
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One line of Python descends through NumPy\'s C code into a BLAS routine that the CPU\'s vector units execute, and comes back as a single array. '
-           'The Python layers cost microseconds; for a 1000 × 1000 multiplication the BLAS work takes milliseconds, so the interpreter all but disappears from the bill.')
+caption = ("One line of Python descends through NumPy's C code into a BLAS routine that the CPU's vector units execute, and comes back as a single array. The Python layers cost microseconds; for a 1000 × 1000 multiplication the BLAS work takes milliseconds, so the interpreter all but disappears from the bill.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

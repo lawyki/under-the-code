@@ -78,8 +78,7 @@ a(f'<g class="fx"><g>{T.translate(off(xs), "x")}'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Until the pipe is full, more data in flight means more throughput; after that the extra only waits in the bottleneck\'s queue, adding delay until the buffer overflows. '
-           'BBR measures the bottleneck rate and the shortest round trip to sit at the knee, while loss-based TCP climbs until a packet is dropped.')
+caption = ("Until the pipe is full, more data in flight means more throughput; after that the extra only waits in the bottleneck's queue, adding delay until the buffer overflows. BBR measures the bottleneck rate and the shortest round trip to sit at the knee, while loss-based TCP climbs until a packet is dropped.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

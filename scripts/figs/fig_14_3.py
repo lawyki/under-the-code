@@ -72,8 +72,7 @@ o.insert(2, '<desc id="svgd-part4-16">The work needed to break each property of 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A collision needs only some pair of inputs to match, and the pairs grow as the square of the inputs tried: 23 people already make 253 pairs and better than even odds of a shared birthday. '
-           'So a 256-bit hash holds out against collisions only to about 2<sup>128</sup> work, against about 2<sup>256</sup> for either preimage.')
+caption = ('A collision needs only some pair of inputs to match, and pairs grow as the square of the inputs: 23 people make 253 pairs and better than even odds of a shared birthday. A match is likely once the pairs rival the possible hashes, so a 256-bit hash falls to about 2<sup>128</sup> inputs, against 2<sup>256</sup> tries for either preimage.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

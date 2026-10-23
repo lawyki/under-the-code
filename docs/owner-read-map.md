@@ -4,6 +4,7 @@ For the owner's one full read (brief, THE CLOSE). It starts where the book is we
 
 ## 1. Open owner calls
 
+- Pre-read audit (2026-10-17), read these first: `docs/audit/owner-calls.md`, chapter by chapter, each with options and a recommendation. Most are kept-original figures or captions that now disagree with the corrected prose beside them (Figs BR.3, 10.11, 11.7, 12.9, 12.10, 13.10); the rest are owner text in Chapter 18 and the account page's legal wording. What changed in each chapter, and why: `docs/audit/decisions/<ch>.md`.
 - Pass 30, Gate 2: five figures (BR.7, 6.6, 6.9, 10.3, 12.3) and three chapter heroes (Ch1, Ch3, Ch12) still failing after two repair rounds: `docs/pass-30-owner-calls.md` §A, each with a screenshot in `docs/pass-30-shots/`.
 - Pass 30, Gate 1: three findings left open (Fig 14.3 and Fig 14.6 believed false; the cover's tinted cards and one-time entrance an owner call): `docs/pass-30-owner-calls.md` §C.
 - Every per-picture Gate 2 verdict, with the blind reader's words: `docs/pass-30-gate2-record.md`.

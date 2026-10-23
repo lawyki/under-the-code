@@ -52,12 +52,10 @@ for t0, t1, s, col in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A MAC address is 48 bits: the first half names the maker (<code>B8:27:EB</code> is the Raspberry Pi Foundation), the second the card. '
-           'To find the MAC behind an IP address, a host broadcasts "who has 192.168.1.5?", the owner replies, and the answer is cached.')
+caption = ('One MAC address split into maker and card, and the ARP exchange that finds it: broadcast the question, the owner replies, the answer is cached.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The halves.</b> The first 24 bits are an OUI, bought by a manufacturer from the IEEE; the maker numbers its cards with the rest.</li>
           <li><b>Expiry.</b> Entries age out after seconds to minutes, depending on the system, so a device that leaves or changes card is soon forgotten.</li>
           <li><b>No proof.</b> ARP checks nothing: any host on the link can answer for any address. <a href="part-4#ch15">Chapter 15</a> returns to what that allows.</li>
         </ol>

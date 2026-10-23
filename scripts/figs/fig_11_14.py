@@ -84,8 +84,7 @@ o.insert(2, '<desc id="svgd-part3-53">Six files over one connection. With HTTP/1
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('On one HTTP/1.1 connection each response must finish before the next starts, so while the server prepares <code>slow.js</code> the wire sits idle. '
-           'HTTP/2 cuts every response into frames tagged with a stream ID and interleaves them, so the other files use that time and the page is done at 360 ms, not 560.')
+caption = ('On one HTTP/1.1 connection each response must finish before the next starts, so while the server prepares <code>slow.js</code> the wire sits idle. HTTP/2 cuts every response into frames tagged with a stream ID and interleaves them, so the other files use that time and the page is done at 360 ms, not 560.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -61,8 +61,7 @@ a(f'<g class="fx">{T.anim("opacity", [(0.0, 0.0), (0.39, 0.0), (0.4, 1.0), (D - 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A packet climbs from your ISP through a regional network to a Tier 1, crosses to another Tier 1 by peering, and comes back down to the server. '
-           'Money flows the other way: each network pays the one above it for transit, while the dozen or so Tier 1s exchange traffic with each other for free.')
+caption = ('A packet climbs from your ISP through a regional network to a Tier 1, crosses to another Tier 1 by peering, and comes back down to the server. Money flows up on both sides: each network pays the one above it for transit, while the dozen or so Tier 1s exchange traffic with each other for free.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -48,13 +48,13 @@ a(text(20, BY + 31, 'same base layer', anchor='start', size=13, fill=QAMBER, ls=
 a(text(282, BY + 31, 'stored once', anchor='start', size=13, fill=QAMBER, ls='0'))
 H = BY + 52
 o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-15 svgd-part5-15">')
-o.insert(1, '<title id="svgt-part5-15">Fig 17.2 · Docker image layers · copy-on-write filesystems for software distribution</title>')
+o.insert(1, '<title id="svgt-part5-15">Fig 17.2 · Docker image layers · rebuild and ship only what changed</title>')
 o.insert(2, '<desc id="svgd-part5-15">An image built from five Dockerfile steps, one layer each, bottom up: the ubuntu base, installing Python, copying the requirements file, installing packages, and copying app.py. '
   'After app.py is edited and the image rebuilt, the four layers below come from the cache unchanged and only the top layer is rebuilt, and only that layer is sent to the registry. A second image built on the same base shares the bottom layer, stored once.</desc>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each Dockerfile step produces one read-only layer, named by a hash of its contents. Change app.py and only its layer is rebuilt and pushed; images that share a base store it once.')
+caption = ('A Dockerfile is the recipe an image is built from: each of its steps produces one read-only layer holding the files that step added or changed, named by a hash of its contents. Change app.py and only its layer is rebuilt and pushed to the registry; images that share a base store it once.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

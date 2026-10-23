@@ -48,8 +48,7 @@ for (yp, *_), (yc, *_), (_, _, tc) in ((CARDS[1], CARDS[2], CHK[0]), (CARDS[0], 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A server sends its own certificate and the intermediate\'s; the browser checks each signature with the public key of the certificate above it, until it reaches a root it already trusts. '
-           'Here <code>shop.example</code> is vouched for by R11, and R11 by ISRG Root X1, which ships in the trust store.')
+caption = ("A server sends its own certificate and the intermediate's; the browser checks each signature with the public key of the certificate above it, until it reaches a root it already trusts. Here <code>shop.example</code> is vouched for by R11, and R11 by ISRG Root X1, which ships in the trust store.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

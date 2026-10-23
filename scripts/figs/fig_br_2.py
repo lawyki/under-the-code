@@ -12,9 +12,9 @@ row_y = lambda i: 48 + i * 40
 def show(t0):
     return T.anim('opacity', [(0.0, 0.0), (t0 - 0.001, 0.0), (t0, 1.0), (8.8, 1.0), (8.801, 0.0), (8.9995, 0.0)])
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40 svgd-part1-40">')
-a('<title id="svgt-part1-40">Fig BR.2 · The trap mechanism · one round trip across the boundary</title>')
-a('<desc id="svgd-part1-40">A write system call, step by step, time flowing down. In user mode the program puts 1, the number of write, in RAX and executes SYSCALL. '
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-2 svgd-part1-br-2">')
+a('<title id="svgt-part1-br-2">Fig BR.2 · The trap mechanism · one round trip across the boundary</title>')
+a('<desc id="svgd-part1-br-2">A write system call, step by step, time flowing down. In user mode the program puts 1, the number of write, in RAX and executes SYSCALL. '
   'The CPU saves RIP in RCX and RFLAGS in R11, switches to Ring 0 and jumps to the entry point the kernel stored in MSR_LSTAR. '
   'The kernel looks up entry 1 in its syscall table, runs write, puts the result, 6 bytes written, in RAX, and executes SYSRET, which restores user mode at the next instruction.</desc>')
 a(text(UX, 24, 'USER · RING 3', size=13, fill=BLUE))

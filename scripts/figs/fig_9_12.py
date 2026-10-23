@@ -66,8 +66,7 @@ for t0, t1, s, col in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Customer C buys transit from P1 and P2; when it mistakenly passes P2\'s routes on to P1, P1 prefers them, since routes from a paying customer usually win, and traffic that crossed directly now squeezes through C\'s small links. '
-           'That is a <span class="key-term">route leak</span>: nobody attacked anything; one router\'s configuration told the rest of the internet something wrong.')
+caption = ('Customer C buys transit from P1 and P2; when it mistakenly passes P2\'s routes on to P1, P1 prefers them, since a paying customer\'s routes usually win, and traffic that crossed directly now squeezes through C\'s small links. That is a <span class="key-term">route leak</span>: genuine routes reaching a neighbour that should never have heard them, with no attacker at all.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

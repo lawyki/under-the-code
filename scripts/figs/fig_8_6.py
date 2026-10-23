@@ -2,7 +2,7 @@
 # Manchester to a receiver whose clock runs 20% fast (exaggerated). The NRZ receiver can resync only
 # on the rare edges and samples the four-zero run five times: an extra 0. The Manchester receiver
 # resyncs on every mid-bit edge and reads all seven bits. A cursor sweeps; samples and reads appear.
-# t=0 (shift): both read out.
+# t=0 (shift): both read out. Pre-read audit: the published SVG adds a "read" label beside each digit row.
 import figlib
 from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
 figlib.FONT = SPACE
@@ -66,8 +66,7 @@ a(f'<line y1="34" y2="190" stroke="#fff" stroke-width="1.2" opacity="0">'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Sent to a receiver whose clock runs fast, NRZ\'s four zeros are one flat stretch with nothing to correct against, so the receiver reads five. '
-           'Manchester gives it an edge in every bit, so it corrects its clock each time and reads all seven, at the cost of up to twice the signal changes.')
+caption = ("Sent to a receiver whose clock runs fast, NRZ's four zeros are one flat stretch with nothing to correct against, so the receiver reads five zeros. Manchester gives it an edge in every bit, so it corrects its clock each time and reads all seven bits correctly.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

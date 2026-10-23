@@ -60,8 +60,7 @@ for t0, t1, s, col in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each resource is an object on the stack, acquired as its line runs and released by its destructor when the function exits, in reverse order. '
-           'A normal return and an exception thrown by <code>parse()</code> unwind the same way, so no cleanup code is written and none can be forgotten.')
+caption = ("Each resource is held by an object on the stack (<code>buf</code>'s 1024 bytes sit on the heap; the vector on the stack owns them), acquired as its line runs and released by its destructor in reverse order. A normal return and an exception thrown by <code>parse()</code> unwind the same way.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

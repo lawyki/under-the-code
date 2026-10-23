@@ -44,12 +44,11 @@ a(f'<g opacity="0">{win(6.6, 7.2)}{text(372, 318, "module_exit()", anchor="end",
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('insmod links a separately built module into the running kernel: its calls are resolved against the kernel\'s symbol table, its init function runs, and from then on it is part of Ring 0. '
-           'rmmod takes it out again, so Linux stays monolithic in speed but modular in practice.')
+caption = ("The command <code>insmod</code> loads a separately built module into the running kernel, and <code>rmmod</code> takes it out again. The module cannot know where the kernel's functions sit, so each one it calls is looked up by name in the symbol table, which pairs names with addresses; then its init function runs inside Ring 0.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Load.</b> The kernel allocates memory for the module, copies its code in, and resolves every kernel function it calls by name in the symbol table.</li>
+          <li><b>Load.</b> The kernel allocates memory for the module, copies its code in, and finds the address of every kernel function it calls in the symbol table, by name.</li>
           <li><b>Start.</b> It calls the module's module_init(); a driver registers itself with the subsystem it serves.</li>
           <li><b>Still Ring 0.</b> A loaded module has the kernel's full power, so a buggy one can crash the machine (Fig 4.2).</li>
           <li><b>Unload.</b> rmmod calls module_exit(), frees the memory and forgets the module. lsmod lists what is loaded.</li>

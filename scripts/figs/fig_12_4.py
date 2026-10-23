@@ -57,8 +57,7 @@ o.insert(2, '<desc id="svgd-part3-59">The same job written three ways: get a use
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The same three steps (the user, then the orders, then the invoice) spelled three ways: callbacks nested inside callbacks, a flat chain of promises, and async/await that reads like straight-line code. '
-           'The event loop underneath is the same; only the shape on the page changed.')
+caption = ('The same four steps (the user, then the orders, then the invoice, then render) spelled three ways: callbacks nested inside callbacks, a flat chain of promises, and async/await that reads like straight-line code.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

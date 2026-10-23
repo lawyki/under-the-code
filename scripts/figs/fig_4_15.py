@@ -96,14 +96,13 @@ for name, pos, off, col in (('write', wpos, -16, PHOS), ('read', rpos, 16, PHOS_
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A pipe is a ring buffer in the kernel with a write end and a read end. '
-           'When the ring is full the writer blocks until the reader frees space, and when it is empty the reader blocks until bytes arrive: flow control with no locks in either program.')
+caption = ('<code>cat</code> writes at one pointer and <code>grep</code> reads at the other; the ring fills when <code>grep</code> falls behind and empties when it catches up, and the kernel makes whichever side is ahead wait.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Two descriptors.</b> <code>pipe()</code> returns one file descriptor for each end; the shell wires the writer's standard output to one and the reader's standard input to the other.</li>
+          <li><b>Two descriptors.</b> <code>pipe()</code> returns one file descriptor for each end; the shell connects <code>cat</code>'s output to one and <code>grep</code>'s input to the other.</li>
           <li><b>The size.</b> A Linux pipe holds 64 KB by default, so a fast writer runs ahead of a slow reader by at most that much.</li>
-          <li><b>The lineage.</b> Doug McIlroy pressed for pipes for years; Ken Thompson added them to UNIX in 1973, and every shell pipeline since runs on this mechanism.</li>
+          
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-15">

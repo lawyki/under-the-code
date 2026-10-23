@@ -83,13 +83,12 @@ for s0, x_end in ((E1, X1), (E2, 216)):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Ctrl+C makes the kernel mark SIGINT pending; the program runs on until its next return from the kernel, where it is diverted into its handler and then resumed where it stopped. '
-           'SIGKILL never reaches the program: the kernel ends the process without running any of its code.')
+caption = ('Ctrl+C makes the kernel mark SIGINT pending; the program runs on until its next return from the kernel (the end of its next system call or timer interrupt), where it is diverted into its handler and then resumed where it stopped. SIGKILL never reaches the program: at that same point the kernel ends the process instead, and no handler runs.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Three reactions.</b> A process can handle a signal with its own function, ignore it, or take the default action: terminate (sometimes with a core dump), stop, continue, or nothing.</li>
-          <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that has trapped everything else.</li>
+          <li><b>Uncatchable.</b> <code>SIGKILL</code> and <code>SIGSTOP</code> can be neither handled nor ignored, so an administrator can always stop a process that handles or ignores every other signal.</li>
           <li><b>Crude by design.</b> A signal is just a number. A second signal of the same kind arriving while the first is still pending merges with it.</li>
         </ol>
       </details>'''

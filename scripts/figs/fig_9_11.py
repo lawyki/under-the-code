@@ -70,8 +70,7 @@ o.insert(2, '<desc id="svgd-part3-25">YouTube\'s address block 208.65.152.0/22, 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Routers follow the most specific route they know, so Pakistan Telecom\'s /24, meant to block YouTube at home but leaked worldwide by its upstream PCCW, beat YouTube\'s own /22 almost everywhere. '
-           'YouTube answered with two still more specific /25s; withdrawing the /24 ended the outage after about two hours.')
+caption = ("Routers follow the most specific route they know, so Pakistan Telecom's /24, meant to block YouTube at home but leaked worldwide by its upstream PCCW, beat YouTube's own /22 almost everywhere. YouTube answered with two still more specific /25s; withdrawing the /24 ended the outage after about two hours.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

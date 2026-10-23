@@ -70,7 +70,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Why it is fast.</b> Appending to one file is sequential; updating data pages means writes scattered across the disk. A commit costs one log flush, and the pages catch up in the background, at checkpoints.</li>
-          <li><b>Redo and undo.</b> This is the ARIES scheme (IBM, 1992), the model for DB2 and SQL Server; InnoDB follows the same redo-and-undo shape. PostgreSQL's log is redo-only: an aborted transaction's row versions simply stay invisible.</li>
+          <li><b>Redo and undo.</b> This is the ARIES scheme (IBM, 1992), the model for DB2 and SQL Server; MySQL's InnoDB engine follows the same redo-and-undo shape. PostgreSQL's log is redo-only: an aborted transaction's row versions simply stay invisible.</li>
           <li><b>The same idea elsewhere.</b> Journaling file systems (Chapter 4) and the replicated logs of Raft and Paxos (Chapter 17) write the intent before doing the deed.</li>
         </ol>
       </details>'''

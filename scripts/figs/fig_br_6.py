@@ -29,7 +29,7 @@ for k, (lab, col) in enumerate(SLICES):
         fills.append(f'<rect x="{xm(k):.1f}" y="{LY}" width="{xm(k + K) - xm(k):.1f}" height="{LH}" fill="{GOLD}"/>')
 a(f'<defs><clipPath id="clip-fig-br-6"><rect class="fx" x="{X0}" y="0" width="{X1 - X0}" height="400">'
   f'{T.anim("width", [(0.0, X1 - X0), (0.3, X1 - X0), (0.305, 0.0), (S0, 0.0), (S1, X1 - X0), (D, X1 - X0)])}</rect></clipPath></defs>')
-a(f'<g clip-path="url(#clip-fig-br-6)">{"".join(fills)}</g>')
+a(f'<g clip-path="url(#clip-fig-br-6)">{"".join(fills)}')  # the labels sit inside the clip, revealed with their slice
 for k, (lab, col) in enumerate(SLICES):
     cx = (xm(k + (K if k else 0)) + xm(k + 1)) / 2
     if 'while' in lab:
@@ -37,6 +37,7 @@ for k, (lab, col) in enumerate(SLICES):
         a(text(cx, LY + 37, 'while (1)', anchor='middle', size=13, fill=RED, ls='0'))
     else:
         a(text(cx, LY + 28, lab, anchor='middle', size=13, fill='#fff', ls='0'))
+a('</g>')
 for k in range(1, MS):
     a(f'<g class="fx" opacity="0">{pulse(tm(k))}<rect x="{xm(k) - 3:.1f}" y="{LY - 4}" width="{xm(k + K) - xm(k) + 6:.1f}" height="{LH + 8}" rx="2" fill="none" stroke="#fff" stroke-width="2"/></g>')
 # axis

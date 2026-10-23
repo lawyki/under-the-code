@@ -51,8 +51,7 @@ a(f'<line y1="42" y2="150" stroke="#fff" stroke-width="1.2" opacity="0">'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Manchester code puts a transition in the middle of every bit: rising for a 1, falling for a 0. '
-           'Because an edge arrives every bit period, the receiver recovers the clock from the data itself, at the cost of up to two changes per bit.')
+caption = ("The bits 1 0 1 1 0 0 1 in Manchester code: each mid-bit edge gives the bit and keeps the receiver's clock in step.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

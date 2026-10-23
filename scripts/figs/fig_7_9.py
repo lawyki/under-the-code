@@ -51,8 +51,7 @@ a(f'<line y1="34" y2="{AY - 12}" stroke="#fff" stroke-width="1.2" opacity="0">'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter\'s toll, and about a hundredth of a second with <code>np.dot</code>. '
-           'On this logarithmic axis that is four steps of ten.')
+caption = ("Multiplying two 1000 × 1000 matrices takes about two minutes in pure Python, a billion multiply-adds each paying the interpreter's toll, and about a hundredth of a second with <code>np.dot</code>. On this logarithmic axis that is four steps of ten.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

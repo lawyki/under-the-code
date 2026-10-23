@@ -10,9 +10,9 @@ def show(t0):
 INS = [('add rax, rbx', False), ('mov cr3, rax', True), ('hlt', True)]
 LANES = [(20, 'RING 0 · KERNEL', '00', GOLD, 0), (210, 'RING 3 · USER', '11', BLUE, 3)]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-39 svgd-part1-39">')
-a('<title id="svgt-part1-39">Fig BR.1 · The privilege bit · two worlds, one chip</title>')
-a('<desc id="svgd-part1-39">The low two bits of the CS register hold the current privilege level: 00 in Ring 0, the kernel, and 11 in Ring 3, user programs. '
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-1 svgd-part1-br-1">')
+a('<title id="svgt-part1-br-1">Fig BR.1 · The privilege bit · two worlds, one chip</title>')
+a('<desc id="svgd-part1-br-1">The low two bits of the CS register hold the current privilege level: 00 in Ring 0, the kernel, and 11 in Ring 3, user programs. '
   'Both run the same three instructions. add runs in both. mov cr3, which changes the page tables, and hlt, which halts the processor, run in Ring 0; '
   'in Ring 3 the CPU stops each before it takes effect with a general-protection fault, #GP, and jumps to a handler the kernel registered in advance.</desc>')
 for x, name, bits, col, cpl in LANES:

@@ -57,8 +57,7 @@ o.insert(2, '<desc id="svgd-part3-66">The server\'s response carries the header 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The browser checks each script against the header on its own: the page\'s own and the listed origin run, and everything else is refused, even when an <span class="key-term">XSS</span> injection has already put it in the page. '
-           'Inline code counts as everything else unless the policy admits it by nonce or hash.')
+caption = ("The browser checks each script against the header on its own: the page's own and the listed origin run, and everything else is refused, even when an XSS injection has already put it in the page. Inline code counts as everything else unless the policy admits it by nonce or hash.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

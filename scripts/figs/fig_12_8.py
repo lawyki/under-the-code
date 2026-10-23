@@ -54,8 +54,7 @@ o.insert(2, '<desc id="svgd-part3-63">The origin https://www.example.com splits 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('An origin is a scheme, a host and a port, and two URLs share one only if all three match; the path never counts. '
-           'Change any one, <code>http</code> for <code>https</code>, <code>api</code> for <code>www</code>, 8443 for 443, and the browser treats the page as a stranger whose responses and DOM it may not read.')
+caption = ('The origin <code>https://www.example.com</code> split into scheme, host and port, and four other URLs each compared with it: the path never counts, so only the first is the same origin.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

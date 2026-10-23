@@ -1,3 +1,6 @@
+# Pre-read audit: the published Fig 4.4 now draws six processes (15.5 dropped) and puts 13.0 back as a new leaf under 17.2,
+# with 8.1 highlighted as the new leftmost; the values are now 3.2, 8.1, 8.4, 8.6, 17.2, 19.8 and the runner ends at 8.9, a
+# little past the others (CFS ends a turn soon after the runner passes the next process). The page is the source of truth.
 # Fig 4.4 · CFS picks the leftmost node (Pass 28, law 3). Runnable processes in a balanced search
 # tree keyed by virtual runtime. The leftmost, the furthest behind, leaves the tree and runs; its
 # virtual runtime grows from 3.2 to 13.0; it goes back in on the right, and 8.1 is now leftmost.
@@ -57,14 +60,13 @@ a(f'<g opacity="0">{win(0.0, 1.6)}{text(32, 291, "idle for an instant", size=13,
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('CFS keeps runnable processes in a tree ordered by virtual runtime, the CPU time each has had. '
-           'The leftmost is the furthest behind, so it runs next; as it runs its virtual runtime grows, and it goes back in among the larger values.')
+caption = ('The leftmost, 3.2, has had the least CPU, so it runs until its virtual runtime is a little past the others, at 8.9. It goes back in after 8.6, as a new leaf; now 8.1 is the leftmost.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Virtual runtime.</b> CPU time received, weighted by priority. Whoever has had least is owed the CPU.</li>
-          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process are both O(log N), even with thousands runnable.</li>
-          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so latency-sensitive work runs on time.</li>
+          <li><b>The tree.</b> A red-black tree, kept balanced, with the leftmost cached: removing it and inserting a process each take a few dozen steps at most, even with thousands runnable.</li>
+          <li><b>Since 6.6.</b> Linux's default is now EEVDF, which keeps the tree and the virtual runtime but picks the eligible task with the earliest virtual deadline, so tasks that ask for short slices are served sooner, though without the guarantee a real-time kernel gives.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-4">

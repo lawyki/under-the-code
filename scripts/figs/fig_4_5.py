@@ -46,7 +46,7 @@ for r, (name, s) in enumerate(ROWS):
     for n, a0, a1 in merged(s):
         w = X(a1) - X(a0)
         a(f'<g opacity="0.12">{show(tm(a0))}<rect x="{X(a0):.1f}" y="{y}" width="{w - 1:.1f}" height="26" fill="{COL[n]}" fill-opacity="0.45" stroke="{COL[n]}"/>'
-          + (f'<text x="{X(a0) + w / 2:.1f}" y="{y + 18}" text-anchor="middle" {PLEX} font-size="13" fill="#fff">{n}</text>' if w >= 14 else '') + '</g>')
+          + (f'<text x="{X(a0) + w / 2:.1f}" y="{y + 18}" text-anchor="middle" {PLEX} font-size="13" fill="#fff">{n}</text>' if w >= 11 else '') + '</g>')
     a(text(X0, y + 46, f'avg wait {avg_wait(s):g}', size=13, fill=PHOS_SOFT, ls='0'))
     a(text(X1, y + 46, f'first run after {first_run(s):g}', anchor='end', size=13, fill=PHOS_SOFT, ls='0'))
 # time axis and the cursor
@@ -62,11 +62,11 @@ caption = ('The same four jobs under four schedulers. Shortest-job-first gives t
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU.</li>
+          <li><b>The jobs.</b> "A 0+8" means A arrives at time 0 and needs 8 units of CPU. A job's wait is all the time it is ready but not running, gaps between its turns included; "first run after" counts only up to its first turn.</li>
           <li><b>FCFS.</b> First come, first served: A's eight units hold up everyone behind it, the convoy effect.</li>
           <li><b>SJF.</b> Shortest job first: the lowest average wait of the four here, and provably optimal when every job is ready at the start, but it needs to know job lengths in advance.</li>
           <li><b>Round robin.</b> Each job runs for a quantum of 2, then goes to the back of the queue: responsive, at the cost of many switches.</li>
-          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Windows and classic UNIX schedulers descend from this idea.</li>
+          <li><b>MLFQ.</b> Multi-level feedback queue: a job that uses up its whole slice drops to a lower queue with a longer slice, so short jobs stay on top. Here every job uses up its slices, so none stays on top and MLFQ behaves much like round robin.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-5">

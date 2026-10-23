@@ -40,7 +40,7 @@ for k, (cmd, job, outs) in enumerate(STAGES):
     body.append(text(BX + 10, y + 19, cmd, size=14, fill='#fff', ls='0'))
     body.append(text(BX + 10, y + 37, job, size=13, fill=GOLD if cmd == 'sort' else MUTED, ls='0'))
     body.append(f'<rect x="{LX}" y="{y}" width="{LW}" height="{rh}" rx="3" fill="{PLATE}" stroke="rgba(132,255,178,0.18)"/>')
-    body.append(f'<line x1="{BX + BW}" y1="{y + BH / 2}" x2="{LX}" y2="{y + BH / 2}" stroke="rgba(132,255,178,0.3)" stroke-width="1.2"/>')
+    body.append(f'<line x1="{BX + BW}" y1="{y + BH / 2}" x2="{LX}" y2="{y + BH / 2}" stroke="rgba(132,255,178,0.55)" stroke-width="1.2"/>')
     for i, (l, t) in enumerate(outs):
         col = PHOS if (l.startswith('ERROR') or l.isdigit()) else 'rgba(198,222,206,0.6)'
         body.append(f'<g>{on_from(t)}{text(LX + 12, y + PAD + 13 + i * LH, l, size=13 if not l.isdigit() else 15, fill=col, ls="0")}</g>')
@@ -62,14 +62,13 @@ o.extend(body)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Five small programs joined by four pipes run at once, each reading standard input and writing standard output with no idea what is on the other end. '
-           'Lines stream through as they arrive, except at <code>sort</code>, which must see the last line before it can print the first.')
+caption = ('Five small programs joined by four pipes run at once, each reading standard input and writing standard output with no idea what is on the other end. Lines stream through as they arrive, except at <code>sort</code>, which must see the last line before it can print the first.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The wiring.</b> The shell calls <code>pipe()</code> four times and <code>fork()</code> five, then points each program's standard output at the next one's standard input.</li>
           <li><b>Streaming.</b> <code>grep</code> and <code>uniq</code> work a line at a time; <code>sort</code> and <code>wc</code> must reach the end of their input before they can answer.</li>
-          <li><b>The philosophy.</b> Doug McIlroy's summary: write programs that do one thing well, and write them to work together.</li>
+          
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-16">

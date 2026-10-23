@@ -49,14 +49,13 @@ a(text(200, yk + 21, 'one kernel answers all three', anchor='middle', size=13, f
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Ask the same five questions from inside container A, inside B and on the host, and one kernel gives three sets of answers: each container sees its own PID 1, hostname, network and root filesystem. '
-           'Namespaces are translation tables, not copies: to the host, A\'s PID 1 is just process 8472.')
+caption = ("Ask the same five questions from inside container A, inside B and on the host, and one kernel gives three sets of answers: each container sees its own PID 1, hostname, network and root filesystem. A PID namespace is a translation table, not a copy: to the host, A's PID 1 is just process 8472.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Eight kinds.</b> Mount, UTS (hostname), IPC, PID, network, user, cgroup and, since Linux 5.6, time. Each can be set separately.</li>
-          <li><b>Making one.</b> <code>clone()</code> or <code>unshare()</code> with a flag such as <code>CLONE_NEWPID</code> gives a new process (or, for PID, the caller\'s next children) a fresh namespace, which its children inherit.</li>
-          <li><b>The wiring.</b> A container's <code>eth0</code> is one end of a virtual Ethernet pair; the other end sits on the host, on a bridge the host routes from.</li>
+          <li><b>Making one.</b> <code>clone()</code> with a flag such as <code>CLONE_NEWPID</code> starts a new process in a fresh namespace; <code>unshare()</code> moves the caller itself into one (for PID, only its next children). Children inherit the namespace.</li>
+          <li><b>The network.</b> A container's network namespace gets its own virtual network card, joined by a virtual cable to the host, which passes its traffic on. Part III opens up networking.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-20">

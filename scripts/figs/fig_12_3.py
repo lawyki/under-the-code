@@ -82,8 +82,7 @@ o.insert(2, '<desc id="svgd-part3-58">Four lines of JavaScript: log 1; a zero-mi
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The script runs to its end first, printing 1 and 2; its timer callback waits in the task queue and its promise callback in the microtask queue. '
-           'When the stack empties, every microtask runs (3), the browser may render, and only then does the next task run (4).')
+caption = ('The script runs to its end first, printing 1 and 2; its timer callback waits in the macrotask queue and its promise callback in the microtask queue. When the stack empties, every microtask runs (3), the browser may render, and only then does the next task run (4).')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

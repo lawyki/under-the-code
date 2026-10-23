@@ -76,8 +76,7 @@ o.insert(2, '<desc id="svgd-part3-49">Symmetric: Alice and Bob both hold the sam
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('With symmetric encryption one key both locks and unlocks: fast, but the key must reach the other side. '
-           'With a key pair the public half locks and only the private half unlocks, so Bob can publish one half openly; TLS uses key pairs once per connection, to agree on a symmetric key for the data.')
+caption = ("Top, one key K that must somehow reach Bob; below it, Bob's key pair, whose public half can cross openly. TLS uses the pair once per connection to agree on K, and AES with K carries the data.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

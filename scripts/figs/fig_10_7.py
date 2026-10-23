@@ -65,8 +65,7 @@ a(f'<g opacity="0">{win(ts(K))}<circle cx="{xt(K):.1f}" cy="{yv(WMAX):.1f}" r="4
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('After one loss, Reno halves its window and adds a segment per round trip; CUBIC cuts to 0.7 and follows a cubic curve in real time, racing back, slowing near the old peak, then probing past it. '
-           'With a 1 Gbit/s path and a 100 ms round trip, CUBIC recovers in 19 seconds, Reno in seven minutes.')
+caption = ('After one loss, Reno halves its window and adds a segment per round trip; CUBIC cuts to 0.7 and follows a cubic curve in real time, racing back, slowing near the old peak, then probing past it. With a 1 Gbit/s path and a 100 ms round trip, CUBIC recovers in 19 seconds, Reno in seven minutes.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

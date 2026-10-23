@@ -59,8 +59,7 @@ o.insert(2, '<desc id="svgd-part4-28">STRIDE applied to two parts of one design.
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('STRIDE turns threat modelling into six questions asked of every part of a design: could someone spoof, tamper, repudiate, disclose, deny service or elevate privilege here? '
-           'The answers differ from part to part, and each yes names the property that part must defend.')
+caption = ('STRIDE asks six questions of every part of a design: could someone spoof, tamper, repudiate, disclose, deny service or elevate privilege here? A login service faces all six; a server handing out public pictures (a CDN) has nothing secret to leak and no action anyone could deny. Each yes names a property that part must defend.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

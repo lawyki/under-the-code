@@ -59,8 +59,7 @@ a(f'<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}<circle class="fx" cx="{xp
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A source that always sends the same symbol carries no information; a fair coin carries one full bit per flip, and the curve is symmetric between them. '
-           'The curve is also the floor for lossless compression: a 90/10 source cannot be coded in fewer than about 0.47 bits per symbol.')
+caption = ('Entropy of a two-symbol source against p, the chance of a 1: 0 when every symbol is predictable, 1 bit for the fair coin, symmetric about it. A 90/10 source is marked at 0.47 bits, the least any lossless code can average for it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

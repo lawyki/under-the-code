@@ -43,8 +43,7 @@ o.insert(2, '<desc id="svgd-part3-62">The five stages of drawing a page: parse, 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A change re-runs only the stages it touches: a new width means style, layout, paint and composite again; a new colour skips layout; an animated transform on its own layer needs only composite. '
-           'That is why smooth animations move transform and opacity, not width or height.')
+caption = ('A change re-runs only the stages it touches: a new width means style, layout, paint and composite again; a new colour skips layout; an animated transform (moving, turning or scaling a layer that is already painted) needs only composite. That is why smooth animations move transform and opacity (a fade), not width or height.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

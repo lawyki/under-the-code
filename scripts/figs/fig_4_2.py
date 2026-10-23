@@ -21,7 +21,7 @@ def win(t0, t1):
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part2-2 svgd-part2-2">')
 a('<title id="svgt-part2-2">Fig 4.2 · Monolithic vs microkernel · speed against safety</title>')
-a('<desc id="svgd-part2-2">Two kernels serve the same file read. In the monolithic kernel the program crosses into the kernel once, the file system and the disk driver run inside it, and the answer crosses back: two crossings. '
+a('<desc id="svgd-part2-2">Two kernels serve the same file read. In the monolithic kernel the program crosses into the kernel once, the filesystem and the disk driver run inside it, and the answer crosses back: two crossings. '
   'In the microkernel the file system and the driver are separate user programs, so the request hops through the kernel\'s message passing four times each way: eight crossings. '
   'Then a driver bug: in the monolithic kernel it brings down the whole machine; in the microkernel only the driver process fails and is restarted.</desc>')
 
@@ -79,13 +79,12 @@ a(text(20, 402, 'speed: fewer crossings · safety: smaller blast', size=13, fill
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A monolithic kernel runs everything in Ring 0, so a file read crosses the boundary twice; a microkernel runs file systems and drivers as separate programs, so the same read crosses eight times. '
-           'The price buys safety: a driver bug takes down one process, not the machine.')
+caption = ('A monolithic kernel runs everything in Ring 0, so a file read crosses the boundary twice; a microkernel runs filesystems and drivers as separate programs, so the same read crosses eight times. The price buys safety: a driver bug takes down one process, not the machine.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Monolithic.</b> Scheduler, memory, file systems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
-          <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that talks by IPC.</li>
+          <li><b>Monolithic.</b> Scheduler, memory, filesystems, drivers and network stack share one address space in Ring 0 and call each other directly.</li>
+          <li><b>Microkernel.</b> Ring 0 keeps only message passing, basic memory protection and scheduling; everything else is a user process that sends its requests as messages through the kernel.</li>
           <li><b>The trade.</b> Every crossing costs time, so microkernels are slower; a bug in any component outside Ring 0 cannot corrupt the kernel, so microkernels are safer.</li>
         </ol>
       </details>'''

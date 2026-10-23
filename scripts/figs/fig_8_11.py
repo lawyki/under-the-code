@@ -46,8 +46,7 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each layer serves the one above and adds its own wrapping on the way down: TLS around the request, then a TCP header, an IP header, and an Ethernet header and checksum, until layer 1 sends it as signals. '
-           'In practice the top three blur into the application, which is why the internet runs on the four layers of TCP/IP.')
+caption = ('Each layer serves the one above, and most add their own wrapping on the way down: TLS (the encryption of Chapter 11) around the request for a page, then a TCP header, an IP header, and an Ethernet header and checksum, until layer 1 sends it as signals.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
