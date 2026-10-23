@@ -3941,7 +3941,7 @@
 
         <!-- Real answer -->
         <rect x="260" y="80" width="200" height="60" rx="6" fill="rgba(150,216,150,0.18)" stroke="rgba(80,140,80,0.85)"/>
-        <text x="360" y="100" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">real bank.com NS</text>
+        <text x="360" y="100" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(150,216,150,0.95)">real bank.com name server</text>
         <text x="360" y="116" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">id=0xA73F · 203.0.113.7</text>
         <text x="360" y="130" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.6)">arrives at t = 30 ms</text>
 
@@ -3959,7 +3959,7 @@
         <text x="500" y="190" text-anchor="start" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">→ believes the attacker</text>
         <text x="500" y="206" text-anchor="start" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">→ caches 198.51.100.66</text>
         <text x="500" y="222" text-anchor="start" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.85)">→ ignores real answer</text>
-        <text x="500" y="244" text-anchor="start" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.65)" font-style="italic">(duplicate response, wrong source)</text>
+        <text x="500" y="244" text-anchor="start" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.65)" font-style="italic">(arrives second: query already answered)</text>
 
         <!-- Defense -->
         <g transform="translate(40,322)">
@@ -3968,7 +3968,7 @@
           <text x="14" y="29" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">~65,000× harder to forge · Kaminsky 2008 patch</text>
         </g>
       </svg>
-      <p id="ch11-dns-p8" class="diagram-caption">DNS cache poisoning in one picture. The resolver sends a query out; the attacker, who has guessed (or been told) a transaction ID, fires forged replies at the resolver from a spoofed source IP. If a forged reply with a matching ID arrives before the real one, the resolver caches the lie and serves it to every user behind it for the TTL duration, typically hours. Kaminsky's 2008 disclosure showed how to make this practical against unpatched resolvers in minutes. The fix, randomising the source port as well as the transaction ID, multiplied the attacker's search space ~65,000-fold and pushed the practical attack from minutes to years. <strong>DNSSEC</strong> is the deeper fix: cryptographically sign every record so resolvers can verify authenticity, not just guess less. DNSSEC has been deployed for two decades and still covers under half the global namespace, because the deployment cost is real and the perceived risk has fallen.</p>
+      <p id="ch11-dns-p8" class="diagram-caption">The attacker races the real answer with forged replies; source-port randomisation multiplies the guesses needed about 65,000-fold. <strong>DNSSEC</strong>, which signs every record, is the deeper fix but still covers under half the namespace.</p>
     </div>
 
     <div class="insight-strip">
