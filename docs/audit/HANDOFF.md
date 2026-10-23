@@ -21,7 +21,7 @@ How to read `raw/book-audit-judged.json`: a list of `{chapter, judged: [{lens, i
 
 | Branch | Holds |
 |---|---|
-| `main` | The live site (Cloudflare Pages deploys every push to `main`). |
+| `main` | The live site (Cloudflare Pages deploys every push to `main`). Since 2026-10-17 it carries the outside-the-chapters fixes and Chapter 1, deployed at the owner's word. Later chapters go live only when the owner says so. |
 | `pre-read-audit` | All finished audit work: outside-the-chapters fixes (6a5f607), Chapter 1 (dc2ebbd), this handoff. |
 | `pre-read-audit-ch2-wip` | Chapter 2 round-1 edits and `decisions/ch2.md`, unfinished: NOT retested, NOT gated, NOT checked. The run lost its connection during Chapter 2's retest. |
 
