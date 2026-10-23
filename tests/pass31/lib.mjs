@@ -95,7 +95,7 @@ const normT = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').
 export const SIGN = /^[+\-−×÷=<>≤≥≠≈*/%^()[\]{}|~→←↑↓↔⇒⇐·•…,.:;!?'"“”‘’&#@$€£¥°±√∑∞]+$/u;
 // short words that are written in capitals in headings and are never abbreviations
 const SHORT = new Set('a an the of to in on at by for and or nor but not no yes is are was be it its as if so do up out off all any one two six ten new old big end key run set put get add top low own per via who why how now then than this that each into from with what when'.split(' '));
-const NUMBER = /^[€£$]?[+\-−]?\d[\d.,:]*(?:[%°]|[kKMGT]?B|[kmµn]?s|×)?$/u;
+const NUMBER = /^[€£$]?[+\-−]?\d[\d.,:]*(?:st|nd|rd|th)?(?:[%°]|[kKMGT]?B|[kmµn]?s|×)?$/u;
 
 let KT = null;
 export function knownTerms(file) {
@@ -142,7 +142,11 @@ export function taughtYet(text, known, glossary, before = '') {
       // all capitals: a heading word in capitals passes (THE, ITS, ROTORS); an abbreviation does not (EAX, CGNAT, IHL).
       // Three letters or fewer pass only as a common short word, since many abbreviations are also rare dictionary words.
       const title = part[0].toUpperCase() + part.slice(1);   // LINUX written for a name the prose spells Linux
-      if (caps) { if (part.length <= 3 ? SHORT.has(part) : inDict) continue; if (before && part.length >= 4 && new RegExp(`(^|[^\\p{L}])${title}(?![\\p{L}])`, 'u').test(before)) continue; bad.push({ token: orig, why: 'an all-capitals abbreviation' }); continue; }
+      if (caps) { if (part.length <= 3 ? SHORT.has(part) : inDict) continue; if (before && part.length >= 4 && new RegExp(`(^|[^\\p{L}])${title}(?![\\p{L}])`, 'u').test(before)) continue;
+        // an abbreviation the prose before the figure spells out: "main memory (RAM)", "ALU (arithmetic and logic unit)"
+        const AB = part.toUpperCase();
+        if (before && (before.includes(`(${AB})`) || new RegExp(`(^|[^\\p{L}])${AB} \\([\\p{Ll}]`, 'u').test(before))) continue;
+        bad.push({ token: orig, why: 'an all-capitals abbreviation' }); continue; }
       if (inDict) continue;
       // a proper name (capital first letter, not all capitals) that the prose before the figure already uses
       if (/^\p{Lu}\p{Ll}/u.test(orig) && before && new RegExp(`(^|[^\\p{L}])${orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'u').test(before)) continue;
@@ -150,6 +154,39 @@ export function taughtYet(text, known, glossary, before = '') {
     }
   }
   return bad;
+}
+
+// ---- label cap: a tag-stack walk over the svg -----------------------------------------------------------------
+const SHAPE = /^(rect|circle|ellipse|line|polyline|polygon|path|use|image)$/;
+export function capCount(svg) {
+  const s = svg.replace(/<(title|desc)\b[\s\S]*?<\/\1>/g, '');
+  const stack = [], texts = [], groups = [];
+  for (const m of s.matchAll(/<(\/?)([a-zA-Z][\w:-]*)\b([^>]*?)(\/?)>|([^<]+)/g)) {
+    if (m[5] !== undefined) { const t = stack.findLast(e => e.name === 'text'); if (t) t.s += m[5]; continue; }
+    const [, close, name, attrs, self] = m;
+    if (close) { const e = stack.pop(); if (e && e.name === 'text') texts.push(e); continue; }
+    const e = { name, attrs, s: '', anc: stack.slice(), shape: false };
+    if (SHAPE.test(name)) for (const a of stack) if (a.name === 'g') a.shape = true;
+    if (name === 'g') groups.push(e);
+    if (!self) stack.push(e);
+  }
+  const panels = new Map();
+  const rows = texts.map(t => {
+    const str = plain(t.s), role = (t.attrs.match(/\bdata-role="([^"]+)"/) || [])[1] || null;
+    const og = t.anc.findLast(a => a.name === 'g' && /\bdata-obj="1"/.test(a.attrs));
+    const free = role === 'object' && og && og.shape && [...str].length <= 6;
+    const pg = t.anc.find(a => a.name === 'g' && /\bdata-panel\b/.test(a.attrs));
+    const panel = pg ? (pg.attrs.match(/data-panel="([^"]*)"/) || [, 'panel'])[1] : 'figure';
+    return { str, role, free, panel, why: free ? 'object' : role === 'object' ? (og ? (og.shape ? 'object over 6 characters: counted as label' : 'obj group without a shape: counted as label') : 'object outside obj(): counted as label') : role ? 'label' : 'untagged: counted as label' };
+  }).filter(r => r.str);
+  for (const r of rows) if (!r.free) panels.set(r.panel, (panels.get(r.panel) || 0) + 1);
+  return { rows, panels: Object.fromEntries(panels), max: Math.max(0, ...panels.values()) };
+}
+// ---- caption sentences ----------------------------------------------------------------------------------------
+const ABBR = /\b(e\.g|i\.e|etc|vs|Fig|Figs|No|Dr|Mr|Mrs|Ms|St|approx|cf|al|U\.S|U\.K|a\.m|p\.m)\./g;
+export function sentences(t) {
+  const s = t.replace(ABBR, m => m.replace(/\./g, '․')).replace(/(\d)\.(\d)/g, '$1․$2');
+  return s.split(/(?<=[.!?])["”’)\]]*\s+(?=["“‘(\[]?[A-Z0-9])/).map(x => x.trim()).filter(x => /[\p{L}\p{N}]/u.test(x));
 }
 
 // ---- processes ------------------------------------------------------------------------------------------------

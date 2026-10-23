@@ -8,7 +8,7 @@ import { chromium } from '../pass25/node_modules/playwright/index.mjs';
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 
 const ARGS = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const ROOT = new URL('../../public/', import.meta.url).pathname;
+const ROOT = process.env.FIG_ROOT || new URL('../../public/', import.meta.url).pathname;   // FIG_ROOT: another public/ tree (Pass 31)
 const PAGES = String(ARGS.pages || 'index,part-1,part-2,part-3,part-4,part-5,glossary').split(',');
 const WIDTHS = String(ARGS.widths || '375,1440').split(',').map(Number);
 const RATE = Number(ARGS.rate || 4);
