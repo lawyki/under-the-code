@@ -85,6 +85,15 @@ Phase 0, gate builder track (a separate agent; v3 sealed)
 - [ ] Development set: v1 and v2 fail, v4 passes, three times each, order swapped
 - [ ] Judge prompt frozen, hash in `docs/pass-31-calibration.md`
 
+Phase 0 repairs (verification by session e2, 2026-10-24: "safe, but not ready for Phase 1"; no gate freeze and no exemplar ticked until these land)
+- [x] Subtraction, Parts II to V, redone row by row: each row names the paragraphs reread and what the reader loses; the 12 weak keeps (1.13, 4.3, 5.2, 6.9, 7.2, 9.9, 12.1, 13.1, 14.1, 17.11, 18.2, 18.5) resolved: nine became cut candidates, 1.13, 14.1 and 17.11 stay with the reason
+- [x] "knows" fixed where it cites a later figure or a cut or merge candidate (10.9, 3.1, 3.3, 6.9, 7.2, 18-trace, 18.6)
+- [x] Intent split: `intent` becomes the takeaway (at most 20 words, one mechanism, at most two numbers, taught tokens, names the job); the new `content` column holds the names, numbers and fields; reader asks go to content or are declined with a reason; taught-yet record in `docs/pass-31-takeaway-check.md`
+- [x] "Real thing" defined (draws a physical object, machine or place as it looks); 4.1, 9.2, 13.1, 17.8, 18.5 retagged
+- [x] Brief amended: held status (§9, §13, §16, §17); §6's prompt rule stated as procedural; one exemplar a two-part merge card; the ledger's takeaway and content columns
+- [ ] Gate builder follow-up (a fresh builder after the running one): an all-capitals token passes when its lowercase form does; taught abbreviations listed at the paragraph that teaches them; Enigma a must-pass under "real thing", three runs; development set rerun with the takeaway form; both forms logged
+- [ ] Housekeeping: `figures-final` pushed; `figures-final-gate` pushed once its builder commits; §4ag records that the author wrote every subtraction row and the hedge-prompt glimpse
+
 Phase 1 and the owner's calibration page
 - [ ] Five exemplars (one per part, three concepts each) and `docs/pass-31-plates.md`
 - [ ] Calibration page published (kept-originals table, exemplars, 3 best and 3 worst per part)
