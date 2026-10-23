@@ -3902,6 +3902,8 @@ Owner, 2026-10-23: "each needs to be self-explanatory, easy to ... read and unde
 ### Phase 0
 Opened 2026-10-23. Held from the pass: the attack and security figures, after the safety filter stopped work on them three times that day (STATE.md, BLOCKED ON TIGER). Why Enigma is good: it draws the real machine's own parts in the order the current flows (key, three rotors, reflector, lamp) and lets one key press trace a visible path out and back, so seeing the same key light F, then E, then C proves the rotors step without a word of explanation.
 
+Prose subtraction 2026-10-23 to 24: all 222 figures in `docs/pass-31-ledger.tsv`, 35 held; merge pairs 1.3+1.4, 2.7+2.8, BR.4+BR.5, 4.20+4.21, 5.4+5.5, 6.3+6.4, 7.8+7.9, 8.5+8.6, 8.11+8.12, 13.5+13.6, 16.8+16.9, 17.7+17.8; cut candidates 1.10, 3.4, 4.1, 6.2, 11.1, 12.2, 18.1, 18.3, 18.4. Intents 2026-10-24: one per open figure (187), written before the blind prose readers (eight Sonnet 5.5 agents, chapter prose only, figure positions marked, held material removed) and compared after; 32 raised where a reader fairly asked for more (Enigma's never-itself flaw, the switches inside each gate, the store buffer behind reordering, the lost update the semaphore prevents, among others). Asks that wanted a different figure (a reader seeing only Fig 1.7's paragraph asked for a chip die) or expert depth (IDT privilege levels, lattice geometry) were left out under law 4. Fig 3.1's "32 bits in all three" checked: x86-64's add rax, 5 is 48 83 C0 05.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em
