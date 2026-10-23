@@ -4870,7 +4870,7 @@
       holds the function frames currently executing: the same stack
       <a href="part-1#ch3">Chapter 3</a> dissected, in JavaScript form. The <strong>macrotask
       queue</strong> (also called the <em>callback queue</em>) holds
-      callbacks ready to run from completed I/O, expired timers, and clicks and other page events. The <strong>microtask queue</strong> holds callbacks that run as soon as the current task ends, before the next task or the render step: chiefly those of Promises (below; for now, an object standing for a value that has not arrived yet, whose <code>.then(f)</code> queues <code>f</code> as a microtask once the value has arrived, or "settled") and of <code>queueMicrotask()</code>. The
+      callbacks ready to run from completed I/O, expired timers (<code>setTimeout(f, 0)</code> sets one that expires at once), and clicks and other page events. The <strong>microtask queue</strong> holds callbacks that run as soon as the current task ends, before the next task or the render step: chiefly those of Promises (below; for now, an object standing for a value that has not arrived yet, whose <code>.then(f)</code> queues <code>f</code> as a microtask once the value has arrived, or "settled") and of <code>queueMicrotask()</code>. The
       <strong>render step</strong> is when the browser recomputes layout
       and paints any visual changes. The event loop coordinates them:
       pull one task off the macrotask queue, run it to completion, drain
@@ -4921,7 +4921,7 @@
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.533167;0.533333;1.000000" dur="12s" repeatCount="indefinite"/><text x="202" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">3</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.049958;0.050000;0.075000;0.075417;0.766500;0.766667;1.000000" dur="12s" repeatCount="indefinite"/><text x="230" y="276" text-anchor="start" font-family="Space Mono" font-size="16" letter-spacing="0" fill="rgba(223,234,242,0.85)">4</text></g>
 </svg>
-      <p id="ch12-loop-p3" class="diagram-caption">The script runs to its end first, printing 1 and 2; its timer callback waits in the macrotask queue and its promise callback in the microtask queue. When the stack empties, every microtask runs (3), the browser may render, and only then does the next task run (4).</p>
+      <p id="ch12-loop-p3" class="diagram-caption">The script runs to its end first, printing 1 and 2 (<code>console.log</code> prints its value); its timer callback waits in the macrotask queue and its promise callback in the microtask queue. When the stack empties, every microtask runs (3), the browser may render, and only then does the next task run (4).</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -5405,7 +5405,7 @@
           <rect x="0" y="14" width="640" height="80" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
           <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">① attacker → victim:  https://search.example.com/?q=&lt;script&gt;steal()&lt;/script&gt;</text>
           <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">② server response:  &lt;p&gt;Results for: &lt;script&gt;steal()&lt;/script&gt;&lt;/p&gt;</text>
-          <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">③ browser executes the injected script as same-origin with example.com</text>
+          <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">③ browser executes the injected script as same-origin with search.example.com</text>
           <text x="14" y="80" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defence: HTML-escape any user input echoed into HTML; never trust query strings</text>
         </g>
 
@@ -5429,7 +5429,7 @@
           <text x="14" y="84" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">defence: never assign untrusted strings to innerHTML; use textContent or DOM APIs that don't parse HTML</text>
         </g>
       </svg>
-      <p id="ch12-security-p5" class="diagram-caption">All three XSS variants share the same shape (attacker-controlled string ends up where the browser parses it as code), and all three are exploitable as long as user input flows into HTML, JavaScript, or attribute contexts without proper output encoding. The 2010s saw an industry-wide push toward template engines that escape by default (React's JSX, Vue's mustaches, Svelte's curly braces all encode by default), and toward <em>tainted-string</em> static analysis at build time. Even so, XSS still appears every year on the OWASP Top 10. The deeper fix, the one this section is heading toward, is <strong>Content Security Policy</strong>, which lets the server tell the browser "do not run inline scripts at all, and only run scripts from these specific origins." Even if an attacker injects a <code>&lt;script&gt;</code>, CSP prevents the browser from executing it.</p>
+      <p id="ch12-security-p5" class="diagram-caption">All three XSS variants share the same shape (attacker-controlled string ends up where the browser parses it as code), and all three are exploitable as long as user input flows into HTML, JavaScript, or attribute contexts without proper output encoding. The 2010s saw an industry-wide push toward template engines that escape by default (React's JSX, Vue's mustaches, Svelte's curly braces all encode by default), and toward <em>tainted-string</em> static analysis at build time. Even so, XSS has stayed in every edition of the OWASP Top 10, since 2021 as part of Injection. The deeper fix, the one this section is heading toward, is <strong>Content Security Policy</strong>, which lets the server tell the browser "do not run inline scripts at all, and only run scripts from these specific origins." Even if an attacker injects a <code>&lt;script&gt;</code>, CSP prevents the browser from executing it.</p>
     </div>
 
     <h3>CSRF: making your browser the attacker</h3>
@@ -5462,7 +5462,7 @@
           <rect x="0" y="14" width="640" height="100" rx="4" fill="rgba(232,120,120,0.10)" stroke="rgba(180,80,80,0.55)"/>
           <text x="14" y="32" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">① user logs into bank.com, browser stores session cookie</text>
           <text x="14" y="48" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">② user visits evil.com (in another tab, while bank session still valid)</text>
-          <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">③ evil.com runs:  &lt;form action="bank.com/transfer" method="POST"&gt;…&lt;/form&gt; · auto-submit</text>
+          <text x="14" y="64" font-family="Space Mono" font-size="9" fill="rgba(180,200,220,0.85)">③ evil.com runs:  &lt;form action="https://bank.com/transfer" method="POST"&gt;…&lt;/form&gt; · auto-submit</text>
           <text x="14" y="80" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">④ browser sends POST with bank.com cookie attached</text>
           <text x="14" y="96" font-family="Space Mono" font-size="9" fill="rgba(232,120,120,0.95)">⑤ bank processes transfer · attacker won</text>
         </g>
@@ -5479,7 +5479,7 @@
           <text x="14" y="116" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.7)" font-style="italic">modern alternative: SameSite=Strict cookie attribute · cookie not sent on cross-site POST at all</text>
         </g>
       </svg>
-      <p id="ch12-security-p7" class="diagram-caption">CSRF tokens are an old defence (~2002); the modern complement is the <code>SameSite</code> cookie attribute, introduced in 2016 and defaulted to <code>Lax</code> by Chrome and Edge since 2020 (Firefox and Safari lean on third-party-cookie blocking instead, which is why prudent sites still set it explicitly). <code>SameSite=Lax</code> means: do not attach this cookie to cross-site POST requests; only to top-level navigations. <code>SameSite=Strict</code> goes further: do not attach the cookie even on cross-site GET. Together with CSRF tokens, they make the classical CSRF attack mostly obsolete on a properly configured site. The deeper lesson is that browser security has, over twenty years, moved from "defend at the application layer" (CSRF tokens, anti-XSS escaping) toward "defend at the platform layer" (SameSite, CSP, Trusted Types). The web's own primitives are getting safer; the application code matters less than it used to.</p>
+      <p id="ch12-security-p7" class="diagram-caption">CSRF tokens are an old defence (~2002); the modern complement is the <code>SameSite</code> cookie attribute, introduced in 2016 and defaulted to <code>Lax</code> by Chrome and Edge since 2020 (Firefox and Safari lean on third-party-cookie blocking instead, which is why prudent sites still set it explicitly). <code>SameSite=Lax</code> means: on a cross-site request, attach this cookie only when it is a top-level navigation that uses GET, such as following a link; never on a cross-site POST. <code>SameSite=Strict</code> goes further: do not attach the cookie even on cross-site GET. Together with CSRF tokens, they make the classical CSRF attack mostly obsolete on a properly configured site. The deeper lesson is that browser security has, over twenty years, moved from "defend at the application layer" (CSRF tokens, anti-XSS escaping) toward "defend at the platform layer" (SameSite, CSP, Trusted Types). The web's own primitives are getting safer; the application code matters less than it used to.</p>
     </div>
 
     <h3>CSP: telling the browser which scripts you trust</h3>
