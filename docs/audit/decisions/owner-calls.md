@@ -31,6 +31,7 @@ Owner, 2026-10-23: "you just take the best option / pedagogic etc. knowing the b
 | p30-hero3 | (a): one-line key for addresses, a pointer from "stack top" to the newest call | Readers could not tie "high/low address" or "stack top" to anything. |
 | p30-fig66, p30-fig69, p30-hero12, p30-cover | accept (the recommendations) | |
 | keep-bundle | keep all | |
+| ch3-aleph | (a), the owner's own choice on the decision page | The quoted sentences are not in the article; the replacement is verbatim from its Introduction (checked against phrack.org). |
 | (punch list) | the Ch4 hero's title id `svgt-part2-1` renamed `svgt-part2-ch4-hero` | It duplicated Fig 4.1's; no duplicate id is left in any part. |
 
 ## Blind retest (workflow `owner-calls-retest`, Sonnet 5.5) and one revision
@@ -39,7 +40,7 @@ Gate 2 on the two changed heroes: hero-ch1 and hero-ch3 each passed with both fr
 
 ## Not applied
 
-- **Chapter 3** (ch3-aleph, ch3-fig37, ch3-fig38cap, ch3-fig38head, ch3-fig39, ch3-fig310, ch3-fig311, ch3-captions): Claude's safety filter stopped work on these figures twice on 2026-10-23 (and a Fig 3.7 redesign on 2026-10-11). Left for the owner; the recommended text is in `docs/audit/owner-calls.md`, Chapter 3.
+- **Chapter 3's figures and captions** (ch3-fig37, ch3-fig38cap, ch3-fig38head, ch3-fig39, ch3-fig310, ch3-fig311, ch3-captions): Claude's safety filter stopped work on these figures twice on 2026-10-23 (and a Fig 3.7 redesign on 2026-10-11). Left for the owner; the recommended text is in `docs/audit/owner-calls.md`, Chapter 3.
 - **marks-wording**: a privacy switch, not a teaching choice; the owner's.
 - **out-privacy** and the rest of the privacy notice: below.
 

@@ -3893,7 +3893,7 @@ Blind retest (Sonnet 5.5): heroes Ch1 and Ch3 passed Gate 2 with both fresh read
 Rewritten so every sentence is true of the code (two independent claim-by-claim checks, the load-bearing claims re-read by hand): cookies and IP-keyed counters named, Cloudflare's role and the database's real placement stated, retention and deletion as they really happen, rights added. Left to the owner: the controller's Business ID and address, legal bases, the transfer basis for Cloudflare, the colophon's © holder against LICENSE, and an on-page licence line.
 
 ### Open
-Chapter 3's eight calls (Claude's safety filter stops work on those figures), the marks-sync wording (to be redrafted against the new notice), and the read.
+Chapter 3's seven figure and caption calls (Claude's safety filter stops work on those figures; the Aleph One pull-quote was replaced at the owner's own choice, 7649311), the marks-sync wording (to be redrafted against the new notice), and the read.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

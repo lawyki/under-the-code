@@ -57,7 +57,7 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [x] Applied on branch `owner-calls`, one chapter per commit; blind retest and one revision; Gate 1 identical to `main`; clip 0; pass25 all pass (§4af)
 - [x] Privacy notice reworded for honesty, checked claim by claim against the code
 - [ ] Deploy `owner-calls` (merge into `main`, push) on the owner's word
-- [ ] Owner: Chapter 3's eight calls (Claude's safety filter blocks them), the marks-sync wording (redraft first), the notice's legal facts (Business ID, address, legal bases)
+- [ ] Owner: Chapter 3's seven figure and caption calls (Claude's safety filter blocks them), the marks-sync wording (redraft first), the notice's legal facts (Business ID, address, legal bases)
 - [ ] Owner does: create an account (first real mail test); VoiceOver check plus iPhone flick-scroll check (`docs/pass-25-sr-trace.md`)
 - [ ] Owner reads the book, from `docs/owner-read-map.md`
 - [ ] Punch-list pass after the read (STATE.md, WHAT'S NEXT item 6)

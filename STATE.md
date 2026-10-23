@@ -1,6 +1,6 @@
 # under-the-code — STATE
 
-**OWNER CALLS DECIDED 2026-10-23 under the owner's delegation ("take the best option ... knowing the book's goal"; "reword for honesty on the legal / privacy"): 36 of 45 applied or kept on branch `owner-calls`, verified (blind retest, Gate 1 identical to `main`, clip 0, pass25 all pass), ledger `UNDER.md` §4af, decisions `docs/audit/decisions/owner-calls.md`. Not deployed: merging `owner-calls` into `main` and pushing waits for the owner's word (it also carries 3fd4774, the Go-deeper video guide). Still the owner's: Chapter 3's eight calls (Claude's safety filter stops work on those figures), the marks-sync wording, the privacy notice's legal facts, and the read.** Before that: prose and figures frozen 1.0-rc2 (2026-10-17), deployed 2026-10-23 (merge fda8ce0); the book is still being built. Tagged `v1.0-rc2` at 92ed9f0; `v1.0-rc1` was 2026-10-15.
+**OWNER CALLS DECIDED 2026-10-23 under the owner's delegation ("take the best option ... knowing the book's goal"; "reword for honesty on the legal / privacy"): 37 of 45 applied or kept (the Aleph One quote by the owner's own choice) on branch `owner-calls`, verified (blind retest, Gate 1 identical to `main`, clip 0, pass25 all pass), ledger `UNDER.md` §4af, decisions `docs/audit/decisions/owner-calls.md`. Not deployed: merging `owner-calls` into `main` and pushing waits for the owner's word (it also carries 3fd4774, the Go-deeper video guide). Still the owner's: Chapter 3's seven remaining calls (Claude's safety filter stops work on those figures), the marks-sync wording, the privacy notice's legal facts, and the read.** Before that: prose and figures frozen 1.0-rc2 (2026-10-17), deployed 2026-10-23 (merge fda8ce0); the book is still being built. Tagged `v1.0-rc2` at 92ed9f0; `v1.0-rc1` was 2026-10-15.
 
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
@@ -168,7 +168,7 @@ removed, each removal checked by a Sonnet 5.5 skeptic).
 
 **Decide**
 
-- **Chapter 3's eight calls** (`docs/audit/owner-calls.md`, Chapter 3; also on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15): Claude's safety filter stops work on those figures, so apply the recommended text yourself or keep them as they are.
+- **Chapter 3's seven remaining calls** (`docs/audit/owner-calls.md`, Chapter 3; also on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15): Claude's safety filter stops work on those figures, so apply the recommended text yourself or keep them as they are.
 - **Marks sync**: `docs/pass-25-copy.md` must first be redrafted against the new privacy notice; approval turns marks sync on.
 - **The privacy notice's legal facts** only you have: YDT Holdings Oy's Business ID and address, the legal bases (account: contract; abuse limits and notices: legitimate interest?), the transfer basis for Cloudflare (a US company), whether hello@atheric.eu is read; and the colophon's © holder against LICENSE's, plus a CC BY-NC 4.0 line on the site (the colophon is your text).
 - **Domain move**: your timing (WHAT'S NEXT item 2).
