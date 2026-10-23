@@ -4335,12 +4335,12 @@ main:
           <text x="380" y="228" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.3)">…</text>
 
           <rect x="244" y="238" width="272" height="22" fill="rgba(100,150,255,0.08)"/>
-          <text x="258" y="253" fill="rgba(212,168,83,0.85)">32</text>
+          <text x="258" y="253" fill="rgba(212,168,83,0.85)">32+</text>
           <text x="300" y="253" fill="rgba(100,150,255,0.85)">timer (LAPIC)</text>
           <text x="510" y="253" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">apic_timer_interrupt</text>
 
           <rect x="244" y="263" width="272" height="22" fill="rgba(100,150,255,0.05)"/>
-          <text x="258" y="278" fill="rgba(212,168,83,0.85)">33</text>
+          <text x="258" y="278" fill="rgba(212,168,83,0.85)">32+</text>
           <text x="300" y="278" fill="rgba(100,150,255,0.85)">keyboard (IRQ 1)</text>
           <text x="510" y="278" text-anchor="end" font-size="8" fill="rgba(255,255,255,0.55)">do_IRQ → driver</text>
 
@@ -4368,13 +4368,13 @@ main:
 
           <rect x="555" y="224" width="135" height="48" rx="5" fill="#1a1a1a" stroke="rgba(212,168,83,0.4)"/>
           <text x="622" y="240" text-anchor="middle" fill="rgba(212,168,83,0.85)">SYSCALLS</text>
-          <text x="622" y="254" text-anchor="middle">SYSCALL or int 0x80</text>
+          <text x="622" y="254" text-anchor="middle">int 0x80 (legacy)</text>
           <text x="622" y="266" text-anchor="middle">user request</text>
         </g>
 
         <text x="360" y="370" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.4)">Each entry holds: handler offset · target segment · DPL · gate type, all set up by the kernel at boot.</text>
       </svg>
-      <p id="chBridge-trap-p5" class="diagram-caption">When any trap fires, the CPU reads the IDT base address from its <code>IDTR</code> register, indexes by vector number, and jumps to the handler the kernel registered for that vector. The same table dispatches CPU exceptions (vectors 0–31), hardware interrupts from devices (vectors 32 and up), and on legacy x86 the <code>int 0x80</code> system call. Exactly the same machinery underlies every involuntary entry into the kernel.</p>
+      <p id="chBridge-trap-p5" class="diagram-caption">When an exception, an interrupt or an <code>int</code> instruction fires, the CPU reads the IDT base address from its <code>IDTR</code> register, indexes by vector number, and jumps to the handler the kernel registered for that vector. The same table dispatches CPU exceptions (vectors 0–31), hardware interrupts from devices (vectors 32 and up), and on legacy x86 the <code>int 0x80</code> system call. Every exception and interrupt enters the kernel through this same machinery.</p>
     </div>
 
     <p id="chBridge-trap-p6">
