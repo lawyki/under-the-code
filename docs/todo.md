@@ -75,8 +75,8 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Prose subtraction, Part IV (Ch13 to Ch15): 34 rows, 1 merge pair (13.5+13.6), 0 cut candidates, 15 held (Ch15 whole, Ch13's query-safety section, Figs 14.3, 14.4, 14.6)
 - [x] Prose subtraction, Part V (Ch16 to Ch18): 29 rows, 2 merge pairs (16.8+16.9, 17.7+17.8), 3 cut candidates (18.1, 18.3, 18.4), none held (Chapter 16 names Spectre only in prose, ch16-numa-p4). Ledger now has all 222 figures once: 35 held
 - [x] Intent sentence per remaining figure (job tagged), raised where the blind prose reader asks for more: 187 intents (every figure not held, cut candidates included); 8 blind Sonnet 5.5 prose readers (`docs/pass-31-prose-readers.tsv`); 32 intents raised; asks for a different figure, or for expert depth, left out (law 4)
-- [ ] Kept-originals table (18 rows, errors and one action each)
-- [ ] Ledger `docs/pass-31-ledger.tsv`, one row per figure
+- [x] Kept-originals table (18 rows, errors and one action each): `docs/pass-31-kept-originals.md`; BR.3 redrawn in Phase 2, the 17 security originals held for the owner (fixes on `owner-calls` checked against `main`)
+- [x] Ledger `docs/pass-31-ledger.tsv`, one row per figure: 222 rows; job, intent, knows and the subtraction record filled for the 187 open figures, 35 held; bin waits for Phase 1b (brief §10), the concept and gate columns for Phase 2
 
 Phase 0, gate builder track (a separate agent; v3 sealed)
 - [ ] `figlib`: `role` on `text()`, `obj()` groups, `Timeline` beat times
