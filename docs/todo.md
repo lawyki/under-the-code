@@ -69,11 +69,11 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Branch `figures-final` (from `owner-calls`), `docs/pass-31-sealed/` gitignored, ledger §4ag and STATE "Pass 31 at:" opened
 - [x] Contact sheets per chapter at 375 px, v4 and Enigma pinned (19 sheets, `npm run fig:sheet`; output gitignored)
 - [x] Why Enigma is good, in one sentence (§4ag)
-- [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge): 47 rows, 3 merge candidates, 2 cut candidates, 8 held
+- [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge): 47 rows, 3 merge candidates, 2 cut candidates, 7 held
 - [x] Prose subtraction, Part II (Ch4 to Ch7): 51 rows, 4 merge pairs, 2 cut candidates, 3 held
 - [x] Prose subtraction, Part III (Ch8 to Ch12): 61 rows, 2 merge pairs, 2 cut candidates, 10 held
 - [x] Prose subtraction, Part IV (Ch13 to Ch15): 34 rows, 1 merge pair (13.5+13.6), 0 cut candidates, 15 held (Ch15 whole, Ch13's query-safety section, Figs 14.3, 14.4, 14.6)
-- [ ] Prose subtraction, Part V (Ch16 to Ch18)
+- [x] Prose subtraction, Part V (Ch16 to Ch18): 29 rows, 2 merge pairs (16.8+16.9, 17.7+17.8), 3 cut candidates (18.1, 18.3, 18.4), none held (Chapter 16 names Spectre only in prose, ch16-numa-p4). Ledger now has all 222 figures once: 35 held
 - [ ] Intent sentence per remaining figure (job tagged), raised where the blind prose reader asks for more
 - [ ] Kept-originals table (18 rows, errors and one action each)
 - [ ] Ledger `docs/pass-31-ledger.tsv`, one row per figure
