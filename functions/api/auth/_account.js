@@ -43,7 +43,7 @@ export async function signupMail(env, request, email, nextPath) {
       ...mailBody({
         lead: 'Confirm your email to finish creating your Under the Code account.',
         linkText: 'Confirm my email →', link,
-        note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it: an unconfirmed account is removed after 14 days.',
+        note: 'The link works once, for 24 hours. If you didn’t ask for this, ignore it: an unconfirmed account is deleted after 14 days, at the next routine clean-up.',
       }),
     }), env);
   }

@@ -191,8 +191,8 @@
     <h1 class="glossary-title">Keep your <em>place</em>.</h1>
     <p class="glossary-intro">
       Signed in, the book remembers the exact paragraph you stopped at and offers it
-      back on any device. Sign in with a password; your email is only for confirming
-      the account and for getting back in. Signed out, nothing changes:
+      back on any device. Sign in with a password; your email is for confirming
+      the account, for getting back in and for security notices about it. Signed out, nothing changes:
       your place still lives in this browser alone, as it always has.
     </p>
 
@@ -343,54 +343,95 @@
     <section class="acct-privacy" id="privacy">
       <h2>What this stores: a <em>privacy</em> notice.</h2>
       <p>
-        The book itself collects nothing: no analytics, no trackers, no third-party
-        requests unless you choose to play an outside video (below). Reading progress for signed-out readers lives in your browser's
-        localStorage and never leaves your device. An account adds a server-side copy of
-        the same reading position, so it can follow you between devices, plus what is
-        needed to sign you in. In detail:
+        The book runs no analytics or tracking scripts, requests nothing from anyone
+        but its host unless you choose to play an outside video (below), and sets no
+        cookie until you sign in. Like any website it is served through that host,
+        Cloudflare, which sees your IP address and browser details and keeps its own
+        logs and traffic statistics. Your place (while signed out) and any sections you mark are kept in this
+        browser's own storage and nowhere else, and the browser forgets the place after
+        90 days without reading; marks stay there even when you are signed in, since
+        they do not follow an account yet. The browser also keeps a cached copy of the
+        glossary and short notes for the open tab, such as which figures you paused.
+        An account adds a server-side copy of the same reading position, so it can
+        follow you between devices, plus what is needed to sign you in; the first time
+        you sign in on a device, the place that browser already holds can become your
+        account's position. In detail:
       </p>
       <ul>
-        <li><strong>What is stored:</strong> your email address, when the account was
-          requested and when you confirmed it; if you set a password, a salted, peppered
-          PBKDF2 hash of it (never the password itself) and when it last changed; for
-          each passkey, if you have any, its ID, public key, signature counter, transport
-          hints, whether it syncs between your devices, a label, and when it was added and
-          last used (the private key never leaves your device); a session
-          identifier (only its hash is kept); and one reading position: which part of
-          the book, a paragraph anchor, an offset within it, chapter and section titles,
-          and when it was last updated. Briefly, the database also holds hashed one-time
-          sign-in links (with the page to return you to) and passkey challenges until they are used or expire, and, to
-          slow down password guessing and mail abuse, counters keyed by a keyed hash of
-          the address or network, or by your random account ID, never the address
-          itself, cleared after about a day.
-          Nothing else.</li>
+        <li><strong>What is stored:</strong> a random account ID, your email address,
+          when the account was requested and when you confirmed it; if you set a
+          password, a salted, peppered PBKDF2 hash of it (never the password itself) and
+          when it last changed; for each passkey (passkeys are not switched on yet), its
+          ID, public key, signature counter, transport hints, whether it syncs between
+          your devices, a label, and when it was added and last used (this site never
+          receives the private key); for each session, a hash of its sign-in token and
+          when it started and ends; and one reading position: which part of the book, a
+          paragraph anchor, an offset within it, the chapter and section numbers and
+          titles, and when it was last updated. Briefly, the database also holds hashed
+          one-time sign-in links (with the page to return you to) and passkey challenges,
+          until they are used or until the first clean-up after they expire. To slow
+          down password guessing and mail abuse, it keeps counters whose keys are a keyed
+          hash of your email address, of your IP address (for IPv6, its /64 network), or
+          of the two together (with an IPv4 address shortened to its /24 network); one
+          counter, for the once-a-day sign-in link, uses your random account ID as it
+          is. Anyone who uses the sign-in or
+          sign-up forms creates them, with or without an account. The keys never contain
+          the address itself, but we could recompute one from a known address, so they
+          are pseudonymous, not anonymous. Nothing else is stored in the database.</li>
+        <li><strong>Cookies:</strong> signing in sets two, each for up to 180 days:
+          <code>__Host-under_session</code>, your random sign-in token, which page
+          scripts cannot read, and <code>under_signedin</code>, a marker with no secret
+          in it that tells the pages to sync. Signing out deletes the session and clears
+          both.</li>
         <li><strong>What it is for:</strong> signing you in and putting you back at your
-          paragraph. Nothing else. Your address receives only the links asked for on
-          this page (a link you did not ask for does nothing unless you open it), a short notice whenever your sign-in settings change, and a notice if
-          someone tries to create an account with your address: no announcements, no
-          marketing. It is never shared or sold.</li>
-        <li><strong>Where it lives:</strong> a Cloudflare D1 database in the European
-          Union, the same infrastructure that already serves the book. Mail is delivered
-          by Cloudflare Email Sending, our host's own service rather than a third-party mail
+          paragraph. Nothing else. Your address receives the links you ask for on this
+          page, a short notice whenever your sign-in settings change, and, at most once
+          a day, a sign-in link if someone tries a password on your account while it has
+          neither a password nor a passkey. If someone enters your address on the
+          sign-up form, it receives at most one email per attempt: a confirmation link
+          if the address has no confirmed account, or a notice if it has one. Sign-up
+          and sign-in-link emails together are capped at 3 in 15 minutes and 20 a day
+          per address. A link you did not ask for does nothing unless you open it. No
+          announcements, no marketing. Your data is never sold, and we give it to no one
+          for their own use.</li>
+        <li><strong>Who handles it, and where:</strong> Cloudflare, our host, stores and
+          processes it for us: the database, the code that answers your requests, and
+          the emails, which it sends through Cloudflare Email Sending. The database is currently
+          in Cloudflare's Eastern Europe region. No EU jurisdiction was set for it, which
+          is the only setting that guarantees the data stays in the European Union, so
+          Cloudflare may move or copy it elsewhere. The code that handles a request runs at the Cloudflare
+          data centre nearest you, which can be outside the EU, and Cloudflare is a US
+          company. Once an email leaves Cloudflare, it passes through your own mail
           provider.</li>
         <li><strong>Retention:</strong> emailed links work once. Confirmation links
-          expire after 24 hours, sign-in links after 30 minutes; an account whose email
-          is never confirmed is removed after 14 days; sessions expire after 180 days;
-          the reading position is overwritten in place as you read and exists only while
-          your account does. Expired records are swept the next time anyone signs in or signs
-          up, at most once every six hours.</li>
-        <li><strong>Deletion:</strong> the Delete account button (shown above once
-          you are signed in) removes your email, password,
-          passkeys, sessions and position immediately and completely. Or write to
-          <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>.</li>
+          expire after 24 hours, sign-in links after 30 minutes, sessions after 180
+          days; the reading position is overwritten in place as you read and exists only
+          while your account does. A confirmed account is kept until you delete it:
+          nothing removes an account for being unused. Expired records stop working at once and are removed
+          at the next clean-up, which runs when someone signs up, asks for an emailed
+          link or signs in with a password, at most once every six hours. An account
+          whose email is never confirmed is removed at the first clean-up after 14 days,
+          and the abuse counters at the first clean-up a day after their count
+          began.</li>
+        <li><strong>Deletion:</strong> the Delete account button (shown above once you
+          are signed in) removes your email, password, passkeys, sessions and position
+          from the live database at once. Not removed at once: the counters keyed by your
+          email address or IP address (gone at a later clean-up), Cloudflare's restore
+          history of the database (kept for up to 30 days), emails already sent, and
+          this browser's own copy of your place, which it keeps until you clear it or
+          for up to 90 days. Or write
+          to <a href="mailto:hello@atheric.eu">hello@atheric.eu</a>, where you can also
+          ask what we hold about you, have it corrected or erased, or object to its use;
+          you can complain to the Finnish Data Protection Ombudsman as well.</li>
       </ul>
       <p>
-        <strong>Embedded videos.</strong> Some passages offer an optional outside
+        <strong>Embedded videos.</strong> Passages can offer an optional outside
         video. Until you press play, the book shows its own placeholder and nothing is
         requested from YouTube or Google: no thumbnail, no script, no cookie. Pressing
         play loads the player from www.youtube-nocookie.com, YouTube's privacy-enhanced
-        mode, run by Google Ireland Limited. From then on YouTube receives your IP address
-        and browser details and may set cookies or similar storage, under
+        mode, run by Google. From then on Google receives your IP address, browser
+        details, which video you play and that you came from this site, and may set
+        cookies or similar storage, under
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>.
         The book receives nothing back. "Watch on YouTube" simply opens youtube.com.
       </p>
@@ -824,13 +865,13 @@
     const btn = $('acct-delete');
     if (!armed) {
       armed = true;
-      btn.textContent = 'Press again to delete everything';
-      say('acct-in-status', 'This removes your email, ' + (passkeysOn ? 'password, passkeys' : 'password') + ', sessions and reading position immediately.');
+      btn.textContent = 'Press again to delete your account';
+      say('acct-in-status', 'This removes your email, ' + (passkeysOn ? 'password, passkeys' : 'password') + ', sessions and reading position from the live database.');
       setTimeout(() => { armed = false; btn.textContent = 'Delete account'; }, 6000);
       return;
     }
     busy(btn, true);
-    const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Your email, sign-in methods and reading position are gone from the server.', 'acct-in-status', true);
+    const res = await guarded(() => api('/api/auth/delete', {}), 'Deleted. Your email, sign-in methods and reading position are removed from the live database. A few traces go later (see the privacy notice below); this browser keeps its own copy of your place for up to 90 days.', 'acct-in-status', true);
     busy(btn, false);
     const done = () => { keepMarksLocal(); setTimeout(() => location.replace('/account'), 1600); };
     if (res.ok) done();

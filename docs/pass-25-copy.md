@@ -1,5 +1,7 @@
 # Pass 25 — privacy wording for owner approval (marks sync)
 
+**Redraft needed (2026-10-23):** the privacy notice was rewritten for honesty (`docs/audit/decisions/owner-calls.md`, "Privacy and legal text"), so every "Now" below is stale. Redraft all five replacements against the new notice before approval.
+
 Server-side marks and the "set it yourself" flag ship **switched off**
 (`MARKS_SYNC = "0"` in `wrangler.toml`). Until this wording is approved,
 signed-in readers keep exactly today's sync (one reading position), and

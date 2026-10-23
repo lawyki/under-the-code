@@ -162,7 +162,8 @@ Pushing `main` deploys the site, so push only on the owner's word.
 
 - **Privacy:** the notice at `/account#privacy` has a paragraph covering
   every embed (nothing loads before play; then YouTube's privacy-enhanced
-  mode, run by Google Ireland Limited).
+  mode, run by Google, and what Google receives from then on). Its wording
+  says "Passages can offer", so a new video needs no change there.
 - **Licence:** `README.md` and `LICENSE` say that embedded and linked
   third-party videos belong to their creators and are not covered by
   CC BY-NC 4.0.
