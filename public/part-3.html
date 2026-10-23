@@ -3051,7 +3051,7 @@
         <!-- Note -->
         <text x="360" y="306" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.65)" letter-spacing="0.1em">EACH SLOT HELD ~30S WAITING FOR THIRD ACK · ATTACKER SUSTAINS THE FLOOD INDEFINITELY</text>
       </svg>
-      <p id="ch10-attacks-p3" class="diagram-caption">A flood of SYN packets, each with a different (often spoofed) source IP, arrives at the target. The target's kernel allocates a TCB for each one and parks it in SYN_RCVD waiting for the third ACK. Because the source addresses are spoofed, the SYN-ACK responses go to addresses that didn't ask for anything; no third ACK ever comes. Each half-open entry sits in the table until the SYN_RCVD timeout fires (typically tens of seconds). At a few thousand SYN packets per second (easy for a single home connection to generate), the table fills. New legitimate connections are refused. The classical attack from the 1990s; still works against unprotected servers; the reason every modern OS ships with SYN cookie support and the reason cloud DDoS protection (Cloudflare, AWS Shield) exists.</p>
+      <p id="ch10-attacks-p3" class="diagram-caption">A flood of SYNs from spoofed sources leaves one half-open entry per SYN in the target's connection table, each waiting tens of seconds for a third ACK that never comes, until the table is full and real clients are refused. It is the reason Linux and FreeBSD ship SYN cookies, and one of the floods that cloud DDoS protection (Cloudflare, AWS Shield) absorbs.</p>
     </div>
 
     <p id="ch10-attacks-p4">
@@ -3095,8 +3095,8 @@
         <g transform="translate(240,60)">
           <rect x="0" y="0" width="200" height="60" rx="6" fill="rgba(79,196,230,0.18)" stroke="rgba(32,116,150,0.85)"/>
           <text x="100" y="22" text-anchor="middle" font-family="Space Mono" font-size="10" fill="rgba(79,196,230,0.95)">② compute cookie</text>
-          <text x="100" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">cookie = hash(secret, A, p, …</text>
-          <text x="100" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">+ time bucket + MSS hint)</text>
+          <text x="100" y="38" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">hash(secret, addresses, ports, time)</text>
+          <text x="100" y="50" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(180,200,220,0.85)">with the MSS in spare bits beside it</text>
         </g>
 
         <!-- Arrow to step 3 -->
@@ -3138,7 +3138,7 @@
         <text x="360" y="278" text-anchor="middle" font-family="Space Mono" font-size="9" fill="rgba(79,196,230,0.95)">no per-connection memory was used during the flood; only verified ACKs cause state to be created</text>
         <text x="360" y="294" text-anchor="middle" font-family="Space Mono" font-size="8" fill="rgba(79,196,230,0.7)">Daniel J. Bernstein, 1996 · enabled by default in modern Linux when the SYN backlog overflows</text>
       </svg>
-      <p id="ch10-attacks-p5" class="diagram-caption">Under SYN-flood pressure, the server skips the TCB allocation entirely. It computes a cryptographic <em>cookie</em>: a keyed hash of the connection's identifying tuple plus a time bucket plus a few bits encoding the MSS hint the server would normally have remembered. The cookie is returned as the server's Initial Sequence Number. Now the state is in the wire, not in the kernel. If a real client completes the handshake, its ACK number will be cookie+1; the server recomputes the hash from the ACK's tuple, verifies it matches, and only then allocates the TCB. An attacker cannot forge cookies (the secret is unknown) and cannot benefit from spoofed sources (the matching ACK never comes back). The server keeps zero per-connection state during the flood, yet legitimate connections still work. Daniel J. Bernstein, 1996. One of the most beautiful pieces of security engineering ever shipped.</p>
+      <p id="ch10-attacks-p5" class="diagram-caption">Under a SYN flood the server keeps no state: it answers with a <em>cookie</em> as its sequence number (a keyed hash of the addresses, ports and a time bucket, with the MSS in a few spare bits) and builds the connection only when an ACK comes back carrying cookie + 1. Without the secret an attacker cannot forge a cookie, so spoofed SYNs never get state; Daniel J. Bernstein's 1996 design is one of the most beautiful pieces of security engineering ever shipped.</p>
     </div>
 
     <p id="ch10-attacks-p6">

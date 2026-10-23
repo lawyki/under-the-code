@@ -82,6 +82,8 @@ const CURATED_TERMS = [
   'CAM-table overflow', 'fragments', 'On Distributed Communications', 'Congestion Avoidance and Control',
   'resolver', 'headers', 'WorldWideWeb', 'AddRoundKey', 'Ed25519', 'secp256k1', 'P vs NP',
   'Capital One 2019 breach', 'livelock', 'CP systems', 'split brain', 'Docker',
+  // Owner calls 2026-10-23: Fig 10.11's caption lost its "cookie:" cue when cut to two sentences.
+  'cookie',
   // Hardware (Part I)
   'transistor', 'MOSFET', 'logic gate', 'NAND', 'NOR', 'XOR', 'half-adder', 'full-adder',
   'two\'s complement', 'IEEE 754', 'mantissa', 'buffer overflow',
