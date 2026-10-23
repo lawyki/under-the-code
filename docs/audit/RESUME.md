@@ -2,7 +2,7 @@
 
 Full picture first: `docs/audit/HANDOFF.md` (every run, every findings file, the method, the rules). This note is the running progress.
 
-All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is the live site and stays untouched: never push, merge, rebase onto or tag `main` from this work. Push only to `pre-read-audit` (from a worktree: `git push origin HEAD:pre-read-audit`). **Update 2026-10-23:** the owner said "full yes, deploy"; `pre-read-audit` is merged into `main` (fda8ce0) and deployed to the site; the book is still being built.
+All audit work was done on branch `pre-read-audit` and pushed to GitHub. 2026-10-23 (owner: "full yes, deploy"): merged into `main` (fda8ce0) and deployed to the site; the book is still being built. Pushing `main` deploys the site: only on the owner's word.
 
 ## Method per chapter (working laws)
 1. Read the chapter's findings (`docs/audit/round1/<ch>.json`, plus the part-N.json items for it) and the whole chapter in `public/part-N.html`.
@@ -16,7 +16,7 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Outside the chapters (docs/audit/outside.json): commit 6a5f607.
 - Chapter 1: round 1 in 6a5f607; fig-1-12 fullscreen contrast fixed; blind retest and one revision; checks green (Gate 1 0/192 still+fs and 0/768 motion+fs on the changed figures, clip 0, pass25 all pass). Commit "Pre-read audit: Chapter 1".
 
-- Outside fixes and Chapter 1 are LIVE (owner: "deploy", 2026-10-17, commit 5cc3417 on `main`, merged back into this branch).
+- Outside fixes and Chapter 1 deployed to the site (owner: "deploy", 2026-10-17, commit 5cc3417 on `main`, merged back into this branch).
 - Chapter 2: round 1 from `pre-read-audit-ch2-wip`; blind retest and one revision; Fig 2.3 fullscreen contrast fixed; checks green (`decisions/ch2.md` lists them). Commit "Pre-read audit: Chapter 2".
 
 - Chapter 3: round 1, blind retest, one revision; Figs 3.1, 3.3, 3.6 relabelled; the hero's own title id. Owner calls for Figs 3.7 to 3.11, their captions and the Aleph One quote. Checks green except the two container traces (pass25 on 6e63b69: invariants 812/0, parity 40/0, marks 106/0, ui 120/0, traces 231/2). Commit "Pre-read audit: Chapter 3".
@@ -32,7 +32,7 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Close: owner calls collected (`owner-calls.md`), ledger `UNDER.md` §4ae, STATE.md freeze line (1.0-rc2), `docs/todo.md` ticked, owner read map refreshed, tag `v1.0-rc2` on `pre-read-audit`.
 
 ## Next
-- The pre-read audit is done. Nothing goes live until the owner says "deploy" (merge `pre-read-audit` into `main` then); the owner's read starts at `docs/owner-read-map.md`. Done 2026-10-23: the owner said "full yes, deploy"; merged at fda8ce0 and deployed to the site (the book is still being built); tag `v1.0-rc2` (92ed9f0) pushed the same day.
+- The pre-read audit is done and deployed (merge fda8ce0, 2026-10-23, owner: "full yes, deploy"; tag `v1.0-rc2` at 92ed9f0 pushed the same day); the book is still being built. Next: the owner's decisions and read, from `docs/owner-read-map.md`.
 - Scratch scripts of this run lived in /home/user/sp (not in the repo): `<ch>_apply.py` per chapter, `gate2.sh`, `glcheck.sh`, `prep.sh`, `mk.py`. Gate 1 at 360 px in Chromium rounds glyph advances to whole pixels, so a label that clears its neighbour in WebKit can crowd it there.
 
 ## Running the checks in a cloud container (Linux)
@@ -42,4 +42,4 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - traces.mjs fails two timing checks (a CDP flick, long tasks over 50 ms under 4× throttle) in the container on dc2ebbd too: the container, not the book.
 
 ## Pending
-- Owner calls: `docs/audit/owner-calls.md` (privacy notice EU wording so far).
+- Owner calls: `docs/audit/owner-calls.md` (36 open) and the seven open Pass 30 calls, all on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15; none decided as of 2026-10-23 (STATE.md, BLOCKED ON TIGER).

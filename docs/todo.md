@@ -1,6 +1,6 @@
 # To do · Pass 29 and Pass 30 to v1.0 (owner, 2026-10-15: "Do them all, use a to do list")
 
-Order follows `docs/pass-29-30-brief.md`. Ticked when committed and live.
+Order follows `docs/pass-29-30-brief.md`. Ticked when committed and deployed to the site.
 
 ## Pass 29 · language pass under law 4
 

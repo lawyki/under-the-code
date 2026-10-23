@@ -1,32 +1,31 @@
 # Owner read map · where the book is weakest
 
-For the owner's one full read (brief, THE CLOSE). It starts where the book is weakest: the open owner calls, then the pictures that needed the most help, then the largest prose changes. Every screenshot is the picture as it stands at 375 px (heroes and the cover at 1440 px), the still a reader with reduced motion sees.
+For the owner's one full read (brief, THE CLOSE). It starts where the book is weakest: the open owner calls, then the pictures that needed the most help, then the largest prose changes. Every screenshot is the picture at the Pass 30 close (2026-10-15) at 375 px (heroes and the cover at 1440 px), the still a reader with reduced motion sees; Figs BR.7, 6.6, 6.9 and 10.3 changed since in the pre-read audit (`docs/audit/decisions/`).
 
 ## 1. Open owner calls
 
-- Pre-read audit (2026-10-17), read these first: `docs/audit/owner-calls.md`, chapter by chapter, each with options and a recommendation. Most are kept-original figures or captions that now disagree with the corrected prose beside them (Figs BR.3, 10.11, 11.7, 12.9, 12.10, 13.10); the rest are owner text in Chapter 18 and the account page's legal wording. What changed in each chapter, and why: `docs/audit/decisions/<ch>.md`.
-- Pass 30, Gate 2: five figures (BR.7, 6.6, 6.9, 10.3, 12.3) and three chapter heroes (Ch1, Ch3, Ch12) still failing after two repair rounds: `docs/pass-30-owner-calls.md` §A, each with a screenshot in `docs/pass-30-shots/`.
-- Pass 30, Gate 1: three findings left open (Fig 14.3 and Fig 14.6 believed false; the cover's tinted cards and one-time entrance an owner call): `docs/pass-30-owner-calls.md` §C.
+- Pre-read audit (2026-10-17), read these first: `docs/audit/owner-calls.md`, chapter by chapter, each with options and a recommendation. Most are kept-original figures or captions that disagree with the corrected prose (Figs 3.7 to 3.11, BR.3, 10.10, 10.11, 11.7, 12.9, 12.10, 13.10, 15.2, 15.4, 15.6, 15.8, 15.9); the rest are owner text (the Aleph One pull-quote, Chapter 18's closing passages, Fig 18.6's caption), two verdicts left to you (Chapter 4 Section 03, ch14-tls-pqc-p10) and the privacy wording. All 36 open ones are on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15. What changed in each chapter, and why: `docs/audit/decisions/<ch>.md`.
+- Pass 30, seven calls still open (`docs/pass-30-owner-calls.md`, also on the decision page): Figs 6.6, 6.9, 12.3 and heroes Ch1, Ch3, Ch12 (§A, failing Gate 2 after two rounds), and the cover (§C). Figs BR.7 and 10.3 also failed Gate 2; their notation is now taught (hex in ch1-cpu-p2, TCP's close states in ch10-handshake-p3). Figs 14.3 and 14.6 (§C) were redrawn in the audit.
 - Every per-picture Gate 2 verdict, with the blind reader's words: `docs/pass-30-gate2-record.md`.
-- Pass 29, Part I: `docs/pass-29-owner-calls.md` (sections A to C); the 2026-10-12 audit closed most of them (`docs/pass-29-part1-open.md`).
-- Pass 29, Part V: ch18-intersect-p3 (owner text): STATE.md, BLOCKED ON TIGER.
+- Pass 29, Part I: `docs/pass-29-owner-calls.md`, closed or moved (`docs/pass-29-part1-open.md`: 68 fixed and 6 obsolete 2026-10-12, the prose rest closed 2026-10-15); the kept-original figure errors are in `docs/audit/owner-calls.md`.
+- Pass 29, Part V: ch18-intersect-p3 (owner text): `docs/audit/owner-calls.md`, Chapter 18.
 - Kept-original figures, "kept original, small on a phone" (settled, reported only): `docs/pass-30-owner-calls.md` §B and `UNDER.md` §5.
 
 ## 2. Section prose against its ceiling
 
-Section prose (`scripts/count-prose.mjs`), the Pass 27 close (02f486b) count and its 5% ceiling (brief). The owner lifted the restrictions on 2026-10-12 ("no restrictions for now"); the overruns are terms readers could not pass, defined where first used (UNDER.md §4ac).
+Section prose (`scripts/count-prose.mjs`), the Pass 27 close (02f486b) count and its 5% ceiling (brief). The owner lifted the restrictions on 2026-10-15 ("No restrictions for now until I say so", UNDER.md §4ac); the overruns are terms readers could not pass, defined where first used. "Now" = `main` at eb7fe95, after the pre-read audit.
 
 | Part | 02f486b | Ceiling | Now | Headroom |
 |---|---|---|---|---|
-| I | 12,095 | 12,700 | 12,807 | −107 |
-| II | 10,891 | 11,436 | 10,867 | 569 |
-| III | 14,012 | 14,713 | 14,597 | 116 |
-| IV | 9,761 | 10,249 | 10,883 | −634 |
-| V | 6,181 | 6,490 | 6,735 | −245 |
+| I | 12,095 | 12,700 | 13,089 | −389 |
+| II | 10,891 | 11,436 | 11,396 | 40 |
+| III | 14,012 | 14,713 | 15,577 | −864 |
+| IV | 9,761 | 10,249 | 11,562 | −1,313 |
+| V | 6,181 | 6,490 | 6,820 | −330 |
 
 ## 3. The five largest Pass 29 edits per part
 
-Largest by changed words between the Pass 28 close (7d56482) and the Pass 29 close (32d3188); each with the place a newcomer stopped that it closed. Read the paragraph live by its anchor (part page, `#id`).
+Largest by changed words between the Pass 28 close (7d56482) and the Pass 29 close (32d3188); each with the place a newcomer stopped that it closed. Read the paragraph on the site by its anchor (part page, `#id`).
 
 ### Part I
 - `ch1-transistor-p7` (219 words changed): why a material must switch itself, what doping does (n-type, p-type, the hole) before the junction; the reader no longer meets "semiconductor" as a bare word.
@@ -69,7 +68,7 @@ Pass 29 Part I took every section (24) through the per-section method with two r
 
 ## 5. Every Gate 2 fail and near-miss
 
-Fails (five, owner calls): Figs BR.7, 6.6, 6.9, 10.3, 12.3, screenshots `docs/pass-30-shots/<id>.png` and the calls in `docs/pass-30-owner-calls.md` §A.
+Fails (five; three still owner calls: 6.6, 6.9, 12.3; BR.7's hex and 10.3's state names are now taught in the prose): screenshots `docs/pass-30-shots/<id>.png` (Pass 30 close), the calls in `docs/pass-30-owner-calls.md` §A.
 
 Near-misses (failed two readers twice, passed only after repair round 2): Figs 1.5, 2.3, 2.9, 3.2, 3.6, 4.3, 4.5, 4.9, 4.18, 4.22, 5.1, 5.2, 5.8, 8.2, 9.5, 9.7, 9.9, 11.5, 11.9, 12.5, 16.7, 17.8 and the trace (fig-18-trace). Screenshots: `docs/pass-30-shots/near/<id>.png`.
 

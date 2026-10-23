@@ -1,15 +1,15 @@
 # under-the-code — STATE
 
-**PROSE AND FIGURES FROZEN 1.0-rc2 (2026-10-17, after the pre-read audit). Open: the pre-read audit's owner calls (`docs/audit/owner-calls.md`, chapter by chapter) and the 12 from before (listed below). Next: the owner's read.** The 12: the eleven Pass 30 calls (`docs/pass-30-owner-calls.md` §A five figures and three heroes, §C three Gate 1 findings) and ch18-intersect-p3 from Pass 29 (owner text), each in BLOCKED ON TIGER. Start the read at `docs/owner-read-map.md`. Tagged `v1.0-rc2` on branch `pre-read-audit` (the tag at 92ed9f0 first reached GitHub 2026-10-23). **Merged into `main` and deployed to the site 2026-10-23** (owner: "full yes, deploy"; merge fda8ce0); the book is still being built. Until then `main` and the live site carried only the outside fixes and Chapter 1. `v1.0-rc1` was 2026-10-15.
+**PROSE AND FIGURES FROZEN 1.0-rc2 (2026-10-17, after the pre-read audit). Deployed to the site 2026-10-23 (owner: "full yes, deploy"; merge fda8ce0); the book is still being built. Open: 43 owner calls on the book, all on the decision page https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15 (none decided as of 2026-10-23), plus the items in BLOCKED ON TIGER. Next: the owner's decisions and his read, from `docs/owner-read-map.md`.** Re-verified against `main` on 2026-10-23 (workflow `open-calls-verify`: one reader per source, a Sonnet 5.5 skeptic on every item marked closed): 36 pre-read audit calls (`docs/audit/owner-calls.md`; its Fig 12.9 "output encoding" entry closed itself, since ch12-security-p4 now explains the term before the figure) and seven Pass 30 calls (`docs/pass-30-owner-calls.md`: Figs 6.6, 6.9, 12.3; heroes Ch1, Ch3, Ch12; the cover). The old "12 from before" overcounted: Figs BR.7 and 10.3 are answered by the prose (hex taught in ch1-cpu-p2, TCP's close states in ch10-handshake-p3), Figs 14.3 and 14.6 were redrawn in the audit (Gate 1 at zero), and ch18-intersect-p3 is one of the 36. Tagged `v1.0-rc2` at 92ed9f0 (on GitHub since 2026-10-23; in `main` since fda8ce0). `v1.0-rc1` was 2026-10-15.
 
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 
-**Pre-read audit, 2026-10-15 → 2026-10-17: DONE.** Every chapter, the Bridge and the outside-the-chapters findings decided, retested blind, gated and committed one chapter per commit on branch `pre-read-audit`; ledger `UNDER.md` §4ae; decisions `docs/audit/decisions/`; owner calls `docs/audit/owner-calls.md`. The outside fixes and Chapter 1 are live (deployed 2026-10-17, "deploy"); the rest was deployed to the site 2026-10-23 (owner: "full yes, deploy"; merge fda8ce0 on `main`); the book is still being built.
+**Pre-read audit, 2026-10-15 → 2026-10-17: DONE.** Every chapter, the Bridge and the outside-the-chapters findings decided, retested blind, gated and committed one chapter per commit on branch `pre-read-audit`; ledger `UNDER.md` §4ae; decisions `docs/audit/decisions/`; owner calls `docs/audit/owner-calls.md`. The outside fixes and Chapter 1 were deployed to the site 2026-10-17 ("deploy"), the rest 2026-10-23 (owner: "full yes, deploy"; merge fda8ce0 on `main`); the book is still being built.
 
-**Pre-read audit at (owner, 2026-10-15: "verify the passes ... so I come back as little as possible"; ultracode on):** two audit workflows running. Round 1 (`book-audit`, run `wf_ba79ebb9-6bf`): a newcomer reader per section (116), a fact checker, a craft/laws reader and a figure checker per chapter (19 each), a consistency reader per part (5), every finding judged by a Sonnet 5.5 skeptic. Outside the sections (`book-audit-outside`, run `wf_f7f446b6-2cb`): part openers, chapter leads, the cover and account pages, all 478 glossary entries, every cross-reference. Judged findings are copied to `docs/audit/` as they land (one JSON per chapter or batch: confirmed and owner verdicts with the fix). Next: I write every confirmed fix myself, chapter by chapter (working laws), one blind newcomer and one expert reader over each chapter's changed paragraphs, one revision; glossary regenerated; Gate 1 on any changed figure; tests; commit per chapter; ledger §4ae; tag v1.0-rc2. Progress is ticked in `docs/todo.md` ("Pre-read audit").
+**Pre-read audit, how it ran (owner, 2026-10-15: "verify the passes ... so I come back as little as possible"; ultracode on):** two workflows, both finished: round 1 (`book-audit`, run `wf_ba79ebb9-6bf`) and outside the sections (`book-audit-outside`, run `wf_f7f446b6-2cb`). Findings in `docs/audit/round1/` and `docs/audit/outside.json`. Every confirmed fix was written, retested, gated and committed per chapter (§4ae); tagged v1.0-rc2.
 
-**Pass 29/30 at:** Pass 29 (language pass under law 4) DONE 2026-10-15. Pass 30 (every picture holds) DONE 2026-10-15, ledger `UNDER.md` §4ad: the shared pause control; intended messages for every figure, hero and the cover committed before any reader ran; Gate 2 with blind readers (figures 199 of 204 pass after two repair rounds, heroes and cover 17 of 20, icons all); Gate 1 at zero on every redrawn figure, hero and icon in Chromium and WebKit at every width, in the page and in fullscreen, in the still and at every sampled frame, except three findings left as owner calls; every page at zero in every `clip.mjs` mode, 31 containers that scroll on purpose listed (`UNDER.md` §5). Two Sonnet 5.5 verifications of every figure before and after. Owner calls: `docs/pass-30-owner-calls.md`; the owner's read starts at `docs/owner-read-map.md`. Then THE CLOSE (tag v1.0-rc1, freeze line above).
+**Pass 29/30 at:** Pass 29 (language pass under law 4) DONE 2026-10-15. Pass 30 (every picture holds) DONE 2026-10-15, ledger `UNDER.md` §4ad: the shared pause control; intended messages for every figure, hero and the cover committed before any reader ran; Gate 2 with blind readers (figures 199 of 204 pass after two repair rounds, heroes and cover 17 of 20, icons all); Gate 1 at zero on every redrawn figure, hero and icon in Chromium and WebKit at every width, in the page and in fullscreen, in the still and at every sampled frame, except three findings left as owner calls; every page at zero in every `clip.mjs` mode, 31 containers that scroll on purpose listed (`UNDER.md` §5). Two Sonnet 5.5 verifications of every figure before and after. Owner calls: `docs/pass-30-owner-calls.md`; the owner's read starts at `docs/owner-read-map.md`. Then THE CLOSE (tag v1.0-rc1, 2026-10-15; §4ad).
 
 **Pass 29 calibration (2026-10-11, cold reader `docs/pass-29-cold-reader.md` v1, Opus 5.5; record `docs/pass-29-calibration.json`):** planted gap (ch1-context-p4's definition of Turing's device removed) logged on the first try, as the reader's first point. Real runs: **ch1-context 10 search points, ch16-lockfree 4** (both under the 15-point floor). Its fact doubts (Turing "built" the Bombe; "historians estimate" two years and fourteen million lives for Bombe and Colossus alone; the Church–Turing thesis stated as fact; the halting framing credited to 1936; ch16-lockfree-p3 on x86 store order and coherence as a cause of reordering) go to the Part I and Part V fact gates, not to the count.
 
@@ -25,7 +25,9 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 | IV | 9,761 | 10,249 | 9,811 (after law 4: 10,883) | −634 |
 | V | 6,181 | 6,490 | 6,187 (after law 4: 6,735) | −245 |
 
-**Pass 30 tools** (built 2026-10-11; each reviewed by an independent agent and fixed): `tests/pass28/figs.mjs` (`--kind=figs|heroes|cover|icons|all`, widths 320 to 1440, `--motion` at 0/25/50/75 % of each cycle, `--fullscreen` at the fitted viewBox scale, contrast at 1440 from pixels: text 4.5, named marks 3 on the worse paint, icons 3, unrounded; helper `tests/pass30/contrast.mjs`; skips only from `docs/pass-30-exceptions.json`; a run that measures nothing exits 2), `tests/pass30/bare.mjs` (the svg alone, any selector, `--frames`, cover at its end state, collision-guarded output), `tests/pass28/clip.mjs` (adds 360, `--textsize=200` from 768 up, `--spacing` per WCAG F104, a `scroll` finding for any overflowing scroll container not listed in the exceptions, scroll-driven reveals cancelled so headings are measured, `--state=open` for closed details). For Gate 1: the plain clip sweep now reports 250 scroll findings (chapter navs, code blocks, wide tables), each to be listed with a §5 entry or fixed; contrast already fails on some redrawn figures (fig 1.2 at 1440: text min 2.7, 23 named marks); known limit: the 200 % run scales rem/em text only, so px-sized labels, captions, code, tables and chapter navs are not exercised by it (record beside the Gate 1 results).
+Not enforced since the owner's "No restrictions for now until I say so" (2026-10-15, §4ac). On `main` at eb7fe95, after the pre-read audit: I 13,089 (−390), II 11,396 (39), III 15,577 (−865), IV 11,562 (−1,313), V 6,820 (−330).
+
+**Pass 30 tools** (built 2026-10-11; each reviewed by an independent agent and fixed): `tests/pass28/figs.mjs` (`--kind=figs|heroes|cover|icons|all`, widths 320 to 1440, `--motion` at 0/25/50/75 % of each cycle, `--fullscreen` at the fitted viewBox scale, contrast at 1440 from pixels: text 4.5, named marks 3 on the worse paint, icons 3, unrounded; helper `tests/pass30/contrast.mjs`; skips only from `docs/pass-30-exceptions.json`; a run that measures nothing exits 2), `tests/pass30/bare.mjs` (the svg alone, any selector, `--frames`, cover at its end state, collision-guarded output), `tests/pass28/clip.mjs` (adds 360, `--textsize=200` from 768 up, `--spacing` per WCAG F104, a `scroll` finding for any overflowing scroll container not listed in the exceptions, scroll-driven reveals cancelled so headings are measured, `--state=open` for closed details). For Gate 1 (done, §4ad): the first plain sweep's 250 scroll findings were fixed or listed (31 containers that scroll on purpose, `docs/pass-30-exceptions.json`, §5); every redrawn figure reached zero (Figs 14.3 and 14.6 since the pre-read audit). Known limit: the 200 % run scales rem/em text only (px-sized labels, captions, code, tables and chapter navs are not exercised).
 
 **Paragraph id form** (checked 2026-10-11 against `book.js` `/-p\d+$/`, `tests/pass25/lib.mjs` `PARA_RE`, `traces.mjs`, `ui.mjs`, `build-sections.js`, `build-glossary.js`): `<section id>-p<N>`. A new paragraph takes N = one more than the highest N the section has ever used (current ids, `ANCHOR_ALIASES` keys, git history), so it never reuses an id; ids then run out of numeric order in the page, which nothing relies on (the code reads DOM order). Never run `scripts/add-anchor-ids.js` for this: it fills gaps from 1 and would reuse merged-away ids.
 
@@ -33,7 +35,7 @@ The resume header for this repo. `BRIDGE.md` is the architect charter;
 
 ## WHERE WE ARE
 
-**READY.** Pass 19 — the book-wide closing sweep — completed 2026-08-09
+**READY at Pass 19 (2026-08-09); the current status is the header of this file.** Pass 19, the book-wide closing sweep, completed 2026-08-09
 (ledger `UNDER.md` §4s) and declared the book prose-ready for the owner's
 complete read. The language pass is complete across all five parts and
 independently verified in all five — Part II's audit (Pass-15 verification)
@@ -105,19 +107,16 @@ by `npm run check:dashes`), verified by Sonnet 5.5 (20 findings fixed, one
 old ARPANET fact corrected). Glossary 519 → 509 (eleven junk entries gone).
 The three laws are in `CLAUDE.md`.
 
-The book: five parts, 18 chapters plus the Bridge interlude, ~93k words,
-242 figures, glossary at **519** terms (the Diffie–Hellman duplicate row
-merged in Pass 19 — see §4s item 3). Five volume identities live; magic-link
-accounts and exact reading-position sync live; the §4g fact ledger survives
-in substance throughout.
+The book: five parts, 18 chapters plus the Bridge interlude, section prose 58,444 words (`node scripts/count-prose.mjs`, eb7fe95), 222 figures (18 kept original), glossary 484 entries (`public/glossary.json`). Five volume identities; accounts (password sign-in, email only to confirm and recover, passkeys off until the domain move) and exact reading-position sync; the §4g fact ledger survives in substance throughout.
 
 ## WHAT'S NEXT — the to-do list (in order)
 
-**For the Go-deeper (video) work, not Pass 29 (2026-10-12):** `tests/pass25` invariants fail 12 checks, all on Part I and all from Go deeper: the injected id `deeper-viewer-title` needs the `utc-` prefix, and the new tab stops (`button.deeper-note` on desktop, `button.deeper-pill` on phones) need adding to the tab-stop baseline (or the test told about them). Everything else passes.
+Go-deeper test failures fixed 2026-10-15 (06eab33): viewer id `utc-deeper-viewer-title`, note and pill known tab stops; invariants 812/0.
 
 1. **Marks sync on** once the owner approves `docs/pass-25-copy.md`: apply
-   its five replacements in `public/account.html`, set `MARKS_SYNC = "1"`,
-   push.
+   its five replacements in `public/account.html` (the first redrafted
+   2026-10-23 against the intro the pre-read audit rewrote), set
+   `MARKS_SYNC = "1"`, push.
 2. **Domain move** (~early November 2026, owner's timing): set
    `SITE_ORIGIN` (wrangler.toml), redirect old URLs with `#anchor` intact,
    hand signed-out readers' local place (and Pass 25 marks) across the
@@ -134,12 +133,14 @@ in substance throughout.
    tested, kept going by a loop (`docs/pass-28-brief.md`, incl. the owner's
    fig 1.2 note: the image explains itself, text goes into explainers).
 6. **The punch-list pass**, after Tiger's read: the read's findings, the
-   §4w arc dossier's seven ranked findings (Ch16 §03 scaffolding, the
-   locality thread, the coda instrument, the integer-overflow and De Morgan
-   promises, the Ch14 primer callback, the Ch17 §02 revisit gloss), fig
-   7.6's eval-loop line overhang (Pass 20), the open §4o register flags (two
-   Part II hero-lead overclaims) and §4s register flags, the default-blue
-   "Chapter 15" link in Part I's Spectre/Meltdown insight strip (§4y).
+   §4w arc dossier's seven ranked findings (Ch16 §03 scaffolding: store
+   buffers glossed since Pass 29, recheck the rest; the locality thread, the
+   coda instrument, the integer-overflow and De Morgan promises, the Ch14
+   primer callback, the Ch17 §02 revisit gloss), the open §4o and §4s
+   register flags, the default-blue "Chapter 16" link in Part I's
+   Spectre/Meltdown strip (ch1-cpu-p11; no `.insight-text a` rule, §4y), the
+   duplicate SVG title id `svgt-part2-1` (Ch4 hero and Fig 4.1), and the §6
+   backlog items the owner approves.
 
 **Model (owner ruling 2026-10-05, BRIDGE §5):** every pass runs on Opus 5.5;
 each is followed by an independent Sonnet 5.5 verification.
@@ -149,43 +150,40 @@ findings held, all fixed or recorded)  · Pass 23 book-arc read (§4w) · Pass 2
 icons (§4u) · Pass 22 tabs + touch tooltips (§4v) · Sonnet verification of
 21/22/24 with fixes · open-redirect fix · saved-title spacing fix · account
 bookmark in the bar (all 2026-10-05 → 10-09). Owner's two old accounts
-deleted at his request 2026-10-09 (backup in `~/under-the-code-backups/`);
-the live database is empty and ready for fresh sign-ups.
+deleted at his request 2026-10-09 (backup: Google Drive → My Drive → _inbox →
+mac → mac-cleanup-2026-10-15 → under-the-code-backups; the Mac copy went in
+the 2026-10-15 cleanup). Pass 29 reader check: owner gave go without marks,
+2026-10-11 (recall and precision tests not run).
 
 ## BLOCKED ON TIGER
 
 Owner decisions and actions live here and nowhere else. If it is not on
-this list, it is not blocking.
+this list, it is not blocking. Re-verified against `main` 2026-10-23
+(workflow `open-calls-verify`; answered, superseded and duplicate items
+removed, each removal checked by a Sonnet 5.5 skeptic).
 
-- **Pre-read audit owner calls (2026-10-17): `docs/audit/owner-calls.md`.** Each with what, options and a recommendation, chapter by chapter: kept-original figures that now disagree with corrected prose (BR.3, 10.11, 11.7, 12.9, 12.10, 13.10, Chapter 3's and Chapter 15's attack figures), owner text (ch18-intersect-p3, the closing note's fragments, Fig 18.6's caption), and the account page's legal wording.
-- **Pass 30 owner calls (11, 2026-10-15): `docs/pass-30-owner-calls.md`, each with a screenshot.** §A: five figures still failing Gate 2 after two repair rounds (BR.7 hexadecimal, 6.6 and 6.9 C++ notation, 10.3 TCP state names, 12.3 setTimeout and console.log) and three chapter heroes (Ch1 the dashed kernel link, Ch3 addresses and the stack-top register, Ch12 the braces); §C: Fig 14.3 and Fig 14.6 (Gate 1 findings believed false) and the cover (tinted cards, one-time entrance). Options: rule on each / let the next session apply every "recommended" option / accept all as they are. Recommended: the second (most are one label or one clause; two need a prose clause, BR.7 and 10.3).
-- **ch18-intersect-p3, owner text (Pass 29 Part V, 2026-10-15).** The passage carrying the four moves (resolve into layers, follow the math, locate the security boundary, name the historical decision) is the book's claim about itself, so it was left as written. Two blind-reader findings: "market microstructure" and "distributed-ledger" are never taught; the sentence ending "a computational one they are trying to solve without the vocabulary" is hard to parse. Options: "how a market matches buyers and sellers ... a shared-ledger system (a blockchain, say)" and "whether they can recognise that a problem in their own field is a computational one, even when nobody has given them the words for it" / leave. Recommended: the rewrites.
-- **Pass 29 Part I owner calls (more than the brief's 10 per part, so Pass 29 stopped after Part I).** Each, one line with question, options and recommended option: https://github.com/lawyki/under-the-code/blob/main/docs/pass-29-owner-calls.md (A: from the per-section method; B: verification findings left; C: kept-original figures). Options: rule on them / let the next session apply every "recommended" / keep the cap and leave them. Recommended: let the next session apply the recommended fixes for facts (section B) and decide the rest when you read.
-- **Fig BR.3, kept original, contradicts §4g (verification H).** Its rows "SYSCALL or int 0x80" and "32 · timer (LAPIC)" repeat two corrected errors beside the corrected prose. Options: redraw those rows / accept. Recommended: redraw. Link: docs/pass-29-owner-calls.md, section C.
-- **Pass 29 reader check (answered).** Read Chapter 1 §01 and Chapter 16 §03 at https://claude.ai/artifact/N35mfA7FsjTxboSLryWMxu as a newcomer would, and mark every place you had to stop and wonder (select the words, press Mark; a note is optional). Options: write go when you have marked / write go with no marks if nothing stopped you. Recommended: the first; the cold reader is compared against your marks before it touches Part I. Your answer: go. Owner gave go without marks, 2026-10-11; recall and precision tests not run.
-- **Permission rules (not blocking).** The owner's 2026-10-11 list of `permissions.allow` rules for `.claude/settings.local.json` (node, npm, npx, git, python3, curl, cp, mv, mkdir, touch, chmod, sort, awk, tee, `pkill -f serve.mjs`, lsof; Edit, Write, Read, WebSearch, WebFetch, Artifact, ArtifactData, ArtifactComments, Workflow, Agent, Skill, ToolSearch, Monitor, ScheduleWakeup) was not written: Claude Code's auto-mode safety check refuses an agent editing its own permissions. Options: add them yourself (or run `/permissions`) / leave as is. Recommended: leave as is while auto mode runs the work; add them if prompts start to stall it.
-- **Look at the figure pilot** (https://claude.ai/artifact/ADZTGFP5QqDEqq62E9Ebhn,
-  three figures redrawn, before/after and live). One question: is this the
-  direction for every figure? The work continues meanwhile; a change you ask
-  for is applied to every figure already done.
-- **Pass 28, Chapter 3's attack figures** (3.7 to 3.11): a redesign of 3.7 was
-  stopped by a safety filter. Redraw them conceptually (the defences, without
-  exploit mechanics) or keep the current ones?
-- **Read the book.** The punch list waits on the complete read. Read-along
-  notes: end of `UNDER.md` §4s.
-- **Create your new account** at /account ("New here? Create an account")
-  — the first real end-to-end email test of Pass 24. Report if the mail
-  doesn't arrive.
-- **Run the ten-minute screen-reader check** — `docs/pass-25-sr-trace.md`
-  (VoiceOver on Mac/iPhone; NVDA if you have Windows). Report what differs.
-- **Sign off the Pass 26 wording choices** (§4z "Owner sign-off list": the Zen
-  of Python's own punctuation, the shortened Berners-Lee pull-quote, the
-  epilogue ornament, quote attributions). Silence keeps them.
-- **Sign off the Pass 27 epilogue trims** (§4aa Part V, "For the owner's
-  sign-off": restatement cut from Ch18's math, trace, civilization, future,
-  intersect, reading and final paragraphs; the book's closing paragraph and
-  every changed claim were restored verbatim). Silence keeps them.
-- **Approve the Pass 25 privacy wording** — `docs/pass-25-copy.md` (five
-  short replacements on the account page). Until then marks stay on each
-  device.
-- **`.kilo/`** (another tool's folder, untracked in the repo): keep or delete.
+**Decide** (all on one page: https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15; "Take every recommendation still open" is one click)
+
+- **Pre-read audit owner calls (2026-10-17): `docs/audit/owner-calls.md`, 36 open, each with options and a recommendation.** Kept-original figures and captions that disagree with the corrected prose (Figs 3.7 to 3.11, BR.3, 10.10, 10.11, 11.7, 12.9, 12.10, 13.10, 15.2, 15.4, 15.6, 15.8, 15.9), owner text (the Aleph One pull-quote, ch18-intersect-p3 and the closing note, ch18-future-p3, the four moves listed twice, Fig 18.6's caption), two verdicts left to you (Chapter 4 Section 03, ch14-tls-pqc-p10), the privacy notice's EU wording. Nine have no recommendation (your text): the Ch3 and Ch10 kept captions, ch14-tls-pqc-p10 and the six Chapter 18 items.
+- **Pass 30 owner calls, seven open: `docs/pass-30-owner-calls.md`, each with a screenshot.** §A: Figs 6.6, 6.9 (C++ notation), 12.3 (setTimeout, console.log); heroes Ch1, Ch3, Ch12; §C: the cover.
+- **Fig BR.3, kept original, contradicts §4g (verification H):** the figure and its caption are two of the 36 (`docs/audit/owner-calls.md`, the Bridge).
+- **ch18-intersect-p3, owner text:** one of the 36 (`docs/audit/owner-calls.md`, Chapter 18), with the audit's five reader points; still as written.
+- **Approve the Pass 25 privacy wording**, `docs/pass-25-copy.md` (five short replacements on the account page, the first redrafted 2026-10-23 against the intro the pre-read audit rewrote). Approval turns marks sync on; until then marks stay on each device.
+- **Domain move**: your timing (WHAT'S NEXT item 2).
+
+**Do** (needs you, not a decision)
+
+- **Read the book**, starting at `docs/owner-read-map.md`. The punch list waits on the complete read. Older read-along notes: end of `UNDER.md` §4s.
+- **Create your new account** at /account ("New here? Create an account"): the first real end-to-end email test of Pass 24. Report if the mail doesn't arrive.
+- **Ten-minute screen-reader check**: `docs/pass-25-sr-trace.md` (VoiceOver on Mac/iPhone; NVDA if you have Windows). In the same sitting, on an iPhone: flick-scroll a part page hard and check the saved place does not jump (owed since Pass 25, §4y). Report what differs.
+
+**Silence keeps** (each stays as it is unless you object; one card on the decision page)
+
+- Pass 26 wording choices (§4z "Owner sign-off list": the Zen of Python's own punctuation, the shortened Berners-Lee pull-quote, the epilogue ornament, quote attributions, the Part V tagline order, the account notice and mails repunctuated).
+- Pass 27 epilogue trims (§4aa Part V, "For the owner's sign-off").
+- §4s read-along notes still open: the Amdahl pull-quote's silent capital, Chapter 15's title "Attack and Defence", the American "civilization".
+- The cover's "A unified theory" (§4g flag: you may prefer "A visual theory").
+- Found 2026-10-23, never listed before (`docs/audit/owner-calls.md`, "Found later"): Part II's closer as the audit changed it ("End of Part II", "The software layer is built."); the "3 nm" lines the audit corrected (your old ruling kept them); the account page wording the audit rewrote (you approved the earlier copy 2026-10-09); Figs 1.5 and 1.7's intended messages, revised with their fact fixes.
+- The 18 kept-original figures stay as drawn (`docs/pass-30-owner-calls.md` §B; the alternative is a typography-only pass).
+- `.kilo/agents/data.md`, `.claude/settings.json` and `shots4/`: tracked since your commit 7c2495b (a generic Kilo agent prompt and permission rules; no secrets).
+- Permission rules for `.claude/settings.local.json` (your 2026-10-11 list): not written, not blocking while auto mode runs the work.

@@ -44,7 +44,7 @@ The 114 owner-call items in `docs/pass-29-owner-calls.md` were checked against t
 - Fig BR.9 strip: "One level down" uses hypervisor and nested page tables, which Part I never teaches.
 - Fig 1.5 "3 nm": owner-ruled; open only if the owner re-rules.
 
-## Not Pass 29
+## Not Pass 29 (both done 2026-10-15)
 
-- Every other Part I figure still needs its Pass 30 check (only Fig 1.1 is done).
-- tests/pass25 invariants: 12 failures from the Go-deeper feature (see STATE.md).
+- Every Part I figure through Pass 30 (§4ad).
+- Go-deeper invariants fixed in 06eab33 (812/0).

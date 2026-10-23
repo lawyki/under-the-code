@@ -21,15 +21,15 @@ How to read `raw/book-audit-judged.json`: a list of `{chapter, judged: [{lens, i
 
 | Branch | Holds |
 |---|---|
-| `main` | The live site (Cloudflare Pages deploys every push to `main`). Since 2026-10-17 it carries the outside-the-chapters fixes and Chapter 1, deployed at the owner's word. Later chapters go live only when the owner says so. |
+| `main` | The site (Cloudflare Pages deploys every push to `main`). Outside fixes and Chapter 1 deployed 2026-10-17; the whole audit merged (fda8ce0) and deployed 2026-10-23 at the owner's word; the book is still being built. |
 | `pre-read-audit` | All finished audit work: outside-the-chapters fixes (6a5f607), Chapter 1 (dc2ebbd), this handoff. |
 | `pre-read-audit-ch2-wip` | Chapter 2 round-1 edits and `decisions/ch2.md`, unfinished: NOT retested, NOT gated, NOT checked. The run lost its connection during Chapter 2's retest. |
 
 **Update 2026-10-23:** this table is the 2026-10-17 snapshot. Chapter 2 was finished on `pre-read-audit` the same day (9ba87ec), the audit closed as 1.0-rc2 (92ed9f0, tag `v1.0-rc2`), and the owner said "full yes, deploy": `pre-read-audit` is merged into `main` (fda8ce0) and the whole book is deployed to the site; it is still being built. Every commit of `pre-read-audit-ch2-wip` is in `main`'s history; the branch is kept.
 
-Done: outside the chapters (all five parts, cover, account page, glossary, cross-references) and Chapter 1. Everything else is open.
+Done: all of it. Every chapter, the Bridge and outside the chapters, then the close (ledger `UNDER.md` §4ae, tag `v1.0-rc2`). The list below is the 2026-10-17 plan, kept as a record.
 
-## What is left, in order
+## What was left on 2026-10-17 (all done)
 
 1. **Chapter 2**: merge `pre-read-audit-ch2-wip` into your working branch (or cherry-pick its one commit), read `decisions/ch2.md`, check the edits against `round1/ch2.json` and part-1.json items 12, 13, 16, 17, 25, finish any undecided ones, then the blind retest, one revision, all checks, commit "Pre-read audit: Chapter 2".
 2. **Chapter 3** (`round1/ch3.json`, 69, plus part-1.json items 1, 5, 6, 19, 23, 24, 26; Figs 3.7 to 3.11 are kept originals: their findings are owner calls).
@@ -56,10 +56,10 @@ Done: outside the chapters (all five parts, cover, account page, glossary, cross
 - `UNDER.md` §4g is law: a corrected error must never come back. §5 lists known non-defects.
 - Never edit: the thesis set, the authorship line ("one person's study journal, built out with claude"), owner epigraphs and pull-quotes, the colophon, Ch18's closing note, Fig 18.6's caption, and the 18 kept-original figures (fig-3-7, 3-8, 3-9, 3-10, 3-11, fig-br-3, 10-10, 10-11, 11-7, 12-9, 12-10, 13-10, 15-2, 15-3, 15-4, 15-6, 15-8, 15-9). The §4w arc devices (the six-pattern unification, the four disciplines, the part micro-arcs, the "What you now understand" codas) stay whole: fix a false fact inside one minimally, never cut one. Findings that need any of these, and every "owner" verdict, go to `owner-calls.md`.
 - Never ask the owner what to do next; do the agreed next step.
-- Never commit `.claude/`, `.kilo/`, `shots4/` or `node_modules/`.
+- Never commit `node_modules/`, `.claude/worktrees/` or `.claude/settings.local.json`. `.claude/settings.json`, `.kilo/agents/data.md` and `shots4/` are tracked since the owner's commit 7c2495b: leave them to him.
 - Commit messages end with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 
 ## Pending notes
 
-- Duplicate SVG title ids: svgt-part1-30 (Ch3 hero and Fig 3.2), -39 and -40 (Figs 3.9 and 3.10, kept originals, against BR.1 and BR.2): fix with Ch3 and the Bridge (renaming an id inside a kept original is markup, not drawing).
-- Owner calls so far: `owner-calls.md` (the privacy notice's EU wording, plus Chapter 1's).
+- Duplicate SVG title ids in Part I: fixed with Ch3 (6e63b69) and the Bridge (2f771c5). Still duplicated: svgt-part2-1 (Ch4 hero, part-2.html:106, and Fig 4.1, :206), since at least v1.0-rc1.
+- Owner calls: `owner-calls.md`, 36 open (outside the chapters, Chapter 3, the Bridge, Chapters 4, 10 to 15 and 18), all on the decision page https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15.

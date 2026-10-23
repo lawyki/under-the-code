@@ -17,16 +17,21 @@ the wording now names every field the server stores once the flag is on.
 
 ## 1 · Intro paragraph (privacy notice, first paragraph)
 
-**Now:**
-> Reading progress for signed-out readers lives in your browser's localStorage
-> and never leaves your device. An account adds exactly one thing: the same
-> reading position, stored server-side so it can follow you between devices.
+Redrafted 2026-10-23: the pre-read audit's outside fixes (6a5f607) rewrote
+this paragraph, so the 2026-10-10 "Now" no longer matched the page.
+
+**Now** (public/account.html, on the site since 6a5f607):
+> Reading progress for signed-out readers lives in your browser's
+> localStorage and never leaves your device. An account adds a server-side
+> copy of the same reading position, so it can follow you between devices,
+> plus what is needed to sign you in.
 
 **Proposed** (the replacement text follows the dash law, `CLAUDE.md`):
 > Reading progress **and section marks** for signed-out readers live in your
-> browser's localStorage and never leave your device. An account adds **two
-> things: the same reading position, and any sections you mark**, stored
-> server-side so they can follow you between devices.
+> browser's localStorage and never leave your device. An account adds a
+> server-side copy of the same reading position **and of any sections you
+> mark**, so **they** can follow you between devices, plus what is needed to
+> sign you in.
 
 ## 2 · "What is stored" (the reading-position clause)
 
