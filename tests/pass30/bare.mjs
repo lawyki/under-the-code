@@ -4,11 +4,12 @@
 // plate painted behind it, so the describer sees what the reader sees and nothing that explains it.
 const USAGE = `node tests/pass30/bare.mjs --page=part-1 (--id=fig-1-2[,fig-1-3] | --selector='.chapter-hero-visual svg' [--index=N | --all])
     --out=<dir> [--width=375[,1440]] [--times=0,4,8 | --frames=3] [--browser=chromium|webkit] [--dsf=2]
-    [--height=1000] [--click=<selector>[,<selector>]] [--json=<manifest.json>]
+    [--height=1000] [--click=<selector>[,<selector>]] [--json=<manifest.json>] [--no-text]
   --times   absolute SMIL seconds. --frames=N: N frames at k/N of the cycle (largest begin + dur).
             Default: static 1 frame at t=0; animated --frames=3; plays once (the cover) its end state.
   --dsf     deviceScaleFactor, default 2. Icons are 22 CSS px: use --dsf=6.
   --click   click these first (opens UI that holds an icon, e.g. --click=.place-btn for .pb-close svg).
+  --no-text remove every <text> in the svg before capture (Pass 31 text-stripped test); files end -notext.
   Heroes render above 768 px and the cover from 880 px: capture them at --width=1440.
   Files: <out>/<id | kind-index[-controlClass][-ancestorId]>-<width>-t<time>.png. --json merges into an existing manifest.
   A file another page, target or engine already wrote in <out> (owners in <out>/.bare-owners.json) is not
@@ -26,6 +27,7 @@ const WIDTHS = [...new Set(String(ARGS.width || '375').split(',').map(num))];
 const ENG = ARGS.browser || 'chromium', DSF = num(ARGS.dsf || 2), H = num(ARGS.height || 1000);
 const TIMES = ARGS.times !== undefined ? String(ARGS.times).split(',').map(num) : null;
 const FRAMES = ARGS.frames ? Math.max(1, parseInt(ARGS.frames, 10)) : null;
+const NOTEXT = !!ARGS['no-text'];
 const PICK = { ids: ARGS.id ? [...new Set(String(ARGS.id).split(','))] : null, selector: ARGS.selector || null, index: num(ARGS.index || 0), all: !!ARGS.all };
 // a bad number would otherwise surface as a stack trace from setCurrentTime or Playwright
 if (![...WIDTHS, DSF, H, PICK.index, ...(TIMES || []), ...(FRAMES === null ? [] : [FRAMES])].every(Number.isFinite) || ![...WIDTHS, DSF, H].every(x => x > 0)) { console.log(USAGE); process.exit(2); }
@@ -62,7 +64,7 @@ function resolve({ ids, selector, index, all }) {
 }
 
 // in the page: hide what could explain or cover the target; read its animation clock
-function prepare([k, chrome, fignum]) {
+function prepare([k, chrome, fignum, notext]) {
   const svg = document.querySelector(`[data-bare="${k}"]`); let root = svg; while (root.ownerSVGElement) root = root.ownerSVGElement;
   const hide = el => el.setAttribute('data-bare-hide', '');
   document.querySelectorAll('[data-bare-hide]').forEach(e => e.removeAttribute('data-bare-hide'));   // the previous target's set
@@ -70,6 +72,9 @@ function prepare([k, chrome, fignum]) {
   const card = svg.closest('.diagram-card, .light-diagram');
   if (card) card.querySelectorAll('.diagram-label, .diagram-caption, details.fig-how').forEach(hide);
   const rx = new RegExp(fignum, 'i'), figNum = [...svg.querySelectorAll('text')].filter(t => rx.test(t.textContent)).map(t => (hide(t), t.textContent.trim()));
+  // --no-text: every <text> in the figure goes (its tspans and textPaths with it); <title>/<desc> are never painted
+  let removedText = 0;
+  if (notext) for (const t of [...root.querySelectorAll('text')]) { t.remove(); removedText++; }
   svg.scrollIntoView({ block: 'center' });
   // clock values: 8s, 500ms, 1.5min, 0:08, bare seconds; events, syncbases, 'indefinite' are not clocks
   const clock = v => { let m; v = v.trim();
@@ -86,7 +91,7 @@ function prepare([k, chrome, fignum]) {
   let cssEnd = 0, cssLoop = 0; const css = document.getAnimations().filter(a => a.effect && a.effect.target && svg.contains(a.effect.target));
   for (const a of css) { const t = a.effect.getComputedTiming();
     if (t.endTime === Infinity) { forever = true; cssLoop = Math.max(cssLoop, (t.delay + t.duration) / 1000); } else cssEnd = Math.max(cssEnd, t.endTime / 1000); }
-  return { animated: smil.length + css.length > 0, forever, cycle: cycle || cssLoop, end: Math.max(cycle, cssEnd), figNum };
+  return { animated: smil.length + css.length > 0, forever, cycle: cycle || cssLoop, end: Math.max(cycle, cssEnd), figNum, removedText };
 }
 
 // in the page: freeze SMIL (on the outermost svg, the time container) and the svg's CSS animations at t
@@ -133,7 +138,7 @@ for (const w of WIDTHS) {
   for (const tg of await page.evaluate(resolve, PICK)) {
     if (tg.missing) { console.log(`MISS ${ARGS.page} ${tg.target}: no element or no <svg> in it`); bad++; continue; }
     if (!tg.rendered) { console.log(`MISS ${ARGS.page} ${tg.target}: not rendered at ${w} px (${tg.size}). Heroes render above 768 px, the cover from 880 px: try --width=1440`); bad++; continue; }
-    const info = await page.evaluate(prepare, [tg.k, CHROME, FIGNUM]);
+    const info = await page.evaluate(prepare, [tg.k, CHROME, FIGNUM, NOTEXT]);
     await page.waitForTimeout(350);   // let the scroll's intersection callbacks (pauser, reading place) settle before the clock stops
     // a loop is sampled over its cycle; a play-once svg (the cover) over its real end, SMIL and CSS together
     const span = info.forever ? info.cycle : info.end;
@@ -143,7 +148,7 @@ for (const w of WIDTHS) {
       : Array.from({ length: FRAMES || 3 }, (_, i) => round(i / (FRAMES || 3) * span));
     let hiddenOverlap = null;
     for (const [i, t] of times.entries()) {
-      const base = `${tg.name.replace(/[^\w.-]+/g, '_')}-${w}-t${t}.png`, file = path.join(ARGS.out, base), loc = page.locator(`[data-bare="${tg.k}"]`);
+      const base = `${tg.name.replace(/[^\w.-]+/g, '_')}-${w}-t${t}${NOTEXT ? '-notext' : ''}.png`, file = path.join(ARGS.out, base), loc = page.locator(`[data-bare="${tg.k}"]`);
       const was = owner.get(base);
       if (was && (was.page !== ARGS.page || was.target !== tg.target || was.browser !== ENG)) {
         console.log(`COLLIDE ${file} (was ${was.page} ${was.target} ${was.browser}; now ${ARGS.page} ${tg.target} ${ENG}): not overwritten, use another --out`); bad++; continue; }
@@ -153,9 +158,9 @@ for (const w of WIDTHS) {
       own({ file: base, page: ARGS.page, target: tg.target, browser: ENG }); fs.writeFileSync(REG, JSON.stringify([...owner.values()], null, 1));   // per shot: a crash mid-run still leaves the owners
       let ok = await page.evaluate(held, [tg.k, t]);
       if (!ok) { await page.evaluate(freeze, [tg.k, t]); await loc.screenshot({ path: file }); ok = await page.evaluate(held, [tg.k, t]); }
-      console.log(`${ok ? 'shot' : 'DRIFT'} ${ENG} ${ARGS.page} ${tg.target} ${w} t${t} (${i + 1}/${times.length}${!info.animated ? ', static' : info.forever ? ', cycle ' + round(info.cycle) + 's' : ', plays once, ends ' + round(info.end) + 's'})${info.figNum.length ? ' hid fig number [' + info.figNum.join('; ') + ']' : ''}${hiddenOverlap.length ? ' hid overlapping text [' + hiddenOverlap.slice(0, 3).join('; ') + ']' : ''} -> ${file}`);
+      console.log(`${ok ? 'shot' : 'DRIFT'} ${ENG} ${ARGS.page} ${tg.target} ${w} t${t} (${i + 1}/${times.length}${!info.animated ? ', static' : info.forever ? ', cycle ' + round(info.cycle) + 's' : ', plays once, ends ' + round(info.end) + 's'})${info.figNum.length ? ' hid fig number [' + info.figNum.join('; ') + ']' : ''}${NOTEXT ? ' removed ' + info.removedText + ' text' : ''}${hiddenOverlap.length ? ' hid overlapping text [' + hiddenOverlap.slice(0, 3).join('; ') + ']' : ''} -> ${file}`);
       if (!ok) bad++;
-      manifest.push({ page: ARGS.page, target: tg.target, kind: tg.kind, browser: ENG, width: w, dsf: DSF, time: t, frame: i + 1, of: times.length, file, hiddenFigNumber: info.figNum.length ? info.figNum : false, hiddenOverlap, held: ok });
+      manifest.push({ page: ARGS.page, target: tg.target, kind: tg.kind, browser: ENG, width: w, dsf: DSF, time: t, frame: i + 1, of: times.length, file, hiddenFigNumber: info.figNum.length ? info.figNum : false, hiddenOverlap, held: ok, ...(NOTEXT ? { noText: true, removedText: info.removedText } : {}) });
     }
   }
   await ctx.close();
