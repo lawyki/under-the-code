@@ -72,7 +72,7 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge): 47 rows, 3 merge candidates, 2 cut candidates, 8 held
 - [x] Prose subtraction, Part II (Ch4 to Ch7): 51 rows, 4 merge pairs, 2 cut candidates, 3 held
 - [x] Prose subtraction, Part III (Ch8 to Ch12): 61 rows, 2 merge pairs, 2 cut candidates, 10 held
-- [ ] Prose subtraction, Part IV (Ch13 to Ch15)
+- [x] Prose subtraction, Part IV (Ch13 to Ch15): 34 rows, 1 merge pair (13.5+13.6), 0 cut candidates, 15 held (Ch15 whole, Ch13's query-safety section, Figs 14.3, 14.4, 14.6)
 - [ ] Prose subtraction, Part V (Ch16 to Ch18)
 - [ ] Intent sentence per remaining figure (job tagged), raised where the blind prose reader asks for more
 - [ ] Kept-originals table (18 rows, errors and one action each)
