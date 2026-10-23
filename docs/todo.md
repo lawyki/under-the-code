@@ -69,7 +69,7 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Branch `figures-final` (from `owner-calls`), `docs/pass-31-sealed/` gitignored, ledger §4ag and STATE "Pass 31 at:" opened
 - [x] Contact sheets per chapter at 375 px, v4 and Enigma pinned (19 sheets, `npm run fig:sheet`; output gitignored)
 - [x] Why Enigma is good, in one sentence (§4ag)
-- [ ] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge)
+- [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge): 47 rows, 3 merge candidates, 2 cut candidates, 8 held
 - [ ] Prose subtraction, Part II (Ch4 to Ch7)
 - [ ] Prose subtraction, Part III (Ch8 to Ch12)
 - [ ] Prose subtraction, Part IV (Ch13 to Ch15)
