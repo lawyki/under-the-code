@@ -17,7 +17,7 @@
 //            every missing id aliased in ANCHOR_ALIASES; an added id is a finding too
 //   npm run fig:check -- <part-1|1> [--fig=fig-1-1,fig-1-2] [--tree=<public dir>] [--base=main] [--gate1=full|quick|off]
 //                        [--json=<file>] [--browser=chromium|webkit]
-// Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>.json.
+// Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json.
 import fs from 'node:fs'; import path from 'node:path';
 import { args, tree, readPart, figures, plain, packet, capCount, sentences, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
 
