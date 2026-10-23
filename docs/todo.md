@@ -53,8 +53,11 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [x] Re-verify every open owner call and STATE item against `main` (workflow `open-calls-verify`, Sonnet 5.5 skeptic on every closure): 43 open, not 49
 - [x] STATE, owner calls, read map, RESUME, HANDOFF brought up to date (b2a0f1a)
 - [x] Decision page rebuilt: 45 cards (36 audit, 7 Pass 30, marks wording, one "stays unless you object")
-- [ ] Owner decides: the 45 cards (36 have a recommendation; one click takes them all)
-- [ ] Apply the decisions, one chapter per commit, blind retest, Gate 1, tests, deploy on the owner's word (Fig 3.10: Claude's safety filter blocks the redraw)
+- [x] Owner delegated the calls (2026-10-23): 36 of 45 decided by the laws and the book's goal (`docs/audit/decisions/owner-calls.md`)
+- [x] Applied on branch `owner-calls`, one chapter per commit; blind retest and one revision; Gate 1 identical to `main`; clip 0; pass25 all pass (§4af)
+- [x] Privacy notice reworded for honesty, checked claim by claim against the code
+- [ ] Deploy `owner-calls` (merge into `main`, push) on the owner's word
+- [ ] Owner: Chapter 3's eight calls (Claude's safety filter blocks them), the marks-sync wording (redraft first), the notice's legal facts (Business ID, address, legal bases)
 - [ ] Owner does: create an account (first real mail test); VoiceOver check plus iPhone flick-scroll check (`docs/pass-25-sr-trace.md`)
 - [ ] Owner reads the book, from `docs/owner-read-map.md`
 - [ ] Punch-list pass after the read (STATE.md, WHAT'S NEXT item 6)

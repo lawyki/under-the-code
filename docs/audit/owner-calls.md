@@ -1,5 +1,7 @@
 # Pre-read audit · owner calls
 
+**Decided 2026-10-23 under the owner's delegation** ("take the best option ... knowing the book's goal"): every entry below except Chapter 3's, on branch `owner-calls`; choices and reasons in `docs/audit/decisions/owner-calls.md`, ledger `UNDER.md` §4af. Still open: Chapter 3 (Claude's safety filter stops work on those figures; the recommended text below is ready for the owner to apply or decline).
+
 Findings the author may not settle alone: owner text (epigraphs, pull-quotes, the thesis set, the colophon, Ch18's closing note, Fig 18.6's caption), the 18 kept-original figures, verdicts the judge marked "owner", and the account page's legal wording. One entry each: what, options, recommendation. Nothing here was changed in the text. To decide them in one place: the private decision page https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15 (with the seven Pass 30 calls still open). Re-verified against `main` 2026-10-23: 36 still open; the Fig 12.9 "output encoding" entry is closed (below); four more found that no list carried ("Found later", at the end).
 
 ## Outside the chapters

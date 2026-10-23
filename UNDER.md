@@ -3879,6 +3879,22 @@ No anchor id removed. New paragraphs took the next unused number: `ch6-classes-p
 ### Open
 The owner calls in `docs/audit/owner-calls.md`, chapter by chapter, plus those already open from Passes 29 and 30.
 
+## 4af. Owner calls decided under the owner's delegation (2026-10-23)
+
+Owner, 2026-10-23: "you just take the best option / pedagogic etc. knowing the book's goal" and "reword for honesty on the legal / privacy". Every open call was first re-verified against `main` (43 open, not the 49 counted; workflow `open-calls-verify`), then decided by the four laws, §4g and the §4w arc devices, with the lightest change that does the job. Decisions, reasons and the retest: `docs/audit/decisions/owner-calls.md`. Branch `owner-calls`, one commit per chapter (Ch1 hero 5ff9df2, Ch3 hero 241b08a, the Bridge f0b96a2, Ch4 hero id 263b6b5, Ch10 8a49931, Ch11 2903d26, Ch12 201eeb2, Ch13 1fd58c9, Ch15 0a8b7a4, Ch18 2b126bb, privacy notice c9d8f2f); deployed only on the owner's word.
+
+### Facts corrected (§4g)
+Fig BR.3 no longer draws SYSCALL as an IDT source; Fig 15.2 draws ASLR (2001) before DEP (2003) and dates PAC 2018 and CET 2020; Fig 15.4's caption says ARP poisoning wins by persistence, not speed; Fig 15.6 calls IMDSv2 AWS's default, not a mandate; Fig 15.8 gives the sourced Natanz estimate (~1,000 centrifuges); Fig 13.10 names the 2011 Sony Pictures breach (confirmed SQL injection; LulzSec's "a million accounts" was a claim) instead of PSN; Fig 11.7's caption drops "minutes to years"; Fig 12.9 and 12.10's captions: OWASP editions, SameSite=Lax on top-level GETs only; Fig 10.10's caption: SYN cookies ship in Linux and FreeBSD, not every OS.
+
+### Checks
+Blind retest (Sonnet 5.5): heroes Ch1 and Ch3 passed Gate 2 with both fresh readers; a newcomer and an expert per changed chapter, one revision. Gate 1 on every changed figure and hero, still and motion, with fullscreen, both engines: findings identical to `main`'s, row by row (the kept originals' old small-label and spill findings; none new). clip 0 in 108 runs (account page included); pass25 invariants 812/0, traces 229/0, parity 40/0, marks 106/0, ui 120/0 (on the Mac). check:dashes clean; glossary 484, unchanged but for "cookie" now kept by name; no duplicate id in any part.
+
+### Privacy notice
+Rewritten so every sentence is true of the code (two independent claim-by-claim checks, the load-bearing claims re-read by hand): cookies and IP-keyed counters named, Cloudflare's role and the database's real placement stated, retention and deletion as they really happen, rights added. Left to the owner: the controller's Business ID and address, legal bases, the transfer basis for Cloudflare, the colophon's © holder against LICENSE, and an on-page licence line.
+
+### Open
+Chapter 3's eight calls (Claude's safety filter stops work on those figures), the marks-sync wording (to be redrafted against the new notice), and the read.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em

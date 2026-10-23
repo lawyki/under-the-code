@@ -1,6 +1,6 @@
 # under-the-code — STATE
 
-**PROSE AND FIGURES FROZEN 1.0-rc2 (2026-10-17, after the pre-read audit). Deployed to the site 2026-10-23 (owner: "full yes, deploy"; merge fda8ce0); the book is still being built. Open: 43 owner calls on the book, all on the decision page https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15 (none decided as of 2026-10-23), plus the items in BLOCKED ON TIGER. Next: the owner's decisions and his read, from `docs/owner-read-map.md`.** Re-verified against `main` on 2026-10-23 (workflow `open-calls-verify`: one reader per source, a Sonnet 5.5 skeptic on every item marked closed): 36 pre-read audit calls (`docs/audit/owner-calls.md`; its Fig 12.9 "output encoding" entry closed itself, since ch12-security-p4 now explains the term before the figure) and seven Pass 30 calls (`docs/pass-30-owner-calls.md`: Figs 6.6, 6.9, 12.3; heroes Ch1, Ch3, Ch12; the cover). The old "12 from before" overcounted: Figs BR.7 and 10.3 are answered by the prose (hex taught in ch1-cpu-p2, TCP's close states in ch10-handshake-p3), Figs 14.3 and 14.6 were redrawn in the audit (Gate 1 at zero), and ch18-intersect-p3 is one of the 36. Tagged `v1.0-rc2` at 92ed9f0 (on GitHub since 2026-10-23; in `main` since fda8ce0). `v1.0-rc1` was 2026-10-15.
+**OWNER CALLS DECIDED 2026-10-23 under the owner's delegation ("take the best option ... knowing the book's goal"; "reword for honesty on the legal / privacy"): 36 of 45 applied or kept on branch `owner-calls`, verified (blind retest, Gate 1 identical to `main`, clip 0, pass25 all pass), ledger `UNDER.md` §4af, decisions `docs/audit/decisions/owner-calls.md`. Not deployed: merging `owner-calls` into `main` and pushing waits for the owner's word (it also carries 3fd4774, the Go-deeper video guide). Still the owner's: Chapter 3's eight calls (Claude's safety filter stops work on those figures), the marks-sync wording, the privacy notice's legal facts, and the read.** Before that: prose and figures frozen 1.0-rc2 (2026-10-17), deployed 2026-10-23 (merge fda8ce0); the book is still being built. Tagged `v1.0-rc2` at 92ed9f0; `v1.0-rc1` was 2026-10-15.
 
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
@@ -162,13 +162,15 @@ this list, it is not blocking. Re-verified against `main` 2026-10-23
 (workflow `open-calls-verify`; answered, superseded and duplicate items
 removed, each removal checked by a Sonnet 5.5 skeptic).
 
-**Decide** (all on one page: https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15; "Take every recommendation still open" is one click)
+**Deploy** (one word)
 
-- **Pre-read audit owner calls (2026-10-17): `docs/audit/owner-calls.md`, 36 open, each with options and a recommendation.** Kept-original figures and captions that disagree with the corrected prose (Figs 3.7 to 3.11, BR.3, 10.10, 10.11, 11.7, 12.9, 12.10, 13.10, 15.2, 15.4, 15.6, 15.8, 15.9), owner text (the Aleph One pull-quote, ch18-intersect-p3 and the closing note, ch18-future-p3, the four moves listed twice, Fig 18.6's caption), two verdicts left to you (Chapter 4 Section 03, ch14-tls-pqc-p10), the privacy notice's EU wording. Nine have no recommendation (your text): the Ch3 and Ch10 kept captions, ch14-tls-pqc-p10 and the six Chapter 18 items.
-- **Pass 30 owner calls, seven open: `docs/pass-30-owner-calls.md`, each with a screenshot.** §A: Figs 6.6, 6.9 (C++ notation), 12.3 (setTimeout, console.log); heroes Ch1, Ch3, Ch12; §C: the cover.
-- **Fig BR.3, kept original, contradicts §4g (verification H):** the figure and its caption are two of the 36 (`docs/audit/owner-calls.md`, the Bridge).
-- **ch18-intersect-p3, owner text:** one of the 36 (`docs/audit/owner-calls.md`, Chapter 18), with the audit's five reader points; still as written.
-- **Approve the Pass 25 privacy wording**, `docs/pass-25-copy.md` (five short replacements on the account page, the first redrafted 2026-10-23 against the intro the pre-read audit rewrote). Approval turns marks sync on; until then marks stay on each device.
+- **`owner-calls` → `main`**: the 36 decided calls, the honest privacy notice and the Go-deeper video guide (3fd4774). Say "deploy" and it is merged and pushed.
+
+**Decide**
+
+- **Chapter 3's eight calls** (`docs/audit/owner-calls.md`, Chapter 3; also on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15): Claude's safety filter stops work on those figures, so apply the recommended text yourself or keep them as they are.
+- **Marks sync**: `docs/pass-25-copy.md` must first be redrafted against the new privacy notice; approval turns marks sync on.
+- **The privacy notice's legal facts** only you have: YDT Holdings Oy's Business ID and address, the legal bases (account: contract; abuse limits and notices: legitimate interest?), the transfer basis for Cloudflare (a US company), whether hello@atheric.eu is read; and the colophon's © holder against LICENSE's, plus a CC BY-NC 4.0 line on the site (the colophon is your text).
 - **Domain move**: your timing (WHAT'S NEXT item 2).
 
 **Do** (needs you, not a decision)
@@ -177,7 +179,7 @@ removed, each removal checked by a Sonnet 5.5 skeptic).
 - **Create your new account** at /account ("New here? Create an account"): the first real end-to-end email test of Pass 24. Report if the mail doesn't arrive.
 - **Ten-minute screen-reader check**: `docs/pass-25-sr-trace.md` (VoiceOver on Mac/iPhone; NVDA if you have Windows). In the same sitting, on an iPhone: flick-scroll a part page hard and check the saved place does not jump (owed since Pass 25, §4y). Report what differs.
 
-**Silence keeps** (each stays as it is unless you object; one card on the decision page)
+**Kept** (decided 2026-10-23 under your delegation: each stays as it is; say so if you want one changed)
 
 - Pass 26 wording choices (§4z "Owner sign-off list": the Zen of Python's own punctuation, the shortened Berners-Lee pull-quote, the epilogue ornament, quote attributions, the Part V tagline order, the account notice and mails repunctuated).
 - Pass 27 epilogue trims (§4aa Part V, "For the owner's sign-off").
