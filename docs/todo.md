@@ -45,3 +45,17 @@ Order follows `docs/pass-29-30-brief.md`. Ticked when committed and deployed to 
 - [x] Retest the fixes blind; Gate 1 on any changed figure; tests/pass25, check:dashes, clip
 - [x] Ledger, owner calls, commit per chapter, push, tag
 
+
+## After 1.0-rc2 (re-verified against `main` 2026-10-23)
+
+Decision page for everything below marked "decide": https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15
+
+- [x] Re-verify every open owner call and STATE item against `main` (workflow `open-calls-verify`, Sonnet 5.5 skeptic on every closure): 43 open, not 49
+- [x] STATE, owner calls, read map, RESUME, HANDOFF brought up to date (b2a0f1a)
+- [x] Decision page rebuilt: 45 cards (36 audit, 7 Pass 30, marks wording, one "stays unless you object")
+- [ ] Owner decides: the 45 cards (36 have a recommendation; one click takes them all)
+- [ ] Apply the decisions, one chapter per commit, blind retest, Gate 1, tests, deploy on the owner's word (Fig 3.10: Claude's safety filter blocks the redraw)
+- [ ] Owner does: create an account (first real mail test); VoiceOver check plus iPhone flick-scroll check (`docs/pass-25-sr-trace.md`)
+- [ ] Owner reads the book, from `docs/owner-read-map.md`
+- [ ] Punch-list pass after the read (STATE.md, WHAT'S NEXT item 6)
+- [ ] Domain move and passkeys (owner's timing, ~early November); retire `/api/auth/request` after 2026-11-15
