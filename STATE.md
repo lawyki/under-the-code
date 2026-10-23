@@ -170,6 +170,7 @@ removed, each removal checked by a Sonnet 5.5 skeptic).
 
 **Decide**
 
+- **Pass 31 and the security figures**: Claude's safety filter stopped work on the book's attack and security figures three times on 2026-10-23, so Pass 31 leaves them as they are (Chapter 3's overflow and defence figures, Fig 1.12, Fig 2.9, the kept originals in Chapters 10 to 13, Chapter 15, the Spectre figures in Chapter 16). Edit them yourself, use another route, or keep them; every other figure goes through the pass.
 - **Chapter 3's seven remaining calls** (`docs/audit/owner-calls.md`, Chapter 3; also on https://claude.ai/artifact/NAF7n8U6uuQ3kwdb8gwA15): Claude's safety filter stops work on those figures, so apply the recommended text yourself or keep them as they are.
 - **Marks sync**: `docs/pass-25-copy.md` must first be redrafted against the new privacy notice; approval turns marks sync on.
 - **The privacy notice's legal facts** only you have: YDT Holdings Oy's Business ID and address, the legal bases (account: contract; abuse limits and notices: legitimate interest?), the transfer basis for Cloudflare (a US company), whether hello@atheric.eu is read; and the colophon's © holder against LICENSE's, plus a CC BY-NC 4.0 line on the site (the colophon is your text).

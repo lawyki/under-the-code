@@ -3900,7 +3900,7 @@ Chapter 3's seven figure and caption calls (Claude's safety filter stops work on
 Owner, 2026-10-23: "each needs to be self-explanatory, easy to ... read and understand, good quality and follow the style of the PART, and the book. Subtly animated ... It can take as many token / time it needs, literally." Brief: `docs/pass-31-brief.md` (built from the first council's full record, re-read by a third round). Started by the owner's figure-finalization heartbeat. Branch `figures-final` from `owner-calls` (§4af). Per-figure ledger: `docs/pass-31-ledger.tsv`; gate calibration: `docs/pass-31-calibration.md`; sealed material in `docs/pass-31-sealed/` (gitignored, never pushed; every read logged here).
 
 ### Phase 0
-Opened 2026-10-23.
+Opened 2026-10-23. Held from the pass: the attack and security figures, after the safety filter stopped work on them three times that day (STATE.md, BLOCKED ON TIGER). Why Enigma is good: it draws the real machine's own parts in the order the current flows (key, three rotors, reflector, lamp) and lets one key press trace a visible path out and back, so seeing the same key light F, then E, then C proves the rotors step without a word of explanation.
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 

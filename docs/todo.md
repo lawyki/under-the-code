@@ -65,10 +65,10 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 
 ## Figure finalization (Pass 31, `docs/pass-31-brief.md`; ticked when committed and verified)
 
-Phase 0, author track
+Phase 0, author track (the security figures are held: Claude's safety filter, STATE.md BLOCKED ON TIGER)
 - [x] Branch `figures-final` (from `owner-calls`), `docs/pass-31-sealed/` gitignored, ledger §4ag and STATE "Pass 31 at:" opened
 - [ ] Contact sheets per chapter at 375 px, v4 and Enigma pinned
-- [ ] Why Enigma is good, in one sentence
+- [x] Why Enigma is good, in one sentence (§4ag)
 - [ ] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge)
 - [ ] Prose subtraction, Part II (Ch4 to Ch7)
 - [ ] Prose subtraction, Part III (Ch8 to Ch12)
