@@ -7,7 +7,7 @@ figlib.FONT = SPACE
 
 NODES = ['laptop', 'router', 'provider', 'data centre']
 HOPS = [('radio', 'Wi-Fi, through shared air', '#c8a6ff'),
-        ('copper', 'Ethernet 100 m, DSL km', ROUTE),
+        ('copper', 'phone line, a few km', ROUTE),
         ('glass', 'loses about 0.2 dB per km', CYAN)]
 W, H = 400, 330
 NX, NW, NH = 20, 112, 34
@@ -19,7 +19,7 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-3 svgd-part3-3">')
 a('<title id="svgt-part3-3">Fig 8.2 · Three substrates, one job</title>')
 a('<desc id="svgd-part3-3">One request\'s path from a laptop to a data centre across the ocean. From laptop to router it travels as radio, Wi-Fi at 2.4, 5 or 6 GHz through shared air. '
-  'From router to internet provider it travels on copper (twisted pair: Ethernet to 100 m, DSL for a few kilometres) or on fibre. From provider to data centre it travels as light in glass fibre, losing about 0.2 dB per km. Each hop encodes the bits its own way.</desc>')
+  'From router to internet provider it travels on copper (a telephone or cable-TV line, a few kilometres) or on fibre. From provider to data centre it travels as light in glass fibre, losing about 0.2 dB per km. Each hop encodes the bits its own way.</desc>')
 for i, nm in enumerate(NODES):
     a(f'<rect x="{NX}" y="{Y(i)}" width="{NW}" height="{NH}" rx="3" fill="{CDEEP}" stroke="{CSOFT}" stroke-opacity="0.5"/>')
     a(text(NX + NW / 2, Y(i) + 22, nm, anchor='middle', size=13, fill='#fff', ls='0'))
@@ -47,8 +47,7 @@ a(f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (0.29, 0.0), (0.3, 1.0), (D -
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A request from a laptop to a distant server crosses all three substrates: radio to the router, copper or fibre to the internet provider, and glass across the ocean. '
-           'Each hop encodes the bits its own way, and the layers above see none of it.')
+caption = ('A request from a laptop to a distant server crosses all three substrates: radio to the router, copper or fibre to the internet provider, and glass across the ocean. Each hop encodes the bits its own way, and the programs above see none of it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -68,7 +68,7 @@ how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Self-configuring.</b> Nobody fills the table in: it builds itself from traffic, and entries expire when a device stops talking.</li>
-          <li><b>No more collisions.</b> With one device per switch port and both directions on separate wire pairs (full duplex), collision detection never fires.</li>
+          <li><b>No more collisions.</b> With one device per switch port and both ends able to send at the same time (full duplex), collision detection never fires.</li>
           <li><b>Broadcasts.</b> Frames addressed to everyone, such as ARP requests, still go out of every port.</li>
         </ol>
       </details>'''

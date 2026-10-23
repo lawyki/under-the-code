@@ -61,8 +61,7 @@ o.insert(2, '<desc id="svgd-part4-2">Codd\'s 1970 paper on the relational model,
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Codd\'s 1970 paper inspired two prototypes, System R at IBM and Ingres at Berkeley, and the major relational databases still running descend from one or the other: '
-           'DB2 and, through IBM\'s published SQL, Oracle; PostgreSQL and, through Ingres\'s people, Sybase and SQL Server.')
+caption = ("Codd's 1970 paper inspired two prototypes, System R at IBM and Ingres at Berkeley, and the major relational databases still running descend from one or the other: DB2 and, through IBM's published SQL, Oracle; PostgreSQL and, through Ingres's people, Sybase and SQL Server.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

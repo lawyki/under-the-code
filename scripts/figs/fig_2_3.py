@@ -22,7 +22,7 @@ a('<desc id="svgd-part1-19">AND outputs 1 only when both inputs are 1. OR output
   'Each gate is drawn with its standard symbol and its truth table; the inputs step through every case.</desc>')
 
 def wire(d, vals):
-    a(f'<path d="{d}" fill="none" stroke="{OFF}" stroke-width="2"/>')
+    a(f'<path d="{d}" fill="none" stroke="{OFF}" stroke-width="2">{when([not v for v in vals])}</path>')  # hidden while lit
     a(f'<path d="{d}" fill="none" stroke="{GOLD}" stroke-width="2.6" opacity="0">{when(vals)}</path>')
 def value(cx, cy, vals, r=14):
     a(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#141414" stroke="{OFF}" stroke-width="1.5"/>')

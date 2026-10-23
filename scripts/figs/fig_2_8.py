@@ -70,7 +70,7 @@ for i, v in enumerate(STEPS):
     op = T.anim('opacity', [(0.0, 0.0), (t0 - 0.001, 0.0), (t0, 1.0), (t1 - 0.002, 1.0), (t1 - 0.001, 0.0), (D - 0.0005, 0.0)]) if i else \
          T.anim('opacity', [(0.0, 1.0), (t1 - 0.002, 1.0), (t1 - 0.001, 0.0), (D - 0.0005, 0.0)])
     col = GOLD if v >= 0 else RED
-    a(f'<g opacity="0">{op}<text x="{C[0]}" y="{C[1] + 6}" text-anchor="middle" {MONO} font-size="26" fill="{col}">{v:+d}</text>'
+    a(f'<g opacity="0">{op}<text x="{C[0]}" y="{C[1] + 6}" text-anchor="middle" {MONO} font-size="26" fill="{col}">{('−' + str(-v)) if v < 0 else ('+' + str(v) if v > 0 else '0')}</text>'
       f'<text x="{C[0]}" y="{C[1] + 28}" text-anchor="middle" {MONO} font-size="13" fill="rgba(255,255,255,0.6)">{bits(v)}</text></g>')
 # what each crossing means
 msgs = [(3, '+127 + 1 = −128', 'overflow: a silent wrap', RED), (7, '−1 + 1 = 0', 'the carry is dropped: correct', GOLD)]

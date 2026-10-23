@@ -57,8 +57,7 @@ a(f'<g class="fx"><g>{T.translate([(0.0, span), (0.3, span), (0.305, 0.0), (S0, 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('JavaScript was written in ten days in 1995 and renamed twice for marketing; a standard followed in 1997, then a decade\'s stall when the ambitious ES4 was abandoned. '
-           'ES2015 finally brought classes and modules, and since then the language has shipped one edition a year.')
+caption = ("JavaScript was written in ten days in 1995 and renamed twice for marketing; a standard followed in 1997, then a decade's stall over the ambitious ES4 until it was abandoned in 2008. ES2015 finally brought classes and modules, and since then the language has shipped one edition a year.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

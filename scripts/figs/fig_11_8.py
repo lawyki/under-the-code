@@ -55,8 +55,7 @@ o.insert(2, '<desc id="svgd-part3-47">Forward: 61 times 53 equals 3233, in one s
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Multiplying two primes is one step; getting them back from the product is a search. '
-           'For 3233 it takes 16 tries; a 250-digit product took about 2,700 core-years in 2020, and a 2048-bit RSA key has 617 digits.')
+caption = ('Multiplying two primes is one step; getting them back from the product is a search. For 3233 it takes 16 tries; a 250-digit product took about 2,700 core-years in 2020, and a 2048-bit RSA key has 617 digits.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

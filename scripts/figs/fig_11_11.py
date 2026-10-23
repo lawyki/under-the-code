@@ -59,8 +59,7 @@ for fromc, lines, y0, y1, (t0, t1) in MSGS:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The client\'s hello already carries its half of a Diffie–Hellman exchange, so the server can derive the keys at once and encrypt everything after its own hello, certificate included. '
-           'One round trip after its hello the client holds the same keys, checks the certificate and signature, and sends its request encrypted.')
+caption = ('Gold marks when each side holds the keys: the server as soon as the ClientHello lands, the client when the ServerHello arrives, one round trip after sending its own. Everything after that point is encrypted, the request included.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

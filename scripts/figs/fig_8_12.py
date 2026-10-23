@@ -43,12 +43,10 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('TCP/IP folds OSI\'s top three layers into one Application layer, because protocols such as HTTP manage their own sessions and formats, and its bottom two into one Link layer, because IP only needs a frame delivered to the next hop. '
-           'OSI says where a feature belongs; TCP/IP describes what is on the wire.')
+caption = ("Read across: TCP/IP's Application covers OSI's top three layers and its Link the bottom two. OSI says where a feature belongs; TCP/IP describes what is on the wire.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>HTTP as an example.</b> It handles its own connections, content negotiation and compression, the jobs OSI gave to Session and Presentation.</li>
           <li><b>The names.</b> TCP/IP's layers come from RFC 1122 (1989): link, internet, transport, application.</li>
           <li><b>Where TLS sits.</b> It encrypts between the application and TCP, which is one reason neither model places it cleanly.</li>
         </ol>

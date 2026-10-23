@@ -25,7 +25,7 @@ for i, gname in enumerate(groups):
     a(f'<text x="{x}" y="56" {MONO} font-size="17" fill="{col}">{gname}{show(0.3 + i * 0.25) if i else ""}</text>')
     x += 50 if i == 0 else 52
 a(f'<text x="{x}" y="56" {MONO} font-size="17" fill="rgba(212,168,83,0.5)">…</text>')
-a(text(20, 80, 'repeats forever; a double keeps 52 bits', size=14, fill=MUTED, ls='0'))
+a(text(20, 80, 'repeats forever, so a double rounds it', size=14, fill=MUTED, ls='0'))
 # the number line near 0.3, to scale: one tick per double
 Y = 196
 STEP = 92

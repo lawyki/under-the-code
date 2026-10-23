@@ -59,8 +59,7 @@ o.insert(2, '<desc id="svgd-part3-61">Node\'s layers: your JavaScript on top, No
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Node runs your JavaScript on one thread in V8 and hands everything slow to libuv. A file read takes a pool thread and goes to the disk while the JavaScript thread serves other requests; '
-           'when the read is done, libuv\'s event loop queues the callback and V8 runs it.')
+caption = ("Node runs your JavaScript on one thread in V8 and hands everything slow to libuv. A file read takes a pool thread and goes to the disk while the JavaScript thread serves other requests; when the read is done, libuv's event loop queues the callback and V8 runs it.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

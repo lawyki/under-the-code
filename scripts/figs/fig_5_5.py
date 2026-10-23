@@ -42,14 +42,13 @@ lines(E2, T2, END2)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The C standard defines <code>a[i]</code> as <code>*(a&nbsp;+&nbsp;i)</code>: add <code>i</code> elements to the address, then read what is there. '
-           'Because addition commutes, <code>2[a]</code> is the same expression and reads the same 99; arrays in C are a notation over pointer arithmetic.')
+caption = ('<code>a[2]</code> rewritten step by step down to the 99 stored at 0x108. <code>2[a]</code>, legal but never written, reads the same 99, because addition commutes.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rule.</b> C99 §6.5.2.1: "<code>E1[E2]</code> is identical to <code>(*((E1)+(E2)))</code>."</li>
           <li><b>The decay.</b> In most expressions an array's name turns into a pointer to its first element, which is why <code>a + 2</code> means an address at all.</li>
-          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour; in practice it reads whatever lies beyond it.</li>
+          <li><b>The cost.</b> Nothing in <code>*(a + i)</code> knows how long the array is, so <code>a[10]</code> on a six-element array is undefined behaviour (Section 05); in practice it reads whatever lies beyond it.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-5-5">

@@ -68,8 +68,7 @@ o.insert(2, '<desc id="svgd-part4-12">The code sends the SQL text SELECT * FROM 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('With a parameterised query the SQL text, a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. '
-           'Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.')
+caption = ('With a parameterised query the SQL text, with a placeholder where each value goes, is parsed once into a plan, and the values travel separately and are bound into it afterwards. Since a value never reaches the parser, nothing in it can change what the query does: an apostrophe is only a letter.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -41,7 +41,7 @@ o.insert(2, '<desc id="svgd-part5-21">Systems that choose consistency: etcd and 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each production store picked the failure its users can bear. Coordination services and ledgers refuse writes they cannot confirm; carts, feeds and DNS keep answering and reconcile when the network heals.')
+caption = ('Each production store picked the failure its users can bear. Coordination services and ledgers refuse what they cannot confirm; carts, feeds and DNS keep answering and reconcile when the network heals.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

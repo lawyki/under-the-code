@@ -80,8 +80,7 @@ a(f'<g>{held(FAIL_T)}{text(X0, 206, "largest free piece: 176 B", size=13, fill=M
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. '
-           'The heap is <span class="key-term">fragmented</span>: free memory in pieces too small to use, so the allocator must ask the kernel for more.')
+caption = ('After five allocations and two frees the heap holds 400 free bytes in three pieces, and a request for 300 fits none of them. The heap is <span class="key-term">fragmented</span>: free memory in pieces too small to use, so the allocator must ask the kernel for more.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

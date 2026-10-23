@@ -55,8 +55,7 @@ a(f'<g>{T.translate([(t, v - xs[0]) for t, v in pts], "x")}'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class\'s vtable leads to that class\'s own <code>area()</code>. '
-           'The caller never changes; that is <span class="key-term">polymorphism</span>, code written against an interface rather than an implementation.')
+caption = ('One call site, three classes: when <code>s</code> points at a Circle, a Square or a Triangle, the same slot 0 of each class\'s vtable leads to that class\'s own <code>area()</code>. The caller never changes; that is <span class="key-term">polymorphism</span>, code written for the general kind, Shape, not for any one shape\'s formula.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

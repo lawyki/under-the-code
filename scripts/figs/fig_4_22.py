@@ -79,14 +79,13 @@ for k in range(len(PKT) + 1):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Before an eBPF program may run in the kernel, the verifier must prove that it ends and never reads outside its bounds: a packet counter passes, is compiled to native code and runs on every packet. '
-           'A loop the verifier cannot bound is refused with an error, so it never runs at all.')
+caption = ('Program A, a packet counter, is proven to end and stay in bounds, so it is compiled to native code and runs on every packet; program B, an endless loop, is refused and never runs.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The toolchain.</b> <code>clang</code> compiles restricted C to eBPF bytecode, and the <code>bpf()</code> system call hands it to the kernel.</li>
           <li><b>The proof.</b> The verifier walks every path through the program, tracking the range of every register. Loops pass only when it can bound them (allowed since Linux 5.3), and its effort is capped.</li>
-          <li><b>A second guard.</b> Most systems also let only privileged users load programs, so the verifier is not the only line of defence.</li>
+          
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-22">

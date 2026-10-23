@@ -49,8 +49,7 @@ o.extend(body)
 o.append('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Seven standards in twenty-five years, and the same task keeps getting shorter: an iterator loop in C++98, a range-for in C++11, a single fold with no loop in C++23. '
-           'The old forms still compile, so the language keeps growing while the recommended way to write it shrinks.')
+caption = ('Seven standards in twenty-five years, and the same task needs less bookkeeping each time: an iterator loop in C++98, a range-for in C++11, one call over the whole vector, with no iterators to name, in C++23.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

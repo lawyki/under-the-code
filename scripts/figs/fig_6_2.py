@@ -56,8 +56,7 @@ for i, (yr, ev) in enumerate(EVENTS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('From Simula\'s classes to C++23: Stroustrup\'s C with Classes (1979) became C++, standardised in 1998. '
-           'C++11 is the pivot, adding move semantics, lambdas, <code>auto</code> and smart pointers, and every standard since has added more while keeping almost all older code compiling.')
+caption = ("From Simula's classes to C++23, with the style turning from classic to modern at C++11.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

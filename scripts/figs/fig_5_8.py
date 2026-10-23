@@ -39,8 +39,7 @@ a(f'<g>{held(OUT)}<rect x="20" y="262" width="360" height="56" rx="3" fill="{PLA
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Signed overflow is <span class="key-term">undefined behaviour</span>, so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code. '
-           'At <code>-O2</code> gcc deletes it, leaving only an add and a return.')
+caption = ('Signed overflow is <span class="key-term">undefined behaviour</span> (UB in the figure), so the compiler may assume it never happens; from that, <code>i&nbsp;+&nbsp;1&nbsp;&lt;&nbsp;i</code> is always false and the check is dead code, code that can never run. With optimisation switched on (<code>-O2</code>), the gcc compiler deletes it, leaving only an add and a return.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

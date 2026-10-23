@@ -52,13 +52,12 @@ a(text(RX + 32 * BW, RY - 10, 'each ++ moves one element', anchor='end', size=13
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Three pointers start at 0x100 and take the same step, <code>++</code>: the <code>char</code> pointer moves 1 byte, the <code>int</code> pointer 4, the <code>double</code> pointer 8. '
-           'The compiler scales pointer arithmetic by the size of the type, so <code>p + 1</code> always means the next element, never the next byte.')
+caption = ('Three pointers start at 0x100 and take the same step, <code>++</code>: the <code>char</code> pointer moves 1 byte, the <code>int</code> pointer 4, the <code>double</code> pointer 8, until the next <code>double</code> would leave the 32 bytes shown.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The sizes.</b> A <code>char</code> is 1 byte by definition; <code>int</code> is 4 and <code>double</code> 8 on today's common machines, though the standard only sets minimums.</li>
-          <li><b>What <code>*p</code> reads.</b> The bracket under each pointer is the span a dereference loads: one, four or eight bytes from its address.</li>
+          <li><b>What <code>*p</code> reads.</b> The block in each pointer's track is as wide as the span a dereference loads: one, four or eight bytes from its address.</li>
           <li><b>Where it leads.</b> Strings are <code>char</code> pointers walking to a zero byte, and arrays are the same arithmetic in disguise, as the next figure shows.</li>
         </ol>
       </details>'''

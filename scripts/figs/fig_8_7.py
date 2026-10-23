@@ -50,14 +50,12 @@ a(f'<line y1="34" y2="{36 + 3 * 80}" stroke="#fff" stroke-width="1.2" opacity="0
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A carrier wave has three things a transmitter can change: its size (AM), its speed (FM) or its phase (PSK), and the receiver reads each bit from whichever one moves. '
-           'Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: 10 in Wi-Fi 6.')
+caption = ("The bits 1 0 1 0 carried three ways: with each bit the wave's size, its speed or its starting direction changes. Wi-Fi and cable modems change size and phase together (QAM), packing many bits into each symbol: up to 10 in Wi-Fi 6, but only on a far cleaner signal than the 20 dB point in Fig 8.4.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Noise.</b> Interference mostly disturbs amplitude, so FM and PSK resist it better; Edwin Armstrong patented FM in 1933 for exactly that reason.</li>
           <li><b>QAM.</b> 16 combinations of size and phase carry 4 bits per symbol; Wi-Fi 6 uses 1024, 10 bits, and Wi-Fi 7 4096, 12 bits, when the signal is clean, dropping to fewer as it degrades.</li>
-          <li><b>The carrier.</b> It moves the signal to a frequency band the medium carries well, such as 2.4 or 5 GHz for Wi-Fi.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-8-7">

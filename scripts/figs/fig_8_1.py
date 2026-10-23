@@ -53,8 +53,7 @@ a(text(200, FY + 76, 'but readable', anchor='middle', size=13, fill=ROUTE, ls='0
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing over twelve orders of magnitude apart: a signal guided along a line, in copper or in glass. '
-           'On the chip it arrives unchanged; under the sea it fades with distance, and repeaters every 50 to 100 km restore it.')
+caption = ('A bit crossing a micrometre of chip wiring and a bit crossing 5,600 km of ocean are the same thing at scales a trillion times apart: a signal guided along a line, in copper or in glass. On the chip it arrives unchanged; under the sea it fades with distance, and repeaters every 50 to 100 km restore it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

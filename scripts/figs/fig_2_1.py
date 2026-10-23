@@ -48,16 +48,17 @@ def readout(y, seq, reads, t_of):
 t_of = lambda i: 0.5 + (i + 0.6) * 1.0
 B = {'1': 52, '0': 128}
 panel(36, 'BINARY · ONE THRESHOLD', B, [90], ['0', '1', '1', '0', '1'], drift_at=3)   # the same drift, absorbed
-a(text(X0 + 6, 84, 'threshold', size=13, fill=GOLD))
+a(text(X0 + 76, 84, 'threshold', size=13, fill=GOLD))
 readout(172, ['0', '1', '1', '0', '1'], ['0', '1', '1', '0', '1'], t_of)
 TER = {'+1': 222, '0': 258, '−1': 294}
 panel(206, 'TERNARY · TWO THRESHOLDS', TER, [240, 276], ['0', '+1', '−1', '0', '+1'], drift_at=3)
 readout(338, ['0', '+1', '−1', '0', '+1'], ['0', '+1', '−1', '+1', '+1'], t_of)
 a(text(X0 + 3.5 * SW, 364, 'sent 0, read +1', anchor='middle', size=13, fill=RED))
-# the reading cursor, over both wires
-a(f'<line y1="40" y2="345" stroke="#fff" stroke-width="1.5" opacity="0">{T.anim("x1", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
-  f'{T.anim("x2", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
-  f'{T.anim("opacity", [(0.0, 0.0), (0.45, 0.0), (0.5, 0.8), (5.5, 0.8), (5.6, 0.0), (7.0, 0.0)])}</line>')
+# the reading cursor, one segment inside each wire's box so it never crosses a label
+for y1, y2 in ((40, 142), (210, 306)):
+  a(f'<line y1="{y1}" y2="{y2}" stroke="#fff" stroke-width="1.5" opacity="0">{T.anim("x1", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
+    f'{T.anim("x2", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
+    f'{T.anim("opacity", [(0.0, 0.0), (0.45, 0.0), (0.5, 0.8), (5.5, 0.8), (5.6, 0.0), (7.0, 0.0)])}</line>')
 a('</svg>')
 svg = '\n'.join(o)
 
@@ -67,7 +68,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>A threshold.</b> The reader decides a digit by which side of a threshold the voltage is on.</li>
           <li><b>The margin.</b> Binary's single threshold sits halfway: a level must drift half the span to flip. Ternary's two thresholds leave each level only a sixth of the span on either side.</li>
-          <li><b>The noise.</b> Ageing parts and temperature swings make small drifts constant, so the wider margin won. Engineering, not mathematics, decided it.</li>
+          <li><b>The noise.</b> Ageing parts and temperature swings make small drifts constant, so the wider margin won.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-2-1">

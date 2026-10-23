@@ -103,7 +103,7 @@
  },
  "availability": {
   "term": "Availability",
-  "definition": "In the CAP theorem, the property that every request gets a response; a consistent system gives it up on the wrong side of a partition."
+  "definition": "In the CAP theorem, the property that every request gets a real answer rather than an error; a consistent system gives it up on any side of a partition that cannot reach a majority."
  },
  "avalanche effect": {
   "term": "avalanche effect",
@@ -191,7 +191,8 @@
  },
  "boolean algebra": {
   "term": "Boolean algebra",
-  "definition": "The algebra of true and false (AND, OR, NOT) that grew from George Boole's 1847 work; Shannon showed in 1937 that relay circuits can compute it."
+  "definition": "The algebra of true and false (AND, OR, NOT) that grew from George Boole's 1847 work; Shannon showed in 1937 that relay circuits can compute it.",
+  "home": "ch2-boole"
  },
  "bootloader": {
   "term": "bootloader",
@@ -396,6 +397,14 @@
   "term": "consensus",
   "definition": "The formal problem of getting n machines to agree on a value despite up to f of them failing; Paxos and Raft are its classic protocols."
  },
+ "confused deputies": {
+  "term": "confused deputy",
+  "definition": "Code that holds authority, such as a logged-in browser or a server able to fetch URLs, tricked into using it on an attacker's behalf; CSRF and SSRF are the classic cases."
+ },
+ "congestion window": {
+  "term": "congestion window",
+  "definition": "The amount of unacknowledged data a TCP sender lets itself have in flight, its own guess at what the network can carry; AIMD grows it by one segment per round trip and halves it on loss."
+ },
  "consistency": {
   "term": "Consistency",
   "definition": "In ACID, the guarantee that a transaction starting from a valid database state ends in one, its rules intact. In the CAP theorem it means every read returns the latest write."
@@ -545,6 +554,10 @@
  "diffusion": {
   "term": "diffusion",
   "definition": "The cipher property that each input bit influences every output bit; in AES, ShiftRows and MixColumns spread it across the state."
+ },
+ "digital signature": {
+  "term": "digital signature",
+  "definition": "A value computed from a message with a private key that anyone can check with the matching public key: it proves who produced the message and that it was not changed. TLS servers prove their identity this way."
  },
  "direct memory access": {
   "term": "direct memory access",
@@ -876,7 +889,8 @@
  },
  "ieee": {
   "term": "IEEE",
-  "definition": "The Institute of Electrical and Electronics Engineers: the standards body behind IEEE 754 floating point, which also assigns manufacturers the OUI prefixes of their MAC addresses."
+  "definition": "The Institute of Electrical and Electronics Engineers: the standards body behind IEEE 754 floating point, which also assigns manufacturers the OUI prefixes of their MAC addresses.",
+  "home": "ch2-float"
  },
  "ieee 754": {
   "term": "IEEE 754",
@@ -1188,9 +1202,9 @@
   "term": "monolithic kernel",
   "definition": "A kernel that runs everything in Ring 0 (scheduling, memory management, filesystems, drivers, network stacks): fast, but one bug can compromise the whole machine."
  },
- "moore s law is ending": {
-  "term": "Moore's Law is ending",
-  "definition": "Moore's Law, transistor density doubling roughly every two years, has slowed sharply: a transistor's finest parts are a few nanometres (a few dozen atoms) across, and each shrink leaks more and costs more."
+ "moore s law": {
+  "term": "Moore's Law",
+  "definition": "Gordon Moore's observation that the transistors on a chip double about every two years; it held for about fifty years and has slowed sharply since."
  },
  "mosfet": {
   "term": "MOSFET",
@@ -1198,7 +1212,8 @@
  },
  "move semantics": {
   "term": "move semantics",
-  "definition": "The C++11 mechanism that lets one object take over another's internal buffers instead of copying them; the source stays valid but holds an unspecified value (a moved-from vector is empty)."
+  "definition": "The C++11 mechanism that lets one object take over another's internal buffers instead of copying them; the source stays valid but holds an unspecified value (a moved-from vector is empty).",
+  "home": "ch6-modern"
  },
  "mss": {
   "term": "MSS",
@@ -1313,6 +1328,10 @@
  "out-of-order execution": {
   "term": "out-of-order execution",
   "definition": "Running a later instruction before an earlier one when it does not depend on that result, so the CPU keeps working while the earlier one waits for memory."
+ },
+ "output encoding": {
+  "term": "output encoding",
+  "definition": "Rewriting characters that mean something to the browser, such as < and >, into codes it shows as text before user input goes into a page; the first defence against XSS."
  },
  "p p p": {
   "term": "p₁, p₂, …, pₙ",
@@ -1687,7 +1706,8 @@
  },
  "sha-256": {
   "term": "SHA-256",
-  "definition": "The modern standard cryptographic hash: it turns any input into a 256-bit fingerprint quickly, and no practical way is known to reverse it or find two inputs with the same fingerprint."
+  "definition": "The modern standard cryptographic hash: it turns any input into a 256-bit fingerprint quickly, and no practical way is known to reverse it or find two inputs with the same fingerprint.",
+  "home": "ch14-hashing"
  },
  "shamir": {
   "term": "Shamir",
@@ -1858,7 +1878,8 @@
  },
  "thompson": {
   "term": "Thompson",
-  "definition": "Ken Thompson, the Bell Labs programmer who began UNIX on a discarded PDP-7 in 1969, wrote the B language and built the UNIX pipe in an evening."
+  "definition": "Ken Thompson, the Bell Labs programmer who began UNIX on a spare PDP-7 in 1969, wrote the B language and built the UNIX pipe in an evening.",
+  "home": "ch5-bell-labs"
  },
  "thread": {
   "term": "thread",
@@ -1983,7 +2004,7 @@
  },
  "van rossum": {
   "term": "van Rossum",
-  "definition": "Guido van Rossum, who began Python as a Christmas 1989 hobby at the Centrum Wiskunde & Informatica in Amsterdam and released it to USENET by 1991."
+  "definition": "Guido van Rossum, who began Python as a Christmas 1989 hobby at the Centrum Wiskunde & Informatica in Amsterdam and released it to Usenet by 1991."
  },
  "verifier": {
   "term": "verifier",
@@ -2106,6 +2127,10 @@
   "term": "runtime",
   "definition": "The support code that runs a program written in a language, such as the Java virtual machine or the Python interpreter, checking array bounds or freeing unused memory."
  },
+ "enquire": {
+  "term": "ENQUIRE",
+  "definition": "The linked-notes program Tim Berners-Lee wrote for himself at CERN in 1980, the seed of the web's hyperlinks."
+ },
  "entropy": {
   "term": "entropy",
   "definition": "Shannon's measure of information: the fewest yes-or-no questions, on average, needed to learn each symbol a source sends. 1 bit for a fair coin, 0 for a certain one."
@@ -2137,5 +2162,9 @@
  "posix 1003 1c": {
   "term": "POSIX 1003.1c",
   "definition": "The 1995 threads section of the POSIX standard for UNIX-style systems: how a program creates threads that share its memory and how they synchronise."
+ },
+ "flags": {
+  "term": "Flags",
+  "definition": "In the IPv4 header, three bits: one reserved, then don't fragment and more fragments, which steer how a packet too big for a link is split."
  }
 }

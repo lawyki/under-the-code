@@ -52,8 +52,7 @@ a(text(X1, AY + 40, 'milliseconds', anchor='end', size=13, fill=CMUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Fetching one page over HTTPS is four exchanges in a row, each waiting for the one before: DNS finds the address, TCP opens a connection, TLS agrees on keys, and only then does HTTP ask for the page. '
-           'With a 20 ms round trip to the server, the page arrives at 70 ms; only the last 20 carry the request.')
+caption = ('Fetching one page over HTTPS is four exchanges in a row, each waiting for the one before: DNS finds the address, TCP opens a connection, TLS agrees on keys, and only then does HTTP ask for the page. With a 20 ms round trip to the server, the page arrives at 70 ms; only the last 20 carry the request.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

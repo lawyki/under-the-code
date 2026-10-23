@@ -57,8 +57,7 @@ a(f'<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}<circle class="fx" cx="{xd
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Shannon\'s limit: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above the curve errors cannot be avoided. '
-           'A phone line at 30&nbsp;dB allows about 10 bits per hertz, about 34&nbsp;kbps over the 3.4&nbsp;kHz band a V.34 modem uses; V.34 modems reached 33.6&nbsp;kbps, just under it.')
+caption = ('Shannon\'s limit, the curve: a channel of bandwidth B carries at most <span style="white-space:nowrap">B · log₂(1 + SNR)</span> bits per second, and above it errors cannot be avoided. A phone line at 30&nbsp;dB (signal 1,000 times the noise) allows about 10 bits per hertz, about 34&nbsp;kbps over the 3.43&nbsp;kHz band V.34 modems use; they reached 33.6&nbsp;kbps.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

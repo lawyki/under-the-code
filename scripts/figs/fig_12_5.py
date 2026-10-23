@@ -62,8 +62,7 @@ o.insert(2, '<desc id="svgd-part3-60">V8\'s tiers, top to bottom: the parser tur
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('V8 runs every function first in its interpreter, which records the types it sees; as the function gets hotter it moves on to compilers that make ever faster code, betting on those types. '
-           'Break the bet, a string where only numbers came, and the optimised code is thrown away: back to the interpreter.')
+caption = ('V8 runs every function first in its interpreter, which records the types it sees; as the function gets hotter it moves on to compilers that make ever faster code, betting on those types. If a string arrives where only numbers came before, the bet fails: the optimised code is thrown away and the function goes back to the interpreter.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -60,8 +60,7 @@ for k, (yr, ev) in enumerate(MS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('In December 1969 the ARPANET was four computers on leased 50 kbps lines, each joined to the network by an IMP, a refrigerator-sized packet switch built by BBN. '
-           'Its first message, on 29 October, went from UCLA to SRI: L and O arrived, then the receiving system crashed.')
+caption = ('In December 1969 the ARPANET was four computers on leased 50 kbps lines, each joined to the network by an IMP, a refrigerator-sized packet switch built by BBN. Below, how the network grew until its retirement in 1990.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

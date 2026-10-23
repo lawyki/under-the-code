@@ -54,8 +54,7 @@ a(text(xr(10), yc(7), '+1 per RTT, halve on loss', size=13, fill=ROUTE_D, ls='0'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Slow start doubles the window every round trip until the first loss; after that TCP adds one segment per round trip and halves the window at each loss. '
-           'The result is a sawtooth around a capacity TCP never measures directly: it finds the limit by overshooting it.')
+caption = ('On a path that carries 24 segments, slow start overshoots to 32 before the first loss halves the window; from then on it saws between about 12 and 25. TCP never measures the capacity: it finds the limit by overshooting it.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

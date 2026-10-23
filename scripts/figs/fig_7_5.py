@@ -62,8 +62,7 @@ a(f'<line y1="20" y2="168" stroke="#fff" stroke-width="1.2" opacity="0">'
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One thread runs an event loop: each task runs until it awaits a network reply, and the loop switches to another that is ready, so the waits overlap although only one task runs at a time. '
-           'A task can be interrupted only where it says <code>await</code>, so most shared state needs no locks.')
+caption = ('One thread runs an event loop: each task runs until it awaits a network reply, and the loop switches to another that is ready, so the waits overlap although only one task runs at a time. A task can be interrupted only where it says <code>await</code>, so most shared state needs no locks.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

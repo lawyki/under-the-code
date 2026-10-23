@@ -62,14 +62,13 @@ for t0, t1, s, col in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Namespaces decide what a process can see; cgroups decide what it can use, with a CPU and a memory limit per group that the kernel enforces. '
-           'A runaway batch job wanting 12 CPUs is held to its 4, and when it outgrows its 16 GB the kernel kills it, while web and db never notice.')
+caption = ('Namespaces decide what a process can see; cgroups decide what it can use, with a CPU and a memory limit per group that the kernel enforces. A runaway batch job wanting 12 CPUs is held to its 4, and when it outgrows its 16 GB the kernel kills it, while web and db never notice.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The interface.</b> Cgroup v2 is a filesystem at <code>/sys/fs/cgroup</code>. Writing <code>400000 100000</code> to <code>cpu.max</code> allows 4 CPUs' worth of time in every 100 ms period.</li>
           <li><b>Memory.</b> Past <code>memory.max</code> the kernel first reclaims the group's own pages; if that fails, the OOM killer picks a process inside the group.</li>
-          <li><b>Who writes them.</b> Docker's <code>--cpus</code> and <code>--memory</code>, Kubernetes resource limits and systemd's services all set these files, as do <code>io.max</code> and <code>pids.max</code> for disk and process counts.</li>
+          <li><b>Who writes them.</b> Docker's <code>--cpus</code> and <code>--memory</code>, Kubernetes resource limits and systemd's services all write these files; <code>io.max</code> and <code>pids.max</code> are further files, for disk and process counts.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card light-diagram fig-v2" id="fig-4-21">

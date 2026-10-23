@@ -75,8 +75,7 @@ o.insert(2, f'<desc id="svgd-part4-17">A table with two users, alice and bob, wh
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Stored well, a stolen password table gives away as little as possible: a hash hides the password, a per-user salt makes equal passwords look different, and a slow, memory-hard function makes every guess expensive. '
-           'Each step closes the gap the one before it left open.')
+caption = ("A hash hides the password, a per-user salt (a random value stored beside the hash and hashed in with it) makes equal passwords look different, and a slow, memory-hard function makes every guess costly: each needs its own 64 MiB, which caps how many guesses an attacker's hardware can run at once.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

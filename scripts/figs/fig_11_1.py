@@ -62,8 +62,7 @@ a(f'<g class="fx"><g>{T.translate([(0.0, yy(1994) - yy(1989)), (0.3, yy(1994) - 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('For two and a half years the web was one project on one machine at CERN: a proposal, a server running by December 1990, an announcement in August 1991. '
-           'It took off after CERN gave the software away in April 1993; by the end of that year there were more than 500 servers.')
+caption = ('For two and a half years the web was one project at CERN: a proposal, a server running by December 1990, an announcement in August 1991. It took off after CERN gave the software away in April 1993; by the end of that year there were more than 500 servers.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

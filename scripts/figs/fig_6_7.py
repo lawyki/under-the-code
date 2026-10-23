@@ -66,8 +66,7 @@ a(text(20, 258, '', size=13))
 a('</svg>')
 svg = '\n'.join(o).replace(text(20, 258, '', size=13), '')
 
-caption = ('Ownership is part of the type: behind a <code>unique_ptr</code> the object dies with its single owner, behind a <code>shared_ptr</code> when its count of owners reaches zero. '
-           'A <code>weak_ptr</code> watches without keeping its object alive, and afterwards reports that it has expired.')
+caption = ('Three lifetimes: one owner, counted owners, and an observer left holding an expired pointer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -65,8 +65,7 @@ o.insert(2, '<desc id="svgd-part3-56">Two browser windows from 1995. In the firs
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('In 1995 a page could only send a form to the server and wait for a whole new page, or hand a box to a Java applet that took seconds to start and could not touch the page around it. '
-           'What was missing was a small language that ran inside the page itself, at once.')
+caption = ('In 1995 a page could only send a form to the server and wait for a whole new page, or hand a box to a Java applet that took seconds to start and could not touch the page around it. What was missing was a small language that ran inside the page itself, at once.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

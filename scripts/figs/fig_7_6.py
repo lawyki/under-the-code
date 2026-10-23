@@ -52,8 +52,7 @@ for i, st in enumerate(STACKS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('CPython turns <code>a + b * c</code> into bytecode for a stack machine: three loads push 2, 3 and 4; <code>BINARY_OP&nbsp;*</code> pops 3 and 4 and pushes 12; <code>BINARY_OP&nbsp;+</code> pops 2 and 12 and pushes 14. '
-           'The eval loop does exactly this, one instruction at a time, for every line of Python.')
+caption = ('CPython turns <code>a + b * c</code> into bytecode for a stack machine: three loads push 2, 3 and 4; <code>BINARY_OP&nbsp;*</code> pops 3 and 4 and pushes 12; <code>BINARY_OP&nbsp;+</code> pops 2 and 12 and pushes 14. The eval loop does exactly this, one instruction at a time, for every line of Python.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

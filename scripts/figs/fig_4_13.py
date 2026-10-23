@@ -66,14 +66,13 @@ for t0, t1, s, col in STAT:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The change goes to the journal first, sealed by a commit record, and only then to its home in the filesystem. '
-           'After a crash, boot replays every committed change and discards any without a commit, so the disk is consistent in seconds.')
+caption = ('One change is committed and replayed after the power cut, taking the filesystem from version 1 to 2; the next loses power before its commit record and is discarded, so the filesystem stays at version 2.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The atomic step.</b> The commit record is one small block, written after the rest of the entry has reached the disk. Whether it exists decides the outcome.</li>
-          <li><b>What is logged.</b> By default ext4 and NTFS journal metadata only (inodes, bitmaps, directories); ext4's <code>data=journal</code> mode also logs file contents, writing them twice.</li>
-          <li><b>The lineage.</b> This is write-ahead logging, taken from databases (Chapter 13). Before journals, <code>fsck</code> had to scan the whole disk after a crash, which took hours.</li>
+          <li><b>What is logged.</b> By default ext4 and NTFS journal metadata only (inodes, the free list, directories); ext4's <code>data=journal</code> mode also logs file contents, writing them twice.</li>
+          
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-4-13">

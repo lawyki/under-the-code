@@ -59,8 +59,7 @@ for lv, (l1, l2) in enumerate(OPS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A domain name is a path through one tree, written leaf first: read <code>www.example.com.</code> from the right and each label is a step down, from the root to <code>com</code> to <code>example</code> to <code>www</code>. '
-           'Each of the first three steps hands authority to a different operator; <code>www</code> is a host in the last zone.')
+caption = ("The bold path is the name read from the right. Beside each level stands who runs it, and <code>www</code> is only one host inside <code>example.com</code>'s zone.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

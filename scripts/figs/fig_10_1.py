@@ -56,8 +56,7 @@ a(f'<g>{held(SENDS[2] + FLY + 0.4)}{text(SX, LY + 64, "no resend: retrying is th
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('UDP is an envelope around your bytes: eight bytes of header with two ports, a length and a checksum, and nothing else. '
-           'No connection, no order, no retransmission: a lost datagram is simply missing, and the application decides whether to try again.')
+caption = ("Port 51234 asks port 53 a DNS question behind eight bytes of header. Datagram 2 is lost and nothing notices; retrying, if anyone does, is the application's job.")
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
