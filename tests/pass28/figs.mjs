@@ -25,7 +25,7 @@ import http from 'node:http'; import fs from 'node:fs'; import path from 'node:p
 import { contrastOf, iconContrast } from '../pass30/contrast.mjs';
 
 const ARGS = Object.fromEntries(process.argv.slice(2).map(a => { const [k, v] = a.replace(/^--/, '').split('='); return [k, v ?? true]; }));
-const ROOT = new URL('../../public/', import.meta.url).pathname;
+const ROOT = process.env.FIG_ROOT || new URL('../../public/', import.meta.url).pathname;   // FIG_ROOT: another public/ tree (Pass 31)
 const KINDS = ARGS.kind === 'all' ? ['figs', 'heroes', 'cover', 'icons'] : [ARGS.kind || 'figs'];
 if (KINDS.some(k => !['figs', 'heroes', 'cover', 'icons'].includes(k))) { console.log(`figs: bad --kind=${ARGS.kind} (figs|heroes|cover|icons|all)`); process.exit(2); }
 const onPage = (k, p) => p === 'index' ? k === 'cover' || k === 'icons' : k !== 'cover';
