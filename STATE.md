@@ -2,6 +2,8 @@
 
 **OWNER CALLS DECIDED 2026-10-23 under the owner's delegation ("take the best option ... knowing the book's goal"; "reword for honesty on the legal / privacy"): 37 of 45 applied or kept (the Aleph One quote by the owner's own choice) on branch `owner-calls`, verified (blind retest, Gate 1 identical to `main`, clip 0, pass25 all pass), ledger `UNDER.md` §4af, decisions `docs/audit/decisions/owner-calls.md`. Not deployed: merging `owner-calls` into `main` and pushing waits for the owner's word (it also carries 3fd4774, the Go-deeper video guide). Still the owner's: Chapter 3's seven remaining calls (Claude's safety filter stops work on those figures), the marks-sync wording, the privacy notice's legal facts, and the read.** Before that: prose and figures frozen 1.0-rc2 (2026-10-17), deployed 2026-10-23 (merge fda8ce0); the book is still being built. Tagged `v1.0-rc2` at 92ed9f0; `v1.0-rc1` was 2026-10-15.
 
+**Pass 31 at:** figure finalization (`docs/pass-31-brief.md`, ledger `UNDER.md` §4ag), branch `figures-final` from `owner-calls`, started 2026-10-23. Phase 0: both tracks open (author: contact sheets, prose subtraction, intents, kept-originals table; separate gate builder: tooling, frozen gate). Progress ticked in `docs/todo.md`, "Figure finalization". Nothing reaches `main` without the owner's word.
+
 The resume header for this repo. `BRIDGE.md` is the architect charter;
 `UNDER.md` §4 is the pass ledger; `README.md` says what the repo is.
 

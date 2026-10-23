@@ -62,3 +62,61 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [ ] Owner reads the book, from `docs/owner-read-map.md`
 - [ ] Punch-list pass after the read (STATE.md, WHAT'S NEXT item 6)
 - [ ] Domain move and passkeys (owner's timing, ~early November); retire `/api/auth/request` after 2026-11-15
+
+## Figure finalization (Pass 31, `docs/pass-31-brief.md`; ticked when committed and verified)
+
+Phase 0, author track
+- [x] Branch `figures-final` (from `owner-calls`), `docs/pass-31-sealed/` gitignored, ledger §4ag and STATE "Pass 31 at:" opened
+- [ ] Contact sheets per chapter at 375 px, v4 and Enigma pinned
+- [ ] Why Enigma is good, in one sentence
+- [ ] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge)
+- [ ] Prose subtraction, Part II (Ch4 to Ch7)
+- [ ] Prose subtraction, Part III (Ch8 to Ch12)
+- [ ] Prose subtraction, Part IV (Ch13 to Ch15)
+- [ ] Prose subtraction, Part V (Ch16 to Ch18)
+- [ ] Intent sentence per remaining figure (job tagged), raised where the blind prose reader asks for more
+- [ ] Kept-originals table (18 rows, errors and one action each)
+- [ ] Ledger `docs/pass-31-ledger.tsv`, one row per figure
+
+Phase 0, gate builder track (a separate agent; v3 sealed)
+- [ ] `figlib`: `role` on `text()`, `obj()` groups, `Timeline` beat times
+- [ ] `bare.mjs --no-text`
+- [ ] `tests/pass31/sheet.mjs`, `check.mjs`, `gate.mjs` and their npm scripts
+- [ ] Development set: v1 and v2 fail, v4 passes, three times each, order swapped
+- [ ] Judge prompt frozen, hash in `docs/pass-31-calibration.md`
+
+Phase 1 and the owner's calibration page
+- [ ] Five exemplars (one per part, three concepts each) and `docs/pass-31-plates.md`
+- [ ] Calibration page published (kept-originals table, exemplars, 3 best and 3 worst per part)
+- [ ] Validation run (Phase 1b) passed with zero false passes; final bins
+
+Phase 2, chapters in book order (one commit each, retell included)
+- [ ] Ch1
+- [ ] Ch2
+- [ ] Ch3
+- [ ] The Bridge
+- [ ] Drift check after Part I
+- [ ] Ch4
+- [ ] Ch5
+- [ ] Ch6
+- [ ] Ch7
+- [ ] Drift check after Part II
+- [ ] Ch8
+- [ ] Ch9
+- [ ] Ch10
+- [ ] Ch11
+- [ ] Ch12
+- [ ] Drift check after Part III
+- [ ] Ch13
+- [ ] Ch14
+- [ ] Ch15
+- [ ] Drift check after Part IV
+- [ ] Ch16
+- [ ] Ch17
+- [ ] Ch18
+- [ ] Drift check after Part V
+- [ ] Hard list: one more round of three concepts per part
+- [ ] Heroes and the cover
+
+Close
+- [ ] READY page for the owner (before/after per part, cuts, below-bar list, validation result); deploy waits for his word

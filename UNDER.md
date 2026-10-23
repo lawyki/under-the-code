@@ -3895,6 +3895,13 @@ Rewritten so every sentence is true of the code (two independent claim-by-claim 
 ### Open
 Chapter 3's seven figure and caption calls (Claude's safety filter stops work on those figures; the Aleph One pull-quote was replaced at the owner's own choice, 7649311), the marks-sync wording (to be redrafted against the new notice), and the read.
 
+## 4ag. Pass 31 (2026-10-23 →): figure finalization
+
+Owner, 2026-10-23: "each needs to be self-explanatory, easy to ... read and understand, good quality and follow the style of the PART, and the book. Subtly animated ... It can take as many token / time it needs, literally." Brief: `docs/pass-31-brief.md` (built from the first council's full record, re-read by a third round). Started by the owner's figure-finalization heartbeat. Branch `figures-final` from `owner-calls` (§4af). Per-figure ledger: `docs/pass-31-ledger.tsv`; gate calibration: `docs/pass-31-calibration.md`; sealed material in `docs/pass-31-sealed/` (gitignored, never pushed; every read logged here).
+
+### Phase 0
+Opened 2026-10-23.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em
