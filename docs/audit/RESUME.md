@@ -2,7 +2,7 @@
 
 Full picture first: `docs/audit/HANDOFF.md` (every run, every findings file, the method, the rules). This note is the running progress.
 
-All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is the live site and stays untouched: never push, merge, rebase onto or tag `main` from this work. Push only to `pre-read-audit` (from a worktree: `git push origin HEAD:pre-read-audit`).
+All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is the live site and stays untouched: never push, merge, rebase onto or tag `main` from this work. Push only to `pre-read-audit` (from a worktree: `git push origin HEAD:pre-read-audit`). **Update 2026-10-23:** the owner said "full yes, deploy"; `pre-read-audit` is merged into `main` (fda8ce0) and deployed to the site; the book is still being built.
 
 ## Method per chapter (working laws)
 1. Read the chapter's findings (`docs/audit/round1/<ch>.json`, plus the part-N.json items for it) and the whole chapter in `public/part-N.html`.
@@ -32,7 +32,7 @@ All work is on branch `pre-read-audit` (pushed to GitHub, not merged). `main` is
 - Close: owner calls collected (`owner-calls.md`), ledger `UNDER.md` §4ae, STATE.md freeze line (1.0-rc2), `docs/todo.md` ticked, owner read map refreshed, tag `v1.0-rc2` on `pre-read-audit`.
 
 ## Next
-- The pre-read audit is done. Nothing goes live until the owner says "deploy" (merge `pre-read-audit` into `main` then); the owner's read starts at `docs/owner-read-map.md`.
+- The pre-read audit is done. Nothing goes live until the owner says "deploy" (merge `pre-read-audit` into `main` then); the owner's read starts at `docs/owner-read-map.md`. Done 2026-10-23: the owner said "full yes, deploy"; merged at fda8ce0 and deployed to the site (the book is still being built); tag `v1.0-rc2` (92ed9f0) pushed the same day.
 - Scratch scripts of this run lived in /home/user/sp (not in the repo): `<ch>_apply.py` per chapter, `gate2.sh`, `glcheck.sh`, `prep.sh`, `mk.py`. Gate 1 at 360 px in Chromium rounds glyph advances to whole pixels, so a label that clears its neighbour in WebKit can crowd it there.
 
 ## Running the checks in a cloud container (Linux)

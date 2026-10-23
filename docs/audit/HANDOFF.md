@@ -25,6 +25,8 @@ How to read `raw/book-audit-judged.json`: a list of `{chapter, judged: [{lens, i
 | `pre-read-audit` | All finished audit work: outside-the-chapters fixes (6a5f607), Chapter 1 (dc2ebbd), this handoff. |
 | `pre-read-audit-ch2-wip` | Chapter 2 round-1 edits and `decisions/ch2.md`, unfinished: NOT retested, NOT gated, NOT checked. The run lost its connection during Chapter 2's retest. |
 
+**Update 2026-10-23:** this table is the 2026-10-17 snapshot. Chapter 2 was finished on `pre-read-audit` the same day (9ba87ec), the audit closed as 1.0-rc2 (92ed9f0, tag `v1.0-rc2`), and the owner said "full yes, deploy": `pre-read-audit` is merged into `main` (fda8ce0) and the whole book is deployed to the site; it is still being built. Every commit of `pre-read-audit-ch2-wip` is in `main`'s history; the branch is kept.
+
 Done: outside the chapters (all five parts, cover, account page, glossary, cross-references) and Chapter 1. Everything else is open.
 
 ## What is left, in order
