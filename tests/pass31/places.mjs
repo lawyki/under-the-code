@@ -6,9 +6,11 @@
 //     caption (p.diagram-caption) and never a part tagline (p.part-tagline: a part opener's line or an end-of-part
 //     teaser such as Part II's, which names Part III's people before Part III);
 //   - the first cell of a table row that expands or defines its term: the cell glosses itself with a parenthesis that
-//     opens with a lower-case word (HDD (spinning disk)), or the row's second cell is a definition, a phrase closed by
+//     opens with a lower-case word (HDD (spinning disk)), or the row's second cell is a definition: a phrase closed by
 //     a colon or a full stop and followed by more words ("Counter: used for loop counts and shift amounts", "Shortest
-//     Job First. When the CPU is free, ..."). Only that first cell teaches: the row's other cells do not (SIGTERM,
+//     Job First. When the CPU is free, ...", "Base Pointer (the frame pointer): points to ..."), or a sentence of four
+//     words or more closed by a full stop ("A counter that processes change in one indivisible step, used to
+//     coordinate access to a shared resource."). Only that first cell teaches: the row's other cells do not (SIGTERM,
 //     listed in the Signal row's description, is not taught there), a header row does not, and a row whose other
 //     cells are values does not (Chapter 1's memory table: SATA in "SATA bus", OS in "OS kernel", NVMe in "SSD
 //     (NVMe)", L2 in "L2 Cache").
@@ -21,9 +23,11 @@
 // of the figure cards in it.
 const plainText = h => h.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&(#x?[0-9a-f]+|\w+);/gi, ' ').replace(/\s+/g, ' ').trim();
 const SKIP_P = /class="[^"]*\b(?:diagram-caption|part-tagline)\b/;
-// a row's second cell that defines: a phrase of words closed by a colon or a full stop, then more words (a value
-// such as "~200 cycles (~60 ns)", "1–20 TB" or "On the CPU die, shared by cores" has neither)
-export const DEFINES = /\p{L}{2,}[:.]\s+\p{L}/u;
+// a row's second cell that defines: a phrase of words closed by a colon or a full stop (a closing bracket or quote
+// may come between), then more words; or a sentence of four words or more closed by a full stop (a value such as
+// "~200 cycles (~60 ns)", "1–20 TB" or "On the CPU die, shared by cores" is neither)
+const PHRASE = /\p{L}{2,}[)"”’]*[:.]\s+\p{L}/u, SENTENCE = /\p{L}{2,}[)"”’]*\.$/u;
+export const defines = t => { const x = t.trim(); return PHRASE.test(x) || (SENTENCE.test(x) && x.split(/\s+/).length >= 4); };
 // a first cell that expands itself: a parenthesis opening with a lower-case word (never a lone abbreviation, "(DRAM)",
 // "(NVMe)")
 export const EXPANDS = /\(\s*\p{Ll}/u;
@@ -36,8 +40,8 @@ export function definingRows(html, inCard) {
       const cells = [...r[1].matchAll(/<(t[dh])\b([^>]*)>([\s\S]*?)<\/\1>/g)];
       if (cells.length < 2 || cells.every(c => c[1] === 'th')) continue;   // a header row
       const head = cells[0], start = innerAt + head.index, a = start + head[0].indexOf('>') + 1;
-      const expands = EXPANDS.test(plainText(head[3])), defines = DEFINES.test(plainText(cells[1][3]));
-      if (expands || defines) out.push({ kind: 'row', start, end: start + head[0].length, a, inner: head[3], why: expands ? 'expands' : 'defines' });
+      const ex = EXPANDS.test(plainText(head[3])), df = defines(plainText(cells[1][3]));
+      if (ex || df) out.push({ kind: 'row', start, end: start + head[0].length, a, inner: head[3], why: ex ? 'expands' : 'defines' });
     }
   }
   return out;

@@ -312,10 +312,13 @@ const CASES = [
   ['fig-4-3', 'FCFS · SJF · MLFQ', ['FCFS', 'SJF', 'MLFQ']],
   ['fig-4-4', 'FCFS · SJF · MLFQ', []],
   ['fig-4-5', 'FCFS · SJF · MLFQ', []],
-  // Chapter 4's IPC table: the Named pipe (FIFO) row defines its head, so FIFO is taught from Fig 4.15; the signals its
-  // Signal row lists in a description cell are not taught by it
+  // Chapter 4's IPC table: the Named pipe (FIFO) row defines its head, so FIFO is taught from Fig 4.15; so do the
+  // Semaphore and Shared memory rows, each a one-sentence definition; the signals the Signal row lists in a description
+  // cell are not taught by it
   ['fig-4-14', 'FIFO', ['FIFO']],
   ['fig-4-15', 'FIFO', []],
+  ['fig-4-14', 'semaphore · shared memory', ['semaphore', 'shared memory']],
+  ['fig-4-15', 'semaphore · shared memory', []],
   ['fig-4-15', 'SIGKILL', ['SIGKILL']],
 ];
 // item 2b: the paragraph known-terms places each term at (the first prose gloss)
@@ -405,7 +408,8 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
 // it), plain uses of eight everyday words made glossary terms of ch18-final (they must still fail at Fig 1.1, as
 // glossary terms not yet taught: none of the new cues credits a plain use), one control sentence per new cue for a
 // planted term (each must pass), a pointer sentence's emphasis and a part tagline's gloss and abbreviation (they must
-// fail), and a table with an expanding row, two defining rows, a value row, a header row and a description cell
+// fail), and a table with an expanding row, three defining rows (a phrase, a sentence), a row whose second cell is two
+// words, a value row, a header row and a description cell
 {
   const T = path.join(OUT, 'taught-test', 'tree18'); fs.rmSync(T, { recursive: true, force: true }); mkdirp(T);
   for (const p of PARTS) fs.copyFileSync(path.join(ROOT, p + '.html'), path.join(T, p + '.html'));
@@ -419,6 +423,7 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   const cues = ' Qzdefword is a planted term. A qzgen machine imitates a planted thing. Initialised to one, a planted counter admits one at a time, a qznamed; that is all. The planted store\'s "source", qzrev, runs a protocol. It has qzmod-plane parts (the pieces that decide what runs). In Qzyear–Pair (1976), which is a planted method, two sides agree. The kernel keeps <em>qzemph tables</em> that map pages. Chapter 9 shows the <em>qzpointed</em> at work. ';
   const table = '<table class="summary-table"><tr><th>Name</th><th>What it is</th><th>Size</th></tr><tr><td>QZEXP (a planted expansion)</td><td>On the die</td><td>5 ms</td></tr>'
     + '<tr><td>QZDEF</td><td>Planted: a definition of the term, with QZDESC named in it.</td><td>10 GB</td></tr><tr><td>qzrowterm</td><td>Planted row. It defines the term here.</td><td>1</td></tr>'
+    + '<tr><td>QZSENT</td><td>A planted sentence that defines it.</td><td>2</td></tr><tr><td>QZSHORT</td><td>Fast disk.</td><td>3</td></tr>'
     + '<tr><td>QZVAL qzvalterm</td><td>On the board</td><td>8 GB</td></tr><tr><th>QZHEAD</th><th>Header</th><th>Row</th></tr></table>';
   let h = fs.readFileSync(path.join(T, 'part-1.html'), 'utf8');
   const at = h.indexOf('id="ch1-context-p1"'), open = h.indexOf('>', at) + 1, close = h.indexOf('</p>', open) + 4;
@@ -435,8 +440,8 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   check(!b.length, `synthetic tree: one control per new cue (definition, generic, naming, reverse, modifier, a year skipped, emphasis, table row) -> fails ${JSON.stringify(b)}`);
   const n = [...new Set(run1(NEG.join(' · ')).map(x => x.token))];
   check(n.length === NEG.length, `synthetic tree: emphasis in a pointer sentence, a part tagline's gloss, a value row's term -> fail ${JSON.stringify(n)}`);
-  const ab = run1('QZEXP · QZDEF'), abN = [...new Set(run1('QZVAL · QZHEAD · QZDESC · QZTAGX').map(x => x.token))];
-  check(!ab.length && abN.length === 4, `synthetic tree: abbreviations of an expanding and a defining row pass (${JSON.stringify(ab.map(x => x.token))}); of a value row, a header row, a description cell and a part tagline fail ${JSON.stringify(abN)}`);
+  const ab = run1('QZEXP · QZDEF · QZSENT'), abN = [...new Set(run1('QZSHORT · QZVAL · QZHEAD · QZDESC · QZTAGX').map(x => x.token))];
+  check(!ab.length && abN.length === 5, `synthetic tree: abbreviations of an expanding row and of rows defined by a phrase and by a sentence pass (${JSON.stringify(ab.map(x => x.token))}); of a row whose second cell is two words, a value row, a header row, a description cell and a part tagline fail ${JSON.stringify(abN)}`);
 }
 // the figures themselves: Fig 1.1 (v4) and Fig 1.2 (Enigma) as they stand in the tree
 for (const id of ['fig-1-1', 'fig-1-2']) {
