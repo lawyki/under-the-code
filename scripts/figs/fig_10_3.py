@@ -1,79 +1,120 @@
-# Fig 10.3 · TCP's state machine (Pass 28, law 3). Chart Room. All eleven states, unrolled top to bottom
-# (CLOSED drawn at both ends). The two lives play interleaved in causal order (pre-read audit, 2026-10-17):
-# server listen, client connect, server SYN in, ... client's wait; a token walks each path and a status
-# line names each event. t=0 (shift): the client in TIME_WAIT. The page's SVG is ahead of this file
-# (labels, viewBox); the audit retimed the page directly to this schedule.
+# Fig 10.3 · TCP's state machine (Pass 31 exemplar for Part III, from an empty script). Takeaway: each segment, call
+# or timer moves a connection one state along fixed rules from open to closed.
+# Concept chosen of three (ledger): the client and the server as two lanes, time running down; each segment crosses
+# between them, and each side's state changes where a segment leaves or lands, or where its program calls listen or
+# close, or where TIME_WAIT's timer runs out. Chart Room's continuous flow: segments travel the chart like routes.
+# t=0 is the whole connection, opened and closed.
 import figlib
-from figlib import Timeline, text, splice, SPACE, CYAN, ROUTE, CPLATE, CDEEP, CSOFT, CMUTED
+from figlib import Timeline, text, obj, splice, SPACE, CYAN, ROUTE, CSOFT, CMUTED
 figlib.FONT = SPACE
 
-W, H = 400, 470
-NW, NH = 118, 32
-NODES = {'CLOSED': (141, 14), 'SYN_SENT': (12, 70), 'LISTEN': (270, 70), 'SYN_RCVD': (270, 126),
-         'ESTABLISHED': (141, 182), 'FIN_WAIT_1': (12, 238), 'CLOSE_WAIT': (270, 238), 'FIN_WAIT_2': (12, 294),
-         'CLOSING': (141, 294), 'LAST_ACK': (270, 294), 'TIME_WAIT': (12, 350), 'CLOSED ': (141, 404)}
-def c(n):
-    x, y = NODES[n]; return x + NW / 2, y + NH / 2
-CLIENT = [('CLOSED', 'connect(): send SYN'), ('SYN_SENT', 'SYN-ACK in: send ACK'), ('ESTABLISHED', 'close(): send FIN'),
-          ('FIN_WAIT_1', 'ACK in'), ('FIN_WAIT_2', 'FIN in: send ACK'), ('TIME_WAIT', 'wait 2 × MSL'), ('CLOSED ', '')]
-SERVER = [('CLOSED', 'listen()'), ('LISTEN', 'SYN in: send SYN-ACK'), ('SYN_RCVD', 'ACK in'), ('ESTABLISHED', 'FIN in: send ACK'),
-          ('CLOSE_WAIT', 'close(): send FIN'), ('LAST_ACK', 'ACK in'), ('CLOSED ', '')]
-EXTRA = [('FIN_WAIT_1', 'CLOSING'), ('CLOSING', 'TIME_WAIT')]
-D = 16.0
-STEP = 1.05
-S0 = 0.6; C0 = S0 + STEP; GAP = 2 * STEP
-T = Timeline(D, shift=C0 + 5 * GAP + 0.4)
-def win(t0, t1):
-    return T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
+W, H = 400, 482
+CX, SX = 132, 268                    # the two lanes
+CP, SP = 66, 334                     # state pills, centred
+Y = lambda r: 54 + r * 31
+D = 17.0
+T = Timeline(D, shift=16.4)
+RESET = 0.4
+def at(r):                           # story time of event row r
+    return 1.0 + 0.95 * r
+def held(t):                         # off from the reset until t, then held (on at t=0)
+    return T.anim('opacity', [(0.0, 1.0), (RESET, 1.0), (RESET + 0.001, 0.0), (t - 0.001, 0.0), (t, 1.0), (D, 1.0)])
+
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-30 svgd-part3-30">')
-a('<title id="svgt-part3-30">Fig 10.3 · TCP\'s state machine</title>')
-a('<desc id="svgd-part3-30">TCP\'s eleven connection states. A client goes from CLOSED to SYN_SENT when it connects, to ESTABLISHED when the SYN-ACK arrives, to FIN_WAIT_1 when it closes, FIN_WAIT_2 when its FIN is acknowledged, '
-  'TIME_WAIT when the other side\'s FIN arrives, and back to CLOSED after waiting twice the maximum segment lifetime. A server goes from CLOSED to LISTEN, to SYN_RCVD when a SYN arrives, to ESTABLISHED on the ACK, '
-  'to CLOSE_WAIT when the client\'s FIN arrives, to LAST_ACK when it closes too, and to CLOSED when its FIN is acknowledged. CLOSING is reached only when both sides close at once.</desc>')
-def edge(u, v, dashed=False):
-    (x1, y1), (x2, y2) = c(u), c(v)
-    y1 += NH / 2 if y2 > y1 else 0; y2 -= NH / 2 if y2 > y1 else 0
-    if y1 == y2: x1, x2 = (x1 + NW / 2, x2 - NW / 2) if x2 > x1 else (x1 - NW / 2, x2 + NW / 2)
-    return x1, y1, x2, y2
-for path in (CLIENT, SERVER):
-    for (u, _), (v, _) in zip(path, path[1:]):
-        x1, y1, x2, y2 = edge(u, v)
-        a(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{CSOFT}" stroke-opacity="0.3" stroke-width="1.5"/>')
-for u, v in EXTRA:
-    x1, y1, x2, y2 = edge(u, v)
-    a(f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{CSOFT}" stroke-opacity="0.25" stroke-width="1.5" stroke-dasharray="3 3"/>')
-for n, (x, y) in NODES.items():
-    dim = n == 'CLOSING'
-    a(f'<rect x="{x}" y="{y}" width="{NW}" height="{NH}" rx="2" fill="{CDEEP}" stroke="{CSOFT}" stroke-opacity="{0.3 if dim else 0.6}"/>')
-    a(text(x + NW / 2, y + 21, n.strip(), anchor='middle', size=13, fill=CMUTED if dim else '#fff', ls='0'))
-def life(path, t0, col, who):
-    (sx, sy) = c(path[0][0])
-    kx, ky = [(0.0, 0.0), (t0, 0.0)], [(0.0, 0.0), (t0, 0.0)]
-    for i, (n, _) in enumerate(path[1:], 1):
-        x, y = c(n); t = t0 + (i - 1) * GAP + STEP
-        kx += [(t - 0.35, kx[-1][1]), (t, x - sx)]; ky += [(t - 0.35, ky[-1][1]), (t, y - sy)]
-        x1, y1, x2, y2 = edge(path[i - 1][0], n)
-        a(f'<line class="fx" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" stroke="{col}" stroke-width="3" opacity="0">{win(t - 0.35, t + 0.5)}</line>')
-    kx.append((D, kx[-1][1])); ky.append((D, ky[-1][1]))
-    end = t0 + (len(path) - 2) * GAP + STEP + 0.6
-    a(f'<g class="fx" opacity="0">{win(t0 - 0.2, end)}<g>{T.translate(kx, "x")}<g>{T.translate(ky, "y")}'
-      f'<rect x="{sx - NW / 2 - 3}" y="{sy - NH / 2 - 3}" width="{NW + 6}" height="{NH + 6}" rx="3" fill="none" stroke="{col}" stroke-width="2.5"/></g></g></g>')
-    for i, (n, ev) in enumerate(path[:-1]):
-        t = t0 + i * GAP
-        a(f'<g opacity="0">{win(t, t + STEP)}{text(200, H - 10, f"{who}: {ev}", anchor="middle", size=13, fill=col, ls="0")}</g>')
-life(CLIENT, C0, ROUTE, 'client')
-life(SERVER, S0, CYAN, 'server')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-30 svgd-part3-30"{T.beats_attr()}>')
+a("<title id=\"svgt-part3-30\">Fig 10.3 · TCP's state machine</title>")
+a('<desc id="svgd-part3-30">Two lanes, the client on the left and the server on the right, with time running down. '
+  'The server\'s program calls listen and the server waits in LISTEN; the client starts CLOSED. The client sends SYN and is in '
+  'SYN_SENT; the server receives it, answers SYN+ACK and is in SYN_RCVD; the client receives that, sends ACK and is ESTABLISHED, '
+  'and the server is ESTABLISHED when the ACK lands. Data flows both ways. Then the client\'s program calls close: it sends FIN '
+  'and is in FIN_WAIT_1; the server receives it, acknowledges and is in CLOSE_WAIT; the ACK moves the client to FIN_WAIT_2. '
+  'The server\'s program calls close: it sends FIN and is in LAST_ACK; the client receives it, sends the last ACK and enters '
+  'TIME_WAIT, and the server is CLOSED when that ACK lands. The client waits out a timer, then is CLOSED. Each segment, call '
+  'or timer moves one side one state.</desc>')
+
+def pill(x, y, name, col, t=None, w=118):
+    shape = f'<rect x="{x - w / 2}" y="{y - 14}" width="{w}" height="23" rx="11.5" fill="none" stroke="{col}" stroke-width="1.5"/>'
+    word = text(x, y + 3, name, anchor='middle', size=14, fill=col, ls='0', role='label' if len(name) > 6 else None)
+    g = obj(shape, word)
+    return g if t is None else f'<g opacity="1">{held(t)}{g}</g>'
+
+def segment(r_from, r_to, x1, x2, name, col):
+    """A segment leaving one lane at row r_from and landing on the other at r_to; it travels from at(r_from)."""
+    y1, y2 = Y(r_from) - 3, Y(r_to) - 3
+    d = 1 if x2 > x1 else -1
+    L = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+    t0, t1 = at(r_from), at(r_from) + 0.8
+    draw = T.anim('stroke-dashoffset', [(0.0, 0.0), (RESET, 0.0), (RESET + 0.001, L), (t0, L), (t1, 0.0), (D, 0.0)])
+    head = f'<polygon points="{x2},{y2} {x2 - 9 * d},{y2 - 6} {x2 - 9 * d},{y2 + 4}" fill="{col}"/>'
+    word = text((x1 + x2) / 2, (y1 + y2) / 2 - 7, name, anchor='middle', size=14, fill=col, ls='0',
+                role='label' if len(name) > 6 else None)
+    a(f'<g opacity="1">{held(t0)}' +
+      obj(f'<line x1="{x1}" y1="{y1}" x2="{x2}" y2="{y2}" stroke="{col}" stroke-width="2" stroke-dasharray="{L:.1f}" stroke-dashoffset="0">{draw}</line>',
+          f'<g opacity="1">{held(t1)}{head}</g>', word) + '</g>')
+
+# the client's lane
+a('<g data-panel="client">')
+a(text(CP, 22, 'client', anchor='middle', size=14, fill=CMUTED, role='label'))
+a(f'<line x1="{CX}" y1="34" x2="{CX}" y2="{Y(13) + 4}" stroke="{CSOFT}" stroke-opacity="0.55"/>')
+a(pill(CP, Y(0), 'CLOSED', CSOFT))
+a(pill(CP, Y(1), 'SYN_SENT', CSOFT, at(1)))
+a(pill(CP, Y(3), 'ESTABLISHED', CYAN, at(2) + 0.8, w=128))
+a(f'<g opacity="1">{held(at(6) - 0.4)}' + text(CX - 8, Y(6) - 18, 'close', anchor='end', size=14, fill=ROUTE, ls='0', role='label') + '</g>')
+a(pill(CP, Y(6), 'FIN_WAIT_1', ROUTE, at(6)))
+a(pill(CP, Y(8), 'FIN_WAIT_2', ROUTE, at(7) + 0.8))
+a(pill(CP, Y(10), 'TIME_WAIT', ROUTE, at(9) + 0.8))
+# TIME_WAIT's timer: a bar that runs out, then CLOSED
+tw0, tw1 = at(10) + 0.8, at(10) + 3.4
+a(f'<g opacity="1">{held(tw0)}' + obj(
+    f'<rect x="{CP - 44}" y="{Y(11) - 6}" width="88" height="8" rx="4" fill="none" stroke="{ROUTE}" stroke-width="1.3"/>',
+    f'<rect x="{CP - 44}" y="{Y(11) - 6}" width="88" height="8" rx="4" fill="{ROUTE}">'
+    f'{T.anim("width", [(0.0, 0.0), (RESET, 0.0), (RESET + 0.001, 88.0), (tw0, 88.0), (tw1, 0.0), (D, 0.0)])}</rect>',
+    text(CP, Y(11) + 18, 'timer', anchor='middle', size=14, fill=CMUTED, ls='0')) + '</g>')
+a(f'<g opacity="1">{held(tw1)}<path d="M {CP} {Y(11) + 26} V {Y(13) - 22}" stroke="{CSOFT}" stroke-width="1.5"/>'
+  f'<polygon points="{CP - 5},{Y(13) - 24} {CP + 5},{Y(13) - 24} {CP},{Y(13) - 17}" fill="{CSOFT}"/></g>')
+a(pill(CP, Y(13), 'CLOSED', CSOFT, tw1))
+a('</g>')
+
+# the server's lane
+a('<g data-panel="server">')
+a(text(SP, 22, 'server', anchor='middle', size=14, fill=CMUTED, role='label'))
+a(f'<line x1="{SX}" y1="34" x2="{SX}" y2="{Y(13) + 4}" stroke="{CSOFT}" stroke-opacity="0.55"/>')
+a(text(SX - 8, Y(0) + 3, 'listen', anchor='end', size=14, fill=CYAN, ls='0', role='label'))
+a(pill(SP, Y(0), 'LISTEN', CSOFT))
+a(pill(SP, Y(2), 'SYN_RCVD', CSOFT, at(1) + 0.8))
+a(pill(SP, Y(4), 'ESTABLISHED', CYAN, at(3) + 0.8, w=128))
+a(pill(SP, Y(7), 'CLOSE_WAIT', ROUTE, at(6) + 0.8))
+a(f'<g opacity="1">{held(at(9) - 0.4)}' + text(SX + 8, Y(9) - 18, 'close', size=14, fill=ROUTE, ls='0', role='label') + '</g>')
+a(pill(SP, Y(9), 'LAST_ACK', ROUTE, at(9)))
+a(pill(SP, Y(11), 'CLOSED', CSOFT, at(10) + 0.8))
+a('</g>')
+
+# the segments between them
+a('<g data-panel="segments">')
+segment(1, 2, CX, SX, 'SYN', CYAN)
+segment(2, 3, SX, CX, 'SYN+ACK', CYAN)
+segment(3, 4, CX, SX, 'ACK', CYAN)
+a(f'<g opacity="1">{held(at(4) + 0.6)}' + obj(f'<rect x="{CX + 8}" y="{Y(4) + 12}" width="{SX - CX - 16}" height="40" rx="4" fill="none" stroke="{CYAN}" stroke-opacity="0.6" stroke-dasharray="3 4"/>',
+                                           text(200, Y(5) + 6, 'data', anchor='middle', size=14, fill=CYAN, ls='0')) + '</g>')
+segment(6, 7, CX, SX, 'FIN', ROUTE)
+segment(7, 8, SX, CX, 'ACK', ROUTE)
+segment(9, 10, SX, CX, 'FIN', ROUTE)
+segment(10, 11, CX, SX, 'ACK', ROUTE)
+a('</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ("TCP's eleven states (CLOSED is drawn twice, where a connection starts and where it ends), as RFC 793 defined them in 1981: the client connects and closes first, the server listens and closes second. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before its addresses and ports are reused.")
+caption = ('Time runs down: each segment drawn between the two lanes, and each listen or close from the program, moves one side to '
+           'its next state. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before '
+           'its addresses and ports are reused.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>TIME_WAIT.</b> It lasts twice the maximum segment lifetime; Linux uses 60 seconds.</li>
-          <li><b>CLOSING.</b> Reached only when both sides send FIN at the same moment; most connections never see it.</li>
-          <li><b>Seeing it live.</b> <code>ss -tan</code> on Linux lists every connection with its current state.</li>
+          <li><b>Opening.</b> SYN, SYN+ACK, ACK: three segments carry each side from CLOSED or LISTEN to ESTABLISHED.</li>
+          <li><b>Data.</b> In ESTABLISHED both sides send and acknowledge bytes.</li>
+          <li><b>Closing.</b> Each side's program calls close, and each side sends its own FIN, which the other acknowledges. The first to close passes FIN_WAIT_1 and FIN_WAIT_2; the second, CLOSE_WAIT and LAST_ACK.</li>
+          <li><b>TIME_WAIT.</b> It lasts twice the maximum segment lifetime (Linux uses 60 seconds), so a late copy of a segment cannot land in a new connection.</li>
+          <li><b>The eleventh state.</b> CLOSING, reached only when both sides send FIN at once, is not drawn; RFC 793 (1981) defined all eleven. <code>ss -tan</code> on Linux lists every connection's state.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-10-3">
