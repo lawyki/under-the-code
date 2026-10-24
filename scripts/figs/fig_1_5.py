@@ -19,9 +19,9 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-6 svgd-part1-6"{T.beats_attr()}>')
 a('<title id="svgt-part1-6">Fig 1.5 · Inside the switch · a field-effect transistor in cross-section</title>')
 a('<desc id="svgd-part1-6">The same transistor twice, cut open. A slab of p-type silicon holds two n-type wells, the source and the '
-  'drain, full of free electrons; above the gap between them a gate sits on a thin insulating oxide, and a wire with a lamp joins '
-  'source to drain. Top, the gate at 0 V: the electrons stay in their wells, nothing joins them, and the lamp is dark. Bottom, '
-  'the gate at a positive voltage (1 V): its pull reaches through the oxide, electrons slide in from both wells into a thin channel '
+  'drain, full of free electrons; above the gap between them a gate sits on a thin insulating oxide, and a wire with a lamp and a '
+  'battery joins source to drain. Top, the gate at 0 V: the electrons stay in their wells, nothing joins them, and the lamp is dark. Bottom, '
+  'the gate switched each cycle from 0 V to a positive voltage (1 V): its pull reaches through the oxide, electrons slide in from both wells into a thin channel '
   'under it while the holes are pushed down, current flows round the wire and the lamp lights. The gate never touches the '
   'electrons.</desc>')
 
@@ -52,11 +52,14 @@ def panel(py, live):
     """One cross-section at panel top py. live: the lower panel, which switches on."""
     a(f'<g data-panel="{"on" if live else "off"}" transform="translate(0 {py})">')
     # the circuit: source contact up, across through the lamp, down to the drain contact
-    a(f'<path d="M 40 {ST} V 26 H 360 V {ST}" fill="none" stroke="{WIRE}" stroke-width="1.6"/>')
+    a(f'<path d="M 40 {ST} V 26 H 66 M 75 26 H 360 V {ST}" fill="none" stroke="{WIRE}" stroke-width="1.6"/>')
     for x in (40, 360):
         a(f'<rect x="{x - 12}" y="{ST - 6}" width="24" height="7" rx="1.5" fill="#8d8d8d"/>')
     lit = T.pulse(IN + 0.2, OFF, ramp=0.25) if live else None
     a(lamp(118, 26, lit))
+    # the battery that drives the current (long plate +, short plate -)
+    a(f'<line x1="66" y1="13" x2="66" y2="39" stroke="rgba(255,255,255,0.75)" stroke-width="2.2"/>'
+      f'<line x1="75" y1="19" x2="75" y2="33" stroke="rgba(255,255,255,0.75)" stroke-width="3.4"/>')
     # the slab, the two wells, the oxide, the gate
     a(f'<rect x="{SL}" y="{ST}" width="{SR - SL}" height="{SB - ST}" rx="4" fill="none" stroke="{RED}" stroke-opacity="0.8" stroke-width="1.4"/>')
     for x0 in (SL, WR):
@@ -143,7 +146,7 @@ how = '''<details class="fig-how">
         <ol>
           <li><b>The silicon.</b> The source and drain are n-type, full of free electrons (dots); the body between them is p-type, with holes (rings). Where the two kinds meet, electrons fill the nearby holes and leave a thin barrier, so nothing joins source to drain.</li>
           <li><b>Gate on.</b> A positive voltage on the gate pulls through the oxide. It draws electrons in from both wells and pushes the holes away beneath it.</li>
-          <li><b>The channel.</b> The gathered electrons form a thin bridge under the oxide, and current flows round the circuit: the lamp lights.</li>
+          <li><b>The channel.</b> The gathered electrons form a thin bridge under the oxide, and the battery drives a current round the circuit: the lamp lights.</li>
           <li><b>Gate off.</b> At 0 V the pull stops, the electrons go back, the channel is gone and the lamp goes dark.</li>
           <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor, the kind a modern chip holds billions of.</li>
         </ol>

@@ -80,7 +80,7 @@ a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('From A\'s side a slow C and a crashed C look the same (top). Deciding now fails if C was only slow and its vote '
-           'disagrees, waiting fails for ever if C crashed, so no deterministic protocol is safe in both, and real systems '
+           'disagrees, waiting fails for ever if C crashed, so no deterministic protocol keeps safety and liveness in both, and real systems '
            'use timeouts that start a new election, never a decision.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>

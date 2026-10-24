@@ -727,7 +727,7 @@
           <li><b>The log first.</b> Each change is appended to the write-ahead log and forced to disk (<code>fsync()</code>) before the commit is acknowledged.</li>
           <li><b>Pages later.</b> The data pages are written when convenient, so at a crash some committed changes are missing from them and some uncommitted ones are already there.</li>
           <li><b>Recovery.</b> It reads the log: a transaction with a commit record is redone, one without is undone. One mechanism gives both durability and atomicity.</li>
-          <li><b>Variants.</b> This is the ARIES scheme (IBM, 1992); PostgreSQL only redoes, and its row versions keep uncommitted changes from ever being seen.</li>
+          <li><b>Variants.</b> This is the idea behind ARIES (IBM, 1992), which first repeats every logged change and then undoes the unfinished transactions; PostgreSQL only redoes, and its row versions keep uncommitted changes from ever being seen.</li>
         </ol>
       </details>
     </div>

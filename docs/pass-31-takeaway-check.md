@@ -20,3 +20,7 @@ Terms flagged as untaught although the prose teaches them first (the paragraph t
 | 12.6 | thread | ch7-gil-p1 |
 
 Everyday words missing from the checker's word list: inflections (lowest, became, rewritten) and plain nouns (database).
+
+## Exemplar drafts (2026-10-24)
+
+`fig:check` on the five Phase 1 drafts: Figs 1.5, 13.5 and 17.6 pass every check. Figs 4.8 and 10.3 fail taught-yet on all-capitals tokens only, each taught before the figure: CR3 (chBridge-mode-p4) and TCP's state names SYN_SENT, SYN_RCVD, FIN_WAIT_1, FIN_WAIT_2, CLOSE_WAIT, LAST_ACK, TIME_WAIT and the segment SYN-ACK (ch10-handshake-p1 and p3).

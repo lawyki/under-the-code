@@ -24,8 +24,8 @@ o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part3-30 svgd-part3-30"{T.beats_attr()}>')
 a("<title id=\"svgt-part3-30\">Fig 10.3 · TCP's state machine</title>")
 a('<desc id="svgd-part3-30">Two lanes, the client on the left and the server on the right, with time running down. '
-  'The server\'s program calls listen and the server waits in LISTEN; the client starts CLOSED. The client sends SYN and is in '
-  'SYN_SENT; the server receives it, answers SYN+ACK and is in SYN_RCVD; the client receives that, sends ACK and is ESTABLISHED, '
+  'The server\'s program calls listen and the server waits in LISTEN; the client starts CLOSED. The client\'s program calls '
+  'connect: it sends SYN and is in SYN_SENT; the server receives it, answers SYN-ACK and is in SYN_RCVD; the client receives that, sends ACK and is ESTABLISHED, '
   'and the server is ESTABLISHED when the ACK lands. Data flows both ways. Then the client\'s program calls close: it sends FIN '
   'and is in FIN_WAIT_1; the server receives it, acknowledges and is in CLOSE_WAIT; the ACK moves the client to FIN_WAIT_2. '
   'The server\'s program calls close: it sends FIN and is in LAST_ACK; the client receives it, sends the last ACK and enters '
@@ -57,6 +57,7 @@ a('<g data-panel="client">')
 a(text(CP, 22, 'client', anchor='middle', size=14, fill=CMUTED, role='label'))
 a(f'<line x1="{CX}" y1="34" x2="{CX}" y2="{Y(13) + 4}" stroke="{CSOFT}" stroke-opacity="0.55"/>')
 a(pill(CP, Y(0), 'CLOSED', CSOFT))
+a(f'<g opacity="1">{held(at(1) - 0.4)}' + text(CX + 8, Y(1) - 14, 'connect', anchor='start', size=14, fill=CYAN, ls='0', role='label') + '</g>')
 a(pill(CP, Y(1), 'SYN_SENT', CSOFT, at(1)))
 a(pill(CP, Y(3), 'ESTABLISHED', CYAN, at(2) + 0.8, w=128))
 a(f'<g opacity="1">{held(at(6) - 0.4)}' + text(CX - 8, Y(6) - 18, 'close', anchor='end', size=14, fill=ROUTE, ls='0', role='label') + '</g>')
@@ -92,7 +93,7 @@ a('</g>')
 # the segments between them
 a('<g data-panel="segments">')
 segment(1, 2, CX, SX, 'SYN', CYAN)
-segment(2, 3, SX, CX, 'SYN+ACK', CYAN)
+segment(2, 3, SX, CX, 'SYN-ACK', CYAN)
 segment(3, 4, CX, SX, 'ACK', CYAN)
 a(f'<g opacity="1">{held(at(4) + 0.6)}' + obj(f'<rect x="{CX + 8}" y="{Y(4) + 12}" width="{SX - CX - 16}" height="40" rx="4" fill="none" stroke="{CYAN}" stroke-opacity="0.6" stroke-dasharray="3 4"/>',
                                            text(200, Y(5) + 6, 'data', anchor='middle', size=14, fill=CYAN, ls='0')) + '</g>')
@@ -104,13 +105,13 @@ a('</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Time runs down: each segment drawn between the two lanes, and each listen or close from the program, moves one side to '
+caption = ('Time runs down: each segment drawn between the two lanes, and each listen, connect or close from the program, moves one side to '
            'its next state. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before '
            'its addresses and ports are reused.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Opening.</b> SYN, SYN+ACK, ACK: three segments carry each side from CLOSED or LISTEN to ESTABLISHED.</li>
+          <li><b>Opening.</b> SYN, SYN-ACK, ACK: three segments carry each side from CLOSED or LISTEN to ESTABLISHED.</li>
           <li><b>Data.</b> In ESTABLISHED both sides send and acknowledge bytes.</li>
           <li><b>Closing.</b> Each side's program calls close, and each side sends its own FIN, which the other acknowledges. The first to close passes FIN_WAIT_1 and FIN_WAIT_2; the second, CLOSE_WAIT and LAST_ACK.</li>
           <li><b>TIME_WAIT.</b> It lasts twice the maximum segment lifetime (Linux uses 60 seconds), so a late copy of a segment cannot land in a new connection.</li>
