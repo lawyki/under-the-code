@@ -1,6 +1,6 @@
 # Pass 31 · gate calibration (gate builder's record)
 
-Brief: `docs/pass-31-brief.md` sections 3, 4, 6, 7 (gate builder track), 10, 11, 15. Status: **frozen 2026-10-24** (section 11, combined fingerprint `3294111df0b4b9b81033d65b2424affad874452574d0894bd76076d31526185d`). The sealed validation (brief section 10) is not part of this record: it runs later with `npm run fig:validate` and reports counts only.
+Brief: `docs/pass-31-brief.md` sections 3, 4, 6, 7 (gate builder track), 10, 11, 15. Status: **not frozen.** The gate was frozen on 2026-10-24 at `dd51d25` (section 11, combined fingerprint `3294111df0b4b9b81033d65b2424affad874452574d0894bd76076d31526185d`), reopened the same day before any validation for session e2's follow-up (section 13: taught-yet repairs, the takeaway read from the ledger by header, Enigma as a must-pass), and **not re-frozen**: the three prompt revisions the follow-up allowed were used without v4 and Enigma passing three of three (section 13.4). The configuration in the repo is the last one tried (try25, combined `9ba0dfc0709a7f4cb8d8ea4f618e5b976ecd8eea474fbb147729e3a43b4f6a87`). Total prompt attempts: **26** (try0 to try25, section 13.6). The sealed validation (brief section 10) is not part of this record: it runs later with `npm run fig:validate` and reports counts only.
 
 The gate builder never saw the sealed material: commit 93aae05 (Fig 1.1 v3) was not checked out, shown, diffed or rendered, and nothing under `docs/pass-31-sealed/` was read or written. The validation runner was tested only on a scratch manifest in the builder's scratch directory, with v1, v4 and a decoy as stand-ins. The only Fig 1.1 versions used are v1, v2 and v4 below, plus decoys built from v4. No figure from the book's security chapters was opened.
 
@@ -13,16 +13,17 @@ The gate builder never saw the sealed material: commit 93aae05 (Fig 1.1 v3) was 
 | `node tests/pass30/bare.mjs ... --no-text` | `tests/pass30/bare.mjs` | The SVG alone at a SMIL time; `--no-text` removes every `<text>` first. |
 | `npm run fig:sheet` | `tests/pass31/sheet.mjs` | Contact sheets per chapter, 375 px, t=0, Fig 1.1 v4 and Fig 1.2 Enigma pinned. |
 | `npm run fig:check -- <part>` | `tests/pass31/check.mjs` | Mechanical checks per figure: Gate 1 rows attributed to the figure (new), label cap (tightened), legend entries (new), 11 px floor, taught-yet, t=0 empty band, `<desc>`, caption, strip; per part: dashes, anchors, each Gate 1 tool's summary. |
-| `npm run fig:gate -- <id> --intent=... --job=...` | `tests/pass31/gate.mjs`, `tests/pass31/prompts.mjs`, `tests/pass31/lib.mjs` | The gate (section 2). |
-| `npm run fig:dev -- [--runs=3] [--label=...]` | `tests/pass31/dev.mjs` | The development set: builds v1, v2, v4 and the three decoys and runs the gate on each, three times. |
+| `npm run fig:gate -- <id> [--ledger=...]` | `tests/pass31/gate.mjs`, `tests/pass31/prompts.mjs`, `tests/pass31/lib.mjs`, `tests/pass31/common-words.txt` | The gate (section 2). The takeaway and job come from the ledger by header name (section 13.1, item 4), or from `--intent` and `--job` for a figure outside it. |
+| `npm run fig:dev -- [--runs=3] [--label=...] [--ledger=...]` | `tests/pass31/dev.mjs` | The development set: builds v1, v2, v4, the four decoys and Enigma (section 13.1, items 5 and 6) and runs the gate on each, three times, with the ledger's takeaways. |
+| `npm run fig:taught-test` | `tests/pass31/taught.test.mjs` | The taught-yet rules on 19 fixed cases at real figure positions (section 13.1, item 7). |
 | `npm run fig:hash` | `tests/pass31/hash.mjs` | The gate's fingerprint: sha256 of each prompt, of each file the gate runs, the model id, and the combined hash; the CLI version beside it. |
-| `npm run fig:validate -- --expect-hash=<combined>` | `tests/pass31/validate.mjs` | The sealed validation: runs the frozen gate (no pairwise) on the items of `docs/pass-31-sealed/validation.json` and prints counts only; everything else stays under `docs/pass-31-sealed/`. |
+| `npm run fig:validate -- --expect-hash=<combined>` | `tests/pass31/validate.mjs` | The sealed validation: runs the frozen gate (no pairwise) on the items of `docs/pass-31-sealed/validation.json`, each scored against the ledger's takeaway (the manifest's intent only where the ledger has none), and prints counts only; everything else stays under `docs/pass-31-sealed/`. |
 
 Outputs (renders, packets, every tester reply, verdicts) go to `tests/pass31/out/` (gitignored); validation outputs go to `docs/pass-31-sealed/` (gitignored).
 
 ## 2. The gate
 
-`npm run fig:gate -- <fig-id> --intent="<intent sentence>" --job="function|real thing|two-part" [--tree=<public dir>] [--rc2-tree=<dir> | --rc2-rev=v1.0-rc2 | --no-pairwise] [--order=random|cand-first|rc2-first] [--criteria=...] [--expect-hash=<combined>] [--author]`
+`npm run fig:gate -- <fig-id> [--ledger=<docs/pass-31-ledger.tsv>] | [--intent="<takeaway>" --job="function|real thing|two-part"] [--tree=<public dir>] [--rc2-tree=<dir> | --rc2-rev=v1.0-rc2 | --no-pairwise] [--order=random|cand-first|rc2-first] [--criteria=...] [--expect-hash=<combined>] [--author]`
 
 - **Renders** (bare.mjs, Chromium, 375 px, dsf 2): 12 frames at k/12 of the cycle, k = 0..11 (frame 1 is the t=0 still, the reduced-motion view); the same frames with `--no-text`; for pairwise, the rc2 version's frames. The rc2 version defaults to the `v1.0-rc2` tag's part page with this tree's assets. A figure that does not animate renders one frame: `judge` is then n/a (the still is the whole figure), the still and the one-frame text-stripped still carry the test, and pairwise compares one frame against twelve when needed. A figure missing from rc2 (a merge, a new figure) gets pairwise n/a.
 - **Judge packet**: unchanged: the book's prose up to the figure, with every figure card (label, picture, caption, strip), every other `<svg>`, scripts, styles and navigation removed. Caption, strip, `<title>`, `<desc>` and intent are never in it.
@@ -30,7 +31,7 @@ Outputs (renders, packets, every tester reply, verdicts) go to `tests/pass31/out
 - **Describers** (round 1): the judge (12 frames), the still (t=0), the text-stripped judge, and the two pairwise orders. Each describer names `cause_drawn`, the drawn thing that shows the cause, or "none". The judge and the still list `unexplained_words` (each with its reason) and `unexplained_marks` separately.
 - **Checks** (round 2): one scorer per description and one hedge check per description (judge, still, stripped), each asked **three times** in fresh sessions; the majority decides. The description is fixed, so the votes damp only the checker's noise in applying its rules.
 - **Criteria** (the verdict names the first failed one in this order):
-  1. `taught` (mechanical): every `<text>` token is a number or sign, a term `known-terms.mjs` lists before the section (or the section teaches before the card), an everyday word, or a proper name from the glossary that the prose before the figure already uses (`lib.mjs taughtYet`, brief section 15).
+  1. `taught` (mechanical): every `<text>` token is a number or sign, a term `known-terms.mjs` lists before the section (or the section teaches before the card, or, for an all-capitals abbreviation, the prose paragraph that first uses it comes before the card), an everyday word, or a proper name from the glossary that the prose before the figure already uses (`lib.mjs taughtYet`, brief section 15; the rules as revised in section 13.1).
   2. `judge`: (a) the judge describes the 12 frames; (b) the scorer compares that description with the intent for the job: mechanism (with the cause drawn), unexplained (any unexplained word fails), carried by the picture, one scene shown once, few words.
   3. `hedge`: (c) the hedge check on the judge's, the still's and the text-stripped descriptions, each in its own scope (section 7, item 1). Any of the three failing fails `hedge`.
   4. `still`: (d) the t=0 still alone, described and scored (mechanism with the cause drawn, unexplained, few words).
@@ -40,7 +41,7 @@ Outputs (renders, packets, every tester reply, verdicts) go to `tests/pass31/out
 
 ## 3. Intent used for Fig 1.1
 
-From `docs/pass-30-figures.md`, row `fig-1-1`, job **function**:
+From try22 on (section 13), the takeaway in the ledger's column `intent`, read by header: "Function: the head walks right past each mark and marks the next blank, so three marks become four." (job **function**). Up to try21, the long intent from `docs/pass-30-figures.md`, row `fig-1-1`, job **function**:
 
 > A Turing machine's head reads one tape cell at a time and follows two rules: on a mark, move right; on an empty cell, write a mark and stop. Starting from three tally marks it walks past them and writes a fourth, so these two rules alone compute 3 + 1 = 4.
 
@@ -54,8 +55,10 @@ From `docs/pass-30-figures.md`, row `fig-1-1`, job **function**:
 | decoy1 | v4 tree, svg replaced | constructed: the mechanism written out as six lines of text beside a decorative moving dot (the review's decoy1) | FAIL | none (validation mode) |
 | decoy2 | v4 tree, svg replaced | constructed: tape, three marks, a head that slides right and writes a fourth, labels TAPE, HEAD, "3 + 1 = 4", **no rule drawn** (the review's decoy2) | FAIL | none |
 | decoy3 | v4 tree, one label changed | constructed: v4 with its head labelled "head · adding" (v2's unexplained state label on an otherwise approved scene) | FAIL | none |
+| Enigma | this worktree's `public/`, Fig 1.2 as it stands | owner: praised (the real thing); a must-pass from session e2 on, job **real thing** (added in section 13) | PASS | against rc2 (byte-identical frames: SAME) |
+| decoy4 | Enigma tree, svg replaced | constructed: Fig 1.2's takeaway as a block schematic, empty boxes KEY, ROTORS, REFLECTOR, LAMP joined by arrows, a counter and a lamp letter stepping (added in section 13) | FAIL | none |
 
-v1, v2 and v4 are built by `dev.mjs` from a copy of this worktree's `public/` with each commit's own `fig_1_1.py` and `figlib.py` run through `build_into.py`. The built v4 differs from the deployed v4 card only in two outline rects (a later hand smoothing fix); pairwise therefore compares built v4 with deployed v4 and answers SAME or CANDIDATE (one RC2 in one order in try21, never both). The decoys are test fixtures made by `dev.mjs` (never book figures) and run without pairwise, as validation runs, so each must fail on its single-figure criteria alone. The owner never saw the decoys: their expected verdicts follow from the bar (decoy1 and decoy2) and from the owner's stated reason for rejecting v2 (decoy3).
+v1, v2 and v4 are built by `dev.mjs` from a copy of this worktree's `public/` with each commit's own `fig_1_1.py` and `figlib.py` run through `build_into.py`. The built v4 differs from the deployed v4 card only in two outline rects (a later hand smoothing fix); pairwise therefore compares built v4 with deployed v4 and answers SAME or CANDIDATE (one RC2 in one order in try21, never both). The decoys are test fixtures made by `dev.mjs` (never book figures) and run without pairwise, as validation runs, so each must fail on its single-figure criteria alone. The owner never saw the decoys: their expected verdicts follow from the bar (decoy1 and decoy2), from the owner's stated reason for rejecting v2 (decoy3) and from the amended brief's "a schematic is never a real thing" (decoy4).
 
 ## 5. Verification
 
@@ -255,7 +258,9 @@ Without pairwise (as the sealed validation runs), v1 and v2 still fail on their 
 - **Rendering** is Chromium only. The full `fig:check -- part-1` (41 min) was not re-run after the changes; chapters 1 and 2 were (quick Gate 1).
 - **figlib literal regression check** still fails (pre-existing drift, section 5); unchanged.
 
-## 11. Frozen (2026-10-24)
+## 11. Frozen (2026-10-24), then reopened
+
+**Superseded.** This freeze was reopened for section 13 and not re-made; the values below are those of `dd51d25` and no longer match the code (taught-yet rules, ledger reading, real-thing prompts). The text as written at the freeze follows.
 
 The gate is **frozen** as of 2026-10-24, at the configuration of try20 and try21. From here only a failed validation or a drift-check false pass reopens it (brief sections 10 and 14), and a rebuilt gate is validated again on the sealed set before it judges. `npm run fig:hash` reproduces these values; run the validation as `npm run fig:validate -- --expect-hash=3294111df0b4b9b81033d65b2424affad874452574d0894bd76076d31526185d`.
 
@@ -284,9 +289,9 @@ SHA-256 of each judge prompt, rendered by `prompts.mjs frozenTexts()` with place
 - Combined fingerprint (prompts, files, model): `3294111df0b4b9b81033d65b2424affad874452574d0894bd76076d31526185d`.
 - CLI at the freeze (recorded, not hashed): `2.1.310 (Claude Code)`.
 
-## 12. Full prompt texts (tests/pass31/prompts.mjs, sha256 `529f80b39e3dad2377cbc1adf98f99bbcf9acab797d34e370131653acd85c149`)
+## 12. Full prompt texts (tests/pass31/prompts.mjs, sha256 `b54ca44c368332f631564fb7a7b6c46d7b4d6fb6533537fccaacb5177c0b6c57`, the try25 configuration; not frozen)
 
-Every tester gets `SYSTEM` as its system prompt and one user message. `JUDGE`, `STILL`, `STRIPPED` and `PAIRWISE` are followed by the images: for 12 frames each is preceded by a line `Frame k of 12 (t = ... s of a ... s loop):` (pairwise: `Version A, Frame k ...`); a one-frame figure's image is preceded by `the still picture:`; the still tester's image by `The still:`. `SCORER` and `HEDGE` get text only.
+The frozen text of `dd51d25` (sha256 `529f80b3...`) is in git history. Every tester gets `SYSTEM` as its system prompt and one user message. `JUDGE`, `STILL`, `STRIPPED` and `PAIRWISE` are followed by the images: for 12 frames each is preceded by a line `Frame k of 12 (t = ... s of a ... s loop):` (pairwise: `Version A, Frame k ...`); a one-frame figure's image is preceded by `the still picture:`; the still tester's image by `The still:`. `SCORER` and `HEDGE` get text only.
 
 ```js
 // Pass 31 gate prompts (tests/pass31/gate.mjs). The full text is reproduced in docs/pass-31-calibration.md, with the
@@ -374,24 +379,32 @@ The ${n > 1 ? `${n} frames follow` : 'picture follows'}. Then answer with one JS
 // (b) the scorer: a describer's description against the intent sentence, for the figure's job
 const JOBS = {
   'function': `The figure's job is "function": it shows how something works. The bar for this job (the book owner's approved reference) is one calm scene, the core function, few labels, motion that is the mechanism, and the result stated.`,
-  'real thing': `The figure's job is "real thing": it shows a real object or machine as it really is, so the reader sees the real thing and what happens inside it. For this job the description must recognise the object the intent names and see in it what the intent says happens.`,
+  'real thing': `The figure's job is "real thing": it draws a real physical object, machine or place as it looks, its parts drawn with their own physical features (a wheel's contacts and wiring, round keys and lamps, a cabinet's front), even when the drawing is simplified or flattened; and the reader sees in it what the intent says happens. This job is judged on showing the real object as it looks and what visibly happens in it, not on explaining how or why it works: a reader who cannot say what the object is for, why it is built or wired as it is, or why it gives these particular values does not fail for that. Plain labelled boxes joined by arrows or lines standing for the parts, a table, a timeline or text in a frame is never a real thing.`,
   'two-part': `The figure's job is "two-part": one panel shows the real thing and the other shows its function, in one figure. Two panels are expected; each must do its job.`,
 };
 const DRAWN = `A thing that holds still while its matching rule card stays lit is shown stopping, even though the card's word names the stop. The cause counts only when the picture draws it: "cause_drawn" must name a drawn thing (a shape, card, symbol, arrow or light) that shows the intent's cause. It fails if "cause_drawn" is "none", empty, or names only written words; if "read_only", "unsure" or "cause_drawn" says the rules, the cause or the result is not drawn or not shown; or if the cause given comes only from the book's text before the figure or from the reader's own guess.`;
 const DRAWN_STILL = `The cause counts only when the picture draws it: "cause_drawn" must name a drawn thing (a rule card, an arrow, a drawn state, a symbol) that shows the intent's cause. It fails if "cause_drawn" is "none", empty, or names only written words; if "read_only", "unsure" or "cause_drawn" says the rules or the cause are not drawn; or if the cause given comes only from the book's text before the figure or from the reader's own guess. A still cannot show the change happening, so the result may be worked out from the drawn rules and states or stated by a short result line.`;
-const UNEXPLAINED_TEST = `unexplained: it fails if "unexplained_words" lists any word or label (a word the reader had to guess, or one naming something the text never introduced, fails even when the reader got the mechanism anyway; an entry that is only a number or a sign is judged as a mark). The one exception: an entry whose own reason says the text describes the thing the word names and the reader was unsure only where or how the picture places it does not count. It also fails if an entry in "unexplained_marks" shows that the reader could not get what changes, why, or the result. Judge only these two lists here (doubts in "unsure" are scored elsewhere). A mark the description itself uses in the intent's way in "changes", "cause" or "result" is resolved; so is a mark the description itself resolves elsewhere (for example strokes the reader took as counting marks and then used that way in "result"), one about decoration, or a doubt only about how a short result line refers to the drawn marks (whether it states the task or the answer, which mark is the "+ 1") when "result" matches the intent, does not count.`;
+const UNEXPLAINED_BASE = `unexplained: it fails if "unexplained_words" lists any word or label (a word the reader had to guess, or one naming something the text never introduced, fails even when the reader got the mechanism anyway; an entry that is only a number or a sign is judged as a mark). The one exception: an entry whose own reason says the text describes the thing the word names and the reader was unsure only where or how the picture places it does not count. It also fails if an entry in "unexplained_marks" shows that the reader could not get what changes, why, or the result. Judge only these two lists here (doubts in "unsure" are scored elsewhere). A mark the description itself uses in the intent's way in "changes", "cause" or "result" is resolved; so is a mark the description itself resolves elsewhere (for example strokes the reader took as counting marks and then used that way in "result"), one about decoration, or a doubt only about how a short result line refers to the drawn marks (whether it states the task or the answer, which mark is the "+ 1") when "result" matches the intent, does not count.`;
+// a real thing is judged on showing the object as it looks: its parts' names, the letters on them, a legend and a short
+// note on a part are part of that job (taught-yet still checks every token mechanically)
+const UNEXPLAINED_TEST = job => job !== 'real thing' ? UNEXPLAINED_BASE : `${UNEXPLAINED_BASE} For this job (real thing), do not count, in either list, an entry for a word, letter or number that is part of drawing the object: a part's name (a key, a wheel, a lamp, a reflector, a cabinet), the letters or numbers written on a part (a key's letter, a wheel's position letter), a legend for the drawing's colours or lines, or a short note on the drawing saying what a part does or how the drawing simplifies the object. These do not count even when the reader had to guess them or the text never used them: naming the parts of the object as it looks is this job (a separate mechanical check makes sure every such word is an everyday word or taught before the figure). Count only a word tagged onto a part to name a state, mode or condition it is in that neither the picture nor the text explains (for example a part tagged "· ready").`;
+const OBJECT = `object: the description recognises the real object or scene the intent names, its parts drawn with their own physical features (for example wheels with their rows of contacts and the wiring inside them, round keys and lamps). It fails only when the parts are plain boxes or labels with nothing of the part drawn in them (at most a name, a letter or a number), joined by arrows or lines, or when the figure is a table, a timeline or text in a frame. Parts drawn with their own detail pass even when the reader calls them boxes or the drawing a diagram.`;
+// a real thing's cause is its part changing as drawn; how that change gives the result inside the object is function
+const REAL_CAUSE = ` For this job (real thing), the cause is drawn when the part the intent names is drawn changing (it moves or steps, or its position letter or drawn state changes); how that change produces the result inside the object is not tested, so a reader who says nothing shows how it does so does not fail this test.`;
 const RUBRIC = {
   judge: job => `Score the description against the intent. PASS only if every test below passes; otherwise FAIL.
-1. mechanism: the description gives the intent's mechanism: the same thing changes, for the same cause, with the same result. Paraphrase is fine and extra correct detail is fine. It fails if what changes, why, or the result is missing, vague or wrong, or if the description gives a different mechanism, a different representation or a different example than the intent names. ${DRAWN}
-2. ${UNEXPLAINED_TEST}
-${job === 'real thing' ? `3. object: the description recognises the real object or scene the intent names, drawn as itself (not as boxes and labels standing for it).` : `3. carried by the picture: the mechanism is shown happening or drawn, not only written. It fails if "read_only" names a part of the mechanism (what changes, why, or the result) that the picture never shows, or if the cause is not drawn (test 1). Things moving is not enough: the picture must show what makes them move. A short result line that states what the drawn change amounts to (for example a sum, which also says what the drawn marks count) is part of this bar ("the result stated") and does not fail the test, even when "read_only" names it, as long as the change it sums up is shown happening.
+1. mechanism: the description gives the intent's mechanism: the same thing changes, for the same cause, with the same result. Paraphrase is fine and extra correct detail is fine. It fails if what changes, why, or the result is missing, vague or wrong, or if the description gives a different mechanism, a different representation or a different example than the intent names. ${DRAWN}${job === 'real thing' ? REAL_CAUSE : ''}
+2. ${UNEXPLAINED_TEST(job)}
+${job === 'real thing' ? `3. ${OBJECT}` : `3. carried by the picture: the mechanism is shown happening or drawn, not only written. It fails if "read_only" names a part of the mechanism (what changes, why, or the result) that the picture never shows, or if the cause is not drawn (test 1). Things moving is not enough: the picture must show what makes them move. A short result line that states what the drawn change amounts to (for example a sum, which also says what the drawn marks count) is part of this bar ("the result stated") and does not fail the test, even when "read_only" names it, as long as the change it sums up is shown happening.
 4. one scene, shown once: ${job === 'two-part' ? 'at most two panels, and' : 'one panel only (the scene, with its own rule cards, keys and result line), and'} "repeated" is "none". It fails if the figure adds a separate table, list of steps, replay or block of text beside the scene, or shows the same steps twice. A short result line that states what the scene arrives at is not a repeat, even when "repeated" names it.
 5. few words: the picture uses few words. It fails if "text_pieces" is more than 8 for one panel, or if the words, not the picture, carry the mechanism.`}`,
-  still: () => `This description comes from the still alone, the frame a reader with animation turned off sees (for a figure that does not animate, the whole figure). A still cannot move, so the change may be shown by drawn states, arrows, a before and after, drawn rules, or a stated result, and the reader may have to work the motion out. Score it against the intent: a reader who works out, from what is drawn, the same change, cause and result as the intent passes, even when the reader says the change is implied rather than seen. PASS only if every test passes; otherwise FAIL.
-1. mechanism: the description gives the intent's mechanism: what changes, why, and the result, as the intent says. Paraphrase is fine. It fails if any of the three is missing, vague or wrong, or a different mechanism is given. ${DRAWN_STILL}
-2. ${UNEXPLAINED_TEST}
-3. few words: it fails if "text_pieces" is more than 8 for one panel.`,
-  stripped: () => `This description comes from the figure with every word, letter and number removed: only shapes (and, for an animated figure, their motion) were left. Score whether the picture still shows what moves and what causes what, as the intent says. Words and numbers are not expected. PASS only if both tests pass; otherwise FAIL.
+  still: job => `This description comes from the still alone, the frame a reader with animation turned off sees (for a figure that does not animate, the whole figure). A still cannot move, so the change may be shown by drawn states, arrows, a before and after, drawn rules, or a stated result, and the reader may have to work the motion out. Score it against the intent: a reader who works out, from what is drawn, the same change, cause and result as the intent passes, even when the reader says the change is implied rather than seen. PASS only if every test passes; otherwise FAIL.
+1. mechanism: the description gives the intent's mechanism: what changes, why, and the result, as the intent says. Paraphrase is fine. It fails if any of the three is missing, vague or wrong, or a different mechanism is given. ${DRAWN_STILL}${job === 'real thing' ? ` For this job (real thing) the change may also be shown on the drawn object by its parts' drawn states, a row of results, or a short note on the part that changes together with that part's drawn state (a still cannot move); such a note counts as drawn.${REAL_CAUSE}` : ''}
+2. ${UNEXPLAINED_TEST(job)}
+3. ${job === 'real thing' ? OBJECT : `few words: it fails if "text_pieces" is more than 8 for one panel.`}`,
+  stripped: job => job === 'real thing' ? `This description comes from the figure with every word, letter and number removed (the letters on keys, wheels or dials too): only shapes (and, for an animated figure, their motion) were left. The figure's job is "real thing", so score whether the picture without its words still shows the real object and what changes in it, as the intent says. Names are not expected, and why the object behaves as it does is not tested for this job. PASS only if both tests pass; otherwise FAIL.
+1. the object: the shapes the description gives can be matched to the parts of the object the intent names, drawn with their own features (for example panels with rows of contacts and crossing wires for wheels, circles for keys and lamps, cabinets), even when the reader cannot name them or calls them boxes. It fails only if the reader saw plain empty boxes with nothing of the part drawn in them, joined by arrows or lines, or text-like blocks.
+2. what changes: the description names a drawn part that moves or changes, or a drawn result that changes from one press or step to the next (a different light, a path that takes a different route), consistent with the intent. It fails if it names nothing that changes, or only a change the intent does not name.` : `This description comes from the figure with every word, letter and number removed: only shapes (and, for an animated figure, their motion) were left. Score whether the picture still shows what moves and what causes what, as the intent says. Words and numbers are not expected. PASS only if both tests pass; otherwise FAIL.
 1. what moves: the description names the thing that moves or changes and how, consistent with the intent.
 2. what causes what: the description says which thing acts and what happens because of it, consistent with the intent's cause, and "cause_drawn" names a drawn shape that shows that cause (it lights up, matches, points or acts when the change happens). It fails if "cause_drawn" is "none" or empty, if the description can say only that things move, appear or light up without what causes what, if the cause given is only the reader's guess or comes only from the book's text, or if it gives a different mechanism.`,
 };
@@ -423,7 +436,17 @@ const HEDGE_SCOPE = {
 // The text-stripped reader lost every word that named an action or a result, so its check is narrow and positive: it
 // counts only a doubt about which thing moves, or a doubt that anything drawn causes the change (the stripped scorer
 // tests the drawn cause itself).
-const HEDGE_STRIPPED = d => `Below is part of a blind reader's description of a figure from which every word, letter and number was removed. Decide whether the reader hedges on what moves, or on whether any drawn thing causes it.
+const HEDGE_STRIPPED = (d, job = 'function') => job === 'real thing' ? `Below is part of a blind reader's description of a figure from which every word, letter and number was removed. The figure draws a real object, and it is judged on showing that object as it looks, not on how or why it works. Decide whether the reader hedges on whether anything in it changes.
+
+A candidate is each entry in "unsure", each hedging word ("seems", "appears", "probably", "perhaps", "might", "may", "likely", "I think", "I assume", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only when it says that nothing in the picture moves or changes, or that the reader cannot tell what the drawing shows at all.
+Every other candidate does NOT count: doubts about which of the drawn things moves, or whether a change the reader sees is real or meant; why things move or change, what causes it, what the shapes or their parts stand for or are called (the words that named them were removed), what the object is for; timing (a pause, a frame where nothing is lit, a frame caught between two positions, the order inside a step); the result (where it ends up, whether it stops or holds still); the loop starting again; colours and layout.
+
+THE DESCRIPTION (JSON):
+${JSON.stringify(d, null, 1)}
+
+Answer with one JSON object, nothing else:
+{"candidates": [{"quote": "the hedged words", "about": "nothing changes | cannot tell what is drawn | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "nothing changes | cannot tell what is drawn"}], "hedged": true}
+("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)` : `Below is part of a blind reader's description of a figure from which every word, letter and number was removed. Decide whether the reader hedges on what moves, or on whether any drawn thing causes it.
 
 A candidate is each entry in "unsure", each hedging word ("seems", "appears", "probably", "perhaps", "might", "may", "likely", "I think", "I assume", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only in these two cases:
 - it leaves open WHICH thing moves or changes (the reader cannot tell what moved, or offers two different things);
@@ -436,10 +459,26 @@ ${JSON.stringify(d, null, 1)}
 Answer with one JSON object, nothing else:
 {"candidates": [{"quote": "the hedged words", "about": "which thing moves | no drawn cause | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "which thing moves | no drawn cause"}], "hedged": true}
 ("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
-export const HEDGE = (kind, description) => {
+// a real thing is judged on showing the object as it looks, not on how or why it works (brief section 4)
+const HEDGE_REAL_THING = (kind, d) => `Below is part of a blind reader's description of a figure${kind === 'still' ? ' seen as one still picture' : ''}. The figure draws a real object (a machine, a device, a place), and it is judged on showing that object as it looks and what visibly happens in it, not on explaining how or why it works. Decide whether the reader hedges on what the drawing shows, on whether anything in the object changes, or on the result it shows.
+
+A candidate is each entry in "unsure", each hedging word ("seems", "appears", "probably", "perhaps", "might", "may", "likely", "I think", "I assume", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only in these three cases:
+- it leaves open what the drawing shows: the reader cannot tell what object, or which kind of parts, is drawn;
+- it leaves open whether anything in the object changes at all${kind === 'still' ? ' (or, for this still, whether the picture shows a change: drawn states, a row of results, a note on a part)' : ''};
+- it leaves open whether the result the reader names changes (for example whether a different lamp lights for the same key), or offers two different results.
+Every other candidate does NOT count, however it is worded: which of several parts moves, how far, or why the others stay still; why or how a part moves or gives the result it gives, including whether the drawn part is really what makes the result change; what a letter, mark or note on a part stands for; why the object is built or wired as it is, or what it is for; the order or timing of the results shown, a pause, a frame caught between two positions, the loop starting again; colours, layout and how the drawing is meant. (Another test scores whether the reader saw what the figure is meant to show.)
+
+THE DESCRIPTION (JSON):
+${JSON.stringify(d, null, 1)}
+
+Answer with one JSON object, nothing else:
+{"candidates": [{"quote": "the hedged words", "about": "what is drawn | whether it changes | the result | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "what is drawn | whether it changes | the result"}], "hedged": true}
+("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
+export const HEDGE = (kind, description, job = 'function') => {
   const S = HEDGE_SCOPE[kind];
   const d = Object.fromEntries(S.fields.filter(k => description[k] !== undefined).map(k => [k, description[k]]));
-  if (kind === 'stripped') return HEDGE_STRIPPED(d);
+  if (kind === 'stripped') return HEDGE_STRIPPED(d, job);
+  if (job === 'real thing') return HEDGE_REAL_THING(kind, d);
   return `Below is part of a blind reader's description of a figure. Decide whether the reader hedges on ${S.what}.
 
 Every candidate below COUNTS as a hedge unless a rule further down says it does not:
@@ -481,10 +520,174 @@ export function frozenTexts() {
     system: SYSTEM,
     judge: JUDGE(pk),
     scorer: ['judge', 'still', 'stripped'].flatMap(kind => jobs.map(job => SCORER({ kind, job, intent: '{{INTENT}}', description: desc }))).join('\n\u0000\n'),
-    hedge: ['judge', 'still', 'stripped'].map(k => HEDGE(k, Object.fromEntries(HEDGE_SCOPE[k].fields.map(f => [f, `{{${f}}}`])))).join('\n\u0000\n'),
+    hedge: ['judge', 'still', 'stripped'].flatMap(k => jobs.map(job => HEDGE(k, Object.fromEntries(HEDGE_SCOPE[k].fields.map(f => [f, `{{${f}}}`])), job))).join('\n\u0000\n'),
     still: STILL(pk),
     stripped: [STRIPPED(pk, 12), STRIPPED(pk, 1)].join('\n\u0000\n'),
     pairwise: [PAIRWISE(pk, 12, 12), PAIRWISE(pk, 12, 1), PAIRWISE(pk, 1, 12), PAIRWISE(pk, 1, 1)].join('\n\u0000\n'),
   };
 }
 ```
+
+## 13. Follow-up (2026-10-24, session e2): the takeaway form, taught-yet repairs, Enigma. Not re-frozen
+
+The gate frozen at `dd51d25` (fingerprint `3294111d`) was reopened, before any validation ran, for exactly the items of the author's Phase 0 repairs and session e2's verification (its systemic items 2 and 3 and the §15 findings). The cap set by session e2 against overfitting: at most **three prompt revisions** after the first rerun on the takeaway form and Enigma; code that is not prompt wording does not count. Every attempt is logged below, numbered on from try21. **The cap was reached without the bar** (v4 and Enigma did not pass three of three in the last attempt), so, as the cap requires, **the gate was not re-frozen**. The development set is a smoke test; only the sealed validation tests the gate.
+
+### 13.1 What changed (code, not counted toward the cap)
+
+1. **Taught-yet, all-capitals tokens** (`tests/pass31/lib.mjs` `taughtYet`, `scripts/known-terms.mjs`, new `tests/pass31/common-words.txt`). An all-capitals token passes when:
+   - the prose before the figure teaches it: `known-terms.mjs` now lists every all-capitals token (two or more capitals; digits and underscores allowed, so CR3 and SYN_SENT stay whole) at the prose paragraph that first uses it (`abbreviations`: part, section, nearest id, offset). Prose is the section text with every figure card (label, picture, caption, strip), every other svg, scripts and styles taken out. A token passes when that paragraph comes before the card. `known-terms.mjs --public=<tree>` reads the tree the gate or check is run on, so offsets match;
+   - its lowercase form is on the COMMON-word list: the 1,000 most frequent words of google-10000-english (Google Trillion Word Corpus), kept when the word or a plain inflection is a lowercase dictionary entry, plus 11 everyday words the dictionary predates (box, database, women, ...), minus words that double as abbreviations (al, id, am, re, ...; ax, arm, ram, mac, os, nat, lan, dos listed so a regenerated list keeps them out); 902 words. Below four letters only the exact form counts (DOS is not "do"s);
+   - or (beyond the literal item, needed for Enigma, see 13.4) it is an everyday word set in capitals: four letters or more, a lowercase dictionary or COMMON entry, not a glossary term, and never written in capitals anywhere in the book's text outside figure cards (`known-terms.mjs` `capitals`), so it is not an abbreviation the book uses. LAMP, REFLECTOR, ROTORS pass this way; ARM, RAM, OS, MAC, LAN, CPU do not, since the book writes them in capitals.
+   The old rules (a three-letter stop list, `/usr/share/dict/words` for four letters or more, the "(RAM)" spelled-out pattern) are gone. A proper name the prose already uses still passes (Shannon; LINUX for a name the prose spells Linux).
+2. **Inflections.** `stems()` adds -est, -iest, -ier, doubled consonants, -en and -n participles (written, rewritten, taken, shown), an irregular-form table (became, began, held, ...) and plain prefixes (re-, un-, over-, ...). An inflection of a glossary term the figure has not taught fails like the term (kernels). The COMMON list also counts as everyday for lowercase tokens (database, databases).
+3. **Own caption, label, strip.** Prose never includes a figure card, so a term first written in the figure's own caption, label or How-it-works strip is not taught for it. Multi-word glossary terms are now checked whole: "system call", "Ring 0", "Ring 3" fail before they are taught, although every word in them is a dictionary word (a hyphenated term needs its hyphen: "a-machine" is not "a machine"). Named ones (Bell Labs, von Neumann) pass once the prose uses them.
+4. **The ledger, read by header.** `lib.mjs readLedger` reads `docs/pass-31-ledger.tsv` by column name, throws on a missing column or a repeated id, and returns the file's sha256; `ledgerTakeaway` gives column `intent` (the takeaway) and column `job`, and refuses a held row or an unknown job. `content` is never read by the gate (it is the fact checker's). `gate.mjs` takes `--ledger` (default `docs/pass-31-ledger.tsv`) or `--intent`/`--job`, never both, and records the ledger file and sha256 in every verdict; `dev.mjs` copies the ledger into the attempt folder and every run reads the copy; `validate.mjs` scores each sealed item against the ledger's takeaway and job (the manifest's own intent only where the ledger has none) and prints how many came from each. `check.mjs` reads no ledger. Tested with a ledger whose 15 columns were shuffled: all 222 rows read the same.
+5. **Development set.** Every item's takeaway and job come from the ledger (`figures-final`'s working file, read only, copied per attempt). The takeaways used, identical in all four attempts (ledger sha256 `3309a269e395...` for try22 and try23, `e8396779dc93...` for try24 and try25; the author edited other rows in between): Fig 1.1 "Function: the head walks right past each mark and marks the next blank, so three marks become four." (job function); Fig 1.2 "Real thing: the rotors step before each press, so the same key lights a different lamp every time." (job real thing).
+6. **Enigma and a real-thing decoy added.** `enigma`: Fig 1.2 as it stands (this worktree's `public/`, whose prose and card up to Fig 1.2 are byte-identical to `figures-final`'s), expected PASS. `decoy4`: Fig 1.2's takeaway drawn as a block schematic (empty boxes KEY, ROTORS, REFLECTOR, LAMP joined by arrows, a counter stepping 1, 2, 3, a lamp letter F, E, C), expected FAIL, because the amended brief says a schematic is never a real thing; it guards the real-thing loosenings below.
+7. `npm run fig:taught-test` (`tests/pass31/taught.test.mjs`): 19 cases at real figure positions, 19 hold: the nine abbreviations fail at Fig 1.1; ARM, RAM, OS, CPU pass at Fig 3.2; AX and AL fail at Fig 3.3 (RAX passes); CR3 passes at Figs BR.4 and 4.8; the state names fail at Fig 10.2 and pass at Fig 10.3 (SYN_SENT to TIME_WAIT, SYN-ACK, ESTABLISHED, LISTEN; TCP, IP, HTTP, DNS); CGNAT fails at Fig 9.8 and IHL at Fig 9.4; THE MACHINE, TAPE, HEAD and Enigma's KEY, LAMP, ROTORS, REFLECTOR pass; lowest, became, rewritten, databases and seven more inflections pass; kernels fails; Ring 3, Ring 0 and system call fail at Fig 1.14; Figs 1.1 and 1.2 are clean.
+8. Effect on the book (rc2 figures, this worktree's `public/`): 174 of 222 fail taught-yet (188 with the frozen rules); all-capitals flags 281 to 124, "not an everyday word" 685 to 572. The seven figures of `figures-final`'s `public/` that have drafts or references (Figs 1.1, 1.2, 1.5, 4.8, 10.3, 13.5, 17.6) are clean, including CR3 in Fig 4.8 and the state names in Fig 10.3.
+
+### 13.2 Prompt revisions (the cap: three, all used)
+
+Each revision changed only the **real-thing** renderings: every function and two-part rendering of every prompt is byte-identical from try22 to try25 (checked by rendering each prompt with each version), so v1, v2, v4 and decoys 1 to 3 ran one configuration in all four attempts.
+
+- **Revision 1 (try23).** The amended brief's real thing: the job text (drawn as it looks, judged on showing the object and what visibly happens in it, not on how or why it works); the still's rubric job-aware (the object test instead of "few words", as the judge's rubric already was); a text-stripped rubric for real thing (the object without its words; what changes; no cause test); in the unexplained test, part names, letters on parts, legends and notes on the drawing do not count; in the hedge check, doubts about why the object is built or behaves as it does do not count (the hedge check now gets the job: a code change in `gate.mjs`).
+- **Revision 2 (try24).** The object test by physical features (parts drawn with their own features, even simplified or flattened; revision 1's "a schematic of boxes is never a real thing" had made the scorer read Enigma's rotors as boxes); the unexplained exception restated without its "a setting still counts" clause (which caught the rotors' position letters); for real thing the cause is the named part drawn changing, how it produces the result is not tested; the real-thing hedge scope narrowed to what is drawn, whether anything changes and whether the result changes.
+- **Revision 3 (try25).** The real-thing hedge as its own narrow check for the judge and the still (revision 2's rule sat as the last exclusion and the checker applied the general rule over it); the object test stated by what fails (plain boxes or labels with nothing of the part drawn in them, joined by arrows or lines).
+
+### 13.3 Attempts
+
+| Attempt | Combined | prompts.mjs | Change before the run | v1, v2, v4 correct | Decoys correct | Enigma passed | Where v4 or Enigma failed |
+|---|---|---|---|---|---|---|---|
+| try22 | `ec9797ed2dde` | `529f80b3` (frozen) | the code of 13.1 only; prompts as frozen | 7 of 9 | 12 of 12 | 0 of 3 | v4 run 2 judge unexplained ("write, stop"), run 3 still hedge ("whether the head moves from the left cell"). Enigma every run: judge unexplained (REFLECTOR, KEY · LAMP, out, back, "steps each press"), still few words (13 to 15 pieces) and unexplained, stripped "what causes what"; hedges on why only the first rotor steps and why the outputs are F, E, C |
+| try23 | `b1d77d7f4d1e` | `fa1abceb` | revision 1 | 9 of 9 | 12 of 12 | 0 of 3 | Enigma: object (judge 2, still 3, stripped 2 of 3 runs: rotors read as boxes) and unexplained (judge and still 3 of 3) |
+| try24 | `b858d961da67` | `55ab1a05` | revision 2 | 8 of 9 | 12 of 12 | 0 of 3 | v4 run 1 judge hedge (a pause in frame 5). Enigma every run: judge hedge ("why only the left rotor moves" counted under the general rule); run 3 also still object and hedge |
+| try25 | `9ba0dfc0709a` | `b54ca44c` | revision 3 (the cap) | 7 of 9 | 12 of 12 | 1 of 3 | v4 runs 1 and 2 judge hedge ("whether the lit card causes each step or only shows which rule applies"; "why the write, stop card does not show what is written"). Enigma runs 1 and 2 still: mechanism (the stepping shown only by the note "steps each press") in run 1, unexplained ("KEY · LAMP", "steps") in run 2 |
+
+Full fingerprints: try22 `ec9797ed2ddeca27ba960c3c5e52fd81a6ba57f711f1efb361f5db8aef8350a2`, try23 `b1d77d7f4d1ea71cb1aa72eb9de152755da54454f24dd815d7f6bdfeaa6b75b0`, try24 `b858d961da67229069f7cc759e528ac6e0a9ae362f25750383c6ee73dd8a215f`, try25 `9ba0dfc0709a7f4cb8d8ea4f618e5b976ecd8eea474fbb147729e3a43b4f6a87`. prompts.mjs sha256: try22 `529f80b39e3dad2377cbc1adf98f99bbcf9acab797d34e370131653acd85c149`, try23 `fa1abceb3e7def7c567250533c9c588ec4865259b4d5eb2563f7de7da96231d8`, try24 `55ab1a05087c85d3afe12d907ce48e194541ca9f5df23a1abaa0ddccdc340ff7`, try25 `b54ca44c368332f631564fb7a7b6c46d7b4d6fb6533537fccaacb5177c0b6c57`. CLI 2.1.310 throughout.
+
+Sub-tests failed by majority, per attempt (runs of 3): v1 fails judge mechanism, unexplained, carried by the picture, one scene, few words, still mechanism, unexplained, few words, stripped both tests and `taught` in every run of every attempt. v2 fails judge unexplained, one scene, few words and still unexplained in every run; its mechanism passes. decoy1, decoy2 and decoy3 fail as in try20 and try21 (decoy3 on judge and still unexplained, "adding", 12 of 12). decoy4 fails judge mechanism 12 of 12 and, from try23 on, judge, still and stripped object 9 of 9: no revision let the schematic through. Enigma, try25: judge 3 of 3 passed; still mechanism failed 1 of 3 and unexplained 1 of 3; stripped and hedge passed 3 of 3. Pairwise: rc2 (v4) judged better than v1 and v2 in all 48 replies; Enigma's frames are byte-identical to its rc2 version (SAME, no call).
+
+### 13.4 Result and what it means
+
+- **Not re-frozen.** In try25, the configuration after the third revision: v1 and v2 failed 6 of 6, every decoy failed (12 of 12), v4 passed 1 of 3, Enigma passed 1 of 3. The cap's condition (v1 and v2 failing, v4 and Enigma passing, every decoy failing) is not met, so the builder stopped here.
+- **v4.** Its configuration did not change in this follow-up, so try22 to try25 are 12 runs of it: 7 passed (try22 1, try23 3, try24 2, try25 1). The five failures: one unexplained word (the judge listed "write, stop") and four failed hedge checks, each carried by all three votes: a pause in a frame where nothing is lit, whether the lit card causes the step or only shows the rule, whether the still shows the head's start (three doubts of kinds the hedge rules exclude), and why the "write, stop" card does not show what is written. The describers and the hedge check never see the takeaway, and the scorer failed v4 once (the unexplained test, which does not depend on it), so the takeaway form does not explain the rate; the frozen gate's own record was 5 of 6 (try20, try21). Whether this is sample noise or a change in the tester model behind the same CLI version is not known.
+- **Enigma.** The frozen gate failed it on everything a real thing is not judged on (unexplained part names, few words in the still, the stripped cause, doubts about why only one rotor steps). After the three revisions its judge, stripped and hedge criteria pass 3 of 3; the t=0 still fails 2 of 3 (the stepping it shows is a written note plus the rotors' position letters, and one reader still listed "KEY · LAMP" and "steps").
+- **The literal item 1 and Enigma.** Item 1 lets an all-capitals token pass only when taught or on the COMMON list. Enigma's LAMP and REFLECTOR are neither (the prose before Fig 1.2 names only Enigma and its rotors; the reflector is first explained in Fig 1.2's own caption), so the literal rule fails the must-pass figure on `taught`. The rule kept here adds one route: an everyday word of four letters or more that the book never writes in capitals passes as that word. It keeps every abbreviation the book uses, and every token of three letters or fewer, under the teaching rule. This is the builder's reading; the alternative is to drop it, and then Enigma fails `taught` whatever the judge says.
+- **Next step (the caller's call, not the builder's):** keep the gate open with these results; or accept a configuration below the bar; or have the author or the brief change what a real-thing still must show. The development set is a smoke test only; the sealed validation (brief section 10) has not run, and the §10 path (one fresh builder, then stop) applies only to a failed validation.
+
+### 13.5 Known limits added by this follow-up
+
+- The real-thing handling (revisions 1 to 3) was found on one real thing (Enigma) and checked against one decoy (decoy4). It is written generally (part names, legends and notes on a drawn object do not count as unexplained; how or why the object works is not tested or hedged), and each loosening applies only to the job "real thing", but no second real-thing figure has been run.
+- "Taught" for an abbreviation is mechanical: the first prose paragraph that uses it (CPU at ch1-vonneumann-p3, TCP at ch4-ipc-p2). A first use that does not explain the term still counts as teaching; the judge's unexplained-words test is the backstop.
+- Glossary placement is unchanged: terms the prose teaches before their glossary section (register, thread, bandwidth, byte; `docs/pass-31-takeaway-check.md`) still fail as untaught glossary terms.
+- A multi-word glossary term written without its hyphen ("copy on write") is checked word by word only.
+- The ledger is read from `figures-final`'s working file, which the author was editing during the attempts; each attempt copied it, and the takeaways used never changed.
+- `fig:validate` with the ledger was run once on a scratch manifest (v1 as stand-in v3, v4; both takeaways from the ledger, read from `figures-final`'s working file): HOLDS, v3 failed 1 of 1, v4 passed 1 of 1, tool errors 0 (gate `9ba0dfc0`). Nothing under `docs/pass-31-sealed/` was read or written; commit 93aae05 was not touched.
+
+### 13.6 Total attempt count (for the READY page)
+
+**26 prompt attempts** on the development set: try0 to try21 before this follow-up (the frozen configuration was try20 and try21), and try22 to try25 here (one rerun on the takeaway form and Enigma, then the three revisions the cap allows). Each attempt ran every item three times.
+
+### 13.7 Every run, try22 to try25
+
+Order: the first pairwise order of the run (both orders are asked in every run). Hedge in: the descriptions whose hedge check failed.
+
+| Attempt | Item | Run | Order | Expected | Got | Failed criteria | Hedge in | Pairwise |
+|---|---|---|---|---|---|---|---|---|
+| try22 | v1 | 1 | cand-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | still | candidate A: RC2; rc2 A: RC2 |
+| try22 | v1 | 2 | rc2-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | rc2 A: RC2; candidate A: RC2 |
+| try22 | v1 | 3 | random | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | candidate A: RC2; rc2 A: RC2 |
+| try22 | v2 | 1 | cand-first | FAIL | FAIL | judge, still, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try22 | v2 | 2 | rc2-first | FAIL | FAIL | judge, still, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try22 | v2 | 3 | random | FAIL | FAIL | judge, still, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try22 | v4 | 1 | cand-first | PASS | PASS | none | none | candidate A: CANDIDATE; rc2 A: CANDIDATE |
+| try22 | v4 | 2 | rc2-first | PASS | FAIL | judge | none | rc2 A: CANDIDATE; candidate A: SAME |
+| try22 | v4 | 3 | random | PASS | FAIL | hedge | still | rc2 A: CANDIDATE; candidate A: SAME |
+| try22 | Enigma | 1 | cand-first | PASS | FAIL | judge, hedge, still, stripped | judge, still | SAME (identical frames) |
+| try22 | Enigma | 2 | rc2-first | PASS | FAIL | judge, hedge, still, stripped | judge, still | SAME (identical frames) |
+| try22 | Enigma | 3 | random | PASS | FAIL | judge, hedge, still, stripped | judge | SAME (identical frames) |
+| try22 | decoy1 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try22 | decoy1 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try22 | decoy1 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, stripped | not run |
+| try22 | decoy2 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still, stripped | not run |
+| try22 | decoy2 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try22 | decoy2 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try22 | decoy3 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still | judge | not run |
+| try22 | decoy3 | 2 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try22 | decoy3 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still | judge | not run |
+| try22 | decoy4 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try22 | decoy4 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try22 | decoy4 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try23 | v1 | 1 | cand-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | stripped | candidate A: RC2; rc2 A: RC2 |
+| try23 | v1 | 2 | rc2-first | FAIL | FAIL | taught, judge, still, stripped, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try23 | v1 | 3 | random | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | candidate A: RC2; rc2 A: RC2 |
+| try23 | v2 | 1 | cand-first | FAIL | FAIL | judge, still, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try23 | v2 | 2 | rc2-first | FAIL | FAIL | judge, still, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try23 | v2 | 3 | random | FAIL | FAIL | judge, still, stripped, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try23 | v4 | 1 | cand-first | PASS | PASS | none | none | candidate A: SAME; rc2 A: CANDIDATE |
+| try23 | v4 | 2 | rc2-first | PASS | PASS | none | none | rc2 A: CANDIDATE; candidate A: SAME |
+| try23 | v4 | 3 | random | PASS | PASS | none | none | rc2 A: CANDIDATE; candidate A: SAME |
+| try23 | Enigma | 1 | cand-first | PASS | FAIL | judge, hedge, still, stripped | judge, still | SAME (identical frames) |
+| try23 | Enigma | 2 | rc2-first | PASS | FAIL | judge, hedge, still, stripped | judge, stripped | SAME (identical frames) |
+| try23 | Enigma | 3 | random | PASS | FAIL | judge, still | none | SAME (identical frames) |
+| try23 | decoy1 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try23 | decoy1 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, stripped | not run |
+| try23 | decoy1 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try23 | decoy2 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still | not run |
+| try23 | decoy2 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still | not run |
+| try23 | decoy2 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still, stripped | not run |
+| try23 | decoy3 | 1 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try23 | decoy3 | 2 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try23 | decoy3 | 3 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try23 | decoy4 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try23 | decoy4 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try23 | decoy4 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, stripped | not run |
+| try24 | v1 | 1 | cand-first | FAIL | FAIL | taught, judge, still, stripped, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try24 | v1 | 2 | rc2-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still, stripped | rc2 A: RC2; candidate A: RC2 |
+| try24 | v1 | 3 | random | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | rc2 A: RC2; candidate A: RC2 |
+| try24 | v2 | 1 | cand-first | FAIL | FAIL | judge, hedge, still, pairwise | judge | candidate A: RC2; rc2 A: RC2 |
+| try24 | v2 | 2 | rc2-first | FAIL | FAIL | judge, still, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try24 | v2 | 3 | random | FAIL | FAIL | judge, still, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try24 | v4 | 1 | cand-first | PASS | FAIL | hedge | judge | candidate A: SAME; rc2 A: CANDIDATE |
+| try24 | v4 | 2 | rc2-first | PASS | PASS | none | none | rc2 A: CANDIDATE; candidate A: RC2 |
+| try24 | v4 | 3 | random | PASS | PASS | none | none | rc2 A: CANDIDATE; candidate A: SAME |
+| try24 | Enigma | 1 | cand-first | PASS | FAIL | hedge | judge | SAME (identical frames) |
+| try24 | Enigma | 2 | rc2-first | PASS | FAIL | hedge | judge | SAME (identical frames) |
+| try24 | Enigma | 3 | random | PASS | FAIL | hedge, still | judge, still | SAME (identical frames) |
+| try24 | decoy1 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try24 | decoy1 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try24 | decoy1 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try24 | decoy2 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try24 | decoy2 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still | not run |
+| try24 | decoy2 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still | judge, still | not run |
+| try24 | decoy3 | 1 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try24 | decoy3 | 2 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try24 | decoy3 | 3 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try24 | decoy4 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try24 | decoy4 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try24 | decoy4 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try25 | v1 | 1 | cand-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | candidate A: RC2; rc2 A: RC2 |
+| try25 | v1 | 2 | rc2-first | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge, still | rc2 A: RC2; candidate A: RC2 |
+| try25 | v1 | 3 | random | FAIL | FAIL | taught, judge, hedge, still, stripped, pairwise | judge | candidate A: RC2; rc2 A: RC2 |
+| try25 | v2 | 1 | cand-first | FAIL | FAIL | judge, still, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try25 | v2 | 2 | rc2-first | FAIL | FAIL | judge, still, pairwise | none | rc2 A: RC2; candidate A: RC2 |
+| try25 | v2 | 3 | random | FAIL | FAIL | judge, still, pairwise | none | candidate A: RC2; rc2 A: RC2 |
+| try25 | v4 | 1 | cand-first | PASS | FAIL | hedge | judge | candidate A: SAME; rc2 A: CANDIDATE |
+| try25 | v4 | 2 | rc2-first | PASS | FAIL | hedge | judge | rc2 A: CANDIDATE; candidate A: SAME |
+| try25 | v4 | 3 | random | PASS | PASS | none | none | candidate A: SAME; rc2 A: CANDIDATE |
+| try25 | Enigma | 1 | cand-first | PASS | FAIL | still | none | SAME (identical frames) |
+| try25 | Enigma | 2 | rc2-first | PASS | FAIL | still | none | SAME (identical frames) |
+| try25 | Enigma | 3 | random | PASS | PASS | none | none | SAME (identical frames) |
+| try25 | decoy1 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try25 | decoy1 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try25 | decoy1 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still, stripped | not run |
+| try25 | decoy2 | 1 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try25 | decoy2 | 2 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try25 | decoy2 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | judge, still | not run |
+| try25 | decoy3 | 1 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try25 | decoy3 | 2 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try25 | decoy3 | 3 | no pairwise | FAIL | FAIL | judge, still | none | not run |
+| try25 | decoy4 | 1 | no pairwise | FAIL | FAIL | judge, still, stripped | none | not run |
+| try25 | decoy4 | 2 | no pairwise | FAIL | FAIL | judge, still, stripped | none | not run |
+| try25 | decoy4 | 3 | no pairwise | FAIL | FAIL | judge, hedge, still, stripped | still | not run |
