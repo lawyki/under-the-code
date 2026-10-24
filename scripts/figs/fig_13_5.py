@@ -1,77 +1,140 @@
-# Fig 13.5 · A bank transfer · atomicity: all of it or none of it (Pass 28, law 3). Strongroom dossier plate.
-# Transfer €100 from Alice (200) to Bob (50), and the power fails between the two updates. Run twice, step by step:
-# without a transaction the restart finds Alice at 100 and Bob at 50, €100 gone; inside BEGIN … COMMIT the restart
-# finds no commit record in the log and undoes the debit, Alice back to 200. Lock-step: three shared steps light
-# (debit Alice, power cut, restart), the balances stamp their new values. t=0 (shift): both outcomes shown.
+# Fig 13.5 · A bank transfer, and the log that saves it (Pass 31 exemplar for Part IV, from an empty script: the merge
+# of Figs 13.5 and 13.6 into one two-part card). Takeaway: changes reach the log before the data, so after a crash
+# recovery redoes committed work and undoes the rest, losing nothing.
+# Concept chosen of three (ledger). Top, the failure: a transfer with no transaction, cut by a power failure after
+# Alice is debited, and EUR 100 is gone. Below, the same transfer inside a transaction: every change is stamped into
+# the log before the data pages; an earlier deposit committed but never reached its page, and the transfer was
+# cut before its commit. Recovery redoes the deposit and undoes the transfer. Strongroom's lock-step motion: records land like stamps.
+# t=0 is the recovered state. This script also removes Fig 13.6's card; its ids are aliased in book.js.
+import re
 import figlib
-from figlib import Timeline, text, splice, COURIER, PARCH, PSOFT, PMUTED, SEAL, STAMP, OXBLOOD, BRASS, SAGE, DCARD
+from figlib import Timeline, text, obj, splice, COURIER, PARCH, PSOFT, PMUTED, SEAL, STAMP, BRASS, SAGE
 figlib.FONT = COURIER
 
-W = 400
+W, H = 400, 470
 D = 10.0
-T = Timeline(D, shift=9.4)
-TS = [1.0, 2.6, 4.2]                               # debit Alice, power cut, restart
-lit = lambda t0, t1: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-win = lambda t0: T.anim('opacity', [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (D, 1.0)])
-stamp = lambda t0: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t0 + 0.5, 0.0), (D, 0.0)])
+T = Timeline(D, shift=9.6)
+RESET = 0.3
+def held(t):
+    return T.anim('opacity', [(0.0, 1.0), (RESET, 1.0), (RESET + 0.001, 0.0), (t - 0.001, 0.0), (t, 1.0), (D, 1.0)])
+def until(t):
+    return T.anim('opacity', [(0.0, 0.0), (RESET, 0.0), (RESET + 0.001, 1.0), (t - 0.001, 1.0), (t, 0.0), (D, 0.0)])
+P1_DEBIT, P1_CUT, P1_GONE = T.beat(0.6, 'no transaction: Alice is debited'), T.beat(1.3, 'the power fails'), T.beat(2.0, 'EUR 100 is gone')
+L1, L2, L3 = T.beat(3.0, 'the deposit logged'), T.beat(3.6, 'the deposit commits'), T.beat(4.3, 'the transfer logged: Alice debited')
+EARLY, CUT = T.beat(4.8, "Alice's page written early"), T.beat(5.5, 'the power fails before the transfer commits')
+REDO, UNDO, DONE = T.beat(6.6, 'recovery redoes the deposit'), T.beat(7.5, 'and undoes the transfer'), T.beat(8.3, 'nothing half done')
+
 o = []; a = o.append
-# the shared steps
-STEPS = [(10, 'debit Alice', SEAL), (140, 'power cut', STAMP), (270, 'restart', BRASS)]
-for k, (x, s, col) in enumerate(STEPS):
-    w = 120
-    body = f'<rect x="{x}" y="6" width="{w}" height="24" rx="12" fill="none" stroke="{col}" stroke-width="1.5"/>' + text(x + w / 2, 23, s, anchor='middle', size=13, fill=col, ls='0')
-    a(f'<g opacity="0.3">{body}</g><g opacity="0">{win(TS[k])}{body}</g>')
-BW = 120
-BX = [10, 140, 270]
-def lane(y, head, hcol, vals, end_text, end_col):
-    """vals: per account, list of (t_from, t_to or None, value, colour)."""
-    a(text(10, y - 10, head, anchor='start', size=13, fill=hcol, ls='0'))
-    for k, (name, seq) in enumerate(vals):
-        x = BX[k]
-        a(f'<rect x="{x}" y="{y}" width="{BW}" height="44" rx="3" fill="{DCARD}" stroke="{PMUTED}" stroke-opacity="0.6"/>')
-        a(text(x + 10, y + 17, name, anchor='start', size=13, fill=PMUTED, ls='0'))
-        for t0, t1, v, col in seq:
-            body = text(x + 10, y + 37, v, anchor='start', size=16, fill=col, ls='0')
-            a(f'<g opacity="0">{win(t0) if t1 is None else lit(t0, t1)}{body}</g>')
-            if t0 > 0.5:
-                a(f'<g class="fx" opacity="0">{stamp(t0)}<rect x="{x - 2}" y="{y - 2}" width="{BW + 4}" height="48" rx="4" fill="none" stroke="{STAMP}" stroke-width="2.5"/></g>')
-    a(f'<g opacity="0">{win(TS[2] + 0.4)}{text(10, y + 66, end_text, anchor="start", size=13, fill=end_col, ls="0")}</g>')
-Y1, Y2 = 62, 172
-lane(Y1, 'no transaction', OXBLOOD,
-     [('Alice', [(0.31, TS[0], '€200', PARCH), (TS[0], None, '€100', PARCH)]),
-      ('Bob', [(0.31, None, '€50', PARCH)]),
-      ('total', [(0.31, TS[0], '€250', PSOFT), (TS[0], None, '€150', OXBLOOD)])],
-     'restart: €100 has vanished', OXBLOOD)
-lane(Y2, 'BEGIN … COMMIT', SAGE,
-     [('Alice', [(0.31, TS[0], '€200', PARCH), (TS[0], TS[2], '€100?', PMUTED), (TS[2], None, '€200', SAGE)]),
-      ('Bob', [(0.31, None, '€50', PARCH)]),
-      ('total', [(0.31, None, '€250', PSOFT)])],
-     'no COMMIT in the log: undone', SAGE)
-H = Y2 + 80
-o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6">')
-o.insert(1, '<title id="svgt-part4-6">Fig 13.5 · A bank transfer · atomicity: all of it or none of it</title>')
-o.insert(2, '<desc id="svgd-part4-6">A transfer of 100 euros from Alice, who has 200, to Bob, who has 50, interrupted by a power cut after Alice is debited and before Bob is paid. '
-  'Without a transaction the restarted database shows Alice at 100 and Bob at 50: 100 euros have vanished. Inside BEGIN and COMMIT, the restart finds no commit record in the log and undoes the debit: Alice is back at 200 and the total is still 250.</desc>')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6"{T.beats_attr()}>')
+a('<title id="svgt-part4-6">Fig 13.5 · A bank transfer · the failure, and the log that prevents it</title>')
+a('<desc id="svgd-part4-6">Two parts. Top, a transfer of 100 euros from Alice to Bob with no transaction: Alice is debited, the '
+  'power fails before Bob is credited, and at restart Alice holds 100, Bob 50, and 100 euros are gone. Below, the same '
+  'transfer inside a transaction. Every change is written to the log first: an earlier deposit raising Dan from 20 to 70, '
+  'and its commit; then the transfer, debiting Alice from 200 to 100. Dan\'s data page has not been written yet, while '
+  'Alice\'s was written early. The power fails before the transfer commits. Recovery reads the log: the deposit has a '
+  'commit, so it is redone and Dan holds 70; the transfer has none, so it is undone and Alice holds 200 again. Nothing is '
+  'left half done.</desc>')
+
+def card(x, y, w, name, value='', col=PARCH, layers=()):
+    """An account's data card: its name, and either a fixed value or value layers that change over time."""
+    parts = [f'<rect x="{x}" y="{y}" width="{w}" height="46" rx="3" fill="none" stroke="{PSOFT}" stroke-width="1.3"/>',
+             text(x + 10, y + 18, name, size=14, fill=PMUTED, ls='0')]
+    if value:
+        parts.append(text(x + w - 10, y + 38, value, anchor='end', size=16, fill=col, ls='0'))
+    return obj(*parts, *layers)
+
+def stamp(x, y, word, col, t):
+    """A word that lands like a rubber stamp, boxed, at t; held to the end of the loop."""
+    w = len(word) * 9 + 18
+    return (f'<g opacity="1">{held(t)}' +
+            obj(f'<rect x="{x - w / 2}" y="{y - 15}" width="{w}" height="21" rx="2" fill="none" stroke="{col}" stroke-width="2"/>',
+                text(x, y + 1, word, anchor='middle', size=14, fill=col, ls='0.04em')) + '</g>')
+
+# ---- top: the failure ------------------------------------------------------------------------------------------
+a('<g data-panel="failure">')
+a(text(20, 22, 'no transaction', size=14, fill=PMUTED, role='label'))
+steps = [('debit Alice', PARCH, P1_DEBIT), ('power cut', SEAL, P1_CUT), ('credit Bob', PMUTED, None)]
+x = 20
+for name, col, t in steps:
+    w = len(name) * 8.6 + 20
+    chip = obj(f'<rect x="{x}" y="34" width="{w:.0f}" height="24" rx="12" fill="none" stroke="{col}" stroke-width="1.5"/>',
+               text(x + w / 2, 51, name, anchor='middle', size=14, fill=col, ls='0', role='label'))
+    if t is None:  # never happens: struck through
+        chip += f'<line x1="{x + 6}" y1="46" x2="{x + w - 6:.0f}" y2="46" stroke="{STAMP}" stroke-width="2"/>'
+        a(f'<g opacity="1">{held(P1_CUT)}{chip}</g>')
+    else:
+        a(f'<g opacity="1">{held(t)}{chip}</g>')
+    x += w + 10
+a(card(20, 72, 112, 'Alice', '€100'))
+a(card(144, 72, 112, 'Bob', '€50'))
+a(f'<g opacity="1">{held(P1_GONE)}' + card(268, 72, 112, 'total', '€150', SEAL) +
+  text(380, 136, '€100 gone', anchor='end', size=15, fill=SEAL, ls='0', role='label') + '</g>')
+a('</g>')
+a(f'<line x1="20" y1="156" x2="380" y2="156" stroke="{PSOFT}" stroke-width="1" stroke-dasharray="2 4"/>')
+
+# ---- below: the log that prevents it ----------------------------------------------------------------------------
+a('<g data-panel="log">')
+a(text(20, 182, 'the log, written first', size=14, fill=PMUTED, role='label'))
+recs = [('deposit: Dan 20 → 70', PARCH, L1), ('deposit commits', SAGE, L2), ('transfer: Alice 200 → 100', PARCH, L3)]
+for i, (s, col, t) in enumerate(recs):
+    y = 192 + i * 26
+    a(f'<g opacity="1">{held(t)}' + obj(f'<rect x="20" y="{y}" width="262" height="22" rx="2" fill="none" stroke="{PSOFT}" stroke-width="1.2"/>',
+                                        text(30, y + 16, s, size=14, fill=col, ls='0', role='label')) + '</g>')
+a(stamp(338, 261, 'power cut', SEAL, CUT))
+a(text(20, 294, 'data pages after the cut', size=14, fill=PMUTED, role='label'))
+# Dan: stale 20 on the page, redone to 70
+a(card(20, 304, 112, 'Dan', layers=(
+    f'<g opacity="1">{until(REDO)}' + text(122, 342, '€20', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
+    f'<g opacity="1">{held(REDO)}' + text(76, 342, '€20', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
+    f'<line x1="44" y1="337" x2="78" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
+    text(122, 342, '€70', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
+# Alice: 200 on the page until the transfer's debit reaches it early, undone back to 200
+a(card(144, 304, 112, 'Alice', layers=(
+    f'<g opacity="1">{until(EARLY)}' + text(246, 342, '€200', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
+    f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (EARLY - 0.001, 0.0), (EARLY, 1.0), (UNDO - 0.001, 1.0), (UNDO, 0.0), (D, 0.0)])}' +
+    text(246, 342, '€100', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
+    f'<g opacity="1">{held(UNDO)}' + text(196, 342, '€100', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
+    f'<line x1="158" y1="337" x2="198" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
+    text(246, 342, '€200', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
+a(card(268, 304, 112, 'Bob', '€50'))
+a(stamp(76, 382, 'redo', SAGE, REDO))
+a(stamp(200, 382, 'undo', BRASS, UNDO))
+a(f'<g opacity="1">{held(DONE)}' + text(20, 432, 'deposit kept, transfer undone:', size=15, fill=SAGE, ls='0', role='label') +
+  text(20, 454, 'nothing half done', size=15, fill=SAGE, ls='0', role='label') + '</g>')
+a('</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A transfer is two updates. If the power fails between them, a database without transactions wakes up with Alice debited and Bob unpaid; '
-           'inside a <span class="key-term">transaction</span>, <code>BEGIN</code> to <code>COMMIT</code>, recovery finds no commit record and undoes the debit, so the transfer happened in full or not at all.')
+caption = ('Top, a transfer with no transaction: the power fails after Alice is debited, and €100 vanishes. Below, every '
+           'change reaches the log before the data pages, so recovery redoes the committed deposit that never reached its '
+           'page and undoes the unfinished transfer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>How recovery knows.</b> Every change goes to the write-ahead log before the table (Fig 13.6); at restart, the changes of any transaction with no commit record are undone.</li>
-          <li><b>Who.</b> Jim Gray set out the transaction concept in 1981 (Turing Award 1998); Theo Härder and Andreas Reuter named it ACID in 1983.</li>
+          <li><b>The transaction.</b> BEGIN and COMMIT fence the transfer: both updates count, or neither does.</li>
+          <li><b>The log first.</b> Each change is appended to the write-ahead log and forced to disk (<code>fsync()</code>) before the commit is acknowledged.</li>
+          <li><b>Pages later.</b> The data pages are written when convenient, so at a crash some committed changes are missing from them and some uncommitted ones are already there.</li>
+          <li><b>Recovery.</b> It reads the log: a transaction with a commit record is redone, one without is undone. One mechanism gives both durability and atomicity.</li>
+          <li><b>Variants.</b> This is the ARIES scheme (IBM, 1992); PostgreSQL only redoes, and its row versions keep uncommitted changes from ever being seen.</li>
         </ol>
       </details>'''
-card = f'''<div class="diagram-card fig-v2" id="fig-13-5">
-      <div class="diagram-label">Fig 13.5 · A bank transfer · atomicity: all of it or none of it</div>
+card_html = f'''<div class="diagram-card fig-v2" id="fig-13-5">
+      <div class="diagram-label">Fig 13.5 · A bank transfer · the failure, and the log that prevents it</div>
       {svg}
-      <p id="CAPID" class="diagram-caption">{caption}</p>
+      <p id="ch13-acid-p3" class="diagram-caption">{caption}</p>
       {how}
     </div>'''
+
+def drop_fig_13_6():
+    """The merge: Fig 13.6's card (and its caption, ch13-acid-p5) leaves the page; book.js aliases both ids."""
+    p = '/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html'
+    s = open(p).read()
+    m = re.search(r'\s*<div class="diagram-card[^"]*" id="fig-13-6">[\s\S]*?</details>\s*</div>', s)
+    if m:
+        s = s[:m.start()] + s[m.end():]
+        open(p, 'w').write(s)
+        print('fig-13-6 removed (merged into fig-13-5)')
+
 if __name__ == '__main__':
-    import re
-    s = open('/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html').read()
-    i = s.index('id="fig-13-5"'); cap = re.search(r'<p id="([^"]+)" class="diagram-caption"', s[i:]).group(1)
-    splice('part-4', 'fig-13-5', cap, card.replace('CAPID', cap))
+    splice('part-4', 'fig-13-5', 'ch13-acid-p3', card_html)
+    drop_fig_13_6()
