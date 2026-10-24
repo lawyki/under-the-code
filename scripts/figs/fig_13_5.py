@@ -1,11 +1,12 @@
-# Fig 13.5 · A bank transfer, and the log that saves it (Pass 31 exemplar for Part IV, from an empty script: the merge
-# of Figs 13.5 and 13.6 into one two-part card). Takeaway: changes reach the log before the data, so after a crash
-# recovery redoes committed work and undoes the rest, losing nothing.
+# Fig 13.6 · A bank transfer, and the log that saves it (Pass 31 exemplar for Part IV, from an empty script: the merge
+# of Figs 13.5 and 13.6 into one merged card, which keeps the higher number). Takeaway (ledger, round 4): changes reach the log before the pages,
+# so recovery after a crash replays committed work, rolls back the rest.
 # Concept chosen of three (ledger). Top, the failure: a transfer with no transaction, cut by a power failure after
 # Alice is debited, and EUR 100 is gone. Below, the same transfer inside a transaction: every change is stamped into
 # the log before the data pages; an earlier deposit committed but never reached its page, and the transfer was
 # cut before its commit. Recovery redoes the deposit and undoes the transfer. Strongroom's lock-step motion: records land like stamps.
-# t=0 is the recovered state. This script also removes Fig 13.6's card; its ids are aliased in book.js.
+# t=0 is the recovered state. The merged card is Fig 13.6 (the higher half keeps its number, id and slot); Fig 13.5's
+# card leaves the page and its ids are aliased in book.js to ch13-acid-p2.
 import re
 import figlib
 from figlib import Timeline, text, obj, splice, COURIER, PARCH, PSOFT, PMUTED, SEAL, STAMP, BRASS, SAGE
@@ -26,7 +27,7 @@ REDO, UNDO, DONE = T.beat(6.6, 'recovery redoes the deposit'), T.beat(7.5, 'and 
 
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6"{T.beats_attr()}>')
-a('<title id="svgt-part4-6">Fig 13.5 · A bank transfer · the failure, and the log that prevents it</title>')
+a('<title id="svgt-part4-6">Fig 13.6 · A bank transfer · the failure, and the log that prevents it</title>')
 a('<desc id="svgd-part4-6">Two parts. Top, a transfer of 100 euros from Alice to Bob with no transaction: Alice is debited, the '
   'power fails before Bob is credited, and at restart Alice holds 100, Bob 50, and 100 euros are gone. Below, the same '
   'transfer inside a transaction. Every change is written to the log first: an earlier deposit raising Dan from 20 to 70, '
@@ -118,39 +119,41 @@ how = '''<details class="fig-how">
           <li><b>Variants.</b> This is the idea behind ARIES (IBM, 1992), which first repeats every logged change and then undoes the unfinished transactions; PostgreSQL only redoes, and its row versions keep uncommitted changes from ever being seen.</li>
         </ol>
       </details>'''
-card_html = f'''<div class="diagram-card fig-v2" id="fig-13-5">
-      <div class="diagram-label">Fig 13.5 · A bank transfer · the failure, and the log that prevents it</div>
+card_html = f'''<div class="diagram-card fig-v2" id="fig-13-6">
+      <div class="diagram-label">Fig 13.6 · A bank transfer · the failure, and the log that prevents it</div>
       {svg}
-      <p id="ch13-acid-p3" class="diagram-caption">{caption}</p>
+      <p id="ch13-acid-p5" class="diagram-caption">{caption}</p>
       {how}
     </div>'''
 
-def drop_fig_13_6():
-    """The merge: Fig 13.6's card (and its caption, ch13-acid-p5) leaves the page; book.js aliases both ids."""
+def place_merged_card():
+    """Brief section 12 (round 4): a merged card keeps the HIGHER half's number, id and slot, after every paragraph between
+    the halves. Here that is Fig 13.6 after ch13-acid-p4 (the log, lazy data pages, redo and undo), so the drawing uses
+    only words taught before it; fig-13-5 and its caption ch13-acid-p3 are aliased in book.js to ch13-acid-p2, the
+    paragraph before the lower half's old slot, so a stored reading position resumes before text not yet read."""
+    from figlib import splice  # noqa: F401 (kept for symmetry with the other scripts)
     p = '/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html'
     s = open(p).read()
-    m = re.search(r'\s*<div class="diagram-card[^"]*" id="fig-13-6">[\s\S]*?</details>\s*</div>', s)
-    if m:
+    pat = lambda fid: re.compile(r'\n\s*<div class="diagram-card[^"]*" id="' + fid + r'">[\s\S]*?</details>\s*</div>')
+    global card_html
+    # the same label rule as figlib.splice: a separator keeps to the word before it, never alone at a line end
+    card_html = re.sub(r'(<div class="diagram-label">)([^<]*)(</div>)', lambda g: g.group(1) + g.group(2).replace(' · ', '&nbsp;· ') + g.group(3), card_html, count=1)
+    lower, higher = pat('fig-13-5').search(s), pat('fig-13-6').search(s)
+    if lower and higher:          # the page before any merge: drop the lower card, replace the higher one
+        s = s[:lower.start()] + s[lower.end():]
+        higher = pat('fig-13-6').search(s)
+        s = s[:higher.start()] + '\n    ' + card_html + s[higher.end():]
+    elif lower or higher:         # an earlier merge left one card: replace it
+        m = lower or higher
         s = s[:m.start()] + s[m.end():]
-        open(p, 'w').write(s)
-        print('fig-13-6 removed (merged into fig-13-5)')
-
-def place_after_p4():
-    """Brief section 12: a merged card sits at the higher half's slot, after every paragraph between the halves. Here that
-    is ch13-acid-p4 (the log, lazy data pages, redo and undo), so the card's drawing uses only words taught before it."""
-    p = '/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html'
-    s = open(p).read()
-    card = re.search(r'\n\s*<div class="diagram-card[^"]*" id="fig-13-5">[\s\S]*?</details>\s*</div>', s)
-    p4 = re.search(r'<p id="ch13-acid-p4"[\s\S]*?</p>', s)
-    if card and p4 and card.start() < p4.start():
-        block = card.group(0)
-        s = s[:card.start()] + s[card.end():]
         p4 = re.search(r'<p id="ch13-acid-p4"[\s\S]*?</p>', s)
-        s = s[:p4.end()] + block + s[p4.end():]
-        open(p, 'w').write(s)
-        print('fig-13-5 placed after ch13-acid-p4')
+        s = s[:p4.end()] + '\n    ' + card_html + s[p4.end():]
+    else:
+        raise SystemExit('no Fig 13.5 or 13.6 card found')
+    card = pat('fig-13-6').search(s); p4 = re.search(r'<p id="ch13-acid-p4"[\s\S]*?</p>', s)
+    assert card and p4 and p4.end() <= card.start(), 'the merged card must sit after ch13-acid-p4'
+    open(p, 'w').write(s)
+    print('fig-13-6 written as the merged card, after ch13-acid-p4')
 
 if __name__ == '__main__':
-    splice('part-4', 'fig-13-5', 'ch13-acid-p3', card_html)
-    drop_fig_13_6()
-    place_after_p4()
+    place_merged_card()

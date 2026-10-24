@@ -28,12 +28,12 @@ One set of rules per part, written from its exemplar (brief §8). They are rules
 - **Motion verbs.** *Flow*: a segment or packet travels its route like a line drawn on a chart. *Arrive*: a state lights where the segment lands. *Drift*: ambient dashes along a route, never carrying meaning.
 - **Recurring things.** Each endpoint as a vertical lane; segments as diagonal arrows named in six characters or fewer; states as outlined pills beside their lane; packets as small outlined boxes.
 
-## Part IV · Strongroom (exemplar: Fig 13.5, the merge reference)
+## Part IV · Strongroom (exemplar: Fig 13.6, the merge reference)
 
 - **Plate and type.** Dossier plate #171008, Courier Prime. Parchment #e6d9bd for records, seal #cf8d78 for warnings in text, stamp red #b8372f for strokes only (too dark for text on the plate), brass #c9a25a for reversal, sage #a9bf8e for what is kept.
 - **Motion verbs.** *Stamp*: a record or verdict lands whole and stays. *Strike*: an old value is struck through and the new one written beside it. *Seal*: a commit closes a record.
 - **Recurring things.** Account and data cards (name top left in muted, value bottom right). Log records as outlined lines. Verdicts as boxed stamped words.
-- **Two-part cards.** The problem on top, the mechanism below, divided by a dotted rule. The lower panel continues the upper panel's own example, so the two read as one story. A merge keeps the lower figure's number and id, and the higher one's ids are aliased in `book.js` (brief §12).
+- **Merged cards with two panels.** The problem on top, the mechanism below, divided by a dotted rule. The lower panel continues the upper panel's own example, so the two read as one story. A merge keeps the higher figure's number, id and slot; the lower one's figure and caption ids are aliased in `book.js` to the paragraph before its old slot (brief §12).
 
 ## Part V · Quorum (exemplar: Fig 17.6)
 

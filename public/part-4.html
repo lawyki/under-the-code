@@ -703,11 +703,10 @@
       escaped to disk. The log is the source of truth; the data pages are
       a cache.
     </p>
-
-    <div class="diagram-card fig-v2" id="fig-13-5">
-      <div class="diagram-label">Fig 13.5&nbsp;· A bank transfer&nbsp;· the failure, and the log that prevents it</div>
+    <div class="diagram-card fig-v2" id="fig-13-6">
+      <div class="diagram-label">Fig 13.6&nbsp;· A bank transfer&nbsp;· the failure, and the log that prevents it</div>
       <svg viewBox="0 0 400 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6" data-dur="10" data-beats="1 1.7 2.4 3.4 4 4.7 5.2 5.9 7 7.9 8.7">
-<title id="svgt-part4-6">Fig 13.5 · A bank transfer · the failure, and the log that prevents it</title>
+<title id="svgt-part4-6">Fig 13.6 · A bank transfer · the failure, and the log that prevents it</title>
 <desc id="svgd-part4-6">Two parts. Top, a transfer of 100 euros from Alice to Bob with no transaction: Alice is debited, the power fails before Bob is credited, and at restart Alice holds 100, Bob 50, and 100 euros are gone. Below, the same transfer inside a transaction. Every change is written to the log first: an earlier deposit raising Dan from 20 to 70, and its commit; then the transfer, debiting Alice from 200 to 100. Dan's data page has not been written yet, while Alice's was written early. The power fails before the transfer commits. Recovery reads the log: the deposit has a commit, so it is redone and Dan holds 70; the transfer has none, so it is undone and Alice holds 200 again. Nothing is left half done.</desc>
 <g data-panel="failure">
 <text data-role="label" x="20" y="22" text-anchor="start" font-family="Courier Prime" font-size="14" letter-spacing="0.06em" fill="rgba(230,217,189,0.6)">no transaction</text>
@@ -734,7 +733,7 @@
 <g opacity="1"><animate attributeName="opacity" values="1;1;1;1;0;0;1;1" keyTimes="0.000000;0.039950;0.040000;0.070000;0.070100;0.869900;0.870000;1.000000" dur="10s" repeatCount="indefinite"/><text data-role="label" x="20" y="432" text-anchor="start" font-family="Courier Prime" font-size="15" letter-spacing="0" fill="#a9bf8e">deposit kept, transfer undone:</text><text data-role="label" x="20" y="454" text-anchor="start" font-family="Courier Prime" font-size="15" letter-spacing="0" fill="#a9bf8e">nothing half done</text></g>
 </g>
 </svg>
-      <p id="ch13-acid-p3" class="diagram-caption">Top, a transfer with no transaction: the power fails after Alice is debited, and €100 vanishes. Below, every change reaches the log before the data pages, so recovery redoes the committed deposit that never reached its page and undoes the unfinished transfer.</p>
+      <p id="ch13-acid-p5" class="diagram-caption">Top, a transfer with no transaction: the power fails after Alice is debited, and €100 vanishes. Below, every change reaches the log before the data pages, so recovery redoes the committed deposit that never reached its page and undoes the unfinished transfer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -3529,7 +3528,7 @@
 
 </section>
 
-<script src="book.js?v=20261024b"></script>
+<script src="book.js?v=20261024c"></script>
 
 </body>
 </html>

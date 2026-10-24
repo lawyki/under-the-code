@@ -81,6 +81,9 @@ card = f'''<div class="diagram-card fig-v2" id="fig-13-6">
       {how}
     </div>'''
 if __name__ == '__main__':
+    # Pass 31 (brief section 12): Fig 13.6 is now the merged card built by scripts/figs/fig_13_5.py. This Pass 28
+    # script would overwrite it, so it refuses to run; it stays in git for the record.
+    raise SystemExit('fig_13_6.py is retired: Fig 13.6 is the merged card, built by scripts/figs/fig_13_5.py')
     import re
     s = open('/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html').read()
     i = s.index('id="fig-13-6"'); cap = re.search(r'<p id="([^"]+)" class="diagram-caption"', s[i:]).group(1)

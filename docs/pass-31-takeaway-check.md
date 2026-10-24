@@ -1,28 +1,26 @@
-# Pass 31 · takeaway check (2026-10-24, rerun after repair round 3)
+# Pass 31 · takeaway check (2026-10-24, rerun for repair round 4)
 
-The 186 takeaways (ledger column `intent`; held rows and Fig 13.6, merged into Fig 13.5, have none) after repair round 3: every one at most 20 words counting its opening job words, at most two numbers, each opening with its job.
+The 186 takeaways (ledger column `intent`; held rows and Fig 13.5, merged into Fig 13.6, have none) after repair round 4: every one at most 20 words counting its job words, at most two numbers, each opening with its job.
 
-**The checker in force** is the gate's frozen taught-yet: `tests/pass31/lib.mjs` with `tests/pass31/common-words.txt` and `scripts/known-terms.mjs` as on `figures-final-gate` at the freeze commit `355c41f` (blobs `6d8b3ff`, `98aa9dc` and `97d99d2`, unchanged since `fd4c94e`). It was run on a scratch copy of those three files against `figures-final`'s `public/` (known-terms with `--public`: 116 sections, 488 terms, 371 abbreviations at their first prose paragraph). The runner calls `knownTerms`, `taughtBefore`, `packet` and `taughtYet` for each figure; its full output is below. The older copy of `lib.mjs` on `figures-final` (the dictionary rule) no longer decides anything.
+**The checker in force** is the gate's taught-yet as frozen at `43ff49c` (fingerprint `4095d1aa`): `tests/pass31/lib.mjs` (blob `e7190db`), `tests/pass31/common-words.txt` and `scripts/known-terms.mjs`, run on a scratch copy against `figures-final`'s `public/` (known-terms with `--public`: 116 sections, 488 terms, 371 abbreviations at their first prose paragraph). The runner calls `knownTerms`, `taughtBefore`, `packet` and `taughtYet` per figure. Lowercase words pass on the common-word list or the dictionary, except tokens of three letters or fewer whose capital form is an abbreviation (brief section 15). A second gate follow-up (code only) is fixing the checker gaps below in the checker itself; this file is rerun on its freeze.
 
-Result: 14 figures flagged, no all-capitals flag. Each was looked up in the prose before its card (paragraphs only, captions and cards excluded). Every flag is the checker's, not the wording's: the term is taught before the card, or it is an everyday word that matches a glossary term by spelling. They go to the gate track as known false flags; no takeaway was reworded to dodge one.
+Result: 12 figures flagged, no all-capitals flag. Every flag was looked up in the prose before its card (paragraphs only, never captions or cards).
 
-| Figure | Token | Why the checker flags it | In fact |
-|---|---|---|---|
-| 1.10 | mov, bytes, register | known-terms places byte and register later | mov eax: ch1-cpu-p5; byte: ch1-cpu-p2; register: ch1-vonneumann-p4 |
-| 3.4 | compilers | glossary first-use placed later | ch1-vonneumann-p3 |
-| 4.19 | virtual machine, container's | taught earlier in the same section, which known-terms does not credit | ch4-security-p6 |
-| 4.20 | container's | same | ch4-security-p6 |
-| 4.21 | group's | everyday word matching a glossary term | everyday |
-| 6.5 | releases | everyday word matching a glossary term (memory ordering) | everyday |
-| 7.4, 7.5, 12.6 | thread | glossary first-use placed later | ch7-gil-p1 |
-| 8.3 | toss | everyday word matching a glossary term | everyday |
-| 8.4 | bandwidth | not on the word list | ch8-shannon-p8 |
-| 9.9 | groups | everyday word matching a glossary term | everyday |
-| 12.1 | applet | not on the word list | ch12-browser-p2 |
-| 12.3 | microtask | not on the word list | ch12-loop-p2 |
+| Figure | Token | Why the checker flags it | In fact | Fix |
+|---|---|---|---|---|
+| 1.10 | mov, bytes, register | mov written lowercase; byte and register placed later by known-terms | mov eax: ch1-cpu-p5; byte: ch1-cpu-p2; register: ch1-vonneumann-p4 | checker (follow-up 2) |
+| 3.4 | compilers | glossary first-use placed later | ch1-vonneumann-p3 | checker |
+| 4.19, 4.20, 4.21 | virtual machine, container | taught earlier in the same section | ch4-security-p6 | checker |
+| 5.3 | pointer, int | taught earlier in the same section | ch5-bell-labs-p5, ch5-portability-p7 | checker |
+| 7.4, 7.5, 12.6 | thread | glossary first-use placed later | ch7-gil-p1 | checker |
+| 9.9 | groups | everyday word matching a glossary term | plain sense: the card writes the address in groups of hex digits | newcomer read: stays |
+| 12.1 | applet | not a glossary term, met in prose before the card | ch12-browser-p2 | checker |
+| 12.3 | microtask | same | ch12-loop-p2 | checker |
 
-Reworded in round 3 because a flag or a review was right: 5.3 ("pointers", first taught after the card), 4.19 ("VM" spelled out), BR.6 ("timer interrupts" read as the glossary term), 9.4 ("time to live"), 9.7 ("Tier 1s"), 17.1 ("sensitive"), 17.3 ("desired state", "watchers"), 6.4 ("call site"), 7.9 ("toll"); and, from round 2, 3.3 (AL, AX), 17.3 (API), 1.6, 1.14 and 10.8, all terms first met in the figure's own caption.
+## Newcomer reads
+
+A newcomer read asks whether a plain word in a takeaway carries a technical sense the prose has not taught by then. Round 4's pre-commit check (`wf_ae34022e-546`, read-only Sonnet reviewers with two skeptics per finding) read every changed takeaway; its confirmed and split findings were reworded: 2.3 ("symbol", a word first met in the caption, now "gate"), 5.11 ("braces"), 16.10 ("link"), 13.6 ("redoes", "undoes", now p4's "replays" and "rolls back"), 8.4 (a "limit" read as a ceiling), 11.1 (a cause the prose before the card does not give). Earlier rounds reworded 13.4 ("bucket", "keys"), 8.10 ("port"), 8.5 and 8.6 ("edge", now "transition"), 4.4 ("node"), 9.4 ("time to live", then "counts it down"), 17.1 ("sensitive") and 17.3 ("desired state", "watchers"). Kept with their plain sense: 9.9 "groups"; 2.8 "wrap" and "wheel" (the card draws the wheel; knows gives a clock face).
 
 ## Exemplar drafts (2026-10-24)
 
-`fig:check` on the five Phase 1 drafts: Figs 1.5, 13.5 and 17.6 pass every check. Figs 4.8 and 10.3 fail taught-yet on all-capitals tokens only, each taught before the figure: CR3 (chBridge-mode-p4) and TCP's state names SYN_SENT, SYN_RCVD, FIN_WAIT_1, FIN_WAIT_2, CLOSE_WAIT, LAST_ACK, TIME_WAIT and the segment SYN-ACK (ch10-handshake-p1 and p3).
+The first run used the older `fig:check` on `figures-final`: Figs 1.5, 13.5 (now 13.6) and 17.6 passed every check; Figs 4.8 and 10.3 failed taught-yet on all-capitals tokens the prose teaches before them (CR3, chBridge-mode-p4 and chBridge-mmu-p4; TCP's state names and SYN-ACK, ch10-handshake-p1 and p3). That checker no longer decides. The frozen gate's mechanical checks on the five drafts are run by the second gate follow-up and recorded here on its freeze. Figs 10.3 and 17.6 have three panels each, which the two-panel cap fails as drawn; both are redrawn before any exemplar is ticked.

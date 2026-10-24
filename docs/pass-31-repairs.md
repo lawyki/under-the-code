@@ -1,0 +1,495 @@
+# Pass 31 · repairs, cell by cell
+
+Generated from git: every change each repair round made to the ledger columns job, intent (the takeaway), content, knows, subtraction, chosen and status (`docs/pass-31-ledger.tsv`); the bookkeeping columns date, bin, concepts_tried, gate, failed_criterion and commit are not listed. Held rows never change. The reasons are in `UNDER.md` §4ag and in the verification reports it names.
+
+## Round 1 (Phase 0 repairs): `fb4c1b9` to `7876daa`, 187 rows, 373 cells
+
+- fig-1-1: intent
+- fig-1-2: intent
+- fig-1-3: intent
+- fig-1-4: intent
+- fig-1-5: intent, knows
+- fig-1-6: intent
+- fig-1-7: intent
+- fig-1-8: intent
+- fig-1-9: intent
+- fig-1-10: intent
+- fig-1-11: intent
+- fig-1-13: intent, subtraction
+- fig-1-14: intent
+- fig-1-15: intent
+- fig-2-1: intent, knows
+- fig-2-2: intent, knows
+- fig-2-3: intent
+- fig-2-4: intent
+- fig-2-5: intent
+- fig-2-6: intent
+- fig-2-7: intent
+- fig-2-8: intent
+- fig-2-10: intent
+- fig-2-11: intent
+- fig-2-12: intent
+- fig-3-1: intent, knows
+- fig-3-2: intent
+- fig-3-3: job, intent, knows
+- fig-3-4: intent
+- fig-3-5: intent
+- fig-3-6: intent
+- fig-br-1: intent
+- fig-br-2: intent
+- fig-br-3: intent
+- fig-br-4: intent
+- fig-br-5: intent
+- fig-br-6: intent
+- fig-br-7: job, intent
+- fig-br-8: intent
+- fig-br-9: intent
+- fig-4-1: job, intent, subtraction
+- fig-4-2: intent, subtraction
+- fig-4-3: intent, subtraction, status
+- fig-4-4: intent, subtraction
+- fig-4-5: intent, subtraction
+- fig-4-6: intent, subtraction
+- fig-4-7: intent, subtraction
+- fig-4-8: intent, knows, subtraction
+- fig-4-9: intent, subtraction
+- fig-4-10: intent, subtraction
+- fig-4-12: intent, subtraction
+- fig-4-13: intent, subtraction
+- fig-4-14: intent, subtraction
+- fig-4-15: intent, subtraction
+- fig-4-16: intent, subtraction
+- fig-4-17: intent, subtraction
+- fig-4-18: intent, subtraction
+- fig-4-19: intent, subtraction
+- fig-4-20: intent, subtraction
+- fig-4-21: intent, subtraction
+- fig-4-22: intent, knows, subtraction
+- fig-5-1: intent, subtraction
+- fig-5-2: intent, subtraction, status
+- fig-5-3: job, intent, subtraction
+- fig-5-4: intent, subtraction
+- fig-5-5: intent, subtraction
+- fig-5-6: intent, subtraction
+- fig-5-9: intent, subtraction
+- fig-5-10: intent, subtraction
+- fig-5-11: job, intent, knows, subtraction
+- fig-6-1: intent, subtraction
+- fig-6-2: intent, subtraction
+- fig-6-3: intent, subtraction
+- fig-6-4: intent, subtraction
+- fig-6-5: intent, subtraction
+- fig-6-6: intent, subtraction
+- fig-6-7: intent, subtraction
+- fig-6-8: intent, subtraction
+- fig-6-9: intent, knows, subtraction, status
+- fig-7-1: intent, subtraction
+- fig-7-2: intent, knows, subtraction, status
+- fig-7-3: intent, knows, subtraction
+- fig-7-4: intent, subtraction
+- fig-7-5: intent, subtraction
+- fig-7-6: intent, subtraction
+- fig-7-7: intent, subtraction
+- fig-7-8: intent, subtraction
+- fig-7-9: intent, subtraction
+- fig-8-1: intent, knows, subtraction
+- fig-8-2: intent, subtraction
+- fig-8-3: intent, subtraction
+- fig-8-4: intent, subtraction
+- fig-8-5: intent, knows, subtraction
+- fig-8-6: intent, subtraction
+- fig-8-7: intent, subtraction
+- fig-8-8: intent, subtraction
+- fig-8-9: intent, subtraction
+- fig-8-10: intent, subtraction
+- fig-8-11: intent, subtraction
+- fig-8-12: intent, subtraction
+- fig-9-1: intent, subtraction
+- fig-9-2: job, intent, subtraction
+- fig-9-3: intent, subtraction
+- fig-9-4: job, intent, subtraction
+- fig-9-5: intent, subtraction
+- fig-9-6: intent, subtraction
+- fig-9-7: intent, subtraction
+- fig-9-8: intent, subtraction
+- fig-9-9: intent, subtraction, status
+- fig-10-1: intent, subtraction
+- fig-10-2: intent, subtraction
+- fig-10-3: intent, subtraction
+- fig-10-4: intent, subtraction
+- fig-10-5: intent, subtraction
+- fig-10-6: intent, subtraction
+- fig-10-7: intent, subtraction
+- fig-10-8: intent, subtraction
+- fig-10-9: intent, knows, subtraction
+- fig-11-1: intent, subtraction
+- fig-11-2: job, intent, subtraction
+- fig-11-3: intent, subtraction
+- fig-11-4: intent, subtraction
+- fig-11-5: intent, subtraction
+- fig-11-6: intent, subtraction
+- fig-11-8: intent, subtraction
+- fig-11-9: intent, subtraction
+- fig-11-10: intent, subtraction
+- fig-11-11: intent, subtraction
+- fig-11-12: intent, subtraction
+- fig-11-13: intent, subtraction
+- fig-11-14: intent, subtraction
+- fig-11-15: intent, subtraction
+- fig-12-1: intent, subtraction, status
+- fig-12-2: intent, knows, subtraction
+- fig-12-3: intent, subtraction
+- fig-12-4: intent, subtraction
+- fig-12-5: intent, subtraction
+- fig-12-6: intent, subtraction
+- fig-12-7: intent, subtraction
+- fig-13-1: job, intent, subtraction, status
+- fig-13-2: intent, subtraction
+- fig-13-3: intent, subtraction
+- fig-13-4: intent, subtraction
+- fig-13-5: intent, subtraction
+- fig-13-6: intent, subtraction
+- fig-13-7: intent, subtraction
+- fig-13-8: intent, subtraction
+- fig-13-9: intent, subtraction
+- fig-14-1: intent, subtraction
+- fig-14-2: intent, subtraction
+- fig-14-5: intent, subtraction
+- fig-14-7: intent, subtraction
+- fig-14-8: intent, subtraction
+- fig-14-9: intent, subtraction
+- fig-14-10: intent, subtraction
+- fig-14-11: intent, subtraction
+- fig-14-12: intent, subtraction
+- fig-14-13: intent, subtraction
+- fig-16-1: intent, subtraction
+- fig-16-2: intent, subtraction
+- fig-16-3: intent, subtraction
+- fig-16-4: intent, subtraction
+- fig-16-5: intent, subtraction
+- fig-16-6: intent, subtraction
+- fig-16-7: intent, subtraction
+- fig-16-8: intent, subtraction
+- fig-16-9: intent, subtraction
+- fig-16-10: intent, subtraction
+- fig-16-11: intent, subtraction
+- fig-17-1: intent, subtraction
+- fig-17-2: intent, subtraction
+- fig-17-3: intent, subtraction
+- fig-17-4: intent, subtraction
+- fig-17-5: intent, subtraction
+- fig-17-6: intent, subtraction
+- fig-17-7: intent, subtraction
+- fig-17-8: job, intent, subtraction
+- fig-17-9: intent, subtraction
+- fig-17-10: intent, subtraction
+- fig-17-11: intent, subtraction
+- fig-18-1: intent, subtraction
+- fig-18-trace: intent, knows, subtraction
+- fig-18-2: intent, subtraction, status
+- fig-18-3: intent, subtraction, status
+- fig-18-4: intent, subtraction
+- fig-18-5: job, intent, subtraction, status
+- fig-18-6: intent, knows, subtraction
+
+## Round 2 (with the Phase 1 drafts committed in between): `7876daa` to `5022e8f`, 135 rows, 225 cells
+
+- fig-1-1: subtraction
+- fig-1-2: intent, content, subtraction
+- fig-1-3: knows, subtraction, chosen
+- fig-1-4: knows, subtraction, chosen
+- fig-1-5: subtraction, chosen
+- fig-1-6: intent, subtraction
+- fig-1-7: subtraction
+- fig-1-8: subtraction
+- fig-1-9: subtraction
+- fig-1-10: intent, subtraction, status
+- fig-1-11: subtraction
+- fig-1-13: intent, content, subtraction
+- fig-1-14: intent, subtraction, chosen
+- fig-1-15: subtraction
+- fig-2-1: intent, knows, subtraction
+- fig-2-2: intent, subtraction
+- fig-2-3: intent, content, subtraction
+- fig-2-4: intent, subtraction
+- fig-2-5: subtraction
+- fig-2-6: subtraction
+- fig-2-7: intent, subtraction
+- fig-2-8: intent, knows, subtraction
+- fig-2-10: subtraction
+- fig-2-11: intent, subtraction
+- fig-2-12: subtraction
+- fig-3-1: intent, subtraction
+- fig-3-2: intent, subtraction
+- fig-3-3: intent, subtraction
+- fig-3-4: intent, subtraction, status
+- fig-3-5: intent, subtraction
+- fig-3-6: intent, subtraction
+- fig-br-1: intent, subtraction
+- fig-br-2: subtraction
+- fig-br-3: subtraction
+- fig-br-4: content, subtraction, status
+- fig-br-5: knows, subtraction, status
+- fig-br-6: subtraction
+- fig-br-7: subtraction
+- fig-br-8: subtraction
+- fig-br-9: intent, knows, subtraction
+- fig-4-1: subtraction
+- fig-4-4: intent
+- fig-4-8: chosen
+- fig-4-9: intent
+- fig-4-10: intent
+- fig-4-15: intent
+- fig-4-16: intent
+- fig-4-17: subtraction
+- fig-4-20: subtraction
+- fig-4-21: knows
+- fig-5-2: intent, subtraction
+- fig-5-3: intent, subtraction
+- fig-5-4: intent, subtraction
+- fig-5-5: intent, knows
+- fig-5-6: subtraction
+- fig-5-9: subtraction
+- fig-5-11: knows, subtraction
+- fig-6-2: intent, subtraction
+- fig-6-3: intent, subtraction
+- fig-6-4: knows
+- fig-6-5: subtraction
+- fig-6-7: intent
+- fig-6-8: intent
+- fig-6-9: intent, subtraction, status
+- fig-7-1: intent, subtraction
+- fig-7-4: subtraction
+- fig-7-7: intent, content, subtraction
+- fig-7-8: intent, subtraction
+- fig-7-9: knows
+- fig-8-1: job, intent, knows
+- fig-8-2: job, intent, subtraction
+- fig-8-4: intent
+- fig-8-5: knows, subtraction
+- fig-8-6: knows, subtraction
+- fig-8-8: subtraction
+- fig-8-10: subtraction
+- fig-8-11: knows, subtraction, status
+- fig-8-12: knows, subtraction, status
+- fig-9-2: intent, content, subtraction
+- fig-9-3: subtraction
+- fig-9-4: subtraction
+- fig-9-5: subtraction
+- fig-9-7: intent
+- fig-9-8: intent
+- fig-9-9: subtraction, status
+- fig-10-3: subtraction, chosen
+- fig-10-4: subtraction
+- fig-10-5: subtraction
+- fig-10-8: intent, subtraction
+- fig-10-9: intent, knows
+- fig-11-1: subtraction
+- fig-11-2: intent
+- fig-11-5: subtraction
+- fig-11-6: subtraction
+- fig-11-8: subtraction
+- fig-11-10: subtraction
+- fig-11-11: intent
+- fig-11-13: subtraction
+- fig-11-15: subtraction
+- fig-12-2: subtraction
+- fig-12-4: intent
+- fig-12-6: intent
+- fig-13-1: intent, content, subtraction
+- fig-13-3: intent, subtraction
+- fig-13-4: subtraction
+- fig-13-5: intent, content, subtraction, chosen, status
+- fig-13-6: intent, knows, chosen, status
+- fig-13-7: intent, content, subtraction
+- fig-14-1: subtraction
+- fig-14-2: intent
+- fig-14-5: subtraction
+- fig-14-7: intent, subtraction
+- fig-14-8: subtraction
+- fig-14-10: intent, subtraction
+- fig-14-11: intent
+- fig-14-12: subtraction
+- fig-14-13: content
+- fig-16-3: subtraction
+- fig-16-5: subtraction
+- fig-16-8: subtraction
+- fig-16-9: knows, subtraction
+- fig-16-10: job, intent
+- fig-16-11: subtraction
+- fig-17-2: intent, subtraction
+- fig-17-3: intent
+- fig-17-5: intent
+- fig-17-6: intent, chosen
+- fig-17-7: subtraction
+- fig-17-8: knows, subtraction
+- fig-17-10: subtraction
+- fig-17-11: intent, subtraction, status
+- fig-18-1: subtraction, status
+- fig-18-trace: content
+- fig-18-2: subtraction, status
+- fig-18-6: intent
+
+## Round 3: `d76e513` to `832cb0d`, 91 rows, 125 cells
+
+- fig-1-2: content
+- fig-1-3: subtraction, chosen
+- fig-1-6: subtraction
+- fig-1-7: intent
+- fig-1-9: content
+- fig-1-14: knows, subtraction, chosen
+- fig-2-2: content, subtraction
+- fig-2-3: intent, content, subtraction
+- fig-2-6: intent
+- fig-2-10: content, subtraction
+- fig-2-11: content
+- fig-2-12: subtraction
+- fig-3-1: intent, content
+- fig-3-2: content
+- fig-3-4: intent, content, subtraction
+- fig-3-5: subtraction
+- fig-br-3: content
+- fig-br-4: content
+- fig-br-6: intent
+- fig-br-9: intent, subtraction
+- fig-4-3: subtraction
+- fig-4-4: intent
+- fig-4-5: content
+- fig-4-6: intent, content, subtraction
+- fig-4-8: content
+- fig-4-9: intent, content
+- fig-4-14: content, subtraction
+- fig-4-15: content
+- fig-4-16: content
+- fig-4-19: intent
+- fig-5-1: content
+- fig-5-2: subtraction
+- fig-5-3: intent
+- fig-5-9: intent
+- fig-6-2: content, subtraction
+- fig-6-3: subtraction
+- fig-6-4: intent
+- fig-6-9: intent, content, knows, subtraction
+- fig-7-1: intent, subtraction
+- fig-7-2: content, subtraction
+- fig-7-4: knows
+- fig-7-7: intent
+- fig-7-8: knows
+- fig-7-9: intent, knows
+- fig-8-1: subtraction
+- fig-8-2: content
+- fig-8-5: subtraction
+- fig-8-6: subtraction
+- fig-8-9: subtraction, status
+- fig-8-10: content, knows
+- fig-8-11: intent, content, subtraction
+- fig-8-12: subtraction
+- fig-9-2: intent, content
+- fig-9-4: intent
+- fig-9-7: intent
+- fig-9-8: intent
+- fig-10-3: content
+- fig-10-4: subtraction
+- fig-11-1: subtraction
+- fig-11-2: content
+- fig-11-3: content
+- fig-11-4: subtraction
+- fig-11-6: content, subtraction
+- fig-11-10: subtraction
+- fig-11-13: content
+- fig-12-1: subtraction
+- fig-12-2: subtraction, status
+- fig-12-6: intent
+- fig-12-7: knows
+- fig-13-2: subtraction
+- fig-13-4: intent
+- fig-13-5: subtraction
+- fig-13-6: intent, content, chosen
+- fig-13-8: subtraction
+- fig-14-2: content, subtraction
+- fig-14-10: intent
+- fig-14-13: intent
+- fig-16-6: content, subtraction
+- fig-16-9: intent
+- fig-17-1: intent
+- fig-17-3: intent
+- fig-17-8: subtraction
+- fig-17-9: content
+- fig-17-10: intent
+- fig-17-11: subtraction
+- fig-18-1: knows
+- fig-18-trace: knows
+- fig-18-2: knows, subtraction
+- fig-18-3: subtraction
+- fig-18-4: subtraction
+- fig-18-6: content
+
+## Round 4: `832cb0d` to `bc17ed6`, 67 rows, 123 cells
+
+- fig-1-3: subtraction, chosen
+- fig-1-4: intent, content, knows, subtraction, chosen
+- fig-1-6: content, subtraction
+- fig-1-9: intent, content
+- fig-1-10: subtraction
+- fig-1-13: content
+- fig-1-14: subtraction, chosen
+- fig-2-3: intent
+- fig-2-7: subtraction
+- fig-2-8: intent, content, knows, subtraction
+- fig-3-1: content
+- fig-3-2: subtraction
+- fig-3-4: subtraction
+- fig-3-5: intent, subtraction
+- fig-br-3: content
+- fig-br-4: content, knows, subtraction
+- fig-br-5: subtraction
+- fig-br-9: content, subtraction
+- fig-4-4: intent
+- fig-4-20: subtraction
+- fig-4-21: intent, content, subtraction
+- fig-5-2: subtraction
+- fig-5-3: intent
+- fig-5-4: subtraction
+- fig-5-5: intent, content, subtraction
+- fig-5-11: intent
+- fig-6-3: knows, subtraction
+- fig-6-4: intent, content, knows, subtraction
+- fig-6-5: intent
+- fig-6-6: knows
+- fig-6-9: intent, content, knows, subtraction
+- fig-7-2: subtraction
+- fig-7-3: knows
+- fig-7-8: subtraction
+- fig-7-9: intent, content, knows, subtraction
+- fig-8-3: intent
+- fig-8-4: intent
+- fig-8-5: intent, subtraction
+- fig-8-6: intent, content, knows, subtraction
+- fig-8-9: subtraction, status
+- fig-8-10: intent
+- fig-8-11: intent
+- fig-9-2: content
+- fig-9-4: intent, subtraction
+- fig-9-5: subtraction
+- fig-10-3: intent, chosen
+- fig-10-5: subtraction
+- fig-11-1: intent, subtraction
+- fig-11-2: content
+- fig-12-1: subtraction
+- fig-13-4: intent
+- fig-13-5: intent, content, subtraction, chosen, status
+- fig-13-6: intent, content, knows, subtraction, chosen, status
+- fig-13-7: knows
+- fig-14-2: intent
+- fig-16-8: intent, content, subtraction
+- fig-16-9: intent, content, knows, subtraction
+- fig-16-10: intent
+- fig-16-11: subtraction
+- fig-17-2: subtraction
+- fig-17-3: intent, content, subtraction
+- fig-17-7: subtraction
+- fig-17-8: intent, content, knows, subtraction
+- fig-18-1: status
+- fig-18-trace: knows
+- fig-18-2: knows
+- fig-18-3: subtraction
