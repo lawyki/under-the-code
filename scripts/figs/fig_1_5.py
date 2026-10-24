@@ -124,7 +124,7 @@ def panel(py, live):
             g.append(f'<circle r="2.8" fill="#fff"><animateMotion path="M 360 {ST - 8} V 26 H 40 V {ST - 8}" dur="4.2s" begin="-{k * 0.6:.1f}s" repeatCount="indefinite"/></circle>')
         g.append('</g>'); a(''.join(g))
         a(f'<g opacity="0">{T.anim("opacity", T.pulse(IN + 0.2, OFF, ramp=0.25))}' +
-          text(200, ST + 34, 'channel', anchor='middle', size=14, fill=BLUE, role='label') +
+          text(200, ST + 34, 'bridge', anchor='middle', size=14, fill=BLUE, role='label') +
           text(380, 17, 'current flows', anchor='end', size=15, fill=GOLD, role='label') + '</g>')
     else:
         a(text(380, 17, 'no current', anchor='end', size=15, fill=MUTED, role='label'))

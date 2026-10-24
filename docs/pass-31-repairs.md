@@ -494,7 +494,7 @@ Generated from git: every change each repair round made to the ledger columns jo
 - fig-18-2: knows
 - fig-18-3: subtraction
 
-## Round 5: `6257b62` to the commit that adds this section, 90 rows, 177 cells
+## Round 5: `6257b62` to `929b930`, 90 rows, 177 cells
 
 - fig-1-3: intent
 - fig-1-4: subtraction
@@ -586,3 +586,116 @@ Generated from git: every change each repair round made to the ledger columns jo
 - fig-18-4: intent, subtraction
 - fig-18-5: intent, content, subtraction
 - fig-18-6: subtraction
+
+## Round 6: `929b930` to the commit that adds this section, 110 rows, 148 cells
+
+- fig-1-5: content, chosen
+- fig-1-6: subtraction
+- fig-1-10: subtraction
+- fig-1-13: subtraction
+- fig-1-14: intent
+- fig-2-3: subtraction
+- fig-2-6: intent
+- fig-2-8: subtraction
+- fig-2-10: subtraction
+- fig-2-11: subtraction
+- fig-2-12: subtraction
+- fig-3-1: subtraction
+- fig-3-2: subtraction
+- fig-3-3: subtraction
+- fig-3-4: subtraction
+- fig-3-5: subtraction
+- fig-br-1: subtraction
+- fig-br-2: subtraction
+- fig-br-3: subtraction
+- fig-br-4: subtraction
+- fig-br-7: subtraction
+- fig-br-9: subtraction
+- fig-4-1: subtraction
+- fig-4-3: subtraction
+- fig-4-5: subtraction
+- fig-4-7: intent, subtraction
+- fig-4-9: intent, subtraction
+- fig-4-12: subtraction
+- fig-4-14: intent
+- fig-4-15: subtraction
+- fig-4-16: intent
+- fig-4-19: subtraction
+- fig-4-20: subtraction
+- fig-4-21: intent
+- fig-5-1: subtraction
+- fig-5-2: knows, subtraction
+- fig-5-3: subtraction
+- fig-5-6: content
+- fig-5-9: subtraction
+- fig-5-10: knows, subtraction
+- fig-5-11: intent, knows, subtraction
+- fig-6-1: subtraction
+- fig-6-2: intent, subtraction
+- fig-6-4: subtraction
+- fig-6-7: subtraction
+- fig-6-9: subtraction
+- fig-7-1: intent, content, subtraction
+- fig-7-2: subtraction
+- fig-7-3: subtraction
+- fig-7-7: subtraction
+- fig-7-8: content
+- fig-7-9: subtraction
+- fig-8-1: subtraction
+- fig-8-2: subtraction
+- fig-8-6: content
+- fig-8-8: content, subtraction
+- fig-8-9: subtraction
+- fig-8-11: subtraction
+- fig-8-12: subtraction
+- fig-9-2: intent, content, subtraction
+- fig-9-5: intent, content
+- fig-9-7: subtraction
+- fig-9-9: intent, content, subtraction
+- fig-10-1: subtraction
+- fig-10-3: chosen
+- fig-10-7: intent, subtraction
+- fig-10-9: subtraction
+- fig-11-1: subtraction
+- fig-11-2: subtraction
+- fig-11-3: subtraction
+- fig-11-5: subtraction
+- fig-11-8: subtraction
+- fig-11-10: subtraction
+- fig-11-12: subtraction
+- fig-11-13: subtraction
+- fig-12-1: intent, content, subtraction
+- fig-12-2: intent, subtraction
+- fig-12-4: subtraction
+- fig-12-5: content, subtraction
+- fig-12-7: subtraction
+- fig-13-1: subtraction
+- fig-13-2: subtraction
+- fig-13-3: subtraction
+- fig-13-6: subtraction
+- fig-13-7: subtraction
+- fig-14-1: intent, subtraction
+- fig-14-2: subtraction
+- fig-14-5: subtraction
+- fig-14-7: subtraction
+- fig-14-8: subtraction
+- fig-14-9: content
+- fig-14-10: intent, subtraction
+- fig-14-11: intent, content, subtraction
+- fig-14-12: intent, content, subtraction
+- fig-14-13: subtraction
+- fig-16-9: intent
+- fig-17-1: intent, content, subtraction
+- fig-17-2: content, subtraction
+- fig-17-3: subtraction
+- fig-17-6: subtraction
+- fig-17-7: content, knows
+- fig-17-8: intent, content, knows, subtraction
+- fig-17-9: subtraction
+- fig-17-11: subtraction
+- fig-18-1: subtraction
+- fig-18-trace: subtraction
+- fig-18-2: intent, content, subtraction
+- fig-18-3: intent, subtraction
+- fig-18-4: intent, subtraction
+- fig-18-5: subtraction
