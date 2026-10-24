@@ -8,6 +8,8 @@
 // --criteria runs only the criteria named (a builder's diagnosis): the verdict carries "partial" and is never a verdict
 // on the figure; with --author it is refused (calibration section 17), --single included, except inside a decision's
 // own runs, and every output line of a partial run, the author's included, carries the partial marker (section 18).
+// --single with --author is refused outside a decision's own runs, whatever the criteria (section 19); every output line
+// of a single run carries "single", and of a run without the pairwise test "no_pairwise" (section 19).
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -75,16 +77,24 @@ const PARTIAL = !FULL.every(c => CRIT.includes(c));
 const IN_DECISION = !!o.single && process.env.P31_GATE_DECISION_RUN === '1';
 if (o.criteria && CRIT.some(c => !ALL.includes(c))) { console.log(`gate: unknown criterion in --criteria=${o.criteria} (${ALL.join(', ')})`); process.exit(2); }
 if (PARTIAL && o.author && !IN_DECISION) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration sections 17 and 18)'); process.exit(2); }
+// section 19 (the review of the section 18 freeze, D): one run (--single) is a decision's building block, never a verdict on
+// a figure (the bar is 2 of 3 runs), so the author's form refuses it outside a decision's own runs, full criteria
+// included; and every output line of a single run says "single"
+if (o.single && o.author && !IN_DECISION) { console.log('gate: --single with --author refused: one run is not a verdict; the author gets only decisions (calibration section 19)'); process.exit(2); }
+// (G) a run without the pairwise test (--no-pairwise: decoys, validation, merged figures, redraws) says so on every
+// output line, the author's included, and in its verdict
+const NO_PAIR = !!o['no-pairwise'];
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const OUTDIR = mkdirp(path.resolve(o.out || path.join(OUT, 'gate', `${ID}-${o.label || 'run'}-${STAMP}`)));
 const log = (...a) => { if (!o.author) console.error(...a); };
-const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP, ...(PARTIAL ? { partial: CRIT } : {}) };
+const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP, ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}) };
 let SANDBOX = null;
 
 function finish(code) {
   if (SANDBOX) fs.rmSync(SANDBOX, { recursive: true, force: true });
   fs.writeFileSync(path.join(OUTDIR, 'verdict.json'), JSON.stringify(V, null, 1));
-  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
+  const marks = { ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}) };
+  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, ...marks, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...marks, failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
   process.exit(code);
 }
 function toolError(msg) { V.pass = false; V.failed = 'error'; V.failed_all = ['error']; V.error = String(msg).slice(0, 2000); finish(2); }

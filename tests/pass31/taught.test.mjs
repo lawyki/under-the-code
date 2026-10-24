@@ -11,7 +11,13 @@
 // eleven false flags and the same placement class (each passing at the first figure after its teaching paragraph and
 // failing at the figure just before), the teaching places (defining table rows teach, value rows, part taglines and
 // pointer sentences do not), and a synthetic tree that plants plain uses of everyday glossary words (they must still
-// fail) beside one control sentence per new cue (each must teach).
+// fail) beside one control sentence per new cue (each must teach). Section 19 (the review of the section 18 freeze)
+// adds A (no abbreviation placed by a mention in a sentence that points elsewhere, nor a noMention term or one first
+// written in held material by a mention: DNS, ASLR, CFI, HTTPS, SBOM, CVE, CA must fail where the review named them;
+// DNS after its teaching, DEP, GCHQ and the glosses in pointer sentences must pass; the abbreviations' placements),
+// B (a line break in the HTML source is no sentence start: planted mid-sentence uses fail, a control passes), E (a
+// possessive apposition glosses: C++), F (a hexadecimal run is notation taught with hexadecimal; a word in capitals
+// passes as the word the prose writes), each with its regressions.
 //   npm run fig:taught-test [-- --tree=<public dir>]
 // Exit 0 when every case holds, 1 otherwise. Each case: the figure that sets the position, the label text, and the
 // tokens expected to fail (an empty list: every token passes).
@@ -209,11 +215,15 @@ const CASES = [
   ['fig-14-5', 'SubBytes', []],
   ['fig-1-1', 'upload · subsystem · unpaid · rewrite', []],
   ['fig-1-14', 'unkernel', ['unkernel']],
-  // ---- defect 5: HTTPS is not a plural of HTTP (the book writes HTTPS as its own abbreviation, first in Chapter 11's
-  // lead since section 18, before ch11-http-p1)
+  // ---- defect 5: HTTPS is not a plural of HTTP. (Section 19: HTTPS, a glossary term written in its section only inside
+  // held material and first written there, is never placed by a mention, so it fails at Fig 11.2 too; HTTP, written
+  // before Fig 4.19 only in the Part III teaser at ch4-ipc-p15, fails there and passes from ch7-types-p3, where HTTPS
+  // still fails)
   ['fig-4-19', 'HTTPS', ['https']],
-  ['fig-4-19', 'HTTP', []],
-  ['fig-11-2', 'HTTPS', []],
+  ['fig-4-19', 'HTTP', ['http']],
+  ['fig-7-3', 'HTTP', []],
+  ['fig-7-3', 'HTTPS', ['https']],
+  ['fig-11-2', 'HTTPS', ['https']],
 
   // ==== section 18 (the review of the section 17 freeze) ===============================================================
   // ---- H1: a prefix comes off only when what remains is an everyday word as written, of four letters or more: redis
@@ -320,6 +330,68 @@ const CASES = [
   ['fig-4-14', 'semaphore · shared memory', ['semaphore', 'shared memory']],
   ['fig-4-15', 'semaphore · shared memory', []],
   ['fig-4-15', 'SIGKILL', ['SIGKILL']],
+
+  // ==== section 19 (the review of the section 18 freeze) ===============================================================
+  // ---- A: a writing in a sentence that points elsewhere places no abbreviation, nor does a mention of one that is never
+  // credited by a mention (a noMention glossary term, or one the book first writes inside held material); only a gloss
+  // of it does. DNS, written before Chapter 10 only in the Part III teaser (ch4-ipc-p15), fails at Fig 8.12 and passes
+  // from Chapter 10 (its lead writes it) and after its teaching paragraph ch11-dns-p1
+  ['fig-8-12', 'HTTP, DNS, SSH', ['dns']],
+  ['fig-10-1', 'DNS', []],
+  ['fig-11-5', 'DNS', []],
+  // ASLR (taught nowhere outside held material; ch1-memory-p11's sentence points to Chapter 3) fails from Fig 2.1 on;
+  // DEP, glossed there ("the defence called DEP"), passes from Fig 2.1 and fails before
+  ['fig-2-1', 'ASLR · DEP', ['aslr']],
+  ['fig-1-15', 'DEP', ['dep']],
+  // CFI (Chapter 3's closing list) and HTTPS (Chapter 11's lead), never glossed outside held material, fail where the
+  // review placed them and at the book's last figure; SBOM, first written in held Chapter 15 and then only in a sentence
+  // pointing to it (ch17-microservices-p7), fails at Fig 18-trace
+  ['fig-br-1', 'CFI', ['cfi']],
+  ['fig-11-1', 'HTTPS', ['https']],
+  ['fig-18-6', 'HTTPS · ASLR · CFI', ['https', 'aslr', 'cfi']],
+  ['fig-18-trace', 'SBOM', ['SBOM']],
+  // the older cases of the class, first written in held material: CVE (a bare identifier, ch4-vm-p17) and CA (ch14-tls-
+  // pqc-p3) fail after those writings; GCHQ, glossed by a possessive apposition at ch14-history-p6 ("GCHQ, Britain's
+  // signals-intelligence agency"), passes from Fig 14.2 and fails at Fig 14.1
+  ['fig-4-12', 'CVE', ['CVE']],
+  ['fig-14-12', 'CA', ['CA']],
+  ['fig-14-1', 'GCHQ', ['GCHQ']],
+  ['fig-14-2', 'GCHQ', []],
+  // ... while a gloss in a pointer sentence still places it (RAM, SSD at ch1-memory-p2, a sentence naming Section 03;
+  // IRQ at chBridge-io-p2, naming Section 02), and neither an aside in parentheses that cites another section or chapter
+  // (SIGSEGV at ch4-vm-p12, DH at ch14-publickey-p6) nor a figure of the writing's own chapter (MEM at ch1-cpu-p7, "Fig
+  // 1.11 adds a fifth stage, MEM, ..."; ES2015 at ch12-loop-p4) makes the sentence point elsewhere; a part's number is
+  // the book's numbering (II, III, IV); SQL opens a sentence of Chapter 13's lead with a verb in -s (the generic form)
+  ['fig-1-14', 'RAM · SSD', ['RAM', 'SSD']],
+  ['fig-1-15', 'RAM · SSD', []],
+  ['fig-br-7', 'IRQ', []],
+  ['fig-4-8', 'SIGSEGV', ['SIGSEGV']],
+  ['fig-4-9', 'SIGSEGV', []],
+  ['fig-14-8', 'DH', ['DH']],
+  ['fig-14-9', 'DH', []],
+  ['fig-1-10', 'MEM', ['MEM']],
+  ['fig-1-11', 'MEM', []],
+  ['fig-12-4', 'ES2015', []],
+  ['fig-18-5', 'Part II · Part III · Part IV', []],
+  ['fig-12-7', 'SQL', ['SQL']],
+  ['fig-13-1', 'SQL', []],
+  // ---- E: a possessive apposition glosses like an article one: C++ at ch5-survives-p1 ("in C++, C's best-known
+  // descendant."), between Figs 5.9 and 5.10
+  ['fig-5-9', 'C++', ['c++']],
+  ['fig-5-10', 'C++', []],
+  ['fig-5-11', 'C++', []],
+  // ---- F: a run of hexadecimal groups (a MAC address) is notation, taught once the prose writes "hexadecimal"
+  // (ch1-cpu-p2, between Figs 1.8 and 1.9); a word in capitals that the prose writes in lower case passes like the word
+  // (HEXADECIMAL, FILESYSTEM, DESCRIPTOR), unless the book writes it in capitals (COMMIT); a lone group is judged as before
+  ['fig-8-9', 'B8:27:EB:9C:DA:C7 · 9C:DA:C7 · 8C:85:90:1F:33:42 · MAC ADDRESS · 48 BITS IN HEXADECIMAL', []],
+  ['fig-1-8', '9C:DA:C7 · HEXADECIMAL', ['9C:DA:C7', 'HEXADECIMAL']],
+  ['fig-1-9', '9C:DA:C7 · 8c-85-90', []],
+  ['fig-8-9', 'DA', ['DA']],
+  ['fig-1-1', '10:25:11 · 12:30', []],
+  ['fig-4-13', 'MAIN FILESYSTEM', []],
+  ['fig-br-3', 'INTERRUPT DESCRIPTOR TABLE', []],
+  ['fig-4-13', 'COMMIT', ['COMMIT']],
+  ['fig-1-1', 'FILESYSTEM', ['FILESYSTEM']],
 ];
 // item 2b: the paragraph known-terms places each term at (the first prose gloss)
 const PLACED = { register: 'ch1-vonneumann-p4', byte: 'ch1-cpu-p2', compiler: 'ch1-vonneumann-p3', thread: 'ch7-gil-p1' };
@@ -357,7 +429,19 @@ for (const [t, p] of Object.entries(ABBR18)) {
   const a = kt.abbrev[t];
   check(a && a.paragraph === p, `abbreviation ${t} placed after ${a && a.paragraph} (expected ${p})`);
 }
-check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 'ch4-ipc-p2'), `abbreviations: SATA (a value cell) ${kt.abbrev.SATA ? 'placed' : 'not placed'}; SIGKILL (a description cell in the table after ch4-ipc-p2) ${kt.abbrev.SIGKILL ? 'placed at ' + kt.abbrev.SIGKILL.paragraph : 'not placed'}`);
+// section 19: where each abbreviation the review named is placed now, and by which writing (a plain writing, a gloss,
+// a part number), and which are never placed (no gloss outside held material, no writing outside a pointer)
+const ABBR19 = { DNS: ['ch10-hero-lead', 'writing'], HTTP: ['ch7-types-p3', 'writing'], ARPANET: ['ch9-hero-lead', 'writing'], SQL: ['ch13-hero-lead', 'gloss (generic)'],
+  GCHQ: ['ch14-history-p6', 'gloss (apposition)'], DEP: ['ch1-memory-p11', 'gloss (called)'], TTL: ['ch11-dns-p5', 'gloss (expansion)'], RAM: ['ch1-memory-p2', 'gloss (expansion)'],
+  MEM: ['ch1-cpu-p7', 'writing'], SIGSEGV: ['ch4-vm-p12', 'writing'], DH: ['ch14-publickey-p6', 'writing'], II: ['ch1-kernel-p10', 'part number'] };
+for (const [t, [p, by]] of Object.entries(ABBR19)) {
+  const a = kt.abbrev[t];
+  check(a && a.paragraph === p && a.by === by, `abbreviation ${t} placed after ${a && a.paragraph} by ${a && a.by} (expected ${p}, ${by})`);
+}
+{ const never = ['ASLR', 'CFI', 'HTTPS', 'CVE', 'CA', 'SBOM'], placed = never.filter(t => kt.abbrev[t]);
+  check(!placed.length, `abbreviations never placed (no gloss outside held material, every other writing a mention): ${never.length - placed.length} of ${never.length}${placed.length ? ` (placed: ${placed.join(', ')})` : ''}`); }
+{ const e = kt.j.taught['C++']; check(e && e.paragraph === 'ch5-survives-p1' && e.source === 'prose gloss (apposition)', `placed  C++ at ${e && e.paragraph} (${e && e.source}; expected ch5-survives-p1, prose gloss (apposition))`); }
+check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 'ch4-ipc-p2'),`abbreviations: SATA (a value cell) ${kt.abbrev.SATA ? 'placed' : 'not placed'}; SIGKILL (a description cell in the table after ch4-ipc-p2) ${kt.abbrev.SIGKILL ? 'placed at ' + kt.abbrev.SIGKILL.paragraph : 'not placed'}`);
 // H3: no name is a term the book marks with a key-term span (outside the figure cards)
 {
   const marked = new Set();
@@ -415,12 +499,22 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   for (const p of PARTS) fs.copyFileSync(path.join(ROOT, p + '.html'), path.join(T, p + '.html'));
   const GL = JSON.parse(fs.readFileSync(path.join(ROOT, 'glossary.json'), 'utf8'));
   const PLAIN = ['safety', 'release', 'group', 'key', 'bucket', 'port', 'node', 'edge'];
-  const CUE = ['qzdefword', 'qzgen machine', 'qznamed', 'qzrev', 'qzmod plane', 'Qzyear–Pair', 'qzemph table', 'qzrowterm'];
+  const CUE = ['qzdefword', 'qzgen machine', 'qznamed', 'qzrev', 'qzmod plane', 'Qzyear–Pair', 'qzemph table', 'qzrowterm', 'qznlterm', 'qzposs'];
   const NEG = ['qzpointed', 'qztagterm', 'qzvalterm'];
-  for (const t of [...PLAIN, ...CUE, ...NEG]) GL.entries[t.toLowerCase()] = { term: t, part: 'part-5', section: 'ch18-final' };
+  // section 19 (A): two abbreviations made glossary entries of ch18-final that its paragraphs never write, so they are
+  // taught nowhere (noMention): one only mentioned before Fig 1.1, one glossed there by its expansion
+  const NOMEN = ['QZNOMEN', 'QZNOMGL'];
+  for (const t of [...PLAIN, ...CUE, ...NEG, ...NOMEN]) GL.entries[t.toLowerCase()] = { term: t, part: 'part-5', section: 'ch18-final' };
   fs.writeFileSync(path.join(T, 'glossary.json'), JSON.stringify(GL));
-  const plainUses = ' Safety is important here, and the release of the report is late. A key opens the lock; each node has a bucket. The key is in the drawer. The release is the last step. We packed a lock, a counter, a bucket. Node 3 sends a packet over the edge router (a box) on port number 80 (16 bits). Chapter 9 shows the <em>port</em> and the <em>node</em>. A bucket is full. Ports, nodes, edges, groups and keys. ';
-  const cues = ' Qzdefword is a planted term. A qzgen machine imitates a planted thing. Initialised to one, a planted counter admits one at a time, a qznamed; that is all. The planted store\'s "source", qzrev, runs a protocol. It has qzmod-plane parts (the pieces that decide what runs). In Qzyear–Pair (1976), which is a planted method, two sides agree. The kernel keeps <em>qzemph tables</em> that map pages. Chapter 9 shows the <em>qzpointed</em> at work. ';
+  const plainUses = ' Safety is important here, and the release of the report is late. A key opens the lock; each node has a bucket. The key is in the drawer. The release is the last step. We packed a lock, a counter, a bucket. Node 3 sends a packet over the edge router (a box) on port number 80 (16 bits). Chapter 9 shows the <em>port</em> and the <em>node</em>. A bucket is full. Ports, nodes, edges, groups and keys. '
+    // section 19 (B): a line break in the HTML source mid-sentence is no sentence start (the definitional cue must not
+    // read "and\nsafety is a" or "as a\ngroup is a" as one); (E) a possessive apposition in a list or a pointer is no gloss
+    + ' We tried it, and\nsafety is a concern; we treat them as a\ngroup is a mistake. We met the port, Kim\'s lamp, a cup. Then the bucket, Kim\'s subject of the next chapter, broke. ';
+  const cues = ' Qzdefword is a planted term. A qzgen machine imitates a planted thing. Initialised to one, a planted counter admits one at a time, a qznamed; that is all. The planted store\'s "source", qzrev, runs a protocol. It has qzmod-plane parts (the pieces that decide what runs). In Qzyear–Pair (1976), which is a planted method, two sides agree. The kernel keeps <em>qzemph tables</em> that map pages. Chapter 9 shows the <em>qzpointed</em> at work. '
+    // section 19: a real sentence start after a line break in the source (B), and a possessive apposition (E), each teach
+    + ' That is all.\nQznlterm is a planted term. We use the qzposs, Kim\'s planted device. '
+    // section 19 (A): a pointer sentence's mention and a noMention term's mention place no abbreviation; a gloss does
+    + ' We saw QZNOMEN today. A planted noun (QZNOMGL) sits here. Chapter 9 covers QZPTRA and more. Section 04 explains the planted store (QZPTRB). ';
   const table = '<table class="summary-table"><tr><th>Name</th><th>What it is</th><th>Size</th></tr><tr><td>QZEXP (a planted expansion)</td><td>On the die</td><td>5 ms</td></tr>'
     + '<tr><td>QZDEF</td><td>Planted: a definition of the term, with QZDESC named in it.</td><td>10 GB</td></tr><tr><td>qzrowterm</td><td>Planted row. It defines the term here.</td><td>1</td></tr>'
     + '<tr><td>QZSENT</td><td>A planted sentence that defines it.</td><td>2</td></tr><tr><td>QZSHORT</td><td>Fast disk.</td><td>3</td></tr>'
@@ -436,10 +530,14 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   const run1 = label => taughtYet(label, c.known, K.glossary, c.prior);
   const a = run1(PLAIN.join(' · ')), aG = [...new Set(a.filter(b => b.why === 'a glossary term not yet taught').map(b => b.token))];
   check(f.at > close && aG.length === PLAIN.length, `synthetic tree: plain uses of ${PLAIN.join(', ')} before Fig 1.1 -> fail as glossary terms not yet taught: ${aG.length} of ${PLAIN.length} ${JSON.stringify(aG)}`);
+  { const nl = ['safety', 'group'].filter(t => K.j.taught[t] && K.j.taught[t].part === 'part-1' && /definition/.test(K.j.taught[t].source));
+    check(!nl.length && ['safety', 'group'].every(t => aG.includes(t)), `synthetic tree (section 19, B): "and\\nsafety is a", "as a\\ngroup is a" -> placed by the definitional cue: ${nl.length ? nl.join(', ') : 'none'}; both fail at Fig 1.1`); }
   const b = [...new Set(run1(CUE.join(' · ')).map(x => x.token))];
   check(!b.length, `synthetic tree: one control per new cue (definition, generic, naming, reverse, modifier, a year skipped, emphasis, table row) -> fails ${JSON.stringify(b)}`);
   const n = [...new Set(run1(NEG.join(' · ')).map(x => x.token))];
   check(n.length === NEG.length, `synthetic tree: emphasis in a pointer sentence, a part tagline's gloss, a value row's term -> fail ${JSON.stringify(n)}`);
+  { const pass = [...new Set(run1('QZPTRB · QZNOMGL').map(x => x.token))], fail = [...new Set(run1('QZPTRA · QZNOMEN').map(x => x.token))];
+    check(!pass.length && fail.length === 2, `synthetic tree (section 19, A): an expansion in a pointer sentence and a noMention term's expansion place them (fails ${JSON.stringify(pass)}); a pointer sentence's mention and a noMention term's mention do not (fail ${JSON.stringify(fail)})`); }
   const ab = run1('QZEXP · QZDEF · QZSENT'), abN = [...new Set(run1('QZSHORT · QZVAL · QZHEAD · QZDESC · QZTAGX').map(x => x.token))];
   check(!ab.length && abN.length === 5, `synthetic tree: abbreviations of an expanding row and of rows defined by a phrase and by a sentence pass (${JSON.stringify(ab.map(x => x.token))}); of a row whose second cell is two words, a value row, a header row, a description cell and a part tagline fail ${JSON.stringify(abN)}`);
 }

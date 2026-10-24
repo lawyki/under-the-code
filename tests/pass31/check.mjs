@@ -29,9 +29,13 @@
 // --expect-hash is required (calibration section 18): fig:check is part of the gate's pass (brief section 11) and is in
 // its fingerprint, so it first computes the fingerprint (hash.mjs) and refuses (exit 2, nothing checked) unless the
 // hash given equals it, the same refusal as gate.mjs, dev.mjs and validate.mjs.
-// Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json.
+// The exemption file is held to the brief's grants (calibration section 19): kept names only the 18 kept originals, the
+// label cap's ids are at-bar or kept figures, the floor's kept ones, the caption check's kept ones and fig-18-6; any
+// other id is a refusal (exit 2). With --gate1=quick or off the run is partial: every line it prints says so.
+// Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json
+// (with the fingerprint the run was checked against, and the partial mark).
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, exemptProblems, REPO, OUT, PUBLIC } from './lib.mjs';
 import { fingerprint } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
@@ -39,10 +43,10 @@ const part = pos[0] ? (/^\d$/.test(pos[0]) ? `part-${pos[0]}` : pos[0]) : null;
 if (!part || !/^part-[1-5]$/.test(part)) { console.log('usage: npm run fig:check -- <part-1..5> --expect-hash=sha [--fig=ids] [--tree=dir] [--base=main] [--gate1=full|quick|off] [--json=file]'); process.exit(2); }
 // the frozen-file check (calibration section 18), as gate.mjs: nothing runs unless the fingerprint of the gate's files,
 // prompts and model equals the --expect-hash given; a missing or different hash is a refusal (exit 2)
+const FP = await fingerprint(o.model || 'claude-sonnet-5-5');
 {
-  const fp = await fingerprint(o.model || 'claude-sonnet-5-5');
   if (!o['expect-hash'] || o['expect-hash'] === true) { console.log('check: refused: no --expect-hash (fig:check runs only against the frozen fingerprint; npm run fig:hash)'); process.exit(2); }
-  if (o['expect-hash'] !== fp.combined) { console.log(`check: refused: the gate's fingerprint ${fp.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`); process.exit(2); }
+  if (o['expect-hash'] !== FP.combined) { console.log(`check: refused: the gate's fingerprint ${FP.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`); process.exit(2); }
 }
 const ROOT = tree(o.tree), IS_REPO = path.resolve(ROOT) === path.resolve(PUBLIC);
 const BASE = o.base || 'main', G1 = o.gate1 || 'full', ENG = o.browser || 'chromium';
@@ -51,6 +55,10 @@ const EX = JSON.parse(fs.readFileSync(path.join(REPO, 'docs/pass-31-exempt.json'
 const EXEMPTABLE = ['label_cap', 'floor', 'caption'];
 { const other = Object.keys(EX).filter(k => !['note', 'at_bar', 'kept', ...EXEMPTABLE].includes(k));
   if (other.length) { console.log(`check: docs/pass-31-exempt.json has ${other.join(', ')}: only ${EXEMPTABLE.join(', ')} take exemptions (calibration section 17)`); process.exit(2); } }
+// section 19 (the review of the section 18 freeze, H): the exemption file is data, not hashed (at_bar is filled after
+// validation), so its lists are held to the brief's grants by frozen code (lib.mjs exemptProblems); a breach is a
+// refusal (exit 2), nothing checked
+{ const bad = exemptProblems(EX); if (bad.length) { console.log(`check: refused: docs/pass-31-exempt.json: ${bad.join('; ')} (calibration section 19)`); process.exit(2); } }
 const exempt = (check, id) => {
   if (!EXEMPTABLE.includes(check)) return false;
   const ids = new Set([...(EX[check]?.ids || []), ...EX.kept, ...(check === 'label_cap' ? EX.at_bar : [])]);
@@ -171,15 +179,18 @@ for (const g of gate1) partChecks['gate1:' + g.name] = { pass: g.pass, detail: g
 
 // ---- report ---------------------------------------------------------------------------------------------------
 const rows = [...R.values()];
+// section 19 (G): a run with Gate 1 off or quick is a partial check, and every line it prints says so (the figure lines
+// and the part lines, not only the summary); check.json records the mode and the fingerprint it ran under
+const PARTIAL = G1 !== 'full', MARK = PARTIAL ? `  [partial: gate1 ${G1}]` : '';
 for (const r of rows) {
   const failed = Object.entries(r.checks).filter(([, c]) => !c.pass).map(([k]) => k);
   const skips = Object.entries(r.checks).filter(([, c]) => c.skipped).map(([k, c]) => `${k}${c.wouldPass ? '' : '!'}`);
   r.pass = failed.length === 0;
-  console.log(`${r.pass ? 'PASS' : 'FAIL'} ${r.id}${failed.length ? '  ' + failed.map(k => `${k}: ${r.checks[k].detail}`).join(' | ') : ''}${skips.length ? `  (exempt: ${skips.join(' ')})` : ''}`);
+  console.log(`${r.pass ? 'PASS' : 'FAIL'} ${r.id}${failed.length ? '  ' + failed.map(k => `${k}: ${r.checks[k].detail}`).join(' | ') : ''}${skips.length ? `  (exempt: ${skips.join(' ')})` : ''}${MARK}`);
 }
-for (const [k, c] of Object.entries(partChecks)) console.log(`${c.pass ? 'PASS' : 'FAIL'} ${part} ${k}: ${c.detail}`);
+for (const [k, c] of Object.entries(partChecks)) console.log(`${c.pass ? 'PASS' : 'FAIL'} ${part} ${k}: ${c.detail}${MARK}`);
 const nFail = rows.filter(r => !r.pass).length, pFail = Object.values(partChecks).filter(c => !c.pass).length;
-const report = { part, tree: ROOT, base: BASE, gate1: G1, figures: rows, part_checks: partChecks, failed_figures: nFail, failed_part_checks: pFail };
+const report = { part, tree: ROOT, base: BASE, gate1: G1, ...(PARTIAL ? { partial: `gate1 ${G1}` } : {}), fingerprint: FP.combined, figures: rows, part_checks: partChecks, failed_figures: nFail, failed_part_checks: pFail };
 fs.writeFileSync(o.json ? path.resolve(o.json) : path.join(OUTDIR, 'check.json'), JSON.stringify(report, null, 1));
-console.log(`fig:check ${part}: ${rows.length - nFail}/${rows.length} figures clean, ${Object.keys(partChecks).length - pFail}/${Object.keys(partChecks).length} part checks clean (gate1 ${G1})`);
+console.log(`fig:check ${part}: ${rows.length - nFail}/${rows.length} figures clean, ${Object.keys(partChecks).length - pFail}/${Object.keys(partChecks).length} part checks clean (gate1 ${G1}${PARTIAL ? ': partial' : ''})`);
 process.exit(nFail || pFail ? 1 : 0);

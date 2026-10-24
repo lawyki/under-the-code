@@ -27,8 +27,9 @@
 //     ...), a compiler, which turns code ...) sat in a later section. That is why the next source exists;
 //   - prose gloss: the first paragraph or list item where the term, or its plural, is glossed in place: followed by
 //     a parenthesis that opens with a word ("register (a slot"), by ", which" or ", who", by ", or ACRONYM", by an
-//     apposition (", the|a|an …", or up to four words then "that|which|who": "threads, streams of instructions
-//     that"), or preceded by "called" or "known as"; a parenthesised number between the term and its cue is skipped
+//     apposition (", the|a|an …", or, section 19, ", <a possessive noun> …": "C++, C's best-known descendant."; or up
+//     to four words then "that|which|who": "threads, streams of instructions that"), or preceded by "called" or
+//     "known as"; a parenthesised number between the term and its cue is skipped
 //     ("Diffie–Hellman (1976), which is key agreement"). Section 18 adds five cues, each a definition by its form:
 //       definition   the sentence opens with the term (after "A" or "An" at most) and goes on "is|are a|an|the"
 //                    ("SHA-256 is the workhorse", "A pipe is a kernel-allocated ring buffer");
@@ -75,7 +76,18 @@
 //                  the nearest id before it, and its offset in the part's
 //                  HTML. So a token first written in a figure's own caption,
 //                  label or strip, or in a code comment, is not taught for
-//                  that figure (EAX: section 17).
+//                  that figure (EAX: section 17). Section 19: a writing
+//                  places it only when it glosses it (a prose-gloss cue on
+//                  it, or its expansion before it: "main memory (RAM)"), or
+//                  when it is a plain writing in a sentence that does not
+//                  point elsewhere (a chapter, section, part or another
+//                  chapter's figure, outside the parentheses that do not hold
+//                  it: "Part III opens up ...: ... DNS") of an abbreviation that
+//                  a mention may credit (never a glossary term taught nowhere
+//                  or only in held material, ASLR, CFI, HTTPS, nor one the book
+//                  first writes inside held material, CVE, CA, SBOM); a part's
+//                  roman number (Part II) is placed where it is written. Each
+//                  record says by which (by: writing, gloss (cue), part number).
 //   capitals       every all-capitals token the book's text writes anywhere
 //                  outside the figure cards (sections, heroes, leads, tables,
 //                  code), held material included (the list only ever makes a
@@ -113,6 +125,20 @@ function textMap(html, base = 0) {
   }
   return { text: chars.join(''), map };
 }
+// section 19 (the review of the section 18 freeze, B): a piece's text with every run of whitespace made one space (the
+// run keeps its first character's offset) and trimmed, so a line break in the HTML source is a space like any other;
+// pieces are joined with SEP, a character that is not whitespace, so no cue, term or sentence start reads across two
+// pieces, and a piece's start (and only that, or a sentence end) is a sentence's start
+const SEP = '\u001E';
+function collapse({ text, map }) {
+  const t = [], m = [];
+  for (let i = 0; i < text.length; i++) {
+    if (/\s/u.test(text[i])) { if (t.length && t[t.length - 1] !== ' ') { t.push(' '); m.push(map[i]); } continue; }
+    t.push(text[i]); m.push(map[i]);
+  }
+  if (t[t.length - 1] === ' ') { t.pop(); m.pop(); }
+  return { text: t.join(''), map: m };
+}
 // a term as a pattern: words joined by any run of spaces or hyphens, either apostrophe, an optional plural ending.
 // Case: exact for an abbreviation (no lower-case letter) and for a one-word name (Scheme is not the everyday word
 // scheme); a lower-case term may open with a capital (a sentence start); any other term (Translation Lookaside
@@ -130,20 +156,26 @@ function termRe(term) {
 // a pointer elsewhere ("a trap, the subject of the next section")
 const ASIDE = 'Figs?|see|See|Chapter|chapter|Part|part|Section|section|§|e\\.g|i\\.e|in|on|at|for|from|with|by|over|under|into|as|and|or|but|so|which|who|that|also|usually|typically|often|now|then|still|even|only|just|not|below|above|here|there|this|these|those|its|their|his|her|our|your|my|when|where|while|if|because|since|after|before|unlike|like|about|around|via|per|plus|minus|versus|vs';
 const STOP = 'and|or|but|so|then|thus|while|because|since|if|when|where|as|yet|not|nor|which|who|whose|that|the|a|an|it|its|they|their|we|our|you|your|he|his|she|her|this|these|those|there|here|each|every|all|some|in|on|at|of|for|to|from|with|by|into|onto|over|under|after|before|until|unless|though|although|also|still|even|only|just|both|either|neither';
-const LIST = /^,\s+(?:the|a|an)\s+[^,.;:()]*,\s+(?:the|a|an|and|or)\s/u;
-const POINTER = /^,\s+(?:the|a|an)\s+[^,.;:()]*\b(?:[Ss]ections?|[Cc]hapters?|[Pp]arts?|[Ff]igs?|[Ff]igures?|§)\b/u;   // "a trap, the subject of the next section
+// an apposition's determiner: an article, or (section 19, the review of the section 18 freeze, E) a possessive noun, as
+// the reverse cue's OPENS_NP accepts ("in C++, C's best-known descendant."; "at GCHQ, Britain's signals-intelligence
+// agency:"); the list and pointer guards apply to both
+const DET = `(?:the|a|an|[\\p{L}\\p{N}.+#-]*\\p{L}(?:['’]s|s['’]|['’]))`;
+const LIST = new RegExp(`^,\\s+${DET}\\s+[^,.;:()]*,\\s+(?:${DET}|and|or)\\s`, 'u');
+const POINTER = new RegExp(`^,\\s+${DET}\\s+[^,.;:()]*\\b(?:[Ss]ections?|[Cc]hapters?|[Pp]arts?|[Ff]igs?|[Ff]igures?|§)\\b`, 'u');   // "a trap, the subject of the next section
+const APPOS = new RegExp(`^,\\s+${DET}\\s+\\p{Ll}`, 'u');
 const GLOSS_AFTER = [
   ['parenthesis', new RegExp(`^\\s*\\(\\s*(?!(?:${ASIDE})\\b)(?![\\p{Lu}\\d][\\p{Lu}\\d_\\-./]*\\s*[),;])\\p{L}`, 'u')],
   ['which', /^,\s+(?:which|who)\b/u],
   ['or-acronym', /^,\s+or\s+\p{Lu}[\p{L}\p{N}-]+/u],
-  ['apposition', { test: a => /^,\s+(?:the|a|an)\s+\p{Ll}/u.test(a) && !LIST.test(a) && !POINTER.test(a) }],
+  ['apposition', { test: a => APPOS.test(a) && !LIST.test(a) && !POINTER.test(a) }],
   ['apposition', new RegExp(`^,\\s+(?!(?:${STOP})\\b)(?:[\\p{L}'’-]+\\s+){1,4}(?:that|which|who)\\b`, 'u')],
 ];
 const GLOSS_BEFORE = /(?:^|[^\p{L}])(?:called|known as)\s+(?:an?\s+|the\s+)?$/iu;
 // section 18: a parenthesised number between the term and its cue is skipped ("Diffie–Hellman (1976), which")
 const NUMBER_PAREN = /^\s*\(\s*(?:c\.\s*)?\d[\d\s,.–-]*\)/u;
-// section 18: the definitional forms (header). Pieces are joined with "\n", so a piece's start is a sentence's start
-const SENT = '(?:^\\s*|\\n\\s*|[.!?:]["”’)\\]]*\\s+)';
+// section 18: the definitional forms (header). Pieces are joined with SEP (section 19: never a newline, which the HTML
+// source puts mid-sentence), so a piece's start is a sentence's start
+const SENT = `(?:^\\s*|${SEP}\\s*|[.!?:]["”’)\\]]*\\s+)`;
 const DEF_BEFORE = new RegExp(`${SENT}(?:(?:A|An)\\s+)?$`, 'u'), GEN_BEFORE = new RegExp(`${SENT}(?:A|An)\\s+$`, 'u');
 const DEF_AFTER = /^\s+(?:is|are)\s+(?:a|an|the)\b/u;
 const AUX = 'is|are|was|were|has|have|had|can|could|will|would|may|might|must|should|shall|does|did|do';
@@ -154,7 +186,7 @@ const OPENS_NP = /^(?:(?:the|a|an|The|A|An)\s|[\p{L}\p{N}.-]+(?:['’]s|s['’]|
 const MOD_AFTER = new RegExp(`^\\s+\\p{Ll}[\\p{L}-]*\\s*\\(\\s*(?!(?:${ASIDE})\\b)(?![\\p{Lu}\\d][\\p{Lu}\\d_\\-./]*\\s*[),;])\\p{L}`, 'u');
 // the clause before a comma that ends `before` (back to the last , ; : . ! ? ( ) or piece start; quotes kept), and the
 // character that opens it ('' at a piece or text start)
-const clauseBefore = b => { const t = b.replace(/,\s*$/u, ''); const i = Math.max(...[',', ';', ':', '.', '!', '?', '(', ')', '\n'].map(c => t.lastIndexOf(c))); return { seg: t.slice(i + 1).trim(), opener: i >= 0 ? t[i] : '' }; };
+const clauseBefore = b => { const t = b.replace(/,\s*$/u, ''); const i = Math.max(...[',', ';', ':', '.', '!', '?', '(', ')', SEP].map(c => t.lastIndexOf(c))); return { seg: t.slice(i + 1).trim(), opener: i >= 0 ? t[i] : '' }; };
 const words = x => x.split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length;
 // the section 18 cues on one use of a term: rawBefore holds up to 200 characters before it (newlines kept), after the
 // text after it (number parenthesis removed)
@@ -196,15 +228,19 @@ for (const part of PARTS) {
   // never a caption or a part tagline, and the first cell of a defining table row; a <pre> block inside one blanked;
   // joined in reading order with each character's offset in the part (-1 between pieces)
   const pres = [...src.matchAll(PRE)].map(m => [m.index, m.index + m[0].length]);
-  const pieces = teachingPieces(src, cards).map(x => ({ ...textMap(x.inner.replace(PRE, blank), x.a), start: x.start, end: x.end, kind: x.kind, inner: x.inner, a: x.a }));
-  const joined = { text: pieces.map(p => p.text).join('\n'), map: pieces.flatMap(p => [...p.map, -1]) };
+  const pieces = teachingPieces(src, cards).map(x => ({ ...collapse(textMap(x.inner.replace(PRE, blank), x.a)), start: x.start, end: x.end, kind: x.kind, inner: x.inner, a: x.a }));
+  const joined = { text: pieces.map(p => p.text).join(SEP), map: pieces.flatMap(p => [...p.map, -1]) };
   const inPiece = off => pieces.some(p => off >= p.start && off < p.end) && !pres.some(([a, b]) => off >= a && off < b);
   // the whole book's paragraph and list-item text, held material included, code and <pre> left out: where a word is
   // written in lower case (the names rule below; it only ever makes the check stricter)
   const rawCards = [...raw.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
   const plainText = [...raw.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter(m => !/class="[^"]*diagram-caption/.test(m[2]) && !rawCards.some(([a, b]) => m.index >= a && m.index < b))
     .map(m => plain(m[3].replace(PRE, ' ').replace(/<code\b[^>]*>[\s\S]*?<\/code>/g, ' '))).join('\n');
-  P[part] = { raw, src, cards, zones: S.zones, inCard, pieces, joined, inPiece, plainText };
+  // the same teaching places read with held material in (section 19: only to tell which abbreviations the book first
+  // writes inside held material; nothing here teaches)
+  const rawPieces = teachingPieces(raw, rawCards).map(x => collapse(textMap(x.inner.replace(PRE, blank), x.a)));
+  const rawJoined = { text: rawPieces.map(p => p.text).join(SEP), map: rawPieces.flatMap(p => [...p.map, -1]) };
+  P[part] = { raw, src, cards, zones: S.zones, inCard, pieces, joined, inPiece, plainText, rawJoined };
 }
 const idx = new Map(sections.map((s, i) => [s.part + '|' + s.section, i]));
 for (const part of PARTS) {
@@ -228,7 +264,7 @@ const sectionText = (i, which) => {   // the section's text (held material blank
 const sectionPieces = i => {   // the section's paragraph and list-item text with offsets
   const k = i + '|pieces'; if (secText.has(k)) return secText.get(k);
   const s = sections[i], ps = P[s.part].pieces.filter(p => p.start >= s.start && p.start < s.end);
-  const t = { text: ps.map(p => p.text).join('\n'), map: ps.flatMap(p => [...p.map, -1]) }; secText.set(k, t); return t;
+  const t = { text: ps.map(p => p.text).join(SEP), map: ps.flatMap(p => [...p.map, -1]) }; secText.set(k, t); return t;
 };
 for (const e of Object.values(g.entries)) {
   const i = idx.get(e.part + '|' + e.section);
@@ -280,7 +316,9 @@ for (const part of PARTS) {
   for (const m of src.matchAll(/<(em|strong)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
     const inner = m.index + m[0].indexOf('>') + 1, pc = pieces.find(x => inner >= x.start && inner < x.end);
     if (!pc) continue;
-    const i = pc.map.indexOf(inner); if (i < 0) continue;
+    // the first character of the emphasis in the piece's text (section 19: a tag right inside <em> is a space that the
+    // whitespace collapse merges into the one before, so the first character at or after the content's start)
+    const i = pc.map.findIndex(x => x >= inner); if (i < 0) continue;
     const said = plain(m[2]), k = norm(said); if (!k) continue;
     const terms = [k, k.replace(/s$/, ''), k.replace(/es$/, '')].flatMap(x => byNorm.get(x) || []).filter(term => new RegExp(`^${termRe(term).source}$`, termRe(term).flags.replace('g', '')).test(said));
     if (!terms.length) continue;
@@ -333,6 +371,74 @@ const prose = src => src.replace(/<!--[\s\S]*?-->/g, blank).replace(/<head[\s\S]
   .replace(/<[^>]+>/g, blank);
 // an all-capitals token, with an optional plural ending in lower case (VMs, OSes: section 18); group 1 is the singular
 const CAPS = /(?<![\p{L}\p{N}_])([\p{Lu}\d_]*\p{Lu}[\p{Lu}\d_]*)(?:s|es)?(?![\p{L}\p{N}_])/gu;
+// section 19 (the review of the section 18 freeze, A): which writings place an abbreviation. A writing places it when
+// it glosses it (abbrCue below), or when it is a plain writing and neither of these holds:
+//   - its sentence points elsewhere (POINTS, as for emphasis: a chapter, section, part or figure number), as a teaser
+//     or a pointer does ("Part III opens up ...: ARPANET, packet switching, TCP, DNS, TLS, HTTP"; "Chapter 15's answers
+//     (SBOMs, ...)"; "Chapter 3 shows the defences, among them ... ASLR");
+//   - the abbreviation is never credited by a mention: a glossary term taught nowhere or written in its section only
+//     inside held material (lib.mjs glossary.noMention: ASLR, CFI, HTTPS), or one the book first writes inside held
+//     material (its first writing in a teaching place, read with held material in, lies in held material: CVE, US,
+//     GCHQ, CA, SBOM).
+// A gloss of an abbreviation: a cue of the prose-gloss list above on that writing (a parenthesis that opens with a word,
+// ", which", an apposition, "called", a definitional form), or its expansion before it, the abbreviation alone in a
+// parenthesis after a word ("main memory (RAM)", "interrupt request (IRQ)", "time to live (TTL)") or after ", or "
+const heldOnlyT = new Set(strippedOnly.map(norm)), nowhereT = new Set(untaught.map(norm));
+const firstInHeld = new Set();
+if (H) { const seen = new Set();
+  for (const part of PARTS) { const rj = P[part].rawJoined;
+    for (const m of rj.text.matchAll(CAPS)) { const t = m[1], off = rj.map[m.index];
+      if (seen.has(t) || off < 0 || (t.match(/\p{Lu}/gu) || []).length < 2) continue;
+      seen.add(t); if (HM.inZone(P[part].zones, off)) firstInHeld.add(t); } } }
+const restricted = t => nowhereT.has(norm(t)) || heldOnlyT.has(norm(t)) || firstInHeld.has(t);
+const EXPAND_PAREN = /\p{L}[\p{L}\p{N}'’-]*\s*\(\s*$/u, EXPAND_OR = /\p{L}[\p{L}\p{N}'’-]*,\s+or\s+$/u;
+function abbrCue(text, i, len, term) {
+  const after = text.slice(i + len, i + len + 160).replace(/\s+/g, ' ').replace(NUMBER_PAREN, '');
+  const before = text.slice(Math.max(0, i - 30), i).replace(/\s+/g, ' ');
+  const rawBefore = text.slice(Math.max(0, i - 200), i);
+  return (GLOSS_AFTER.find(([, re]) => re.test(after)) || [])[0] || (GLOSS_BEFORE.test(before) ? 'called' : null) || formCue(term, rawBefore, after)
+    || ((EXPAND_PAREN.test(before) && /^\s*\)/u.test(after)) || (EXPAND_OR.test(before) && /^\s*[,.;:)]/u.test(after)) ? 'expansion' : null)
+    // the generic form (section 18) for an abbreviation too: it opens the sentence and a verb in -s follows ("SQL tells
+    // it what you want"); the one-word limit there guards an everyday sense, which an abbreviation in capitals lacks
+    || (DEF_BEFORE.test(rawBefore) && GEN_AFTER.test(after) ? 'generic' : null);
+}
+// the sentence holding character i of a joined text: from the piece start or the last sentence end (. ! ? and any
+// closing marks, then a space) before it, to the next one or the piece end; a decimal point (Fig 1.11) ends nothing.
+// Returns the sentence and where the writing sits in it
+const SENT_END = new RegExp(`${SEP}|[.!?]["”’)\\]]*\\s`, 'gu');
+const sentenceAt = (text, i) => {
+  const back = text.slice(Math.max(0, i - 2000), i), fwd = text.slice(i, i + 2000);
+  let a = 0; for (const m of back.matchAll(SENT_END)) a = m.index + m[0].length;
+  const e = fwd.search(new RegExp(SENT_END.source, 'u'));
+  return { s: back.slice(a) + (e < 0 ? fwd : fwd.slice(0, e + 1)), at: back.length - a };
+};
+// does the sentence of a writing point elsewhere? POINTS, read on the sentence less every parenthesis that does not
+// hold the writing (an aside citing where something else is covered, "a SIGSEGV signal (Section 05 covers signals),
+// which ...", "forward secrecy (Chapter 11, Section 05): each session uses ephemeral DH values", is not the sentence
+// pointing elsewhere), and less every figure number of the writing's own chapter (a sentence that brings in the
+// figure beside it, "Fig 1.11 adds a fifth stage, MEM, for reading or writing data in memory", "drawn in Fig 3.4", is
+// the teaching the figure goes with); a figure of another chapter ("the IP header's TTL, Fig 9.4" in Chapter 11) points
+// elsewhere
+const asidesOut = ({ s, at }) => {
+  let out = '', depth = 0, open = -1;
+  for (let k = 0; k < s.length; k++) {
+    const c = s[k];
+    if (c === '(') { if (depth++ === 0) open = k; continue; }
+    if (c === ')' && depth > 0) { if (--depth === 0) { if (at > open && at < k) out += s.slice(open, k + 1); else out += ' '; } continue; }
+    if (depth === 0) out += c;
+  }
+  return depth > 0 ? out + s.slice(open) : out;
+};
+// the chapter of an element id (ch12-hero-lead, ch3-call-p6, chBridge-io-p2, fig-3-6): its number, BR for the bridge
+const chapterOf = id => { const m = String(id).match(/^(?:ch(\d+|Bridge)|fig-(\d+|br))-/); return m ? ((m[1] || m[2]) === 'Bridge' || m[2] === 'br' ? 'BR' : (m[1] || m[2])) : null; };
+const FIGNUM = /\b(?:Figs?\.?|Figures?)\s+(BR|\d+)\.\d+[a-z]?(?:(?:,\s*|\s+(?:and|to|or)\s+)(?:BR|\d+)\.\d+[a-z]?)*/gu;
+const pointsElsewhere = (sen, ch) => {
+  const t = asidesOut(sen).replace(FIGNUM, m => [...m.matchAll(/(BR|\d+)\.\d+/gu)].every(x => x[1] === ch) ? ' ' : m);
+  return POINTS.test(t);
+};
+// a roman numeral written as a part's number ("Part II's kernel chapter", "Parts II and III") is the book's own
+// numbering, notation it uses from Part I on: placed at that writing, as a plain writing of it is
+const PART_NUMERAL = /^(?:I{2,3}|IV|VI{0,3}|IX|X)$/u, PART_BEFORE = /\bParts?\s+(?:[IVX]+(?:,\s*|\s+(?:and|to|or)\s+))*$/u;
 const abbreviations = {}, capitals = new Set();
 for (const part of PARTS) {
   const { raw, joined } = P[part];
@@ -345,7 +451,13 @@ for (const part of PARTS) {
     // the section holding it; a chapter lead or closing outside the sections counts too (section 18), recorded with
     // the next section of the part (or its last); the check reads only part and offset
     const sec = secs.find(s => off >= s.start && off < s.end) || secs.find(s => s.start > off) || secs[secs.length - 1]; if (!sec) continue;
-    abbreviations[t] = { part, section: sec.section, paragraph: paragraphAt(part, off, sec), at: off };
+    const para = paragraphAt(part, off, sec), cue = abbrCue(joined.text, m.index, m[0].length, t);
+    const numeral = !cue && PART_NUMERAL.test(t) && PART_BEFORE.test(joined.text.slice(Math.max(0, m.index - 40), m.index));
+    // a chapter lead or closing sits outside its sections: its chapter is the nearest id's (the lead's own, or the last
+    // section's paragraph before a closing), never the next section's
+    const ch = chapterOf(para) || chapterOf(sec.section);
+    if (!cue && !numeral && (restricted(t) || pointsElsewhere(sentenceAt(joined.text, m.index), ch))) continue;   // a mention that places nothing
+    abbreviations[t] = { part, section: sec.section, paragraph: para, at: off, by: cue ? `gloss (${cue})` : numeral ? 'part number' : 'writing' };
   }
 }
 

@@ -1319,12 +1319,12 @@ Prompt hashes: unchanged from section 14.7 (judge `fd5e2c7a...`, scorer `45189b5
 | `tests/pass28/clip.mjs` | `25ea825b575245ff0b0353875c4b402e4e94907ae7e014f52f060c301c2ead67` |
 | `tests/pass28/smooth.mjs` | `559d25fc2aa6c17b99866e8568da03adf57fe7119fdd4afa8c22de59566546e2` |
 | `tests/pass30/contrast.mjs` | `0cc1eed5a34619ec88e61094e2f0e3037fb3a19ae9672bd2adabae00f56660e0` |
-| `tests/pass31/places.mjs` | `18b42f9e2a7ab7210dfb5eac070456a34627ee345d72ba7f901c3e366bfcd44b` |
+| `tests/pass31/places.mjs` | `198a4b32e74e2f5224b9628aedc7741d7c4770262ade056d4253ff12c6bf7641` (corrected in section 19: this row first recorded `e2df9cf`'s file, `18b42f9e...`; the combined fingerprint was computed with the frozen file) |
 | `/usr/share/dict/words` | `be41ad97963bf8dabedd5871d5d691596175269d540956b0f9965a885c2bbab9` |
 | `docs/pass-30-exceptions.json` | `e1766e4c87edd36c43ef077b7650f36151338684592afd766da5ea9c49a27dc2` |
 | `scripts/figs/build_into.py` | `4dffffaa7e23a1900ef3342e00ffeb2b42e960b9500e95d549d88380c13c4443` |
 
-- Not in the fingerprint (they judge no figure), recorded here: `tests/pass31/dev.mjs` `857a137268147545b36ba62b6ba15fecb0ab7ef4c53e9970b46b4e51cd3db6b1` (unchanged), `tests/pass31/taught.test.mjs` `515b64436fa2caf2452499fde786e1933a7d4ce6fc5ad443778371f0a4284c7d`, `tests/pass31/packet.test.mjs` `a4c89c1a33580d090bee9d581ddb8251cdfe734d2bd732e18b3ac60afc082566`, `tests/pass31/frozen.test.mjs` `0b11a323024038cdd5936b31cab96ee7459c170bf8b7b476f222ea46c0f979a8`, `tests/pass31/sheet.mjs` `7d35e20b3bb881ef1b72edd5593dfb62775382a293d4af8080de329d85cb7c0a`; the exemption data `docs/pass-31-exempt.json` `7a78bd188067e6c4d24d384b11cfc7c7c2b6be9d255f2e20e48f5bfa952ceb52`; the third-party renderer playwright 1.61.1 (under `tests/pass25/node_modules`).
+- Not in the fingerprint (they judge no figure), recorded here: `tests/pass31/dev.mjs` `857a137268147545b36ba62b6ba15fecb0ab7ef4c53e9970b46b4e51cd3db6b1` (unchanged), `tests/pass31/taught.test.mjs` `ffa8095fd20e2771349a390292935ceb01ee3cdf35143398f35ac41d8f3d1c00` (corrected in section 19: first recorded as `e2df9cf`'s file, `515b6443...`), `tests/pass31/packet.test.mjs` `a4c89c1a33580d090bee9d581ddb8251cdfe734d2bd732e18b3ac60afc082566`, `tests/pass31/frozen.test.mjs` `0b11a323024038cdd5936b31cab96ee7459c170bf8b7b476f222ea46c0f979a8`, `tests/pass31/sheet.mjs` `7d35e20b3bb881ef1b72edd5593dfb62775382a293d4af8080de329d85cb7c0a`; the exemption data `docs/pass-31-exempt.json` `7a78bd188067e6c4d24d384b11cfc7c7c2b6be9d255f2e20e48f5bfa952ceb52`; the third-party renderer playwright 1.61.1 (under `tests/pass25/node_modules`).
 - Decision rule: at least 2 of 3 independent complete runs pass (section 14.2, unchanged). Votes per scorer and hedge check within a run: 3. Model: `claude-sonnet-5-5`.
 - Combined fingerprint (prompts, files, model): `69bbef92cf736e77c0d75c41f1c6e98bcb7751c39213a116459dc509eefdbc6c`.
 - CLI at the freeze (recorded, not hashed): `2.1.310 (Claude Code)`.

@@ -219,6 +219,8 @@ export const stems = (w, deep = true) => {
 const normT = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').trim();
 const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 export const SIGN = /^[+\-−×÷=<>≤≥≠≈*/%^()[\]{}|~→←↑↓↔⇒⇐·•…,.:;!?'"“”‘’&#@$€£¥°±√∑∞]+$/u;
+// section 19 (F): three or more two-character hexadecimal groups, one separator throughout (9C:DA:C7, 8C-85-90)
+export const HEXRUN = /(?<![\p{L}\p{N}_:-])[0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(?:\1[0-9A-Fa-f]{2})+(?![\p{L}\p{N}_:-])/gu;
 const NUMBER = /^[€£$]?[+\-−]?\d[\d.,:]*(?:st|nd|rd|th)?(?:[%°]|[kKMGT]?B|[kmµn]?s|×)?$/u;
 
 let KT = null;
@@ -289,6 +291,16 @@ const inPrior = (prior, part, orig, exact) => {
 export function taughtYet(text, known, glossary, prior = null) {
   if (typeof prior === 'string') throw new Error('taughtYet(text, known, glossary, prior): the packet is no longer an argument (calibration section 17)');
   const bad = [];
+  // section 19 (the review of the section 18 freeze, F): a run of three or more two-character hexadecimal groups joined
+  // by colons or hyphens, holding a digit and a letter A to F (a MAC address, B8:27:EB:9C:DA:C7), is notation judged
+  // whole: it passes once the prose before the card writes "hexadecimal" (ch1-cpu-p2), and fails otherwise as
+  // hexadecimal notation not yet taught; its groups (DA, 9C) are never judged as words or abbreviations
+  const hexTaught = !!(prior && prior.lower && prior.lower.has('hexadecimal'));
+  text = text.replace(HEXRUN, r => {
+    if (!/\d/u.test(r) || !/[A-Fa-f]/u.test(r)) return r;
+    if (!hexTaught) bad.push({ token: r, why: 'hexadecimal notation not taught before the figure' });
+    return ' ';
+  });
   // a taught term of two letters or fewer takes an s or es ending only written as the abbreviation: IPs, PCs, OSes
   // (the ending dropped here, before case is folded); css, js and Ips keep theirs and are checked as tokens
   const isShort = t => t.replace(/[^\p{L}\p{N}]/gu, '').length <= 2;
@@ -363,6 +375,10 @@ export function taughtYet(text, known, glossary, prior = null) {
         if ((j.length >= 4 ? sj : [j]).some(w => common().has(w))) continue;                    // THE, KEY, PRESS (inflected only from four letters: DOS is not "do")
         if (j.replace(/[^\p{L}]/gu, '').length >= 4 && !sj.some(w => glossary.capitals?.has(w.toUpperCase())) && sj.some(w => lowerDict().has(w) || common().has(w))) continue;   // LAMP, ROTORS
         if (j.length >= 4 && /^\p{L}+$/u.test(j) && writes(prior, j[0].toUpperCase() + j.slice(1))) continue;   // LINUX
+        // (section 19, F) a word of four letters or more set in capitals, which the book never writes in capitals and
+        // which is no glossary term (those are judged above), passes once the prose before the card writes it in lower
+        // case, as section 16 passes the lower-case token: HEXADECIMAL after "hexadecimal" (ch1-cpu-p2)
+        if (j.length >= 4 && /^\p{L}+$/u.test(j) && !glossary.capitals?.has(j.toUpperCase()) && inPrior(prior, j, j, false)) continue;
         bad.push({ token: ob || op, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
       // a short abbreviation in lower or mixed case (ram, Mac, os, rax, lo), its possessive (ram's: section 18), or a
       // plain plural of one the book writes in capitals (rams, arms): taught like the abbreviation, unless the token
@@ -471,6 +487,34 @@ export function capCount(svg) {
     legends: Object.fromEntries(legends), maxLegend: Math.max(0, ...legends.values()),
     panelCount: [...names].filter(n => n !== 'figure').length, merged };
 }
+// ---- the exemption file (docs/pass-31-exempt.json; check.mjs) -----------------------------------------------------
+// Calibration section 19 (H): the file is data, not hashed (at_bar is filled after validation), so its lists are held to
+// the brief's grants here (sections 10, 13, 15): kept only ever names the 18 kept originals (the owner's call,
+// 2026-10-11: one may leave the list, none may join it); the label cap's ids are at-bar or kept figures, the floor's
+// kept ones, the caption check's kept ones and fig-18-6 (the owner's closing claim); every id is a figure id; no other
+// key (calibration section 17). Returns the breaches (none: an empty list)
+export const KEPT_ORIGINALS = ['fig-3-7', 'fig-3-8', 'fig-3-9', 'fig-3-10', 'fig-3-11', 'fig-br-3', 'fig-10-10', 'fig-10-11', 'fig-11-7', 'fig-12-9', 'fig-12-10', 'fig-13-10', 'fig-15-2', 'fig-15-3', 'fig-15-4', 'fig-15-6', 'fig-15-8', 'fig-15-9'];
+export const EXEMPTABLE = ['label_cap', 'floor', 'caption'];
+export function exemptProblems(EX) {
+  const bad = [];
+  if (!EX || typeof EX !== 'object' || Array.isArray(EX)) return ['not an object'];
+  const other = Object.keys(EX).filter(k => !['note', 'at_bar', 'kept', ...EXEMPTABLE].includes(k));
+  if (other.length) bad.push(`keys ${other.join(', ')}: only ${EXEMPTABLE.join(', ')} take exemptions`);
+  const isList = x => Array.isArray(x) && x.every(v => typeof v === 'string' && /^fig-[0-9a-z]+-[0-9a-z]+$/.test(v));
+  const at = isList(EX.at_bar) ? EX.at_bar : null, kept = isList(EX.kept) ? EX.kept : null;
+  if (!at) bad.push('at_bar is not a list of figure ids');
+  if (!kept) bad.push('kept is not a list of figure ids');
+  else { const x = kept.filter(id => !KEPT_ORIGINALS.includes(id)); if (x.length) bad.push(`kept names ${x.join(' ')}, not kept originals`); }
+  const grant = { label_cap: [...(at || []), ...(kept || [])], floor: kept || [], caption: [...(kept || []), 'fig-18-6'] };
+  for (const k of EXEMPTABLE) {
+    if (EX[k] === undefined) continue;
+    const ids = EX[k] && EX[k].ids;
+    if (!isList(ids)) { bad.push(`${k}.ids is not a list of figure ids`); continue; }
+    const x = ids.filter(id => !grant[k].includes(id)); if (x.length) bad.push(`${k}.ids names ${x.join(' ')}, outside its grant`);
+  }
+  return bad;
+}
+
 // ---- caption sentences ----------------------------------------------------------------------------------------
 const ABBR = /\b(e\.g|i\.e|etc|vs|Fig|Figs|No|Dr|Mr|Mrs|Ms|St|approx|cf|al|U\.S|U\.K|a\.m|p\.m)\./g;
 export function sentences(t) {
