@@ -645,9 +645,9 @@
     // Part II
     'ch4-anatomy-p3': 'ch4-anatomy-p4',
     'ch4-security-p7': 'ch4-security-p6',
-    // Pass 31: Fig 13.6 merged into Fig 13.5 (its caption paragraph goes with it)
+    // Pass 31: Fig 13.6 merged into Fig 13.5, which now sits at 13.6's slot after ch13-acid-p4 (brief section 12)
     'fig-13-6': 'fig-13-5',
-    'ch13-acid-p5': 'ch13-acid-p4'
+    'ch13-acid-p5': 'ch13-acid-p3'
   };
   const resolveId = id => (document.getElementById(id) ? id : (ANCHOR_ALIASES[id] || id));
 

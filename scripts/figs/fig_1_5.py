@@ -70,12 +70,13 @@ def panel(py, live):
         lit_g = T.pulse(ON, OFF, ramp=0.2)
         dark_g = [(t, 1.0 - v) for t, v in lit_g]
         def word(fill, pts, start):
-            return text(200, GATE_Y + 19, 'gate', anchor='middle', size=15, fill=fill, extra=f' opacity="{start}"').replace('</text>', f'{T.anim("opacity", pts)}</text>')
-        a(obj(f'<rect x="{WL}" y="{GATE_Y}" width="{WR - WL}" height="{OX_Y - GATE_Y}" rx="3" fill="{GOLD}" fill-opacity="0" stroke="{GOLD}" stroke-width="1.8">'
-              f'{T.anim("fill-opacity", lit_g)}</rect>', word('#f3e7cc', dark_g, 0), word('#16120a', lit_g, 1)))
+            return text(200, GATE_Y + 19, 'gate', anchor='middle', size=15, fill=fill, extra=f' opacity="{start}"', role='label').replace('</text>', f'{T.anim("opacity", pts)}</text>')
+        # 'gate' is a name, so a label (brief section 15), not object text
+        a(f'<rect x="{WL}" y="{GATE_Y}" width="{WR - WL}" height="{OX_Y - GATE_Y}" rx="3" fill="{GOLD}" fill-opacity="0" stroke="{GOLD}" stroke-width="1.8">'
+          f'{T.anim("fill-opacity", lit_g)}</rect>' + word('#f3e7cc', dark_g, 0) + word('#16120a', lit_g, 1))
     else:
-        a(obj(f'<rect x="{WL}" y="{GATE_Y}" width="{WR - WL}" height="{OX_Y - GATE_Y}" rx="3" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="1.4"/>',
-              text(200, GATE_Y + 19, 'gate', anchor='middle', size=15, fill='#f3e7cc')))
+        a(f'<rect x="{WL}" y="{GATE_Y}" width="{WR - WL}" height="{OX_Y - GATE_Y}" rx="3" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="1.4"/>'
+          + text(200, GATE_Y + 19, 'gate', anchor='middle', size=15, fill='#f3e7cc', role='label'))
     # the gate's lead and its voltage
     a(f'<line x1="200" y1="{GATE_Y}" x2="200" y2="60" stroke="{GOLD if live else "rgba(255,255,255,0.6)"}" stroke-width="2"/>')
     if live:
@@ -130,7 +131,8 @@ def panel(py, live):
         a(text(200, ST + 72, 'p-type', anchor='middle', size=14, fill=RED, role='label'))
         a(text(80, ST - 12, 'source', anchor='middle', size=14, fill=BLUE, role='label'))
         a(text(322, ST - 12, 'drain', anchor='middle', size=14, fill=BLUE, role='label'))
-        a(text(68, ST + 72, 'n-type', anchor='middle', size=14, fill='rgba(134,168,255,0.85)', role='label'))
+        # above 'source', clear of the p-type body, so it names the well
+        a(text(80, ST - 28, 'n-type', anchor='middle', size=14, fill='rgba(134,168,255,0.85)', role='label'))
     a('</g>')
 
 panel(0, False)

@@ -135,6 +135,22 @@ def drop_fig_13_6():
         open(p, 'w').write(s)
         print('fig-13-6 removed (merged into fig-13-5)')
 
+def place_after_p4():
+    """Brief section 12: a merged card sits at the higher half's slot, after every paragraph between the halves. Here that
+    is ch13-acid-p4 (the log, lazy data pages, redo and undo), so the card's drawing uses only words taught before it."""
+    p = '/Users/yki/Documents/github/atheric/under-the-code/public/part-4.html'
+    s = open(p).read()
+    card = re.search(r'\n\s*<div class="diagram-card[^"]*" id="fig-13-5">[\s\S]*?</details>\s*</div>', s)
+    p4 = re.search(r'<p id="ch13-acid-p4"[\s\S]*?</p>', s)
+    if card and p4 and card.start() < p4.start():
+        block = card.group(0)
+        s = s[:card.start()] + s[card.end():]
+        p4 = re.search(r'<p id="ch13-acid-p4"[\s\S]*?</p>', s)
+        s = s[:p4.end()] + block + s[p4.end():]
+        open(p, 'w').write(s)
+        print('fig-13-5 placed after ch13-acid-p4')
+
 if __name__ == '__main__':
     splice('part-4', 'fig-13-5', 'ch13-acid-p3', card_html)
     drop_fig_13_6()
+    place_after_p4()

@@ -39,7 +39,7 @@ Quality sets the cost. There is no token or time cap. Volume without quality is 
 
 Stands:
 - contact sheets; one exemplar per part from an empty script, with its plate rules;
-- the intent sentence first; several genuinely different concepts per figure, each from an empty script;
+- the takeaway first; several genuinely different concepts per figure, each from an empty script;
 - a label cap, with any repair that raises the count rejected (section 15 says what is counted);
 - a failed gate means a new concept, never a patch;
 - one chapter per commit, with prose edits, the fact-ledger check, byte-identical or aliased anchors, `check:dashes` and a glossary rebuild;
@@ -55,13 +55,13 @@ Changes:
 
 ## 6. Roles
 
-- **Author.** One agent (Opus 5.5) designs every figure and writes every changed sentence. It learns from the gate only pass or fail and the name of the failed criterion, never the judge prompts. That rule is procedural, not technical: the prompts sit in the repo the author works in (`figures-final-gate`), so the author does not open them, and every exposure is logged in `UNDER.md` §4ag (one so far: two lines of the hedge prompt, seen 2026-10-24 while checking the builder's progress). READY says so.
+- **Author.** One agent (Opus 5.5) designs every figure and writes every changed sentence. It learns from the gate only pass or fail and the name of the failed criterion, never the judge prompts. That rule is procedural, not technical: the prompts sit in the repo the author works in (`figures-final-gate`), so the author does not open them, and every exposure is logged in `UNDER.md` §4ag (two so far, both 2026-10-24: two lines of the hedge prompt, seen while checking the builder's progress; and a workflow notification summarising the builder's review, which named carve-outs in `prompts.mjs` with line references). READY says so.
 - **Gate builder.** A separate agent builds and tunes the gate harness. It never sees the sealed items, and sees validation results as counts only.
 - **Testers** (fresh blind subagents, Sonnet 5.5, never editing or advising):
   - the judge, who describes the figure from its frames;
-  - the scorer, who compares that description with the intent sentence;
+  - the scorer, who compares that description with the takeaway only (never the content);
   - the prose reader, who reads a chapter's prose only and writes what each figure there must show;
-  - the fact checker, who checks every number, name and date in a figure against §4g and the section prose.
+  - the fact checker, who checks every number, name and date in a figure against the content column, §4g and the section prose.
 - **Sealing is procedural, and that is stated on the READY page.** The repo is public and everything runs in one model family. Sealed material (v3's renders and results, the owner's taps) sits in `docs/pass-31-sealed/`, which is gitignored and never pushed. Only the validation run reads it; the gate builder and the judge prompts never get it; every read is logged in the ledger. The author does see the taps arrive and v3 exists in git history, so the seal guards the gate's tuning, not the author's knowledge.
 
 ## 7. Phase 0 · survey and tools (two tracks in parallel)
@@ -74,12 +74,12 @@ Changes:
   - Two figures that each half-carry one idea: they merge into one two-part figure.
   - The record of each decision goes in the ledger.
 - **One intent per remaining figure, in two parts** (amended 2026-10-24 after session e2's verification: a long intent rewards text-heavy figures, since the scorer grades against it).
-  - The **takeaway** (ledger column `intent`): at most 20 words, one mechanism, at most two numbers, every token passing taught-yet, opening with its job ("Function:" or "Real thing:"). "[what] [changes] because [cause], so [result]." The scorer grades only this.
-  - The **content** (column `content`): the names, numbers and fields the figure, its strip, the prose and the fact checker need.
-  - **Knows** (column `knows`): what the newcomer already knows, an everyday thing or an earlier figure that will survive (never a later figure, a cut or merge candidate, or a held one).
-  - The prose reader reads the chapter and writes what each figure must show. Its asks go to the content, or are declined with a reason in the ledger; an ask showing the takeaway is too modest raises the takeaway. This stops modest intents passing easily.
+  - The **takeaway** (ledger column `intent`): at most 20 words, one mechanism, at most two numbers, every token passing taught-yet, opening with its job ("Function:" or "Real thing:"). "[what] [changes] because [cause], so [result]." It states the mechanism the figure draws (what changes, and why), not only the result, and is checked against the drawing and the section prose. A term first taught in the figure's own caption, labels or strip is not taught: the judge never sees them. The scorer grades only this.
+  - The **content** (column `content`): the names, numbers and fields the figure, its strip, the prose and the fact checker need. Phase 0's content is a starting point: Phase 2 step 1 re-derives it in full from the figure, its caption, its strip and the section prose.
+  - **Knows** (column `knows`): what the newcomer already knows, an everyday thing or an earlier figure that will survive (never a later figure, a cut candidate, a held figure, or the higher half of a merge). The lower half of a merge may be cited, because the merged card keeps its id; the higher half never cites its own partner, which becomes the first panel of the same card. A cited paragraph id is allowed only once it has been checked to say what knows claims.
+  - The prose reader reads the chapter and writes what each figure must show. Its asks go to the content, or are declined with a reason in the ledger; an ask showing the takeaway is too modest raises the takeaway. This stops modest takeaways passing easily.
 - The Enigma sentence (section 4).
-- The kept-originals table: 18 rows, each with its errors from `docs/audit/owner-calls.md` and one recommended action (literal fix, concept-level redraw, or cut).
+- The kept-originals table: 18 rows, each with its errors from `docs/audit/owner-calls.md` and one recommended action (literal fix, concept-level redraw, cut, or held: no attempt in this pass, listed for the owner).
 
 **Gate builder track:**
 - `figlib`: a `role` keyword on `text()` that writes `data-role="label"` or `data-role="object"` on the `<text>`, and an `obj()` group helper (section 15); `Timeline` exports its beat times. Existing scripts keep building untagged; tags are added as each figure comes up.
@@ -101,7 +101,7 @@ Changes:
 
 - The hardest figure in each of the five parts, chosen by the author from the sheets, from an empty script, with three concepts.
 - **One page of plate rules per part** in `docs/pass-31-plates.md`: grid, type, three motion verbs drawn from the part's motif, and how its recurring things are drawn (for example, Greenbar's register, Chart Room's packet). These are written rules, never shared drawing code, so each figure is still designed by hand.
-- At least one exemplar is a two-part merge card, since twelve merge pairs will use that form: Part IV's, Figs 13.5 and 13.6 (the failure, then the log). Part IV's exemplar comes from Chapter 13 or 14, because Chapter 15 is held (amended 2026-10-24).
+- At least one exemplar is a two-part merge card, since ten merge pairs will use that form: Part IV's, Figs 13.5 and 13.6 (the failure, then the log). A merged card carries one takeaway, one mechanism, on the lower half's row; its two panels show that mechanism in two parts (the failure, then the cure; the parts, then the function), and the gate scores it as one figure. Part IV's exemplar comes from Chapter 13 or 14, because Chapter 15 is held (amended 2026-10-24).
 - **Exit:** all five exemplars clear Gate 1, the fact checker and the frozen gate's mechanical checks. They go through the judge after validation (section 10), before Phase 2; an exemplar that fails is redone from a new concept.
 
 ## 9. Owner touchpoint 1 · the calibration page (one page, about 15 minutes, sent once)
@@ -109,8 +109,8 @@ Changes:
 One claude.ai page that records his taps:
 - **Line one, in plain words:** "This reverses your 2026-10-11 call on the kept originals. Reply yes to apply the table below. Silence keeps your call."
 - **The kept-originals table:** 18 rows, each with its errors and one action.
-  - The literal error fixes are open audit owner calls (`docs/audit/owner-calls.md`), which he delegated on 2026-10-23 ("take the best option"). They are applied under that delegation, logged, and shown here, except where the safety filter blocks them; a literal fix is not a redraw.
-  - Fig 3.10: the recommendation is a concept-level replacement. He can write "human illustrator" instead, or make the literal fixes himself (the exact list is on the row).
+  - The literal error fixes are open audit owner calls (`docs/audit/owner-calls.md`), which he delegated on 2026-10-23 ("take the best option"). They are applied under that delegation, logged, and shown here; a literal fix is not a redraw. Held figures get no attempt: their literal fixes stay open and are listed on READY.
+  - Fig 3.10 is held, like 16 other kept originals: no attempt in this pass. Its options are those of the held figures below; its five errors stay listed with the Chapter 3 calls in `docs/audit/owner-calls.md`, and its row in `docs/pass-31-kept-originals.md` points there.
 - **The five exemplars,** before and after, each with yes or no.
 - **The held figures** (35, status `held` in the ledger: the attack and security figures Claude's safety filter blocks), each with his options: edit it himself, have it redrawn by another route, or keep it.
 - **The current contact sheets:** he taps the 3 best and the 3 worst figures per part, giving 30 sealed labels. The tap sheets leave the held figures out.
@@ -143,14 +143,14 @@ One claude.ai page that records his taps:
 
 - **Order:** Part I, then Parts II to V and their chapters in book order, so the prose the judge sees before each figure is already final. Inside a chapter, the worst figure first. One chapter per commit; mid-chapter work goes on `figures-final-wip` and is squashed.
 - **Per figure:**
-  1. The intent sentence from Phase 0, raised if the prose reader asked for more.
+  1. The takeaway from Phase 0, raised if the prose reader asked for more; the content re-derived in full from the figure, its caption, its strip and the section prose.
   2. Three genuinely different concepts as stills, beside v4, Enigma and the part's exemplar. The author picks one and writes in the ledger why, and why the others lost.
   3. An empty script on the plate rules. The old script stays in git.
   4. Within the label cap; motion only where motion is the mechanism, in the part's motion verbs; t=0 complete, result included; caption at most two sentences, naming the picture.
   5. How-it-works strip at most 150 words, walking the beats, at most one sentence of detail or history.
-  6. `<desc>` written from the intent sentence and the beats; `<title>` names the figure.
+  6. `<desc>` written from the takeaway and the beats; `<title>` names the figure.
 - **The gate passes a figure when:**
-  - the judge's description of the 12-frame strip gives the mechanism in the intent sentence, for the figure's job;
+  - the judge's description of the 12-frame strip gives the mechanism in the takeaway, for the figure's job;
   - the t=0 still alone gives it too;
   - the text-stripped strip still shows what moves and what causes what;
   - there is no hedge on what changes, why, or the result;
@@ -163,13 +163,14 @@ One claude.ai page that records his taps:
   - if it still fails, the better of the rc2 figure and the best new attempt ships, and READY names it **below bar**. The fact check and the audit's known errors cannot be waived: whichever ships has its facts fixed in place first;
   - a failed figure is never cut; only the subtraction record can cut.
 - **Prose.** Words removed from a figure do not move into the prose by default. A sentence is added only where the subtraction record shows a gap, in the same commit. Every sentence citing a changed figure is re-read; the glossary is rebuilt after any prose edit.
-- **Every chapter commit includes the figures-only retell.** A blind judge sees only that chapter's figures, in order, and retells the chapter. A gap is fixed in the chapter before the commit.
+- **Every chapter commit includes the figures-only retell.** A blind judge sees only that chapter's figures, in order, and retells the chapter. Held figures are left out; the judge is told one sits there. A gap is fixed in the chapter before the commit.
 
 ## 12. Cuts, merges and anchors
 
 - **Figures are never renumbered.**
   - **Cut:** a gap stays in the numbering, visible to the reader; that is the price of the anchor law. The figure id (where it is an anchor) and its caption's paragraph id get `ANCHOR_ALIASES` entries pointing at the nearest surviving paragraph. Every "Fig N.M" citation of it is rewritten in the same commit.
-  - **Merge:** the merged figure keeps the lower number and id. The higher figure's anchors are aliased the same way, and its citations are rewritten in the same commit.
+  - **Merge:** the merged figure keeps the lower number and id, and sits at the higher half's slot, after every paragraph between the two halves, so its drawing uses only what is taught before it. Its caption keeps the lower half's caption id. The higher figure's anchors (its id and its caption's id) are aliased to the card, and its citations are rewritten in the same commit.
+  - **Held material:** this pass edits nothing inside a held figure's card or caption. A cut or merge whose citation sits there (Fig 2.8 in Fig 2.9's card; Fig 3.4 in ch3-defenses-p8) is listed for the owner. A held figure is cut only on his order (section 13), with aliases and citations handled as for any cut.
   - **Verified live:** a stored reading position on a cut or merged id lands on its alias target. Surviving anchors stay at zero pixel delta. `ANCHOR_ALIASES` lives in `public/book.js`, so its `?v=` is bumped.
 - Ids are never reused. §4g entries keyed by figure number stay valid.
 - Every cut carries its subtraction record in the ledger. READY shows the cut counts per chapter.
@@ -177,12 +178,12 @@ One claude.ai page that records his taps:
 ## 13. Kept originals, heroes, cover, open calls
 
 - **With his yes:** each kept original is rebuilt from an empty script under Phase 2's loop, in its chapter, with its audit errors fixed in the drawing, the strip and the prose.
-- **Without it:** his call stands. The delegated literal fixes are applied where the filter allows; the figure otherwise stays as it is, is exempt from the label cap, the 11 px floor and the caption check (as in Pass 30), and is listed on READY with what remains wrong. Fig 11.7's eight-sentence caption is one of these.
+- **Without it:** his call stands. The delegated literal fixes are applied to the kept originals that are not held (Fig BR.3); the figure otherwise stays as it is, is exempt from the label cap, the 11 px floor and the caption check (as in Pass 30), and is listed on READY with what remains wrong. Fig 11.7's eight-sentence caption is one of these.
 - **Held figures (standing rule, 2026-10-24):** the safety filter stopped work on the attack and security figures three times on 2026-10-23, so this pass makes no attempt on any held figure, Figs 3.7 and 3.10 included, and never rewords to get past the filter. A held figure stays as it is unless he edits it, has it redrawn by another route, or asks for a cut (with aliases). READY lists each with its status. Of the 18 kept originals, 17 are held; only Fig BR.3 goes through the loop.
 - **Fig 18.6's caption is owner text:** typeset, never rewritten, and exempt from the caption check.
 - **The 7 Pass 30 figure calls** were decided on `owner-calls` (§4af: Figs 6.6, 6.9 accepted, 12.3 option b; heroes Ch1 and Ch3 labelled, Ch12 and the cover accepted). This pass starts from those results; a redesign still goes through the full loop.
 - **Heroes and the cover** come after Part V, through the same gate, on their parts' plate rules.
-- **Audit owner calls.** Decided on `owner-calls` (§4af), except Chapter 3's figures and captions, which are decided in this pass under the delegation where the safety filter allows. This branch rebases onto `origin/main` once `owner-calls` is deployed.
+- **Audit owner calls.** Decided on `owner-calls` (§4af), except Chapter 3's figures and captions, which are held: no attempt in this pass, listed on READY. This branch rebases onto `origin/main` once `owner-calls` is deployed.
 
 ## 14. Drift and continuity
 
@@ -199,7 +200,7 @@ One claude.ai page that records his taps:
   - At-bar figures are exempt from the cap.
 - **The text-stripped test removes every `<text>`,** as the council wrote, so it needs no tags and also runs on untagged rc2 versions.
 - **No per-figure comparison with the exemplar.** The council's verdict had "not judged weaker than its part's exemplar"; the first session's own reviews showed that compares unlike ideas, so identity is judged per chapter sheet (section 11).
-- **Taught-yet is also checked mechanically.** A judge cannot forget what it knows, so besides seeing the prose up to the figure, every label and object token must be a number or arithmetic sign, a term `known-terms.mjs` lists before the figure's section (run with `--out` to a scratch path), or an everyday word (in `/usr/share/dict/words`, not a glossary term anywhere in the book). An all-capitals token passes when its lowercase form is an everyday word (AND, THE) or when known-terms lists it as taught before the figure; abbreviations the prose teaches (CPU, RAM, TCP, IP, HTTP, DNS) are listed at the paragraph that teaches them. No per-figure exemptions. An abbreviation the prose never teaches before the figure (CGNAT, IHL) fails, and so does notation such as "/22". (Amended 2026-10-24: session e2 found the old all-capitals rule failing 166 of 222 figures on noise.)
+- **Taught-yet is also checked mechanically.** A judge cannot forget what it knows, so besides seeing the prose up to the figure, every label and object token must be a number or arithmetic sign, a term `known-terms.mjs` lists before the figure's section (run with `--out` to a scratch path), or an everyday word (in a common-word list, not a glossary term anywhere in the book; `/usr/share/dict/words` is not used, because it holds ax, al, arm, ram, nat, lan and dos, which would let real abbreviations pass). Inflections of a passing word pass (adds, added, adding). A term first taught in the figure's own caption, labels or strip does not count as taught. An all-capitals token passes when its lowercase form is on the common-word list (AND, THE) or when known-terms lists it as taught before the figure; abbreviations the prose teaches (CPU, RAM, TCP, IP, HTTP, DNS) are listed at the paragraph that teaches them. No per-figure exemptions. An abbreviation the prose never teaches before the figure (CGNAT, IHL) fails, and so does notation such as "/22". (Amended 2026-10-24: session e2 found the old all-capitals rule failing 166 of 222 figures on noise; amended again the same day after its second verification found the dictionary clause gameable.)
 - **Captions are anchors too,** so every cut and merge aliases the caption paragraph id as well as the figure id.
 - **The strips carry more words than the drawings** (15,983 against 13,145), so they get the 150-word limit and the same checks.
 - **`<desc>` is what screen readers read,** so it is rewritten with every changed figure.
@@ -211,7 +212,8 @@ One page:
 - a before/after sheet per part;
 - cut counts per chapter;
 - the below-bar list;
-- the held figures, each with its status (kept as is, edited by him, or redrawn elsewhere);
+- the held figures, each with its status (kept as is, edited by him, redrawn elsewhere, or cut on his order), and the open literal fixes in them;
+- the seal stated as procedural, every exposure of a judge prompt to the author (§4ag), and how many attempts the gate builder took;
 - kept originals whose errors remain because his silence kept them;
 - the gate's validation result, and any part identity he did not confirm;
 - the request for his deploy word.
@@ -221,8 +223,8 @@ Then his full read, from `docs/owner-read-map.md`.
 ## 17. Done
 
 - **Held figures** are exempt from the gate, the retell and the identity check; they count as listed, not passed (amended 2026-10-24).
-- Every remaining figure has a complete ledger row and has passed the validated gate (with a clean final drift check), the label cap (at-bar and kept figures exempt) and the fact checker, or is on the below-bar list with its facts fixed.
-- No known error remains, except in kept originals his silence preserved, and those are listed.
+- Every remaining figure that is not held has a complete ledger row and has passed the validated gate (with a clean final drift check), the label cap (at-bar and kept figures exempt) and the fact checker, or is on the below-bar list with its facts fixed.
+- No known error remains, except in kept originals his silence preserved and in held figures; both are listed with their errors.
 - Every chapter's retell has passed (Chapter 15, held whole, has none). A blind tester judges each part's final sheet as one identity, against its exemplar; Part IV's sheet holds Chapters 13 and 14.
 - Anchors identical or aliased; all figure citations correct; glossary rebuilt; `check:dashes` clean; `tests/pass25` at its recorded baseline.
 - **No gate declares this pass done.** It is done when his full read sends back no figure. Wording keeps "still being built" until then.
@@ -238,4 +240,4 @@ Then his full read, from `docs/owner-read-map.md`.
 - Anchor ids never change; migrations go through `ANCHOR_ALIASES`, verified live.
 - Pushing `main` deploys: only on the owner's word.
 - Never ask the owner questions mid-work beyond the one calibration page; owner calls go to STATE.md's BLOCKED ON TIGER and work continues.
-- Safety: concept level for attack figures, the defence or the idea; never hunt for wording that gets past the filter.
+- Safety: held figures get no attempt (section 13); their literal fixes stay open and are listed on READY. Never hunt for wording that gets past the filter.

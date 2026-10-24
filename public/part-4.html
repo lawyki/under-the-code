@@ -689,6 +689,21 @@
       consistency is what the other three exist to preserve.
     </p>
 
+    <h3>How durability is actually achieved · the write-ahead log</h3>
+
+    <p id="ch13-acid-p4">
+      Durability and atomicity look like opposite problems (one wants
+      changes <em>persisted</em>, the other wants them <em>reversible</em>),
+      but the same mechanism handles both: the
+      <strong>write-ahead log</strong> (WAL). Before touching the data pages (the fixed-size blocks on disk that hold the tables' rows), the engine appends a record of the <em>intended</em>
+      change to a sequential log file and forces it onto physical storage (the <code>fsync()</code> system call). Only then does the engine modify the data
+      pages, lazily. If the database crashes, recovery reads the log forward from the last checkpoint (a marker in the log: every change before it is already safely in the data pages, so recovery can start there), replaying every committed transaction
+      whose changes might not have made it to the data pages, and rolling
+      back every uncommitted transaction whose partial changes might have
+      escaped to disk. The log is the source of truth; the data pages are
+      a cache.
+    </p>
+
     <div class="diagram-card fig-v2" id="fig-13-5">
       <div class="diagram-label">Fig 13.5&nbsp;· A bank transfer&nbsp;· the failure, and the log that prevents it</div>
       <svg viewBox="0 0 400 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6" data-dur="10" data-beats="1 1.7 2.4 3.4 4 4.7 5.2 5.9 7 7.9 8.7">
@@ -731,21 +746,6 @@
         </ol>
       </details>
     </div>
-
-    <h3>How durability is actually achieved · the write-ahead log</h3>
-
-    <p id="ch13-acid-p4">
-      Durability and atomicity look like opposite problems (one wants
-      changes <em>persisted</em>, the other wants them <em>reversible</em>),
-      but the same mechanism handles both: the
-      <strong>write-ahead log</strong> (WAL). Before touching the data pages (the fixed-size blocks on disk that hold the tables' rows), the engine appends a record of the <em>intended</em>
-      change to a sequential log file and forces it onto physical storage (the <code>fsync()</code> system call). Only then does the engine modify the data
-      pages, lazily. If the database crashes, recovery reads the log forward from the last checkpoint (a marker in the log: every change before it is already safely in the data pages, so recovery can start there), replaying every committed transaction
-      whose changes might not have made it to the data pages, and rolling
-      back every uncommitted transaction whose partial changes might have
-      escaped to disk. The log is the source of truth; the data pages are
-      a cache.
-    </p>
 
     <h3>Isolation levels · the trade between safety and speed</h3>
 
@@ -3529,7 +3529,7 @@
 
 </section>
 
-<script src="book.js?v=20261024a"></script>
+<script src="book.js?v=20261024b"></script>
 
 </body>
 </html>
