@@ -14,7 +14,7 @@ The owner stopped the work on 2026-10-24 ("Stop it. Only write everything about 
 
 | What | Where | State |
 |---|---|---|
-| Author worktree | `.claude/worktrees/figures-final` (branch `figures-final`) | `24477bd`, pushed; clean apart from untracked `node_modules` |
+| Author worktree | `.claude/worktrees/figures-final` (branch `figures-final`) | `f4202c3` (this handoff; the ledger and pages are exactly as at `24477bd`, which e2 is verifying), pushed; clean apart from untracked `node_modules` |
 | Gate worktree | `.claude/worktrees/figures-final-gate` (branch `figures-final-gate`) | local `19040ce`, NOT pushed (origin at `982670b`); clean |
 | Main checkout | `/Users/yki/Documents/github/atheric/under-the-code` (branch `main`) | `3fd4774`, untouched by Pass 31. Its two untracked files, `docs/figure-finalization-plan.md` and `docs/pass-31-brief.md`, belong there: leave them |
 | Calibration page (owner) | https://claude.ai/artifact/FycKg4RsbcLdCqjT2xQgkk | version 10, private, shows the 12 cut candidates; sources in `scripts/pass31-author/calib/` |
