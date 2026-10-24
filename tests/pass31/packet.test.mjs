@@ -1,9 +1,13 @@
 // Pass 31 held material out of the judge packets (docs/pass-31-calibration.md section 16, item 1).
-//   npm run fig:packet-test [-- --tree=<public dir>]
+//   npm run fig:packet-test [-- --tree=<public dir>] [--ledger=<the author's docs/pass-31-ledger.tsv>]
 // Checks, on a tree, with the strip list tests/pass31/held-strip.json (ids only; this test never prints content):
 //   list     every listed figure, chapter, section and paragraph id exists in the tree; every section whose only
 //            figures are held (found by structure) is in sections.held_only; a listed paragraph that sits inside a
 //            figure card sits inside a held card; no strip zone cuts into a figure that is not held
+//   ledger   (calibration section 18) the ledger's held ids (rows with status "held", read by header name) are exactly
+//            held_figures, and sections.held_only is exactly the set of sections whose figures in the tree are all
+//            held by the ledger (a section with no figure is not one): nothing missing, nothing extra. The gate
+//            branch keeps no ledger, so --ledger names the author's; without one the check fails
 //   packets  every non-held figure's packet (lib.mjs packet) and its prose tokens (priorTokens) are built; no run of
 //            eight words that only held material holds (a held card's label, picture text, caption or strip; a listed
 //            chapter, section or paragraph; a toc card to them) appears in any of them
@@ -18,7 +22,7 @@
 //            Fig 1.1 (taught at ch18-final) passes at Fig 1.1 while a term with a word in capitals planted beside it fails
 // Exit 0 when every check holds, 1 otherwise, 2 when the tree cannot be read.
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, allFigures, figures, readPart, packet, priorTokens, plain, loadHeld, run, mkdirp, runKnownTerms, taughtContext, taughtYet, PARTS, REPO, OUT, HELD_FILE } from './lib.mjs';
+import { args, tree, allFigures, figures, readPart, packet, priorTokens, plain, loadHeld, run, mkdirp, runKnownTerms, taughtContext, taughtYet, readLedger, LEDGER_DEFAULT, PARTS, REPO, OUT, HELD_FILE } from './lib.mjs';
 import { heldZones, CARD } from './held.mjs';
 
 const { o } = args(process.argv.slice(2));
@@ -51,6 +55,30 @@ for (const p of PARTS) {
 }
 check(!inCardBad.length, `list: listed paragraphs inside a figure card that is not held: ${inCardBad.length}${inCardBad.length ? ` (${inCardBad.join(' ')})` : ''}`);
 check(!cutBad.length, `list: strip zones that cut into a figure that is not held: ${cutBad.length}${cutBad.length ? ` (${cutBad.join(' ')})` : ''}`);
+
+// ---- ledger (calibration section 18) ---------------------------------------------------------------------------------
+{
+  const LF = path.resolve(o.ledger || LEDGER_DEFAULT);
+  let L = null; try { L = readLedger(LF, ['id', 'status']); } catch (e) { check(false, `ledger: not readable by header at ${LF} (${e.message.slice(0, 120)}); give --ledger=<the author's docs/pass-31-ledger.tsv>`); }
+  if (L) {
+    const held = new Set([...L.rows.values()].filter(r => r.status === 'held').map(r => r.id));
+    const extra = [...H.figures].filter(id => !held.has(id)), miss = [...held].filter(id => !H.figures.has(id));
+    check(!extra.length && !miss.length && held.size > 0, `ledger: held rows ${held.size} (sha256 ${L.sha256.slice(0, 8)}), held_figures ${H.figures.size}: not in the ledger as held ${extra.length}${extra.length ? ` (${extra.join(' ')})` : ''}, held in the ledger but not listed ${miss.length}${miss.length ? ` (${miss.join(' ')})` : ''}`);
+    const cmp = (heldIds, listedIds) => {
+      const byStruct = [...bySec].filter(([, xs]) => xs.length && xs.every(x => heldIds.has(x))).map(([sec]) => sec).sort();
+      return { byStruct, notListed: byStruct.filter(x => !listedIds.includes(x)), notStruct: listedIds.filter(x => !byStruct.includes(x)) };
+    };
+    const J = JSON.parse(fs.readFileSync(HELD_FILE, 'utf8')), listed = [...new Set(J.sections.held_only)].sort();
+    const r = cmp(held, listed);
+    check(!r.notListed.length && !r.notStruct.length, `ledger: sections whose figures are all held by the ledger ${r.byStruct.length}, held_only ${listed.length}: missing from held_only ${r.notListed.length}${r.notListed.length ? ` (${r.notListed.join(' ')})` : ''}, in held_only without that structure ${r.notStruct.length}${r.notStruct.length ? ` (${r.notStruct.join(' ')})` : ''}`);
+    // controls: one held figure of a held-only section made not held, and one section with a figure that is not held
+    // added to the list: the same comparison finds each
+    const sec0 = listed.find(x => bySec.has(x)), one = new Set(held); one.delete(bySec.get(sec0)[0]);
+    const other = [...bySec.keys()].find(x => !r.byStruct.includes(x));
+    const c1 = cmp(one, listed), c2 = cmp(held, [...listed, other].sort());
+    check(c1.notStruct.includes(sec0) && c2.notStruct.includes(other), `ledger (controls): a held figure made not held -> ${sec0} flagged ${c1.notStruct.includes(sec0)}; a section that is not held-only listed -> ${other} flagged ${c2.notStruct.includes(other)}`);
+  }
+}
 
 // ---- packets -----------------------------------------------------------------------------------------------------
 const words = t => t.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ').filter(Boolean);

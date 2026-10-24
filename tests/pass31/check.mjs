@@ -24,15 +24,26 @@
 //   dashes   check:dashes (the repo tree) or the same scan of the part (another tree)
 //   anchors  the part's anchor ids (book.js candidates(): ch…, fig-N-M, outside svgs) unchanged against --base, or
 //            every missing id aliased in ANCHOR_ALIASES; an added id is a finding too
-//   npm run fig:check -- <part-1|1> [--fig=fig-1-1,fig-1-2] [--tree=<public dir>] [--base=main] [--gate1=full|quick|off]
-//                        [--json=<file>] [--browser=chromium|webkit]
+//   npm run fig:check -- <part-1|1> --expect-hash=<combined sha256> [--fig=fig-1-1,fig-1-2] [--tree=<public dir>] [--base=main]
+//                        [--gate1=full|quick|off] [--json=<file>] [--browser=chromium|webkit]
+// --expect-hash is required (calibration section 18): fig:check is part of the gate's pass (brief section 11) and is in
+// its fingerprint, so it first computes the fingerprint (hash.mjs) and refuses (exit 2, nothing checked) unless the
+// hash given equals it, the same refusal as gate.mjs, dev.mjs and validate.mjs.
 // Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json.
 import fs from 'node:fs'; import path from 'node:path';
 import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
+import { fingerprint } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const part = pos[0] ? (/^\d$/.test(pos[0]) ? `part-${pos[0]}` : pos[0]) : null;
-if (!part || !/^part-[1-5]$/.test(part)) { console.log('usage: npm run fig:check -- <part-1..5> [--fig=ids] [--tree=dir] [--base=main] [--gate1=full|quick|off] [--json=file]'); process.exit(2); }
+if (!part || !/^part-[1-5]$/.test(part)) { console.log('usage: npm run fig:check -- <part-1..5> --expect-hash=sha [--fig=ids] [--tree=dir] [--base=main] [--gate1=full|quick|off] [--json=file]'); process.exit(2); }
+// the frozen-file check (calibration section 18), as gate.mjs: nothing runs unless the fingerprint of the gate's files,
+// prompts and model equals the --expect-hash given; a missing or different hash is a refusal (exit 2)
+{
+  const fp = await fingerprint(o.model || 'claude-sonnet-5-5');
+  if (!o['expect-hash'] || o['expect-hash'] === true) { console.log('check: refused: no --expect-hash (fig:check runs only against the frozen fingerprint; npm run fig:hash)'); process.exit(2); }
+  if (o['expect-hash'] !== fp.combined) { console.log(`check: refused: the gate's fingerprint ${fp.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`); process.exit(2); }
+}
 const ROOT = tree(o.tree), IS_REPO = path.resolve(ROOT) === path.resolve(PUBLIC);
 const BASE = o.base || 'main', G1 = o.gate1 || 'full', ENG = o.browser || 'chromium';
 const OUTDIR = mkdirp(path.join(OUT, 'check', part));

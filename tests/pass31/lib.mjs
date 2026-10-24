@@ -4,7 +4,8 @@
 // prose: it never reaches a judge packet, and nothing taught-yet credits comes from it (calibration section 16).
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { spawn } from 'node:child_process';
 import { CARD, HELD_FILE, loadHeld, stripHeld } from './held.mjs';
-export { CARD, HELD_FILE, loadHeld, stripHeld };
+import { teachingPieces } from './places.mjs';
+export { CARD, HELD_FILE, loadHeld, stripHeld, teachingPieces };
 
 export const REPO = new URL('../../', import.meta.url).pathname;
 export const PUBLIC = path.join(REPO, 'public') + '/';
@@ -79,10 +80,11 @@ export function packet(root, fig, H = loadHeld()) {
   chunks.push(prose(heldStripped(root, fig.part, H).html.slice(0, fig.at)));
   return chunks.join('\n\n').trim();
 }
-// the prose before the card (taught-yet, calibration sections 16 and 17): the text of every paragraph (never a
-// caption) and list item outside the figure cards and the held material, a <pre> block inside one left out, every
-// earlier part whole and this part up to the card. Never a heading, section label, table cell, chapter preview or
-// code block. Split into tokens as label text is split.
+// the prose before the card (taught-yet, calibration sections 16 to 18): the text of every teaching place
+// (tests/pass31/places.mjs: a paragraph or list item outside the figure cards and the held material, never a caption
+// or a part tagline, and the first cell of a defining table row), a <pre> block inside one left out, every earlier
+// part whole and this part up to the card. Never a heading, section label, other table cell, chapter preview, part
+// tagline or code block. Split into tokens as label text is split.
 //   lower  every token, in lower case (the section 16 rule for a token that is neither a glossary term nor an
 //          everyday word)
 //   exact  the tokens as written, less the operands of a <code> span: inside <code> only the span's first token
@@ -96,10 +98,9 @@ const splitToks = h => dec(h.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, ' '
 function paragraphProse(html, upto = html.length) {
   const cards = [...html.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
   const all = [], exact = [], text = [];
-  for (const m of html.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
-    if (m.index >= upto) break;
-    if (/class="[^"]*diagram-caption/.test(m[2]) || cards.some(([a, b]) => m.index >= a && m.index < b)) continue;
-    const inner = m[3].replace(PRE, ' ');
+  for (const pc of teachingPieces(html, cards)) {
+    if (pc.start >= upto) break;
+    const inner = pc.inner.replace(PRE, ' ');
     all.push(...splitToks(inner));
     // outside <code>: every token; inside: the first token of each span
     for (const sg of inner.split(/(<code\b[^>]*>[\s\S]*?<\/code>)/)) { if (/^<code\b/.test(sg)) exact.push(...splitToks(sg).slice(0, 1)); else exact.push(...splitToks(sg)); }
@@ -115,8 +116,13 @@ export function priorTokens(root, fig, H = loadHeld()) {
   return { exact: new Set(ps.flatMap(x => x.exact)), lower: new Set(all.map(t => t.toLowerCase())), text: ps.map(x => x.text).join('\n') };
 }
 
-// ---- taught-yet (brief section 15; docs/pass-31-calibration.md sections 13, 15, 16, 17) ------------------------
-// "The prose before the card" is priorTokens() above: paragraphs and list items only, held material out.
+// ---- taught-yet (brief section 15; docs/pass-31-calibration.md sections 13, 15, 16, 17, 18) --------------------
+// "The prose before the card" is priorTokens() above: the teaching places only (tests/pass31/places.mjs: paragraphs
+// and list items, never a caption or a part tagline, and the first cell of a defining table row), held material out.
+// Section 18: a plural or possessive of an abbreviation, and each piece of a compound, is judged as the abbreviation
+// (DRAMs, DRAM's, OSes, RAM's, ram's, DRAM in DRAM-only); an all-capitals piece by its letters (^ERROR as ERROR); a
+// prefix comes off only when what remains is an everyday word as written, of four letters or more (stems()); and the
+// prose's plural teaches a short abbreviation's singular only when that singular does not itself end in s (inPrior).
 // Every label and object token is one of:
 //   - a number or a sign (arithmetic signs and arrows); a single letter (a key, a lamp);
 //   - a term taught before the figure: known-terms.mjs (run with --strip, held material out) lists it before the
@@ -180,7 +186,11 @@ threw:throw thrown:throw understood:understand woke:wake woken:wake wore:wear wo
 children:child men:man women:woman feet:foot teeth:tooth mice:mouse geese:goose indices:index matrices:matrix vertices:vertex axes:axis
 analyses:analysis criteria:criterion phenomena:phenomenon better:good best:good worse:bad worst:bad less:little least:little more:much most:much`
   .split(/\s+/).filter(Boolean).map(x => x.split(':')));
-const PREFIX = /^(re|un|over|under|pre|mis|out|up|sub|non)(?=[a-z]{3,})/;
+// a plain prefix (section 18, brief section 15): it comes off only when what remains, as written, is an everyday word of
+// four letters or more (a lower-case dictionary entry or on the COMMON list): upload (load), rewrote (wrote),
+// subsystem; never through the remainder's own stems, and never to make a name or an abbreviation everyday words
+// (redis is not re plus dis; subnet, unmap)
+const PREFIX = /^(re|un|over|under|pre|mis|out|up|sub|non)(?=[a-z]{4,}$)/;
 export const stems = (w, deep = true) => {
   const s = [w];
   if (IRREGULAR[w]) s.push(IRREGULAR[w]);
@@ -202,8 +212,8 @@ export const stems = (w, deep = true) => {
   if (w.endsWith("n't")) s.push(w.slice(0, -3));
   // British spellings: centralised -> centralized, colour -> color
   for (const x of [...s]) { if (/is(e|ed|es|ing|ation)$/.test(x)) s.push(x.replace(/is(e|ed|es|ing|ation)$/, 'iz$1')); if (/our$/.test(x)) s.push(x.replace(/our$/, 'or')); }
-  // a plain prefix on an everyday word: rewrote, overwritten, unpaid
-  if (deep && PREFIX.test(w)) for (const x of stems(w.replace(PREFIX, ''), false)) s.push(x);
+  // a plain prefix on an everyday word, after plain endings: uploads (load), rewrote (wrote), overwritten (written)
+  if (deep) for (const x of [...s]) { const m = x.match(PREFIX); if (!m) continue; const r = x.slice(m[1].length); if (lowerDict().has(r) || common().has(r)) s.push(r); }
   return s;
 };
 const normT = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').trim();
@@ -271,7 +281,9 @@ const B = '[^\\p{L}\\p{N}_]';   // a word boundary that keeps SYN_SENT and CR3 w
 // a stripped prefix: "process" in the prose does not teach subprocess, section 17)?
 const inPrior = (prior, part, orig, exact) => {
   if (!prior) return false;
-  if (exact) return prior.exact.has(orig) || prior.exact.has(orig + 's');
+  // (section 18) the prose's plural teaches the singular (movs: mov), never a word that already ends in s (loss is
+  // not "los" plus s)
+  if (exact) return prior.exact.has(orig) || (!/s$/u.test(orig) && prior.exact.has(orig + 's'));
   return stems(part, false).some(w => prior.lower.has(w)) || prior.lower.has(part + 's') || prior.lower.has(part + 'es');
 };
 export function taughtYet(text, known, glossary, prior = null) {
@@ -305,7 +317,14 @@ export function taughtYet(text, known, glossary, prior = null) {
     if (!(glossary.names?.has(t) && writes(prior, form))) bad.push({ token: t, why: 'a glossary term not yet taught' });
     s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
   }
+  // the label's tokens in their original case, cut as the folded text is cut (dashes and hyphens made spaces), so
+  // each piece of a compound keeps its capitals: DRAM in DRAM-based is the abbreviation, not the everyday word dram
+  // (section 18); the whole-word lookup below is the fallback
+  const rawToks = (' ' + t0.replace(/[–-]/g, ' ') + ' ').split(TOKEN_SPLIT).map(trimTok).filter(Boolean);
   const raw = text.split(/\s+/);
+  const bareOf = x => x.replace(/^[^\p{L}\p{N}_]+|[^\p{L}\p{N}_]+$/gu, '');   // ^ERROR: ERROR
+  let rp = 0;   // tokens are matched to their original in order, so "JSON · json" keeps each one's case
+  const origOf = tok => { const k = rawToks.findIndex((r, i) => i >= rp && r.toLowerCase() === tok); if (k < 0) return rawToks.find(r => r.toLowerCase() === tok); rp = k + 1; return rawToks[k]; };
   for (const tok0 of s.split(TOKEN_SPLIT)) {
     const tok = trimTok(tok0); if (!tok) continue;
     if (SIGN.test(tok) || NUMBER.test(tok)) continue;
@@ -313,18 +332,18 @@ export function taughtYet(text, known, glossary, prior = null) {
     if (/^[\d+\-−×÷=<>≤≥*/%^().]+$/u.test(tok) && /\d/.test(tok) && !/^\//.test(tok)) continue;
     if (/^\p{L}$/u.test(tok)) continue;                                      // one letter
     if (/^\/\d/.test(tok)) { if (!inPrior(prior, tok, tok, false)) bad.push({ token: tok, why: 'notation, not a plain number' }); continue; }   // /22
-    const orig = (raw.find(r => r.toLowerCase().replace(/[^\p{L}\p{N}'’_-]/gu, '') === tok.replace(/[^\p{L}\p{N}'’_-]/gu, '')) || tok).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+    const orig = (origOf(tok) || raw.find(r => r.toLowerCase().replace(/[^\p{L}\p{N}'’_-]/gu, '') === tok.replace(/[^\p{L}\p{N}'’_-]/gu, '')) || tok).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
     const origParts = orig.split(/[-–/]/);
-    const letters = orig.replace(/[^\p{L}]/gu, '');
-    const caps = letters.length >= 2 && letters === letters.toUpperCase() && /\p{Lu}/u.test(letters);
     for (const part of tok.split(/[-–/]/)) {
       if (!part) continue;
       if (NUMBER.test(part) || SIGN.test(part) || /^\p{L}$/u.test(part)) continue;
+      // this piece as the label writes it
+      const op = origParts.find(x => bareOf(x).toLowerCase() === bareOf(part)) || part, ob = bareOf(op);
       // a glossary term in a plain inflection (kernels, pipelined). A stripped prefix makes a different word
       // (subprocess is not process, SubBytes is not bytes): it is checked as a token of its own below, and the
       // prefix never makes it an everyday word when what remains is a glossary term (section 17)
-      const st0 = stems(part, false), deep = stems(part), g = st0.find(w => glossary.has(w));
-      const st = deep.some(w => !st0.includes(w) && glossary.has(w)) ? st0 : deep;
+      const guarded = w => { const a = stems(w, false), d = stems(w); return d.some(x => !a.includes(x) && glossary.has(x)) ? a : d; };
+      const st0 = stems(part, false), g = st0.find(w => glossary.has(w)), st = guarded(part);
       if (g !== undefined) {
         // an inflection of a taught term, by plain endings only (pipelined, registered), and never a form that is an
         // abbreviation of its own (HTTPS)
@@ -334,23 +353,28 @@ export function taughtYet(text, known, glossary, prior = null) {
         if (glossary.names?.has(g) && form && writes(prior, form)) continue;
         bad.push({ token: part, why: 'a glossary term not yet taught' }); continue; }
       const everyday = st.some(w => dict().has(w) || common().has(w));
-      const title = part[0].toUpperCase() + part.slice(1);   // LINUX written for a name the prose spells Linux
-      if (caps) {
-        const AB = part.toUpperCase();
-        if ((part.length >= 4 ? st : [part]).some(w => common().has(w))) continue;                    // THE, KEY, PRESS (inflected only from four letters: DOS is not "do")
-        if (part.replace(/[^\p{L}]/gu, '').length >= 4 && !st.some(w => glossary.capitals?.has(w.toUpperCase())) && st.some(w => lowerDict().has(w) || common().has(w))) continue;   // LAMP, ROTORS
-        if (part.length >= 4 && /^\p{L}+$/u.test(part) && writes(prior, title)) continue;   // LINUX
-        bad.push({ token: orig.includes('-') || orig.includes('/') ? AB : orig, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
-      // a short abbreviation in lower or mixed case (ram, Mac, os, rax, lo), or a plain plural of one the book writes in
-      // capitals (rams, arms): taught like the abbreviation, unless the token itself is on the COMMON list (add, not),
-      // or (section 16) the prose before the card writes this very token in this very case (mov)
-      if (/^\p{L}+$/u.test(part) && !common().has(part)) {
+      // an all-capitals piece, or the plural or possessive of one (DRAMs, DRAM's, OSes, RAM's: section 18, brief
+      // section 15), judged as the abbreviation itself, its letters only (^ERROR as ERROR)
+      const abm = ob.match(/^([\p{Lu}\d_]*\p{Lu}[\p{Lu}\d_]*)(?:['’]s|es|s)$/u);
+      const abStem = abm && (abm[1].match(/\p{Lu}/gu) || []).length >= 2 ? abm[1] : null;
+      const lt = ob.replace(/[^\p{L}]/gu, '');
+      if (abStem || (lt.length >= 2 && lt === lt.toUpperCase() && /\p{Lu}/u.test(lt))) {
+        const j = (abStem || ob).toLowerCase(), sj = guarded(j);
+        if ((j.length >= 4 ? sj : [j]).some(w => common().has(w))) continue;                    // THE, KEY, PRESS (inflected only from four letters: DOS is not "do")
+        if (j.replace(/[^\p{L}]/gu, '').length >= 4 && !sj.some(w => glossary.capitals?.has(w.toUpperCase())) && sj.some(w => lowerDict().has(w) || common().has(w))) continue;   // LAMP, ROTORS
+        if (j.length >= 4 && /^\p{L}+$/u.test(j) && writes(prior, j[0].toUpperCase() + j.slice(1))) continue;   // LINUX
+        bad.push({ token: ob || op, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
+      // a short abbreviation in lower or mixed case (ram, Mac, os, rax, lo), its possessive (ram's: section 18), or a
+      // plain plural of one the book writes in capitals (rams, arms): taught like the abbreviation, unless the token
+      // itself is on the COMMON list (add, not), or (section 16) the prose before the card writes this very token in
+      // this very case (mov)
+      const bp = part.replace(/['’]s$/u, ''), obp = op.replace(/['’]s$/u, '');
+      if (/^\p{L}+$/u.test(bp) && !common().has(bp) && !common().has(part)) {
         const short = w => [...w].length >= 2 && [...w].length <= 3;
-        const abbr = short(part) && (glossary.capitals?.has(part.toUpperCase()) || SHORT_ABBR.has(part));
-        const w = part.replace(/s$/, ''), plural = w !== part && short(w) && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);   // adds, puts: add, put are COMMON
+        const abbr = short(bp) && (glossary.capitals?.has(bp.toUpperCase()) || SHORT_ABBR.has(bp));
+        const w = bp.replace(/s$/, ''), plural = w !== bp && short(w) && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);   // adds, puts: add, put are COMMON
         if (abbr || plural) {
-          const op = origParts.find(x => x.toLowerCase() === part) || part;
-          if (inPrior(prior, part, op, true)) continue;
+          if (inPrior(prior, bp, obp, true)) continue;
           bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
       }
       if (everyday) continue;

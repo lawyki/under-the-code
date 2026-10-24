@@ -8,11 +8,14 @@
 //   defines_at  for each of those, the offset (in the part's HTML) of the first place in the section's paragraphs
 //               that teaches it (null: no such place, which the rules below never produce): a figure in the same
 //               section is credited the term only when this offset comes before its card
-// Teaching happens only in paragraph and list-item text (section 17): the text of a <p> or <li> outside every figure
-// card, never a caption, with any <pre> block inside it blanked. Not teaching: a figure card (label, picture,
-// caption, How-it-works strip), which no judge sees; a heading, a section label (div.section-number), a table cell
-// (a table restates or compares; it is not where a term is explained), a <pre> code block, a part opener's chapter
-// preview. A term is first taught at the earliest of these, in reading order:
+// Teaching happens only in the places tests/pass31/places.mjs lists (sections 17 and 18; brief section 15): the text
+// of a <p> or <li> outside every figure card (chapter and section leads, chapter closings included), never a caption
+// or a part tagline, with any <pre> block inside it blanked; and the first cell of a table row that expands or defines
+// its term (HDD (spinning disk); RCX | Counter: ...; FCFS | First-come, first-served. ...). Not teaching: a figure card
+// (label, picture, caption, How-it-works strip), which no judge sees; a heading, a section label (div.section-number),
+// a math label, any other table cell (a row whose cells are values lists its term, it does not explain it), a <pre>
+// code block, a part opener's chapter preview, a part tagline. A term is first taught at the earliest of these, in
+// reading order:
 //   - glossary: its entry in public/glossary.json (the section the extractor assigns), located at the first use in
 //     that section's paragraphs and list items. An entry whose section writes the term only elsewhere teaches
 //     nothing, and is listed by where it does write it: only in held material (glossary_terms_only_in_held), only in
@@ -25,8 +28,27 @@
 //   - prose gloss: the first paragraph or list item where the term, or its plural, is glossed in place: followed by
 //     a parenthesis that opens with a word ("register (a slot"), by ", which" or ", who", by ", or ACRONYM", by an
 //     apposition (", the|a|an …", or up to four words then "that|which|who": "threads, streams of instructions
-//     that"), or preceded by "called" or "known as". A plain use is not a gloss, so an everyday word that is also a
-//     glossary term (safety, release, group) is not taught by being used;
+//     that"), or preceded by "called" or "known as"; a parenthesised number between the term and its cue is skipped
+//     ("Diffie–Hellman (1976), which is key agreement"). Section 18 adds five cues, each a definition by its form:
+//       definition   the sentence opens with the term (after "A" or "An" at most) and goes on "is|are a|an|the"
+//                    ("SHA-256 is the workhorse", "A pipe is a kernel-allocated ring buffer");
+//       generic      a term of two words or more opens the sentence after "A" or "An" and a verb in -s follows
+//                    ("A virtual machine imitates an entire computer"); never a one-word term, whose everyday sense
+//                    reads the same (a key opens a lock);
+//       naming       a clause of four words or more, then ", a|an TERM" closed by ";" or "." ("a semaphore admits one
+//                    process at a time, a mutex;"); a list's last item ("a lock, a counter, a mutex.") is not one;
+//       reverse      a noun phrase opening its clause with an article or a possessive, then ", TERM," and a verb
+//                    ("Kubernetes' "source of truth", etcd, runs"); a list ("canaries, DEP, ASLR, CFI, pointer
+//                    authentication") is not one;
+//       modifier     a term of two words or more, written as the modifier of one noun that a parenthesis glosses
+//                    ("control-plane components (the parts that decide what should run where)");
+//     A plain use is not a gloss, so an everyday word that is also a glossary term (safety, release, group, key,
+//     bucket, port, node, edge) is not taught by being used;
+//   - emphasis (section 18): the term written whole inside <em> or <strong> in a paragraph or list item, the book's
+//     mark for a term it introduces ("the kernel keeps <em>page tables</em> that say ...", "the MMU stops it with a
+//     <em>page fault</em>"), unless its sentence points elsewhere (a chapter, section, part or figure number: "the
+//     stack canary, <em>ASLR</em> and DEP" in a sentence naming Chapter 3 teaches nothing);
+//   - table row (section 18): a term written in the first cell of a defining table row (above);
 //   - key-term: every <span class="key-term"> in a paragraph or list item (one outside a section, such as a chapter
 //     lead, counts as taught before the next section).
 // A marked term (glossary entry or key-term span) with none of these is listed in "taught" as taught nowhere: it
@@ -41,14 +63,19 @@
 //
 // Also (Pass 31, brief section 15), two lists the figure checks read:
 //   abbreviations  every all-capitals token (two or more capital letters, digits
-//                  and underscores allowed: CPU, CR3, SYN_SENT) at the first
-//                  paragraph or list item (as above: never a caption, heading,
-//                  label, table cell or <pre> block; <code> inside a paragraph
-//                  counts, it is part of the sentence) inside a section that
-//                  writes it: part, section, the nearest id before it, and its
-//                  offset in the part's HTML. So a token first written in a
-//                  figure's own caption, label or strip, or in a code comment,
-//                  is not taught for that figure (EAX: section 17).
+//                  and underscores allowed: CPU, CR3, SYN_SENT), its plural
+//                  (VMs, OSes) recorded as the singular (section 18), at the
+//                  first teaching place that writes it (as above: a paragraph,
+//                  list item or defining row's first cell; never a caption,
+//                  heading, label, other table cell, part tagline or <pre>
+//                  block; <code> inside a paragraph counts, it is part of the
+//                  sentence), a chapter lead or closing outside the sections
+//                  included (JSON in Chapter 12's lead: section 18): part,
+//                  section (the one holding it, else the next in the part),
+//                  the nearest id before it, and its offset in the part's
+//                  HTML. So a token first written in a figure's own caption,
+//                  label or strip, or in a code comment, is not taught for
+//                  that figure (EAX: section 17).
 //   capitals       every all-capitals token the book's text writes anywhere
 //                  outside the figure cards (sections, heroes, leads, tables,
 //                  code), held material included (the list only ever makes a
@@ -56,6 +83,7 @@
 //
 //   node scripts/known-terms.mjs [--out=docs/pass-29-known-terms.json] [--public=<public dir>] [--strip=<held-strip.json>]
 import fs from 'node:fs'; import path from 'node:path';
+import { teachingPieces } from '../tests/pass31/places.mjs';
 
 const ARGS = Object.fromEntries(process.argv.slice(2).map(a => { const [k, ...v] = a.replace(/^--/, '').split('='); return [k, v.length ? v.join('=') : true]; }));
 const ROOT = new URL('../', import.meta.url).pathname;
@@ -112,6 +140,33 @@ const GLOSS_AFTER = [
   ['apposition', new RegExp(`^,\\s+(?!(?:${STOP})\\b)(?:[\\p{L}'’-]+\\s+){1,4}(?:that|which|who)\\b`, 'u')],
 ];
 const GLOSS_BEFORE = /(?:^|[^\p{L}])(?:called|known as)\s+(?:an?\s+|the\s+)?$/iu;
+// section 18: a parenthesised number between the term and its cue is skipped ("Diffie–Hellman (1976), which")
+const NUMBER_PAREN = /^\s*\(\s*(?:c\.\s*)?\d[\d\s,.–-]*\)/u;
+// section 18: the definitional forms (header). Pieces are joined with "\n", so a piece's start is a sentence's start
+const SENT = '(?:^\\s*|\\n\\s*|[.!?:]["”’)\\]]*\\s+)';
+const DEF_BEFORE = new RegExp(`${SENT}(?:(?:A|An)\\s+)?$`, 'u'), GEN_BEFORE = new RegExp(`${SENT}(?:A|An)\\s+$`, 'u');
+const DEF_AFTER = /^\s+(?:is|are)\s+(?:a|an|the)\b/u;
+const AUX = 'is|are|was|were|has|have|had|can|could|will|would|may|might|must|should|shall|does|did|do';
+const VERB_S = `(?!\\p{Ll}*ss\\b)\\p{Ll}{2,}s\\b`;
+const GEN_AFTER = new RegExp(`^\\s+(?!(?:${AUX})\\b)${VERB_S}`, 'u');
+const REV_AFTER = new RegExp(`^,\\s+(?:is|are|was|were|${VERB_S})`, 'u');
+const OPENS_NP = /^(?:(?:the|a|an|The|A|An)\s|[\p{L}\p{N}.-]+(?:['’]s|s['’]|['’])(?=\s))/u;
+const MOD_AFTER = new RegExp(`^\\s+\\p{Ll}[\\p{L}-]*\\s*\\(\\s*(?!(?:${ASIDE})\\b)(?![\\p{Lu}\\d][\\p{Lu}\\d_\\-./]*\\s*[),;])\\p{L}`, 'u');
+// the clause before a comma that ends `before` (back to the last , ; : . ! ? ( ) or piece start; quotes kept), and the
+// character that opens it ('' at a piece or text start)
+const clauseBefore = b => { const t = b.replace(/,\s*$/u, ''); const i = Math.max(...[',', ';', ':', '.', '!', '?', '(', ')', '\n'].map(c => t.lastIndexOf(c))); return { seg: t.slice(i + 1).trim(), opener: i >= 0 ? t[i] : '' }; };
+const words = x => x.split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length;
+// the section 18 cues on one use of a term: rawBefore holds up to 200 characters before it (newlines kept), after the
+// text after it (number parenthesis removed)
+function formCue(term, rawBefore, after) {
+  const multi = /[\s\-–]/u.test(term.trim());
+  if (DEF_BEFORE.test(rawBefore) && DEF_AFTER.test(after)) return 'definition';
+  if (multi && GEN_BEFORE.test(rawBefore) && GEN_AFTER.test(after)) return 'generic';
+  if (/,\s+(?:a|an)\s+$/u.test(rawBefore) && /^\s*[;.]/u.test(after)) { const { seg } = clauseBefore(rawBefore.replace(/\s+(?:a|an)\s+$/u, '')); if (words(seg) >= 4) return 'naming'; }
+  if (/,\s+$/u.test(rawBefore) && REV_AFTER.test(after)) { const { seg, opener } = clauseBefore(rawBefore); if (opener !== ',' && OPENS_NP.test(seg) && words(seg) >= 2 && words(seg) <= 8) return 'reverse'; }
+  if (multi && MOD_AFTER.test(after)) return 'modifier';
+  return null;
+}
 
 // reading order
 const sections = [];
@@ -137,15 +192,11 @@ for (const part of PARTS) {
   });
   const cards = [...src.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
   const inCard = off => cards.some(([a, b]) => off >= a && off < b);
-  // the paragraph and list-item text (section 17): every <p> and <li> outside the figure cards, never a caption, a
-  // <pre> block inside one blanked; joined in reading order with each character's offset in the part (-1 between pieces)
+  // the teaching places (tests/pass31/places.mjs; sections 17 and 18): every <p> and <li> outside the figure cards,
+  // never a caption or a part tagline, and the first cell of a defining table row; a <pre> block inside one blanked;
+  // joined in reading order with each character's offset in the part (-1 between pieces)
   const pres = [...src.matchAll(PRE)].map(m => [m.index, m.index + m[0].length]);
-  const pieces = [];
-  for (const m of src.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
-    if (/class="[^"]*diagram-caption/.test(m[2]) || inCard(m.index)) continue;
-    const a = m.index + m[0].indexOf('>') + 1;
-    pieces.push({ ...textMap(m[3].replace(PRE, blank), a), start: m.index, end: m.index + m[0].length });
-  }
+  const pieces = teachingPieces(src, cards).map(x => ({ ...textMap(x.inner.replace(PRE, blank), x.a), start: x.start, end: x.end, kind: x.kind, inner: x.inner, a: x.a }));
   const joined = { text: pieces.map(p => p.text).join('\n'), map: pieces.flatMap(p => [...p.map, -1]) };
   const inPiece = off => pieces.some(p => off >= p.start && off < p.end) && !pres.some(([a, b]) => off >= a && off < b);
   // the whole book's paragraph and list-item text, held material included, code and <pre> left out: where a word is
@@ -208,15 +259,42 @@ for (const part of PARTS) {
   const t = P[part].joined;
   for (const term of universe.values()) {
     for (const m of t.text.matchAll(termRe(term))) {
-      const after = t.text.slice(m.index + m[0].length, m.index + m[0].length + 120).replace(/\s+/g, ' ');
+      const after = t.text.slice(m.index + m[0].length, m.index + m[0].length + 160).replace(/\s+/g, ' ').replace(NUMBER_PAREN, '');
       const before = t.text.slice(Math.max(0, m.index - 30), m.index).replace(/\s+/g, ' ');
-      const cue = (GLOSS_AFTER.find(([, re]) => re.test(after)) || [])[0] || (GLOSS_BEFORE.test(before) ? 'called' : null);
+      const rawBefore = t.text.slice(Math.max(0, m.index - 200), m.index);
+      const cue = (GLOSS_AFTER.find(([, re]) => re.test(after)) || [])[0] || (GLOSS_BEFORE.test(before) ? 'called' : null) || formCue(term, rawBefore, after);
       if (!cue) continue;
       const off = t.map[m.index];
       add(term, { at: posAt(part, off), off, prose: true, source: `prose gloss (${cue})`, part }); glossed++;
       break;   // the first gloss in this part is the earliest here
     }
   }
+}
+// emphasis (section 18): a term written whole inside <em> or <strong> in a teaching place (its plural too), unless the
+// sentence holding it points elsewhere (a chapter, section, part or figure number); case as termRe() matches it
+const POINTS = /\b(?:Chapters?|Sections?|Parts?|Figs?\.?|Figures?)\s+(?:\d|[IVX]+\b)|§/u;
+const byNorm = new Map(); for (const term of universe.values()) { const k = norm(term); if (!byNorm.has(k)) byNorm.set(k, []); byNorm.get(k).push(term); }
+let emphasised = 0;
+for (const part of PARTS) {
+  const { src, pieces } = P[part];
+  for (const m of src.matchAll(/<(em|strong)\b[^>]*>([\s\S]*?)<\/\1>/g)) {
+    const inner = m.index + m[0].indexOf('>') + 1, pc = pieces.find(x => inner >= x.start && inner < x.end);
+    if (!pc) continue;
+    const i = pc.map.indexOf(inner); if (i < 0) continue;
+    const said = plain(m[2]), k = norm(said); if (!k) continue;
+    const terms = [k, k.replace(/s$/, ''), k.replace(/es$/, '')].flatMap(x => byNorm.get(x) || []).filter(term => new RegExp(`^${termRe(term).source}$`, termRe(term).flags.replace('g', '')).test(said));
+    if (!terms.length) continue;
+    const a = Math.max(pc.text.lastIndexOf('.', i), pc.text.lastIndexOf('!', i), pc.text.lastIndexOf('?', i)) + 1;
+    const ends = ['.', '!', '?'].map(c => pc.text.indexOf(c, i)).filter(x => x >= 0), b = ends.length ? Math.min(...ends) : pc.text.length;
+    if (POINTS.test(pc.text.slice(a, b))) continue;
+    for (const term of [...new Set(terms)]) { add(term, { at: posAt(part, inner), off: inner, prose: true, source: 'emphasis', part }); emphasised++; }
+  }
+}
+// table row (section 18): a term written in the first cell of a defining table row (tests/pass31/places.mjs)
+let rowTaught = 0;
+for (const part of PARTS) for (const pc of P[part].pieces.filter(x => x.kind === 'row')) for (const term of universe.values()) {
+  const m = pc.text.matchAll(termRe(term)).next().value; if (!m) continue;
+  add(term, { at: posAt(part, pc.map[m.index]), off: pc.map[m.index], prose: true, source: 'table row', part }); rowTaught++;
 }
 
 // the first teaching point of each term (the earliest section, then the earliest offset; an unlocated one last)
@@ -237,7 +315,8 @@ const out = sections.map((s, i) => {
   return { part: s.part, section: s.section, label: s.label, title: s.title, ...(H ? { stripped: s.stripped } : {}), known: known.sort(cmp), defines: defines.sort(cmp),
     defines_at: Object.fromEntries(Object.keys(at).sort(cmp).map(k => [k, at[k]])) };
 });
-const paragraphAt = (part, off, s) => { const src = P[part].raw, idAt = src.lastIndexOf(' id="', off); return idAt >= s.start ? src.slice(idAt + 5, src.indexOf('"', idAt + 5)) : s.section; };
+// the nearest id before an offset, in the part with held material blanked (so a record never names a held element)
+const paragraphAt = (part, off, s) => { const src = P[part].src, idAt = src.lastIndexOf(' id="', off); return idAt >= 0 && (idAt >= s.start || off < s.start) ? src.slice(idAt + 5, src.indexOf('"', idAt + 5)) : s.section; };
 const taught = Object.fromEntries([...terms.values()].sort((a, b) => order(a.first, b.first)).map(t => {
   const i = Math.ceil(t.first.at); const s = sections[Math.min(i, sections.length - 1)];
   return [t.term, { part: s.part, section: s.section, where: Number.isInteger(t.first.at) ? 'in' : 'before', source: t.first.source,
@@ -252,17 +331,20 @@ const prose = src => src.replace(/<!--[\s\S]*?-->/g, blank).replace(/<head[\s\S]
   .replace(/<(script|style|nav|button|noscript)\b[\s\S]*?<\/\1>/gi, blank).replace(CARD, blank).replace(/<svg[\s\S]*?<\/svg>/g, blank)
   .replace(/<details class="fig-how">[\s\S]*?<\/details>/g, blank).replace(/<p\b[^>]*class="diagram-caption"[^>]*>[\s\S]*?<\/p>/g, blank)
   .replace(/<[^>]+>/g, blank);
-const CAPS = /(?<![\p{L}\p{N}_])[\p{Lu}\d_]*\p{Lu}[\p{Lu}\d_]*(?![\p{L}\p{N}_])/gu;
+// an all-capitals token, with an optional plural ending in lower case (VMs, OSes: section 18); group 1 is the singular
+const CAPS = /(?<![\p{L}\p{N}_])([\p{Lu}\d_]*\p{Lu}[\p{Lu}\d_]*)(?:s|es)?(?![\p{L}\p{N}_])/gu;
 const abbreviations = {}, capitals = new Set();
 for (const part of PARTS) {
   const { raw, joined } = P[part];
-  for (const m of prose(raw).matchAll(CAPS)) if ((m[0].match(/\p{Lu}/gu) || []).length >= 2) capitals.add(m[0]);
+  for (const m of prose(raw).matchAll(CAPS)) if ((m[1].match(/\p{Lu}/gu) || []).length >= 2) capitals.add(m[1]);
   const secs = sections.filter(s => s.part === part);
   for (const m of joined.text.matchAll(CAPS)) {
-    const t = m[0]; if ((t.match(/\p{Lu}/gu) || []).length < 2) continue;
+    const t = m[1]; if ((t.match(/\p{Lu}/gu) || []).length < 2) continue;
     if (abbreviations[t]) continue;
     const off = joined.map[m.index]; if (off < 0) continue;
-    const sec = secs.find(s => off >= s.start && off < s.end); if (!sec) continue;   // taught only inside a section
+    // the section holding it; a chapter lead or closing outside the sections counts too (section 18), recorded with
+    // the next section of the part (or its last); the check reads only part and offset
+    const sec = secs.find(s => off >= s.start && off < s.end) || secs.find(s => s.start > off) || secs[secs.length - 1]; if (!sec) continue;
     abbreviations[t] = { part, section: sec.section, paragraph: paragraphAt(part, off, sec), at: off };
   }
 }
@@ -280,13 +362,20 @@ for (const part of PARTS) {
 //     out, held material included) never write it, its singular or its plural in lower case (Signals, Promises,
 //     Consistency: common nouns that open a sentence or a list item);
 //   - is taught somewhere outside held material: never one taught nowhere or written in its section only inside held
-//     material (Reno, SQL injection), which no mention credits.
+//     material (Reno, SQL injection), which no mention credits;
+//   - is never marked with a key-term span anywhere outside the figure cards (section 18; held material included, so
+//     the list only ever makes the check stricter): the book marks a concept it teaches that way (Ethernet at
+//     ch8-ethernet-p1, JavaScript, Kubernetes, Raft), and such a term is credited only where it is taught, never by an
+//     earlier mention.
 const PARTICLES = new Set(['von', 'van', 'de', 'der', 'du', 'da', 'di', 'la', 'le']);
 const bookLower = PARTS.map(p => P[p].plainText).join('\n');
 const heldOnly = new Set(strippedOnly.map(norm)), nowhere = new Set(untaught.map(norm));
+const keyMarked = new Set();
+for (const part of PARTS) { const { raw } = P[part], rc = [...raw.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
+  for (const m of raw.matchAll(/<span class="key-term">([\s\S]*?)<\/span>/g)) if (!rc.some(([a, b]) => m.index >= a && m.index < b)) keyMarked.add(norm(plain(m[1]))); }
 const isName = form => {
   if (!/\p{Lu}/u.test(form) || /\p{N}/u.test(form) || /–/.test(form) || /['’]s\s/u.test(form)) return false;
-  if (nowhere.has(norm(form)) || heldOnly.has(norm(form))) return false;
+  if (nowhere.has(norm(form)) || heldOnly.has(norm(form)) || keyMarked.has(norm(form))) return false;
   const words = form.split(/[\s\-]+/).filter(Boolean);
   if (words.some(w => { const l = w.replace(/[^\p{L}]/gu, ''); return l.length >= 2 && l === l.toUpperCase(); })) return false;
   if (words.some(w => !/^\p{Lu}/u.test(w) && !PARTICLES.has(w))) return false;
@@ -305,5 +394,5 @@ fs.writeFileSync(path.resolve(ROOT, OUT), JSON.stringify({
   taught, by_section: out,
   abbreviations, capitals: [...capitals].sort(), names
 }, null, 1).replace(/\[\n\s+("[^\]]*?)\n\s+\]/g, (m, inner) => '[' + inner.replace(/,\n\s+/g, ', ') + ']'));
-console.log(`known-terms: ${out.length} sections, ${universe.size} terms (${untaught.length} taught nowhere) (${g.count} glossary + key-term spans), ${glossed} prose glosses, ${Object.keys(abbreviations).length} abbreviations at their first prose paragraph${H ? `, held material stripped (${sections.filter(s => s.stripped).length} sections; ${strippedOnly.length} glossary terms used in their section only inside it)` : ''} -> ${OUT}`);
+console.log(`known-terms: ${out.length} sections, ${universe.size} terms (${untaught.length} taught nowhere) (${g.count} glossary + key-term spans), ${glossed} prose glosses, ${emphasised} emphasised uses, ${rowTaught} table-row uses, ${Object.keys(abbreviations).length} abbreviations at their first prose paragraph${H ? `, held material stripped (${sections.filter(s => s.stripped).length} sections; ${strippedOnly.length} glossary terms used in their section only inside it)` : ''} -> ${OUT}`);
 if (unplaced.length) console.log(`  glossary entries with no section in reading order: ${unplaced.join(', ')}`);

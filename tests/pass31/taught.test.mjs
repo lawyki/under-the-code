@@ -7,12 +7,16 @@
 // a term taught only in held material or nowhere, of a term that is not a name, or in a heading or chapter preview
 // credits it), EAX before ch3-registers, teaching only in paragraphs and list items (never a section label, heading,
 // table cell or code block), inflections without a stripped prefix, HTTPS not a plural of HTTP, no taught exemption,
-// and synthetic cases for the name rule.
+// and synthetic cases for the name rule. Section 18 (the review of the section 17 freeze) adds its holes H1 to H5, the
+// eleven false flags and the same placement class (each passing at the first figure after its teaching paragraph and
+// failing at the figure just before), the teaching places (defining table rows teach, value rows, part taglines and
+// pointer sentences do not), and a synthetic tree that plants plain uses of everyday glossary words (they must still
+// fail) beside one control sentence per new cue (each must teach).
 //   npm run fig:taught-test [-- --tree=<public dir>]
 // Exit 0 when every case holds, 1 otherwise. Each case: the figure that sets the position, the label text, and the
 // tokens expected to fail (an empty list: every token passes).
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, findFigure, runKnownTerms, taughtContext, taughtYet, svgTexts, mkdirp, OUT, REPO } from './lib.mjs';
+import { args, tree, findFigure, runKnownTerms, taughtContext, taughtYet, svgTexts, mkdirp, readPart, plain, CARD, PARTS, OUT, REPO } from './lib.mjs';
 
 const { o } = args(process.argv.slice(2));
 const ROOT = tree(o.tree);
@@ -141,8 +145,9 @@ const CASES = [
   // being mentioned only when known-terms lists it as a name (a person, place, organisation, paper or product), and
   // only when a paragraph or list item before the card writes it (never a heading, section label, table or chapter
   // preview). Taught only in held material or nowhere: never credited (SQL injection, SYN flood, SHA-256 in held
-  // material only; Reno nowhere), not even at the book's last figure
-  ['fig-18-6', 'SQL injection · SYN flood · SHA-256 · Reno', ['sql injection', 'syn flood', 'sha 256', 'reno']],
+  // material only; Reno nowhere), not even at the book's last figure. (SHA-256 left this case in section 18: a
+  // definitional sentence at ch11-crypto-p4 teaches it, see below)
+  ['fig-18-6', 'SQL injection · SYN flood · Reno', ['sql injection', 'syn flood', 'reno']],
   // not name-shaped (a word in capitals, a digit): fails until taught, however often it is mentioned (IEEE 754 in the
   // Part I chapter preview; TLS handshake, CAP theorem, IP header in paragraphs before their teaching)
   ['fig-1-1', 'IEEE 754', ['ieee 754']],
@@ -156,8 +161,9 @@ const CASES = [
   ['fig-17-7', 'CAP theorem', []],
   ['fig-9-4', 'IP header', []],
   // named methods and laws, and a common noun opening a sentence, are not names: Diffie–Hellman (an en dash joins the
-  // pair), Amdahl's law (a possessive law), Promises (the book writes promise in lower case)
-  ['fig-11-11', 'Diffie–Hellman', ['diffie hellman']],
+  // pair) fails before ch11-crypto-p7 teaches it (section 18 corrects this case, which sat at Fig 11.11, after that
+  // teaching), Amdahl's law (a possessive law), Promises (the book writes promise in lower case)
+  ['fig-11-9', 'Diffie–Hellman', ['diffie hellman']],
   ['fig-16-2', "Amdahl's law", ["amdahl's law"]],
   ['fig-12-2', 'Promises', ['promises']],
   // names pass once a paragraph before the card writes them (Bell Labs, Shannon, Diffie, von Neumann), and not when
@@ -191,9 +197,10 @@ const CASES = [
   ['fig-10-8', 'BBR', []],
   ['fig-17-11', 'serverless', []],
   ['fig-5-10', 'undefined behaviour', []],
-  // tables do not teach: OS and the scheduling policies are written before Figs 3.2 and 4.5 only in table cells
+  // a table row whose other cells are values does not teach (section 18): OS, written before Fig 3.2 only in Chapter
+  // 1's memory table ("OS kernel" under "Managed by"). (The scheduling policies, which section 17 had here, are taught
+  // by Chapter 4's table, whose rows define them: see section 18 below)
   ['fig-3-2', 'OS', ['OS']],
-  ['fig-4-5', 'FCFS · SJF · MLFQ', ['FCFS', 'SJF', 'MLFQ']],
   // ---- defect 4: an inflection of a taught term is by plain endings only, never by a stripped prefix
   ['fig-17-6', 'subprocess · subthreads · substack · unpipelined', ['subprocess', 'subthreads', 'substack', 'unpipelined']],
   // ... and a prefixed word is a word of its own, not the glossary term inside it: SubBytes (the prose names it before
@@ -202,13 +209,126 @@ const CASES = [
   ['fig-14-5', 'SubBytes', []],
   ['fig-1-1', 'upload · subsystem · unpaid · rewrite', []],
   ['fig-1-14', 'unkernel', ['unkernel']],
-  // ---- defect 5: HTTPS is not a plural of HTTP (the book writes HTTPS as its own abbreviation, first at ch11-http-p1)
+  // ---- defect 5: HTTPS is not a plural of HTTP (the book writes HTTPS as its own abbreviation, first in Chapter 11's
+  // lead since section 18, before ch11-http-p1)
   ['fig-4-19', 'HTTPS', ['https']],
   ['fig-4-19', 'HTTP', []],
   ['fig-11-2', 'HTTPS', []],
+
+  // ==== section 18 (the review of the section 17 freeze) ===============================================================
+  // ---- H1: a prefix comes off only when what remains is an everyday word as written, of four letters or more: redis
+  // is not re plus dis (no paragraph before Fig 4.20 writes it), subnet and unmap fail; everyday prefixed words and
+  // their inflections still pass
+  ['fig-4-20', 'redis', ['redis']],
+  ['fig-1-1', 'subnet · unmap', ['subnet', 'unmap']],
+  ['fig-1-1', 'upload · uploads · subsystem · unpaid · rewrite · rewrote · rewritten · overwritten', []],
+  // ---- H2: a plural or possessive of an abbreviation is judged as the abbreviation (brief section 15), and so is
+  // each piece of a compound (DRAM in DRAM-only); lower-case possessives as the short abbreviation
+  ['fig-1-1', "RAM's · OS's · ARM's · DRAMs · DRAM's · FIFOs · FIFO's · BIOSs · NULLs · ENIACs", ["RAM's", "OS's", "ARM's", 'DRAMs', "DRAM's", 'FIFOs', "FIFO's", 'BIOSs', 'NULLs', 'ENIACs']],
+  ['fig-1-1', "ram's · os's · Mac's", ["ram's", "os's", "mac's"]],
+  ['fig-1-1', 'DRAM-only · SYN-ACK', ['DRAM', 'SYN', 'ACK']],
+  ['fig-3-5', "RAM's · OS's · ram's · os's", []],
+  ['fig-16-10', 'DRAM-only · DRAMs', []],
+  // ---- H3: a term the book marks with a key-term span is a concept it teaches, never a name a mention credits:
+  // Ethernet (key-term at ch8-ethernet-p1) fails at Figs 8.2 and 8.7, passes from Fig 8.8; JavaScript (taught at
+  // ch11-modern-p1) fails at Fig 5.11, passes from Fig 11.14
+  ['fig-8-2', 'Ethernet', ['ethernet']],
+  ['fig-8-7', 'Ethernet', ['ethernet']],
+  ['fig-8-8', 'Ethernet', []],
+  ['fig-5-11', 'JavaScript', ['javascript']],
+  ['fig-11-14', 'JavaScript', []],
+  // ---- H4: the prose's loss does not teach "los" (the plural of lo, untaught before Chapter 9)
+  ['fig-4-13', 'los', ['los']],
+  // ---- H5: a part tagline never teaches: Part II's end-of-part teaser names Part III's people; each passes only
+  // after a paragraph writes it
+  ['fig-8-1', 'Baran · Cerf · Kahn · Berners-Lee · Eich', ['baran', 'cerf', 'kahn', 'berners lee', 'eich']],
+  ['fig-9-2', 'Baran', []],
+  ['fig-10-2', 'Cerf · Kahn', []],
+  ['fig-11-1', 'Berners-Lee', []],
+  ['fig-12-2', 'Eich', []],
+  // ---- the eleven false flags, fixed in the checker (each: the figure just before its teaching fails, the first
+  // figure after passes, and the figures the review named pass)
+  // Diffie–Hellman: "Diffie–Hellman (1976), which is key agreement" at ch11-crypto-p7 (the year is skipped)
+  ['fig-11-10', 'Diffie–Hellman', []],
+  ['fig-11-11', 'Diffie–Hellman', []],
+  ['fig-11-13', 'Diffie–Hellman', []],
+  ['fig-14-1', 'Diffie–Hellman', []],
+  // SHA-256: "SHA-256 is the workhorse" at ch11-crypto-p4 (a definitional sentence), though its glossary section is held
+  ['fig-11-8', 'SHA-256', ['sha 256']],
+  ['fig-11-9', 'SHA-256', []],
+  ['fig-14-2', 'SHA-256', []],
+  ['fig-14-13', 'SHA-256', []],
+  ['fig-18-6', 'SHA-256', []],
+  // month and chapter abbreviations are everyday shorthand (COMMON); dec stays out (the book writes DEC, the company)
+  // and mar stays out of the list (MAR in capitals must be taught; mar in lower case is a dictionary word)
+  ['fig-9-2', 'Oct', []],
+  ['fig-11-1', 'Aug · Apr · Ch 3', []],
+  ['fig-1-1', 'Jan Feb Mar Apr Jun Jul Aug Sep Sept Oct Nov · Ch', []],
+  ['fig-1-1', 'DEC', ['DEC']],
+  ['fig-1-1', 'Dec', ['dec']],
+  ['fig-1-1', 'MAR', ['MAR']],
+  // ERROR with its caret (grep ^ERROR) is judged by its letters; a caret makes no abbreviation everyday
+  ['fig-4-16', '^ERROR · ERROR', []],
+  ['fig-1-10', '^EAX', ['EAX']],
+  // etcd: 'Kubernetes' "source of truth", etcd, runs' at ch17-consensus-p1 (a reverse apposition)
+  ['fig-17-4', 'etcd', ['etcd']],
+  ['fig-17-5', 'etcd', []],
+  ['fig-17-8', 'etcd', []],
+  // virtual machine and VM: "A virtual machine imitates an entire computer" and "lightweight VMs" at ch4-security-p6
+  // (a generic definition; a plural abbreviation placed as its singular)
+  ['fig-4-18', 'virtual machine · VM', ['virtual machine', 'VM']],
+  ['fig-4-18', 'VMs', ['VMs']],
+  ['fig-4-19', 'virtual machine · VM · VMs', []],
+  // ---- the same placement class
+  // page table and page fault, emphasised where Chapter 1 introduces them (ch1-memory-p9 and p10)
+  ['fig-1-15', 'page table · page fault', ['page table', 'page fault']],
+  ['fig-2-1', 'page table · page fault', []],
+  ['fig-br-3', 'page fault', []],
+  ['fig-br-4', 'page table · page fault', []],
+  ['fig-br-5', 'page table', []],
+  // mutex: "a semaphore admits one process at a time, a mutex;" at ch4-ipc-p12 (a naming apposition)
+  ['fig-4-17', 'mutex', ['mutex']],
+  ['fig-4-18', 'mutex', []],
+  ['fig-6-5', 'mutex', []],
+  // control plane: "control-plane components (the parts that decide what should run where)" at ch17-k8s-p1
+  ['fig-17-2', 'control plane', ['control plane']],
+  ['fig-17-3', 'control plane', []],
+  ['fig-17-10', 'control plane', []],
+  // JSON, written only in Chapter 12's lead (a chapter lead teaches): fails before it, in capitals and lower case
+  ['fig-11-15', 'JSON · json', ['JSON', 'json']],
+  ['fig-12-1', 'JSON · json', []],
+  // ---- teaching places: a table row that expands or defines its term teaches it; one whose cells are values does not
+  // HDD (spinning disk) in Chapter 1's memory table (between Figs 1.14 and 1.15)
+  ['fig-1-14', 'HDD', ['HDD']],
+  ['fig-1-15', 'HDD', []],
+  // the same table's value rows and value cells teach nothing: SATA ("SATA bus"), NVMe ("SSD (NVMe)"), L2 ("L2 Cache")
+  ['fig-1-15', 'SATA · NVMe · L2', ['SATA', 'nvme', 'l2']],
+  // Chapter 3's register table defines each register in its second cell ("Counter: used for loop counts ...")
+  ['fig-3-3', 'RDX · RCX · rbx', ['RDX', 'RCX', 'rbx']],
+  ['fig-3-4', 'RDX · RCX', []],
+  ['fig-br-1', 'rbx', []],
+  ['fig-br-2', 'RCX', []],
+  // Chapter 4's scheduling table expands and defines each policy ("First-come, first-served. Run processes ...")
+  ['fig-4-3', 'FCFS · SJF · MLFQ', ['FCFS', 'SJF', 'MLFQ']],
+  ['fig-4-4', 'FCFS · SJF · MLFQ', []],
+  ['fig-4-5', 'FCFS · SJF · MLFQ', []],
+  // Chapter 4's IPC table: the Named pipe (FIFO) row defines its head, so FIFO is taught from Fig 4.15; the signals its
+  // Signal row lists in a description cell are not taught by it
+  ['fig-4-14', 'FIFO', ['FIFO']],
+  ['fig-4-15', 'FIFO', []],
+  ['fig-4-15', 'SIGKILL', ['SIGKILL']],
 ];
 // item 2b: the paragraph known-terms places each term at (the first prose gloss)
 const PLACED = { register: 'ch1-vonneumann-p4', byte: 'ch1-cpu-p2', compiler: 'ch1-vonneumann-p3', thread: 'ch7-gil-p1' };
+// section 18: where known-terms places each fixed term, and by which route (the paragraph, and the source)
+const PLACED18 = { 'Diffie–Hellman': ['ch11-crypto-p7', 'prose gloss (which)'], 'SHA-256': ['ch11-crypto-p4', 'prose gloss (definition)'],
+  'virtual machine': ['ch4-security-p6', 'prose gloss (generic)'], mutex: ['ch4-ipc-p12', 'prose gloss (naming)'], etcd: ['ch17-consensus-p1', 'prose gloss (reverse)'],
+  'control plane': ['ch17-k8s-p1', 'prose gloss (modifier)'], 'page table': ['ch1-memory-p9', 'emphasis'], 'page fault': ['ch1-memory-p10', 'emphasis'] };
+// ... and the abbreviations: a plural placed as its singular (VM), a chapter lead (JSON), defining table rows (the
+// nearest id before each table: HDD after ch1-memory-p2, the registers after ch3-registers-p3, the policies after
+// ch4-scheduling-p4, FIFO after ch4-ipc-p2); never a value row or a description cell (SATA, SIGKILL), never a part tagline
+const ABBR18 = { VM: 'ch4-security-p6', JSON: 'ch12-hero-lead', HDD: 'ch1-memory-p2', RCX: 'ch3-registers-p3', RDX: 'ch3-registers-p3', RBX: 'ch3-registers-p3',
+  FCFS: 'ch4-scheduling-p4', SJF: 'ch4-scheduling-p4', MLFQ: 'ch4-scheduling-p4', FIFO: 'ch4-ipc-p2' };
 // item 2d, synthetic: everyday words made glossary terms (key, bucket, port, node, edge, toss, release, group,
 // safety), not yet taught, each also in the prose before and in its tokens: every one fails as a glossary term
 const EVERYDAY_GLOSSARY = ['key', 'bucket', 'port', 'node', 'edge', 'toss', 'release', 'group', 'safety'];
@@ -225,6 +345,23 @@ for (const [id, label, expect] of CASES) {
 for (const [t, p] of Object.entries(PLACED)) {
   const e = kt.j.taught[t];
   check(e && e.paragraph === p && /^prose gloss/.test(e.source), `placed  ${t} at ${e && e.paragraph} (${e && e.source}; expected ${p}, a prose gloss)`);
+}
+for (const [t, [p, src]] of Object.entries(PLACED18)) {
+  const e = kt.j.taught[t];
+  check(e && e.paragraph === p && e.source === src, `placed  ${t} at ${e && e.paragraph} (${e && e.source}; expected ${p}, ${src})`);
+}
+for (const [t, p] of Object.entries(ABBR18)) {
+  const a = kt.abbrev[t];
+  check(a && a.paragraph === p, `abbreviation ${t} placed after ${a && a.paragraph} (expected ${p})`);
+}
+check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 'ch4-ipc-p2'), `abbreviations: SATA (a value cell) ${kt.abbrev.SATA ? 'placed' : 'not placed'}; SIGKILL (a description cell in the table after ch4-ipc-p2) ${kt.abbrev.SIGKILL ? 'placed at ' + kt.abbrev.SIGKILL.paragraph : 'not placed'}`);
+// H3: no name is a term the book marks with a key-term span (outside the figure cards)
+{
+  const marked = new Set();
+  for (const p of PARTS) { const h = readPart(ROOT, p), cards = [...h.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
+    for (const m of h.matchAll(/<span class="key-term">([\s\S]*?)<\/span>/g)) if (!cards.some(([a, b]) => m.index >= a && m.index < b)) marked.add(plain(m[1]).toLowerCase()); }
+  const bad = kt.j.names.filter(n => marked.has(n.toLowerCase()));
+  check(!bad.length && ['Ethernet', 'Kubernetes', 'Raft', 'JavaScript'].every(n => !kt.j.names.includes(n)), `names: ${bad.length} of ${kt.j.names.length} are marked with a key-term span (Ethernet, Kubernetes, Raft, JavaScript listed: ${['Ethernet', 'Kubernetes', 'Raft', 'JavaScript'].filter(n => kt.j.names.includes(n)).length})`);
 }
 {
   const g = new Set(EVERYDAY_GLOSSARY); g.names = new Set(); g.multi = []; g.capitals = new Set(); g.forms = new Map(EVERYDAY_GLOSSARY.map(t => [t, t])); g.noMention = new Set();
@@ -263,6 +400,43 @@ for (const [t, p] of Object.entries(PLACED)) {
   const src = fs.readFileSync(path.join(REPO, 'tests/pass31/check.mjs'), 'utf8');
   check(!other.length && !/exempt\('(taught|desc|strip|band)'/.test(src) && /const EXEMPTABLE = \['label_cap', 'floor', 'caption'\];/.test(src),
     `exemptions: keys beyond the brief's ${other.length}; check.mjs exempts only label_cap, floor, caption`);
+}
+// section 18, synthetic tree: a scratch copy of the tree with, before Fig 1.1 (in ch1-context-p1 and a table after
+// it), plain uses of eight everyday words made glossary terms of ch18-final (they must still fail at Fig 1.1, as
+// glossary terms not yet taught: none of the new cues credits a plain use), one control sentence per new cue for a
+// planted term (each must pass), a pointer sentence's emphasis and a part tagline's gloss and abbreviation (they must
+// fail), and a table with an expanding row, two defining rows, a value row, a header row and a description cell
+{
+  const T = path.join(OUT, 'taught-test', 'tree18'); fs.rmSync(T, { recursive: true, force: true }); mkdirp(T);
+  for (const p of PARTS) fs.copyFileSync(path.join(ROOT, p + '.html'), path.join(T, p + '.html'));
+  const GL = JSON.parse(fs.readFileSync(path.join(ROOT, 'glossary.json'), 'utf8'));
+  const PLAIN = ['safety', 'release', 'group', 'key', 'bucket', 'port', 'node', 'edge'];
+  const CUE = ['qzdefword', 'qzgen machine', 'qznamed', 'qzrev', 'qzmod plane', 'Qzyear–Pair', 'qzemph table', 'qzrowterm'];
+  const NEG = ['qzpointed', 'qztagterm', 'qzvalterm'];
+  for (const t of [...PLAIN, ...CUE, ...NEG]) GL.entries[t.toLowerCase()] = { term: t, part: 'part-5', section: 'ch18-final' };
+  fs.writeFileSync(path.join(T, 'glossary.json'), JSON.stringify(GL));
+  const plainUses = ' Safety is important here, and the release of the report is late. A key opens the lock; each node has a bucket. The key is in the drawer. The release is the last step. We packed a lock, a counter, a bucket. Node 3 sends a packet over the edge router (a box) on port number 80 (16 bits). Chapter 9 shows the <em>port</em> and the <em>node</em>. A bucket is full. Ports, nodes, edges, groups and keys. ';
+  const cues = ' Qzdefword is a planted term. A qzgen machine imitates a planted thing. Initialised to one, a planted counter admits one at a time, a qznamed; that is all. The planted store\'s "source", qzrev, runs a protocol. It has qzmod-plane parts (the pieces that decide what runs). In Qzyear–Pair (1976), which is a planted method, two sides agree. The kernel keeps <em>qzemph tables</em> that map pages. Chapter 9 shows the <em>qzpointed</em> at work. ';
+  const table = '<table class="summary-table"><tr><th>Name</th><th>What it is</th><th>Size</th></tr><tr><td>QZEXP (a planted expansion)</td><td>On the die</td><td>5 ms</td></tr>'
+    + '<tr><td>QZDEF</td><td>Planted: a definition of the term, with QZDESC named in it.</td><td>10 GB</td></tr><tr><td>qzrowterm</td><td>Planted row. It defines the term here.</td><td>1</td></tr>'
+    + '<tr><td>QZVAL qzvalterm</td><td>On the board</td><td>8 GB</td></tr><tr><th>QZHEAD</th><th>Header</th><th>Row</th></tr></table>';
+  let h = fs.readFileSync(path.join(T, 'part-1.html'), 'utf8');
+  const at = h.indexOf('id="ch1-context-p1"'), open = h.indexOf('>', at) + 1, close = h.indexOf('</p>', open) + 4;
+  h = h.slice(0, open) + plainUses + cues + h.slice(open, close) + table + h.slice(close);
+  const tg = h.search(/<p class="part-tagline"[^>]*>/), tge = h.indexOf('>', tg) + 1;
+  h = h.slice(0, tge) + ' QZTAGX and qztagterm (a planted gloss), ' + h.slice(tge);
+  fs.writeFileSync(path.join(T, 'part-1.html'), h);
+  const K = await runKnownTerms(T + '/', path.join(OUT, 'taught-test', 'known-terms-tree18.json'));
+  const f = findFigure(T + '/', 'fig-1-1'), c = taughtContext(K, T + '/', f);
+  const run1 = label => taughtYet(label, c.known, K.glossary, c.prior);
+  const a = run1(PLAIN.join(' · ')), aG = [...new Set(a.filter(b => b.why === 'a glossary term not yet taught').map(b => b.token))];
+  check(f.at > close && aG.length === PLAIN.length, `synthetic tree: plain uses of ${PLAIN.join(', ')} before Fig 1.1 -> fail as glossary terms not yet taught: ${aG.length} of ${PLAIN.length} ${JSON.stringify(aG)}`);
+  const b = [...new Set(run1(CUE.join(' · ')).map(x => x.token))];
+  check(!b.length, `synthetic tree: one control per new cue (definition, generic, naming, reverse, modifier, a year skipped, emphasis, table row) -> fails ${JSON.stringify(b)}`);
+  const n = [...new Set(run1(NEG.join(' · ')).map(x => x.token))];
+  check(n.length === NEG.length, `synthetic tree: emphasis in a pointer sentence, a part tagline's gloss, a value row's term -> fail ${JSON.stringify(n)}`);
+  const ab = run1('QZEXP · QZDEF'), abN = [...new Set(run1('QZVAL · QZHEAD · QZDESC · QZTAGX').map(x => x.token))];
+  check(!ab.length && abN.length === 4, `synthetic tree: abbreviations of an expanding and a defining row pass (${JSON.stringify(ab.map(x => x.token))}); of a value row, a header row, a description cell and a part tagline fail ${JSON.stringify(abN)}`);
 }
 // the figures themselves: Fig 1.1 (v4) and Fig 1.2 (Enigma) as they stand in the tree
 for (const id of ['fig-1-1', 'fig-1-2']) {

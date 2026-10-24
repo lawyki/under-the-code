@@ -6,7 +6,8 @@
 // --expect-hash is required: the gate computes its fingerprint (hash.mjs) first and refuses (exit 2) unless it equals
 // the hash given, so only the frozen gate ever judges (docs/pass-31-calibration.md section 16).
 // --criteria runs only the criteria named (a builder's diagnosis): the verdict carries "partial" and is never a verdict
-// on the figure; with --author it is refused (calibration section 17).
+// on the figure; with --author it is refused (calibration section 17), --single included, except inside a decision's
+// own runs, and every output line of a partial run, the author's included, carries the partial marker (section 18).
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -67,10 +68,13 @@ const ALL = ['taught', 'judge', 'hedge', 'still', 'stripped', 'pairwise'];
 const FULL = ALL.filter(c => !(c === 'pairwise' && o['no-pairwise']));
 const CRIT = o.criteria ? String(o.criteria).split(',') : FULL;
 // --criteria runs part of the gate (a builder's diagnosis): its verdict says "partial" and is never the gate's verdict
-// on a figure, so the author's form (--author, outside a decision's own runs) refuses it (calibration section 17)
+// on a figure, so the author's form (--author) refuses it (calibration section 17), --single too (section 18): only a
+// decision's own runs, which the decision below starts with P31_GATE_DECISION_RUN=1 and reads from verdict.json, run it
+// in the author's form; and the author's output line of a partial run says "partial" all the same
 const PARTIAL = !FULL.every(c => CRIT.includes(c));
+const IN_DECISION = !!o.single && process.env.P31_GATE_DECISION_RUN === '1';
 if (o.criteria && CRIT.some(c => !ALL.includes(c))) { console.log(`gate: unknown criterion in --criteria=${o.criteria} (${ALL.join(', ')})`); process.exit(2); }
-if (PARTIAL && o.author && !o.single) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration section 17)'); process.exit(2); }
+if (PARTIAL && o.author && !IN_DECISION) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration sections 17 and 18)'); process.exit(2); }
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const OUTDIR = mkdirp(path.resolve(o.out || path.join(OUT, 'gate', `${ID}-${o.label || 'run'}-${STAMP}`)));
 const log = (...a) => { if (!o.author) console.error(...a); };
@@ -80,7 +84,7 @@ let SANDBOX = null;
 function finish(code) {
   if (SANDBOX) fs.rmSync(SANDBOX, { recursive: true, force: true });
   fs.writeFileSync(path.join(OUTDIR, 'verdict.json'), JSON.stringify(V, null, 1));
-  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
+  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
   process.exit(code);
 }
 function toolError(msg) { V.pass = false; V.failed = 'error'; V.failed_all = ['error']; V.error = String(msg).slice(0, 2000); finish(2); }
@@ -107,7 +111,7 @@ if (!o.single) {
   V.runs = [];
   const one = async (k, again = 0) => {
     const dir = path.join(OUTDIR, `run-${k}${again ? '-again' : ''}`);
-    const r = await run('node', [path.join(REPO, 'tests/pass31/gate.mjs'), ...base, '--single', '--author', `--out=${dir}`, `--label=${o.label || 'run'}-run-${k}`]);
+    const r = await run('node', [path.join(REPO, 'tests/pass31/gate.mjs'), ...base, '--single', '--author', `--out=${dir}`, `--label=${o.label || 'run'}-run-${k}`], { env: { P31_GATE_DECISION_RUN: '1' } });
     let R = null; try { R = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch {}
     const err = !R || R.failed === 'error' || r.code === 2 || ![0, 1].includes(r.code);
     if (err && !again) { log(`gate ${ID}: run ${k} ended in a tool error; made again`); return one(k, 1); }
