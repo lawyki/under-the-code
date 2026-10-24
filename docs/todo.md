@@ -95,8 +95,8 @@ Phase 0 repairs (verification by session e2, 2026-10-24: "safe, but not ready fo
 - [ ] Housekeeping: `figures-final` pushed; `figures-final-gate` pushed once its builder commits; §4ag records that the author wrote every subtraction row and the hedge-prompt glimpse
 
 Phase 1 and the owner's calibration page
-- [ ] Five exemplars (one per part, three concepts each) and `docs/pass-31-plates.md`
-- [ ] Calibration page published (kept-originals table, exemplars, 3 best and 3 worst per part)
+- [ ] Five exemplars (one per part, three concepts each) and `docs/pass-31-plates.md` (drafts done: Figs 1.5, 4.8, 10.3, 13.5 with 13.6 merged, 17.6; Gate 1, clip and the fact checker clean; plates written. Ticked when the frozen gate's mechanical checks pass)
+- [x] Calibration page published (kept-originals table, exemplars, 3 best and 3 worst per part): https://claude.ai/artifact/FycKg4RsbcLdCqjT2xQgkk (2026-10-24; private to the owner; answers in its db collection `answers`, copied to `docs/pass-31-sealed/` when read)
 - [ ] Validation run (Phase 1b) passed with zero false passes; final bins
 
 Phase 2, chapters in book order (one commit each, retell included)
