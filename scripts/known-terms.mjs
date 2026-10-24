@@ -1,29 +1,34 @@
 #!/usr/bin/env node
 // Known terms per section, in reading order (Pass 29/30, docs/pass-29-30-brief.md; Pass 31,
-// docs/pass-31-calibration.md sections 13, 15 and 16).
+// docs/pass-31-calibration.md sections 13, 15, 16 and 17).
 //
 // For every <section class="section" id="ch…"> of parts 1 to 5, in reading order:
 //   known       the terms the book has taught before the section starts
 //   defines     the terms first taught inside it
-//   defines_at  for each of those, the offset (in the part's HTML) of the first place in the section's prose that
-//               teaches it (null: no place in the prose, which the rules below never produce): a figure in the same
+//   defines_at  for each of those, the offset (in the part's HTML) of the first place in the section's paragraphs
+//               that teaches it (null: no such place, which the rules below never produce): a figure in the same
 //               section is credited the term only when this offset comes before its card
-// A term is first taught at the earliest of these, in reading order, and only in prose: a paragraph, list item,
-// heading or lead, never a figure card (label, picture, caption, How-it-works strip), which no judge sees:
-//   - glossary: its entry in public/glossary.json (the section the extractor assigns), located at the first place
-//     the section's prose uses the term; an entry whose section writes the term only inside a figure card (CGNAT,
-//     IHL) teaches nothing. The extractor does not record the first teaching: it keeps the first *marked* use
-//     (<span class="key-term">, or <em>/<strong> before a definitional cue) and, for a curated term, the best-*scored*
-//     use (a section named after the term, emphasis, a definitional window), so a term the prose already glosses in
-//     place earlier (a register (a slot in the CPU ...), a compiler, which turns code ...) sat in a later section.
-//     That is why the next source exists;
-//   - prose gloss: the first paragraph or list item (never a caption, label or strip) where the term, or its
-//     plural, is glossed in place: followed by a parenthesis that opens with a word ("register (a slot"), by ", which"
-//     or ", who", by ", or ACRONYM", by an apposition (", the|a|an …", or up to four words then "that|which|who":
-//     "threads, streams of instructions that"), or preceded by "called" or "known as". A plain use is not a gloss,
-//     so an everyday word that is also a glossary term (safety, release, group) is not taught by being used;
-//   - key-term: every <span class="key-term"> outside the figure cards (one outside a section, such as a hero lead,
-//     counts as taught before the next section).
+// Teaching happens only in paragraph and list-item text (section 17): the text of a <p> or <li> outside every figure
+// card, never a caption, with any <pre> block inside it blanked. Not teaching: a figure card (label, picture,
+// caption, How-it-works strip), which no judge sees; a heading, a section label (div.section-number), a table cell
+// (a table restates or compares; it is not where a term is explained), a <pre> code block, a part opener's chapter
+// preview. A term is first taught at the earliest of these, in reading order:
+//   - glossary: its entry in public/glossary.json (the section the extractor assigns), located at the first use in
+//     that section's paragraphs and list items. An entry whose section writes the term only elsewhere teaches
+//     nothing, and is listed by where it does write it: only in held material (glossary_terms_only_in_held), only in
+//     a figure card (glossary_terms_only_in_cards: CGNAT, IHL), only in headings, labels, tables or code blocks
+//     (glossary_terms_only_outside_paragraphs), or not at all (glossary_terms_not_located). The extractor does not
+//     record the first teaching: it keeps the first *marked* use (<span class="key-term">, or <em>/<strong> before a
+//     definitional cue) and, for a curated term, the best-*scored* use (a section named after the term, emphasis, a
+//     definitional window), so a term the prose already glosses in place earlier (a register (a slot in the CPU
+//     ...), a compiler, which turns code ...) sat in a later section. That is why the next source exists;
+//   - prose gloss: the first paragraph or list item where the term, or its plural, is glossed in place: followed by
+//     a parenthesis that opens with a word ("register (a slot"), by ", which" or ", who", by ", or ACRONYM", by an
+//     apposition (", the|a|an …", or up to four words then "that|which|who": "threads, streams of instructions
+//     that"), or preceded by "called" or "known as". A plain use is not a gloss, so an everyday word that is also a
+//     glossary term (safety, release, group) is not taught by being used;
+//   - key-term: every <span class="key-term"> in a paragraph or list item (one outside a section, such as a chapter
+//     lead, counts as taught before the next section).
 // A marked term (glossary entry or key-term span) with none of these is listed in "taught" as taught nowhere: it
 // stays a term, so a label that uses it fails.
 // Terms merge case-insensitively.
@@ -31,22 +36,23 @@
 // With --strip=<tests/pass31/held-strip.json> (Pass 31, always given by the gate's tools) the held material is
 // blanked first (tests/pass31/held.mjs): held figure cards, the listed chapter, sections and paragraphs. Nothing
 // inside it teaches: no key-term, no prose gloss, no abbreviation; a glossary entry whose section is stripped, or
-// whose term the section uses only inside held material, gives no teaching point. Such a term is taught only where
-// the rest of the book teaches it, or not at all.
+// whose term the section uses outside its paragraphs only inside held material, gives no teaching point. Such a term
+// is taught only where the rest of the book teaches it, or not at all.
 //
 // Also (Pass 31, brief section 15), two lists the figure checks read:
 //   abbreviations  every all-capitals token (two or more capital letters, digits
-//                  and underscores allowed: CPU, CR3, SYN_SENT) at the prose
-//                  paragraph that first uses it: part, section, the nearest id
-//                  before it, and its offset in the part's HTML. Prose is the
-//                  text of the sections with every figure card (label, picture,
-//                  caption, How-it-works strip), every other <svg>, scripts and
-//                  styles taken out (and, with --strip, the held material), so a
-//                  token first written in a figure's own caption, label or strip
-//                  is not taught for that figure.
+//                  and underscores allowed: CPU, CR3, SYN_SENT) at the first
+//                  paragraph or list item (as above: never a caption, heading,
+//                  label, table cell or <pre> block; <code> inside a paragraph
+//                  counts, it is part of the sentence) inside a section that
+//                  writes it: part, section, the nearest id before it, and its
+//                  offset in the part's HTML. So a token first written in a
+//                  figure's own caption, label or strip, or in a code comment,
+//                  is not taught for that figure (EAX: section 17).
 //   capitals       every all-capitals token the book's text writes anywhere
-//                  outside the figure cards (sections, heroes, leads), held
-//                  material included (the list only ever makes a check stricter).
+//                  outside the figure cards (sections, heroes, leads, tables,
+//                  code), held material included (the list only ever makes a
+//                  check stricter).
 //
 //   node scripts/known-terms.mjs [--out=docs/pass-29-known-terms.json] [--public=<public dir>] [--strip=<held-strip.json>]
 import fs from 'node:fs'; import path from 'node:path';
@@ -67,6 +73,7 @@ const norm = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').t
 const blank = m => m.replace(/[^\n]/g, ' ');
 const CARD = /<div class="(?:diagram-card|light-diagram)[^"]*" id="([^"]+)">[\s\S]*?<\/svg>\s*<p\b[^>]*class="diagram-caption"[^>]*>[\s\S]*?<\/p>\s*(?:<details class="fig-how">[\s\S]*?<\/details>\s*)?<\/div>/g;
 const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const PRE = /<pre\b[\s\S]*?<\/pre>/gi;
 // the text of an HTML string with the offset of each character: a tag is one space, entities decoded
 function textMap(html, base = 0) {
   const chars = [], map = [];
@@ -129,13 +136,30 @@ for (const part of PARTS) {
     sections.push({ part, section: s.id, label: label ? plain(label) : '', title: title ? plain(title) : '', start: s.start, end: close, stripped });
   });
   const cards = [...src.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
-  P[part] = { raw, src, cards, zones: S.zones, inCard: off => cards.some(([a, b]) => off >= a && off < b) };
+  const inCard = off => cards.some(([a, b]) => off >= a && off < b);
+  // the paragraph and list-item text (section 17): every <p> and <li> outside the figure cards, never a caption, a
+  // <pre> block inside one blanked; joined in reading order with each character's offset in the part (-1 between pieces)
+  const pres = [...src.matchAll(PRE)].map(m => [m.index, m.index + m[0].length]);
+  const pieces = [];
+  for (const m of src.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
+    if (/class="[^"]*diagram-caption/.test(m[2]) || inCard(m.index)) continue;
+    const a = m.index + m[0].indexOf('>') + 1;
+    pieces.push({ ...textMap(m[3].replace(PRE, blank), a), start: m.index, end: m.index + m[0].length });
+  }
+  const joined = { text: pieces.map(p => p.text).join('\n'), map: pieces.flatMap(p => [...p.map, -1]) };
+  const inPiece = off => pieces.some(p => off >= p.start && off < p.end) && !pres.some(([a, b]) => off >= a && off < b);
+  // the whole book's paragraph and list-item text, held material included, code and <pre> left out: where a word is
+  // written in lower case (the names rule below; it only ever makes the check stricter)
+  const rawCards = [...raw.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
+  const plainText = [...raw.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)].filter(m => !/class="[^"]*diagram-caption/.test(m[2]) && !rawCards.some(([a, b]) => m.index >= a && m.index < b))
+    .map(m => plain(m[3].replace(PRE, ' ').replace(/<code\b[^>]*>[\s\S]*?<\/code>/g, ' '))).join('\n');
+  P[part] = { raw, src, cards, zones: S.zones, inCard, pieces, joined, inPiece, plainText };
 }
 const idx = new Map(sections.map((s, i) => [s.part + '|' + s.section, i]));
 for (const part of PARTS) {
   for (const m of P[part].src.matchAll(/<span class="key-term">([\s\S]*?)<\/span>/g)) {
     const term = plain(m[1]); if (!term) continue;
-    keyTerms.push({ term, at: posAt(part, m.index), part, off: m.index, prose: !P[part].inCard(m.index) });
+    keyTerms.push({ term, at: posAt(part, m.index), part, off: m.index, prose: P[part].inPiece(m.index) });   // in a paragraph or list item only
   }
 }
 
@@ -143,24 +167,33 @@ for (const part of PARTS) {
 const cand = new Map();
 const add = (term, c) => { const k = norm(term); if (!cand.has(k)) cand.set(k, { term, list: [] }); cand.get(k).list.push(c); };
 const g = JSON.parse(fs.readFileSync(`${PUB}glossary.json`, 'utf8'));
-const unplaced = [], strippedOnly = [], cardOnly = [], notLocated = [];
+const unplaced = [], strippedOnly = [], cardOnly = [], outsideParagraphs = [], notLocated = [];
 const secText = new Map();
 const sectionText = (i, which) => {   // the section's text (held material blanked, or raw) with offsets
   const k = i + '|' + which; if (secText.has(k)) return secText.get(k);
   const s = sections[i], h = P[s.part][which];
   const t = textMap(h.slice(s.start, s.end), s.start); secText.set(k, t); return t;
 };
+const sectionPieces = i => {   // the section's paragraph and list-item text with offsets
+  const k = i + '|pieces'; if (secText.has(k)) return secText.get(k);
+  const s = sections[i], ps = P[s.part].pieces.filter(p => p.start >= s.start && p.start < s.end);
+  const t = { text: ps.map(p => p.text).join('\n'), map: ps.flatMap(p => [...p.map, -1]) }; secText.set(k, t); return t;
+};
 for (const e of Object.values(g.entries)) {
   const i = idx.get(e.part + '|' + e.section);
   if (i === undefined) { unplaced.push(e.term); continue; }
   const s = sections[i];
   if (s.stripped) { strippedOnly.push(e.term); continue; }
-  const t = sectionText(i, 'src'), re = termRe(e.term);
-  let prose = null, card = null;
-  for (const m of t.text.matchAll(re)) { const off = t.map[m.index]; if (P[s.part].inCard(off)) { if (card === null) card = off; } else { prose = off; break; } }
-  if (prose !== null) add(e.term, { at: i, off: prose, prose: true, source: 'glossary' });
-  else if (card !== null) cardOnly.push(e.term);                                                 // the section writes it only in a figure card
-  else if (H && termRe(e.term).test(sectionText(i, 'raw').text)) strippedOnly.push(e.term);   // used there only inside held material
+  const pt = sectionPieces(i), first = pt.text.matchAll(termRe(e.term)).next().value;
+  if (first) { add(e.term, { at: i, off: pt.map[first.index], prose: true, source: 'glossary' }); continue; }
+  // not in the section's paragraphs: say where the section does write it (held material first, then a card, then a
+  // heading, label, table cell or code block), for the record; none of these teaches
+  let card = false, other = false, held = false;
+  for (const m of sectionText(i, 'src').text.matchAll(termRe(e.term))) { const off = sectionText(i, 'src').map[m.index]; if (P[s.part].inCard(off)) card = true; else other = true; }
+  if (H) for (const m of sectionText(i, 'raw').text.matchAll(termRe(e.term))) if (HM.inZone(P[s.part].zones, sectionText(i, 'raw').map[m.index])) { held = true; break; }
+  if (held) strippedOnly.push(e.term);            // used there (outside its paragraphs) only inside held material
+  else if (card) cardOnly.push(e.term);           // the section writes it only in a figure card
+  else if (other) outsideParagraphs.push(e.term); // only in a heading, section label, table cell or code block
   else notLocated.push(e.term);
 }
 for (const k of keyTerms) if (k.prose) add(k.term, { at: k.at, off: k.off, prose: true, source: 'key-term' });
@@ -172,13 +205,7 @@ for (const part of PARTS) for (const m of P[part].raw.matchAll(/<span class="key
 // prose glosses: paragraphs (not captions) and list items outside every figure card
 let glossed = 0;
 for (const part of PARTS) {
-  const { src, inCard } = P[part];
-  const pieces = [];
-  for (const m of src.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
-    if (/class="[^"]*diagram-caption/.test(m[2]) || inCard(m.index)) continue;
-    const a = m.index + m[0].indexOf('>') + 1; pieces.push(textMap(m[3], a));
-  }
-  const t = { text: pieces.map(p => p.text).join('\n'), map: pieces.flatMap(p => [...p.map, -1]) };
+  const t = P[part].joined;
   for (const term of universe.values()) {
     for (const m of t.text.matchAll(termRe(term))) {
       const after = t.text.slice(m.index + m[0].length, m.index + m[0].length + 120).replace(/\s+/g, ' ');
@@ -219,7 +246,8 @@ const taught = Object.fromEntries([...terms.values()].sort((a, b) => order(a.fir
 const untaught = [...universe].filter(([k]) => !terms.has(k)).map(([, t]) => t).sort();
 for (const t of untaught) taught[t] = { part: null, section: null, where: 'nowhere', source: 'no teaching in the prose (or only in held material)' };
 
-// all-capitals tokens in the prose (offsets kept: everything that is not prose is blanked, not removed)
+// all-capitals tokens. capitals: the whole text outside the figure cards (offsets kept: everything else is blanked, not
+// removed), held material included; abbreviations: the paragraph and list-item text only, held material out
 const prose = src => src.replace(/<!--[\s\S]*?-->/g, blank).replace(/<head[\s\S]*?<\/head>/i, blank)
   .replace(/<(script|style|nav|button|noscript)\b[\s\S]*?<\/\1>/gi, blank).replace(CARD, blank).replace(/<svg[\s\S]*?<\/svg>/g, blank)
   .replace(/<details class="fig-how">[\s\S]*?<\/details>/g, blank).replace(/<p\b[^>]*class="diagram-caption"[^>]*>[\s\S]*?<\/p>/g, blank)
@@ -227,24 +255,55 @@ const prose = src => src.replace(/<!--[\s\S]*?-->/g, blank).replace(/<head[\s\S]
 const CAPS = /(?<![\p{L}\p{N}_])[\p{Lu}\d_]*\p{Lu}[\p{Lu}\d_]*(?![\p{L}\p{N}_])/gu;
 const abbreviations = {}, capitals = new Set();
 for (const part of PARTS) {
-  const { raw, src } = P[part];
+  const { raw, joined } = P[part];
   for (const m of prose(raw).matchAll(CAPS)) if ((m[0].match(/\p{Lu}/gu) || []).length >= 2) capitals.add(m[0]);
   const secs = sections.filter(s => s.part === part);
-  for (const m of prose(src).matchAll(CAPS)) {
+  for (const m of joined.text.matchAll(CAPS)) {
     const t = m[0]; if ((t.match(/\p{Lu}/gu) || []).length < 2) continue;
     if (abbreviations[t]) continue;
-    const sec = secs.find(s => m.index >= s.start && m.index < s.end); if (!sec) continue;   // taught only inside a section
-    abbreviations[t] = { part, section: sec.section, paragraph: paragraphAt(part, m.index, sec), at: m.index };
+    const off = joined.map[m.index]; if (off < 0) continue;
+    const sec = secs.find(s => off >= s.start && off < s.end); if (!sec) continue;   // taught only inside a section
+    abbreviations[t] = { part, section: sec.section, paragraph: paragraphAt(part, off, sec), at: off };
   }
 }
 
+// proper names (section 17): the entries a figure may use once the prose before its card writes them (tests/pass31/
+// lib.mjs taughtYet), because they name a person, place, organisation, paper or product, not a mechanism. A name:
+//   - has a capital letter, no digit and no word written in capitals (TLS handshake, IEEE 754, SHA-256, CAP theorem);
+//   - has no en dash: the book joins two names with one for a named method (Diffie–Hellman);
+//   - has no possessive followed by a word (Amdahl's law, Moore's Law: a named law);
+//   - opens every word with a capital, but for the particles von, van, de, der, du, da, di, la, le (Turing machine,
+//     Boolean algebra, Shannon entropy name mechanisms);
+//   - of several words: their initials are not an abbreviation the book writes (Translation Lookaside Buffer: TLB;
+//     Domain Name System: DNS);
+//   - of one word: opens with a capital and a lower-case letter, and the book's paragraphs and list items (code left
+//     out, held material included) never write it, its singular or its plural in lower case (Signals, Promises,
+//     Consistency: common nouns that open a sentence or a list item);
+//   - is taught somewhere outside held material: never one taught nowhere or written in its section only inside held
+//     material (Reno, SQL injection), which no mention credits.
+const PARTICLES = new Set(['von', 'van', 'de', 'der', 'du', 'da', 'di', 'la', 'le']);
+const bookLower = PARTS.map(p => P[p].plainText).join('\n');
+const heldOnly = new Set(strippedOnly.map(norm)), nowhere = new Set(untaught.map(norm));
+const isName = form => {
+  if (!/\p{Lu}/u.test(form) || /\p{N}/u.test(form) || /–/.test(form) || /['’]s\s/u.test(form)) return false;
+  if (nowhere.has(norm(form)) || heldOnly.has(norm(form))) return false;
+  const words = form.split(/[\s\-]+/).filter(Boolean);
+  if (words.some(w => { const l = w.replace(/[^\p{L}]/gu, ''); return l.length >= 2 && l === l.toUpperCase(); })) return false;
+  if (words.some(w => !/^\p{Lu}/u.test(w) && !PARTICLES.has(w))) return false;
+  if (words.length > 1) return !capitals.has(words.filter(w => !PARTICLES.has(w)).map(w => w[0]).join(''));
+  if (!/^\p{Lu}\p{Ll}/u.test(form)) return false;
+  const lw = form.toLowerCase().replace(/['’]s$/, ''), forms = [...new Set([lw, lw.replace(/s$/, ''), lw.replace(/es$/, '')])].filter(x => x.length > 1);
+  return !forms.some(x => new RegExp(`(?<![\\p{L}\\p{N}_])${esc(x)}(?:s|es)?(?![\\p{L}\\p{N}_])`, 'u').test(bookLower));
+};
+const names = [...universe.values()].filter(isName).sort();
+
 fs.writeFileSync(path.resolve(ROOT, OUT), JSON.stringify({
-  note: 'Known terms (scripts/known-terms.mjs). Per section in reading order: known = taught before it, defines = first taught in it, defines_at = where in the section prose first teaches it (null: not in its prose). A term is taught at the earliest of its glossary section, a prose gloss in a paragraph or list item, and a key-term span (see the script header).',
+  note: 'Known terms (scripts/known-terms.mjs). Per section in reading order: known = taught before it, defines = first taught in it, defines_at = where in the section\'s paragraphs and list items it is first taught (null: not there). A term is taught at the earliest of its glossary section (its first use in that section\'s paragraphs and list items), a prose gloss in a paragraph or list item, and a key-term span in a paragraph or list item; never in a figure card, heading, section label, table cell or code block (see the script header).',
   glossary_generated: g.generated, glossary_count: g.count, terms: terms.size, sections: out.length,
   ...(H ? { strip: { file: path.relative(ROOT, H.file), sha256: H.sha256, stripped_sections: sections.filter(s => s.stripped).map(s => s.section), glossary_terms_only_in_held: strippedOnly.sort() } } : {}),
-  glossary_terms_only_in_cards: cardOnly.sort(), glossary_terms_not_located: notLocated.sort(), taught_nowhere: untaught,
+  glossary_terms_only_in_cards: cardOnly.sort(), glossary_terms_only_outside_paragraphs: outsideParagraphs.sort(), glossary_terms_not_located: notLocated.sort(), taught_nowhere: untaught,
   taught, by_section: out,
-  abbreviations, capitals: [...capitals].sort()
+  abbreviations, capitals: [...capitals].sort(), names
 }, null, 1).replace(/\[\n\s+("[^\]]*?)\n\s+\]/g, (m, inner) => '[' + inner.replace(/,\n\s+/g, ', ') + ']'));
 console.log(`known-terms: ${out.length} sections, ${universe.size} terms (${untaught.length} taught nowhere) (${g.count} glossary + key-term spans), ${glossed} prose glosses, ${Object.keys(abbreviations).length} abbreviations at their first prose paragraph${H ? `, held material stripped (${sections.filter(s => s.stripped).length} sections; ${strippedOnly.length} glossary terms used in their section only inside it)` : ''} -> ${OUT}`);
 if (unplaced.length) console.log(`  glossary entries with no section in reading order: ${unplaced.join(', ')}`);

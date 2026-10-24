@@ -5,6 +5,8 @@
 //        [--model=claude-sonnet-5-5] [--label=<name>] --expect-hash=<combined sha256> [--author] [--single]
 // --expect-hash is required: the gate computes its fingerprint (hash.mjs) first and refuses (exit 2) unless it equals
 // the hash given, so only the frozen gate ever judges (docs/pass-31-calibration.md section 16).
+// --criteria runs only the criteria named (a builder's diagnosis): the verdict carries "partial" and is never a verdict
+// on the figure; with --author it is refused (calibration section 17).
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -62,17 +64,23 @@ const MODEL = o.model || 'claude-sonnet-5-5';
 const VOTES = 3;   // votes per scorer and hedge check (fixed: part of the frozen gate)
 const ROOT = tree(o.tree);
 const ALL = ['taught', 'judge', 'hedge', 'still', 'stripped', 'pairwise'];
-const CRIT = o.criteria ? String(o.criteria).split(',') : ALL.filter(c => !(c === 'pairwise' && o['no-pairwise']));
+const FULL = ALL.filter(c => !(c === 'pairwise' && o['no-pairwise']));
+const CRIT = o.criteria ? String(o.criteria).split(',') : FULL;
+// --criteria runs part of the gate (a builder's diagnosis): its verdict says "partial" and is never the gate's verdict
+// on a figure, so the author's form (--author, outside a decision's own runs) refuses it (calibration section 17)
+const PARTIAL = !FULL.every(c => CRIT.includes(c));
+if (o.criteria && CRIT.some(c => !ALL.includes(c))) { console.log(`gate: unknown criterion in --criteria=${o.criteria} (${ALL.join(', ')})`); process.exit(2); }
+if (PARTIAL && o.author && !o.single) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration section 17)'); process.exit(2); }
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const OUTDIR = mkdirp(path.resolve(o.out || path.join(OUT, 'gate', `${ID}-${o.label || 'run'}-${STAMP}`)));
 const log = (...a) => { if (!o.author) console.error(...a); };
-const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP };
+const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP, ...(PARTIAL ? { partial: CRIT } : {}) };
 let SANDBOX = null;
 
 function finish(code) {
   if (SANDBOX) fs.rmSync(SANDBOX, { recursive: true, force: true });
   fs.writeFileSync(path.join(OUTDIR, 'verdict.json'), JSON.stringify(V, null, 1));
-  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
+  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...(PARTIAL ? { partial: CRIT } : {}), failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
   process.exit(code);
 }
 function toolError(msg) { V.pass = false; V.failed = 'error'; V.failed_all = ['error']; V.error = String(msg).slice(0, 2000); finish(2); }
@@ -198,7 +206,7 @@ if (need('taught')) {
   let kt = null;
   try { kt = await runKnownTerms(ROOT, path.join(OUTDIR, 'known-terms.json')); } catch (e) { toolError(e.message); }
   const c = taughtContext(kt, ROOT, fig);
-  const bad = c ? svgTexts(fig.svg).flatMap(t => taughtYet(t.s, c.known, kt.glossary, c.before, c.prior).map(b => `${b.token} (${b.why})`)) : ['section not in known-terms'];
+  const bad = c ? svgTexts(fig.svg).flatMap(t => taughtYet(t.s, c.known, kt.glossary, c.prior).map(b => `${b.token} (${b.why})`)) : ['section not in known-terms'];
   V.criteria.taught = { pass: bad.length === 0, untaught: [...new Set(bad)] };
 }
 

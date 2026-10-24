@@ -6,6 +6,11 @@
 //            <text> (untagged included) counts as a label. A panel is a <g data-panel> group; without one the figure is one
 //            panel; more than two panels count as one. Object text must be a direct child of its obj group, beside a
 //            shape, with at most two texts in the group. Legend entries (data-role="legend") at most two per panel. At-bar and kept figures are exempt (docs/pass-31-exempt.json)
+// Exemptions (docs/pass-31-exempt.json) exist only where the brief grants them (sections 10, 13, 15): the label cap for
+// at-bar and kept figures, the floor and the caption check for kept figures, and the caption check for the owner's
+// closing claim (fig-18-6). No other check takes an exemption, taught-yet least of all (a false flag is fixed in the
+// checker, never by exempting a figure: calibration section 17); the file holding any other key, or a non-empty id list
+// under any other check, is a refusal (exit 2).
 //   gate1    (per figure) the figure's own figs.mjs rows, still and motion runs: overlap, outside, spill, caption words,
 //            text and named-mark contrast; a failing row fails the figure (the part lines still carry each tool's summary)
 //   floor    no label below 11 CSS px from 360 px up (figs.mjs measures it)
@@ -32,8 +37,12 @@ const ROOT = tree(o.tree), IS_REPO = path.resolve(ROOT) === path.resolve(PUBLIC)
 const BASE = o.base || 'main', G1 = o.gate1 || 'full', ENG = o.browser || 'chromium';
 const OUTDIR = mkdirp(path.join(OUT, 'check', part));
 const EX = JSON.parse(fs.readFileSync(path.join(REPO, 'docs/pass-31-exempt.json'), 'utf8'));
+const EXEMPTABLE = ['label_cap', 'floor', 'caption'];
+{ const other = Object.keys(EX).filter(k => !['note', 'at_bar', 'kept', ...EXEMPTABLE].includes(k));
+  if (other.length) { console.log(`check: docs/pass-31-exempt.json has ${other.join(', ')}: only ${EXEMPTABLE.join(', ')} take exemptions (calibration section 17)`); process.exit(2); } }
 const exempt = (check, id) => {
-  const ids = new Set([...(EX[check]?.ids || []), ...(['label_cap', 'floor', 'caption'].includes(check) ? EX.kept : []), ...(check === 'label_cap' ? EX.at_bar : [])]);
+  if (!EXEMPTABLE.includes(check)) return false;
+  const ids = new Set([...(EX[check]?.ids || []), ...EX.kept, ...(check === 'label_cap' ? EX.at_bar : [])]);
   return ids.has(id);
 };
 const html = readPart(ROOT, part);
@@ -52,13 +61,13 @@ for (const f of figs) {
   R.get(f.id).labels = c.rows;
   const tc = taughtContext(kt, ROOT, f);
   if (!tc) put(f.id, 'taught', false, `section ${f.section} not in known-terms`);
-  else { const bad = svgTexts(f.svg).flatMap(t => taughtYet(t.s, tc.known, kt.glossary, tc.before, tc.prior).map(b => `${b.token} (${b.why})`));
-    put(f.id, 'taught', bad.length === 0, bad.length ? [...new Set(bad)].join('; ') : 'every token taught or everyday', exempt('taught', f.id)); }
-  put(f.id, 'desc', !!(f.desc && plain(f.desc)), f.desc ? `${plain(f.desc).split(/\s+/).length} words` : 'no <desc>', exempt('desc', f.id));
+  else { const bad = svgTexts(f.svg).flatMap(t => taughtYet(t.s, tc.known, kt.glossary, tc.prior).map(b => `${b.token} (${b.why})`));
+    put(f.id, 'taught', bad.length === 0, bad.length ? [...new Set(bad)].join('; ') : 'every token taught or everyday'); }
+  put(f.id, 'desc', !!(f.desc && plain(f.desc)), f.desc ? `${plain(f.desc).split(/\s+/).length} words` : 'no <desc>');
   const n = sentences(f.caption).length;
   put(f.id, 'caption', n <= 2, `${n} sentence${n === 1 ? '' : 's'}`, exempt('caption', f.id));
   const w = f.how.join(' ').split(/\s+/).filter(Boolean).length;
-  put(f.id, 'strip', w <= 150, `${w} words`, exempt('strip', f.id));
+  put(f.id, 'strip', w <= 150, `${w} words`);
 }
 
 // ---- t=0 empty band (stills at 375) ---------------------------------------------------------------------------
@@ -70,7 +79,7 @@ for (const f of figs) {
   const by = new Map(r.out.trim().split('\n').filter(Boolean).map(l => JSON.parse(l)).map(j => [j.file, j]));
   for (const [id, fr] of files) {
     if (!fr) { put(id, 'band', false, 'no t=0 still rendered'); continue; }
-    const j = by.get(fr.f); put(id, 'band', j.frac <= 0.25, `tallest empty band ${Math.round(j.frac * 100)}% of the plate (${j.band}/${j.h} px at y ${j.at})`, exempt('band', id));
+    const j = by.get(fr.f); put(id, 'band', j.frac <= 0.25, `tallest empty band ${Math.round(j.frac * 100)}% of the plate (${j.band}/${j.h} px at y ${j.at})`);
   }
 }
 

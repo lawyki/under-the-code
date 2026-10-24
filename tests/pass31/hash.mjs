@@ -5,8 +5,12 @@
 //             scorer, hedge, still (t=0), stripped (text-stripped), pairwise)
 //   files     sha256 of every file the gate runs: tests/pass31/{gate,prompts,lib,hash}.mjs, tests/pass31/common-words.txt,
 //             tests/pass30/bare.mjs, scripts/known-terms.mjs, the sealed validation runner tests/pass31/validate.mjs
-//             (its bars and its takeaway source; review fix 4), and the held-material strip, tests/pass31/held.mjs and
-//             its list tests/pass31/held-strip.json (calibration section 16)
+//             (its bars and its takeaway source; review fix 4), the held-material strip, tests/pass31/held.mjs and
+//             its list tests/pass31/held-strip.json (calibration section 16), and the mechanical check the gate's pass
+//             also needs clean (brief section 11): tests/pass31/check.mjs and the tools it runs, tests/pass31/band.py,
+//             tests/pass28/{figs,clip,smooth}.mjs, tests/pass30/contrast.mjs (calibration section 17). Not hashed:
+//             docs/pass-31-exempt.json, the author's at-bar and kept lists (data; check.mjs takes exemptions for the
+//             label cap, the floor and the caption check only)
 //   model     the tester model id
 //   combined  sha256 of prompts, files and model (sorted JSON); gate.mjs writes it into every verdict; gate.mjs,
 //             dev.mjs and validate.mjs refuse to run (exit 2) unless --expect-hash is given and equals it
@@ -19,7 +23,8 @@ import { frozenTexts } from './prompts.mjs';
 
 export const CLAUDE = '/opt/homebrew/bin/claude';
 export const GATE_FILES = ['tests/pass31/gate.mjs', 'tests/pass31/prompts.mjs', 'tests/pass31/lib.mjs', 'tests/pass31/hash.mjs', 'tests/pass31/common-words.txt', 'tests/pass30/bare.mjs', 'scripts/known-terms.mjs', 'tests/pass31/validate.mjs',
-  'tests/pass31/held.mjs', 'tests/pass31/held-strip.json'];
+  'tests/pass31/held.mjs', 'tests/pass31/held-strip.json',
+  'tests/pass31/check.mjs', 'tests/pass31/band.py', 'tests/pass28/figs.mjs', 'tests/pass28/clip.mjs', 'tests/pass28/smooth.mjs', 'tests/pass30/contrast.mjs'];
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 const sorted = o => JSON.stringify(o, Object.keys(o).sort());
 
