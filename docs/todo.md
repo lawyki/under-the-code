@@ -69,7 +69,7 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Branch `figures-final` (from `owner-calls`), `docs/pass-31-sealed/` gitignored, ledger §4ag and STATE "Pass 31 at:" opened
 - [x] Contact sheets per chapter at 375 px, v4 and Enigma pinned (19 sheets, `npm run fig:sheet`; output gitignored)
 - [x] Why Enigma is good, in one sentence (§4ag)
-- [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge): 47 rows, 3 merge candidates, 2 cut candidates, 7 held
+- [x] Prose subtraction, Part I (Ch1, Ch2, Ch3, the Bridge; counts as of the first pass, 2026-10-23, superseded by the repair rounds below): 47 rows, 3 merge candidates, 2 cut candidates, 7 held
 - [x] Prose subtraction, Part II (Ch4 to Ch7): 51 rows, 4 merge pairs, 2 cut candidates, 3 held
 - [x] Prose subtraction, Part III (Ch8 to Ch12): 61 rows, 2 merge pairs, 2 cut candidates, 10 held
 - [x] Prose subtraction, Part IV (Ch13 to Ch15): 34 rows, 1 merge pair (13.5+13.6), 0 cut candidates, 15 held (Ch15 whole, Ch13's query-safety section, Figs 14.3, 14.4, 14.6)
@@ -92,6 +92,7 @@ Phase 0 repairs (verification by session e2, 2026-10-24: "safe, but not ready fo
 - [x] "Real thing" defined (draws a physical object, machine or place as it looks); 4.1, 9.2, 13.1, 17.8, 18.5 retagged
 - [x] Brief amended: held status (§9, §13, §16, §17); §6's prompt rule stated as procedural; one exemplar a two-part merge card; the ledger's takeaway and content columns
 - [x] Repairs, round 2 (e2's second verification at `7876daa`: 150 confirmed findings): 64 takeaways restate the drawn mechanism; caption-only terms count as untaught; content fixes on 9 rows, re-derived in full at Phase 2 step 1; 20 knows cells checked against their paragraphs; all 37 open Part I records redone and 59 in Parts II to V rewritten after reading every paragraph not under the hold; 11 status changes (ten merge pairs left); merged cards sit at the higher half's slot; brief §5 to §18 amended; Figs 1.5 and 13.5 exemplar fixes; taught-yet rerun pinned to `dd51d25`; calibration page sections 3 and 5 republished
+- [ ] Repairs, round 3 (this session's own verification of round 2, 31 agents, and e2's partial run at `d76e513`): 91 ledger rows (takeaways free of caption-only terms and within the drawing, content set to each card, every cut's prose gap named; 12.2 keep, 8.9 cut candidate; 16 cut candidates, 10 merge pairs); brief §6, §7, §8, §9, §11, §12, §13, §15, §18; takeaway check rerun on the gate's frozen taught-yet; the third judge-prompt exposure logged
 - [ ] Gate builder follow-up (a fresh builder after the running one): an all-capitals token passes when its lowercase form does; taught abbreviations listed at the paragraph that teaches them; Enigma a must-pass under "real thing", three runs; development set rerun with the takeaway form; both forms logged
 - [x] Housekeeping: `figures-final` pushed; `figures-final-gate` pushed once its builder commits; §4ag records that the author wrote every subtraction row and the hedge-prompt glimpse
 
