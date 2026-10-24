@@ -25,17 +25,21 @@
 //   anchors  the part's anchor ids (book.js candidates(): ch…, fig-N-M, outside svgs) unchanged against --base, or
 //            every missing id aliased in ANCHOR_ALIASES; an added id is a finding too
 //   npm run fig:check -- <part-1|1> --expect-hash=<combined sha256> [--fig=fig-1-1,fig-1-2] [--tree=<public dir>] [--base=main]
-//                        [--gate1=full|quick|off] [--json=<file>] [--browser=chromium|webkit]
+//                        [--gate1=full|quick|off] [--json=<file>] [--browser=chromium|webkit] [--verdicts=<dir>]
 // --expect-hash is required (calibration section 18): fig:check is part of the gate's pass (brief section 11) and is in
 // its fingerprint, so it first computes the fingerprint (hash.mjs) and refuses (exit 2, nothing checked) unless the
 // hash given equals it, the same refusal as gate.mjs, dev.mjs and validate.mjs.
 // The exemption file is held to the brief's grants (calibration section 19): kept names only the 18 kept originals, the
 // label cap's ids are at-bar or kept figures, the floor's kept ones, the caption check's kept ones and fig-18-6; any
 // other id is a refusal (exit 2). With --gate1=quick or off the run is partial: every line it prints says so.
+// Section 20 (the review of the section 19 freeze, D10): an at_bar id exempts the label cap only with evidence, a passing
+// gate decision under the frozen fingerprint for the figure's current svg (lib.mjs atBarEvidence: a verdict.json in a
+// folder of --verdicts, default tests/pass31/out/gate, the gate's own default output); without it the cap is checked
+// and the line says so. check.json records the verdict each at-bar exemption rests on.
 // Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json
 // (with the fingerprint the run was checked against, and the partial mark).
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, exemptProblems, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, exemptProblems, atBarEvidence, svgSha, REPO, OUT, PUBLIC } from './lib.mjs';
 import { fingerprint } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
@@ -59,10 +63,16 @@ const EXEMPTABLE = ['label_cap', 'floor', 'caption'];
 // validation), so its lists are held to the brief's grants by frozen code (lib.mjs exemptProblems); a breach is a
 // refusal (exit 2), nothing checked
 { const bad = exemptProblems(EX); if (bad.length) { console.log(`check: refused: docs/pass-31-exempt.json: ${bad.join('; ')} (calibration section 19)`); process.exit(2); } }
-const exempt = (check, id) => {
+// (D10) a kept original is exempt as granted; an at-bar figure (at_bar, or label_cap.ids outside kept, which exemptProblems
+// holds to at_bar) only with its passing decision's verdict; the floor and caption lists as granted
+const VERDICTS = o.verdicts && o.verdicts !== true ? path.resolve(String(o.verdicts)) : path.join(OUT, 'gate');
+const atBar = {};   // id -> the verdict file the exemption rests on, or null (no evidence: not exempt)
+const exempt = (check, f) => {
+  const id = f.id;
   if (!EXEMPTABLE.includes(check)) return false;
-  const ids = new Set([...(EX[check]?.ids || []), ...EX.kept, ...(check === 'label_cap' ? EX.at_bar : [])]);
-  return ids.has(id);
+  if (EX.kept.includes(id)) return true;
+  if (check === 'label_cap' && (EX.at_bar.includes(id) || (EX.label_cap?.ids || []).includes(id))) return !!(atBar[id] = atBarEvidence(VERDICTS, id, svgSha(f.svg), FP.combined));
+  return (EX[check]?.ids || []).includes(id);
 };
 const html = readPart(ROOT, part);
 let figs = figures(html, part);
@@ -76,7 +86,8 @@ const KT_FILE = path.join(OUTDIR, 'known-terms.json');
 let kt; try { kt = await runKnownTerms(ROOT, KT_FILE); } catch (e) { console.log('check:', e.message); process.exit(2); }
 for (const f of figs) {
   const c = capCount(f.svg);
-  put(f.id, 'cap', c.max <= LABELS && c.maxLegend <= LEGEND, `labels per panel ${JSON.stringify(c.panels)}${c.merged ? ` (${c.panelCount} panels, more than ${MAX_PANELS}: counted as one)` : ''}; legend entries ${JSON.stringify(c.legends)}; free object text ${c.rows.filter(r => r.free).length}`, exempt('label_cap', f.id));
+  const capEx = exempt('label_cap', f);
+  put(f.id, 'cap', c.max <= LABELS && c.maxLegend <= LEGEND, `labels per panel ${JSON.stringify(c.panels)}${c.merged ? ` (${c.panelCount} panels, more than ${MAX_PANELS}: counted as one)` : ''}; legend entries ${JSON.stringify(c.legends)}; free object text ${c.rows.filter(r => r.free).length}${f.id in atBar ? (atBar[f.id] ? `; at bar by ${atBar[f.id]}` : '; at_bar without a passing decision for this svg under the frozen fingerprint: not exempt') : ''}`, capEx);
   R.get(f.id).labels = c.rows;
   const tc = taughtContext(kt, ROOT, f);
   if (!tc) put(f.id, 'taught', false, `section ${f.section} not in known-terms`);
@@ -84,7 +95,7 @@ for (const f of figs) {
     put(f.id, 'taught', bad.length === 0, bad.length ? [...new Set(bad)].join('; ') : 'every token taught or everyday'); }
   put(f.id, 'desc', !!(f.desc && plain(f.desc)), f.desc ? `${plain(f.desc).split(/\s+/).length} words` : 'no <desc>');
   const n = sentences(f.caption).length;
-  put(f.id, 'caption', n <= 2, `${n} sentence${n === 1 ? '' : 's'}`, exempt('caption', f.id));
+  put(f.id, 'caption', n <= 2, `${n} sentence${n === 1 ? '' : 's'}`, exempt('caption', f));
   const w = f.how.join(' ').split(/\s+/).filter(Boolean).length;
   put(f.id, 'strip', w <= 150, `${w} words`);
 }
@@ -128,7 +139,7 @@ for (const f of figs) {
   const rows = (floorRows || []).filter(r => r.id === f.id && r.w >= 360 && r.minPx != null);
   if (!rows.length) { put(f.id, 'floor', false, 'not measured'); continue; }
   const min = Math.min(...rows.map(r => r.minPx));
-  put(f.id, 'floor', min >= 11, `smallest label ${min} CSS px from 360 px up`, exempt('floor', f.id));
+  put(f.id, 'floor', min >= 11, `smallest label ${min} CSS px from 360 px up`, exempt('floor', f));
 }
 
 // ---- Gate 1 rows, attributed to their figure: the findings figs.mjs counts (its why(), restated here because figs.mjs
@@ -190,7 +201,7 @@ for (const r of rows) {
 }
 for (const [k, c] of Object.entries(partChecks)) console.log(`${c.pass ? 'PASS' : 'FAIL'} ${part} ${k}: ${c.detail}${MARK}`);
 const nFail = rows.filter(r => !r.pass).length, pFail = Object.values(partChecks).filter(c => !c.pass).length;
-const report = { part, tree: ROOT, base: BASE, gate1: G1, ...(PARTIAL ? { partial: `gate1 ${G1}` } : {}), fingerprint: FP.combined, figures: rows, part_checks: partChecks, failed_figures: nFail, failed_part_checks: pFail };
+const report = { part, tree: ROOT, base: BASE, gate1: G1, ...(PARTIAL ? { partial: `gate1 ${G1}` } : {}), fingerprint: FP.combined, at_bar_evidence: atBar, figures: rows, part_checks: partChecks, failed_figures: nFail, failed_part_checks: pFail };
 fs.writeFileSync(o.json ? path.resolve(o.json) : path.join(OUTDIR, 'check.json'), JSON.stringify(report, null, 1));
 console.log(`fig:check ${part}: ${rows.length - nFail}/${rows.length} figures clean, ${Object.keys(partChecks).length - pFail}/${Object.keys(partChecks).length} part checks clean (gate1 ${G1}${PARTIAL ? ': partial' : ''})`);
 process.exit(nFail || pFail ? 1 : 0);

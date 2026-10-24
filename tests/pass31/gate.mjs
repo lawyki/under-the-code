@@ -10,6 +10,14 @@
 // own runs, and every output line of a partial run, the author's included, carries the partial marker (section 18).
 // --single with --author is refused outside a decision's own runs, whatever the criteria (section 19); every output line
 // of a single run carries "single", and of a run without the pairwise test "no_pairwise" (section 19).
+// Section 20 (the review of the section 19 freeze): the options that change what is judged, --rc2-tree, --rc2-rev,
+// --intent, --intent-file and --job, are refused with --author outside a decision's own runs (D3): Phase 2 judges
+// against the ledger's takeaway and v1.0-rc2; every line of a run given one says so (rc2, takeaway), and verdict.json
+// records the rc2 source and its tree hash. A decision's own run is told so by a per-decision nonce (D9): the decision
+// writes "<its pid> <nonce>" to <out>/decision.nonce, passes the nonce to its runs in P31_GATE_DECISION_NONCE, and a
+// run counts as its own only when it is that process's child and the file beside its --out holds that line; the file
+// is removed when the decision ends. Every verdict records the sha256 of the figure's svg (svg_sha256: the at-bar
+// evidence check.mjs reads, D10) and the tree hash of the tree judged (tree_sha256, D5).
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -44,15 +52,44 @@
 // the gate builder) and on stdout one JSON line {"id","pass","failed","failed_all"}; with --author only
 // {"id","pass","failed"}. For a failed decision, failed_all lists the criteria its failing runs failed, most often first.
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import os from 'node:os';
-import { args, tree, findFigure, packet as proseUpTo, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, findFigure, packet as proseUpTo, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, svgSha, REPO, OUT, PUBLIC } from './lib.mjs';
 import * as P from './prompts.mjs';
-import { fingerprint, CLAUDE } from './hash.mjs';
+import { fingerprint, treeHash, CLAUDE } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const ID = pos[0];
 const USAGE = 'usage: npm run fig:gate -- <fig-id> [--ledger=file] | [--intent="..." --job="function|real thing|two-part"] [--tree=dir] [--rc2-tree=dir|--rc2-rev=v1.0-rc2|--no-pairwise] [--order=random|cand-first|rc2-first] --expect-hash=sha [--author]';
-let INTENT = o.intent || (o['intent-file'] ? fs.readFileSync(o['intent-file'], 'utf8').trim() : null), JOB = o.job || null, SOURCE;
 if (!ID) { console.log(USAGE); process.exit(2); }
+const MODEL = o.model || 'claude-sonnet-5-5';
+const VOTES = 3;   // votes per scorer and hedge check (fixed: part of the frozen gate)
+const ROOT = tree(o.tree);
+const ALL = ['taught', 'judge', 'hedge', 'still', 'stripped', 'pairwise'];
+const FULL = ALL.filter(c => !(c === 'pairwise' && o['no-pairwise']));
+const CRIT = o.criteria ? String(o.criteria).split(',') : FULL;
+// --criteria runs part of the gate (a builder's diagnosis): its verdict says "partial" and is never the gate's verdict
+// on a figure, so the author's form (--author) refuses it (calibration section 17), --single too (section 18): only a
+// decision's own runs, which the decision below starts with its nonce (section 20, D9) and reads from verdict.json, run
+// it in the author's form; and the author's output line of a partial run says "partial" all the same
+const PARTIAL = !FULL.every(c => CRIT.includes(c));
+// section 20 (the review of the section 19 freeze, D9): a decision's own run, told by the decision's nonce (header); a
+// constant in the environment no longer lifts a refusal
+const NONCE_FILE = 'decision.nonce';
+const IN_DECISION = (() => {
+  const n = process.env.P31_GATE_DECISION_NONCE;
+  if (!o.single || !n || !/^[0-9a-f]{32}$/.test(n) || !o.out || o.out === true) return false;
+  try { return fs.readFileSync(path.join(path.dirname(path.resolve(o.out)), NONCE_FILE), 'utf8').trim() === `${process.ppid} ${n}`; } catch { return false; }
+})();
+if (o.criteria && CRIT.some(c => !ALL.includes(c))) { console.log(`gate: unknown criterion in --criteria=${o.criteria} (${ALL.join(', ')})`); process.exit(2); }
+if (PARTIAL && o.author && !IN_DECISION) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration sections 17 and 18)'); process.exit(2); }
+// section 19 (the review of the section 18 freeze, D): one run (--single) is a decision's building block, never a verdict on
+// a figure (the bar is 2 of 3 runs), so the author's form refuses it outside a decision's own runs, full criteria
+// included; and every output line of a single run says "single"
+if (o.single && o.author && !IN_DECISION) { console.log('gate: --single with --author refused: one run is not a verdict; the author gets only decisions (calibration section 19)'); process.exit(2); }
+// section 20 (D3): the options that change what is judged (the rc2 baseline, the takeaway, the job) are the builder's;
+// the author's form judges against the ledger's takeaway and v1.0-rc2 only
+const OWN = ['rc2-tree', 'rc2-rev', 'intent', 'intent-file', 'job'].filter(k => o[k] !== undefined);
+if (OWN.length && o.author && !IN_DECISION) { console.log(`gate: ${OWN.map(k => '--' + k).join(', ')} with --author refused: the author's form judges against the ledger's takeaway and job and against v1.0-rc2 (calibration section 20)`); process.exit(2); }
+let INTENT = o.intent || (o['intent-file'] ? fs.readFileSync(o['intent-file'], 'utf8').trim() : null), JOB = o.job || null, SOURCE;
 if (INTENT && o.ledger) { console.log('gate: give the takeaway either from the ledger (--ledger) or with --intent, not both'); process.exit(2); }
 if (INTENT) { JOB = JOB || 'function'; SOURCE = { from: 'command line' }; }
 else {
@@ -63,37 +100,24 @@ else {
   } catch (e) { console.log(`gate: ${e.message}`); process.exit(2); }
 }
 if (!INTENT || !['function', 'real thing', 'two-part'].includes(JOB)) { console.log(USAGE); process.exit(2); }
-const MODEL = o.model || 'claude-sonnet-5-5';
-const VOTES = 3;   // votes per scorer and hedge check (fixed: part of the frozen gate)
-const ROOT = tree(o.tree);
-const ALL = ['taught', 'judge', 'hedge', 'still', 'stripped', 'pairwise'];
-const FULL = ALL.filter(c => !(c === 'pairwise' && o['no-pairwise']));
-const CRIT = o.criteria ? String(o.criteria).split(',') : FULL;
-// --criteria runs part of the gate (a builder's diagnosis): its verdict says "partial" and is never the gate's verdict
-// on a figure, so the author's form (--author) refuses it (calibration section 17), --single too (section 18): only a
-// decision's own runs, which the decision below starts with P31_GATE_DECISION_RUN=1 and reads from verdict.json, run it
-// in the author's form; and the author's output line of a partial run says "partial" all the same
-const PARTIAL = !FULL.every(c => CRIT.includes(c));
-const IN_DECISION = !!o.single && process.env.P31_GATE_DECISION_RUN === '1';
-if (o.criteria && CRIT.some(c => !ALL.includes(c))) { console.log(`gate: unknown criterion in --criteria=${o.criteria} (${ALL.join(', ')})`); process.exit(2); }
-if (PARTIAL && o.author && !IN_DECISION) { console.log('gate: --criteria with --author refused: the author gets only full verdicts (calibration sections 17 and 18)'); process.exit(2); }
-// section 19 (the review of the section 18 freeze, D): one run (--single) is a decision's building block, never a verdict on
-// a figure (the bar is 2 of 3 runs), so the author's form refuses it outside a decision's own runs, full criteria
-// included; and every output line of a single run says "single"
-if (o.single && o.author && !IN_DECISION) { console.log('gate: --single with --author refused: one run is not a verdict; the author gets only decisions (calibration section 19)'); process.exit(2); }
 // (G) a run without the pairwise test (--no-pairwise: decoys, validation, merged figures, redraws) says so on every
 // output line, the author's included, and in its verdict
 const NO_PAIR = !!o['no-pairwise'];
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const OUTDIR = mkdirp(path.resolve(o.out || path.join(OUT, 'gate', `${ID}-${o.label || 'run'}-${STAMP}`)));
 const log = (...a) => { if (!o.author) console.error(...a); };
-const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP, ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}) };
-let SANDBOX = null;
+// (D3) the rc2 baseline a run compares against: the v1.0-rc2 tag unless --rc2-tree or --rc2-rev names another; marked on
+// every output line when it is another, and the takeaway when it is not the ledger's
+const RC2_SRC = !CRIT.includes('pairwise') ? null : o['rc2-tree'] ? { from: 'tree', tree: path.resolve(String(o['rc2-tree'])) } : { from: 'rev', rev: o['rc2-rev'] || 'v1.0-rc2' };
+const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP, rc2_source: RC2_SRC, ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}) };
+let SANDBOX = null, NONCE_PATH = null;
 
 function finish(code) {
   if (SANDBOX) fs.rmSync(SANDBOX, { recursive: true, force: true });
+  if (NONCE_PATH) fs.rmSync(NONCE_PATH, { force: true });
   fs.writeFileSync(path.join(OUTDIR, 'verdict.json'), JSON.stringify(V, null, 1));
-  const marks = { ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}) };
+  const marks = { ...(PARTIAL ? { partial: CRIT } : {}), ...(NO_PAIR ? { no_pairwise: true } : {}), ...(o.single ? { single: true } : {}),
+    ...(RC2_SRC && (RC2_SRC.from === 'tree' || RC2_SRC.rev !== 'v1.0-rc2') ? { rc2: RC2_SRC.tree || RC2_SRC.rev } : {}), ...(SOURCE.from !== 'ledger' ? { takeaway: SOURCE.from } : {}) };
   console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, ...marks, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, ...marks, failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
   process.exit(code);
 }
@@ -115,20 +139,26 @@ if (o['expect-hash'] !== V.fingerprint.combined) toolError(`gate fingerprint ${V
 // the decision's building block, never a verdict on a figure by itself.
 const RUNS_NEEDED = 2, RUNS_OF = 3;
 if (!o.single) {
-  if (!findFigure(ROOT, ID) || (o.part && findFigure(ROOT, ID).part !== o.part)) { console.log(`gate: no figure ${ID}${o.part ? ' in ' + o.part : ''} in ${ROOT}`); process.exit(2); }
+  const F0 = findFigure(ROOT, ID);
+  if (!F0 || (o.part && F0.part !== o.part)) { console.log(`gate: no figure ${ID}${o.part ? ' in ' + o.part : ''} in ${ROOT}`); process.exit(2); }
+  V.svg_sha256 = svgSha(F0.svg); V.tree_sha256 = treeHash(ROOT);
+  // (D9) the nonce this decision's own runs are told by
+  const NONCE = crypto.randomBytes(16).toString('hex');
+  NONCE_PATH = path.join(OUTDIR, NONCE_FILE); fs.writeFileSync(NONCE_PATH, `${process.pid} ${NONCE}\n`);
   const base = process.argv.slice(2).filter(a => !/^--(out|label|single)(=|$)/.test(a));
   V.rule = { pass_when: `at least ${RUNS_NEEDED} of ${RUNS_OF} complete runs pass`, runs_needed: RUNS_NEEDED, of: RUNS_OF, third_run: 'only when runs 1 and 2 disagree', error_retry: 1 };
   V.runs = [];
   const one = async (k, again = 0) => {
     const dir = path.join(OUTDIR, `run-${k}${again ? '-again' : ''}`);
-    const r = await run('node', [path.join(REPO, 'tests/pass31/gate.mjs'), ...base, '--single', '--author', `--out=${dir}`, `--label=${o.label || 'run'}-run-${k}`], { env: { P31_GATE_DECISION_RUN: '1' } });
+    const r = await run('node', [path.join(REPO, 'tests/pass31/gate.mjs'), ...base, '--single', '--author', `--out=${dir}`, `--label=${o.label || 'run'}-run-${k}`], { env: { P31_GATE_DECISION_NONCE: NONCE } });
     let R = null; try { R = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch {}
+    let line = null; try { line = JSON.parse(r.out.trim().split('\n').pop()); } catch {}   // the run's own (author's form) output line
     const err = !R || R.failed === 'error' || r.code === 2 || ![0, 1].includes(r.code);
     if (err && !again) { log(`gate ${ID}: run ${k} ended in a tool error; made again`); return one(k, 1); }
     const row = { k, dir, pass: err ? false : !!R.pass, error: err ? (R && R.error) || (r.out + r.err).slice(-1500) : null, failed: err ? 'error' : R.failed, failed_all: err ? ['error'] : R.failed_all,
       hedge_in: R && R.criteria && R.criteria.hedge ? R.criteria.hedge.failed_in : null,
       pairwise: R && R.criteria && R.criteria.pairwise ? (R.criteria.pairwise.replies ? R.criteria.pairwise.replies.map(x => `${x.order}: ${x.verdict}`) : R.criteria.pairwise.same_frames ? ['SAME (identical frames)'] : ['n/a']) : null,
-      fingerprint: R && R.fingerprint ? R.fingerprint.combined : null };
+      fingerprint: R && R.fingerprint ? R.fingerprint.combined : null, svg_sha256: R ? R.svg_sha256 || null : null, line };
     V.runs.push(row); log(`gate ${ID}: run ${k} ${row.error ? 'ERROR' : row.pass ? 'PASS' : 'FAIL'}${row.failed_all && row.failed_all.length ? ' (' + row.failed_all.join(', ') + ')' : ''}`);
     return row;
   };
@@ -147,11 +177,13 @@ if (!o.single) {
   }
   V.runs_passed = passes; V.runs_made = rows.length;
   if (rows.some(x => x.fingerprint && x.fingerprint !== V.fingerprint.combined)) toolError('a run reported a different gate fingerprint (the gate changed during the decision)');
+  if (rows.some(x => x.svg_sha256 !== V.svg_sha256)) toolError('a run judged a different svg (the figure changed during the decision)');
   finish(V.pass ? 0 : 1);
 }
 SANDBOX =fs.mkdtempSync(path.join(os.tmpdir(), 'p31-tester-'));   // the testers' empty working directory, outside any repo
 const fig = findFigure(ROOT, ID);
 if (!fig || (o.part && fig.part !== o.part)) { console.log(`gate: no figure ${ID}${o.part ? ' in ' + o.part : ''} in ${ROOT}`); process.exit(2); }
+V.svg_sha256 = svgSha(fig.svg); V.tree_sha256 = treeHash(ROOT);
 
 // ---- renders --------------------------------------------------------------------------------------------------
 async function strip(root, dir, extra = []) {
@@ -166,14 +198,16 @@ async function strip(root, dir, extra = []) {
 let rc2Root = null;
 if (CRIT.includes('pairwise')) {
   if (o['rc2-tree']) rc2Root = tree(o['rc2-tree']);
-  else {   // the rc2 version: this tree's assets with the part page as it is at --rc2-rev (default the v1.0-rc2 tag)
+  else {   // the rc2 version: the gate's own public/ (hashed) with the part page as it is at --rc2-rev (default the v1.0-rc2 tag)
     const rev = o['rc2-rev'] || 'v1.0-rc2';
     const r = await run('git', ['show', `${rev}:public/${fig.part}.html`]);
     if (r.code) toolError(`cannot read ${rev}:public/${fig.part}.html`);
+    const c = await run('git', ['rev-parse', `${rev}^{commit}`]); if (!c.code) V.rc2_source.commit = c.out.trim();
     rc2Root = path.join(OUTDIR, 'rc2-tree') + '/';
     fs.cpSync(PUBLIC, rc2Root, { recursive: true });
     fs.writeFileSync(path.join(rc2Root, `${fig.part}.html`), r.out);
   }
+  V.rc2_source.tree_sha256 = treeHash(rc2Root);
 }
 log(`gate ${ID}: rendering`);
 const [cand, bare, rc2] = await Promise.all([

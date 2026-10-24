@@ -17,13 +17,14 @@
 // must exist: the gate branch keeps none, so --ledger names the author's file (default docs/pass-31-ledger.tsv of
 // this worktree); a missing or unreadable ledger, or a fallback item without a valid job, is incomplete (exit 2).
 //   tree: a prebuilt public dir; rev: that commit's scripts/figs/<script> and figlib.py built into a copy of public/
-//   (as fig:dev builds); neither: this worktree's public/.
+//   (as fig:dev builds; rebuilt on every run); neither: this worktree's public/ (hashed in the fingerprint: section 20,
+//   D5). Every item's tree hash is recorded in counts.json; the reads.log line carries the fingerprint.
 // Bars (section 10): every v3 item fails, every v4 item passes, every worst fails, at least half of the best pass.
 // Everything else (built trees, every verdict, the counts) is written under <sealed>/, which is gitignored and never
 // pushed, and each run appends one line to <sealed>/reads.log. Exit 0 validation holds, 1 it does not, 2 incomplete.
 import fs from 'node:fs'; import path from 'node:path';
 import { args, run, mkdirp, readLedger, LEDGER_DEFAULT, REPO, PUBLIC } from './lib.mjs';
-import { fingerprint } from './hash.mjs';
+import { fingerprint, treeHash } from './hash.mjs';
 
 const { o } = args(process.argv.slice(2));
 const SEALED = path.resolve(REPO, o.sealed || 'docs/pass-31-sealed');
@@ -62,7 +63,8 @@ for (const [k, it] of items.entries()) {
   if (!it.rev) { it.root = PUBLIC.slice(0, -1); continue; }
   const d = path.join(SEALED, 'trees', `${it.rev}-${it.script || 'fig'}`), src = mkdirp(path.join(d, 'src'));
   it.root = path.join(d, 'public');
-  if (fs.existsSync(path.join(it.root, 'part-1.html'))) continue;
+  // (calibration section 20, D5) rebuilt every run from the hashed inputs, never reused from an earlier run
+  fs.rmSync(it.root, { recursive: true, force: true });
   fs.cpSync(PUBLIC, it.root, { recursive: true });
   for (const f of [it.script, 'figlib.py']) {
     const r = await run('git', ['show', `${it.rev}:scripts/figs/${f}`]);
@@ -73,14 +75,18 @@ for (const [k, it] of items.entries()) {
   if (b.code) { say('a build failed (build_into.py); incomplete'); process.exit(2); }
 }
 
+// every item's tree hash (counts.json, under the sealed folder; nothing of it reaches stdout)
+for (const it of items) it.tree_sha256 = treeHash(it.root);
 // gate runs, quiet
 const res = [];
 const queue = [...items];
 async function one(it) {
   const out = path.join(DIR, it.key);
   const take = it.src === 'ledger' ? [`--ledger=${LEDGER}`] : [`--intent=${it.intent}`, `--job=${it.job}`];
+  // (section 20, D3) the builder's form, not --author: a fallback item's --intent and --job are refused with --author;
+  // the runner prints counts only and reads each decision from its verdict.json
   const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), it.id, ...take, `--tree=${it.root}`,
-    '--no-pairwise', '--author', `--out=${out}`, `--label=validate-${it.key}`, `--expect-hash=${o['expect-hash']}`];
+    '--no-pairwise', `--out=${out}`, `--label=validate-${it.key}`, `--expect-hash=${o['expect-hash']}`];
   const r = await run('node', argv);
   let V = null; try { V = JSON.parse(fs.readFileSync(path.join(out, 'verdict.json'), 'utf8')); } catch {}
   res.push({ role: it.role, got: !V || V.failed === 'error' || r.code === 2 ? 'error' : V.pass ? 'pass' : 'fail' });
@@ -92,6 +98,6 @@ const C = { v3: { fail: n('v3', 'fail'), of: n('v3') }, v4: { pass: n('v4', 'pas
 const holds = C.errors === 0 && C.v3.of > 0 && C.v3.fail === C.v3.of && C.v4.of > 0 && C.v4.pass === C.v4.of && C.worst.fail === C.worst.of && C.best.pass * 2 >= C.best.of;
 const verdict = C.errors ? 'INCOMPLETE' : holds ? 'HOLDS' : 'FAILS';
 const fromLedger = items.filter(x => x.src === 'ledger').length;
-fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, takeaways_from_ledger: fromLedger, of: items.length, ledger: { file: LEDGER_SRC, sha256: LG.sha256 }, fingerprint: FP }, null, 1));
+fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, takeaways_from_ledger: fromLedger, of: items.length, ledger: { file: LEDGER_SRC, sha256: LG.sha256 }, trees: Object.fromEntries(items.map(it => [it.key, it.tree_sha256])), fingerprint: FP }, null, 1));
 say(`${verdict}: v3 failed ${C.v3.fail} of ${C.v3.of}; v4 passed ${C.v4.pass} of ${C.v4.of}; tapped worst failed ${C.worst.fail} of ${C.worst.of}; tapped best passed ${C.best.pass} of ${C.best.of}; tool errors ${C.errors}; takeaways from the ledger ${fromLedger} of ${items.length}`);
 process.exit(C.errors ? 2 : holds ? 0 : 1);

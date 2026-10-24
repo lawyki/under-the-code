@@ -218,6 +218,21 @@ export const stems = (w, deep = true) => {
 };
 const normT = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').trim();
 const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// section 20 (the review of the section 19 freeze, D2): a multi-word term's last word in any plain ending stems() strips
+// (s, es, d, ed, ing, er, ers, ly; a final e dropped before ing, ed, er, ers; a final consonant doubled; a final y made
+// i), so "page faulting", "hard-linked", "system calling" and "virtual addressing" are the terms page fault, hard link,
+// system call and virtual address in an inflection. A last word that is not all lower-case letters (Ring 0, IEEE 754)
+// keeps only s and es, as before
+export const lastInflected = w => {
+  if (!/^\p{Ll}+$/u.test(w)) return `${esc(w)}(?:s|es)?`;
+  const alts = [`${esc(w)}(?:s|es|d|ed|ing|er|ers|ly)?`];
+  if (w.endsWith('e')) alts.push(`${esc(w.slice(0, -1))}(?:ing|ed|er|ers)`);
+  if (/[^aeiouy]$/u.test(w)) alts.push(`${esc(w)}${esc(w.slice(-1))}(?:ing|ed|er|ers)`);
+  if (/[^aeiou]y$/u.test(w)) alts.push(`${esc(w.slice(0, -1))}i(?:es|ed|er|ers|ly)`);
+  return `(?:${alts.join('|')})`;
+};
+// a normalised multi-word term (words joined by one space) with its last word inflected
+const multiInflected = t => { const w = t.split(' '); return [...w.slice(0, -1).map(esc), lastInflected(w[w.length - 1])].join(' '); };
 export const SIGN = /^[+\-−×÷=<>≤≥≠≈*/%^()[\]{}|~→←↑↓↔⇒⇐·•…,.:;!?'"“”‘’&#@$€£¥°±√∑∞]+$/u;
 // section 19 (F): three or more two-character hexadecimal groups, one separator throughout (9C:DA:C7, 8C-85-90)
 export const HEXRUN = /(?<![\p{L}\p{N}_:-])[0-9A-Fa-f]{2}([:-])[0-9A-Fa-f]{2}(?:\1[0-9A-Fa-f]{2})+(?![\p{L}\p{N}_:-])/gu;
@@ -311,8 +326,9 @@ export function taughtYet(text, known, glossary, prior = null) {
   // written in capitals (HTTPS). It is never a plural or other inflection of a taught term (HTTPS is not HTTP plus s)
   const ownAbbr = w => !!(glossary.capitals?.has(w.toUpperCase()) || /^[^\p{Ll}]*\p{Lu}[^\p{Ll}]*$/u.test(glossary.forms?.get(w) || ''));
   const endings = t => { if (isShort(t)) return ''; const xs = ['s', 'es'].filter(x => !ownAbbr(t + x)); return xs.length ? `(?:${xs.join('|')})?` : ''; };
-  // known terms first (longest first), so "turing machine" is taken whole
-  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}${endings(t)}(?=$|${B})`, 'gu'), '$1 ');
+  // known terms first (longest first), so "turing machine" is taken whole; a multi-word one in any plain ending of its
+  // last word (section 20, D2: "page faulting" once page fault is taught)
+  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${t.includes(' ') ? multiInflected(t) : esc(t) + endings(t)}(?=$|${B})`, 'gu'), '$1 ');
   // then multi-word glossary terms not yet taught ("system call", "ring 0"): each fails whole, even when every word in
   // it is an everyday word; a name ("Bell Labs", "von Neumann": glossary.names) passes once the prose before the card
   // writes it. Matched on the text as written (a hyphen in the term needs a hyphen: "a-machine" is not "a machine").
@@ -322,12 +338,14 @@ export function taughtYet(text, known, glossary, prior = null) {
   // stem (ips is not IP plus s)
   const knownStems = new Set();
   for (const k of known) if (!k.includes(' ') && k.replace(/[^\p{L}\p{N}]/gu, '').length > 2) for (const w of stems(k, false)) if (w === k || w.length >= 5) knownStems.add(w);
+  // (section 20, D2) the last word in any plain ending, in the match and in the removal: "page faulting", "hard-linked"
   for (const { t, form } of glossary.multi || []) {
     if (knownSet.has(t)) continue;
-    const pat = form.toLowerCase().split(/(\s+|[-–])/).map(x => /^\s+$/.test(x) ? '[\\s\\-–]+' : /^[-–]$/.test(x) ? '[-–]' : esc(x)).join('');
-    if (!new RegExp(`(^|${B})${pat}(s|es)?(?=$|${B})`, 'u').test(rawL)) continue;
+    const pieces = form.toLowerCase().split(/(\s+|[-–])/), last = pieces.length - 1;
+    const pat = pieces.map((x, i) => /^\s+$/.test(x) ? '[\\s\\-–]+' : /^[-–]$/.test(x) ? '[-–]' : i === last ? lastInflected(x) : esc(x)).join('');
+    if (!new RegExp(`(^|${B})${pat}(?=$|${B})`, 'u').test(rawL)) continue;
     if (!(glossary.names?.has(t) && writes(prior, form))) bad.push({ token: t, why: 'a glossary term not yet taught' });
-    s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
+    s = s.replace(new RegExp(`(^|${B})${multiInflected(t)}(?=$|${B})`, 'gu'), '$1 ');
   }
   // the label's tokens in their original case, cut as the folded text is cut (dashes and hyphens made spaces), so
   // each piece of a compound keeps its capitals: DRAM in DRAM-based is the abbreviation, not the everyday word dram
@@ -391,6 +409,23 @@ export function taughtYet(text, known, glossary, prior = null) {
         const w = bp.replace(/s$/, ''), plural = w !== bp && short(w) && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);   // adds, puts: add, put are COMMON
         if (abbr || plural) {
           if (inPrior(prior, bp, obp, true)) continue;
+          bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
+      }
+      // section 20 (the review of the section 19 freeze, D6): a token of four letters or more, not all capitals, whose
+      // capitals form the book writes (known-terms "capitals": DRAM, FIFO, BIOS, ENIAC, NULL, GRUB, READ_FILE), or a plain s
+      // plural of one, is that abbreviation in another case: taught like the abbreviation (a taught one was taken out with
+      // the known terms above), unless the token is on the COMMON list (head) or the prose before the card writes this
+      // very token in this very case. The dictionary (dram, fifo, null) and the mention route (read_file) never pass it
+      if (/^[\p{L}\p{N}_]+$/u.test(bp) && [...bp.replace(/[^\p{L}]/gu, '')].length >= 4 && !common().has(bp) && !common().has(part)) {
+        const w = bp.replace(/s$/u, ''), plural = w !== bp && [...w.replace(/[^\p{L}]/gu, '')].length >= 4 && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);
+        if (glossary.capitals?.has(bp.toUpperCase()) || plural) {
+          // (in this very case; or, for the word in lower case, the prose before writes that word in lower case in a
+          // plain inflection: hosts after "host", though the book writes HOSTS.TXT; load after "loaded"; a capital that
+          // opens a label is no other case form)
+          const lowerForms = x => { const l = x.toLowerCase(), f = [l, ...['s', 'es', 'd', 'ed', 'ing', 'er', 'ers'].map(e => l + e)];
+            if (l.endsWith('e')) f.push(...['ing', 'ed', 'er'].map(e => l.slice(0, -1) + e)); if (/[^aeiouy]$/u.test(l)) f.push(...['ing', 'ed', 'er'].map(e => l + l.slice(-1) + e)); return f; };
+          const wroteLower = x => !!(prior && prior.exact && lowerForms(x).some(f => prior.exact.has(f)));
+          if (inPrior(prior, bp, obp, true) || (/^\p{Ll}/u.test(obp) || /^\p{Lu}\p{Ll}*$/u.test(obp)) && stems(bp, false).some(x => [...x.replace(/[^\p{L}]/gu, '')].length >= 4 && wroteLower(x))) continue;
           bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
       }
       if (everyday) continue;
@@ -513,6 +548,26 @@ export function exemptProblems(EX) {
     const x = ids.filter(id => !grant[k].includes(id)); if (x.length) bad.push(`${k}.ids names ${x.join(' ')}, outside its grant`);
   }
   return bad;
+}
+
+// ---- at-bar evidence (calibration section 20, D10) -----------------------------------------------------------------
+// at_bar is data the author fills after validation (brief section 10: a figure that passes the gate unchanged), so an
+// at_bar id exempts the label cap only with evidence: a gate decision's verdict.json (a folder of the verdicts folder,
+// default tests/pass31/out/gate) for that id that passed as a decision (not --single, not partial; at least two
+// complete runs made and passed), under the frozen fingerprint (the decision's and every run's), for the figure's
+// current svg (sha256 of the card's <svg>, recorded by gate.mjs as svg_sha256). Returns the verdict file, or null
+export const svgSha = svg => crypto.createHash('sha256').update(svg).digest('hex');
+export const atBarOK = (V, id, svgHash, combined) => !!(V && V.id === id && V.pass === true && !V.single && !V.partial
+  && Array.isArray(V.runs) && V.runs_made >= 2 && V.runs_passed >= 2 && V.runs.every(r => r.fingerprint === combined)
+  && V.fingerprint && V.fingerprint.combined === combined && V.svg_sha256 === svgHash);
+export function atBarEvidence(dir, id, svgHash, combined) {
+  let ents = []; try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch { return null; }
+  for (const e of ents.filter(x => x.isDirectory()).sort((a, b) => (a.name < b.name ? -1 : 1))) {
+    const f = path.join(dir, e.name, 'verdict.json'); let V = null;
+    try { V = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
+    if (atBarOK(V, id, svgHash, combined)) return f;
+  }
+  return null;
 }
 
 // ---- caption sentences ----------------------------------------------------------------------------------------

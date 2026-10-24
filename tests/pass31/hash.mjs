@@ -13,9 +13,12 @@
 //             verdicts: the dictionary taught-yet reads (/usr/share/dict/words, hashed by its absolute path, so a
 //             system update that changes it changes the fingerprint), the Gate 1 skips in docs/pass-30-exceptions.json
 //             (read by check.mjs, figs.mjs and clip.mjs) and the builder of the development and validation trees,
-//             scripts/figs/build_into.py (dev.mjs, validate.mjs). Not hashed: docs/pass-31-exempt.json, the author's
+//             scripts/figs/build_into.py (dev.mjs, validate.mjs); and (calibration section 20, D5) scripts/check-dashes.mjs,
+//             which check.mjs runs on the gate's own tree, and the gate's own public/ (a tree hash, treeHash below): the
+//             tree validation judges an item without a rev on, the base every development and validation tree is
+//             copied from, and the assets of the default rc2 tree. Not hashed: docs/pass-31-exempt.json, the author's
 //             at-bar and kept lists (data; check.mjs takes exemptions for the label cap, the floor and the caption
-//             check only)
+//             check only, and an at-bar one only with a passing decision: section 20, D10)
 //   model     the tester model id
 //   combined  sha256 of prompts, files and model (sorted JSON); gate.mjs writes it into every verdict; gate.mjs,
 //             dev.mjs, validate.mjs and check.mjs refuse to run (exit 2) unless --expect-hash is given and equals it
@@ -30,13 +33,22 @@ export const CLAUDE = '/opt/homebrew/bin/claude';
 export const GATE_FILES = ['tests/pass31/gate.mjs', 'tests/pass31/prompts.mjs', 'tests/pass31/lib.mjs', 'tests/pass31/hash.mjs', 'tests/pass31/common-words.txt', 'tests/pass30/bare.mjs', 'scripts/known-terms.mjs', 'tests/pass31/validate.mjs',
   'tests/pass31/held.mjs', 'tests/pass31/held-strip.json',
   'tests/pass31/check.mjs', 'tests/pass31/band.py', 'tests/pass28/figs.mjs', 'tests/pass28/clip.mjs', 'tests/pass28/smooth.mjs', 'tests/pass30/contrast.mjs',
-  'tests/pass31/places.mjs', '/usr/share/dict/words', 'docs/pass-30-exceptions.json', 'scripts/figs/build_into.py'];
+  'tests/pass31/places.mjs', '/usr/share/dict/words', 'docs/pass-30-exceptions.json', 'scripts/figs/build_into.py',
+  'scripts/check-dashes.mjs', 'public/'];
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
+// a directory's hash (section 20, D5): sha256 of one line per regular file under it, "<relative path>\t<sha256>\n", in
+// sorted path order (links followed); an entry of GATE_FILES that ends in / is hashed so
+export function treeHash(dir) {
+  const files = [];
+  const walk = d => { for (const e of fs.readdirSync(d)) { const p = path.join(d, e), st = fs.statSync(p); if (st.isDirectory()) walk(p); else if (st.isFile()) files.push(path.relative(dir, p)); } };
+  walk(dir);
+  return sha(files.sort().map(f => `${f}\t${sha(fs.readFileSync(path.join(dir, f)))}\n`).join(''));
+}
 const sorted = o => JSON.stringify(o, Object.keys(o).sort());
 
 export async function fingerprint(model = 'claude-sonnet-5-5') {
   const prompts = Object.fromEntries(Object.entries(frozenTexts()).map(([k, v]) => [k, sha(v)]));
-  const files = Object.fromEntries(GATE_FILES.map(f => [f, sha(fs.readFileSync(path.resolve(REPO, f)))]));   // an absolute path stays absolute
+  const files = Object.fromEntries(GATE_FILES.map(f => [f, f.endsWith('/') ? treeHash(path.resolve(REPO, f)) : sha(fs.readFileSync(path.resolve(REPO, f)))]));   // an absolute path stays absolute
   const r = await run(CLAUDE, ['--version'], { cwd: '/' });
   const cli = r.out.trim();
   const combined = sha(sorted({ prompts: sorted(prompts), files: sorted(files), model }));

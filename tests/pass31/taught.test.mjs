@@ -17,12 +17,17 @@
 // DNS after its teaching, DEP, GCHQ and the glosses in pointer sentences must pass; the abbreviations' placements),
 // B (a line break in the HTML source is no sentence start: planted mid-sentence uses fail, a control passes), E (a
 // possessive apposition glosses: C++), F (a hexadecimal run is notation taught with hexadecimal; a word in capitals
-// passes as the word the prose writes), each with its regressions.
+// passes as the word the prose writes), each with its regressions. Section 20 (the review of the section 19 freeze) adds
+// D1 (a glossary or key-term abbreviation is placed at its teaching point or a gloss, never by a plain writing first:
+// the 19 tokens the review named fail at their figures and pass from the first figure after their teaching), D2 (a
+// multi-word glossary term in -ing, -ed and other plain endings of its last word), D4 (the naming cue's list guard), D6
+// (an abbreviation the book writes in capitals, in lower or mixed case, at four letters or more), D8 (no mechanism
+// entry is a name), each with its regressions and synthetic cases.
 //   npm run fig:taught-test [-- --tree=<public dir>]
 // Exit 0 when every case holds, 1 otherwise. Each case: the figure that sets the position, the label text, and the
 // tokens expected to fail (an empty list: every token passes).
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, findFigure, runKnownTerms, taughtContext, taughtYet, svgTexts, mkdirp, readPart, plain, CARD, PARTS, OUT, REPO } from './lib.mjs';
+import { args, tree, findFigure, allFigures, runKnownTerms, taughtContext, taughtYet, svgTexts, mkdirp, readPart, plain, loadHeld, CARD, PARTS, OUT, REPO } from './lib.mjs';
 
 const { o } = args(process.argv.slice(2));
 const ROOT = tree(o.tree);
@@ -44,7 +49,9 @@ const CASES = [
   // TCP's state names are taught at ch10-handshake-p3: after Fig 10.2's card, before Fig 10.3's
   ['fig-10-2', 'SYN_SENT FIN_WAIT_1', ['SYN_SENT', 'FIN_WAIT_1']],
   ['fig-10-3', 'SYN_SENT SYN_RCVD FIN_WAIT_1 FIN_WAIT_2 CLOSE_WAIT LAST_ACK TIME_WAIT SYN-ACK ESTABLISHED LISTEN', []],
-  ['fig-10-3', 'TCP IP HTTP DNS', []],
+  // (section 20, D1: HTTP is taught at ch10-modern-p6 and DNS at ch11-dns-p1, both after Fig 10.3; TCP at ch10-why-p1
+  // and IP at ch9-ip-p1 before it)
+  ['fig-10-3', 'TCP IP HTTP DNS', ['http', 'dns']],
   // never taught in prose (CGNAT and IHL only in captions, labels and strips): they fail
   ['fig-9-8', 'CGNAT', ['cgnat']],
   ['fig-9-4', 'IHL', ['ihl']],
@@ -217,11 +224,12 @@ const CASES = [
   ['fig-1-14', 'unkernel', ['unkernel']],
   // ---- defect 5: HTTPS is not a plural of HTTP. (Section 19: HTTPS, a glossary term written in its section only inside
   // held material and first written there, is never placed by a mention, so it fails at Fig 11.2 too; HTTP, written
-  // before Fig 4.19 only in the Part III teaser at ch4-ipc-p15, fails there and passes from ch7-types-p3, where HTTPS
-  // still fails)
+  // before Fig 4.19 only in the Part III teaser at ch4-ipc-p15, fails there. Section 20, D1: a glossary entry, it is not
+  // placed by its plain writing at ch7-types-p3 either, and fails at Fig 7.3 too; it passes from ch10-modern-p6, its
+  // apposition, where HTTPS still fails)
   ['fig-4-19', 'HTTPS', ['https']],
   ['fig-4-19', 'HTTP', ['http']],
-  ['fig-7-3', 'HTTP', []],
+  ['fig-7-3', 'HTTP', ['http']],
   ['fig-7-3', 'HTTPS', ['https']],
   ['fig-11-2', 'HTTPS', ['https']],
 
@@ -335,9 +343,10 @@ const CASES = [
   // ---- A: a writing in a sentence that points elsewhere places no abbreviation, nor does a mention of one that is never
   // credited by a mention (a noMention glossary term, or one the book first writes inside held material); only a gloss
   // of it does. DNS, written before Chapter 10 only in the Part III teaser (ch4-ipc-p15), fails at Fig 8.12 and passes
-  // from Chapter 10 (its lead writes it) and after its teaching paragraph ch11-dns-p1
-  ['fig-8-12', 'HTTP, DNS, SSH', ['dns']],
-  ['fig-10-1', 'DNS', []],
+  // after its teaching paragraph ch11-dns-p1. (Section 20, D1: no longer from Chapter 10's lead, a plain writing of a
+  // key-term entry; HTTP fails at Fig 8.12 too)
+  ['fig-8-12', 'HTTP, DNS, SSH', ['http', 'dns']],
+  ['fig-10-1', 'DNS', ['dns']],
   ['fig-11-5', 'DNS', []],
   // ASLR (taught nowhere outside held material; ch1-memory-p11's sentence points to Chapter 3) fails from Fig 2.1 on;
   // DEP, glossed there ("the defence called DEP"), passes from Fig 2.1 and fails before
@@ -392,6 +401,63 @@ const CASES = [
   ['fig-br-3', 'INTERRUPT DESCRIPTOR TABLE', []],
   ['fig-4-13', 'COMMIT', ['COMMIT']],
   ['fig-1-1', 'FILESYSTEM', ['FILESYSTEM']],
+
+  // ==== section 20 (the review of the section 19 freeze) ===============================================================
+  // ---- D1: a glossary or key-term entry written as an abbreviation is placed at its teaching point (TLS ch11-tls-p1,
+  // TCP ch10-why-p1, UDP's generic form in Chapter 10's lead, HTTP's apposition at ch10-modern-p6, IP ch9-ip-p1, DNS
+  // ch11-dns-p1, RSA ch14-publickey-p4) or at a gloss of it, never by a plain writing that comes first ("a TLS
+  // handshake" at ch2-float-p12, "using TCP or UDP" at ch4-ipc-p14, "an HTTP response" at ch7-types-p3, the IP right
+  // after a pointer sentence at ch8-ethernet-p8, "a 2048-bit RSA key" at ch11-crypto-p2). The 19 tokens the review
+  // named fail at their 12 figures ...
+  ['fig-8-9', 'IP', ['ip']],
+  ['fig-8-11', 'TLS · TCP · IP', ['tls', 'tcp', 'ip']],
+  ['fig-8-12', 'TCP · IP · HTTP · UDP', ['tcp', 'ip', 'http', 'udp']],
+  ['fig-9-2', 'TCP · IP', ['tcp', 'ip']],
+  ['fig-9-4', 'TCP', ['tcp']],
+  ['fig-10-9', 'TLS', ['tls']],
+  ['fig-11-3', 'DNS · TLS', ['dns', 'tls']],
+  ['fig-11-8', 'RSA', ['rsa']],
+  ['fig-11-10', 'TLS', ['tls']],
+  ['fig-11-13', 'RSA', ['rsa']],
+  ['fig-14-1', 'RSA', ['rsa']],
+  // ... and each passes from the first figure after its teaching place, failing at the figure just before (fig-10-1 DNS,
+  // fig-11-5 DNS above)
+  ['fig-9-3', 'IP', ['ip']], ['fig-9-4', 'IP · ip', []],
+  ['fig-10-1', 'TCP', ['tcp']], ['fig-10-2', 'TCP · tcp', []],
+  ['fig-9-9', 'UDP', ['udp']], ['fig-10-1', 'UDP', []],
+  ['fig-10-8', 'HTTP', ['http']], ['fig-10-9', 'HTTP', []],
+  ['fig-11-4', 'DNS', ['dns']],
+  ['fig-11-11', 'TLS', []],
+  ['fig-14-7', 'RSA', ['rsa']], ['fig-14-8', 'RSA', []],
+  // ... and an entry glossed by a quoted definition right after it (the quoted cue, section 20) keeps its place: XOR at
+  // ch2-boole-p10, between Figs 2.2 and 2.3 (without the cue it would fall to its key-term at ch2-arithmetic-p4)
+  ['fig-2-2', 'XOR', ['xor']], ['fig-2-3', 'XOR', []],
+  // ---- D2: a multi-word glossary term in a plain ending of its last word is the term: it fails until taught (page fault,
+  // hard link, buffer overflow, system call, virtual address at Fig 1.1; hard link at Fig 4.10, before ch4-fs-p4) ...
+  ['fig-1-1', 'page faulting · hard-linked · buffer overflowing · system calling · virtual addressing', ['page fault', 'hard link', 'buffer overflow', 'system call', 'virtual address']],
+  ['fig-1-1', 'page faulted · hard links · system calls', ['page fault', 'hard link', 'system call']],
+  // (the review measured at Fig 4.11, a held figure; Fig 4.10 sits in the same window, before ch4-fs-p4)
+  ['fig-4-10', 'hard-linked · hard linking · hard link', ['hard link']],
+  ['fig-1-14', 'system calling', ['system call']],
+  ['fig-1-15', 'page faulting · virtual addressing · buffer overflowing', ['page fault', 'virtual address', 'buffer overflow']],
+  // ... and passes once taught, in the same endings
+  ['fig-4-12', 'hard-linked · hard linking · hard links', []],
+  ['fig-1-15', 'system calling · system calls', []],
+  ['fig-2-1', 'page faulting · page faulted · virtual addressing · buffer overflowing', []],
+  // ---- D6: a token of four letters or more whose capitals the book writes is that abbreviation in any case: it fails
+  // where the capitals fail (the dictionary and the mention route no longer pass dram, fifo, bios, eniac, null, grub,
+  // read_file), and passes where they pass ...
+  ['fig-1-1', 'dram · fifo · bios · eniac · null · grub · read_file · Dram · drams', ['dram', 'fifo', 'bios', 'eniac', 'null', 'grub', 'read_file', 'drams']],
+  ['fig-1-2', 'eniac · ENIAC', ['eniac', 'ENIAC']], ['fig-1-3', 'eniac · Eniac · ENIAC', []],
+  ['fig-4-14', 'fifo · fifos', ['fifo', 'fifos']], ['fig-4-15', 'fifo · fifos · FIFO', []],
+  ['fig-br-9', 'bios · grub', ['bios', 'grub']], ['fig-4-1', 'bios · grub', []],
+  ['fig-4-8', 'null', ['null']], ['fig-4-9', 'null · NULL', []],
+  ['fig-16-9', 'dram', ['dram']], ['fig-16-10', 'dram · drams · DRAM', []],
+  ['fig-18-6', 'read_file', ['read_file']],
+  // ... while a COMMON word (head), a word the prose before writes in lower case or as its stem (hosts after "host",
+  // though the book writes HOSTS.TXT) and a label's opening capital (Hosts) still pass
+  ['fig-1-1', 'head', []],
+  ['fig-9-2', 'hosts · Hosts', []],
 ];
 // item 2b: the paragraph known-terms places each term at (the first prose gloss)
 const PLACED = { register: 'ch1-vonneumann-p4', byte: 'ch1-cpu-p2', compiler: 'ch1-vonneumann-p3', thread: 'ch7-gil-p1' };
@@ -431,7 +497,9 @@ for (const [t, p] of Object.entries(ABBR18)) {
 }
 // section 19: where each abbreviation the review named is placed now, and by which writing (a plain writing, a gloss,
 // a part number), and which are never placed (no gloss outside held material, no writing outside a pointer)
-const ABBR19 = { DNS: ['ch10-hero-lead', 'writing'], HTTP: ['ch7-types-p3', 'writing'], ARPANET: ['ch9-hero-lead', 'writing'], SQL: ['ch13-hero-lead', 'gloss (generic)'],
+// (section 20, D1: HTTP moves to its apposition at ch10-modern-p6; DNS and ARPANET, key-term entries whose writings
+// before their teaching are plain, are no longer placed as abbreviations: ABBR20 below)
+const ABBR19 = { HTTP: ['ch10-modern-p6', 'gloss (apposition)'], SQL: ['ch13-hero-lead', 'gloss (generic)'],
   GCHQ: ['ch14-history-p6', 'gloss (apposition)'], DEP: ['ch1-memory-p11', 'gloss (called)'], TTL: ['ch11-dns-p5', 'gloss (expansion)'], RAM: ['ch1-memory-p2', 'gloss (expansion)'],
   MEM: ['ch1-cpu-p7', 'writing'], SIGSEGV: ['ch4-vm-p12', 'writing'], DH: ['ch14-publickey-p6', 'writing'], II: ['ch1-kernel-p10', 'part number'] };
 for (const [t, [p, by]] of Object.entries(ABBR19)) {
@@ -440,6 +508,28 @@ for (const [t, [p, by]] of Object.entries(ABBR19)) {
 }
 { const never = ['ASLR', 'CFI', 'HTTPS', 'CVE', 'CA', 'SBOM'], placed = never.filter(t => kt.abbrev[t]);
   check(!placed.length, `abbreviations never placed (no gloss outside held material, every other writing a mention): ${never.length - placed.length} of ${never.length}${placed.length ? ` (placed: ${placed.join(', ')})` : ''}`); }
+// section 20, D1: where the entries the review named are placed now, as abbreviations (a gloss) and as terms (their
+// teaching point); DNS and ARPANET only as terms. No glossary or key-term entry is placed by a plain writing. D4: CDN,
+// the last item of a list, is placed by its writing, no longer by the naming cue
+const ABBR20 = { XOR: ['ch2-boole-p10', 'gloss (quoted)'], TLS: ['ch11-tls-p1', 'gloss (parenthesis)'], TCP: ['ch10-modern-p1', 'gloss (parenthesis)'], UDP: ['ch10-hero-lead', 'gloss (generic)'], IP: ['ch10-hero-lead', 'gloss (generic)'],
+  RSA: ['ch14-publickey-p4', 'gloss (parenthesis)'], CDN: ['ch11-dns-p3', 'writing'] };
+for (const [t, [p, by]] of Object.entries(ABBR20)) {
+  const a = kt.abbrev[t];
+  check(a && a.paragraph === p && a.by === by, `abbreviation ${t} placed after ${a && a.paragraph} by ${a && a.by} (expected ${p}, ${by})`);
+}
+const TERM20 = { TLS: 'ch11-tls-p1', TCP: 'ch10-why-p1', UDP: 'ch10-udp-p1', HTTP: 'ch10-modern-p6', IP: 'ch9-ip-p1', DNS: 'ch11-dns-p1', RSA: 'ch14-publickey-p4', ARPANET: 'ch9-arpanet-p1' };
+for (const [t, p] of Object.entries(TERM20)) {
+  const e = kt.j.taught[t];
+  check(e && e.paragraph === p, `term ${t} taught at ${e && e.paragraph} (${e && e.source}; expected ${p})`);
+}
+check(!kt.abbrev.DNS && !kt.abbrev.ARPANET, `abbreviations DNS, ARPANET not placed (no gloss of either before their teaching): ${['DNS', 'ARPANET'].filter(t => kt.abbrev[t]).join(', ') || 'none placed'}`);
+{ const entries = new Set(Object.keys(kt.j.taught).map(k => k.toLowerCase()));
+  const byWriting = Object.entries(kt.abbrev).filter(([t, a]) => a.by === 'writing' && entries.has(t.toLowerCase())).map(([t]) => t);
+  check(!byWriting.length, `abbreviations that are glossary or key-term entries placed by a plain writing: ${byWriting.length}${byWriting.length ? ` (${byWriting.join(', ')})` : ''}`); }
+// section 20, D8: no mechanism entry is a name (AddRoundKey, NaN, Paxos); persons, places, organisations, papers and
+// products stay names
+check(['AddRoundKey', 'NaN', 'Paxos'].every(n => !kt.j.names.includes(n)) && ['Shannon', 'Bell Labs', 'Docker', 'Adleman', 'Multics', 'On Distributed Communications'].every(n => kt.j.names.includes(n)),
+  `names: AddRoundKey, NaN, Paxos listed ${['AddRoundKey', 'NaN', 'Paxos'].filter(n => kt.j.names.includes(n)).join(', ') || 'none'}; Shannon, Bell Labs, Docker, Adleman, Multics, On Distributed Communications missing ${['Shannon', 'Bell Labs', 'Docker', 'Adleman', 'Multics', 'On Distributed Communications'].filter(n => !kt.j.names.includes(n)).join(', ') || 'none'}`);
 { const e = kt.j.taught['C++']; check(e && e.paragraph === 'ch5-survives-p1' && e.source === 'prose gloss (apposition)', `placed  C++ at ${e && e.paragraph} (${e && e.source}; expected ch5-survives-p1, prose gloss (apposition))`); }
 check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 'ch4-ipc-p2'),`abbreviations: SATA (a value cell) ${kt.abbrev.SATA ? 'placed' : 'not placed'}; SIGKILL (a description cell in the table after ch4-ipc-p2) ${kt.abbrev.SIGKILL ? 'placed at ' + kt.abbrev.SIGKILL.paragraph : 'not placed'}`);
 // H3: no name is a term the book marks with a key-term span (outside the figure cards)
@@ -499,8 +589,10 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   for (const p of PARTS) fs.copyFileSync(path.join(ROOT, p + '.html'), path.join(T, p + '.html'));
   const GL = JSON.parse(fs.readFileSync(path.join(ROOT, 'glossary.json'), 'utf8'));
   const PLAIN = ['safety', 'release', 'group', 'key', 'bucket', 'port', 'node', 'edge'];
-  const CUE = ['qzdefword', 'qzgen machine', 'qznamed', 'qzrev', 'qzmod plane', 'Qzyear–Pair', 'qzemph table', 'qzrowterm', 'qznlterm', 'qzposs'];
-  const NEG = ['qzpointed', 'qztagterm', 'qzvalterm'];
+  const CUE = ['qzdefword', 'qzgen machine', 'qznamed', 'qzrev', 'qzmod plane', 'Qzyear–Pair', 'qzemph table', 'qzrowterm', 'qznlterm', 'qzposs', 'qzquot'];
+  // (section 20, D4: qzlistterm, the last of three list items of four words and more, is no naming)
+  // (and qzquotneg, a quoted aside of two words closed by a comma, is no quoted definition)
+  const NEG = ['qzpointed', 'qztagterm', 'qzvalterm', 'qzlistterm', 'qzquotneg'];
   // section 19 (A): two abbreviations made glossary entries of ch18-final that its paragraphs never write, so they are
   // taught nowhere (noMention): one only mentioned before Fig 1.1, one glossed there by its expansion
   const NOMEN = ['QZNOMEN', 'QZNOMGL'];
@@ -514,7 +606,13 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
     // section 19: a real sentence start after a line break in the source (B), and a possessive apposition (E), each teach
     + ' That is all.\nQznlterm is a planted term. We use the qzposs, Kim\'s planted device. '
     // section 19 (A): a pointer sentence's mention and a noMention term's mention place no abbreviation; a gloss does
-    + ' We saw QZNOMEN today. A planted noun (QZNOMGL) sits here. Chapter 9 covers QZPTRA and more. Section 04 explains the planted store (QZPTRB). ';
+    + ' We saw QZNOMEN today. A planted noun (QZNOMGL) sits here. Chapter 9 covers QZPTRA and more. Section 04 explains the planted store (QZPTRB). '
+    // section 20: D1, plain writings of two key-term entries taught later (QZENT plain, QZENTG by its expansion) beside a
+    // non-entry's plain writing (QZPLAIN); D4, a list of three items of four words and more; D8, a mechanism entry and a
+    // person entry, both taught later, mentioned here
+    + ' We use QZENT and QZPLAIN here. A planted entry (QZENTG) sits here. It ships three parts: a big planted red box, a small planted blue box, a qzlistterm. We met Qzperson and Qzmech. '
+    // section 20 (D1's quoted cue): a quoted definition of three words or more right after the term, and a control
+    + ' Take qzquot, "one planted thing only": it holds. We call qzquotneg, "planted twice", now. ';
   const table = '<table class="summary-table"><tr><th>Name</th><th>What it is</th><th>Size</th></tr><tr><td>QZEXP (a planted expansion)</td><td>On the die</td><td>5 ms</td></tr>'
     + '<tr><td>QZDEF</td><td>Planted: a definition of the term, with QZDESC named in it.</td><td>10 GB</td></tr><tr><td>qzrowterm</td><td>Planted row. It defines the term here.</td><td>1</td></tr>'
     + '<tr><td>QZSENT</td><td>A planted sentence that defines it.</td><td>2</td></tr><tr><td>QZSHORT</td><td>Fast disk.</td><td>3</td></tr>'
@@ -524,6 +622,15 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   h = h.slice(0, open) + plainUses + cues + h.slice(open, close) + table + h.slice(close);
   const tg = h.search(/<p class="part-tagline"[^>]*>/), tge = h.indexOf('>', tg) + 1;
   h = h.slice(0, tge) + ' QZTAGX and qztagterm (a planted gloss), ' + h.slice(tge);
+  // section 20: the later teaching, in the first paragraph of the section after the one holding ch1-context-p1 (not
+  // held), after a card: the two key-term entries (D1) and the two entries of D8, whose glossary section is that one
+  const secs = [...h.matchAll(/<section class="section" id="(ch[^"]+)"/g)], s0 = secs.filter(m => m.index < at).pop(), s1 = secs[secs.indexOf(s0) + 1];
+  const cAfter = [...h.matchAll(CARD)].find(m => m.index > s1.index), pAt = h.indexOf('<p ', cAfter.index + cAfter[0].length), pOpen = h.indexOf('>', pAt) + 1;
+  const laterId = (h.slice(pAt, pOpen).match(/id="([^"]+)"/) || [])[1], laterSec = [...h.slice(0, pAt).matchAll(/<section class="section" id="(ch[^"]+)"/g)].pop()[1];
+  h = h.slice(0, pOpen) + ' <span class="key-term">QZENT</span> and <span class="key-term">QZENTG</span> are planted entries; Qzperson and Qzmech are written here. ' + h.slice(pOpen);
+  GL.entries.qzperson = { term: 'Qzperson', part: 'part-1', section: laterSec, definition: 'Kim Qzperson, who planted it in 2026.' };
+  GL.entries.qzmech = { term: 'Qzmech', part: 'part-1', section: laterSec, definition: 'The planted round step that mixes the state.' };
+  fs.writeFileSync(path.join(T, 'glossary.json'), JSON.stringify(GL));
   fs.writeFileSync(path.join(T, 'part-1.html'), h);
   const K = await runKnownTerms(T + '/', path.join(OUT, 'taught-test', 'known-terms-tree18.json'));
   const f = findFigure(T + '/', 'fig-1-1'), c = taughtContext(K, T + '/', f);
@@ -538,6 +645,14 @@ check(!kt.abbrev.SATA && (!kt.abbrev.SIGKILL || kt.abbrev.SIGKILL.paragraph !== 
   check(n.length === NEG.length, `synthetic tree: emphasis in a pointer sentence, a part tagline's gloss, a value row's term -> fail ${JSON.stringify(n)}`);
   { const pass = [...new Set(run1('QZPTRB · QZNOMGL').map(x => x.token))], fail = [...new Set(run1('QZPTRA · QZNOMEN').map(x => x.token))];
     check(!pass.length && fail.length === 2, `synthetic tree (section 19, A): an expansion in a pointer sentence and a noMention term's expansion place them (fails ${JSON.stringify(pass)}); a pointer sentence's mention and a noMention term's mention do not (fail ${JSON.stringify(fail)})`); }
+  // section 20: D1 (an entry's plain writing places nothing; its gloss and a non-entry's plain writing do), D8 (a
+  // mechanism entry is no name: its mention does not credit it; a person's does), and each passes after the later
+  // paragraph that teaches it
+  { const H = loadHeld(), later = allFigures(T + '/').find(x => x.part === 'part-1' && x.at > h.indexOf('QZENT</span>'));
+    const fail1 = [...new Set(run1('QZENT · Qzmech').map(x => x.token))], pass1 = [...new Set(run1('QZENTG · QZPLAIN · Qzperson').map(x => x.token))];
+    const cL = taughtContext(K, T + '/', later), passL = [...new Set(taughtYet('QZENT · QZENTG · Qzmech · Qzperson', cL.known, K.glossary, cL.prior).map(x => x.token))];
+    check(laterId && !H.paragraphs.includes(laterId) && fail1.length === 2 && !pass1.length && !passL.length && K.j.names.includes('Qzperson') && !K.j.names.includes('Qzmech'),
+      `synthetic tree (section 20, D1, D8): at Fig 1.1 an entry's plain writing and a mechanism's mention fail ${JSON.stringify(fail1)}; an entry's expansion, a non-entry's writing and a person's mention pass (fails ${JSON.stringify(pass1)}); at ${later && later.id}, after ${laterId}, all pass (fails ${JSON.stringify(passL)})`); }
   const ab = run1('QZEXP · QZDEF · QZSENT'), abN = [...new Set(run1('QZSHORT · QZVAL · QZHEAD · QZDESC · QZTAGX').map(x => x.token))];
   check(!ab.length && abN.length === 5, `synthetic tree: abbreviations of an expanding row and of rows defined by a phrase and by a sentence pass (${JSON.stringify(ab.map(x => x.token))}); of a row whose second cell is two words, a value row, a header row, a description cell and a part tagline fail ${JSON.stringify(abN)}`);
 }

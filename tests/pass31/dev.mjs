@@ -4,7 +4,8 @@
 // The frozen-file check comes first (calibration section 16): fig:dev computes the gate's fingerprint and refuses
 // (exit 2, nothing built or run) unless --expect-hash is given and equals it; every gate run it makes checks it again.
 // Builds Fig 1.1 at three owner-judged commits into scratch public trees (each commit's own fig_1_1.py and
-// figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/), then runs
+// figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/; rebuilt on every run, and
+// every tree's hash recorded in summary.json: calibration section 20, D5), then runs
 // tests/pass31/gate.mjs on each version --runs times. Each of those is one evaluation: one gate decision (at least
 // two of three complete runs pass; docs/pass-31-calibration.md section 14), so --runs=3 makes 6 to 9 complete runs per
 // item. Pairwise is against the v1.0-rc2 tag; the first order alternates per evaluation (candidate first, rc2 first,
@@ -30,7 +31,7 @@
 // Output: tests/pass31/out/dev/<label>/summary.json and one line per evaluation on stdout (each with its runs).
 import fs from 'node:fs'; import path from 'node:path';
 import { args, run, mkdirp, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
-import { fingerprint } from './hash.mjs';
+import { fingerprint, treeHash } from './hash.mjs';
 
 const { o } = args(process.argv.slice(2));
 {
@@ -96,7 +97,10 @@ const LEDGER_SRC = path.resolve(o.ledger || LEDGER_DEFAULT), LEDGER = path.join(
 fs.copyFileSync(LEDGER_SRC, LEDGER);
 const LG = readLedger(LEDGER), TAKE = Object.fromEntries([...new Set(ONLY.map(v => SET[v].id))].map(id => [id, ledgerTakeaway(LG, id)]));
 
-for (const v of [...ONLY].sort((a, b) => !!SET[a].from - !!SET[b].from)) {
+// (calibration section 20, D5) every tree a run judges is built in this run, a decoy's base included (--only=decoy1
+// builds v4 too: a decoy is never made from a tree an earlier run left)
+const BUILD = [...new Set([...ONLY, ...ONLY.map(v => SET[v].from).filter(Boolean)])];
+for (const v of [...BUILD].sort((a, b) => !!SET[a].from - !!SET[b].from)) {
   const d = path.join(OUT, 'dev', 'trees', v), src = mkdirp(path.join(d, 'src'));
   if (SET[v].copy) {   // a figure as it stands: this worktree's public/ copied whole (rebuilt every run, never stale)
     fs.rmSync(path.join(d, 'public'), { recursive: true, force: true }); fs.cpSync(PUBLIC, path.join(d, 'public'), { recursive: true });
@@ -104,24 +108,27 @@ for (const v of [...ONLY].sort((a, b) => !!SET[a].from - !!SET[b].from)) {
   }
   if (SET[v].from) {   // a decoy: the v4 tree with fig-1-1's svg replaced (rebuilt every run: cheap, and never stale)
     const base = path.join(OUT, 'dev', 'trees', SET[v].from, 'public');
-    if (!fs.existsSync(path.join(base, 'part-1.html'))) throw new Error(`${v}: build ${SET[v].from} first (--only=${SET[v].from},${v})`);
+    if (!fs.existsSync(path.join(base, 'part-1.html'))) throw new Error(`${v}: its base ${SET[v].from} was not built`);
     fs.rmSync(path.join(d, 'public'), { recursive: true, force: true }); fs.cpSync(base, path.join(d, 'public'), { recursive: true });
     const p = path.join(d, 'public', 'part-1.html'), h = fs.readFileSync(p, 'utf8');
     const i = h.indexOf(`id="${SET[v].id}"`), a = h.indexOf('<svg', i), b = h.indexOf('</svg>', a) + 6;
     fs.writeFileSync(p, h.slice(0, a) + DECOY[v](h.slice(a, b)) + h.slice(b));
     continue;
   }
-  if (!fs.existsSync(path.join(d, 'public', 'part-1.html'))) {
-    fs.cpSync(PUBLIC, path.join(d, 'public'), { recursive: true });
-    for (const f of ['fig_1_1.py', 'figlib.py']) {
-      const r = await run('git', ['show', `${SET[v].rev}:scripts/figs/${f}`]);
-      if (r.code) throw new Error(`git show ${SET[v].rev}:${f}: ${r.err}`);
-      fs.writeFileSync(path.join(src, f), r.out);
-    }
-    const b = await run('python3', [path.join(REPO, 'scripts/figs/build_into.py'), path.join(d, 'public'), path.join(src, 'fig_1_1.py')]);
-    if (b.code) throw new Error(`build ${v}: ${b.err}`);
+  // (calibration section 20, D5) rebuilt every run from the hashed inputs (this worktree's public/, scripts/figs/
+  // build_into.py) and the commit's own scripts, never reused from an earlier run
+  fs.rmSync(path.join(d, 'public'), { recursive: true, force: true });
+  fs.cpSync(PUBLIC, path.join(d, 'public'), { recursive: true });
+  for (const f of ['fig_1_1.py', 'figlib.py']) {
+    const r = await run('git', ['show', `${SET[v].rev}:scripts/figs/${f}`]);
+    if (r.code) throw new Error(`git show ${SET[v].rev}:${f}: ${r.err}`);
+    fs.writeFileSync(path.join(src, f), r.out);
   }
+  const b = await run('python3', [path.join(REPO, 'scripts/figs/build_into.py'), path.join(d, 'public'), path.join(src, 'fig_1_1.py')]);
+  if (b.code) throw new Error(`build ${v}: ${b.err}`);
 }
+// every tree's hash, for the record (summary.json)
+const TREES = Object.fromEntries(BUILD.map(v => [v, treeHash(path.join(OUT, 'dev', 'trees', v, 'public'))]));
 const tasks = [];
 for (let k = 1; k <= RUNS; k++) for (const v of ONLY) tasks.push({ v, k, order: k === 1 ? 'cand-first' : k === 2 ? 'rc2-first' : 'random' });
 const results = [];
@@ -155,5 +162,5 @@ const single = core.filter(r => r.single_got).map(r => ({ v: r.v, eval: r.run, g
 const perRun = Object.fromEntries(ONLY.map(v => { const rs = results.filter(r => r.v === v).flatMap(r => r.runs); return [v, { passed: rs.filter(x => x.got === 'PASS').length, of: rs.length }]; }));
 let hash = null; try { hash = JSON.parse(fs.readFileSync(path.join((core[0] || dec[0] || must[0]).dir, 'verdict.json'), 'utf8')).fingerprint; } catch {}
 fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify({ label: LABEL, correct, of: core.length, decoys_correct: dcorrect, decoys_of: dec.length, must_pass_correct: mcorrect, must_pass_of: must.length,
-  ledger: { source: LEDGER_SRC, copy: LEDGER, sha256: LG.sha256, takeaways: TAKE }, rule: 'a decision passes when at least 2 of 3 complete runs pass', single_criteria: single, runs_per_item: perRun, fingerprint: hash, results }, null, 1));
+  ledger: { source: LEDGER_SRC, copy: LEDGER, sha256: LG.sha256, takeaways: TAKE }, rule: 'a decision passes when at least 2 of 3 complete runs pass', trees: TREES, single_criteria: single, runs_per_item: perRun, fingerprint: hash, results }, null, 1));
 console.log(`fig:dev ${LABEL}: decisions: ${correct} of ${core.length} correct (v1, v2, v4); decoys ${dcorrect} of ${dec.length} correct; must-pass (Enigma) ${mcorrect} of ${must.length}; complete runs passed per item: ${Object.entries(perRun).map(([v, x]) => `${v} ${x.passed}/${x.of}`).join(', ')} -> ${path.join(DIR, 'summary.json')}`);

@@ -169,6 +169,10 @@ const GLOSS_AFTER = [
   ['or-acronym', /^,\s+or\s+\p{Lu}[\p{L}\p{N}-]+/u],
   ['apposition', { test: a => APPOS.test(a) && !LIST.test(a) && !POINTER.test(a) }],
   ['apposition', new RegExp(`^,\\s+(?!(?:${STOP})\\b)(?:[\\p{L}'’-]+\\s+){1,4}(?:that|which|who)\\b`, 'u')],
+  // section 20 (the review of the section 19 freeze, D1): a quoted definition right after the term, three words or more
+  // closed by a colon, semicolon or full stop ('Take XOR, "exactly one of A and B is 1": it gives 1 when ...'); with D1
+  // an entry's plain writing places nothing, so this form, which glosses it, is read as the gloss it is
+  ['quoted', /^,\s+["“](?:[^"”,.;:()]+\s+){2,}[^"”,.;:()]*["”]\s*[:;.]/u],
 ];
 const GLOSS_BEFORE = /(?:^|[^\p{L}])(?:called|known as)\s+(?:an?\s+|the\s+)?$/iu;
 // section 18: a parenthesised number between the term and its cue is skipped ("Diffie–Hellman (1976), which")
@@ -186,15 +190,25 @@ const OPENS_NP = /^(?:(?:the|a|an|The|A|An)\s|[\p{L}\p{N}.-]+(?:['’]s|s['’]|
 const MOD_AFTER = new RegExp(`^\\s+\\p{Ll}[\\p{L}-]*\\s*\\(\\s*(?!(?:${ASIDE})\\b)(?![\\p{Lu}\\d][\\p{Lu}\\d_\\-./]*\\s*[),;])\\p{L}`, 'u');
 // the clause before a comma that ends `before` (back to the last , ; : . ! ? ( ) or piece start; quotes kept), and the
 // character that opens it ('' at a piece or text start)
-const clauseBefore = b => { const t = b.replace(/,\s*$/u, ''); const i = Math.max(...[',', ';', ':', '.', '!', '?', '(', ')', SEP].map(c => t.lastIndexOf(c))); return { seg: t.slice(i + 1).trim(), opener: i >= 0 ? t[i] : '' }; };
+const clauseBefore = b => { const t = b.replace(/,\s*$/u, ''); const i = Math.max(...[',', ';', ':', '.', '!', '?', '(', ')', SEP].map(c => t.lastIndexOf(c))); return { seg: t.slice(i + 1).trim(), opener: i >= 0 ? t[i] : '', rest: i >= 0 ? t.slice(0, i) : '' }; };
 const words = x => x.split(/\s+/).filter(w => /[\p{L}\p{N}]/u.test(w)).length;
+// section 20 (the review of the section 19 freeze, D4): the naming cue's list guard. ", a TERM" closing a list of items
+// that each open with an article ("a hosting company, a corporate IT department, a CDN.") is the list's last item, not
+// a naming, however long the items: the clause before opens after ", a|an|the", and the clause before that one opens
+// with an article too (two items before the term), as LIST reads a list forward. "Initialised to 1, a semaphore admits one process
+// at a time, a mutex;" stays a naming: the clause before its clause does not open with an article
+const ART = /^(?:a|an|the)\s/iu;
+const listTail = before => {
+  const c1 = clauseBefore(before); if (c1.opener !== ',' || !ART.test(c1.seg)) return false;
+  return ART.test(clauseBefore(c1.rest).seg);
+};
 // the section 18 cues on one use of a term: rawBefore holds up to 200 characters before it (newlines kept), after the
 // text after it (number parenthesis removed)
 function formCue(term, rawBefore, after) {
   const multi = /[\s\-–]/u.test(term.trim());
   if (DEF_BEFORE.test(rawBefore) && DEF_AFTER.test(after)) return 'definition';
   if (multi && GEN_BEFORE.test(rawBefore) && GEN_AFTER.test(after)) return 'generic';
-  if (/,\s+(?:a|an)\s+$/u.test(rawBefore) && /^\s*[;.]/u.test(after)) { const { seg } = clauseBefore(rawBefore.replace(/\s+(?:a|an)\s+$/u, '')); if (words(seg) >= 4) return 'naming'; }
+  if (/,\s+(?:a|an)\s+$/u.test(rawBefore) && /^\s*[;.]/u.test(after)) { const pre = rawBefore.replace(/\s+(?:a|an)\s+$/u, ''), { seg } = clauseBefore(pre); if (words(seg) >= 4 && !listTail(pre)) return 'naming'; }
   if (/,\s+$/u.test(rawBefore) && REV_AFTER.test(after)) { const { seg, opener } = clauseBefore(rawBefore); if (opener !== ',' && OPENS_NP.test(seg) && words(seg) >= 2 && words(seg) <= 8) return 'reverse'; }
   if (multi && MOD_AFTER.test(after)) return 'modifier';
   return null;
@@ -456,7 +470,11 @@ for (const part of PARTS) {
     // a chapter lead or closing sits outside its sections: its chapter is the nearest id's (the lead's own, or the last
     // section's paragraph before a closing), never the next section's
     const ch = chapterOf(para) || chapterOf(sec.section);
-    if (!cue && !numeral && (restricted(t) || pointsElsewhere(sentenceAt(joined.text, m.index), ch))) continue;   // a mention that places nothing
+    // section 20 (the review of the section 19 freeze, D1): a glossary or key-term entry (TLS, TCP, UDP, HTTP, IP, DNS,
+    // RSA) is placed by a gloss of it or at its own teaching point (the terms above), never by a plain writing that
+    // comes first ("a TLS handshake", "using TCP or UDP"): brief section 15, the abbreviations the prose teaches are
+    // listed at the paragraph that teaches them
+    if (!cue && !numeral && (restricted(t) || universe.has(norm(t)) || pointsElsewhere(sentenceAt(joined.text, m.index), ch))) continue;   // a mention that places nothing
     abbreviations[t] = { part, section: sec.section, paragraph: para, at: off, by: cue ? `gloss (${cue})` : numeral ? 'part number' : 'writing' };
   }
 }
@@ -485,9 +503,28 @@ const heldOnly = new Set(strippedOnly.map(norm)), nowhere = new Set(untaught.map
 const keyMarked = new Set();
 for (const part of PARTS) { const { raw } = P[part], rc = [...raw.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
   for (const m of raw.matchAll(/<span class="key-term">([\s\S]*?)<\/span>/g)) if (!rc.some(([a, b]) => m.index >= a && m.index < b)) keyMarked.add(norm(plain(m[1]))); }
+// section 20 (the review of the section 19 freeze, D8): an entry whose glossary definition names a mechanism is no name,
+// though it is name-shaped and no key-term marks it: its head noun (the last word of the definition's first noun
+// phrase, read after an expansion and its colon, up to the first , : ; ( . or relative word or preposition) is a step,
+// protocol, algorithm, value, method ... ("The AES round step that ...": AddRoundKey; "Leslie Lamport's classic
+// consensus protocol (1989): ...": Paxos; "Not a Number: the IEEE 754 special value ...": NaN). A person, place,
+// organisation, paper or product ("Leonard Adleman, who ...", "The research laboratory where ...", "The container
+// tool, released ...") keeps the name rule
+const MECH = new Set(['step', 'round', 'protocol', 'algorithm', 'value', 'method', 'scheme', 'technique', 'cipher', 'procedure', 'operation', 'instruction', 'function', 'attack',
+  'rule', 'law', 'theorem', 'principle', 'pattern', 'format', 'encoding', 'mechanism', 'transform', 'transformation', 'primitive', 'mode', 'construction', 'policy', 'strategy',
+  'model', 'metric', 'notation', 'representation', 'structure', 'problem', 'effect', 'property', 'loop', 'test', 'check', 'routine', 'command', 'opcode', 'exchange', 'handshake']);
+const defOf = new Map(Object.values(g.entries).map(e => [norm(e.term), e.definition || '']));
+const headNoun = def => {
+  let d = String(def || '').trim(); if (!d) return null;
+  const x = d.match(/^[^:;,(.]{1,60}:\s+(?=(?:the|a|an)\s)/iu); if (x) d = d.slice(x[0].length);   // an expansion first: "Not a Number: the ..."
+  const seg = d.split(/[,:;(.]|\s(?:that|which|who|whose|where|when|for|of|with|in|on|at|by|from|to|whereby|used|built|designed|written|made|released|meant|published|between|after|before)\s/u)[0];
+  const w = seg.trim().split(/\s+/).pop(); return w ? w.toLowerCase().replace(/[^\p{L}-]/gu, '') : null;
+};
+const mechanism = form => MECH.has(headNoun(defOf.get(norm(form))));
 const isName = form => {
   if (!/\p{Lu}/u.test(form) || /\p{N}/u.test(form) || /–/.test(form) || /['’]s\s/u.test(form)) return false;
   if (nowhere.has(norm(form)) || heldOnly.has(norm(form)) || keyMarked.has(norm(form))) return false;
+  if (mechanism(form)) return false;
   const words = form.split(/[\s\-]+/).filter(Boolean);
   if (words.some(w => { const l = w.replace(/[^\p{L}]/gu, ''); return l.length >= 2 && l === l.toUpperCase(); })) return false;
   if (words.some(w => !/^\p{Lu}/u.test(w) && !PARTICLES.has(w))) return false;
