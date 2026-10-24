@@ -79,9 +79,9 @@ Phase 0, author track (the security figures are held: Claude's safety filter, ST
 - [x] Ledger `docs/pass-31-ledger.tsv`, one row per figure: 222 rows; job, intent, knows and the subtraction record filled for the 187 open figures, 35 held; bin waits for Phase 1b (brief §10), the concept and gate columns for Phase 2
 
 Phase 0, gate builder track (a separate agent; v3 sealed)
-- [ ] `figlib`: `role` on `text()`, `obj()` groups, `Timeline` beat times
-- [ ] `bare.mjs --no-text`
-- [ ] `tests/pass31/sheet.mjs`, `check.mjs`, `gate.mjs` and their npm scripts
+- [x] `figlib`: `role` on `text()`, `obj()` groups, `Timeline` beat times (in use by the five exemplars; fig:check reads the tags)
+- [x] `bare.mjs --no-text`
+- [x] `tests/pass31/sheet.mjs`, `check.mjs`, `gate.mjs` and their npm scripts (sheet and check on `figures-final`; gate, dev, hash and validate on `figures-final-gate` at `dd51d25`, pushed)
 - [ ] Development set: v1 and v2 fail, v4 passes, three times each, order swapped
 - [ ] Judge prompt frozen, hash in `docs/pass-31-calibration.md`
 
