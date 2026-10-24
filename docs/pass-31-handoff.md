@@ -2,6 +2,18 @@
 
 The owner stopped the work on 2026-10-24 ("Stop it. Only write everything about the progress that was made, and instructions and everything so it can be continued exactly"). The 15-minute heartbeat loop is cancelled and the gate's background run is stopped. This file is the complete state; it is enough to continue without the old conversation. Restart nothing until the owner says to continue.
 
+## 0. How to continue: keep it cheap (owner, 2026-10-24)
+
+The process grew far heavier than the job. One keep panel alone ran 282 agents (about 21.6 million subagent tokens) and its result was unusable; e2's verification rounds ran 260 to 439 agents each; each gate build and review stage cost about 1.5 to 2 million tokens. All of it produced rules and keep, cut and merge lists, and not one redrawn figure. So, when work resumes:
+
+- No workflows and no multi-agent panels or multi-skeptic verification unless the owner asks for one by name. Ultracode is his setting; it should be off.
+- One author redraws each figure, with one blind test per figure on Sonnet.
+- No per-round verification by session e2: at most one check per chapter, or none until the owner has read the result.
+- The formal gate (section 4) is optional. The exemplars already pass the mechanical checks, and the owner's own eye on the calibration page may be the better judge. The gate's stop path and validation below apply only if he keeps the gate.
+- Work figure by figure, or on a small set he picks, not all 222.
+
+Everything below records where things stand; read its heavier procedures (panels, review loops, verification rounds) as history and options, not as the default.
+
 ## 1. Read first, in this order
 
 1. This file.
