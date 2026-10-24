@@ -1,5 +1,5 @@
 // Pass 31 gate (docs/pass-31-brief.md sections 7, 10, 11, 15; docs/pass-31-calibration.md).
-//   npm run fig:gate -- <fig-id> --intent="<intent sentence>" --job="function|real thing|two-part"
+//   npm run fig:gate -- <fig-id> [--ledger=<docs/pass-31-ledger.tsv>] | [--intent="<takeaway>" --job="function|real thing|two-part"]
 //        [--tree=<public dir>] [--part=part-N] [--rc2-tree=<public dir> | --rc2-rev=v1.0-rc2 | --no-pairwise]
 //        [--order=random|cand-first|rc2-first] [--criteria=taught,judge,hedge,still,stripped,pairwise] [--out=<dir>]
 //        [--model=claude-sonnet-5-5] [--label=<name>] [--expect-hash=<combined sha256>] [--author]
@@ -19,24 +19,34 @@
 //   (the scorers and hedge checks are each asked three times; the majority decides)
 //   pairwise  (f) candidate against its rc2 version, both orders (the first one random unless --order): it fails
 //             only when the rc2 version is judged better in both orders. Identical frames skip the call (SAME).
-// The intent sentence is passed in by the caller (from the ledger) and only the scorer sees it.
+// The takeaway is read from the ledger by header name (column "intent", the takeaway the scorer grades; column "job",
+// the job it tests; never by column index; "content" is the fact checker's), default docs/pass-31-ledger.tsv, or
+// given with --intent and --job for a figure outside the ledger. Only the scorer sees it. The verdict records the
+// ledger file and its sha256.
 // A tool failure (render, CLI, an unreadable reply after three attempts) is not a figure failure: the verdict is
 // failed "error" and the exit code 2. Exit 0 pass, 1 fail.
 // Output: <out>/verdict.json (every tester's reply, for the gate builder) and on stdout one JSON line
 // {"id","pass","failed","failed_all"}; with --author only {"id","pass","failed"}.
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import os from 'node:os';
-import { args, tree, findFigure, readPart, packet as proseUpTo, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, findFigure, readPart, packet as proseUpTo, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
 import * as P from './prompts.mjs';
 import { fingerprint, CLAUDE } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const ID = pos[0];
-const JOB = o.job || 'function';
-const INTENT = o.intent || (o['intent-file'] ? fs.readFileSync(o['intent-file'], 'utf8').trim() : null);
-if (!ID || !INTENT || !['function', 'real thing', 'two-part'].includes(JOB)) {
-  console.log('usage: npm run fig:gate -- <fig-id> --intent="..." --job="function|real thing|two-part" [--tree=dir] [--rc2-tree=dir|--rc2-rev=v1.0-rc2|--no-pairwise] [--order=random|cand-first|rc2-first] [--expect-hash=sha] [--author]');
-  process.exit(2);
+const USAGE = 'usage: npm run fig:gate -- <fig-id> [--ledger=file] | [--intent="..." --job="function|real thing|two-part"] [--tree=dir] [--rc2-tree=dir|--rc2-rev=v1.0-rc2|--no-pairwise] [--order=random|cand-first|rc2-first] [--expect-hash=sha] [--author]';
+let INTENT = o.intent || (o['intent-file'] ? fs.readFileSync(o['intent-file'], 'utf8').trim() : null), JOB = o.job || null, SOURCE;
+if (!ID) { console.log(USAGE); process.exit(2); }
+if (INTENT && o.ledger) { console.log('gate: give the takeaway either from the ledger (--ledger) or with --intent, not both'); process.exit(2); }
+if (INTENT) { JOB = JOB || 'function'; SOURCE = { from: 'command line' }; }
+else {
+  try {
+    const L = readLedger(o.ledger ? path.resolve(o.ledger) : LEDGER_DEFAULT), t = ledgerTakeaway(L, ID);
+    if (JOB && JOB !== t.job) throw new Error(`--job "${JOB}" is not the ledger's job "${t.job}" for ${ID}`);
+    INTENT = t.intent; JOB = t.job; SOURCE = { from: 'ledger', file: L.file, sha256: L.sha256, columns: { takeaway: 'intent', job: 'job' } };
+  } catch (e) { console.log(`gate: ${e.message}`); process.exit(2); }
 }
+if (!INTENT || !['function', 'real thing', 'two-part'].includes(JOB)) { console.log(USAGE); process.exit(2); }
 const MODEL = o.model || 'claude-sonnet-5-5';
 const VOTES = 3;   // votes per scorer and hedge check (fixed: part of the frozen gate)
 const ROOT = tree(o.tree);
@@ -45,7 +55,7 @@ const CRIT = o.criteria ? String(o.criteria).split(',') : ALL.filter(c => !(c ==
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const OUTDIR = mkdirp(path.resolve(o.out || path.join(OUT, 'gate', `${ID}-${o.label || 'run'}-${STAMP}`)));
 const log = (...a) => { if (!o.author) console.error(...a); };
-const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP };
+const V = { id: ID, tree: ROOT, job: JOB, intent: INTENT, intent_source: SOURCE, model: MODEL, label: o.label || null, criteria: {}, stamp: STAMP };
 let SANDBOX = null;
 
 function finish(code) {
@@ -129,7 +139,8 @@ const need = c => CRIT.includes(c);
 // taught (mechanical)
 if (need('taught')) {
   const ktFile = path.join(OUTDIR, 'known-terms.json');
-  await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, ktFile)}`]);
+  const k = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, ktFile)}`, `--public=${ROOT}`]);
+  if (k.code) toolError(`known-terms failed: ${k.err.slice(-600)}`);
   const kt = knownTerms(ktFile), known = taughtBefore(kt, fig, readPart(ROOT, fig.part));
   const bad = known ? svgTexts(fig.svg).flatMap(t => taughtYet(t.s, known, kt.glossary, PACKET).map(b => `${b.token} (${b.why})`)) : ['section not in known-terms'];
   V.criteria.taught = { pass: bad.length === 0, untaught: [...new Set(bad)] };
@@ -168,7 +179,7 @@ async function vote(name, content, ok) {
 const scoreOK = s => String(s.verdict).toUpperCase() === 'PASS';
 const hedgeOK1 = h => h.hedged === false && (!h.hedges || h.hedges.length === 0);
 const score = (kind, d) => d && !d._error ? vote(`score-${kind}`, [text(P.SCORER({ kind, job: JOB, intent: INTENT, description: strip_(d) }))], scoreOK) : Promise.resolve(d);
-const hedge = (kind, d) => d && !d._error ? vote(`hedge-${kind}`, [text(P.HEDGE(kind, strip_(d)))], hedgeOK1) : Promise.resolve(d);
+const hedge = (kind, d) => d && !d._error ? vote(`hedge-${kind}`, [text(P.HEDGE(kind, strip_(d), JOB))], hedgeOK1) : Promise.resolve(d);
 const [sJ, sS, sT, hJ, hS, hT] = await Promise.all([
   need('judge') && !STATIC ? score('judge', judge) : null,
   need('still') ? score('still', still) : null,

@@ -10,7 +10,8 @@
 //            text and named-mark contrast; a failing row fails the figure (the part lines still carry each tool's summary)
 //   floor    no label below 11 CSS px from 360 px up (figs.mjs measures it)
 //   taught   every label and object token is a number or sign, a term taught before the figure, or an everyday word
-//            (tests/pass31/lib.mjs taughtYet; the known terms come from scripts/known-terms.mjs run with --out)
+//            (tests/pass31/lib.mjs taughtYet; the known terms come from scripts/known-terms.mjs run with --out and
+//            --public on the tree checked)
 //   band     at t=0, no empty band taller than a quarter of the plate (tests/pass31/band.py on a bare.mjs still, 375 px)
 //   desc     <desc> present and not empty
 //   caption  at most two sentences
@@ -44,7 +45,7 @@ const put = (id, check, pass, detail, skipped = false) => { R.get(id).checks[che
 
 // ---- per-figure static checks ---------------------------------------------------------------------------------
 const KT_FILE = path.join(OUTDIR, 'known-terms.json');
-{ const r = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, KT_FILE)}`]); if (r.code) { console.log('check: known-terms failed', r.err); process.exit(2); } }
+{ const r = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, KT_FILE)}`, `--public=${ROOT}`]); if (r.code) { console.log('check: known-terms failed', r.err); process.exit(2); } }
 const kt = knownTerms(KT_FILE);
 for (const f of figs) {
   const c = capCount(f.svg);

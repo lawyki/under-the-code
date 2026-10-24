@@ -3,17 +3,21 @@
 // COUNTS ONLY: no figure id, verdict, criterion name or tester reply reaches stdout, so the gate builder can run it
 // and see only whether validation held.
 //   npm run fig:validate -- [--sealed=docs/pass-31-sealed] [--manifest=<sealed>/validation.json]
-//                           [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
+//                           [--ledger=<docs/pass-31-ledger.tsv>] [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
 // The manifest (written by whoever seals the set, never by the gate builder):
 //   {"items": [{"name": "...", "id": "fig-1-1", "role": "v3|v4|worst|best", "job": "function|real thing|two-part",
 //               "intent": "...", "tree": "<public dir>" | "rev": "<commit>", "script": "fig_1_1.py"}]}
+// The takeaway each item is scored against is the ledger's (read by header name: columns "intent" and "job"; the
+// gate reads a copy of the ledger saved under <sealed>/runs/<stamp>/); an item's own "intent" and "job" are used only
+// when the ledger has no takeaway for its id (a held figure, or an id outside the ledger). The counts line says how
+// many takeaways came from each.
 //   tree: a prebuilt public dir; rev: that commit's scripts/figs/<script> and figlib.py built into a copy of public/
 //   (as fig:dev builds); neither: this worktree's public/.
 // Bars (section 10): every v3 item fails, every v4 item passes, every worst fails, at least half of the best pass.
 // Everything else (built trees, every verdict, the counts) is written under <sealed>/, which is gitignored and never
 // pushed, and each run appends one line to <sealed>/reads.log. Exit 0 validation holds, 1 it does not, 2 incomplete.
 import fs from 'node:fs'; import path from 'node:path';
-import { args, run, mkdirp, REPO, PUBLIC } from './lib.mjs';
+import { args, run, mkdirp, readLedger, LEDGER_DEFAULT, REPO, PUBLIC } from './lib.mjs';
 import { fingerprint } from './hash.mjs';
 
 const { o } = args(process.argv.slice(2));
@@ -25,12 +29,24 @@ if (!fs.existsSync(MANIFEST)) { say(`no manifest at ${path.relative(REPO, MANIFE
 let items;
 try { items = JSON.parse(fs.readFileSync(MANIFEST, 'utf8')).items; } catch { say('the manifest is not readable JSON'); process.exit(2); }
 const ROLES = ['v3', 'v4', 'worst', 'best'];
-if (!Array.isArray(items) || !items.length || items.some(x => !x || !x.id || !x.intent || !ROLES.includes(x.role))) { say('the manifest has an item without id, intent or a role (v3, v4, worst, best)'); process.exit(2); }
+if (!Array.isArray(items) || !items.length || items.some(x => !x || !x.id || !ROLES.includes(x.role))) { say('the manifest has an item without id or a role (v3, v4, worst, best)'); process.exit(2); }
+// the takeaways: the ledger's by header, the manifest's only where the ledger has none
+const LEDGER_SRC = path.resolve(o.ledger || LEDGER_DEFAULT);
+let LG = null;
+if (fs.existsSync(LEDGER_SRC)) { try { LG = readLedger(LEDGER_SRC); } catch { say('the ledger is not readable by header (columns id, job, intent)'); process.exit(2); } }
+const JOBS_OK = ['function', 'real thing', 'two-part'];
+for (const it of items) {
+  const r = LG && LG.rows.get(it.id);
+  if (r && r.intent && JOBS_OK.includes(r.job)) { it.src = 'ledger'; it.job = r.job; it.intent = r.intent; }
+  else if (it.intent) it.src = 'manifest';
+  else { say('an item has no takeaway in the ledger and no intent in the manifest; incomplete'); process.exit(2); }
+}
 const FP = await fingerprint(o.model || 'claude-sonnet-5-5');
 if (o['expect-hash'] && o['expect-hash'] !== FP.combined) { say(`refused: the gate's fingerprint is not the frozen one (npm run fig:hash)`); process.exit(2); }
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const DIR = mkdirp(path.join(SEALED, 'runs', STAMP));
-fs.appendFileSync(path.join(SEALED, 'reads.log'), `${STAMP}\tfig:validate\t${items.length} items\tgate ${FP.combined}\tcli ${FP.cli}\n`);
+const LEDGER = LG ? path.join(DIR, 'ledger.tsv') : null; if (LG) fs.copyFileSync(LEDGER_SRC, LEDGER);
+fs.appendFileSync(path.join(SEALED, 'reads.log'), `${STAMP}\tfig:validate\t${items.length} items\tgate ${FP.combined}\tcli ${FP.cli}\tledger ${LG ? LG.sha256 : 'none'}\n`);
 
 // trees
 for (const [k, it] of items.entries()) {
@@ -55,7 +71,8 @@ const res = [];
 const queue = [...items];
 async function one(it) {
   const out = path.join(DIR, it.key);
-  const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), it.id, `--intent=${it.intent}`, `--job=${it.job || 'function'}`, `--tree=${it.root}`,
+  const take = it.src === 'ledger' ? [`--ledger=${LEDGER}`] : [`--intent=${it.intent}`, `--job=${it.job || 'function'}`];
+  const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), it.id, ...take, `--tree=${it.root}`,
     '--no-pairwise', '--author', `--out=${out}`, `--label=validate-${it.key}`, ...(o['expect-hash'] ? [`--expect-hash=${o['expect-hash']}`] : [])];
   const r = await run('node', argv);
   let V = null; try { V = JSON.parse(fs.readFileSync(path.join(out, 'verdict.json'), 'utf8')); } catch {}
@@ -67,6 +84,7 @@ const n = (role, got) => res.filter(r => r.role === role && (!got || r.got === g
 const C = { v3: { fail: n('v3', 'fail'), of: n('v3') }, v4: { pass: n('v4', 'pass'), of: n('v4') }, worst: { fail: n('worst', 'fail'), of: n('worst') }, best: { pass: n('best', 'pass'), of: n('best') }, errors: res.filter(r => r.got === 'error').length };
 const holds = C.errors === 0 && C.v3.of > 0 && C.v3.fail === C.v3.of && C.v4.of > 0 && C.v4.pass === C.v4.of && C.worst.fail === C.worst.of && C.best.pass * 2 >= C.best.of;
 const verdict = C.errors ? 'INCOMPLETE' : holds ? 'HOLDS' : 'FAILS';
-fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, fingerprint: FP }, null, 1));
-say(`${verdict}: v3 failed ${C.v3.fail} of ${C.v3.of}; v4 passed ${C.v4.pass} of ${C.v4.of}; tapped worst failed ${C.worst.fail} of ${C.worst.of}; tapped best passed ${C.best.pass} of ${C.best.of}; tool errors ${C.errors}`);
+const fromLedger = items.filter(x => x.src === 'ledger').length;
+fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, takeaways_from_ledger: fromLedger, of: items.length, ledger: LG ? { file: LEDGER_SRC, sha256: LG.sha256 } : null, fingerprint: FP }, null, 1));
+say(`${verdict}: v3 failed ${C.v3.fail} of ${C.v3.of}; v4 passed ${C.v4.pass} of ${C.v4.of}; tapped worst failed ${C.worst.fail} of ${C.worst.of}; tapped best passed ${C.best.pass} of ${C.best.of}; tool errors ${C.errors}; takeaways from the ledger ${fromLedger} of ${items.length}`);
 process.exit(C.errors ? 2 : holds ? 0 : 1);

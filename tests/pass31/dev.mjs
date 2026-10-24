@@ -1,5 +1,6 @@
 // Pass 31 gate development set (docs/pass-31-calibration.md). The gate builder's tuning runs, and nothing else:
-//   npm run fig:dev -- [--runs=3] [--label=<attempt name>] [--only=v1,v2,v4,decoy1,decoy2,decoy3] [--criteria=...] [--jobs=3]
+//   npm run fig:dev -- [--runs=3] [--label=<attempt name>] [--only=v1,v2,v4,decoy1,decoy2,decoy3,enigma] [--criteria=...]
+//                      [--jobs=3] [--ledger=<docs/pass-31-ledger.tsv>]
 // Builds Fig 1.1 at three owner-judged commits into scratch public trees (each commit's own fig_1_1.py and
 // figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/), then runs
 // tests/pass31/gate.mjs on each version --runs times. Pairwise is against the v1.0-rc2 tag; the first order
@@ -12,13 +13,21 @@
 //   decoy1  the mechanism written out as text beside a decorative moving dot            expected FAIL
 //   decoy2  tape, head and marks, the head walks and writes, but no rule is drawn       expected FAIL
 //   decoy3  v4 with the head labelled "head · adding" (v2's unexplained state label)    expected FAIL
+//   decoy4  Fig 1.2's takeaway drawn as a block schematic (boxes KEY, ROTORS, REFLECTOR, LAMP joined by arrows, a
+//           stepping counter and a changing lamp letter), built from the Enigma tree: a schematic is never a real
+//           thing (brief section 4, amended 2026-10-24), so under the job "real thing" it must fail  expected FAIL
+// The must-pass (session e2): Fig 1.2 Enigma, praised by the owner, as it stands in this worktree's public/ (copied
+// into a scratch tree), under its ledger job "real thing"                              expected PASS
+// Every item's takeaway and job come from the ledger, read by header name (lib.mjs readLedger: columns "intent" and
+// "job"); the ledger is copied into the attempt's folder and each gate run reads that copy, so a run is reproducible.
 // Output: tests/pass31/out/dev/<label>/summary.json and one line per run on stdout.
 import fs from 'node:fs'; import path from 'node:path';
-import { args, run, mkdirp, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, run, mkdirp, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
 
 const { o } = args(process.argv.slice(2));
-const SET = { v1: { rev: '4392ca0', expect: false }, v2: { rev: 'c18836c', expect: false }, v4: { rev: '2a9ece9', expect: true },
-  decoy1: { from: 'v4', expect: false, decoy: true }, decoy2: { from: 'v4', expect: false, decoy: true }, decoy3: { from: 'v4', expect: false, decoy: true } };
+const SET = { v1: { id: 'fig-1-1', rev: '4392ca0', expect: false }, v2: { id: 'fig-1-1', rev: 'c18836c', expect: false }, v4: { id: 'fig-1-1', rev: '2a9ece9', expect: true },
+  decoy1: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy2: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy3: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true },
+  enigma: { id: 'fig-1-2', copy: true, expect: true, must: true }, decoy4: { id: 'fig-1-2', from: 'enigma', expect: false, decoy: true } };
 // the decoys' pictures (test fixtures, never book figures): the svg of fig-1-1 is replaced, or (decoy3) one label changed
 const F = 'font-family="IBM Plex Mono" fill="#e8e6e0"';
 const SVG = body => `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img">\n${body}\n</svg>`;
@@ -39,21 +48,43 @@ ${Array.from({ length: 6 }, (_, i) => `<rect x="${20 + 55 * i}" y="80" width="50
 <text x="20" y="190" ${F} font-size="13" fill="#d4a853">HEAD</text>
 <text x="20" y="270" ${F} font-size="16" fill="#d4a853">3 + 1 = 4</text>`),
   decoy3: svg => { const t = svg.replace(/(<text\b[^>]*>)head(<\/text>)/, '$1head · adding$2'); if (t === svg) throw new Error('decoy3: no "head" label in v4'); return t; },
+  decoy4: () => {   // three presses in a 6 s loop: the key box flashes, the counter steps 1, 2, 3, the lamp letter reads F, E, C
+    const box = (x, y, w, label) => `<rect x="${x}" y="${y}" width="${w}" height="56" rx="6" fill="none" stroke="#e8e6e0" stroke-opacity="0.7"/><text x="${x + w / 2}" y="${y - 8}" text-anchor="middle" ${F} font-size="12">${label}</text>`;
+    const step = (i, x, y, t) => `<text x="${x}" y="${y}" text-anchor="middle" ${F} font-size="20" fill="#d4a853" opacity="${i ? 0 : 1}"><animate attributeName="opacity" values="${[0, 1, 2].map(k => (k === i ? 1 : 0)).join(';')}" keyTimes="0;0.3333;0.6667" calcMode="discrete" dur="6s" repeatCount="indefinite"/>${t}</text>`;
+    const arrow = (x1, y1, x2, y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#e8e6e0" stroke-width="1.5"/><path d="M${x2} ${y2} l-7 -4 v8 z" fill="#e8e6e0" transform="rotate(${Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI} ${x2} ${y2})"/>`;
+    return SVG(`<rect x="0" y="0" width="400" height="300" fill="#141414"/>
+<text x="200" y="40" text-anchor="middle" ${F} font-size="13">PRESS A THREE TIMES</text>
+${box(20, 110, 70, 'KEY')}<text x="55" y="146" text-anchor="middle" ${F} font-size="20">A</text>
+<rect x="20" y="110" width="70" height="56" rx="6" fill="#d4a853" opacity="0"><animate attributeName="opacity" values="0;0.35;0;0;0.35;0;0;0.35;0;0" keyTimes="0;0.02;0.08;0.333;0.353;0.413;0.667;0.687;0.747;1" dur="6s" repeatCount="indefinite"/></rect>
+${box(130, 110, 90, 'ROTORS')}${[0, 1, 2].map(i => step(i, 175, 146, String(i + 1))).join('')}
+${box(260, 110, 110, 'REFLECTOR')}
+${box(130, 210, 90, 'LAMP')}${[0, 1, 2].map(i => step(i, 175, 246, 'FEC'[i])).join('')}
+${arrow(90, 138, 128, 138)}${arrow(220, 138, 258, 138)}${arrow(315, 166, 222, 228)}`);
+  },
 };
-export const INTENT_1_1 = "A Turing machine's head reads one tape cell at a time and follows two rules: on a mark, move right; on an empty cell, write a mark and stop. Starting from three tally marks it walks past them and writes a fourth, so these two rules alone compute 3 + 1 = 4.";
+// the long Fig 1.1 intent the gate was tuned on up to try21 (docs/pass-31-calibration.md section 3), kept for the record
+export const INTENT_1_1_TRY21 = "A Turing machine's head reads one tape cell at a time and follows two rules: on a mark, move right; on an empty cell, write a mark and stop. Starting from three tally marks it walks past them and writes a fourth, so these two rules alone compute 3 + 1 = 4.";
 const RUNS = +(o.runs || 3), JOBS = +(o.jobs || 3);
 const LABEL = o.label || new Date().toISOString().replace(/[:.]/g, '-');
 const DIR = mkdirp(path.join(OUT, 'dev', LABEL));
 const ONLY = o.only ? String(o.only).split(',') : Object.keys(SET);
+// the ledger: read by header, copied into the attempt folder; every gate run reads the copy
+const LEDGER_SRC = path.resolve(o.ledger || LEDGER_DEFAULT), LEDGER = path.join(DIR, 'ledger.tsv');
+fs.copyFileSync(LEDGER_SRC, LEDGER);
+const LG = readLedger(LEDGER), TAKE = Object.fromEntries([...new Set(ONLY.map(v => SET[v].id))].map(id => [id, ledgerTakeaway(LG, id)]));
 
 for (const v of [...ONLY].sort((a, b) => !!SET[a].from - !!SET[b].from)) {
   const d = path.join(OUT, 'dev', 'trees', v), src = mkdirp(path.join(d, 'src'));
+  if (SET[v].copy) {   // a figure as it stands: this worktree's public/ copied whole (rebuilt every run, never stale)
+    fs.rmSync(path.join(d, 'public'), { recursive: true, force: true }); fs.cpSync(PUBLIC, path.join(d, 'public'), { recursive: true });
+    continue;
+  }
   if (SET[v].from) {   // a decoy: the v4 tree with fig-1-1's svg replaced (rebuilt every run: cheap, and never stale)
     const base = path.join(OUT, 'dev', 'trees', SET[v].from, 'public');
     if (!fs.existsSync(path.join(base, 'part-1.html'))) throw new Error(`${v}: build ${SET[v].from} first (--only=${SET[v].from},${v})`);
     fs.rmSync(path.join(d, 'public'), { recursive: true, force: true }); fs.cpSync(base, path.join(d, 'public'), { recursive: true });
     const p = path.join(d, 'public', 'part-1.html'), h = fs.readFileSync(p, 'utf8');
-    const i = h.indexOf('id="fig-1-1"'), a = h.indexOf('<svg', i), b = h.indexOf('</svg>', a) + 6;
+    const i = h.indexOf(`id="${SET[v].id}"`), a = h.indexOf('<svg', i), b = h.indexOf('</svg>', a) + 6;
     fs.writeFileSync(p, h.slice(0, a) + DECOY[v](h.slice(a, b)) + h.slice(b));
     continue;
   }
@@ -73,13 +104,13 @@ for (let k = 1; k <= RUNS; k++) for (const v of ONLY) tasks.push({ v, k, order: 
 const results = [];
 async function one(t) {
   const out = path.join(DIR, `${t.v}-run${t.k}`);
-  const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), 'fig-1-1', `--intent=${INTENT_1_1}`, '--job=function',
+  const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), SET[t.v].id, `--ledger=${LEDGER}`,
     `--tree=${path.join(OUT, 'dev', 'trees', t.v, 'public')}`, `--order=${t.order}`, `--label=${LABEL}-${t.v}-run${t.k}`, `--out=${out}`];
   if (SET[t.v].decoy) argv.push('--no-pairwise');
   if (o.criteria) argv.push(`--criteria=${o.criteria}`);
   const r = await run('node', argv);
   let V = null; try { V = JSON.parse(fs.readFileSync(path.join(out, 'verdict.json'), 'utf8')); } catch {}
-  const row = { v: t.v, run: t.k, order: SET[t.v].decoy ? 'no pairwise' : t.order, expect: SET[t.v].expect ? 'PASS' : 'FAIL', got: !V || V.failed === 'error' ? 'ERROR' : V.pass ? 'PASS' : 'FAIL',
+  const row = { v: t.v, id: SET[t.v].id, run: t.k, order: SET[t.v].decoy ? 'no pairwise' : t.order, expect: SET[t.v].expect ? 'PASS' : 'FAIL', got: !V || V.failed === 'error' ? 'ERROR' : V.pass ? 'PASS' : 'FAIL',
     hedge_in: V && V.criteria.hedge ? V.criteria.hedge.failed_in : null,
     failed: V ? V.failed : null, failed_all: V ? V.failed_all : null,
     single_failed: V ? V.failed_all.filter(c => c !== 'pairwise') : null,
@@ -92,10 +123,11 @@ async function one(t) {
 const queue = [...tasks];
 await Promise.all(Array.from({ length: JOBS }, async () => { while (queue.length) await one(queue.shift()); }));
 results.sort((a, b) => a.v.localeCompare(b.v) || a.run - b.run);
-const core = results.filter(r => !SET[r.v].decoy), dec = results.filter(r => SET[r.v].decoy);
-const correct = core.filter(r => r.correct).length, dcorrect = dec.filter(r => r.correct).length;
+const core = results.filter(r => !SET[r.v].decoy && !SET[r.v].must), dec = results.filter(r => SET[r.v].decoy), must = results.filter(r => SET[r.v].must);
+const correct = core.filter(r => r.correct).length, dcorrect = dec.filter(r => r.correct).length, mcorrect = must.filter(r => r.correct).length;
 // without pairwise (as the sealed validation runs): would v1 and v2 still fail on their single-figure criteria alone?
 const single = core.filter(r => r.single_failed).map(r => ({ v: r.v, run: r.run, got: r.single_failed.length ? 'FAIL' : 'PASS' }));
-let hash = null; try { hash = JSON.parse(fs.readFileSync(path.join(core[0]?.dir || dec[0].dir, 'verdict.json'), 'utf8')).fingerprint; } catch {}
-fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify({ label: LABEL, correct, of: core.length, decoys_correct: dcorrect, decoys_of: dec.length, single_criteria: single, fingerprint: hash, results }, null, 1));
-console.log(`fig:dev ${LABEL}: ${correct} of ${core.length} correct (v1, v2, v4); decoys ${dcorrect} of ${dec.length} correct -> ${path.join(DIR, 'summary.json')}`);
+let hash = null; try { hash = JSON.parse(fs.readFileSync(path.join((core[0] || dec[0] || must[0]).dir, 'verdict.json'), 'utf8')).fingerprint; } catch {}
+fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify({ label: LABEL, correct, of: core.length, decoys_correct: dcorrect, decoys_of: dec.length, must_pass_correct: mcorrect, must_pass_of: must.length,
+  ledger: { source: LEDGER_SRC, copy: LEDGER, sha256: LG.sha256, takeaways: TAKE }, single_criteria: single, fingerprint: hash, results }, null, 1));
+console.log(`fig:dev ${LABEL}: ${correct} of ${core.length} correct (v1, v2, v4); decoys ${dcorrect} of ${dec.length} correct; must-pass (Enigma) ${mcorrect} of ${must.length} -> ${path.join(DIR, 'summary.json')}`);

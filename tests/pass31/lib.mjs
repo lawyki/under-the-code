@@ -1,6 +1,6 @@
 // Pass 31 shared helpers (docs/pass-31-brief.md; docs/pass-31-calibration.md): the figure cards of a part, the
 // judge's prose packet, the taught-yet token check, and small process helpers. Used by sheet.mjs, check.mjs and gate.mjs.
-import fs from 'node:fs'; import path from 'node:path'; import { spawn } from 'node:child_process';
+import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { spawn } from 'node:child_process';
 
 export const REPO = new URL('../../', import.meta.url).pathname;
 export const PUBLIC = path.join(REPO, 'public') + '/';
@@ -68,15 +68,45 @@ export function packet(root, fig) {
   return chunks.join('\n\n').trim();
 }
 
-// ---- taught-yet (brief section 15) ----------------------------------------------------------------------------
-// Every label and object token is: a number or a sign (arithmetic signs and arrows), a term known-terms.mjs lists
-// before the figure's section (or a term this section teaches in the prose before the figure), or an everyday word
-// (in /usr/share/dict/words after plain inflections are stripped, not a glossary term anywhere in the book, and not
-// an all-capitals abbreviation of two or more letters). A single letter is an everyday token (a key, a lamp).
-let DICT = null;
+// ---- taught-yet (brief section 15; docs/pass-31-calibration.md section 13) ------------------------------------
+// Every label and object token is one of:
+//   - a number or a sign (arithmetic signs and arrows); a single letter (a key, a lamp);
+//   - a term taught before the figure: known-terms.mjs lists it before the figure's section, or the section teaches
+//     it in the prose before the card, or (an all-capitals abbreviation) the prose paragraph that first uses it comes
+//     before the card. Prose never includes a figure card, so a term first written in the figure's own caption, label
+//     or How-it-works strip is not taught for that figure;
+//   - an everyday word: in /usr/share/dict/words or on the COMMON-word list (tests/pass31/common-words.txt), after
+//     plain inflections are stripped (lowest, became, rewritten, databases), and not a glossary term (single or
+//     multi-word, in any inflection) the figure has not yet taught;
+//   - an all-capitals token only when the prose before the figure teaches it (above), when its lowercase form is on
+//     the COMMON-word list (THE, KEY, PRESS), or when it is an everyday word set in capitals: four letters or more,
+//     a lowercase dictionary entry, not a glossary term, and never written in capitals anywhere in the book's text
+//     (so it is not an abbreviation the book uses: LAMP, ROTORS pass; ARM, RAM, OS, MAC, LAN, NAT, CPU do not until
+//     taught). Three letters or fewer pass only through the COMMON-word list or teaching (AX, AL, DOS fail);
+//   - a proper name the prose before the figure already uses (Shannon; LINUX for a name the prose spells Linux).
+let DICT = null, LOWER = null, COMMON = null;
 const dict = () => DICT || (DICT = new Set(fs.readFileSync('/usr/share/dict/words', 'utf8').split('\n').map(w => w.trim().toLowerCase()).filter(Boolean)));
-const stems = w => {
+const lowerDict = () => LOWER || (LOWER = new Set(fs.readFileSync('/usr/share/dict/words', 'utf8').split('\n').map(w => w.trim()).filter(w => w && w === w.toLowerCase())));
+export const COMMON_FILE = new URL('./common-words.txt', import.meta.url).pathname;
+export const common = () => COMMON || (COMMON = new Set(fs.readFileSync(COMMON_FILE, 'utf8').split('\n').map(w => w.trim()).filter(w => w && !w.startsWith('#'))));
+// irregular forms of everyday words (past tenses, participles, plurals, comparatives): form -> stem
+const IRREGULAR = Object.fromEntries(`became:become began:begin begun:begin bent:bend bound:bind bred:breed brought:bring built:build bought:buy
+caught:catch chose:choose chosen:choose clung:cling crept:creep dealt:deal did:do done:do drew:draw drawn:draw dug:dig drove:drive driven:drive
+ate:eat eaten:eat fed:feed fell:fall fallen:fall felt:feel fled:flee flung:fling flew:fly flown:fly fought:fight found:find forgot:forget
+forgotten:forget froze:freeze frozen:freeze gave:give given:give went:go gone:go grew:grow grown:grow hung:hang had:have has:have heard:hear
+held:hold hid:hide hidden:hide kept:keep knew:know known:know laid:lay led:lead left:leave lent:lend lit:light lost:lose made:make meant:mean
+met:meet paid:pay ran:run rang:ring rose:rise risen:rise rode:ride ridden:ride said:say sang:sing sung:sing sank:sink sunk:sink sat:sit saw:see
+seen:see sent:send shook:shake shaken:shake shone:shine shot:shoot showed:show shown:show slept:sleep slid:slide sold:sell sought:seek
+spent:spend spoke:speak spoken:speak sped:speed spun:spin stole:steal stolen:steal stood:stand stuck:stick struck:strike swept:sweep
+swung:swing swam:swim swum:swim swore:swear sworn:swear took:take taken:take taught:teach tore:tear torn:tear told:tell thought:think
+threw:throw thrown:throw understood:understand woke:wake woken:wake wore:wear worn:wear won:win wound:wind wrote:write written:write
+children:child men:man women:woman feet:foot teeth:tooth mice:mouse geese:goose indices:index matrices:matrix vertices:vertex axes:axis
+analyses:analysis criteria:criterion phenomena:phenomenon better:good best:good worse:bad worst:bad less:little least:little more:much most:much`
+  .split(/\s+/).filter(Boolean).map(x => x.split(':')));
+const PREFIX = /^(re|un|over|under|pre|mis|out|up|sub|non)(?=[a-z]{3,})/;
+export const stems = (w, deep = true) => {
   const s = [w];
+  if (IRREGULAR[w]) s.push(IRREGULAR[w]);
   if (w.endsWith('ies')) s.push(w.slice(0, -3) + 'y');
   if (w.endsWith('es')) s.push(w.slice(0, -2));
   if (w.endsWith('s')) s.push(w.slice(0, -1));
@@ -84,17 +114,24 @@ const stems = w => {
   if (w.endsWith('ing')) { s.push(w.slice(0, -3)); s.push(w.slice(0, -3) + 'e'); if (/(.)\1ing$/.test(w)) s.push(w.slice(0, -4)); }
   if (w.endsWith('ed')) { s.push(w.slice(0, -2)); s.push(w.slice(0, -1)); if (/(.)\1ed$/.test(w)) s.push(w.slice(0, -3)); }
   if (w.endsWith('ied')) s.push(w.slice(0, -3) + 'y');
-  if (w.endsWith('er')) { s.push(w.slice(0, -2)); s.push(w.slice(0, -1)); }
+  if (w.endsWith('er')) { s.push(w.slice(0, -2)); s.push(w.slice(0, -1)); if (/(.)\1er$/.test(w)) s.push(w.slice(0, -3)); }
+  if (w.endsWith('ier')) s.push(w.slice(0, -3) + 'y');
+  if (w.endsWith('est')) { s.push(w.slice(0, -3)); s.push(w.slice(0, -2)); if (/(.)\1est$/.test(w)) s.push(w.slice(0, -4)); }   // lowest, largest, biggest
+  if (w.endsWith('iest')) s.push(w.slice(0, -4) + 'y');                                                                       // easiest
+  if (/(.)\1en$/.test(w)) { s.push(w.slice(0, -3) + 'e'); s.push(w.slice(0, -3)); }                                          // written, bitten, rewritten
+  else if (w.endsWith('en')) { s.push(w.slice(0, -2)); s.push(w.slice(0, -1)); }                                             // fallen, taken
+  if (/(?:[aeo]w|ee)n$/.test(w)) s.push(w.slice(0, -1));                                                                      // shown, seen
   if (w.endsWith('ly')) s.push(w.slice(0, -2));
   if (w.endsWith("n't")) s.push(w.slice(0, -3));
   // British spellings: centralised -> centralized, colour -> color
   for (const x of [...s]) { if (/is(e|ed|es|ing|ation)$/.test(x)) s.push(x.replace(/is(e|ed|es|ing|ation)$/, 'iz$1')); if (/our$/.test(x)) s.push(x.replace(/our$/, 'or')); }
+  // a plain prefix on an everyday word: rewrote, overwritten, unpaid
+  if (deep && PREFIX.test(w)) for (const x of stems(w.replace(PREFIX, ''), false)) s.push(x);
   return s;
 };
 const normT = s => s.toLowerCase().replace(/[–-]/g, ' ').replace(/\s+/g, ' ').trim();
+const esc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 export const SIGN = /^[+\-−×÷=<>≤≥≠≈*/%^()[\]{}|~→←↑↓↔⇒⇐·•…,.:;!?'"“”‘’&#@$€£¥°±√∑∞]+$/u;
-// short words that are written in capitals in headings and are never abbreviations
-const SHORT = new Set('a an the of to in on at by for and or nor but not no yes is are was be it its as if so do up out off all any one two six ten new old big end key run set put get add top low own per via who why how now then than this that each into from with what when'.split(' '));
 const NUMBER = /^[€£$]?[+\-−]?\d[\d.,:]*(?:st|nd|rd|th)?(?:[%°]|[kKMGT]?B|[kmµn]?s|×)?$/u;
 
 let KT = null;
@@ -105,26 +142,44 @@ export function knownTerms(file) {
   // glossary entries that are proper names (a capital, then lower case: "Shannon", not "ALU"): a figure may use the
   // name once the prose before it has (the reader has met the person or place; the entry teaches more about them later)
   glossary.names = new Set(Object.keys(j.taught).filter(k => /^\p{Lu}\p{Ll}/u.test(k)).map(normT));
-  return (KT = { file, j, glossary, by: new Map(j.by_section.map(s => [s.section, s])) });
+  // multi-word entries (normalised, longest first), each with its written form: "system call", "Ring 0", "log scale"
+  glossary.multi = Object.keys(j.taught).filter(k => normT(k).includes(' ')).map(k => ({ t: normT(k), form: k })).sort((a, b) => b.t.length - a.t.length);
+  // every all-capitals token the book's text writes outside the figure cards (known-terms.mjs "capitals")
+  glossary.capitals = new Set(j.capitals || []);
+  if (!j.abbreviations || !j.capitals) throw new Error(`${file}: no abbreviations or capitals (scripts/known-terms.mjs is older than the Pass 31 follow-up)`);
+  return (KT = { file, j, glossary, abbrev: j.abbreviations, by: new Map(j.by_section.map(s => [s.section, s])) });
 }
-// the terms taught before the figure: known before its section, plus those its section teaches in prose before the card
+// the terms taught before the figure: known before its section, those its section teaches in prose before the card,
+// and every all-capitals abbreviation whose first prose paragraph comes before the card (known-terms.mjs must have
+// read the same tree as partHtml: run it with --public=<tree>)
 export function taughtBefore(kt, fig, partHtml) {
   const s = kt.by.get(fig.section); if (!s) return null;
   const secStart = partHtml.indexOf(`<section class="section" id="${fig.section}"`);
   const before = secStart >= 0 ? plain(partHtml.slice(secStart, fig.at).replace(CARD, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ')).toLowerCase() : '';
   const inSec = s.defines.filter(t => before.includes(t.toLowerCase()));
-  return [...s.known, ...inSec].map(normT);
+  const pi = PARTS.indexOf(fig.part);
+  const ab = Object.entries(kt.abbrev).filter(([, a]) => PARTS.indexOf(a.part) < pi || (a.part === fig.part && a.at < fig.at)).map(([t]) => t);
+  return [...s.known, ...inSec, ...ab].map(normT);
 }
 export function svgTexts(svg) {
   return [...svg.replace(/<(title|desc)\b[\s\S]*?<\/\1>/g, '').matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].map(m => ({ attrs: m[1], s: plain(m[2]) })).filter(t => t.s);
 }
+const B = '[^\\p{L}\\p{N}_]';   // a word boundary that keeps SYN_SENT and CR3 whole
 export function taughtYet(text, known, glossary, before = '') {
   const bad = [];
   let s = ' ' + normT(text) + ' ';
-  // known multi-word terms first (longest first), so "turing machine" is taken whole
-  for (const t of [...known].sort((a, b) => b.length - a.length)) {
-    const re = new RegExp(`(^|[^\\p{L}\\p{N}])${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(s|es)?(?=$|[^\\p{L}\\p{N}])`, 'gu');
-    s = s.replace(re, '$1 ');
+  // known terms first (longest first), so "turing machine" is taken whole
+  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
+  // then multi-word glossary terms not yet taught ("system call", "ring 0"): each fails whole, even when every word in
+  // it is an everyday word; a named one ("Bell Labs", "von Neumann") passes once the prose before the figure uses it.
+  // Matched on the text as written (a hyphen in the term needs a hyphen: "a-machine" is not "a machine").
+  const knownSet = new Set(known), rawL = ' ' + text.toLowerCase().replace(/\s+/g, ' ') + ' ';
+  for (const { t, form } of glossary.multi || []) {
+    if (knownSet.has(t)) continue;
+    const pat = form.toLowerCase().split(/(\s+|[-–])/).map(x => /^\s+$/.test(x) ? '[\\s\\-–]+' : /^[-–]$/.test(x) ? '[-–]' : esc(x)).join('');
+    if (!new RegExp(`(^|${B})${pat}(s|es)?(?=$|${B})`, 'u').test(rawL)) continue;
+    if (!(/\p{Lu}/u.test(form) && before && new RegExp(`(^|[^\\p{L}])${esc(form)}(?![\\p{L}])`, 'u').test(before))) bad.push({ token: t, why: 'a glossary term not yet taught' });
+    s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
   }
   const raw = text.split(/\s+/);
   for (const tok0 of s.split(/[\s·•,;:!?"“”()[\]{}]+/u)) {
@@ -134,32 +189,60 @@ export function taughtYet(text, known, glossary, before = '') {
     if (/^[\d+\-−×÷=<>≤≥*/%^().]+$/u.test(tok) && /\d/.test(tok) && !/^\//.test(tok)) continue;
     if (/^\p{L}$/u.test(tok)) continue;                                      // one letter
     if (/^\/\d/.test(tok)) { bad.push({ token: tok, why: 'notation, not a plain number' }); continue; }   // /22
-    const orig = (raw.find(r => r.toLowerCase().replace(/[^\p{L}\p{N}'’-]/gu, '') === tok.replace(/[^\p{L}\p{N}'’-]/gu, '')) || tok).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+    const orig = (raw.find(r => r.toLowerCase().replace(/[^\p{L}\p{N}'’_-]/gu, '') === tok.replace(/[^\p{L}\p{N}'’_-]/gu, '')) || tok).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
     const letters = orig.replace(/[^\p{L}]/gu, '');
     const caps = letters.length >= 2 && letters === letters.toUpperCase() && /\p{Lu}/u.test(letters);
     for (const part of tok.split(/[-–/]/)) {
       if (!part) continue;
       if (NUMBER.test(part) || SIGN.test(part) || /^\p{L}$/u.test(part)) continue;
-      if (glossary.has(part)) {
-        const name = part[0].toUpperCase() + part.slice(1);
-        if (glossary.names && glossary.names.has(part) && before && new RegExp(`(^|[^\\p{L}])${name}(?![\\p{L}])`, 'u').test(before)) continue;
+      const st = stems(part), g = st.find(w => glossary.has(w));
+      if (g !== undefined) {   // a glossary term (in any inflection) the figure has not yet taught
+        const name = g[0].toUpperCase() + g.slice(1);
+        if (glossary.names && glossary.names.has(g) && before && new RegExp(`(^|[^\\p{L}])${esc(name)}(?![\\p{L}])`, 'u').test(before)) continue;
         bad.push({ token: part, why: 'a glossary term not yet taught' }); continue; }
-      const inDict = stems(part).some(w => dict().has(w));
-      // all capitals: a heading word in capitals passes (THE, ITS, ROTORS); an abbreviation does not (EAX, CGNAT, IHL).
-      // Three letters or fewer pass only as a common short word, since many abbreviations are also rare dictionary words.
+      const everyday = st.some(w => dict().has(w) || common().has(w));
       const title = part[0].toUpperCase() + part.slice(1);   // LINUX written for a name the prose spells Linux
-      if (caps) { if (part.length <= 3 ? SHORT.has(part) : inDict) continue; if (before && part.length >= 4 && new RegExp(`(^|[^\\p{L}])${title}(?![\\p{L}])`, 'u').test(before)) continue;
-        // an abbreviation the prose before the figure spells out: "main memory (RAM)", "ALU (arithmetic and logic unit)"
+      if (caps) {
         const AB = part.toUpperCase();
-        if (before && (before.includes(`(${AB})`) || new RegExp(`(^|[^\\p{L}])${AB} \\([\\p{Ll}]`, 'u').test(before))) continue;
-        bad.push({ token: orig, why: 'an all-capitals abbreviation' }); continue; }
-      if (inDict) continue;
+        if ((part.length >= 4 ? st : [part]).some(w => common().has(w))) continue;                    // THE, KEY, PRESS (inflected only from four letters: DOS is not "do")
+        if (part.replace(/[^\p{L}]/gu, '').length >= 4 && !st.some(w => glossary.capitals?.has(w.toUpperCase())) && st.some(w => lowerDict().has(w) || common().has(w))) continue;   // LAMP, ROTORS
+        if (before && part.length >= 4 && /^\p{L}+$/u.test(part) && new RegExp(`(^|[^\\p{L}])${esc(title)}(?![\\p{L}])`, 'u').test(before)) continue;   // LINUX
+        bad.push({ token: orig.includes('-') || orig.includes('/') ? AB : orig, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
+      if (everyday) continue;
       // a proper name (capital first letter, not all capitals) that the prose before the figure already uses
-      if (/^\p{Lu}\p{Ll}/u.test(orig) && before && new RegExp(`(^|[^\\p{L}])${orig.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'u').test(before)) continue;
+      if (/^\p{Lu}\p{Ll}/u.test(orig) && before && new RegExp(`(^|[^\\p{L}])${esc(orig)}`, 'u').test(before)) continue;
       bad.push({ token: part, why: /\d/.test(part) ? 'notation, not a plain number' : 'not an everyday word' });
     }
   }
   return bad;
+}
+
+// ---- the ledger (docs/pass-31-ledger.tsv, kept on the author's branch) -----------------------------------------
+// Read by header name, never by column index: "intent" holds the takeaway the scorer grades (brief section 7),
+// "content" the names and numbers for the fact checker, "job" the job the gate tests. Throws when a needed column is
+// missing or an id repeats. Returns { file, sha256, header, rows: Map(id -> {column: value}) }.
+export const LEDGER_DEFAULT = path.join(REPO, 'docs/pass-31-ledger.tsv');
+export function readLedger(file = LEDGER_DEFAULT, need = ['id', 'job', 'intent']) {
+  const buf = fs.readFileSync(file), lines = buf.toString('utf8').split('\n').filter(l => l.trim());
+  const header = lines[0].replace(/\r$/, '').split('\t').map(h => h.trim());
+  const miss = need.filter(h => !header.includes(h));
+  if (miss.length) throw new Error(`${file}: no column ${miss.join(', ')} in the header (${header.join(', ')})`);
+  const rows = new Map();
+  for (const l of lines.slice(1)) {
+    const cells = l.replace(/\r$/, '').split('\t'), row = Object.fromEntries(header.map((h, i) => [h, (cells[i] ?? '').trim()]));
+    if (!row.id) continue;
+    if (rows.has(row.id)) throw new Error(`${file}: id ${row.id} appears twice`);
+    rows.set(row.id, row);
+  }
+  return { file, sha256: crypto.createHash('sha256').update(buf).digest('hex'), header, rows };
+}
+// the takeaway and job of one figure; throws when the row is missing, held (no job or takeaway) or the job unknown
+export function ledgerTakeaway(L, id) {
+  const r = L.rows.get(id);
+  if (!r) throw new Error(`${L.file}: no row for ${id}`);
+  if (!r.intent || !r.job) throw new Error(`${L.file}: ${id} has no takeaway (column intent) or no job (a held figure?)`);
+  if (!['function', 'real thing', 'two-part'].includes(r.job)) throw new Error(`${L.file}: ${id} has job "${r.job}" (function, real thing or two-part)`);
+  return { intent: r.intent, job: r.job };
 }
 
 // ---- label cap: a tag-stack walk over the svg -----------------------------------------------------------------
