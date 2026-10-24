@@ -4,7 +4,7 @@
 # Concept chosen of three (ledger). Top, the failure: a transfer with no transaction, cut by a power failure after
 # Alice is debited, and EUR 100 is gone. Below, the same transfer inside a transaction: every change is stamped into
 # the log before the data pages; an earlier deposit committed but never reached its page, and the transfer was
-# cut before its commit. Recovery redoes the deposit and undoes the transfer. Strongroom's lock-step motion: records land like stamps.
+# cut before its commit. Recovery replays the deposit and rolls back the transfer. Strongroom's lock-step motion: records land like stamps.
 # t=0 is the recovered state. The merged card is Fig 13.6 (the higher half keeps its number, id and slot); Fig 13.5's
 # card leaves the page and its ids are aliased in book.js to ch13-acid-p2.
 import re
@@ -23,7 +23,7 @@ def until(t):
 P1_DEBIT, P1_CUT, P1_GONE = T.beat(0.6, 'no transaction: Alice is debited'), T.beat(1.3, 'the power fails'), T.beat(2.0, 'EUR 100 is gone')
 L1, L2, L3 = T.beat(3.0, 'the deposit logged'), T.beat(3.6, 'the deposit commits'), T.beat(4.3, 'the transfer logged: Alice debited')
 EARLY, CUT = T.beat(4.8, "Alice's page written early"), T.beat(5.5, 'the power fails before the transfer commits')
-REDO, UNDO, DONE = T.beat(6.6, 'recovery redoes the deposit'), T.beat(7.5, 'and undoes the transfer'), T.beat(8.3, 'nothing half done')
+REDO, UNDO, DONE = T.beat(6.6, 'recovery replays the deposit'), T.beat(7.5, 'and rolls back the transfer'), T.beat(8.3, 'nothing half done')
 
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part4-6 svgd-part4-6"{T.beats_attr()}>')
@@ -33,7 +33,7 @@ a('<desc id="svgd-part4-6">Two parts. Top, a transfer of 100 euros from Alice to
   'transfer inside a transaction. Every change is written to the log first: an earlier deposit raising Dan from 20 to 70, '
   'and its commit; then the transfer, debiting Alice from 200 to 100. Dan\'s data page has not been written yet, while '
   'Alice\'s was written early. The power fails before the transfer commits. Recovery reads the log: the deposit has a '
-  'commit, so it is redone and Dan holds 70; the transfer has none, so it is undone and Alice holds 200 again. Nothing is '
+  'commit, so it is replayed and Dan holds 70; the transfer has none, so it is rolled back and Alice holds 200 again. Nothing is '
   'left half done.</desc>')
 
 def card(x, y, w, name, value='', col=PARCH, layers=()):
@@ -83,13 +83,13 @@ for i, (s, col, t) in enumerate(recs):
                                         text(30, y + 16, s, size=14, fill=col, ls='0', role='label')) + '</g>')
 a(stamp(338, 261, 'power cut', SEAL, CUT))
 a(text(20, 294, 'data pages after the cut', size=14, fill=PMUTED, role='label'))
-# Dan: stale 20 on the page, redone to 70
+# Dan: stale 20 on the page, replayed to 70
 a(card(20, 304, 112, 'Dan', layers=(
     f'<g opacity="1">{until(REDO)}' + text(122, 342, '€20', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
     f'<g opacity="1">{held(REDO)}' + text(76, 342, '€20', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
     f'<line x1="44" y1="337" x2="78" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
     text(122, 342, '€70', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
-# Alice: 200 on the page until the transfer's debit reaches it early, undone back to 200
+# Alice: 200 on the page until the transfer's debit reaches it early, rolled back to 200
 a(card(144, 304, 112, 'Alice', layers=(
     f'<g opacity="1">{until(EARLY)}' + text(246, 342, '€200', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
     f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (EARLY - 0.001, 0.0), (EARLY, 1.0), (UNDO - 0.001, 1.0), (UNDO, 0.0), (D, 0.0)])}' +
@@ -98,24 +98,23 @@ a(card(144, 304, 112, 'Alice', layers=(
     f'<line x1="158" y1="337" x2="198" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
     text(246, 342, '€200', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
 a(card(268, 304, 112, 'Bob', '€50'))
-a(stamp(76, 382, 'redo', SAGE, REDO))
-a(stamp(200, 382, 'undo', BRASS, UNDO))
-a(f'<g opacity="1">{held(DONE)}' + text(20, 432, 'deposit kept, transfer undone:', size=15, fill=SAGE, ls='0', role='label') +
-  text(20, 454, 'nothing half done', size=15, fill=SAGE, ls='0', role='label') + '</g>')
+a(stamp(76, 382, 'replay', SAGE, REDO))
+a(stamp(200, 382, 'roll back', BRASS, UNDO))
+a(f'<g opacity="1">{held(DONE)}' + text(20, 440, 'deposit kept, transfer rolled back', size=15, fill=SAGE, ls='0', role='label') + '</g>')
 a('</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('Top, a transfer with no transaction: the power fails after Alice is debited, and €100 vanishes. Below, every '
-           'change reaches the log before the data pages, so recovery redoes the committed deposit that never reached its '
-           'page and undoes the unfinished transfer.')
+           'change reaches the log before the data pages, so recovery replays the committed deposit that never reached its '
+           'page and rolls back the unfinished transfer.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The transaction.</b> BEGIN and COMMIT fence the transfer: both updates count, or neither does.</li>
           <li><b>The log first.</b> Each change is appended to the write-ahead log and forced to disk (<code>fsync()</code>) before the commit is acknowledged.</li>
           <li><b>Pages later.</b> The data pages are written when convenient, so at a crash some committed changes are missing from them and some uncommitted ones are already there.</li>
-          <li><b>Recovery.</b> It reads the log: a transaction with a commit record is redone, one without is undone. One mechanism gives both durability and atomicity.</li>
+          <li><b>Recovery.</b> It reads the log: a transaction with a commit record is replayed (redo), one without is rolled back (undo). One mechanism gives both durability and atomicity.</li>
           <li><b>Variants.</b> This is the idea behind ARIES (IBM, 1992), which first repeats every logged change and then undoes the unfinished transactions; PostgreSQL only redoes, and its row versions keep uncommitted changes from ever being seen.</li>
         </ol>
       </details>'''

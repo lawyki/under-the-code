@@ -45,10 +45,8 @@ a(node(84, 58, 'A', VIOLET)); a(waiting(84, 58))
 a(node(316, 58, 'C', QSOFT))
 a(f'<line x1="100" y1="58" x2="300" y2="58" stroke="{QSOFT}" stroke-width="1.5" stroke-dasharray="4 5"/>')
 a(text(200, 49, 'no vote yet', anchor='middle', size=14, fill=QSOFT, role='label'))
-a('</g>')
 
-# the two worlds
-a('<g data-panel="worlds">')
+# the two worlds A cannot tell apart: the same panel, one view of A's situation (brief section 15, two panels at most)
 for i, (name, dead) in enumerate((('C is slow', False), ('C crashed', True))):
     x0 = GX[i]
     a(obj(f'<rect x="{x0}" y="98" width="{CW}" height="76" rx="10" fill="none" stroke="{QSOFT}" stroke-width="1.3"/>'))

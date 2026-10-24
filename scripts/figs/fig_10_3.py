@@ -1,6 +1,7 @@
 # Fig 10.3 · TCP's state machine (Pass 31 exemplar for Part III, from an empty script). Takeaway: each segment, call
 # or timer moves a connection one state along fixed rules from open to closed.
-# Concept chosen of three (ledger): the client and the server as two lanes, time running down; each segment crosses
+# Concept chosen of three (ledger): the client and the server as two lanes, time running down (two panels, each one
+# side's view: its states and the segments it sends); each segment crosses
 # between them, and each side's state changes where a segment leaves or lands, or where its program calls listen or
 # close, or where TIME_WAIT's timer runs out. Chart Room's continuous flow: segments travel the chart like routes.
 # t=0 is the whole connection, opened and closed.
@@ -74,6 +75,11 @@ a(f'<g opacity="1">{held(tw0)}' + obj(
 a(f'<g opacity="1">{held(tw1)}<path d="M {CP} {Y(11) + 26} V {Y(13) - 22}" stroke="{CSOFT}" stroke-width="1.5"/>'
   f'<polygon points="{CP - 5},{Y(13) - 24} {CP + 5},{Y(13) - 24} {CP},{Y(13) - 17}" fill="{CSOFT}"/></g>')
 a(pill(CP, Y(13), 'CLOSED', CSOFT, tw1))
+# the segments the client sends (each panel is one side's view: its states, and what it sends)
+segment(1, 2, CX, SX, 'SYN', CYAN)
+segment(3, 4, CX, SX, 'ACK', CYAN)
+segment(6, 7, CX, SX, 'FIN', ROUTE)
+segment(10, 11, CX, SX, 'ACK', ROUTE)
 a('</g>')
 
 # the server's lane
@@ -88,20 +94,14 @@ a(pill(SP, Y(7), 'CLOSE_WAIT', ROUTE, at(6) + 0.8))
 a(f'<g opacity="1">{held(at(9) - 0.4)}' + text(SX + 8, Y(9) - 18, 'close', size=14, fill=ROUTE, ls='0', role='label') + '</g>')
 a(pill(SP, Y(9), 'LAST_ACK', ROUTE, at(9)))
 a(pill(SP, Y(11), 'CLOSED', CSOFT, at(10) + 0.8))
-a('</g>')
-
-# the segments between them
-a('<g data-panel="segments">')
-segment(1, 2, CX, SX, 'SYN', CYAN)
+# the segments the server sends, and the data both exchange
 segment(2, 3, SX, CX, 'SYN-ACK', CYAN)
-segment(3, 4, CX, SX, 'ACK', CYAN)
 a(f'<g opacity="1">{held(at(4) + 0.6)}' + obj(f'<rect x="{CX + 8}" y="{Y(4) + 12}" width="{SX - CX - 16}" height="40" rx="4" fill="none" stroke="{CYAN}" stroke-opacity="0.6" stroke-dasharray="3 4"/>',
                                            text(200, Y(5) + 6, 'data', anchor='middle', size=14, fill=CYAN, ls='0')) + '</g>')
-segment(6, 7, CX, SX, 'FIN', ROUTE)
 segment(7, 8, SX, CX, 'ACK', ROUTE)
 segment(9, 10, SX, CX, 'FIN', ROUTE)
-segment(10, 11, CX, SX, 'ACK', ROUTE)
 a('</g>')
+
 a('</svg>')
 svg = '\n'.join(o)
 
