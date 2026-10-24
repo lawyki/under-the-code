@@ -1,17 +1,19 @@
-// Pass 31 taught-yet unit cases (docs/pass-31-calibration.md section 13): the rules of tests/pass31/lib.mjs taughtYet
-// on fixed label strings, each placed at a real figure of a tree, so "before the figure" is the book's own prose.
+// Pass 31 taught-yet unit cases (docs/pass-31-calibration.md sections 13, 15, 16): the rules of tests/pass31/lib.mjs
+// taughtYet on fixed label strings, each placed at a real figure of a tree, so "before the figure" is the book's own
+// prose (held material stripped: known-terms runs with --strip, lib.mjs taughtContext). Section 16 adds the cases of
+// its items 2a to 2e: same-section teaching before the card, the glossary placement (prose glosses), tokens taught by
+// the prose before the card, everyday words that are glossary terms (still failing), and the regressions that must
+// still fail.
 //   npm run fig:taught-test [-- --tree=<public dir>]
 // Exit 0 when every case holds, 1 otherwise. Each case: the figure that sets the position, the label text, and the
 // tokens expected to fail (an empty list: every token passes).
 import path from 'node:path';
-import { args, tree, findFigure, readPart, packet, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, REPO, OUT } from './lib.mjs';
+import { args, tree, findFigure, runKnownTerms, taughtContext, taughtYet, svgTexts, mkdirp, OUT } from './lib.mjs';
 
 const { o } = args(process.argv.slice(2));
 const ROOT = tree(o.tree);
 const KT_FILE = path.join(mkdirp(path.join(OUT, 'taught-test')), 'known-terms.json');
-const r = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, KT_FILE)}`, `--public=${ROOT}`]);
-if (r.code) { console.log('taught-test: known-terms failed', r.err); process.exit(2); }
-const kt = knownTerms(KT_FILE);
+let kt; try { kt = await runKnownTerms(ROOT, KT_FILE); } catch (e) { console.log('taught-test:', e.message); process.exit(2); }
 
 const CASES = [
   // item 1: all-capitals tokens. The nine dictionary words that are abbreviations fail before the prose teaches them.
@@ -60,23 +62,104 @@ const CASES = [
   ['fig-11-14', 'css', ['css']],
   ['fig-8-5', 'lo', ['lo']],
   ['fig-4-1', 'ast', ['ast']],
+
+  // ---- section 16, item 2a: a term known-terms lists as first taught in the figure's own section passes when the
+  // prose teaches it before the card (doping and semiconductor at ch1-transistor-p6 and p7, before Fig 1.5;
+  // pipelining at ch1-cpu-p6, before Fig 1.11; instruction set architecture at ch1-cpu-p4, before Fig 1.10), and an
+  // inflection of a taught term passes like the term (pipelined; registered once register is taught)
+  ['fig-1-5', 'doping · semiconductor', []],
+  ['fig-1-11', 'pipelining · pipelined', []],
+  ['fig-1-10', 'instruction set architecture', []],
+  ['fig-br-1', 'registered', []],
+  // ... and fails when its section teaches it only after the card (2e)
+  ['fig-1-4', 'doping · semiconductor', ['doping', 'semiconductor']],
+  ['fig-1-10', 'pipelining', ['pipelining']],
+  ['fig-1-9', 'instruction set architecture', ['instruction set architecture']],
+  ['fig-4-8', 'mmap', ['mmap']],
+  // ---- item 2b: the glossary placement. known-terms teaches a term at its first prose gloss when that comes before
+  // the glossary's section: register (ch1-vonneumann-p4) and byte (ch1-cpu-p2) before Fig 1.10, compiler
+  // (ch1-vonneumann-p3) before Fig 3.4, thread (ch7-gil-p1) before Figs 7.4 and 7.5 (the PLACED list below checks
+  // the paragraph each is placed at)
+  ['fig-1-10', 'register · registers · byte · bytes', []],
+  ['fig-3-4', 'compiler', []],
+  ['fig-7-4', 'thread · threads · threaded', []],
+  ['fig-7-5', 'thread', []],
+  // ---- item 2c: a token that is not a glossary term and not an everyday word passes when a paragraph or list item
+  // of the prose before the card holds it (as written, or an inflection); mov needs "mov" itself (ch1-cpu-p5)
+  ['fig-8-4', 'bandwidth', []],
+  ['fig-12-1', 'applet', []],
+  ['fig-12-3', 'microtask · microtasks', []],
+  ['fig-16-8', 'speedup', []],
+  ['fig-16-9', 'speedup', []],
+  ['fig-5-1', 'int', []],
+  ['fig-1-10', 'mov', []],
+  ['fig-3-2', 'mov', []],
+  ['fig-3-3', 'mov', []],
+  // ... and fails before that prose (mov and int are first written after Figs 1.9 and 3.4; bandwidth after Fig 8.3;
+  // applet after Fig 11.14; speedup, as "speedups", after Fig 13.2)
+  ['fig-1-9', 'mov', ['mov']],
+  ['fig-3-4', 'int', ['int']],
+  ['fig-8-3', 'bandwidth', ['bandwidth']],
+  ['fig-11-14', 'applet', ['applet']],
+  ['fig-13-2', 'speedup', ['speedup']],
+  // ---- item 2d: an everyday word that is also a glossary term keeps failing until known-terms places its teaching
+  // before the figure: plain uses in the prose before (safety at ch4-anatomy-p4, releases at ch6-raii-p1, groups at
+  // ch4-fs-p1) teach nothing (the synthetic case below covers key, bucket, port, node, edge, toss)
+  ['fig-4-1', 'safety', ['safety']],
+  ['fig-4-2', 'safety', ['safety']],
+  ['fig-5-11', 'safety', ['safety']],
+  ['fig-6-5', 'release · released', ['release', 'released']],
+  ['fig-9-9', 'group · groups', ['group', 'groups']],
+  // ---- item 2e: regressions that must still fail
+  // EAX before the prose teaches it (first written at ch1-cpu-p5, after Fig 1.9)
+  ['fig-1-8', 'EAX', ['EAX']],
+  ['fig-1-9', 'EAX', ['EAX']],
+  ['fig-1-9', 'mov eax, 5', ['mov', 'eax']],
+  // CGNAT and IHL: written only in figure cards (captions, labels, strips), never in the prose, so they fail at every
+  // figure, the book's last included (a glossary entry whose section writes the term only in a card teaches nothing)
+  ['fig-9-9', 'CGNAT · IHL', ['cgnat', 'ihl']],
+  ['fig-18-6', 'CGNAT · IHL', ['cgnat', 'ihl']],
+  // a token written only in the figure's own caption or strip (ARM's STUR and LDUR at Fig 3.2; execve at Fig 4.10;
+  // vptr at Fig 6.3), as Ring 0 and system call at Fig 1.14 above
+  ['fig-3-2', 'stur · ldur', ['stur', 'ldur']],
+  ['fig-4-10', 'execve', ['execve']],
+  ['fig-6-3', 'vptr', ['vptr']],
+  // lower-case abbreviations where untaught, beside the cases above: js before JS is taught (the prose's "Node.js" is
+  // one token, not js), css (the prose's "/style.css" is one token)
+  ['fig-12-1', 'js', ['js']],
+  ['fig-11-14', 'css · js', ['css', 'js']],
+  ['fig-3-3', 'ax · al', ['ax', 'al']],
 ];
-let bad = 0;
+// item 2b: the paragraph known-terms places each term at (the first prose gloss)
+const PLACED = { register: 'ch1-vonneumann-p4', byte: 'ch1-cpu-p2', compiler: 'ch1-vonneumann-p3', thread: 'ch7-gil-p1' };
+// item 2d, synthetic: everyday words made glossary terms (key, bucket, port, node, edge, toss, release, group,
+// safety), not yet taught, each also in the prose before and in its tokens: every one fails as a glossary term
+const EVERYDAY_GLOSSARY = ['key', 'bucket', 'port', 'node', 'edge', 'toss', 'release', 'group', 'safety'];
+let bad = 0, n = 0;
+const check = (ok, line) => { n++; if (!ok) bad++; console.log(`${ok ? 'ok  ' : 'FAIL'} ${line}`); };
 for (const [id, label, expect] of CASES) {
   const fig = findFigure(ROOT, id);
-  if (!fig) { console.log(`MISS ${id}: not in ${ROOT}`); bad++; continue; }
-  const known = taughtBefore(kt, fig, readPart(ROOT, fig.part));
-  const got = [...new Set(taughtYet(label, known, kt.glossary, packet(ROOT, fig)).map(b => b.token))];
+  if (!fig) { check(false, `${id}: not in ${ROOT}`); continue; }
+  const c = taughtContext(kt, ROOT, fig);
+  const got = [...new Set(taughtYet(label, c.known, kt.glossary, c.before, c.prior).map(b => b.token))];
   const ok = got.length === expect.length && expect.every(t => got.includes(t));
-  if (!ok) bad++;
-  console.log(`${ok ? 'ok  ' : 'FAIL'} ${id.padEnd(9)} ${JSON.stringify(label)} -> fails ${JSON.stringify(got)}${ok ? '' : ` (expected ${JSON.stringify(expect)})`}`);
+  check(ok, `${id.padEnd(9)} ${JSON.stringify(label)} -> fails ${JSON.stringify(got)}${ok ? '' : ` (expected ${JSON.stringify(expect)})`}`);
+}
+for (const [t, p] of Object.entries(PLACED)) {
+  const e = kt.j.taught[t];
+  check(e && e.paragraph === p && /^prose gloss/.test(e.source), `placed  ${t} at ${e && e.paragraph} (${e && e.source}; expected ${p}, a prose gloss)`);
+}
+{
+  const g = new Set(EVERYDAY_GLOSSARY); g.names = new Set(); g.multi = []; g.capitals = new Set();
+  const text = EVERYDAY_GLOSSARY.join(' '), prior = { exact: new Set(EVERYDAY_GLOSSARY), lower: new Set(EVERYDAY_GLOSSARY) };
+  const got = [...new Set(taughtYet(text, [], g, text, prior).filter(b => b.why === 'a glossary term not yet taught').map(b => b.token))];
+  check(got.length === EVERYDAY_GLOSSARY.length, `synthetic ${JSON.stringify(text)} as untaught glossary terms, in the prose before -> fail as glossary terms ${JSON.stringify(got)}`);
 }
 // the figures themselves: Fig 1.1 (v4) and Fig 1.2 (Enigma) as they stand in the tree
 for (const id of ['fig-1-1', 'fig-1-2']) {
-  const fig = findFigure(ROOT, id), known = taughtBefore(kt, fig, readPart(ROOT, fig.part));
-  const got = svgTexts(fig.svg).flatMap(t => taughtYet(t.s, known, kt.glossary, packet(ROOT, fig)).map(b => b.token));
-  if (got.length) bad++;
-  console.log(`${got.length ? 'FAIL' : 'ok  '} ${id.padEnd(9)} (the figure's own text) -> fails ${JSON.stringify(got)}`);
+  const fig = findFigure(ROOT, id), c = taughtContext(kt, ROOT, fig);
+  const got = svgTexts(fig.svg).flatMap(t => taughtYet(t.s, c.known, kt.glossary, c.before, c.prior).map(b => b.token));
+  check(!got.length, `${id.padEnd(9)} (the figure's own text) -> fails ${JSON.stringify(got)}`);
 }
-console.log(`taught-test: ${CASES.length + 2 - bad} of ${CASES.length + 2} cases hold`);
+console.log(`taught-test: ${n - bad} of ${n} cases hold`);
 process.exit(bad ? 1 : 0);

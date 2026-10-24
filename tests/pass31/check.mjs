@@ -10,8 +10,8 @@
 //            text and named-mark contrast; a failing row fails the figure (the part lines still carry each tool's summary)
 //   floor    no label below 11 CSS px from 360 px up (figs.mjs measures it)
 //   taught   every label and object token is a number or sign, a term taught before the figure, or an everyday word
-//            (tests/pass31/lib.mjs taughtYet; the known terms come from scripts/known-terms.mjs run with --out and
-//            --public on the tree checked)
+//            (tests/pass31/lib.mjs taughtYet; the known terms come from scripts/known-terms.mjs run with --out,
+//            --public on the tree checked and --strip, the held material out: calibration section 16)
 //   band     at t=0, no empty band taller than a quarter of the plate (tests/pass31/band.py on a bare.mjs still, 375 px)
 //   desc     <desc> present and not empty
 //   caption  at most two sentences
@@ -23,7 +23,7 @@
 //                        [--json=<file>] [--browser=chromium|webkit]
 // Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json.
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, readPart, figures, plain, packet, capCount, LABELS, LEGEND, MAX_PANELS, sentences, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, readPart, figures, plain, capCount, LABELS, LEGEND, MAX_PANELS, sentences, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const part = pos[0] ? (/^\d$/.test(pos[0]) ? `part-${pos[0]}` : pos[0]) : null;
@@ -45,15 +45,14 @@ const put = (id, check, pass, detail, skipped = false) => { R.get(id).checks[che
 
 // ---- per-figure static checks ---------------------------------------------------------------------------------
 const KT_FILE = path.join(OUTDIR, 'known-terms.json');
-{ const r = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, KT_FILE)}`, `--public=${ROOT}`]); if (r.code) { console.log('check: known-terms failed', r.err); process.exit(2); } }
-const kt = knownTerms(KT_FILE);
+let kt; try { kt = await runKnownTerms(ROOT, KT_FILE); } catch (e) { console.log('check:', e.message); process.exit(2); }
 for (const f of figs) {
   const c = capCount(f.svg);
   put(f.id, 'cap', c.max <= LABELS && c.maxLegend <= LEGEND, `labels per panel ${JSON.stringify(c.panels)}${c.merged ? ` (${c.panelCount} panels, more than ${MAX_PANELS}: counted as one)` : ''}; legend entries ${JSON.stringify(c.legends)}; free object text ${c.rows.filter(r => r.free).length}`, exempt('label_cap', f.id));
   R.get(f.id).labels = c.rows;
-  const known = taughtBefore(kt, f, html);
-  if (!known) put(f.id, 'taught', false, `section ${f.section} not in known-terms`);
-  else { const before = packet(ROOT, f); const bad = svgTexts(f.svg).flatMap(t => taughtYet(t.s, known, kt.glossary, before).map(b => `${b.token} (${b.why})`));
+  const tc = taughtContext(kt, ROOT, f);
+  if (!tc) put(f.id, 'taught', false, `section ${f.section} not in known-terms`);
+  else { const bad = svgTexts(f.svg).flatMap(t => taughtYet(t.s, tc.known, kt.glossary, tc.before, tc.prior).map(b => `${b.token} (${b.why})`));
     put(f.id, 'taught', bad.length === 0, bad.length ? [...new Set(bad)].join('; ') : 'every token taught or everyday', exempt('taught', f.id)); }
   put(f.id, 'desc', !!(f.desc && plain(f.desc)), f.desc ? `${plain(f.desc).split(/\s+/).length} words` : 'no <desc>', exempt('desc', f.id));
   const n = sentences(f.caption).length;

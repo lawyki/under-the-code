@@ -2,7 +2,9 @@
 //   npm run fig:gate -- <fig-id> [--ledger=<docs/pass-31-ledger.tsv>] | [--intent="<takeaway>" --job="function|real thing|two-part"]
 //        [--tree=<public dir>] [--part=part-N] [--rc2-tree=<public dir> | --rc2-rev=v1.0-rc2 | --no-pairwise]
 //        [--order=random|cand-first|rc2-first] [--criteria=taught,judge,hedge,still,stripped,pairwise] [--out=<dir>]
-//        [--model=claude-sonnet-5-5] [--label=<name>] [--expect-hash=<combined sha256>] [--author] [--single]
+//        [--model=claude-sonnet-5-5] [--label=<name>] --expect-hash=<combined sha256> [--author] [--single]
+// --expect-hash is required: the gate computes its fingerprint (hash.mjs) first and refuses (exit 2) unless it equals
+// the hash given, so only the frozen gate ever judges (docs/pass-31-calibration.md section 16).
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -10,10 +12,12 @@
 // mechanism (decision D1): there the still's description stands in for the judge's, scored and hedge-checked with the
 // judge's real-thing rubric and hedge scope, so a real thing that does not animate must still give its mechanism
 // (docs/pass-31-calibration.md section 15, review fix 1). The judge packet is the book's prose up to the figure (every earlier
-// part, and this part up to the card), never its caption, strip, <title> or <desc>. Testers are fresh Sonnet 5.5
+// part, and this part up to the card), never its caption, strip, <title> or <desc>, and never held material
+// (tests/pass31/held-strip.json, calibration section 16). Testers are fresh Sonnet 5.5
 // sessions (claude -p, no tools, safe mode), each run in a new empty directory under the system temp dir (outside any
 // repo), each seeing only its message:
-//   taught    mechanical: every label and object token taught before the figure (lib.mjs taughtYet)
+//   taught    mechanical: every label and object token taught before the figure (lib.mjs taughtYet; known-terms run with
+//             the held material stripped)
 //   judge     (a) the judge describes the 12 frames; (b) the scorer compares that with the intent for the job
 //   hedge     (c) any hedge on what changes, why, or the result fails: checked on the judge's, the still's and the
 //             text-stripped descriptions, each in its own scope (prompts.mjs HEDGE)
@@ -35,13 +39,13 @@
 // the gate builder) and on stdout one JSON line {"id","pass","failed","failed_all"}; with --author only
 // {"id","pass","failed"}. For a failed decision, failed_all lists the criteria its failing runs failed, most often first.
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import os from 'node:os';
-import { args, tree, findFigure, readPart, packet as proseUpTo, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, findFigure, packet as proseUpTo, runKnownTerms, taughtContext, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
 import * as P from './prompts.mjs';
 import { fingerprint, CLAUDE } from './hash.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const ID = pos[0];
-const USAGE = 'usage: npm run fig:gate -- <fig-id> [--ledger=file] | [--intent="..." --job="function|real thing|two-part"] [--tree=dir] [--rc2-tree=dir|--rc2-rev=v1.0-rc2|--no-pairwise] [--order=random|cand-first|rc2-first] [--expect-hash=sha] [--author]';
+const USAGE = 'usage: npm run fig:gate -- <fig-id> [--ledger=file] | [--intent="..." --job="function|real thing|two-part"] [--tree=dir] [--rc2-tree=dir|--rc2-rev=v1.0-rc2|--no-pairwise] [--order=random|cand-first|rc2-first] --expect-hash=sha [--author]';
 let INTENT = o.intent || (o['intent-file'] ? fs.readFileSync(o['intent-file'], 'utf8').trim() : null), JOB = o.job || null, SOURCE;
 if (!ID) { console.log(USAGE); process.exit(2); }
 if (INTENT && o.ledger) { console.log('gate: give the takeaway either from the ledger (--ledger) or with --intent, not both'); process.exit(2); }
@@ -75,8 +79,11 @@ function toolError(msg) { V.pass = false; V.failed = 'error'; V.failed_all = ['e
 process.on('uncaughtException', e => toolError(e && e.stack || e));
 process.on('unhandledRejection', e => toolError(e && e.stack || e));
 
+// the frozen-file check (docs/pass-31-calibration.md section 16): nothing runs unless the fingerprint of the gate's
+// files, prompts and model equals the --expect-hash given; a missing or different hash is a refusal (exit 2)
 V.fingerprint = await fingerprint(MODEL);
-if (o['expect-hash'] && o['expect-hash'] !== V.fingerprint.combined) toolError(`gate fingerprint ${V.fingerprint.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`);
+if (!o['expect-hash'] || o['expect-hash'] === true) toolError(`no --expect-hash: the gate runs only against the frozen fingerprint (docs/pass-31-calibration.md; npm run fig:hash)`);
+if (o['expect-hash'] !== V.fingerprint.combined) toolError(`gate fingerprint ${V.fingerprint.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`);
 
 // ---- the decision (docs/pass-31-calibration.md section 14): a figure passes when at least RUNS_NEEDED of RUNS_OF
 // independent complete runs pass, each run the whole gate below (fresh renders, fresh testers, its own votes). Runs 1
@@ -188,11 +195,10 @@ const need = c => CRIT.includes(c);
 
 // taught (mechanical)
 if (need('taught')) {
-  const ktFile = path.join(OUTDIR, 'known-terms.json');
-  const k = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${path.relative(REPO, ktFile)}`, `--public=${ROOT}`]);
-  if (k.code) toolError(`known-terms failed: ${k.err.slice(-600)}`);
-  const kt = knownTerms(ktFile), known = taughtBefore(kt, fig, readPart(ROOT, fig.part));
-  const bad = known ? svgTexts(fig.svg).flatMap(t => taughtYet(t.s, known, kt.glossary, PACKET).map(b => `${b.token} (${b.why})`)) : ['section not in known-terms'];
+  let kt = null;
+  try { kt = await runKnownTerms(ROOT, path.join(OUTDIR, 'known-terms.json')); } catch (e) { toolError(e.message); }
+  const c = taughtContext(kt, ROOT, fig);
+  const bad = c ? svgTexts(fig.svg).flatMap(t => taughtYet(t.s, c.known, kt.glossary, c.before, c.prior).map(b => `${b.token} (${b.why})`)) : ['section not in known-terms'];
   V.criteria.taught = { pass: bad.length === 0, untaught: [...new Set(bad)] };
 }
 

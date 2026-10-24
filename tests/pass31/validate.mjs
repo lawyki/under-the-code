@@ -4,7 +4,9 @@
 // and see only whether validation held. Each item is one gate decision (tests/pass31/gate.mjs: at least two of three
 // independent complete runs pass; docs/pass-31-calibration.md section 14), the same rule as for every figure.
 //   npm run fig:validate -- [--sealed=docs/pass-31-sealed] [--manifest=<sealed>/validation.json]
-//                           --ledger=<the author's docs/pass-31-ledger.tsv> [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
+//                           --ledger=<the author's docs/pass-31-ledger.tsv> --expect-hash=<combined sha256 from the calibration record> [--jobs=3]
+// The frozen-file check comes first (calibration section 16): the runner computes the gate's fingerprint and refuses
+// (exit 2, nothing read, nothing logged) unless --expect-hash is given and equals it; each gate run checks it again.
 // The manifest (written by whoever seals the set, never by the gate builder):
 //   {"items": [{"name": "...", "id": "fig-1-1", "role": "v3|v4|worst|best", "job": "function|real thing|two-part",
 //               "intent": "...", "tree": "<public dir>" | "rev": "<commit>", "script": "fig_1_1.py"}]}
@@ -28,6 +30,9 @@ const SEALED = path.resolve(REPO, o.sealed || 'docs/pass-31-sealed');
 const MANIFEST = path.resolve(o.manifest || path.join(SEALED, 'validation.json'));
 const JOBS = +(o.jobs || 3);
 const say = s => console.log(`fig:validate ${s}`);
+const FP = await fingerprint(o.model || 'claude-sonnet-5-5');
+if (!o['expect-hash'] || o['expect-hash'] === true) { say('refused: no --expect-hash (the validation runs only the frozen gate; npm run fig:hash)'); process.exit(2); }
+if (o['expect-hash'] !== FP.combined) { say(`refused: the gate's fingerprint is not the frozen one (npm run fig:hash)`); process.exit(2); }
 if (!fs.existsSync(MANIFEST)) { say(`no manifest at ${path.relative(REPO, MANIFEST)}`); process.exit(2); }
 let items;
 try { items = JSON.parse(fs.readFileSync(MANIFEST, 'utf8')).items; } catch { say('the manifest is not readable JSON'); process.exit(2); }
@@ -45,8 +50,6 @@ for (const it of items) {
   else if (it.intent && JOBS_OK.includes(it.job)) it.src = 'manifest';
   else { say('an item has no takeaway in the ledger and no intent with a valid job (function, real thing, two-part) in the manifest; incomplete'); process.exit(2); }
 }
-const FP = await fingerprint(o.model || 'claude-sonnet-5-5');
-if (o['expect-hash'] && o['expect-hash'] !== FP.combined) { say(`refused: the gate's fingerprint is not the frozen one (npm run fig:hash)`); process.exit(2); }
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const DIR = mkdirp(path.join(SEALED, 'runs', STAMP));
 const LEDGER = path.join(DIR, 'ledger.tsv'); fs.copyFileSync(LEDGER_SRC, LEDGER);
@@ -77,7 +80,7 @@ async function one(it) {
   const out = path.join(DIR, it.key);
   const take = it.src === 'ledger' ? [`--ledger=${LEDGER}`] : [`--intent=${it.intent}`, `--job=${it.job}`];
   const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), it.id, ...take, `--tree=${it.root}`,
-    '--no-pairwise', '--author', `--out=${out}`, `--label=validate-${it.key}`, ...(o['expect-hash'] ? [`--expect-hash=${o['expect-hash']}`] : [])];
+    '--no-pairwise', '--author', `--out=${out}`, `--label=validate-${it.key}`, `--expect-hash=${o['expect-hash']}`];
   const r = await run('node', argv);
   let V = null; try { V = JSON.parse(fs.readFileSync(path.join(out, 'verdict.json'), 'utf8')); } catch {}
   res.push({ role: it.role, got: !V || V.failed === 'error' || r.code === 2 ? 'error' : V.pass ? 'pass' : 'fail' });

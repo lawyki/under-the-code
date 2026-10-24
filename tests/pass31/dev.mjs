@@ -1,6 +1,8 @@
 // Pass 31 gate development set (docs/pass-31-calibration.md). The gate builder's tuning runs, and nothing else:
 //   npm run fig:dev -- [--runs=3] [--label=<attempt name>] [--only=v1,v2,v4,decoy1,...,decoy5,enigma] [--criteria=...]
-//                      [--jobs=3] [--ledger=<docs/pass-31-ledger.tsv>]
+//                      [--jobs=3] [--ledger=<docs/pass-31-ledger.tsv>] --expect-hash=<combined sha256>
+// The frozen-file check comes first (calibration section 16): fig:dev computes the gate's fingerprint and refuses
+// (exit 2, nothing built or run) unless --expect-hash is given and equals it; every gate run it makes checks it again.
 // Builds Fig 1.1 at three owner-judged commits into scratch public trees (each commit's own fig_1_1.py and
 // figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/), then runs
 // tests/pass31/gate.mjs on each version --runs times. Each of those is one evaluation: one gate decision (at least
@@ -28,8 +30,14 @@
 // Output: tests/pass31/out/dev/<label>/summary.json and one line per evaluation on stdout (each with its runs).
 import fs from 'node:fs'; import path from 'node:path';
 import { args, run, mkdirp, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
+import { fingerprint } from './hash.mjs';
 
 const { o } = args(process.argv.slice(2));
+{
+  const fp = await fingerprint(o.model || 'claude-sonnet-5-5');
+  if (!o['expect-hash'] || o['expect-hash'] === true) { console.log('fig:dev refused: no --expect-hash (npm run fig:hash)'); process.exit(2); }
+  if (o['expect-hash'] !== fp.combined) { console.log(`fig:dev refused: the gate's fingerprint ${fp.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`); process.exit(2); }
+}
 const SET = { v1: { id: 'fig-1-1', rev: '4392ca0', expect: false }, v2: { id: 'fig-1-1', rev: 'c18836c', expect: false }, v4: { id: 'fig-1-1', rev: '2a9ece9', expect: true },
   decoy1: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy2: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy3: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true },
   enigma: { id: 'fig-1-2', copy: true, expect: true, must: true }, decoy4: { id: 'fig-1-2', from: 'enigma', expect: false, decoy: true },
@@ -120,7 +128,7 @@ const results = [];
 async function one(t) {
   const out = path.join(DIR, `${t.v}-eval${t.k}`);
   const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), SET[t.v].id, `--ledger=${LEDGER}`,
-    `--tree=${path.join(OUT, 'dev', 'trees', t.v, 'public')}`, `--order=${t.order}`, `--label=${LABEL}-${t.v}-eval${t.k}`, `--out=${out}`];
+    `--tree=${path.join(OUT, 'dev', 'trees', t.v, 'public')}`, `--order=${t.order}`, `--label=${LABEL}-${t.v}-eval${t.k}`, `--out=${out}`, `--expect-hash=${o['expect-hash']}`];
   if (SET[t.v].decoy) argv.push('--no-pairwise');
   if (o.criteria) argv.push(`--criteria=${o.criteria}`);
   const r = await run('node', argv);

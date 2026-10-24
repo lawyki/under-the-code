@@ -1,6 +1,10 @@
 // Pass 31 shared helpers (docs/pass-31-brief.md; docs/pass-31-calibration.md): the figure cards of a part, the
 // judge's prose packet, the taught-yet token check, and small process helpers. Used by sheet.mjs, check.mjs and gate.mjs.
+// Held material (tests/pass31/held-strip.json, applied by held.mjs) is blanked out of every part before it is read as
+// prose: it never reaches a judge packet, and nothing taught-yet credits comes from it (calibration section 16).
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { spawn } from 'node:child_process';
+import { CARD, HELD_FILE, loadHeld, stripHeld } from './held.mjs';
+export { CARD, HELD_FILE, loadHeld, stripHeld };
 
 export const REPO = new URL('../../', import.meta.url).pathname;
 export const PUBLIC = path.join(REPO, 'public') + '/';
@@ -19,8 +23,7 @@ const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash
 export const dec = s => s.replace(/&(#x?[0-9a-f]+|\w+);/gi, (m, e) => e[0] === '#' ? String.fromCodePoint(e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : +e.slice(1)) : (ENT[e] ?? m));
 export const plain = h => dec(h.replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
 
-// a card: <div class="diagram-card|light-diagram ..." id="fig-..."> label, svg, caption, optional strip </div>
-const CARD = /<div class="(?:diagram-card|light-diagram)[^"]*" id="([^"]+)">[\s\S]*?<\/svg>\s*<p\b[^>]*class="diagram-caption"[^>]*>[\s\S]*?<\/p>\s*(?:<details class="fig-how">[\s\S]*?<\/details>\s*)?<\/div>/g;
+// a card (held.mjs CARD): <div class="diagram-card|light-diagram ..." id="fig-..."> label, svg, caption, optional strip </div>
 export function figures(html, part) {
   const secs = [...html.matchAll(/<section class="section" id="(ch[^"]+)"/g)].map(m => ({ id: m[1], at: m.index }));
   const out = [];
@@ -46,8 +49,9 @@ export function allFigures(root) { return PARTS.flatMap(p => figures(readPart(ro
 export function findFigure(root, id) { return allFigures(root).find(f => f.id === id) || null; }
 
 // ---- the judge's prose packet: the book up to the figure, prose only ------------------------------------------
-// Every earlier part whole, then this part up to the card. Taken out: every figure card (label, picture, caption,
-// strip), every other <svg>, scripts, styles, navigation, comments. Never the figure's caption or strip.
+// Every earlier part whole, then this part up to the card. Taken out: the held material (held.mjs), every figure card
+// (label, picture, caption, strip), every other <svg>, scripts, styles, navigation, comments. Never the figure's caption
+// or strip.
 function prose(html) {
   let h = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<head[\s\S]*?<\/head>/i, '')
     .replace(/<(script|style|nav|button|noscript)\b[\s\S]*?<\/\1>/gi, '')
@@ -61,29 +65,69 @@ function prose(html) {
   return dec(h.replace(/<[^>]+>/g, '')).split('\n').map(l => l.replace(/[ \t]+/g, ' ').trim()).filter((l, i, a) => l || (a[i - 1] && a[i - 1].trim()))
     .join('\n').replace(/\n{3,}/g, '\n\n').trim();
 }
-export function packet(root, fig) {
+// a part's HTML with the held material blanked (offsets kept), cached per file
+// (H: the strip list; tests pass another only to show what the strip removes)
+const HELD_CACHE = new Map();
+export function heldStripped(root, part, H = loadHeld()) {
+  const f = path.join(root, part + '.html'), st = fs.statSync(f), k = `${f}|${st.size}|${st.mtimeMs}|${H.sha256}`;
+  if (!HELD_CACHE.has(k)) HELD_CACHE.set(k, { ...stripHeld(fs.readFileSync(f, 'utf8'), H), prose: null });
+  return HELD_CACHE.get(k);
+}
+export function packet(root, fig, H = loadHeld()) {
   const parts = PARTS.slice(0, PARTS.indexOf(fig.part));
-  const chunks = parts.map(p => prose(readPart(root, p)));
-  chunks.push(prose(readPart(root, fig.part).slice(0, fig.at)));
+  const chunks = parts.map(p => { const c = heldStripped(root, p, H); return c.prose ?? (c.prose = prose(c.html)); });
+  chunks.push(prose(heldStripped(root, fig.part, H).html.slice(0, fig.at)));
   return chunks.join('\n\n').trim();
 }
+// the prose tokens before the card (taught-yet's rule for a token that is not a glossary term and not an everyday
+// word, calibration section 16): the text of every paragraph (never a caption) and list item outside the figure
+// cards and the held material, every earlier part whole and this part up to the card, split as label text is split.
+// exact: the tokens as written; lower: in lower case.
+export const TOKEN_SPLIT = /[\s·•,;:!?"“”()[\]{}]+/u;
+const trimTok = t => t.replace(/^['‘’.]+|['‘’.]+$/g, '');
+function paragraphTokens(html, upto = html.length) {
+  const cards = [...html.matchAll(CARD)].map(m => [m.index, m.index + m[0].length]);
+  const out = [];
+  for (const m of html.matchAll(/<(p|li)\b([^>]*)>([\s\S]*?)<\/\1>/g)) {
+    if (m.index >= upto) break;
+    if (/class="[^"]*diagram-caption/.test(m[2]) || cards.some(([a, b]) => m.index >= a && m.index < b)) continue;
+    for (const t of dec(m[3].replace(/<br\s*\/?>/g, ' ').replace(/<[^>]+>/g, ' ')).split(TOKEN_SPLIT)) { const x = trimTok(t); if (x) out.push(x); }
+  }
+  return out;
+}
+export function priorTokens(root, fig, H = loadHeld()) {
+  const toks = [];
+  for (const p of PARTS.slice(0, PARTS.indexOf(fig.part))) { const c = heldStripped(root, p, H); toks.push(...(c.tokens ?? (c.tokens = paragraphTokens(c.html)))); }
+  toks.push(...paragraphTokens(heldStripped(root, fig.part, H).html, fig.at));
+  return { exact: new Set(toks), lower: new Set(toks.map(t => t.toLowerCase())) };
+}
 
-// ---- taught-yet (brief section 15; docs/pass-31-calibration.md section 13) ------------------------------------
+// ---- taught-yet (brief section 15; docs/pass-31-calibration.md sections 13, 15, 16) ----------------------------
 // Every label and object token is one of:
 //   - a number or a sign (arithmetic signs and arrows); a single letter (a key, a lamp);
-//   - a term taught before the figure: known-terms.mjs lists it before the figure's section, or the section teaches
-//     it in the prose before the card, or (an all-capitals abbreviation) the prose paragraph that first uses it comes
-//     before the card. Prose never includes a figure card, so a term first written in the figure's own caption, label
-//     or How-it-works strip is not taught for that figure;
+//   - a term taught before the figure: known-terms.mjs (run with --strip, held material out) lists it before the
+//     figure's section, or lists it as first taught in the figure's own section at a place in the prose before the
+//     card (defines_at), or (an all-capitals abbreviation) the prose paragraph that first uses it comes before the
+//     card. Prose never includes a figure card, so a term first written in the figure's own caption, label or
+//     How-it-works strip is not taught for that figure. An inflection of a taught term passes (pipelined, registered
+//     once pipeline, register are taught);
 //   - an everyday word: in /usr/share/dict/words or on the COMMON-word list (tests/pass31/common-words.txt), after
 //     plain inflections are stripped (lowest, became, rewritten, databases), and not a glossary term (single or
-//     multi-word, in any inflection) the figure has not yet taught;
+//     multi-word, in any inflection) the figure has not yet taught. A glossary term not yet taught fails whatever
+//     else is true of it: no rule passes it for being an everyday word or for appearing in the prose (key, safety,
+//     release, group fail until known-terms places their teaching before the figure);
 //   - an all-capitals token only when the prose before the figure teaches it (above), when its lowercase form is on
 //     the COMMON-word list (THE, KEY, PRESS), or when it is an everyday word set in capitals: four letters or more,
 //     a lowercase dictionary entry, not a glossary term, and never written in capitals anywhere in the book's text
 //     (so it is not an abbreviation the book uses: LAMP, ROTORS pass; ARM, RAM, OS, MAC, LAN, NAT, CPU do not until
 //     taught). Three letters or fewer pass only through the COMMON-word list or teaching (AX, AL, DOS fail);
-//   - a proper name the prose before the figure already uses (Shannon; LINUX for a name the prose spells Linux).
+//   - a proper name the prose before the figure already uses (Shannon; LINUX for a name the prose spells Linux);
+//   - (section 16) a token that is not a glossary term and not an everyday word (bandwidth, applet, microtasks,
+//     speedup, int, mov, 0x05): taught when the same token, as written or in an inflection, stands in a paragraph or
+//     list item of the prose before the card (never a caption, label or strip; never held material). Tokens are cut
+//     as label text is cut, so "css" is not in "/style.css" and "js" not in "Node.js". A short abbreviation in lower
+//     case (below) needs the token in exactly that case (mov after "mov eax, 5"), never the capitals of a different
+//     word.
 // Short abbreviations in lower or mixed case (docs/pass-31-calibration.md section 15, review fix 2): a token of three
 // letters or fewer that is not all capitals (ram, Mac, os, rax, lo, js) needs teaching like the abbreviation when its
 // capitalised form is one the book writes in capitals (known-terms "capitals") or it is one of brief section 15's
@@ -147,8 +191,13 @@ const NUMBER = /^[€£$]?[+\-−]?\d[\d.,:]*(?:st|nd|rd|th)?(?:[%°]|[kKMGT]?B|
 
 let KT = null;
 export function knownTerms(file) {
-  if (KT && KT.file === file) return KT;
+  const mt = fs.statSync(file).mtimeMs;
+  if (KT && KT.file === file && KT.mtime === mt) return KT;
   const j = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!j.abbreviations || !j.capitals) throw new Error(`${file}: no abbreviations or capitals (scripts/known-terms.mjs is older than the Pass 31 follow-up)`);
+  if (!j.by_section.every(s => s.defines_at)) throw new Error(`${file}: no defines_at (scripts/known-terms.mjs is older than calibration section 16)`);
+  const H = loadHeld();
+  if (!j.strip || j.strip.sha256 !== H.sha256) throw new Error(`${file}: not made with --strip=${path.relative(REPO, H.file)} (held material would be credited)`);
   const glossary = new Set(Object.keys(j.taught).map(normT));
   // glossary entries that are proper names (a capital, then lower case: "Shannon", not "ALU"): a figure may use the
   // name once the prose before it has (the reader has met the person or place; the entry teaches more about them later)
@@ -157,26 +206,40 @@ export function knownTerms(file) {
   glossary.multi = Object.keys(j.taught).filter(k => normT(k).includes(' ')).map(k => ({ t: normT(k), form: k })).sort((a, b) => b.t.length - a.t.length);
   // every all-capitals token the book's text writes outside the figure cards (known-terms.mjs "capitals")
   glossary.capitals = new Set(j.capitals || []);
-  if (!j.abbreviations || !j.capitals) throw new Error(`${file}: no abbreviations or capitals (scripts/known-terms.mjs is older than the Pass 31 follow-up)`);
-  return (KT = { file, j, glossary, abbrev: j.abbreviations, by: new Map(j.by_section.map(s => [s.section, s])) });
+  return (KT = { file, mtime: mt, j, glossary, abbrev: j.abbreviations, by: new Map(j.by_section.map(s => [s.section, s])) });
 }
-// the terms taught before the figure: known before its section, those its section teaches in prose before the card,
-// and every all-capitals abbreviation whose first prose paragraph comes before the card (known-terms.mjs must have
-// read the same tree as partHtml: run it with --public=<tree>)
-export function taughtBefore(kt, fig, partHtml) {
+// known-terms.mjs on a tree, held material stripped (the only way the gate's tools run it)
+export async function runKnownTerms(root, outFile) {
+  const r = await run('node', [path.join(REPO, 'scripts/known-terms.mjs'), `--out=${outFile}`, `--public=${root}`, `--strip=${HELD_FILE}`]);
+  if (r.code) throw new Error(`known-terms failed: ${(r.err || r.out).slice(-600)}`);
+  return knownTerms(outFile);
+}
+// the terms taught before the figure: known before its section, those its section first teaches at a place in its
+// prose before the card (known-terms defines_at), and every all-capitals abbreviation whose first prose paragraph
+// comes before the card (known-terms.mjs must have read the same tree: run it with --public=<tree> --strip)
+export function taughtBefore(kt, fig) {
   const s = kt.by.get(fig.section); if (!s) return null;
-  const secStart = partHtml.indexOf(`<section class="section" id="${fig.section}"`);
-  const before = secStart >= 0 ? plain(partHtml.slice(secStart, fig.at).replace(CARD, ' ').replace(/<svg[\s\S]*?<\/svg>/g, ' ')).toLowerCase() : '';
-  const inSec = s.defines.filter(t => before.includes(t.toLowerCase()));
+  const inSec = s.defines.filter(t => s.defines_at[t] !== null && s.defines_at[t] !== undefined && s.defines_at[t] < fig.at);
   const pi = PARTS.indexOf(fig.part);
   const ab = Object.entries(kt.abbrev).filter(([, a]) => PARTS.indexOf(a.part) < pi || (a.part === fig.part && a.at < fig.at)).map(([t]) => t);
   return [...s.known, ...inSec, ...ab].map(normT);
+}
+// everything taught-yet reads for one figure: the known terms, the prose before it (packet) and its prose tokens
+export function taughtContext(kt, root, fig) {
+  const known = taughtBefore(kt, fig);
+  return known ? { known, before: packet(root, fig), prior: priorTokens(root, fig) } : null;
 }
 export function svgTexts(svg) {
   return [...svg.replace(/<(title|desc)\b[\s\S]*?<\/\1>/g, '').matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].map(m => ({ attrs: m[1], s: plain(m[2]) })).filter(t => t.s);
 }
 const B = '[^\\p{L}\\p{N}_]';   // a word boundary that keeps SYN_SENT and CR3 whole
-export function taughtYet(text, known, glossary, before = '') {
+// the section 16 rule: does the prose before the card hold this token (as written, or an inflection of it)?
+const inPrior = (prior, part, orig, exact) => {
+  if (!prior) return false;
+  if (exact) return prior.exact.has(orig) || prior.exact.has(orig + 's');
+  return stems(part).some(w => prior.lower.has(w)) || prior.lower.has(part + 's') || prior.lower.has(part + 'es');
+};
+export function taughtYet(text, known, glossary, before = '', prior = null) {
   const bad = [];
   // a taught term of two letters or fewer takes an s or es ending only written as the abbreviation: IPs, PCs, OSes
   // (the ending dropped here, before case is folded); css, js and Ips keep theirs and are checked as tokens
@@ -190,6 +253,11 @@ export function taughtYet(text, known, glossary, before = '') {
   // it is an everyday word; a named one ("Bell Labs", "von Neumann") passes once the prose before the figure uses it.
   // Matched on the text as written (a hyphen in the term needs a hyphen: "a-machine" is not "a machine").
   const knownSet = new Set(known), rawL = ' ' + text.toLowerCase().replace(/\s+/g, ' ') + ' ';
+  // a taught single word of three letters or more, and its own stems of five letters or more (pipelining: pipeline),
+  // so an inflection of a taught term passes (pipelined, registered); a taught term of two letters never lends its
+  // stem (ips is not IP plus s)
+  const knownStems = new Set();
+  for (const k of known) if (!k.includes(' ') && k.replace(/[^\p{L}\p{N}]/gu, '').length > 2) for (const w of stems(k, false)) if (w === k || w.length >= 5) knownStems.add(w);
   for (const { t, form } of glossary.multi || []) {
     if (knownSet.has(t)) continue;
     const pat = form.toLowerCase().split(/(\s+|[-–])/).map(x => /^\s+$/.test(x) ? '[\\s\\-–]+' : /^[-–]$/.test(x) ? '[-–]' : esc(x)).join('');
@@ -198,21 +266,23 @@ export function taughtYet(text, known, glossary, before = '') {
     s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
   }
   const raw = text.split(/\s+/);
-  for (const tok0 of s.split(/[\s·•,;:!?"“”()[\]{}]+/u)) {
-    const tok = tok0.replace(/^['‘’.]+|['‘’.]+$/g, ''); if (!tok) continue;
+  for (const tok0 of s.split(TOKEN_SPLIT)) {
+    const tok = trimTok(tok0); if (!tok) continue;
     if (SIGN.test(tok) || NUMBER.test(tok)) continue;
     // arithmetic written solid: 3+1=4, 1011=11, /22
     if (/^[\d+\-−×÷=<>≤≥*/%^().]+$/u.test(tok) && /\d/.test(tok) && !/^\//.test(tok)) continue;
     if (/^\p{L}$/u.test(tok)) continue;                                      // one letter
-    if (/^\/\d/.test(tok)) { bad.push({ token: tok, why: 'notation, not a plain number' }); continue; }   // /22
+    if (/^\/\d/.test(tok)) { if (!inPrior(prior, tok, tok, false)) bad.push({ token: tok, why: 'notation, not a plain number' }); continue; }   // /22
     const orig = (raw.find(r => r.toLowerCase().replace(/[^\p{L}\p{N}'’_-]/gu, '') === tok.replace(/[^\p{L}\p{N}'’_-]/gu, '')) || tok).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+    const origParts = orig.split(/[-–/]/);
     const letters = orig.replace(/[^\p{L}]/gu, '');
     const caps = letters.length >= 2 && letters === letters.toUpperCase() && /\p{Lu}/u.test(letters);
     for (const part of tok.split(/[-–/]/)) {
       if (!part) continue;
       if (NUMBER.test(part) || SIGN.test(part) || /^\p{L}$/u.test(part)) continue;
       const st = stems(part), g = st.find(w => glossary.has(w));
-      if (g !== undefined) {   // a glossary term (in any inflection) the figure has not yet taught
+      if (g !== undefined) {   // a glossary term (in any inflection)
+        if (st.some(w => knownStems.has(w))) continue;                       // an inflection of a taught term: pipelined, registered
         const name = g[0].toUpperCase() + g.slice(1);
         if (glossary.names && glossary.names.has(g) && before && new RegExp(`(^|[^\\p{L}])${esc(name)}(?![\\p{L}])`, 'u').test(before)) continue;
         bad.push({ token: part, why: 'a glossary term not yet taught' }); continue; }
@@ -225,16 +295,22 @@ export function taughtYet(text, known, glossary, before = '') {
         if (before && part.length >= 4 && /^\p{L}+$/u.test(part) && new RegExp(`(^|[^\\p{L}])${esc(title)}(?![\\p{L}])`, 'u').test(before)) continue;   // LINUX
         bad.push({ token: orig.includes('-') || orig.includes('/') ? AB : orig, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
       // a short abbreviation in lower or mixed case (ram, Mac, os, rax, lo), or a plain plural of one the book writes in
-      // capitals (rams, arms): taught like the abbreviation, unless the token itself is on the COMMON list (add, not)
+      // capitals (rams, arms): taught like the abbreviation, unless the token itself is on the COMMON list (add, not),
+      // or (section 16) the prose before the card writes this very token in this very case (mov)
       if (/^\p{L}+$/u.test(part) && !common().has(part)) {
         const short = w => [...w].length >= 2 && [...w].length <= 3;
         const abbr = short(part) && (glossary.capitals?.has(part.toUpperCase()) || SHORT_ABBR.has(part));
         const w = part.replace(/s$/, ''), plural = w !== part && short(w) && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);   // adds, puts: add, put are COMMON
-        if (abbr || plural) { bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
+        if (abbr || plural) {
+          const op = origParts.find(x => x.toLowerCase() === part) || part;
+          if (inPrior(prior, part, op, true)) continue;
+          bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
       }
       if (everyday) continue;
       // a proper name (capital first letter, not all capitals) that the prose before the figure already uses
       if (/^\p{Lu}\p{Ll}/u.test(orig) && before && new RegExp(`(^|[^\\p{L}])${esc(orig)}`, 'u').test(before)) continue;
+      // section 16: neither a glossary term nor an everyday word, and the prose before the card holds it
+      if (inPrior(prior, part, part, false)) continue;
       bad.push({ token: part, why: /\d/.test(part) ? 'notation, not a plain number' : 'not an everyday word' });
     }
   }
