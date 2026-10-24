@@ -1,0 +1,263 @@
+<title>Pass 31 Calibration</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=IBM+Plex+Mono&family=Space+Mono&family=Courier+Prime&family=JetBrains+Mono&display=swap">
+<style>
+/* Layout: one reading column (max 46rem) of six numbered decisions, each a card-less section ruled in gold; the
+   figures sit on their own dark plates, as in the book. Book identity: Playfair for the voice, DM Sans to read,
+   DM Mono for figure numbers and counts, gold for what is chosen. */
+:root {
+  --bg: #f6f4ef; --fg: #1a1813; --soft: #5d574b; --line: #d9d2c2; --gold: #8a6420; --gold-ink: #fffaf0;
+  --best: #2f7a4f; --worst: #b23a3a; --chip: #ebe6da; --focus: #1f5fbf;
+  --display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f0e0c; --fg: #ece6da; --soft: #a49c8c; --line: #2f2b24; --gold: #d4a853; --gold-ink: #17130a;
+  --best: #7fd3a0; --worst: #f08a8a; --chip: #1d1b17; --focus: #86a8ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f0e0c; --fg: #ece6da; --soft: #a49c8c; --line: #2f2b24; --gold: #d4a853; --gold-ink: #17130a;
+  --best: #7fd3a0; --worst: #f08a8a; --chip: #1d1b17; --focus: #86a8ff; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 400 1rem/1.6 var(--body); }
+.wrap { max-width: 46rem; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 2.5rem 5rem; display: grid; gap: 3.25rem; }
+h1, h2, h3 { font-family: var(--display); font-weight: 500; text-wrap: balance; margin: 0; line-height: 1.2 }
+h1 { font-size: clamp(2rem, 6vw, 2.75rem) }
+h2 { font-size: 1.6rem }
+h3 { font-size: 1.15rem; font-family: var(--body); font-weight: 600 }
+p { margin: 0 }
+.eyebrow { font: 500 0.75rem/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--soft) }
+.lede { font-size: 1.05rem; color: var(--soft); max-width: 38rem }
+section { display: grid; gap: 1.1rem; border-top: 2px solid var(--gold); padding-top: 1.25rem }
+section > .head { display: grid; gap: 0.4rem }
+.n { font: 500 0.8rem/1 var(--mono); color: var(--gold) }
+.ask { font-size: 1.08rem; font-weight: 500 }
+.wait { font-size: 0.95rem; border: 1.5px solid var(--gold); border-radius: 10px; padding: 0.7rem 0.85rem; }
+.silence { font-size: 0.92rem; color: var(--soft); border-left: 3px solid var(--line); padding-left: 0.75rem }
+.status { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding-block: 0.6rem; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); font: 400 0.85rem/1.4 var(--mono); color: var(--soft); display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: space-between }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg) }
+.status b { color: var(--fg); font-weight: 500 }
+button { font: inherit; color: inherit }
+.choice { display: flex; flex-wrap: wrap; gap: 0.5rem }
+.choice button, .mode button { min-height: 44px; padding: 0.55rem 1rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--chip); cursor: pointer; font-weight: 500; transition: background 160ms, border-color 160ms, color 160ms; touch-action: manipulation }
+.choice button[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--gold-ink) }
+.choice button[aria-pressed="true"]::before { content: "✓ " }
+button:focus-visible, textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px }
+.note { display: grid; gap: 0.35rem; font-size: 0.9rem; color: var(--soft) }
+textarea { width: 100%; font: 400 1rem/1.5 var(--body); color: var(--fg); background: var(--chip); border: 1.5px solid var(--line); border-radius: 10px; padding: 0.6rem 0.75rem; resize: vertical }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 34rem }
+th, td { text-align: left; vertical-align: top; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line) }
+th { font: 500 0.72rem/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--soft) }
+td.fig, td.num { font-family: var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums }
+tr.redraw td { background: color-mix(in srgb, var(--gold) 10%, transparent) }
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem }
+.chip { font: 400 0.82rem/1 var(--mono); padding: 0.4rem 0.55rem; border-radius: 6px; background: var(--chip); border: 1px solid var(--line) }
+.chipgroup { display: grid; gap: 0.35rem }
+.chipgroup span.k { font: 500 0.72rem/1 var(--mono); color: var(--soft); letter-spacing: 0.06em; text-transform: uppercase }
+.exemplar { display: grid; gap: 0.9rem; padding-block: 0.5rem 1.5rem; border-bottom: 1px solid var(--line) }
+.exemplar:last-of-type { border-bottom: 0 }
+.take { color: var(--soft); font-size: 0.95rem }
+.why { font-size: 0.92rem; color: var(--soft) }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: start }
+.pair .col { display: grid; gap: 0.75rem; min-width: 0 }
+@media (max-width: 640px) { .pair { grid-template-columns: 1fr } }
+.plate { margin: 0; background: var(--plate); border-radius: 12px; padding: 0.75rem 0.5rem 0.6rem; display: grid; gap: 0.5rem }
+.plate figcaption { font: 500 0.72rem/1.3 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.72); padding-inline: 0.25rem }
+.plate svg { width: 100%; height: auto; display: block }
+.part { display: grid; gap: 0.8rem; padding-block: 0.4rem 1.6rem; border-bottom: 1px solid var(--line) }
+.part:last-child { border-bottom: 0 }
+.parthead { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem }
+.count { font: 400 0.85rem/1.3 var(--mono); color: var(--soft); font-variant-numeric: tabular-nums }
+.count .b { color: var(--best) } .count .w { color: var(--worst) }
+.mode { display: flex; gap: 0.5rem; flex-wrap: wrap }
+.mode button[aria-pressed="true"][data-m="best"] { background: var(--best); border-color: var(--best); color: var(--bg) }
+.mode button[aria-pressed="true"][data-m="worst"] { background: var(--worst); border-color: var(--worst); color: var(--bg) }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem }
+@media (min-width: 620px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) } }
+.tile { position: relative; display: grid; gap: 0.35rem; padding: 0.4rem; border-radius: 10px; border: 2px solid var(--line); background: var(--chip); cursor: pointer; text-align: left; touch-action: manipulation; transition: border-color 160ms, transform 120ms }
+.tile:active { transform: scale(0.98) }
+.tile img { width: 100%; height: auto; border-radius: 6px; display: block; background: #111 }
+.tile .t { font: 400 0.78rem/1.3 var(--mono); color: var(--soft) }
+.tile .t b { color: var(--fg); font-weight: 500 }
+.tile[data-mark="best"] { border-color: var(--best) } .tile[data-mark="worst"] { border-color: var(--worst) }
+.tile .badge { position: absolute; top: 0.6rem; left: 0.6rem; font: 500 0.72rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; padding: 0.35rem 0.5rem; border-radius: 5px; color: #fff }
+.tile[data-mark="best"] .badge { background: #2f7a4f } .tile[data-mark="worst"] .badge { background: #b23a3a }
+.tile:not([data-mark]) .badge { display: none }
+.cutlist { display: grid; gap: 0.55rem; margin: 0; padding: 0; list-style: none }
+.cutlist li { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 0.75rem; align-items: start; padding: 0.6rem 0.7rem; border: 1px solid var(--line); border-radius: 10px }
+.cutlist .what { font-family: var(--mono); font-size: 0.85rem }
+.cutlist .why { grid-column: 1 / -1; font-size: 0.85rem }
+.keep { min-height: 40px; padding: 0.4rem 0.8rem; border-radius: 999px; border: 1.5px solid var(--line); background: var(--chip); cursor: pointer; font-size: 0.85rem; white-space: nowrap }
+.keep[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--gold-ink) }
+.counts { display: flex; flex-wrap: wrap; gap: 0.4rem }
+footer { font-size: 0.9rem; color: var(--soft); display: grid; gap: 0.5rem }
+@media (prefers-reduced-motion: reduce) { .tile, .choice button { transition: none } }
+</style>
+
+<div class="status" role="status" aria-live="polite"><span id="save">Opening…</span><span id="progress"></span></div>
+<main class="wrap">
+  <header style="display:grid;gap:0.75rem">
+    <p class="eyebrow">Under the Code · Pass 31 · figure finalization</p>
+    <h1>Calibration</h1>
+    <p class="lede">All six sections are open. About fifteen minutes in all. Each answer saves as you tap it. Where you say nothing, the page tells you what happens; only reversible steps go ahead on silence.</p>
+  </header>
+
+  <section id="kept" aria-labelledby="h-kept">
+    <div class="head"><span class="n">1 of 6</span><h2 id="h-kept">The kept originals</h2></div>
+    <p class="ask">This reverses your 2026-10-11 call on the kept originals. Say yes to apply the table below. Silence keeps your call.</p>
+    <p>Yes means Fig BR.3 is redrawn in this pass. The other 17 kept originals are attack and security figures held from this pass; they are listed once, with the other held figures, in step 2, where you choose for each.</p>
+    <div class="choice" role="group" aria-label="The kept originals" data-key="kept"><button type="button" data-v="apply">Yes, apply the table</button><button type="button" data-v="keep">Keep my call</button></div>
+    <div class="tablewrap"><table><thead><tr><th scope="col">Figure</th><th scope="col">Smallest label at 375 px</th><th scope="col">Audit fixes</th><th scope="col">Action</th></tr></thead><tbody id="kept-rows"></tbody></table></div>
+  </section>
+
+  <section id="held" aria-labelledby="h-held">
+    <div class="head"><span class="n">2 of 6</span><h2 id="h-held">The held figures</h2></div>
+    <p class="ask">35 figures stay as they are in this pass: the attack and security figures (17 of them are the kept originals above). What should happen to them?</p>
+    <div class="choice" role="group" aria-label="The held figures" data-key="held"><button type="button" data-v="self">I'll edit them myself</button><button type="button" data-v="route">Find another route</button><button type="button" data-v="keep">Keep them as they are</button></div>
+    <p class="silence">Silence keeps them as they are; the READY page lists them as below the bar.</p>
+    <div id="held-list" class="chipgroup"></div>
+    <label class="note"><span>Which route, or anything else (optional)</span><textarea id="note-held" data-key="held" rows="2"></textarea></label>
+  </section>
+
+  <section id="exemplars" aria-labelledby="h-ex">
+    <div class="head"><span class="n">3 of 6</span><h2 id="h-ex">Five exemplars</h2></div>
+    <p class="ask">The hardest figure in each part, redrawn from nothing. Each sets its part's look for every figure after it. Yes or no?</p>
+    <p class="silence">Silence lets the exemplar go ahead, and READY marks that part's look as not confirmed by you. A no means a new concept, shown to you once more.</p>
+    <p class="silence">Part IV's exemplar, Figs 13.5 and 13.6 merged, is now numbered Fig 13.6: a merged card keeps the higher number, so a saved reading place never lands past text not yet read. No answers had been given before this change. Figs 10.3 and 17.6 now have two panels each, to fit the label rule, and Fig 13.6's stamps use the book's own words, replay and roll back.</p>
+    %%EXEMPLARS%%
+  </section>
+
+  <section id="taps" aria-labelledby="h-taps">
+    <div class="head"><span class="n">4 of 6</span><h2 id="h-taps">Best and worst, per part</h2></div>
+    <p class="ask">In each part, tap the 3 figures you think work best and the 3 that work worst, as they are now.</p>
+    <p class="silence">These 30 taps test the gate before it judges anything; they are sealed and never shown to the agent that built it. If you tap nothing, the gate is checked on one figure only, which is weak, and READY says so in those words.</p>
+    <div id="parts"></div>
+  </section>
+
+  <section id="cuts" aria-labelledby="h-cuts">
+    <div class="head"><span class="n">5 of 6</span><h2 id="h-cuts">Cuts and merges</h2></div>
+    <p class="ask">Candidates to cut or merge, redone 2026-10-24. These twelve have been cut candidates through every review round; seventeen more were added in one round and then returned to keep, because a figure already checked and kept is cut only on a new fact. Each cut shows nothing happening (a dated list, a lineage, a table, a notation or a text), and the prose holds its facts; its reason is beside it. Silence lets a cut go ahead, but every cut is tested once more, in the keep direction, before it is made. Tap "Keep it" on any you want left alone: your tap wins.</p>
+    <div class="counts" id="cut-counts"></div>
+    <h3>Cut candidates</h3><ul class="cutlist" id="cut-list"></ul>
+    <h3>Merge candidates (two figures become one card, keeping the higher number)</h3><ul class="cutlist" id="merge-list"></ul>
+  </section>
+
+  <section id="notes" aria-labelledby="h-notes">
+    <div class="head"><span class="n">6 of 6</span><h2 id="h-notes">Anything else</h2></div>
+    <label class="note"><span>Notes for the pass (optional)</span><textarea id="note-all" data-key="notes" rows="4"></textarea></label>
+  </section>
+
+  <footer>
+    <p>What happens next: while this page is up I draft Chapter 1's concepts. The gate is checked against your taps, the exemplars go through it, and then the chapters are redrawn in book order, one commit each. Nothing reaches the site without your word.</p>
+  </footer>
+</main>
+
+<script>
+const DATA = %%DATA%%;
+const $ = (s, r = document) => r.querySelector(s);
+const state = {};                 // key -> stored object
+let db = null, saving = 0;
+function local(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem('p31:' + k) || 'null'); localStorage.setItem('p31:' + k, JSON.stringify(v)); } catch (e) { return null; } }
+function setStatus(t) { $('#save').innerHTML = t; }
+async function save(key, patch) {
+  state[key] = Object.assign({}, state[key] || {}, patch, { at: new Date().toISOString() });
+  local(key, state[key]);
+  progress();
+  if (!db) { setStatus('Saved on this device only: <b>sign in to claude.ai</b> so your answers reach me'); return; }
+  saving++; setStatus('Saving…');
+  try { await db.doc('answers/' + key).set(state[key]); setStatus('<b>Saved</b> · your answers reach me'); }
+  catch (e) { setStatus('Not saved (' + (e && e.code || 'error') + '): it stays on this device; tap again to retry'); }
+  finally { saving--; }
+}
+function progress() {
+  const keys = ['kept', 'held', ...document.querySelectorAll('.exemplar').length ? [...document.querySelectorAll('.exemplar')].map(e => 'exemplar-' + e.id.slice(3)) : []];
+  let done = keys.filter(k => state[k] && (state[k].choice || state[k].verdict)).length;
+  let taps = 0; DATA.parts.forEach(p => { const s = state['taps-part-' + p.n]; if (s) taps += (s.best || []).length + (s.worst || []).length; });
+  $('#progress').textContent = `${done} of ${keys.length} decided · ${taps} of 30 taps`;
+}
+// choices (kept, held, exemplars)
+function bindChoices() {
+  document.querySelectorAll('.choice').forEach(g => {
+    const key = g.dataset.key, field = key.startsWith('exemplar-') ? 'verdict' : 'choice';
+    g.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      const v = (state[key] || {})[field] === b.dataset.v ? null : b.dataset.v;
+      save(key, { [field]: v }); paintChoice(g);
+    }));
+    paintChoice(g);
+  });
+  document.querySelectorAll('textarea[data-key]').forEach(t => {
+    let timer; t.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => save(t.dataset.key, { note: t.value }), 700); });
+  });
+}
+function paintChoice(g) {
+  const key = g.dataset.key, field = key.startsWith('exemplar-') ? 'verdict' : 'choice', v = (state[key] || {})[field];
+  g.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === v)));
+}
+function paintNotes() { document.querySelectorAll('textarea[data-key]').forEach(t => { const s = state[t.dataset.key]; if (s && s.note != null && document.activeElement !== t) t.value = s.note; }); }
+// kept table, held list
+function renderStatic() {
+  $('#kept-rows').innerHTML = DATA.kept.map(r => `<tr class="${r.fig === 'BR.3' ? 'redraw' : ''}"><td class="fig">Fig ${r.fig}</td><td class="num">${r.label}</td><td>${r.fixes}</td><td>${r.action}</td></tr>`).join('');
+  const byChap = {}; DATA.held.forEach(h => (byChap[h.chap] = byChap[h.chap] || []).push(h));
+  $('#held-list').innerHTML = Object.entries(byChap).map(([c, hs]) => `<div class="chipgroup"><span class="k">${c === 'Bridge' ? 'The Bridge' : 'Chapter ' + c}</span><div class="chips">${hs.map(h => `<span class="chip">Fig ${h.num}</span>`).join('')}</div></div>`).join('');
+  // cuts
+  const counts = {}; DATA.cuts.forEach(c => counts[c.chap] = (counts[c.chap] || 0) + 1);
+  $('#cut-counts').innerHTML = Object.entries(counts).map(([c, n]) => `<span class="chip">${c === 'Bridge' ? 'Bridge' : 'Ch ' + c}: ${n} cut${n > 1 ? 's' : ''}</span>`).join('');
+  const li = (key, what, why) => `<li><span class="what">${what}</span><button type="button" class="keep" data-id="${key}" aria-pressed="false">Keep it</button><p class="why">${why}</p></li>`;
+  $('#cut-list').innerHTML = DATA.cuts.map(c => li(c.id, `Fig ${c.num}`, c.why)).join('');
+  $('#merge-list').innerHTML = DATA.merges.map(m => li(m.a + '+' + m.b, `Figs ${m.anum} and ${m.bnum}, as Fig ${m.bnum}`, m.why)).join('');
+  document.querySelectorAll('.keep').forEach(b => b.addEventListener('click', () => {
+    const keep = new Set((state.cuts || {}).keep || []); keep.has(b.dataset.id) ? keep.delete(b.dataset.id) : keep.add(b.dataset.id);
+    save('cuts', { keep: [...keep] }); paintCuts();
+  }));
+}
+function paintCuts() { const keep = new Set((state.cuts || {}).keep || []); document.querySelectorAll('.keep').forEach(b => { const on = keep.has(b.dataset.id); b.setAttribute('aria-pressed', String(on)); b.textContent = on ? '✓ Kept' : 'Keep it'; }); }
+// taps
+const mode = {};
+function renderParts() {
+  $('#parts').innerHTML = DATA.parts.map(p => `<div class="part" id="part-${p.n}">
+    <div class="parthead"><h3>${p.name}</h3><span class="count" id="count-${p.n}"></span></div>
+    <div class="mode" role="group" aria-label="What a tap marks in ${p.name}"><button type="button" data-m="best">Tap marks: best</button><button type="button" data-m="worst">Tap marks: worst</button></div>
+    <div class="grid">${p.figs.map(f => `<button type="button" class="tile" data-id="${f.id}" aria-label="Fig ${f.num}, ${f.label}"><span class="badge"></span><img src="thumbs/${f.id}.webp" alt="" loading="lazy" decoding="async" width="360" height="${f.h}" style="aspect-ratio:360/${f.h}"><span class="t"><b>Fig ${f.num}</b> ${f.label}</span></button>`).join('')}</div></div>`).join('');
+  DATA.parts.forEach(p => {
+    mode[p.n] = 'best';
+    const root = $('#part-' + p.n);
+    root.querySelectorAll('.mode button').forEach(b => b.addEventListener('click', () => { mode[p.n] = b.dataset.m; paintPart(p.n); }));
+    root.querySelectorAll('.tile').forEach(t => t.addEventListener('click', () => {
+      const key = 'taps-part-' + p.n, s = state[key] || {}, best = new Set(s.best || []), worst = new Set(s.worst || []), id = t.dataset.id;
+      const m = mode[p.n], set = m === 'best' ? best : worst, other = m === 'best' ? worst : best;
+      if (set.has(id)) set.delete(id);
+      else { if (set.size >= 3) { setStatus(`Already 3 ${m} in ${p.name}: tap one of them to free a place`); return; } set.add(id); other.delete(id); }
+      save(key, { best: [...best], worst: [...worst] }); paintPart(p.n);
+    }));
+    paintPart(p.n);
+  });
+}
+function paintPart(n) {
+  const root = $('#part-' + n), s = state['taps-part-' + n] || {}, best = new Set(s.best || []), worst = new Set(s.worst || []);
+  root.querySelectorAll('.tile').forEach(t => {
+    const m = best.has(t.dataset.id) ? 'best' : worst.has(t.dataset.id) ? 'worst' : '';
+    if (m) t.dataset.mark = m; else delete t.dataset.mark;
+    t.querySelector('.badge').textContent = m; t.setAttribute('aria-pressed', String(!!m));
+  });
+  root.querySelectorAll('.mode button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.m === mode[n])));
+  $('#count-' + n).innerHTML = `<span class="b">best ${best.size}/3</span> · <span class="w">worst ${worst.size}/3</span>`;
+}
+function paintAll() { document.querySelectorAll('.choice').forEach(paintChoice); paintNotes(); paintCuts(); DATA.parts.forEach(p => paintPart(p.n)); progress(); }
+// boot: render from this device's copy at once, then from the store
+renderStatic(); renderParts();
+['kept', 'held', 'cuts', 'notes', ...DATA.parts.map(p => 'taps-part-' + p.n), ...[...document.querySelectorAll('.exemplar')].map(e => 'exemplar-' + e.id.slice(3))].forEach(k => { const v = local(k); if (v) state[k] = v; });
+bindChoices(); paintAll();
+setStatus('Connecting…');
+(async () => {
+  try { db = window.claude && window.claude.use ? await window.claude.use('db') : null; } catch (e) { db = null; }
+  if (!db) { setStatus('Answers save on this device only: <b>open this page signed in to claude.ai</b> so they reach me'); return; }
+  const keys = Object.keys(state).concat(['kept', 'held', 'cuts', 'notes', ...DATA.parts.map(p => 'taps-part-' + p.n), ...[...document.querySelectorAll('.exemplar')].map(e => 'exemplar-' + e.id.slice(3))]);
+  for (const k of [...new Set(keys)]) {
+    try { const snap = await db.doc('answers/' + k).get(); if (snap.exists) { const v = snap.data(); const mine = state[k]; if (!mine || (v.at || '') >= (mine.at || '')) state[k] = Object.assign({}, v); } } catch (e) {}
+  }
+  paintAll(); setStatus('<b>Connected</b> · each answer saves as you tap it');
+})();
+</script>
