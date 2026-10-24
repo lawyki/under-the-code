@@ -47,6 +47,18 @@ class Timeline:
         kt = ';'.join(f'{t / D:.6f}' for t in ts)
         vs = ';'.join(f'{at(t):.3f}'.rstrip('0').rstrip('.') for t in ts)
         return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"{extra}/>'
+    def discrete(self, attr, pts):
+        """A stepped animation of any attribute (a fill, say) from [(tau, value)]: each value holds from its tau
+        until the next one. Lets one object change its look without a second text drawn over it (Pass 31)."""
+        D = self.dur
+        self._keys.update(min(float(t), D) % D for t, _ in pts)
+        ev = sorted(((round(self.t(min(t, D - 0.0005)), 6), v) for t, v in pts), key=lambda p: p[0])
+        held = [v for t, v in ev if t <= 0.0]
+        first = held[-1] if held else ev[-1][1]
+        steps = [(0.0, first)] + [(t, v) for t, v in ev if t > 0.0]
+        kt = ';'.join(f'{t / D:.6f}' for t, _ in steps)
+        vs = ';'.join(str(v) for _, v in steps)
+        return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" calcMode="discrete" dur="{D:g}s" repeatCount="indefinite"/>'
     def translate(self, pts, axis='y'):
         """animateTransform translate along one axis from [(tau, offset)] keyframes."""
         D = self.dur

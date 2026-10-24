@@ -83,20 +83,25 @@ for i, (s, col, t) in enumerate(recs):
                                         text(30, y + 16, s, size=14, fill=col, ls='0', role='label')) + '</g>')
 a(stamp(338, 261, 'power cut', SEAL, CUT))
 a(text(20, 294, 'data pages after the cut', size=14, fill=PMUTED, role='label'))
-# Dan: stale 20 on the page, replayed to 70
-a(card(20, 304, 112, 'Dan', layers=(
-    f'<g opacity="1">{until(REDO)}' + text(122, 342, '€20', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
-    f'<g opacity="1">{held(REDO)}' + text(76, 342, '€20', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
-    f'<line x1="44" y1="337" x2="78" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
-    text(122, 342, '€70', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
-# Alice: 200 on the page until the transfer's debit reaches it early, rolled back to 200
+def timed(t, anim):
+    """An object text that shows and hides by its own animation (so it stays a direct child of its object)."""
+    return t.replace('<text ', '<text opacity="1" ', 1).replace('</text>', f'{anim}</text>')
+# Dan: stale 20 on the page (with the card), then the replay as its own object: the 20 struck, and 70
+a(card(20, 304, 112, 'Dan', layers=(timed(text(122, 342, '€20', anchor='end', size=16, fill=PARCH, ls='0', role='object'), until(REDO)),)))
+a(f'<g data-obj="1" opacity="1">{held(REDO)}' + text(76, 342, '€20', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
+  f'<line x1="44" y1="337" x2="78" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
+  text(122, 342, '€70', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')
+# Alice: 200 on the page (one number: it hides while the transfer's early debit shows 100, and returns, now in the
+# rolled-back colour); the early 100 and its struck record are one object
 a(card(144, 304, 112, 'Alice', layers=(
-    f'<g opacity="1">{until(EARLY)}' + text(246, 342, '€200', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
-    f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (EARLY - 0.001, 0.0), (EARLY, 1.0), (UNDO - 0.001, 1.0), (UNDO, 0.0), (D, 0.0)])}' +
-    text(246, 342, '€100', anchor='end', size=16, fill=PARCH, ls='0', role='object') + '</g>',
-    f'<g opacity="1">{held(UNDO)}' + text(196, 342, '€100', anchor='end', size=14, fill=PMUTED, ls='0', role='object') +
-    f'<line x1="158" y1="337" x2="198" y2="337" stroke="{PMUTED}" stroke-width="1.5"/>' +
-    text(246, 342, '€200', anchor='end', size=16, fill=SAGE, ls='0', role='object') + '</g>')))
+    timed(text(246, 342, '€200', anchor='end', size=16, fill=SAGE, ls='0', role='object'),
+          T.anim('opacity', [(0.0, 1.0), (EARLY - 0.001, 1.0), (EARLY, 0.0), (UNDO - 0.001, 0.0), (UNDO, 1.0), (D, 1.0)])
+          + T.discrete('fill', [(0.0, SAGE), (RESET + 0.001, PARCH), (UNDO, SAGE)])),)))
+a('<g data-obj="1">' +
+  timed(text(246, 342, '€100', anchor='end', size=16, fill=PARCH, ls='0', role='object'),
+        T.anim('opacity', [(0.0, 0.0), (EARLY - 0.001, 0.0), (EARLY, 1.0), (UNDO - 0.001, 1.0), (UNDO, 0.0), (D, 0.0)])) +
+  timed(text(196, 342, '€100', anchor='end', size=14, fill=PMUTED, ls='0', role='object'), held(UNDO)) +
+  f'<line x1="158" y1="337" x2="198" y2="337" stroke="{PMUTED}" stroke-width="1.5" opacity="1">{held(UNDO)}</line>' + '</g>')
 a(card(268, 304, 112, 'Bob', '€50'))
 a(stamp(76, 382, 'replay', SAGE, REDO))
 a(stamp(200, 382, 'roll back', BRASS, UNDO))

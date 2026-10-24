@@ -61,19 +61,22 @@ for k in range(5):
     y = PY0 + k * PSTEP
     col = BLUE if k == 4 else PHOS
     i = OFF if k == 4 else IDX[k]
+    # the table: its frame and its two plain rows, one object; its name beside it is a label
     rows = [f'<rect x="{PX0}" y="{y}" width="{PX1 - PX0}" height="{PH}" rx="3" fill="none" stroke="{col}" stroke-opacity="0.85" stroke-width="1.4"/>']
     for r in range(3):
         ry = y + 2 + r * 18
         if r != 1:
             rows.append(text(PX0 + 12, ry + 14, str(i - 1 + r), size=14, fill=DIM, ls='0'))
-    # the picked row: plain before its step, printed in full from its step on
-    ry = y + 20
-    rows.append(text(PX0 + 12, ry + 14, str(i), size=14, fill=DIM, ls='0', extra=' opacity="0"').replace('</text>', f'{unheld(STEP(k) + 0.3)}</text>'))
-    rows.append(f'<g opacity="1">{held(STEP(k) + 0.3)}<rect x="{PX0 + 2}" y="{ry}" width="{PX1 - PX0 - 4}" height="18" fill="{col}"/>'
-                + text(PX0 + 12, ry + 14, str(i), size=14, fill=INK, ls='0', role='object')
-                + text(PX1 - 10, ry + 14, ('next' if k < 4 else 'byte'), anchor='end', size=14, fill=INK, ls='0', role='object') + '</g>')
-    rows.append(text(PX0 - 10, y + 34, NAME[k] if k < 4 else 'page', anchor='end', size=14, fill=MUTED, ls='0'))
     a(obj(*rows))
+    a(text(PX0 - 10, y + 34, NAME[k] if k < 4 else 'page', anchor='end', size=14, fill=MUTED, ls='0', role='label'))
+    # the picked row, its own object: plain before its step, printed in full from its step on (one number whose
+    # ink changes, not a second number drawn over it)
+    ry = y + 20
+    on = STEP(k) + 0.3
+    ink = T.discrete('fill', [(0.0, INK), (RESET + 0.001, DIM), (on, INK)])
+    a(obj(f'<rect x="{PX0 + 2}" y="{ry}" width="{PX1 - PX0 - 4}" height="18" fill="{col}" opacity="1">{held(on)}</rect>',
+          text(PX0 + 12, ry + 14, str(i), size=14, fill=INK, ls='0', role='object').replace('</text>', f'{ink}</text>'),
+          text(PX1 - 10, ry + 14, ('next' if k < 4 else 'byte'), anchor='end', size=14, fill=INK, ls='0', role='object', extra=' opacity="1"').replace('</text>', f'{held(on)}</text>')))
     if k < 4:  # the picked row points to the next table
         ny = y + PSTEP
         a(f'<g opacity="1">{held(STEP(k) + 0.9)}'
