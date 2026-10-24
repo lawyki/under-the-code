@@ -196,6 +196,12 @@ const CASES = [
   ['fig-4-5', 'FCFS · SJF · MLFQ', ['FCFS', 'SJF', 'MLFQ']],
   // ---- defect 4: an inflection of a taught term is by plain endings only, never by a stripped prefix
   ['fig-17-6', 'subprocess · subthreads · substack · unpipelined', ['subprocess', 'subthreads', 'substack', 'unpipelined']],
+  // ... and a prefixed word is a word of its own, not the glossary term inside it: SubBytes (the prose names it before
+  // Fig 14.5) passes as any token the prose writes; everyday prefixed words pass; the prose writing kernel does not
+  // teach unkernel
+  ['fig-14-5', 'SubBytes', []],
+  ['fig-1-1', 'upload · subsystem · unpaid · rewrite', []],
+  ['fig-1-14', 'unkernel', ['unkernel']],
   // ---- defect 5: HTTPS is not a plural of HTTP (the book writes HTTPS as its own abbreviation, first at ch11-http-p1)
   ['fig-4-19', 'HTTPS', ['https']],
   ['fig-4-19', 'HTTP', []],

@@ -267,11 +267,12 @@ export function svgTexts(svg) {
   return [...svg.replace(/<(title|desc)\b[\s\S]*?<\/\1>/g, '').matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].map(m => ({ attrs: m[1], s: plain(m[2]) })).filter(t => t.s);
 }
 const B = '[^\\p{L}\\p{N}_]';   // a word boundary that keeps SYN_SENT and CR3 whole
-// the section 16 rule: does the prose before the card hold this token (as written, or an inflection of it)?
+// the section 16 rule: does the prose before the card hold this token (as written, or a plain inflection of it; never
+// a stripped prefix: "process" in the prose does not teach subprocess, section 17)?
 const inPrior = (prior, part, orig, exact) => {
   if (!prior) return false;
   if (exact) return prior.exact.has(orig) || prior.exact.has(orig + 's');
-  return stems(part).some(w => prior.lower.has(w)) || prior.lower.has(part + 's') || prior.lower.has(part + 'es');
+  return stems(part, false).some(w => prior.lower.has(w)) || prior.lower.has(part + 's') || prior.lower.has(part + 'es');
 };
 export function taughtYet(text, known, glossary, prior = null) {
   if (typeof prior === 'string') throw new Error('taughtYet(text, known, glossary, prior): the packet is no longer an argument (calibration section 17)');
@@ -285,9 +286,9 @@ export function taughtYet(text, known, glossary, prior = null) {
   // a form that is an abbreviation of its own (section 17): the book writes it in capitals, or its glossary entry is
   // written in capitals (HTTPS). It is never a plural or other inflection of a taught term (HTTPS is not HTTP plus s)
   const ownAbbr = w => !!(glossary.capitals?.has(w.toUpperCase()) || /^[^\p{Ll}]*\p{Lu}[^\p{Ll}]*$/u.test(glossary.forms?.get(w) || ''));
-  const plural = t => { if (isShort(t)) return ''; const xs = ['s', 'es'].filter(x => !ownAbbr(t + x)); return xs.length ? `(?:${xs.join('|')})?` : ''; };
+  const endings = t => { if (isShort(t)) return ''; const xs = ['s', 'es'].filter(x => !ownAbbr(t + x)); return xs.length ? `(?:${xs.join('|')})?` : ''; };
   // known terms first (longest first), so "turing machine" is taken whole
-  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}${plural(t)}(?=$|${B})`, 'gu'), '$1 ');
+  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}${endings(t)}(?=$|${B})`, 'gu'), '$1 ');
   // then multi-word glossary terms not yet taught ("system call", "ring 0"): each fails whole, even when every word in
   // it is an everyday word; a name ("Bell Labs", "von Neumann": glossary.names) passes once the prose before the card
   // writes it. Matched on the text as written (a hyphen in the term needs a hyphen: "a-machine" is not "a machine").
@@ -319,11 +320,15 @@ export function taughtYet(text, known, glossary, prior = null) {
     for (const part of tok.split(/[-–/]/)) {
       if (!part) continue;
       if (NUMBER.test(part) || SIGN.test(part) || /^\p{L}$/u.test(part)) continue;
-      const st = stems(part), g = st.find(w => glossary.has(w));
-      if (g !== undefined) {   // a glossary term (in any inflection, a stripped prefix included: subprocess)
-        // an inflection of a taught term, by plain endings only (pipelined, registered; never subprocess, unpipelined),
-        // and never a form that is an abbreviation of its own (HTTPS)
-        if (stems(part, false).some(w => knownStems.has(w) && (w === part || !ownAbbr(part)))) continue;
+      // a glossary term in a plain inflection (kernels, pipelined). A stripped prefix makes a different word
+      // (subprocess is not process, SubBytes is not bytes): it is checked as a token of its own below, and the
+      // prefix never makes it an everyday word when what remains is a glossary term (section 17)
+      const st0 = stems(part, false), deep = stems(part), g = st0.find(w => glossary.has(w));
+      const st = deep.some(w => !st0.includes(w) && glossary.has(w)) ? st0 : deep;
+      if (g !== undefined) {
+        // an inflection of a taught term, by plain endings only (pipelined, registered), and never a form that is an
+        // abbreviation of its own (HTTPS)
+        if (st0.some(w => knownStems.has(w) && (w === part || !ownAbbr(part)))) continue;
         // a name the prose before the card writes, as the entry writes it (Shannon)
         const form = glossary.forms?.get(g);
         if (glossary.names?.has(g) && form && writes(prior, form)) continue;
