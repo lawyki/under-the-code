@@ -4,14 +4,16 @@
 // and see only whether validation held. Each item is one gate decision (tests/pass31/gate.mjs: at least two of three
 // independent complete runs pass; docs/pass-31-calibration.md section 14), the same rule as for every figure.
 //   npm run fig:validate -- [--sealed=docs/pass-31-sealed] [--manifest=<sealed>/validation.json]
-//                           [--ledger=<docs/pass-31-ledger.tsv>] [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
+//                           --ledger=<the author's docs/pass-31-ledger.tsv> [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
 // The manifest (written by whoever seals the set, never by the gate builder):
 //   {"items": [{"name": "...", "id": "fig-1-1", "role": "v3|v4|worst|best", "job": "function|real thing|two-part",
 //               "intent": "...", "tree": "<public dir>" | "rev": "<commit>", "script": "fig_1_1.py"}]}
 // The takeaway each item is scored against is the ledger's (read by header name: columns "intent" and "job"; the
-// gate reads a copy of the ledger saved under <sealed>/runs/<stamp>/); an item's own "intent" and "job" are used only
-// when the ledger has no takeaway for its id (a held figure, or an id outside the ledger). The counts line says how
-// many takeaways came from each.
+// gate reads a copy of the ledger saved under <sealed>/runs/<stamp>/); an item's own "intent" and "job" (both
+// required, the job one of function, real thing, two-part) are used only when the ledger has no takeaway for its id
+// (a held figure, or an id outside the ledger). The counts line says how many takeaways came from each. The ledger
+// must exist: the gate branch keeps none, so --ledger names the author's file (default docs/pass-31-ledger.tsv of
+// this worktree); a missing or unreadable ledger, or a fallback item without a valid job, is incomplete (exit 2).
 //   tree: a prebuilt public dir; rev: that commit's scripts/figs/<script> and figlib.py built into a copy of public/
 //   (as fig:dev builds); neither: this worktree's public/.
 // Bars (section 10): every v3 item fails, every v4 item passes, every worst fails, at least half of the best pass.
@@ -33,21 +35,22 @@ const ROLES = ['v3', 'v4', 'worst', 'best'];
 if (!Array.isArray(items) || !items.length || items.some(x => !x || !x.id || !ROLES.includes(x.role))) { say('the manifest has an item without id or a role (v3, v4, worst, best)'); process.exit(2); }
 // the takeaways: the ledger's by header, the manifest's only where the ledger has none
 const LEDGER_SRC = path.resolve(o.ledger || LEDGER_DEFAULT);
+if (!fs.existsSync(LEDGER_SRC)) { say(`no ledger at ${LEDGER_SRC} (give --ledger=<the author's docs/pass-31-ledger.tsv>); incomplete`); process.exit(2); }
 let LG = null;
-if (fs.existsSync(LEDGER_SRC)) { try { LG = readLedger(LEDGER_SRC); } catch { say('the ledger is not readable by header (columns id, job, intent)'); process.exit(2); } }
+try { LG = readLedger(LEDGER_SRC); } catch { say('the ledger is not readable by header (columns id, job, intent, each named once); incomplete'); process.exit(2); }
 const JOBS_OK = ['function', 'real thing', 'two-part'];
 for (const it of items) {
-  const r = LG && LG.rows.get(it.id);
+  const r = LG.rows.get(it.id);
   if (r && r.intent && JOBS_OK.includes(r.job)) { it.src = 'ledger'; it.job = r.job; it.intent = r.intent; }
-  else if (it.intent) it.src = 'manifest';
-  else { say('an item has no takeaway in the ledger and no intent in the manifest; incomplete'); process.exit(2); }
+  else if (it.intent && JOBS_OK.includes(it.job)) it.src = 'manifest';
+  else { say('an item has no takeaway in the ledger and no intent with a valid job (function, real thing, two-part) in the manifest; incomplete'); process.exit(2); }
 }
 const FP = await fingerprint(o.model || 'claude-sonnet-5-5');
 if (o['expect-hash'] && o['expect-hash'] !== FP.combined) { say(`refused: the gate's fingerprint is not the frozen one (npm run fig:hash)`); process.exit(2); }
 const STAMP = new Date().toISOString().replace(/[:.]/g, '-');
 const DIR = mkdirp(path.join(SEALED, 'runs', STAMP));
-const LEDGER = LG ? path.join(DIR, 'ledger.tsv') : null; if (LG) fs.copyFileSync(LEDGER_SRC, LEDGER);
-fs.appendFileSync(path.join(SEALED, 'reads.log'), `${STAMP}\tfig:validate\t${items.length} items\tgate ${FP.combined}\tcli ${FP.cli}\tledger ${LG ? LG.sha256 : 'none'}\n`);
+const LEDGER = path.join(DIR, 'ledger.tsv'); fs.copyFileSync(LEDGER_SRC, LEDGER);
+fs.appendFileSync(path.join(SEALED, 'reads.log'), `${STAMP}\tfig:validate\t${items.length} items\tgate ${FP.combined}\tcli ${FP.cli}\tledger ${LG.sha256}\n`);
 
 // trees
 for (const [k, it] of items.entries()) {
@@ -72,7 +75,7 @@ const res = [];
 const queue = [...items];
 async function one(it) {
   const out = path.join(DIR, it.key);
-  const take = it.src === 'ledger' ? [`--ledger=${LEDGER}`] : [`--intent=${it.intent}`, `--job=${it.job || 'function'}`];
+  const take = it.src === 'ledger' ? [`--ledger=${LEDGER}`] : [`--intent=${it.intent}`, `--job=${it.job}`];
   const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), it.id, ...take, `--tree=${it.root}`,
     '--no-pairwise', '--author', `--out=${out}`, `--label=validate-${it.key}`, ...(o['expect-hash'] ? [`--expect-hash=${o['expect-hash']}`] : [])];
   const r = await run('node', argv);
@@ -86,6 +89,6 @@ const C = { v3: { fail: n('v3', 'fail'), of: n('v3') }, v4: { pass: n('v4', 'pas
 const holds = C.errors === 0 && C.v3.of > 0 && C.v3.fail === C.v3.of && C.v4.of > 0 && C.v4.pass === C.v4.of && C.worst.fail === C.worst.of && C.best.pass * 2 >= C.best.of;
 const verdict = C.errors ? 'INCOMPLETE' : holds ? 'HOLDS' : 'FAILS';
 const fromLedger = items.filter(x => x.src === 'ledger').length;
-fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, takeaways_from_ledger: fromLedger, of: items.length, ledger: LG ? { file: LEDGER_SRC, sha256: LG.sha256 } : null, fingerprint: FP }, null, 1));
+fs.writeFileSync(path.join(DIR, 'counts.json'), JSON.stringify({ stamp: STAMP, verdict, counts: C, takeaways_from_ledger: fromLedger, of: items.length, ledger: { file: LEDGER_SRC, sha256: LG.sha256 }, fingerprint: FP }, null, 1));
 say(`${verdict}: v3 failed ${C.v3.fail} of ${C.v3.of}; v4 passed ${C.v4.pass} of ${C.v4.of}; tapped worst failed ${C.worst.fail} of ${C.worst.of}; tapped best passed ${C.best.pass} of ${C.best.of}; tool errors ${C.errors}; takeaways from the ledger ${fromLedger} of ${items.length}`);
 process.exit(C.errors ? 2 : holds ? 0 : 1);

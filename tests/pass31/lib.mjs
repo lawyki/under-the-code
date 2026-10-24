@@ -84,11 +84,22 @@ export function packet(root, fig) {
 //     (so it is not an abbreviation the book uses: LAMP, ROTORS pass; ARM, RAM, OS, MAC, LAN, NAT, CPU do not until
 //     taught). Three letters or fewer pass only through the COMMON-word list or teaching (AX, AL, DOS fail);
 //   - a proper name the prose before the figure already uses (Shannon; LINUX for a name the prose spells Linux).
+// Short abbreviations in lower or mixed case (docs/pass-31-calibration.md section 15, review fix 2): a token of three
+// letters or fewer that is not all capitals (ram, Mac, os, rax, lo, js) needs teaching like the abbreviation when its
+// capitalised form is one the book writes in capitals (known-terms "capitals") or it is one of brief section 15's
+// dictionary abbreviations (SHORT_ABBR), unless the token itself is on the COMMON list (add, get, not); a plain s
+// plural of a word the book writes in capitals (rams, macs, arms) needs teaching too, unless that word is on the
+// COMMON list (adds, puts pass). The dictionary never makes these everyday words. A taught term of two letters or
+// fewer takes an s or es ending only written as the abbreviation (IPs, PCs, OSes), never in lower case (css is not
+// "CS" plus s).
 let DICT = null, LOWER = null, COMMON = null;
 const dict = () => DICT || (DICT = new Set(fs.readFileSync('/usr/share/dict/words', 'utf8').split('\n').map(w => w.trim().toLowerCase()).filter(Boolean)));
 const lowerDict = () => LOWER || (LOWER = new Set(fs.readFileSync('/usr/share/dict/words', 'utf8').split('\n').map(w => w.trim()).filter(w => w && w === w.toLowerCase())));
 export const COMMON_FILE = new URL('./common-words.txt', import.meta.url).pathname;
 export const common = () => COMMON || (COMMON = new Set(fs.readFileSync(COMMON_FILE, 'utf8').split('\n').map(w => w.trim()).filter(w => w && !w.startsWith('#'))));
+// dictionary words that are abbreviations (brief section 15: ax, al, arm, ram, nat, lan, dos; the review: mac, os),
+// flagged in lower and mixed case even where the book's prose never writes them in capitals
+export const SHORT_ABBR = new Set(['ax', 'al', 'arm', 'ram', 'nat', 'lan', 'dos', 'mac', 'os']);
 // irregular forms of everyday words (past tenses, participles, plurals, comparatives): form -> stem
 const IRREGULAR = Object.fromEntries(`became:become began:begin begun:begin bent:bend bound:bind bred:breed brought:bring built:build bought:buy
 caught:catch chose:choose chosen:choose clung:cling crept:creep dealt:deal did:do done:do drew:draw drawn:draw dug:dig drove:drive driven:drive
@@ -167,9 +178,14 @@ export function svgTexts(svg) {
 const B = '[^\\p{L}\\p{N}_]';   // a word boundary that keeps SYN_SENT and CR3 whole
 export function taughtYet(text, known, glossary, before = '') {
   const bad = [];
-  let s = ' ' + normT(text) + ' ';
+  // a taught term of two letters or fewer takes an s or es ending only written as the abbreviation: IPs, PCs, OSes
+  // (the ending dropped here, before case is folded); css, js and Ips keep theirs and are checked as tokens
+  const isShort = t => t.replace(/[^\p{L}\p{N}]/gu, '').length <= 2;
+  let t0 = text;
+  for (const t of known) if (isShort(t) && /^[\p{L}\p{N}]+$/u.test(t)) t0 = t0.replace(new RegExp(`(^|${B})(${esc(t.toUpperCase())})(s|es)(?=$|${B})`, 'gu'), '$1$2');
+  let s = ' ' + normT(t0) + ' ';
   // known terms first (longest first), so "turing machine" is taken whole
-  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}(s|es)?(?=$|${B})`, 'gu'), '$1 ');
+  for (const t of [...known].sort((a, b) => b.length - a.length)) s = s.replace(new RegExp(`(^|${B})${esc(t)}${isShort(t) ? '' : '(s|es)?'}(?=$|${B})`, 'gu'), '$1 ');
   // then multi-word glossary terms not yet taught ("system call", "ring 0"): each fails whole, even when every word in
   // it is an everyday word; a named one ("Bell Labs", "von Neumann") passes once the prose before the figure uses it.
   // Matched on the text as written (a hyphen in the term needs a hyphen: "a-machine" is not "a machine").
@@ -208,6 +224,14 @@ export function taughtYet(text, known, glossary, before = '') {
         if (part.replace(/[^\p{L}]/gu, '').length >= 4 && !st.some(w => glossary.capitals?.has(w.toUpperCase())) && st.some(w => lowerDict().has(w) || common().has(w))) continue;   // LAMP, ROTORS
         if (before && part.length >= 4 && /^\p{L}+$/u.test(part) && new RegExp(`(^|[^\\p{L}])${esc(title)}(?![\\p{L}])`, 'u').test(before)) continue;   // LINUX
         bad.push({ token: orig.includes('-') || orig.includes('/') ? AB : orig, why: 'an all-capitals abbreviation not taught before the figure' }); continue; }
+      // a short abbreviation in lower or mixed case (ram, Mac, os, rax, lo), or a plain plural of one the book writes in
+      // capitals (rams, arms): taught like the abbreviation, unless the token itself is on the COMMON list (add, not)
+      if (/^\p{L}+$/u.test(part) && !common().has(part)) {
+        const short = w => [...w].length >= 2 && [...w].length <= 3;
+        const abbr = short(part) && (glossary.capitals?.has(part.toUpperCase()) || SHORT_ABBR.has(part));
+        const w = part.replace(/s$/, ''), plural = w !== part && short(w) && glossary.capitals?.has(w.toUpperCase()) && !common().has(w);   // adds, puts: add, put are COMMON
+        if (abbr || plural) { bad.push({ token: part, why: 'an abbreviation not taught before the figure (not written in capitals)' }); continue; }
+      }
       if (everyday) continue;
       // a proper name (capital first letter, not all capitals) that the prose before the figure already uses
       if (/^\p{Lu}\p{Ll}/u.test(orig) && before && new RegExp(`(^|[^\\p{L}])${esc(orig)}`, 'u').test(before)) continue;
@@ -220,11 +244,13 @@ export function taughtYet(text, known, glossary, before = '') {
 // ---- the ledger (docs/pass-31-ledger.tsv, kept on the author's branch) -----------------------------------------
 // Read by header name, never by column index: "intent" holds the takeaway the scorer grades (brief section 7),
 // "content" the names and numbers for the fact checker, "job" the job the gate tests. Throws when a needed column is
-// missing or an id repeats. Returns { file, sha256, header, rows: Map(id -> {column: value}) }.
+// missing, a column name repeats in the header, or an id repeats. Returns { file, sha256, header, rows: Map(id -> {column: value}) }.
 export const LEDGER_DEFAULT = path.join(REPO, 'docs/pass-31-ledger.tsv');
 export function readLedger(file = LEDGER_DEFAULT, need = ['id', 'job', 'intent']) {
   const buf = fs.readFileSync(file), lines = buf.toString('utf8').split('\n').filter(l => l.trim());
   const header = lines[0].replace(/\r$/, '').split('\t').map(h => h.trim());
+  const dup = [...new Set(header.filter((h, i) => h && header.indexOf(h) !== i))];
+  if (dup.length) throw new Error(`${file}: column ${dup.join(', ')} appears more than once in the header`);
   const miss = need.filter(h => !header.includes(h));
   if (miss.length) throw new Error(`${file}: no column ${miss.join(', ')} in the header (${header.join(', ')})`);
   const rows = new Map();

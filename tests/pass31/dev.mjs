@@ -1,5 +1,5 @@
 // Pass 31 gate development set (docs/pass-31-calibration.md). The gate builder's tuning runs, and nothing else:
-//   npm run fig:dev -- [--runs=3] [--label=<attempt name>] [--only=v1,v2,v4,decoy1,decoy2,decoy3,enigma] [--criteria=...]
+//   npm run fig:dev -- [--runs=3] [--label=<attempt name>] [--only=v1,v2,v4,decoy1,...,decoy5,enigma] [--criteria=...]
 //                      [--jobs=3] [--ledger=<docs/pass-31-ledger.tsv>]
 // Builds Fig 1.1 at three owner-judged commits into scratch public trees (each commit's own fig_1_1.py and
 // figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/), then runs
@@ -18,6 +18,9 @@
 //   decoy4  Fig 1.2's takeaway drawn as a block schematic (boxes KEY, ROTORS, REFLECTOR, LAMP joined by arrows, a
 //           stepping counter and a changing lamp letter), built from the Enigma tree: a schematic is never a real
 //           thing (brief section 4, amended 2026-10-24), so under the job "real thing" it must fail  expected FAIL
+//   decoy5  Fig 1.2 frozen at its t=0 state (every animation removed, each animated opacity at its first value), so
+//           it does not animate: a real thing whose still is not scored on the mechanism (D1) must not pass on the
+//           object alone (docs/pass-31-calibration.md section 15, review fix 1)              expected FAIL
 // The must-pass (session e2): Fig 1.2 Enigma, praised by the owner, as it stands in this worktree's public/ (copied
 // into a scratch tree), under its ledger job "real thing"                              expected PASS
 // Every item's takeaway and job come from the ledger, read by header name (lib.mjs readLedger: columns "intent" and
@@ -29,7 +32,8 @@ import { args, run, mkdirp, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OU
 const { o } = args(process.argv.slice(2));
 const SET = { v1: { id: 'fig-1-1', rev: '4392ca0', expect: false }, v2: { id: 'fig-1-1', rev: 'c18836c', expect: false }, v4: { id: 'fig-1-1', rev: '2a9ece9', expect: true },
   decoy1: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy2: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true }, decoy3: { id: 'fig-1-1', from: 'v4', expect: false, decoy: true },
-  enigma: { id: 'fig-1-2', copy: true, expect: true, must: true }, decoy4: { id: 'fig-1-2', from: 'enigma', expect: false, decoy: true } };
+  enigma: { id: 'fig-1-2', copy: true, expect: true, must: true }, decoy4: { id: 'fig-1-2', from: 'enigma', expect: false, decoy: true },
+  decoy5: { id: 'fig-1-2', from: 'enigma', expect: false, decoy: true } };
 // the decoys' pictures (test fixtures, never book figures): the svg of fig-1-1 is replaced, or (decoy3) one label changed
 const F = 'font-family="IBM Plex Mono" fill="#e8e6e0"';
 const SVG = body => `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img">\n${body}\n</svg>`;
@@ -62,6 +66,15 @@ ${box(130, 110, 90, 'ROTORS')}${[0, 1, 2].map(i => step(i, 175, 146, String(i + 
 ${box(260, 110, 110, 'REFLECTOR')}
 ${box(130, 210, 90, 'LAMP')}${[0, 1, 2].map(i => step(i, 175, 246, 'FEC'[i])).join('')}
 ${arrow(90, 138, 128, 138)}${arrow(220, 138, 258, 138)}${arrow(315, 166, 222, 228)}`);
+  },
+  decoy5: svg => {   // Enigma at t=0, not animated: each opacity animation replaced by its first value, every other animation removed
+    const first = (attrs, v0) => (/\sopacity="[^"]*"/.test(attrs) ? attrs.replace(/\sopacity="[^"]*"/, ` opacity="${v0}"`) : `${attrs} opacity="${v0}"`);
+    let t = svg.replace(/<(\w+)([^>]*?)>(\s*)<animate attributeName="opacity" values="([^";]+)[^"]*"[^>]*\/>/g, (m, tag, attrs, ws, v0) => `<${tag}${first(attrs, v0)}>${ws}`);
+    t = t.replace(/<(text)([^>]*?)>([^<]*)<animate attributeName="opacity" values="([^";]+)[^"]*"[^>]*\/>/g, (m, tag, attrs, txt, v0) => `<${tag}${first(attrs, v0)}>${txt}`);
+    t = t.replace(/<animate attributeName="stroke-dashoffset" values="[^"]*"[^>]*\/>/g, '');
+    const left = (t.match(/<(animate|animateTransform|animateMotion|set)\b/g) || []).length;
+    if (left || t === svg) throw new Error(`decoy5: ${left} animation elements left in Fig 1.2 (or none found)`);
+    return t;
   },
 };
 // the long Fig 1.1 intent the gate was tuned on up to try21 (docs/pass-31-calibration.md section 3), kept for the record

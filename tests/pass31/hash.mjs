@@ -4,7 +4,8 @@
 //   prompts   sha256 of each prompt as rendered with placeholder inputs (prompts.mjs frozenTexts(): system, judge,
 //             scorer, hedge, still (t=0), stripped (text-stripped), pairwise)
 //   files     sha256 of every file the gate runs: tests/pass31/{gate,prompts,lib,hash}.mjs, tests/pass31/common-words.txt,
-//             tests/pass30/bare.mjs, scripts/known-terms.mjs
+//             tests/pass30/bare.mjs, scripts/known-terms.mjs, and the sealed validation runner tests/pass31/validate.mjs
+//             (its bars and its takeaway source; review fix 4)
 //   model     the tester model id
 //   combined  sha256 of prompts, files and model (sorted JSON); gate.mjs writes it into every verdict and --expect-hash
 //             refuses to run when it differs
@@ -16,7 +17,7 @@ import { run, REPO } from './lib.mjs';
 import { frozenTexts } from './prompts.mjs';
 
 export const CLAUDE = '/opt/homebrew/bin/claude';
-export const GATE_FILES = ['tests/pass31/gate.mjs', 'tests/pass31/prompts.mjs', 'tests/pass31/lib.mjs', 'tests/pass31/hash.mjs', 'tests/pass31/common-words.txt', 'tests/pass30/bare.mjs', 'scripts/known-terms.mjs'];
+export const GATE_FILES = ['tests/pass31/gate.mjs', 'tests/pass31/prompts.mjs', 'tests/pass31/lib.mjs', 'tests/pass31/hash.mjs', 'tests/pass31/common-words.txt', 'tests/pass30/bare.mjs', 'scripts/known-terms.mjs', 'tests/pass31/validate.mjs'];
 const sha = s => crypto.createHash('sha256').update(s).digest('hex');
 const sorted = o => JSON.stringify(o, Object.keys(o).sort());
 

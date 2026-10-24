@@ -44,6 +44,22 @@ const CASES = [
   ['fig-1-14', 'Ring 3 · Ring 0 · system call', ['ring 3', 'ring 0', 'system call']],
   // a hyphenated term needs its hyphen: "a machine" is everyday English
   ['fig-1-1', 'a machine', []],
+  // review fix 2 (docs/pass-31-calibration.md section 15): the same abbreviations in lower and title case fail before
+  // they are taught (the dictionary does not make them everyday words), and so do s plurals of the book's capitals
+  ['fig-1-1', 'ax al arm ram mac os lan dos', ['ax', 'al', 'arm', 'ram', 'mac', 'os', 'lan', 'dos']],
+  ['fig-1-1', 'Ax Al Arm Ram Mac Os Lan Dos', ['ax', 'al', 'arm', 'ram', 'mac', 'os', 'lan', 'dos']],
+  ['fig-1-1', 'rams macs arms', ['rams', 'macs', 'arms']],
+  // ... while COMMON words the book also writes in capitals, their inflections and other everyday words pass
+  ['fig-1-1', 'add adds added adding puts gets not non-volatile re-read Mar 10 ms', []],
+  // ... and the taught forms pass once the prose has taught them, a short term's plural only written as the abbreviation
+  ['fig-3-2', 'ram os arm rams arms CPUs RAMs OSes', []],
+  ['fig-10-3', 'IPs', []],
+  ['fig-10-3', 'ips', ['ips']],
+  // RAX is taught at ch3-registers-p2, after Fig 3.1; CSS is never "CS" plus s; LO and AST before they are taught
+  ['fig-3-1', 'add rax, 5', ['rax']],
+  ['fig-11-14', 'css', ['css']],
+  ['fig-8-5', 'lo', ['lo']],
+  ['fig-4-1', 'ast', ['ast']],
 ];
 let bad = 0;
 for (const [id, label, expect] of CASES) {

@@ -6,7 +6,10 @@
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
-// and the hedge check on both carry the test. The judge packet is the book's prose up to the figure (every earlier
+// and the hedge check on both carry the test; except for the job "real thing", whose still is not scored on the
+// mechanism (decision D1): there the still's description stands in for the judge's, scored and hedge-checked with the
+// judge's real-thing rubric and hedge scope, so a real thing that does not animate must still give its mechanism
+// (docs/pass-31-calibration.md section 15, review fix 1). The judge packet is the book's prose up to the figure (every earlier
 // part, and this part up to the card), never its caption, strip, <title> or <desc>. Testers are fresh Sonnet 5.5
 // sessions (claude -p, no tools, safe mode), each run in a new empty directory under the system temp dir (outside any
 // repo), each seeing only its message:
@@ -200,10 +203,12 @@ const pair = first => {
   const [A, B] = first === 'cand' ? [cand, rc2] : [rc2, cand];
   return [text(P.PAIRWISE(PACKET, A.frames.length, B.frames.length)), ...frameBlocks(A.frames, A.cycle, 'Version A, '), ...frameBlocks(B.frames, B.cycle, 'Version B, ')];
 };
+// a real thing that does not animate: its still's description stands in for the judge's (review fix 1)
+const STAND_IN = STATIC && JOB === 'real thing';
 const wantJudge = !STATIC && (need('judge') || need('hedge'));
-const wantStill = need('still') || (need('hedge') && STATIC);
+const wantStill = need('still') || (need('hedge') && STATIC) || (STAND_IN && need('judge'));
 const wantStripped = need('stripped') || need('hedge');
-log(`gate ${ID}: testers (round 1)${STATIC ? ' (does not animate: judge n/a)' : ''}`);
+log(`gate ${ID}: testers (round 1)${STATIC ? (STAND_IN ? ' (does not animate, real thing: the still stands in for the judge)' : ' (does not animate: judge n/a)') : ''}`);
 const [judge, still, stripped, pw1, pw2] = await Promise.all([
   wantJudge ? ask('judge', [text(P.JUDGE(PACKET)), ...frameBlocks(cand.frames, cand.cycle)]) : null,
   wantStill || need('hedge') ? ask('still', [text(P.STILL(PACKET)), { type: 'text', text: 'The still:' }, img(cand.frames[0].f)]) : null,
@@ -228,10 +233,10 @@ const hedgeOK1 = h => h.hedged === false && (!h.hedges || h.hedges.length === 0)
 const score = (kind, d) => d && !d._error ? vote(`score-${kind}`, [text(P.SCORER({ kind, job: JOB, intent: INTENT, description: strip_(d) }))], scoreOK) : Promise.resolve(d);
 const hedge = (kind, d) => d && !d._error ? vote(`hedge-${kind}`, [text(P.HEDGE(kind, strip_(d), JOB))], hedgeOK1) : Promise.resolve(d);
 const [sJ, sS, sT, hJ, hS, hT] = await Promise.all([
-  need('judge') && !STATIC ? score('judge', judge) : null,
+  need('judge') && !STATIC ? score('judge', judge) : need('judge') && STAND_IN ? score('judge', still) : null,
   need('still') ? score('still', still) : null,
   need('stripped') ? score('stripped', stripped) : null,
-  need('hedge') && !STATIC ? hedge('judge', judge) : null,
+  need('hedge') && !STATIC ? hedge('judge', judge) : need('hedge') && STAND_IN ? hedge('judge', still) : null,
   need('hedge') ? hedge('still', still) : null,
   need('hedge') ? hedge('stripped', stripped) : null,
 ]);
@@ -240,9 +245,10 @@ if (errors.length) toolError(errors.join('; '));
 
 const passOf = s => !!(s && s.pass);
 const hedgeOK = h => !!(h && h.pass);
-if (need('judge')) V.criteria.judge = STATIC ? { pass: true, na: true, note: 'the figure does not animate: its still is the whole figure (criterion still)' } : { pass: passOf(sJ), description: judge, score: sJ };
+if (need('judge')) V.criteria.judge = STAND_IN ? { pass: passOf(sJ), stand_in: 'still', note: 'a real thing that does not animate: the still\'s description scored with the judge\'s real-thing rubric', description: still, score: sJ }
+  : STATIC ? { pass: true, na: true, note: 'the figure does not animate: its still is the whole figure (criterion still)' } : { pass: passOf(sJ), description: judge, score: sJ };
 if (need('hedge')) {
-  const per = { ...(STATIC ? {} : { judge: { pass: hedgeOK(hJ), check: hJ } }), still: { pass: hedgeOK(hS), check: hS }, stripped: { pass: hedgeOK(hT), check: hT } };
+  const per = { ...(STATIC && !STAND_IN ? {} : { judge: { pass: hedgeOK(hJ), check: hJ, ...(STAND_IN ? { stand_in: 'still' } : {}) } }), still: { pass: hedgeOK(hS), check: hS }, stripped: { pass: hedgeOK(hT), check: hT } };
   V.criteria.hedge = { pass: Object.values(per).every(x => x.pass), failed_in: Object.keys(per).filter(k => !per[k].pass), per };
 }
 if (need('still')) V.criteria.still = { pass: passOf(sS), description: still, score: sS };
