@@ -1,7 +1,8 @@
 // Pass 31 sealed validation (docs/pass-31-brief.md section 10; docs/pass-31-calibration.md). Runs the frozen gate on
 // the sealed set with its single-figure criteria only (taught, judge, hedge, still, stripped; no pairwise) and prints
 // COUNTS ONLY: no figure id, verdict, criterion name or tester reply reaches stdout, so the gate builder can run it
-// and see only whether validation held.
+// and see only whether validation held. Each item is one gate decision (tests/pass31/gate.mjs: at least two of three
+// independent complete runs pass; docs/pass-31-calibration.md section 14), the same rule as for every figure.
 //   npm run fig:validate -- [--sealed=docs/pass-31-sealed] [--manifest=<sealed>/validation.json]
 //                           [--ledger=<docs/pass-31-ledger.tsv>] [--expect-hash=<combined sha256 from the calibration record>] [--jobs=3]
 // The manifest (written by whoever seals the set, never by the gate builder):

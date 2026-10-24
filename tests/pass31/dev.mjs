@@ -3,8 +3,10 @@
 //                      [--jobs=3] [--ledger=<docs/pass-31-ledger.tsv>]
 // Builds Fig 1.1 at three owner-judged commits into scratch public trees (each commit's own fig_1_1.py and
 // figlib.py, run by scripts/figs/build_into.py against a copy of this worktree's public/), then runs
-// tests/pass31/gate.mjs on each version --runs times. Pairwise is against the v1.0-rc2 tag; the first order
-// alternates per run (candidate first, rc2 first, then random), and every run asks both orders.
+// tests/pass31/gate.mjs on each version --runs times. Each of those is one evaluation: one gate decision (at least
+// two of three complete runs pass; docs/pass-31-calibration.md section 14), so --runs=3 makes 6 to 9 complete runs per
+// item. Pairwise is against the v1.0-rc2 tag; the first order alternates per evaluation (candidate first, rc2 first,
+// then random) and is passed to each of its runs, and every run asks both orders.
 //   v1 4392ca0  rejected (binary, jargon)          expected FAIL
 //   v2 c18836c  rejected (unexplained state labels) expected FAIL
 //   v4 2a9ece9  approved                            expected PASS
@@ -20,7 +22,7 @@
 // into a scratch tree), under its ledger job "real thing"                              expected PASS
 // Every item's takeaway and job come from the ledger, read by header name (lib.mjs readLedger: columns "intent" and
 // "job"); the ledger is copied into the attempt's folder and each gate run reads that copy, so a run is reproducible.
-// Output: tests/pass31/out/dev/<label>/summary.json and one line per run on stdout.
+// Output: tests/pass31/out/dev/<label>/summary.json and one line per evaluation on stdout (each with its runs).
 import fs from 'node:fs'; import path from 'node:path';
 import { args, run, mkdirp, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
 
@@ -103,18 +105,19 @@ const tasks = [];
 for (let k = 1; k <= RUNS; k++) for (const v of ONLY) tasks.push({ v, k, order: k === 1 ? 'cand-first' : k === 2 ? 'rc2-first' : 'random' });
 const results = [];
 async function one(t) {
-  const out = path.join(DIR, `${t.v}-run${t.k}`);
+  const out = path.join(DIR, `${t.v}-eval${t.k}`);
   const argv = [path.join(REPO, 'tests/pass31/gate.mjs'), SET[t.v].id, `--ledger=${LEDGER}`,
-    `--tree=${path.join(OUT, 'dev', 'trees', t.v, 'public')}`, `--order=${t.order}`, `--label=${LABEL}-${t.v}-run${t.k}`, `--out=${out}`];
+    `--tree=${path.join(OUT, 'dev', 'trees', t.v, 'public')}`, `--order=${t.order}`, `--label=${LABEL}-${t.v}-eval${t.k}`, `--out=${out}`];
   if (SET[t.v].decoy) argv.push('--no-pairwise');
   if (o.criteria) argv.push(`--criteria=${o.criteria}`);
   const r = await run('node', argv);
   let V = null; try { V = JSON.parse(fs.readFileSync(path.join(out, 'verdict.json'), 'utf8')); } catch {}
+  const runs = V && V.runs ? V.runs.map(x => ({ k: x.k, got: x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL', failed_all: x.failed_all, hedge_in: x.hedge_in, pairwise: x.pairwise,
+    single_failed: x.failed_all ? x.failed_all.filter(c => c !== 'pairwise') : null })) : [];
   const row = { v: t.v, id: SET[t.v].id, run: t.k, order: SET[t.v].decoy ? 'no pairwise' : t.order, expect: SET[t.v].expect ? 'PASS' : 'FAIL', got: !V || V.failed === 'error' ? 'ERROR' : V.pass ? 'PASS' : 'FAIL',
-    hedge_in: V && V.criteria.hedge ? V.criteria.hedge.failed_in : null,
-    failed: V ? V.failed : null, failed_all: V ? V.failed_all : null,
-    single_failed: V ? V.failed_all.filter(c => c !== 'pairwise') : null,
-    pairwise: V && V.criteria.pairwise ? (V.criteria.pairwise.replies || []).map(x => `${x.order}: ${x.verdict}`) : null, dir: out };
+    failed: V ? V.failed : null, failed_all: V ? V.failed_all : null, runs_passed: V ? V.runs_passed : null, runs_made: V ? V.runs_made : null, runs,
+    // without pairwise (as validation runs): the decision on each run's single-figure criteria (at least two of the runs made, or two of two)
+    single_got: runs.length ? (runs.filter(x => x.single_failed && !x.single_failed.length).length >= 2 ? 'PASS' : 'FAIL') : null, dir: out };
   row.correct = row.got === row.expect;
   results.push(row);
   console.log(JSON.stringify(row));
@@ -126,8 +129,10 @@ results.sort((a, b) => a.v.localeCompare(b.v) || a.run - b.run);
 const core = results.filter(r => !SET[r.v].decoy && !SET[r.v].must), dec = results.filter(r => SET[r.v].decoy), must = results.filter(r => SET[r.v].must);
 const correct = core.filter(r => r.correct).length, dcorrect = dec.filter(r => r.correct).length, mcorrect = must.filter(r => r.correct).length;
 // without pairwise (as the sealed validation runs): would v1 and v2 still fail on their single-figure criteria alone?
-const single = core.filter(r => r.single_failed).map(r => ({ v: r.v, run: r.run, got: r.single_failed.length ? 'FAIL' : 'PASS' }));
+// (a lower bound for a split decision: run 3 was made only when runs 1 and 2 disagreed with pairwise counted)
+const single = core.filter(r => r.single_got).map(r => ({ v: r.v, eval: r.run, got: r.single_got }));
+const perRun = Object.fromEntries(ONLY.map(v => { const rs = results.filter(r => r.v === v).flatMap(r => r.runs); return [v, { passed: rs.filter(x => x.got === 'PASS').length, of: rs.length }]; }));
 let hash = null; try { hash = JSON.parse(fs.readFileSync(path.join((core[0] || dec[0] || must[0]).dir, 'verdict.json'), 'utf8')).fingerprint; } catch {}
 fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify({ label: LABEL, correct, of: core.length, decoys_correct: dcorrect, decoys_of: dec.length, must_pass_correct: mcorrect, must_pass_of: must.length,
-  ledger: { source: LEDGER_SRC, copy: LEDGER, sha256: LG.sha256, takeaways: TAKE }, single_criteria: single, fingerprint: hash, results }, null, 1));
-console.log(`fig:dev ${LABEL}: ${correct} of ${core.length} correct (v1, v2, v4); decoys ${dcorrect} of ${dec.length} correct; must-pass (Enigma) ${mcorrect} of ${must.length} -> ${path.join(DIR, 'summary.json')}`);
+  ledger: { source: LEDGER_SRC, copy: LEDGER, sha256: LG.sha256, takeaways: TAKE }, rule: 'a decision passes when at least 2 of 3 complete runs pass', single_criteria: single, runs_per_item: perRun, fingerprint: hash, results }, null, 1));
+console.log(`fig:dev ${LABEL}: decisions: ${correct} of ${core.length} correct (v1, v2, v4); decoys ${dcorrect} of ${dec.length} correct; must-pass (Enigma) ${mcorrect} of ${must.length}; complete runs passed per item: ${Object.entries(perRun).map(([v, x]) => `${v} ${x.passed}/${x.of}`).join(', ')} -> ${path.join(DIR, 'summary.json')}`);

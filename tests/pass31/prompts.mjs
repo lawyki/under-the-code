@@ -91,8 +91,14 @@ const DRAWN_STILL = `The cause counts only when the picture draws it: "cause_dra
 const UNEXPLAINED_BASE = `unexplained: it fails if "unexplained_words" lists any word or label (a word the reader had to guess, or one naming something the text never introduced, fails even when the reader got the mechanism anyway; an entry that is only a number or a sign is judged as a mark). The one exception: an entry whose own reason says the text describes the thing the word names and the reader was unsure only where or how the picture places it does not count. It also fails if an entry in "unexplained_marks" shows that the reader could not get what changes, why, or the result. Judge only these two lists here (doubts in "unsure" are scored elsewhere). A mark the description itself uses in the intent's way in "changes", "cause" or "result" is resolved; so is a mark the description itself resolves elsewhere (for example strokes the reader took as counting marks and then used that way in "result"), one about decoration, or a doubt only about how a short result line refers to the drawn marks (whether it states the task or the answer, which mark is the "+ 1") when "result" matches the intent, does not count.`;
 // a real thing is judged on showing the object as it looks: its parts' names, the letters on them, a legend and a short
 // note on a part are part of that job (taught-yet still checks every token mechanically)
-const UNEXPLAINED_TEST = job => job !== 'real thing' ? UNEXPLAINED_BASE : `${UNEXPLAINED_BASE} For this job (real thing), do not count, in either list, an entry for a word, letter or number that is part of drawing the object: a part's name (a key, a wheel, a lamp, a reflector, a cabinet), the letters or numbers written on a part (a key's letter, a wheel's position letter), a legend for the drawing's colours or lines, or a short note on the drawing saying what a part does or how the drawing simplifies the object. These do not count even when the reader had to guess them or the text never used them: naming the parts of the object as it looks is this job (a separate mechanical check makes sure every such word is an everyday word or taught before the figure). Count only a word tagged onto a part to name a state, mode or condition it is in that neither the picture nor the text explains (for example a part tagged "· ready").`;
+// (from revision 1 of the follow-up, try26: a rule of its own, not the base rule with exceptions, which the scorer
+// sometimes applied over them)
+const UNEXPLAINED_REAL = `unexplained (real thing): this job draws the object as it looks, so the words, letters and numbers that are part of drawing it are expected: a part's name, or one label naming parts (a key, a wheel, a lamp, a reflector, a cabinet, or two part names on one label), the letters or numbers written on a part (a key's letter, a wheel's position letter), a legend for the drawing's colours or lines, and a short note on the drawing saying what a part does or how the drawing simplifies the object, with every word in that note. None of these counts, in either list, even when the reader had to guess it or the text never used it (a separate mechanical check makes sure every such word is an everyday word or taught before the figure). The test fails only if "unexplained_words" lists a word tagged onto a part to name a state, mode or condition it is in that neither the picture nor the text explains (for example a part tagged "· ready"), or if an entry in "unexplained_marks" shows that the reader could not tell what object is drawn. Judge only these two lists here (doubts in "unsure" are scored elsewhere).`;
+const UNEXPLAINED_TEST = job => job !== 'real thing' ? UNEXPLAINED_BASE : UNEXPLAINED_REAL;
 const OBJECT = `object: the description recognises the real object or scene the intent names, its parts drawn with their own physical features (for example wheels with their rows of contacts and the wiring inside them, round keys and lamps). It fails only when the parts are plain boxes or labels with nothing of the part drawn in them (at most a name, a letter or a number), joined by arrows or lines, or when the figure is a table, a timeline or text in a frame. Parts drawn with their own detail pass even when the reader calls them boxes or the drawing a diagram.`;
+// the still of a real thing (author decision D1, 2026-10-24): it passes when it shows the real object as it looks, its
+// parts identifiable; the mechanism is carried by the animation (the 12-frame judge) and is not tested on the still
+const OBJECT_STILL = `${OBJECT} The parts must also be identifiable: the reader names them, or tells them apart by their own features.`;
 // a real thing's cause is its part changing as drawn; how that change gives the result inside the object is function
 const REAL_CAUSE = ` For this job (real thing), the cause is drawn when the part the intent names is drawn changing (it moves or steps, or its position letter or drawn state changes); how that change produces the result inside the object is not tested, so a reader who says nothing shows how it does so does not fail this test.`;
 const RUBRIC = {
@@ -102,7 +108,9 @@ const RUBRIC = {
 ${job === 'real thing' ? `3. ${OBJECT}` : `3. carried by the picture: the mechanism is shown happening or drawn, not only written. It fails if "read_only" names a part of the mechanism (what changes, why, or the result) that the picture never shows, or if the cause is not drawn (test 1). Things moving is not enough: the picture must show what makes them move. A short result line that states what the drawn change amounts to (for example a sum, which also says what the drawn marks count) is part of this bar ("the result stated") and does not fail the test, even when "read_only" names it, as long as the change it sums up is shown happening.
 4. one scene, shown once: ${job === 'two-part' ? 'at most two panels, and' : 'one panel only (the scene, with its own rule cards, keys and result line), and'} "repeated" is "none". It fails if the figure adds a separate table, list of steps, replay or block of text beside the scene, or shows the same steps twice. A short result line that states what the scene arrives at is not a repeat, even when "repeated" names it.
 5. few words: the picture uses few words. It fails if "text_pieces" is more than 8 for one panel, or if the words, not the picture, carry the mechanism.`}`,
-  still: job => `This description comes from the still alone, the frame a reader with animation turned off sees (for a figure that does not animate, the whole figure). A still cannot move, so the change may be shown by drawn states, arrows, a before and after, drawn rules, or a stated result, and the reader may have to work the motion out. Score it against the intent: a reader who works out, from what is drawn, the same change, cause and result as the intent passes, even when the reader says the change is implied rather than seen. PASS only if every test passes; otherwise FAIL.
+  still: job => job === 'real thing' ? `This description comes from the still alone, the frame a reader with animation turned off sees (for a figure that does not animate, the whole figure). The figure's job is "real thing": its still passes when it shows the real object the intent names as it looks, its parts identifiable. The still does not have to show what changes, why, or the result: the animation carries that, and another test scores it on the frames. So do not score the intent's mechanism here: a reader who says the still shows no change, or who gets the change, its cause or the result wrong or not at all, does not fail for that. PASS only if both tests pass; otherwise FAIL.
+1. ${OBJECT_STILL}
+2. ${UNEXPLAINED_TEST(job)}` : `This description comes from the still alone, the frame a reader with animation turned off sees (for a figure that does not animate, the whole figure). A still cannot move, so the change may be shown by drawn states, arrows, a before and after, drawn rules, or a stated result, and the reader may have to work the motion out. Score it against the intent: a reader who works out, from what is drawn, the same change, cause and result as the intent passes, even when the reader says the change is implied rather than seen. PASS only if every test passes; otherwise FAIL.
 1. mechanism: the description gives the intent's mechanism: what changes, why, and the result, as the intent says. Paraphrase is fine. It fails if any of the three is missing, vague or wrong, or a different mechanism is given. ${DRAWN_STILL}${job === 'real thing' ? ` For this job (real thing) the change may also be shown on the drawn object by its parts' drawn states, a row of results, or a short note on the part that changes together with that part's drawn state (a still cannot move); such a note counts as drawn.${REAL_CAUSE}` : ''}
 2. ${UNEXPLAINED_TEST(job)}
 3. ${job === 'real thing' ? OBJECT : `few words: it fails if "text_pieces" is more than 8 for one panel.`}`,
@@ -131,11 +139,9 @@ Answer with one JSON object, nothing else:
 // events the reader saw: what changes, what makes it change, whether it stops, where it ends up. What the end state
 // means (that marks stand for a number, that a line states the sum) is scored by the scorer's mechanism test.
 const HEDGE_SCOPE = {
-  judge: { what: 'what changes, what makes it change, or where it ends up', fields: ['changes', 'cause', 'cause_drawn', 'result', 'teaches', 'unsure'],
-    out: '' },
-  still: { what: 'what makes the change happen (which drawn thing is the cause, and whether the rules or causes are drawn)', fields: ['changes', 'cause', 'cause_drawn', 'result', 'teaches', 'unsure'],
-    out: `\n- It is about what happens over time, what a rule's action produces (for example what "write" writes), how the drawn rules are chosen step by step, whether the end state is reached, or whether the still shows the start, the end or only the rules: the reader saw one still picture, which cannot move, and another test scores whether the reader worked those out. A doubt about which drawn thing causes the change, or whether the cause is drawn at all, still counts.` },
-  stripped: { what: 'what moves, or whether any drawn thing causes it', fields: ['moves', 'cause', 'cause_drawn', 'result', 'unsure'] },
+  judge: { fields: ['changes', 'cause', 'cause_drawn', 'result', 'teaches', 'unsure'] },
+  still: { fields: ['changes', 'cause', 'cause_drawn', 'result', 'teaches', 'unsure'] },
+  stripped: { fields: ['moves', 'cause', 'cause_drawn', 'result', 'unsure'] },
 };
 // The text-stripped reader lost every word that named an action or a result, so its check is narrow and positive: it
 // counts only a doubt about which thing moves, or a doubt that anything drawn causes the change (the stripped scorer
@@ -163,6 +169,53 @@ ${JSON.stringify(d, null, 1)}
 Answer with one JSON object, nothing else:
 {"candidates": [{"quote": "the hedged words", "about": "which thing moves | no drawn cause | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "which thing moves | no drawn cause"}], "hedged": true}
 ("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
+// the still of a real thing (author decision D1): judged only on showing the object as it looks, its parts identifiable
+const HEDGE_REAL_STILL = d => `Below is part of a blind reader's description of a figure seen as one still picture. The figure draws a real object (a machine, a device, a place), and its still is judged only on showing that object as it looks, its parts identifiable; what changes in the object is carried by the animation and tested elsewhere. Decide whether the reader hedges on what the drawing shows.
+
+A candidate is each entry in "unsure", each hedging word ("seems", "appears", "probably", "perhaps", "might", "may", "likely", "I think", "I assume", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only when it leaves open what the drawing shows: the reader cannot tell what object is drawn, or what kind of parts it has (offers two different objects, or cannot say what the parts are).
+Every other candidate does NOT count, however it is worded: whether anything changes, what changes, whether the still shows a change, which part moves, what the result is or whether it changes; why or how a part moves or gives its result; what a letter, mark or note on a part stands for; why the object is built or wired as it is, or what it is for; which moment the still shows; colours, layout and how the drawing is meant. (Another test scores whether the reader saw the object.)
+
+THE DESCRIPTION (JSON):
+${JSON.stringify(d, null, 1)}
+
+Answer with one JSON object, nothing else:
+{"candidates": [{"quote": "the hedged words", "about": "what is drawn | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "what is drawn"}], "hedged": true}
+("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
+// the function (and two-part) checks on the judge's and the still's descriptions (from revision 1 of the follow-up,
+// try26: narrow positive checks, as the text-stripped check, instead of "counts unless an exclusion applies")
+const HEDGE_FUNCTION = (kind, d) => kind === 'still' ? `Below is part of a blind reader's description of a figure seen as one still picture, which cannot move. Decide whether the reader hedges on what makes the change happen: which drawn thing is the cause, or whether the cause is drawn at all.
+
+A candidate is each entry in "unsure", each hedging word ("seems", "appears", "apparently", "probably", "presumably", "possibly", "perhaps", "might", "may", "likely", "suggests", "I think", "I assume", "I infer", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only in these cases:
+- it says, or leaves open, that nothing drawn shows why the change happens: the reader names no drawn thing as the cause, or says the rules or the cause are not drawn, or are only written in words. "cause_drawn" being "none", empty or only words also counts;
+- it offers two different drawn things as the cause, or cannot tell which drawn thing is the cause.
+Every other candidate does NOT count, however it is worded: what happens over time; what a rule's action produces (for example what "write" writes); how the drawn rules are chosen step by step; whether the end state is reached; whether the still shows the start, the end or only the rules; whether the drawn cause the reader names truly causes the change, or only shows which rule applies or goes with it; what the end state, a mark, a number or a line means; whether there is more than is drawn; colours, decoration and layout. (The reader saw one still picture, and other tests score whether the reader worked out the change and the result.)
+
+THE DESCRIPTION (JSON):
+${JSON.stringify(d, null, 1)}
+
+Answer with one JSON object, nothing else:
+{"candidates": [{"quote": "the hedged words", "about": "no drawn cause | which cause | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "no drawn cause | which cause"}], "hedged": true}
+("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)` : `Below is part of a blind reader's description of a figure shown as frames of its animation. Decide whether the reader hedges on what changes, what makes it change, or where it ends up.
+
+A candidate is each entry in "unsure", each hedging word ("seems", "appears", "apparently", "probably", "presumably", "possibly", "perhaps", "might", "may", "likely", "suggests", "I think", "I assume", "I infer", "unclear", "not sure", "could be"), each pair of alternatives and each question, in any field. A candidate COUNTS only in these cases:
+- what changes: it leaves open WHICH thing changes or moves, or whether anything changes (the reader cannot tell, or offers two different things);
+- what makes it change: the reader names no drawn thing as the cause, says the rules or the cause are not drawn, or are only written in words, or offers two different drawn things as the cause. "cause_drawn" being "none", empty or only words also counts;
+- where it ends up: the reader cannot say what the end state is, offers two different end states, or doubts that it stops while nothing drawn shows a stop (holding still while a rule card or light stays lit is a drawn stop);
+- a field about these ("changes", "cause", "cause_drawn", "result") is missing, empty or vague.
+Every other candidate does NOT count, however it is worded:
+- a doubt that names the drawn thing that shows the point and asks only whether it is really meant that way, or whether it truly causes the change or only shows which rule applies or goes with it (for example "the head stays put with the stop card lit, but does the machine truly stop?");
+- what the end state, a mark, a number or a line means (whether marks stand for a number, whether a written sum states the task or the answer, which mark is the "+ 1"): another test scores the meaning;
+- how a drawn rule or card depicts its condition or its action (what it shows or leaves out), while the change itself is stated;
+- whether there is more to the thing than is drawn (another part, a hidden state);
+- timing: a pause, a frame where nothing is lit, a frame caught between two positions, the order of events inside one step; the loop starting again;
+- colours, decoration and layout.
+
+THE DESCRIPTION (JSON):
+${JSON.stringify(d, null, 1)}
+
+Answer with one JSON object, nothing else:
+{"candidates": [{"quote": "the hedged words", "about": "what changes | why | end state | other", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "what changes | why | end state"}], "hedged": true}
+("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
 // a real thing is judged on showing the object as it looks, not on how or why it works (brief section 4)
 const HEDGE_REAL_THING = (kind, d) => `Below is part of a blind reader's description of a figure${kind === 'still' ? ' seen as one still picture' : ''}. The figure draws a real object (a machine, a device, a place), and it is judged on showing that object as it looks and what visibly happens in it, not on explaining how or why it works. Decide whether the reader hedges on what the drawing shows, on whether anything in the object changes, or on the result it shows.
 
@@ -182,27 +235,8 @@ export const HEDGE = (kind, description, job = 'function') => {
   const S = HEDGE_SCOPE[kind];
   const d = Object.fromEntries(S.fields.filter(k => description[k] !== undefined).map(k => [k, description[k]]));
   if (kind === 'stripped') return HEDGE_STRIPPED(d, job);
-  if (job === 'real thing') return HEDGE_REAL_THING(kind, d);
-  return `Below is part of a blind reader's description of a figure. Decide whether the reader hedges on ${S.what}.
-
-Every candidate below COUNTS as a hedge unless a rule further down says it does not:
-- each entry in "unsure";
-- each word such as "seems", "appears", "apparently", "probably", "presumably", "possibly", "perhaps", "might", "may", "likely", "suggests", "I think", "I assume", "I infer", "unclear", "not sure", "could be", in any field;
-- each pair of alternatives ("either ... or", "whether ... or") and each question, in any field;
-- a field about ${S.what} that is missing, empty or vague.
-A candidate counts when it touches ${S.what} in any way: which thing changes or moves, how, what makes it, whether a drawn thing causes it, whether it stops, what the end state is, and whether any of these is shown or only implied. It does not matter that another field states the point plainly.
-It does NOT count only in these cases:
-- It is purely about colours, decoration, layout, the exact timing of the animation (a pause, a frame where nothing is lit, a frame caught between two positions, the order of events inside one step), or the loop starting again.
-- It is only about what the end state or a mark, number or line means, not about what happens: for example whether marks stand for a number, whether a written sum states the task or the answer, or which mark is the "+ 1". (Another test scores the meaning.)
-- The doubt itself, or "cause_drawn", names the drawn thing that shows the point, and the doubt asks only whether it is really meant that way: for example "the head stays put with the stop card lit, but does the machine truly stop?", or "the stroke appears one frame after the right card lights, so I take it that rule writes it". Holding still is a drawn way to show a stop: a doubt whether the thing truly stops or only holds still, when the description says it holds still while a card or rule stays lit, is of this kind, even when the word on the card is what names the stop. A doubt where nothing drawn shows the point (for example "nothing shows what makes the head stop", or "the rules are never drawn") still counts.
-- It asks only whether there is more to the thing than is drawn (another part, a hidden state), while the description states the drawn cause plainly.${S.out || ''}
-
-THE DESCRIPTION (JSON):
-${JSON.stringify(d, null, 1)}
-
-Answer with one JSON object, nothing else:
-{"candidates": [{"quote": "the hedged words", "about": "what changes | why | end state | meaning | side detail", "counts": true, "why": "one sentence"}], "hedges": [{"quote": "each candidate that counts", "about": "what changes | why | end state"}], "hedged": true}
-("hedges" holds only the candidates that count; "hedged" is true when "hedges" is not empty.)`;
+  if (job === 'real thing') return kind === 'still' ? HEDGE_REAL_STILL(d) : HEDGE_REAL_THING(kind, d);
+  return HEDGE_FUNCTION(kind, d);
 };
 
 // (f) the pairwise comparison: two versions for the same place, order given by the caller

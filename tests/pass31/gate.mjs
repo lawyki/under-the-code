@@ -2,7 +2,7 @@
 //   npm run fig:gate -- <fig-id> [--ledger=<docs/pass-31-ledger.tsv>] | [--intent="<takeaway>" --job="function|real thing|two-part"]
 //        [--tree=<public dir>] [--part=part-N] [--rc2-tree=<public dir> | --rc2-rev=v1.0-rc2 | --no-pairwise]
 //        [--order=random|cand-first|rc2-first] [--criteria=taught,judge,hedge,still,stripped,pairwise] [--out=<dir>]
-//        [--model=claude-sonnet-5-5] [--label=<name>] [--expect-hash=<combined sha256>] [--author]
+//        [--model=claude-sonnet-5-5] [--label=<name>] [--expect-hash=<combined sha256>] [--author] [--single]
 // Renders, with tests/pass30/bare.mjs at 375 px: a 12-frame strip sampled evenly across the cycle (frame 1 is the t=0
 // still), the same strip with --no-text, and (pairwise) the rc2 version's strip. A figure that does not animate renders
 // one frame: its still is the whole figure, so `judge` is not applicable (n/a) and the still, the text-stripped still
@@ -23,10 +23,14 @@
 // the job it tests; never by column index; "content" is the fact checker's), default docs/pass-31-ledger.tsv, or
 // given with --intent and --job for a figure outside the ledger. Only the scorer sees it. The verdict records the
 // ledger file and its sha256.
+// The decision (docs/pass-31-calibration.md section 14): the figure passes when at least two of three independent
+// complete runs of everything above pass (runs 1 and 2 in parallel, run 3 only when they disagree). Each run's
+// verdict is in <out>/run-k/verdict.json; --single makes one run (the decision's building block, never a verdict).
 // A tool failure (render, CLI, an unreadable reply after three attempts) is not a figure failure: the verdict is
-// failed "error" and the exit code 2. Exit 0 pass, 1 fail.
-// Output: <out>/verdict.json (every tester's reply, for the gate builder) and on stdout one JSON line
-// {"id","pass","failed","failed_all"}; with --author only {"id","pass","failed"}.
+// failed "error" and the exit code 2 (a run that errs is made again once first). Exit 0 pass, 1 fail.
+// Output: <out>/verdict.json (the decision and its runs; each run's own verdict.json holds every tester's reply, for
+// the gate builder) and on stdout one JSON line {"id","pass","failed","failed_all"}; with --author only
+// {"id","pass","failed"}. For a failed decision, failed_all lists the criteria its failing runs failed, most often first.
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import os from 'node:os';
 import { args, tree, findFigure, readPart, packet as proseUpTo, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, readLedger, ledgerTakeaway, LEDGER_DEFAULT, REPO, OUT, PUBLIC } from './lib.mjs';
 import * as P from './prompts.mjs';
@@ -61,7 +65,7 @@ let SANDBOX = null;
 function finish(code) {
   if (SANDBOX) fs.rmSync(SANDBOX, { recursive: true, force: true });
   fs.writeFileSync(path.join(OUTDIR, 'verdict.json'), JSON.stringify(V, null, 1));
-  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, failed: V.failed, failed_all: V.failed_all, ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
+  console.log(JSON.stringify(o.author ? { id: ID, pass: V.pass, failed: V.failed } : { id: ID, label: V.label, pass: V.pass, failed: V.failed, failed_all: V.failed_all, ...(V.runs ? { runs: V.runs.map(x => (x.error ? 'ERROR' : x.pass ? 'PASS' : 'FAIL')) } : {}), ...(V.error ? { error: V.error } : {}), verdict: path.join(OUTDIR, 'verdict.json') }));
   process.exit(code);
 }
 function toolError(msg) { V.pass = false; V.failed = 'error'; V.failed_all = ['error']; V.error = String(msg).slice(0, 2000); finish(2); }
@@ -70,7 +74,50 @@ process.on('unhandledRejection', e => toolError(e && e.stack || e));
 
 V.fingerprint = await fingerprint(MODEL);
 if (o['expect-hash'] && o['expect-hash'] !== V.fingerprint.combined) toolError(`gate fingerprint ${V.fingerprint.combined} is not the expected ${o['expect-hash']} (npm run fig:hash)`);
-SANDBOX = fs.mkdtempSync(path.join(os.tmpdir(), 'p31-tester-'));   // the testers' empty working directory, outside any repo
+
+// ---- the decision (docs/pass-31-calibration.md section 14): a figure passes when at least RUNS_NEEDED of RUNS_OF
+// independent complete runs pass, each run the whole gate below (fresh renders, fresh testers, its own votes). Runs 1
+// and 2 are made in parallel; run 3 only when they disagree, and it decides (the outcome is the one all three would
+// give). A run that ends in a tool error is made again once; a second error makes the decision "error" (exit 2).
+// This rule applies to every figure the gate judges (fig:dev, fig:validate, Phase 2): --single is one complete run,
+// the decision's building block, never a verdict on a figure by itself.
+const RUNS_NEEDED = 2, RUNS_OF = 3;
+if (!o.single) {
+  if (!findFigure(ROOT, ID) || (o.part && findFigure(ROOT, ID).part !== o.part)) { console.log(`gate: no figure ${ID}${o.part ? ' in ' + o.part : ''} in ${ROOT}`); process.exit(2); }
+  const base = process.argv.slice(2).filter(a => !/^--(out|label|single)(=|$)/.test(a));
+  V.rule = { pass_when: `at least ${RUNS_NEEDED} of ${RUNS_OF} complete runs pass`, runs_needed: RUNS_NEEDED, of: RUNS_OF, third_run: 'only when runs 1 and 2 disagree', error_retry: 1 };
+  V.runs = [];
+  const one = async (k, again = 0) => {
+    const dir = path.join(OUTDIR, `run-${k}${again ? '-again' : ''}`);
+    const r = await run('node', [path.join(REPO, 'tests/pass31/gate.mjs'), ...base, '--single', '--author', `--out=${dir}`, `--label=${o.label || 'run'}-run-${k}`]);
+    let R = null; try { R = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch {}
+    const err = !R || R.failed === 'error' || r.code === 2 || ![0, 1].includes(r.code);
+    if (err && !again) { log(`gate ${ID}: run ${k} ended in a tool error; made again`); return one(k, 1); }
+    const row = { k, dir, pass: err ? false : !!R.pass, error: err ? (R && R.error) || (r.out + r.err).slice(-1500) : null, failed: err ? 'error' : R.failed, failed_all: err ? ['error'] : R.failed_all,
+      hedge_in: R && R.criteria && R.criteria.hedge ? R.criteria.hedge.failed_in : null,
+      pairwise: R && R.criteria && R.criteria.pairwise ? (R.criteria.pairwise.replies ? R.criteria.pairwise.replies.map(x => `${x.order}: ${x.verdict}`) : R.criteria.pairwise.same_frames ? ['SAME (identical frames)'] : ['n/a']) : null,
+      fingerprint: R && R.fingerprint ? R.fingerprint.combined : null };
+    V.runs.push(row); log(`gate ${ID}: run ${k} ${row.error ? 'ERROR' : row.pass ? 'PASS' : 'FAIL'}${row.failed_all && row.failed_all.length ? ' (' + row.failed_all.join(', ') + ')' : ''}`);
+    return row;
+  };
+  const first = await Promise.all([one(1), one(2)]);
+  const rows = first.some(x => x.error) || first[0].pass === first[1].pass ? first : [...first, await one(3)];
+  V.runs.sort((a, b) => a.k - b.k);
+  const bad = rows.find(x => x.error);
+  if (bad) toolError(`run ${bad.k}: ${bad.error}`);
+  const passes = rows.filter(x => x.pass).length;
+  V.pass = passes >= RUNS_NEEDED;
+  if (V.pass) { V.failed = null; V.failed_all = []; }
+  else {   // the criteria the failing runs failed, most often first (ties in the gate's order)
+    const n = c => rows.filter(x => !x.pass && x.failed_all.includes(c)).length;
+    V.failed_all = ALL.filter(c => n(c) > 0).sort((a, b) => n(b) - n(a) || ALL.indexOf(a) - ALL.indexOf(b));
+    V.failed = V.failed_all[0] || null;
+  }
+  V.runs_passed = passes; V.runs_made = rows.length;
+  if (rows.some(x => x.fingerprint && x.fingerprint !== V.fingerprint.combined)) toolError('a run reported a different gate fingerprint (the gate changed during the decision)');
+  finish(V.pass ? 0 : 1);
+}
+SANDBOX =fs.mkdtempSync(path.join(os.tmpdir(), 'p31-tester-'));   // the testers' empty working directory, outside any repo
 const fig = findFigure(ROOT, ID);
 if (!fig || (o.part && fig.part !== o.part)) { console.log(`gate: no figure ${ID}${o.part ? ' in ' + o.part : ''} in ${ROOT}`); process.exit(2); }
 
