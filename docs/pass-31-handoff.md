@@ -44,7 +44,11 @@ What happened: six repair rounds, each verified by session e2. The convergence r
 - §7's new-fact clause ("reversing an earlier verified keep needs a new fact, not a reapplied rule") applied: 17 rows that were verified keeps through round 4 and were cut in round 5 by a reapplied rule returned to keep (3.1, 3.3, 5.1, 5.10, 5.11, 9.2, 9.9, 11.2, 11.5, 12.2, 12.4, 14.1, 14.2, 14.10, 14.13, 18.1, 18.2). Each starts with its round-4 subtraction and carries a "Phase 2 inputs: possible cut" note that keeps the round-5 cut record (gap, citations, aliases).
 - Every remaining class-A medium is one labelled "Must-fix before <event>:" item on its row; lows and class B are "Phase 2 inputs" notes.
 
-Pending: e2's targeted verification of `24477bd` (`wuq24i5rs`, resumed after a session-limit death). Its result is sent to this session's address by message. If it finds no fact error and no new class-A medium, Phase 0 is closed: tick in `docs/todo.md` the items "Repairs, round 3" to "Repairs, round 6" and "Phase 0 under the stop rule", commit, push. If it finds a fact, fix it (close "Applied"), and send e2 the rows to re-check. If the message never arrives, ask e2 (`SendMessage` to `under-the-code-e2`) for the result of `wuq24i5rs`.
+e2's targeted verification of `24477bd` (`wuq24i5rs`, after the stop) is in: 63 confirmed (class A 10 medium, 24 low; class B 1 medium, 28 low), 20 class-A blocking. Full report: `scripts/pass31-author/verifications/e2-verify-24477bd.md`. So Phase 0 is not yet closed: the facts below still block (each fixed on its row and closed "Applied"); the class-A mediums become labelled must-fix items on their rows; the lows become "Phase 2 inputs" notes. Done cheaply (section 0), that is one author pass over these rows, then tick the Phase 0 items in `docs/todo.md`.
+
+- Facts still open: 12.1's content still says "because no language ran inside the page" (make it the takeaway's cause, "no script could change the page"); 5.11's final takeaway drops the drawn first wave (objects, with C++); 11.12's takeaway still says "each certificate is signed by the one above" (the root signs itself); exemplar 1.5 draws the battery backwards against the animated electron flow, and its two panels differ in hole count; 9.9's 64|64 bracket sits under the shortened address form. Smaller fact lows: 11.2 (line endings), 14.2 ("unanswerable"), 5.10 (libc), 3.3 (RIP reads as a general register).
+- Structure: the possible-cut note on the 17 returned keeps describes a Phase 2 cut route the brief closes (reword it to say a new fact reopens it only under section 7's two verdicts, as the brief allows, or drop the route); 1.10's record still says 3.1 is cut; 18.2 has an upheld blind flag left open on its return to keep; 18.4's cut drops two dated facts no prose holds; notes on cut rows need the "Must-fix before its chapter commit" label to be picked up.
+- Critic gaps: no gate freeze is READY; `docs/pass-31-takeaway-check.md` still names `c50f7e1` as the checker in force; the eight lower merge halves are counted among the 186 takeaways (count them apart, brief section 12); nine of the 12 cuts were not re-checked against round 6's section 7 (1.10 and 5.2 name mechanisms).
 
 Ledger numbers at `24477bd` (`docs/pass-31-ledger.tsv`, 222 rows, 15 columns read by header):
 
@@ -134,7 +138,7 @@ Checks before any commit: `npm run -s check:dashes` (no em dashes anywhere a rea
 
 ## 10. Next steps, in order
 
-1. Get e2's result for `wuq24i5rs` (Phase 0 check of `24477bd`); act on it as in section 3; tick the Phase 0 items when it confirms.
+1. Act on e2's verification of `24477bd` (section 3): fix the open facts and close them "Applied", label the mediums as must-fix items, note the lows; then tick the Phase 0 items. One author pass, no new verification round (section 0).
 2. Gate: freeze `19040ce`'s code (dev set rerun) or have a fresh builder do so, then review 3 under the READY bar, then the stop path (section 4).
 3. On a READY freeze: sealed validation (section 4), exemplar rechecks with fact checks and label newcomer reads, taught-yet on the takeaways; tick the gate, development-set, exemplar and validation items.
 4. Phase 2, Part I first (Ch1, Ch2, Ch3, the Bridge), one chapter per commit, with the drift check after each part (brief §14).
