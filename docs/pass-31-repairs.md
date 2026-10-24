@@ -424,7 +424,7 @@ Generated from git: every change each repair round made to the ledger columns jo
 - fig-18-4: subtraction
 - fig-18-6: content
 
-## Round 4: `832cb0d` to `bc17ed6`, 67 rows, 123 cells
+## Round 4: `832cb0d` to `3d20ca5`, 67 rows, 123 cells
 
 - fig-1-3: subtraction, chosen
 - fig-1-4: intent, content, knows, subtraction, chosen
