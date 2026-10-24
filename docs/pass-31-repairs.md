@@ -587,7 +587,7 @@ Generated from git: every change each repair round made to the ledger columns jo
 - fig-18-5: intent, content, subtraction
 - fig-18-6: subtraction
 
-## Round 6: `929b930` to the commit that adds this section, 110 rows, 148 cells
+## Round 6: `929b930` to `2a14001`, 110 rows, 148 cells
 
 - fig-1-5: content, chosen
 - fig-1-6: subtraction
@@ -699,3 +699,73 @@ Generated from git: every change each repair round made to the ledger columns jo
 - fig-18-3: intent, subtraction
 - fig-18-4: intent, subtraction
 - fig-18-5: subtraction
+
+## Round 6b, the stop-rule step: `647d172` to the commit that adds this section, 67 rows, 92 cells
+
+- fig-1-3: subtraction
+- fig-1-5: chosen
+- fig-1-8: subtraction
+- fig-2-7: subtraction
+- fig-2-8: subtraction
+- fig-3-1: subtraction, status
+- fig-3-2: subtraction
+- fig-3-3: subtraction, status
+- fig-3-5: subtraction
+- fig-4-1: subtraction
+- fig-4-7: subtraction
+- fig-4-8: chosen
+- fig-4-14: subtraction
+- fig-4-15: subtraction
+- fig-4-20: subtraction
+- fig-4-21: subtraction
+- fig-5-1: subtraction, status
+- fig-5-4: subtraction
+- fig-5-5: subtraction
+- fig-5-10: subtraction, status
+- fig-5-11: intent, subtraction, status
+- fig-6-2: intent, subtraction
+- fig-6-3: subtraction
+- fig-6-6: subtraction
+- fig-6-9: subtraction
+- fig-7-1: subtraction
+- fig-7-7: subtraction
+- fig-7-8: subtraction
+- fig-7-9: subtraction
+- fig-8-1: subtraction
+- fig-8-5: subtraction
+- fig-8-11: subtraction
+- fig-9-2: intent, content, subtraction, status
+- fig-9-8: subtraction
+- fig-9-9: subtraction, status
+- fig-10-3: subtraction, chosen
+- fig-11-1: subtraction
+- fig-11-2: subtraction, status
+- fig-11-5: subtraction, status
+- fig-11-8: subtraction
+- fig-11-12: content
+- fig-12-1: intent, subtraction
+- fig-12-2: subtraction, status
+- fig-12-4: subtraction, status
+- fig-12-7: subtraction
+- fig-13-2: subtraction
+- fig-13-3: subtraction
+- fig-13-6: chosen
+- fig-13-7: subtraction
+- fig-14-1: subtraction, status
+- fig-14-2: subtraction, status
+- fig-14-5: subtraction
+- fig-14-10: subtraction, status
+- fig-14-12: subtraction
+- fig-14-13: subtraction, status
+- fig-16-8: subtraction
+- fig-16-9: intent, subtraction
+- fig-17-1: subtraction
+- fig-17-3: subtraction
+- fig-17-6: chosen
+- fig-17-7: subtraction
+- fig-17-8: subtraction
+- fig-18-1: subtraction, status
+- fig-18-trace: subtraction
+- fig-18-2: content, subtraction, status
+- fig-18-3: subtraction
+- fig-18-4: subtraction
