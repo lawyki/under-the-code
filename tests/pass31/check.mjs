@@ -4,7 +4,10 @@
 //   cap      label cap: role-tagged label text at most 8 per panel. Object text is free only when tagged
 //            data-role="object", inside a <g data-obj="1"> that also holds a shape, and at most 6 characters; any other
 //            <text> (untagged included) counts as a label. A panel is a <g data-panel> group; without one the figure is one
-//            panel. At-bar and kept figures are exempt (docs/pass-31-exempt.json)
+//            panel; more than two panels count as one. Object text must be a direct child of its obj group, beside a
+//            shape, with at most two texts in the group. Legend entries (data-role="legend") at most two per panel. At-bar and kept figures are exempt (docs/pass-31-exempt.json)
+//   gate1    (per figure) the figure's own figs.mjs rows, still and motion runs: overlap, outside, spill, caption words,
+//            text and named-mark contrast; a failing row fails the figure (the part lines still carry each tool's summary)
 //   floor    no label below 11 CSS px from 360 px up (figs.mjs measures it)
 //   taught   every label and object token is a number or sign, a term taught before the figure, or an everyday word
 //            (tests/pass31/lib.mjs taughtYet; the known terms come from scripts/known-terms.mjs run with --out)
@@ -19,7 +22,7 @@
 //                        [--json=<file>] [--browser=chromium|webkit]
 // Output: one line per figure (PASS, or FAIL with the failed checks), the part checks, and tests/pass31/out/check/<part>/check.json.
 import fs from 'node:fs'; import path from 'node:path';
-import { args, tree, readPart, figures, plain, packet, capCount, sentences, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
+import { args, tree, readPart, figures, plain, packet, capCount, LABELS, LEGEND, MAX_PANELS, sentences, knownTerms, taughtBefore, taughtYet, svgTexts, run, mkdirp, framesIn, REPO, OUT, PUBLIC } from './lib.mjs';
 
 const { pos, o } = args(process.argv.slice(2));
 const part = pos[0] ? (/^\d$/.test(pos[0]) ? `part-${pos[0]}` : pos[0]) : null;
@@ -45,7 +48,7 @@ const KT_FILE = path.join(OUTDIR, 'known-terms.json');
 const kt = knownTerms(KT_FILE);
 for (const f of figs) {
   const c = capCount(f.svg);
-  put(f.id, 'cap', c.max <= 8, `labels per panel ${JSON.stringify(c.panels)}; free object text ${c.rows.filter(r => r.free).length}`, exempt('label_cap', f.id));
+  put(f.id, 'cap', c.max <= LABELS && c.maxLegend <= LEGEND, `labels per panel ${JSON.stringify(c.panels)}${c.merged ? ` (${c.panelCount} panels, more than ${MAX_PANELS}: counted as one)` : ''}; legend entries ${JSON.stringify(c.legends)}; free object text ${c.rows.filter(r => r.free).length}`, exempt('label_cap', f.id));
   R.get(f.id).labels = c.rows;
   const known = taughtBefore(kt, f, html);
   if (!known) put(f.id, 'taught', false, `section ${f.section} not in known-terms`);
@@ -82,10 +85,10 @@ async function tool(name, file, argv) {
   gate1.push({ name, pass: r.code === 0, summary: sum || r.err.slice(-300) });
   try { return JSON.parse(fs.readFileSync(json, 'utf8')); } catch { return null; }
 }
-let floorRows = null;
+let floorRows = null, motionRows = null;
 if (G1 !== 'off') {
   floorRows = await tool('figs', 'figs.mjs', [`--part=${part}`, ...figArg, '--fullscreen', ...quick]);
-  await tool('figs-motion', 'figs.mjs', [`--part=${part}`, ...figArg, '--motion', '--fullscreen', ...quick]);
+  motionRows = await tool('figs-motion', 'figs.mjs', [`--part=${part}`, ...figArg, '--motion', '--fullscreen', ...quick]);
   await tool('clip', 'clip.mjs', [`--pages=${part}`, ...(G1 === 'quick' ? ['--widths=375', `--browser=${ENG}`] : [])]);
   await tool('smooth', 'smooth.mjs', [`--pages=${part}`, ...(G1 === 'quick' ? ['--widths=375'] : [])]);
 } else {
@@ -98,6 +101,31 @@ for (const f of figs) {
   if (!rows.length) { put(f.id, 'floor', false, 'not measured'); continue; }
   const min = Math.min(...rows.map(r => r.minPx));
   put(f.id, 'floor', min >= 11, `smallest label ${min} CSS px from 360 px up`, exempt('floor', f.id));
+}
+
+// ---- Gate 1 rows, attributed to their figure: the findings figs.mjs counts (its why(), restated here because figs.mjs
+// is a script, not a module; keep the two in step). The floor has its own check above, so it is left out here.
+if (G1 !== 'off') {
+  let EXC = {}; try { EXC = JSON.parse(fs.readFileSync(path.join(REPO, 'docs/pass-30-exceptions.json'), 'utf8')); } catch {}
+  const CAP_X = new Set(EXC.caption_length?.ids || []);
+  const why = r => {
+    if (r.rendered === false || r.kind !== 'fig') return [];
+    const w = [];
+    if (!r.geomSkip) {
+      if (r.overlaps?.length) w.push('overlap'); if (r.outside?.length) w.push('outside'); if (r.spill?.length) w.push('spill');
+      if (!CAP_X.has(r.id) && r.capWords > 60) w.push('caption-words');
+    }
+    const c = r.contrast;
+    if (c) { if (c.error || c.texts.some(x => x.r == null || x.r < 4.5)) w.push('text-contrast'); if (!c.error && c.marks.some(m => m.named && m.r < 3)) w.push('mark-contrast'); }
+    return w;
+  };
+  for (const f of figs) {
+    const rows = [...(floorRows || []).filter(r => r.id === f.id).map(r => ['still', r]), ...(motionRows || []).filter(r => r.id === f.id).map(r => ['motion', r])];
+    if (!rows.length) { put(f.id, 'gate1', false, 'no Gate 1 rows for this figure (figs.mjs did not measure it)'); continue; }
+    const tally = {}; let bad = 0;
+    for (const [k, r] of rows) { const w = why(r); if (w.length) bad++; for (const x of w) tally[`${k} ${x}`] = (tally[`${k} ${x}`] || 0) + 1; }
+    put(f.id, 'gate1', bad === 0, bad ? `${bad} of ${rows.length} rows fail: ${Object.entries(tally).map(([k, n]) => `${k} ${n}`).join(', ')}` : `${rows.length} rows clean`);
+  }
 }
 
 // ---- part checks: dashes, anchors -----------------------------------------------------------------------------

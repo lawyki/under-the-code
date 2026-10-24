@@ -72,11 +72,12 @@ PLEX = 'font-family="IBM Plex Mono"'
 PHOS, PHOS_SOFT, LISTING, PLATE, PANEL = '#84ffb2', 'rgba(198,222,206,0.85)', 'rgba(132,255,178,0.55)', '#0c120e', '#152016'
 FONT = MONO                     # the face text() uses; a part's script may set figlib.FONT = PLEX
 
-ROLES = ('label', 'object')
+ROLES = ('label', 'object', 'legend')
 
 def text(x, y, s, anchor='start', size=14, fill=MUTED, extra='', ls='0.06em', role=None):
-    """role (Pass 31): 'label' (names, notes, legends: capped per panel) or 'object' (a glyph inside a drawn
-    object, at most 6 characters, free only inside an obj() group). None writes nothing (old output)."""
+    """role (Pass 31): 'label' (names, notes: capped per panel), 'legend' (a legend entry: counted as a label, and at
+    most two per panel) or 'object' (a glyph inside a drawn object, at most 6 characters, free only as a direct child
+    of an obj() group that holds a shape and at most two texts). None writes nothing (old output)."""
     if role is not None and role not in ROLES:
         raise ValueError(f'text role must be one of {ROLES} or None, not {role!r}')
     r = f' data-role="{role}"' if role else ''

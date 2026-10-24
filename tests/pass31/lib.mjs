@@ -102,6 +102,9 @@ export function knownTerms(file) {
   if (KT && KT.file === file) return KT;
   const j = JSON.parse(fs.readFileSync(file, 'utf8'));
   const glossary = new Set(Object.keys(j.taught).map(normT));
+  // glossary entries that are proper names (a capital, then lower case: "Shannon", not "ALU"): a figure may use the
+  // name once the prose before it has (the reader has met the person or place; the entry teaches more about them later)
+  glossary.names = new Set(Object.keys(j.taught).filter(k => /^\p{Lu}\p{Ll}/u.test(k)).map(normT));
   return (KT = { file, j, glossary, by: new Map(j.by_section.map(s => [s.section, s])) });
 }
 // the terms taught before the figure: known before its section, plus those its section teaches in prose before the card
@@ -137,7 +140,10 @@ export function taughtYet(text, known, glossary, before = '') {
     for (const part of tok.split(/[-–/]/)) {
       if (!part) continue;
       if (NUMBER.test(part) || SIGN.test(part) || /^\p{L}$/u.test(part)) continue;
-      if (glossary.has(part)) { bad.push({ token: part, why: 'a glossary term not yet taught' }); continue; }
+      if (glossary.has(part)) {
+        const name = part[0].toUpperCase() + part.slice(1);
+        if (glossary.names && glossary.names.has(part) && before && new RegExp(`(^|[^\\p{L}])${name}(?![\\p{L}])`, 'u').test(before)) continue;
+        bad.push({ token: part, why: 'a glossary term not yet taught' }); continue; }
       const inDict = stems(part).some(w => dict().has(w));
       // all capitals: a heading word in capitals passes (THE, ITS, ROTORS); an abbreviation does not (EAX, CGNAT, IHL).
       // Three letters or fewer pass only as a common short word, since many abbreviations are also rare dictionary words.
@@ -157,30 +163,57 @@ export function taughtYet(text, known, glossary, before = '') {
 }
 
 // ---- label cap: a tag-stack walk over the svg -----------------------------------------------------------------
+// Object text is free only when: tagged data-role="object", at most 6 characters, its direct parent is a
+// <g data-obj="1"> that has a shape (or a group holding a shape) as a direct child beside it, and that obj group holds
+// at most OBJ_TEXTS object texts (a group with more is a text block on a background: all its texts count as labels).
+// Panels are <g data-panel> groups; a figure with more than MAX_PANELS of them is counted as one panel.
+// Legend entries (data-role="legend") count as labels and are capped at LEGEND per panel.
 const SHAPE = /^(rect|circle|ellipse|line|polyline|polygon|path|use|image)$/;
+export const OBJ_TEXTS = 2, MAX_PANELS = 2, LEGEND = 2, LABELS = 8;
 export function capCount(svg) {
   const s = svg.replace(/<(title|desc)\b[\s\S]*?<\/\1>/g, '');
-  const stack = [], texts = [], groups = [];
+  const stack = [], texts = [];
+  const shaped = (e) => { const p = stack[stack.length - 1]; if (p) p.direct = true; };
   for (const m of s.matchAll(/<(\/?)([a-zA-Z][\w:-]*)\b([^>]*?)(\/?)>|([^<]+)/g)) {
     if (m[5] !== undefined) { const t = stack.findLast(e => e.name === 'text'); if (t) t.s += m[5]; continue; }
     const [, close, name, attrs, self] = m;
-    if (close) { const e = stack.pop(); if (e && e.name === 'text') texts.push(e); continue; }
-    const e = { name, attrs, s: '', anc: stack.slice(), shape: false };
-    if (SHAPE.test(name)) for (const a of stack) if (a.name === 'g') a.shape = true;
-    if (name === 'g') groups.push(e);
+    if (close) {
+      const e = stack.pop();
+      if (e && e.name === 'text') texts.push(e);
+      if (e && e.name === 'g' && e.shape) shaped(e);
+      continue;
+    }
+    const e = { name, attrs, s: '', anc: stack.slice(), shape: false, direct: false, parent: stack[stack.length - 1] || null };
+    if (SHAPE.test(name)) { for (const a of stack) if (a.name === 'g') a.shape = true; shaped(e); }
     if (!self) stack.push(e);
   }
-  const panels = new Map();
+  const isObj = g => g && g.name === 'g' && /\bdata-obj="1"/.test(g.attrs);
+  const objTexts = new Map();
+  for (const t of texts) if (isObj(t.parent) && /\bdata-role="object"/.test(t.attrs) && plain(t.s)) objTexts.set(t.parent, (objTexts.get(t.parent) || 0) + 1);
+  const panelOf = t => { const pg = t.anc.find(a => a.name === 'g' && /\bdata-panel\b/.test(a.attrs)); return pg ? (pg.attrs.match(/data-panel="([^"]*)"/) || [, 'panel'])[1] || 'panel' : 'figure'; };
+  const names = new Set(texts.filter(t => plain(t.s)).map(panelOf));
+  const merged = [...names].filter(n => n !== 'figure').length > MAX_PANELS;
   const rows = texts.map(t => {
     const str = plain(t.s), role = (t.attrs.match(/\bdata-role="([^"]+)"/) || [])[1] || null;
-    const og = t.anc.findLast(a => a.name === 'g' && /\bdata-obj="1"/.test(a.attrs));
-    const free = role === 'object' && og && og.shape && [...str].length <= 6;
-    const pg = t.anc.find(a => a.name === 'g' && /\bdata-panel\b/.test(a.attrs));
-    const panel = pg ? (pg.attrs.match(/data-panel="([^"]*)"/) || [, 'panel'])[1] : 'figure';
-    return { str, role, free, panel, why: free ? 'object' : role === 'object' ? (og ? (og.shape ? 'object over 6 characters: counted as label' : 'obj group without a shape: counted as label') : 'object outside obj(): counted as label') : role ? 'label' : 'untagged: counted as label' };
+    const og = t.anc.findLast(a => isObj(a));
+    const direct = isObj(t.parent), n = direct ? objTexts.get(t.parent) || 0 : 0;
+    const free = role === 'object' && direct && t.parent.direct && n <= OBJ_TEXTS && [...str].length <= 6;
+    const panel = merged ? 'figure' : panelOf(t);
+    const why = free ? 'object' : role === 'object'
+      ? (!og ? 'object outside obj(): counted as label'
+        : !direct ? 'object not a direct child of its obj group: counted as label'
+        : !t.parent.direct ? 'obj group without a shape beside the text: counted as label'
+        : n > OBJ_TEXTS ? `obj group with ${n} texts (more than ${OBJ_TEXTS}): counted as label`
+        : 'object over 6 characters: counted as label')
+      : role === 'legend' ? 'legend entry (counted as label)' : role ? 'label' : 'untagged: counted as label';
+    return { str, role, free, panel, why };
   }).filter(r => r.str);
+  const panels = new Map(), legends = new Map();
   for (const r of rows) if (!r.free) panels.set(r.panel, (panels.get(r.panel) || 0) + 1);
-  return { rows, panels: Object.fromEntries(panels), max: Math.max(0, ...panels.values()) };
+  for (const r of rows) if (r.role === 'legend') legends.set(r.panel, (legends.get(r.panel) || 0) + 1);
+  return { rows, panels: Object.fromEntries(panels), max: Math.max(0, ...panels.values()),
+    legends: Object.fromEntries(legends), maxLegend: Math.max(0, ...legends.values()),
+    panelCount: [...names].filter(n => n !== 'figure').length, merged };
 }
 // ---- caption sentences ----------------------------------------------------------------------------------------
 const ABBR = /\b(e\.g|i\.e|etc|vs|Fig|Figs|No|Dr|Mr|Mrs|Ms|St|approx|cf|al|U\.S|U\.K|a\.m|p\.m)\./g;
@@ -197,7 +230,10 @@ export function run(cmd, argv, { cwd = REPO, env = {}, input = null, quiet = tru
     if (timeout) timer = setTimeout(() => { p.kill('SIGTERM'); err += `\n[timeout after ${timeout} ms]`; }, timeout);
     p.stdout.on('data', d => { out += d; if (!quiet) process.stdout.write(d); });
     p.stderr.on('data', d => { err += d; if (!quiet) process.stderr.write(d); });
-    p.on('close', code => { if (timer) clearTimeout(timer); res({ code, out, err }); });
+    let done = false;
+    p.on('error', e => { if (done) return; done = true; if (timer) clearTimeout(timer); res({ code: -1, out, err: err + `\n[spawn error: ${e.message}]` }); });   // e.g. the CLI mid-update
+    p.on('close', code => { if (done) return; done = true; if (timer) clearTimeout(timer); res({ code, out, err }); });
+    p.stdin.on('error', () => {});
     if (input !== null) p.stdin.end(input); else p.stdin.end();
   });
 }
