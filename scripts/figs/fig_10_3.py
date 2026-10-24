@@ -29,8 +29,8 @@ a('<desc id="svgd-part3-30">Two lanes, the client on the left and the server on 
   'and the server is ESTABLISHED when the ACK lands. Data flows both ways. Then the client\'s program calls close: it sends FIN '
   'and is in FIN_WAIT_1; the server receives it, acknowledges and is in CLOSE_WAIT; the ACK moves the client to FIN_WAIT_2. '
   'The server\'s program calls close: it sends FIN and is in LAST_ACK; the client receives it, sends the last ACK and enters '
-  'TIME_WAIT, and the server is CLOSED when that ACK lands. The client waits out a timer, then is CLOSED. Each segment, call '
-  'or timer moves one side one state.</desc>')
+  'TIME_WAIT, and the server is CLOSED when that ACK lands. The client waits out a timer, then is CLOSED. Each handshake or closing segment, call '
+  'or timer moves one side one state; data moves none.</desc>')
 
 def pill(x, y, name, col, t=None, w=118):
     shape = f'<rect x="{x - w / 2}" y="{y - 14}" width="{w}" height="23" rx="11.5" fill="none" stroke="{col}" stroke-width="1.5"/>'
@@ -105,7 +105,7 @@ a('</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Time runs down: each segment drawn between the two lanes, and each listen, connect or close from the program, moves one side to '
+caption = ('Time runs down: each SYN, FIN and ACK between the two lanes, and each listen, connect or close from the program, moves one side to '
            'its next state. The side that closes first waits in TIME_WAIT so that stray packets from this connection die before '
            'its addresses and ports are reused.')
 how = '''<details class="fig-how">

@@ -1910,7 +1910,7 @@
       <div class="diagram-label">Fig 17.6&nbsp;· FLP impossibility&nbsp;· safety vs liveness vs asynchronous failure</div>
       <svg viewBox="0 0 400 446" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part5-19 svgd-part5-19" data-dur="8" data-beats="0 5.6">
 <title id="svgt-part5-19">Fig 17.6 · FLP impossibility · safety vs liveness vs asynchronous failure</title>
-<desc id="svgd-part5-19">Top: what node A sees, its link to node C with no vote from C yet. Below, the two worlds A cannot tell apart: in one C is slow and its vote is still on its way, in the other C has crashed and no vote will ever come. Then a grid of A's two choices in each world. Decide now: in the slow world C's vote arrives later and disagrees, a failure; in the crashed world it is fine. Keep waiting: in the slow world the vote arrives and all is fine; in the crashed world A waits for ever, a failure. Each choice fails in one world, so no protocol can be sure both to decide and never to disagree.</desc>
+<desc id="svgd-part5-19">Top: what node A sees, its link to node C with no vote from C yet. Below, the two worlds A cannot tell apart: in one C is slow and its vote is still on its way, in the other C has crashed and no vote will ever come. Then a grid of A's two choices in each world. Decide now: in the slow world C's vote arrives later and disagrees, a failure; in the crashed world it is fine. Keep waiting: in the slow world the vote arrives and all is fine; in the crashed world A waits for ever, a failure. Each choice fails in one world, so no deterministic protocol can be sure both to decide and never to disagree.</desc>
 <g data-panel="view">
 <text data-role="label" x="20" y="22" text-anchor="start" font-family="JetBrains Mono" font-size="14" letter-spacing="0.06em" fill="rgba(232,229,244,0.58)">what A sees</text>
 <g data-obj="1"><circle cx="84" cy="58" r="15" fill="none" stroke="#a08cff" stroke-width="2"/><text data-role="object" x="84" y="63" text-anchor="middle" font-family="JetBrains Mono" font-size="15" letter-spacing="0" fill="#a08cff">A</text></g>
@@ -1950,7 +1950,7 @@
           <li><b>Decide now.</b> If C was only slow, its vote arrives afterwards and may disagree: safety lost.</li>
           <li><b>Keep waiting.</b> If C crashed, no vote ever comes: liveness lost.</li>
           <li><b>The theorem.</b> Fischer, Lynch and Paterson (1985) proved that no deterministic protocol escapes both in a fully asynchronous system with even one crash.</li>
-          <li><b>In practice.</b> Raft assumes delays end and uses timeouts. It never decides wrongly, but during a long network storm it can stall, electing leader after leader until messages arrive in time again.</li>
+          <li><b>In practice.</b> Raft assumes delays end and uses timeouts. It never decides wrongly, but during a long network storm it can stall, holding election after election until messages arrive in time again.</li>
         </ol>
       </details>
     </div>

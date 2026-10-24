@@ -23,7 +23,7 @@ a('<desc id="svgd-part5-19">Top: what node A sees, its link to node C with no vo
   'tell apart: in one C is slow and its vote is still on its way, in the other C has crashed and no vote will ever come. Then '
   'a grid of A\'s two choices in each world. Decide now: in the slow world C\'s vote arrives later and disagrees, a failure; in '
   'the crashed world it is fine. Keep waiting: in the slow world the vote arrives and all is fine; in the crashed world A waits '
-  'for ever, a failure. Each choice fails in one world, so no protocol can be sure both to decide and never to disagree.</desc>')
+  'for ever, a failure. Each choice fails in one world, so no deterministic protocol can be sure both to decide and never to disagree.</desc>')
 
 def node(x, y, n, col, dead=False):
     dash = ' stroke-dasharray="3 3"' if dead else ''
@@ -89,7 +89,7 @@ how = '''<details class="fig-how">
           <li><b>Decide now.</b> If C was only slow, its vote arrives afterwards and may disagree: safety lost.</li>
           <li><b>Keep waiting.</b> If C crashed, no vote ever comes: liveness lost.</li>
           <li><b>The theorem.</b> Fischer, Lynch and Paterson (1985) proved that no deterministic protocol escapes both in a fully asynchronous system with even one crash.</li>
-          <li><b>In practice.</b> Raft assumes delays end and uses timeouts. It never decides wrongly, but during a long network storm it can stall, electing leader after leader until messages arrive in time again.</li>
+          <li><b>In practice.</b> Raft assumes delays end and uses timeouts. It never decides wrongly, but during a long network storm it can stall, holding election after election until messages arrive in time again.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-17-6">
