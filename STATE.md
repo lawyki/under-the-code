@@ -187,3 +187,9 @@ removed, each removal checked by a Sonnet 5.5 skeptic).
 - The 18 kept-original figures stay as drawn (`docs/pass-30-owner-calls.md` §B; the alternative is a typography-only pass).
 - `.kilo/agents/data.md`, `.claude/settings.json` and `shots4/`: tracked since your commit 7c2495b (a generic Kilo agent prompt and permission rules; no secrets).
 - Permission rules for `.claude/settings.local.json` (your 2026-10-11 list): not written, not blocking while auto mode runs the work.
+
+## CLAIM
+agent: none
+branch:
+task:
+started:
