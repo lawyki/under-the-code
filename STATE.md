@@ -189,7 +189,7 @@ removed, each removal checked by a Sonnet 5.5 skeptic).
 - Permission rules for `.claude/settings.local.json` (your 2026-10-11 list): not written, not blocking while auto mode runs the work.
 
 ## CLAIM
-agent: codex
-branch: codex/sync-setup
-task: Approved sync setup: AGENTS pointer and CLAIM scaffold
-started: 2026-10-26 14:01 Helsinki
+agent: none
+branch:
+task:
+started:
