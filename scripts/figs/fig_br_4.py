@@ -16,7 +16,7 @@ def vis(spans):
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
     return T.discrete('opacity', sorted(pts))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-46 svgd-part1-46"{T.steps([(4.6, 'load'), (10.4, 'store')])}>')
 a('<title id="svgt-part1-46">Fig BR.4 · The MMU · silicon between the CPU and the RAM</title>')
 a('<desc id="svgd-part1-46">Two memory accesses through the MMU, each as an address in two parts, the page number and the offset within the '
   'page. A load from virtual address 0x7fff_fa3c_4010: the MMU walks the page tables the kernel wrote and swaps the page number for the '
@@ -29,7 +29,6 @@ a(f'<rect x="20" y="16" width="360" height="46" rx="7" fill="none" stroke="{BLUE
 a(text(34, 44, 'CPU', size=15, fill=BLUE))
 a(f'<rect x="20" y="96" width="360" height="176" rx="8" fill="none" stroke="{GOLD}" stroke-width="1.5"/>')
 a(text(34, 120, 'MMU', size=15, fill=GOLD))
-a(text(366, 120, 'a circuit, no code', anchor='end', size=14, fill=MUTED))
 a(f'<rect x="200" y="322" width="180" height="46" rx="7" fill="none" stroke="{GREEN}" stroke-width="1.5"/>')
 a(text(214, 350, 'RAM', size=15, fill=GREEN))
 a(f'<rect x="20" y="322" width="150" height="60" rx="7" fill="none" stroke="{RED}" stroke-width="1.5"/>')

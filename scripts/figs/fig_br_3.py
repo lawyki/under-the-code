@@ -19,7 +19,7 @@ ROWS = [('0', 'divide error'), ('13', 'protection'), ('14', 'page fault'), ('⋮
 RY = lambda i: 96 + i * 34                     # row top
 TX, TW = 118, 154                              # the table
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-45 svgd-part1-45">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-45 svgd-part1-45"{T.steps([(2.2, 'page fault'), (6.2, 'device'), (10.2, 'int 0x80')])}>')
 a('<title id="svgt-part1-45">Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel</title>')
 a('<desc id="svgd-part1-45">The interrupt descriptor table: 256 entries the kernel wrote at boot, found through the IDTR register. Each '
   'entry holds the address of a kernel handler. A vector number picks the entry. The CPU itself raises vectors 0 to 31 for its '
@@ -52,14 +52,13 @@ SRC = [(2, 'the CPU', RED, '14', 0.6), (4, 'a device', GREEN, '33', 4.6), (6, 'a
 for i, name, col, vec, t0 in SRC:
     y = RY(i) + 15
     a(text(20, y + 5, name, size=14, fill=col))
-    a(f'<path d="M 100 {y} H {TX - 6}" stroke="{EDGE}" stroke-width="1.4" stroke-dasharray="3 4"/>')
+    a(f'<path d="M 106 {y} H {TX - 6}" stroke="{EDGE}" stroke-width="1.4" stroke-dasharray="3 4"/>')
     # the source raises its vector: its line lights
-    a(f'<path d="M 100 {y} H {TX - 6}" stroke="{col}" stroke-width="2.6" opacity="0">{vis([(t0, t0 + 1.6)])}</path>')
+    a(f'<path d="M 106 {y} H {TX - 6}" stroke="{col}" stroke-width="2.6" opacity="0">{vis([(t0, t0 + 1.6)])}</path>')
     # its row lights, and the CPU jumps along it to the handler
     a(f'<rect x="{TX + 3}" y="{RY(i) - 1}" width="{TW - 6}" height="30" rx="4" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{vis([(t0 + 1.0, t0 + 3.6)])}</rect>')
     a(f'<g opacity="0">{vis([(t0 + 1.6, t0 + 3.6)])}<path d="M {TX + TW + 2} {RY(i) + 15} H {HX - 4} m -7 -5 l 7 5 l -7 5" fill="none" stroke="{GOLD}" stroke-width="2.2"/>'
       f'<rect x="{HX}" y="{RY(i) + 4}" width="80" height="22" rx="4" fill="none" stroke="{GOLD}" stroke-width="2.6"/></g>')
-a(text(200, 362, 'the vector number picks the row', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 

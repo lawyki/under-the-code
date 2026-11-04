@@ -21,7 +21,7 @@ REG = [('boot code', '0xFF00_0000', 66, 44), ('local APIC', '0xFEE0_0000', 110, 
 # the four stores: (region index, address, effect colour)
 STORES = [(5, '0x0040_1000', GREEN), (4, '0xC000_2a00', BLUE), (3, '0xD000_0010', BLUE), (1, '0xFEE0_0380', GOLD)]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49 svgd-part1-49">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49 svgd-part1-49"{T.steps([(1.2, 'RAM'), (3.7, 'pixel'), (6.2, 'packet'), (8.7, 'timer')])}>')
 a('<title id="svgt-part1-49">Fig BR.7 · The physical address space · devices among the RAM</title>')
 a('<desc id="svgd-part1-49">The lowest 4 GiB of a typical PC\'s physical address map, top to bottom: the read-only boot code (firmware) just '
   'below 4 GiB, the local APIC at 0xFEE0_0000, the interrupt router (IO-APIC) that passes device interrupts to the cores at 0xFEC0_0000, '

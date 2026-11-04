@@ -29,7 +29,7 @@ for k, p in enumerate(SEQ):
     oldest = min(range(4), key=lambda j: last[slots[j]])
     hist.append((p, hit, i, list(slots), oldest))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47"{T.steps([(1.75, 'a hit'), (4.75, 'a miss'), (9.35, 'the end')])}>')
 a('<title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn\'t happen</title>')
 a('<desc id="svgd-part1-47">A program\'s twelve memory accesses, by page (a3c4, a3c4, a3c5, a3c4, a3c5, a3c6, a3c4, a3c6, a3c7, a3c7, a3c4, '
   'a3c5), against a TLB of four entries holding recent page translations. A page already in the TLB is a hit, answered at once. A new '
@@ -86,7 +86,6 @@ a(f'<rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="{RE
 # the count
 nh = sum(1 for h in hist if h[1]); nm = len(hist) - nh
 a(text(252, 268, f'hits {nh}', size=15, fill=GREEN)); a(text(252, 290, f'misses {nm}', size=15, fill=RED))
-a(text(20, 318, 'real programs: well over 99% hits', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 

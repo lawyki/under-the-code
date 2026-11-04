@@ -17,7 +17,7 @@ def vis(spans):
 INS = [('add rax, rbx', False), ('mov cr3, rax', True), ('hlt', True)]
 PW, X_START, X_END, GX = 122, 18, 246, 172          # pill width, start x, end x, gate x
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-1 svgd-part1-br-1">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-1 svgd-part1-br-1"{T.steps([(2.5, 'add'), (4.5, 'mov cr3'), (6.5, 'hlt')])}>')
 a('<title id="svgt-part1-br-1">Fig BR.1 · The privilege bit · two worlds, one chip</title>')
 a('<desc id="svgd-part1-br-1">The low two bits of the CS register hold the current privilege level: 00 in Ring 0, the kernel, and 11 in '
   'Ring 3, user programs. The CPU checks it on every instruction, drawn as a gate. The same three instructions go through in each '

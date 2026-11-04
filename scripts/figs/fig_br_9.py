@@ -21,7 +21,7 @@ def vis(spans):
     return T.discrete('opacity', sorted(pts))
 RY = lambda k: 46 + k * 46
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51"{T.steps([(1.0, 'whole'), (2.6, 'privilege'), (5.0, 'traps'), (7.4, 'MMU'), (9.799999999999999, 'timer'), (12.2, 'MMIO')])}>')
 a('<title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>')
 a('<desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each '
   'pair: the privilege bit gives a protected kernel apart from user programs, traps give system calls, the MMU and TLB give separate '
@@ -50,8 +50,7 @@ for k, (feat, abst, loss) in enumerate(ROWS):
       + text(32, y + 21, feat, size=14, fill=MUTED, ls='0')
       + f'<path d="M 26 {y + 16} H 154" stroke="{RED}" stroke-width="2"/>'
       + f'<rect x="240" y="{y}" width="140" height="32" rx="5" fill="none" stroke="{RED}" stroke-width="1.5" stroke-dasharray="4 4"/>'
-      + text(252, y + 21, abst, size=14, fill=MUTED, ls='0')
-      + f'<path d="M 362 {y + 9} l 12 14 m 0 -14 l -12 14" stroke="{RED}" stroke-width="2.2" stroke-linecap="round"/></g>')
+      + text(252, y + 21, abst, size=14, fill=MUTED, ls='0')+ '</g>')
     a(f'<g opacity="0">{vis([off])}' + text(20, 302, ['without the privilege bit:', 'without traps:', 'without the MMU:', 'without the timer:', 'without MMIO and DMA:'][k], size=14, fill=RED, ls='0')
       + text(20, 324, loss, size=14, fill=INK, ls='0') + '</g>')
 a(f'<g opacity="0">{vis([(0.0, 1.6), (1.6 + STEP * len(ROWS) - 0.2, D)])}' + text(20, 302, 'take a feature away,', size=14, fill=MUTED, ls='0')

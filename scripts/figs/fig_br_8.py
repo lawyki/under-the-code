@@ -15,7 +15,7 @@ def vis(spans):
     return T.discrete('opacity', sorted(pts))
 S1, S2, S3 = (0.4, 2.4), (2.6, 7.4), (7.6, D)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50"{T.steps([(1.8, 'queue'), (5.5, 'fill'), (9.0, 'done')])}>')
 a('<title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>')
 a('<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM '
   '(read these blocks into the buffer at 0x4a20_0000) and rings the SSD\'s doorbell register. The SSD then streams the data straight into '
@@ -64,9 +64,8 @@ a(text(200, 96, 'interrupt', anchor='middle', size=14, fill=RED))
 for k, (s, span, col) in enumerate((('1  command queued, doorbell rung', (0.4, D), GOLD), ('2  the SSD fills RAM on its own', (2.6, D), GREEN),
                                    ('3  an interrupt says done', (7.6, D), RED))):
     y = 250 + k * 26
-    a(text(20, y, s, size=14, fill=MUTED, ls='0'))
+    a(f'<g>{T.discrete("opacity", [(0.0, 0), (0.4, 1), (span[0], 0)])}' + text(20, y, s, size=14, fill=MUTED, ls='0') + '</g>')
     a(f'<g opacity="0">{vis([span, (0.0, 0.4)])}' + text(20, y, s, size=14, fill=col, ls='0') + '</g>')
-a(text(20, 330, 'the CPU never copies the data', size=14, fill=INK, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 

@@ -18,7 +18,7 @@ def vis(spans):
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
     return T.discrete('opacity', sorted(pts))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-48 svgd-part1-48">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-48 svgd-part1-48"{T.steps([(2.8, '1 ms'), (4.8, '2 ms'), (6.8, '3 ms'), (8.6, '4 ms')])}>')
 a('<title id="svgt-part1-48">Fig BR.6 · The timer interrupt loop · how the kernel takes the CPU back</title>')
 a('<desc id="svgd-part1-48">Four milliseconds of one CPU core with the timer set to a thousand ticks a second. Process A runs until the '
   'timer fires; the tick interrupts, the kernel runs for a moment and its scheduler picks process B; at the next tick, process C; at '
@@ -49,15 +49,15 @@ for m in (1, 2, 3):
     t = TAU(m)
     a(f'<circle cx="{X0 + 12}" cy="38" r="20" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{vis([(t - 0.05, t + 0.45)])}</circle>')
     a(f'<path d="M {x} 62 V {LY - 8}" stroke="{GOLD}" stroke-width="3" opacity="0">{vis([(t - 0.05, t + 0.45)])}</path>')
-a(f'<rect x="{X0}" y="{LY + 68}" width="12" height="12" rx="2" fill="{GOLD}"/>')
-a(text(X0 + 20, LY + 79, 'kernel: the scheduler picks the next', size=14, fill=INK, ls='0'))
+a(f'<rect x="{X0}" y="{LY + 112}" width="12" height="12" rx="2" fill="{GOLD}"/>')
+a(text(X0 + 20, LY + 123, 'kernel: the scheduler picks the next', size=14, fill=INK, ls='0'))
 # the time axis
 for m in range(5):
     a(f'<line x1="{X(m)}" y1="{LY + 50}" x2="{X(m)}" y2="{LY + 58}" stroke="{EDGE}"/>')
-    a(text(X(m), LY + 112, f'{m} ms', anchor='middle', size=14, fill=MUTED))
+    a(text(X(m), LY + 76, f'{m} ms', anchor='middle', size=14, fill=MUTED))
 # the hand sweeping the four milliseconds
 a(f'<g>{T.translate([(0.0, 0), (0.5, 0), (0.5 + SWEEP, X(4) - X0), (D - 0.2, X(4) - X0), (D - 0.01, 0)], axis="x")}'
-  f'<path d="M {X0} {LY + 62} l -6 10 h 12 z" fill="{INK}"/></g>')
+  f'<path d="M {X0} {LY + 86} l -6 10 h 12 z" fill="{INK}"/></g>')
 a(text(20, 280, 'C never gave the CPU up; the tick took it', size=14, fill=RED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)

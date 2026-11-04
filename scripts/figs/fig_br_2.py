@@ -16,7 +16,7 @@ def vis(spans):
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
     return T.discrete('opacity', sorted(pts))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-2 svgd-part1-br-2">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-br-2 svgd-part1-br-2"{T.steps([(2.4, 'syscall'), (5.0, 'kernel'), (7.4, 'sysret'), (9.6, 'back')])}>')
 a('<title id="svgt-part1-br-2">Fig BR.2 · The trap mechanism · one round trip across the boundary</title>')
 a('<desc id="svgd-part1-br-2">A write system call, step by step, time flowing down. In user mode, Ring 3, the program puts 1, the number of '
   'write, in RAX and executes SYSCALL. The CPU saves RIP, the return address, in RCX and RFLAGS, its status bits, in R11 (a spare '
