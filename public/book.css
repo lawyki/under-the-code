@@ -155,7 +155,7 @@
   .pull-quote .attr { display: block; margin-top: 12px; font-family: var(--mono); font-size: 11px; font-style: normal; color: var(--text-muted); letter-spacing: 0.05em; }
 
   .diagram-card { background: var(--dark); border-radius: 16px; padding: 48px; margin: 48px 0; position: relative; overflow: hidden; }
-  .diagram-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%); }
+  .diagram-card::before { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.06) 0%, transparent 60%); }
   .diagram-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-bottom: 32px; position: relative; z-index: 1; }
   .diagram-caption { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 24px; position: relative; z-index: 1; line-height: 1.7; }
   /* p strong and default link colors are near-black — restate them for the dark card ground */
@@ -285,11 +285,8 @@
   /* Subtle reading-rhythm details — scroll-driven, opt-in via @supports.
      Browsers without scroll-driven animations just see the static, fully visible state. */
   @supports (animation-timeline: view()) {
-    .diagram-card, .light-diagram, .scale-shock, .math-callout, .pull-quote {
-      animation: scrollFade 1s ease-out both;
-      animation-timeline: view();
-      animation-range: entry 5% entry 45%;
-    }
+    /* Figure cards and callouts no longer fade in on scroll (owner, 2026-11-04: the site lagged): a card that moves
+       while its SVG animates is re-rastered every frame, at every width. */
     .section-number {
       position: relative;
     }
@@ -368,11 +365,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
   }
-  .diagram-card:not(.is-fullscreen):hover,
-  .light-diagram:not(.is-fullscreen):hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
-  }
+  /* (the hover lift on figure cards is gone, 2026-11-04: it re-rastered the card under the pointer and moved the step buttons) */
 
   /* === Glass text reveal for h2 ===
      Headings appear as if forming out of clear glass — chromatic aberration on entry,
@@ -395,7 +388,6 @@
          3px -1px 0 rgba(110, 220, 255, 0.35),
          0 0 32px rgba(212, 168, 83, 0.4);
       transform: translateY(30px) scale(1.045);
-      filter: blur(0.5px);
     }
     45% {
       opacity: 0.85;
@@ -407,7 +399,6 @@
          1.5px -0.5px 0 rgba(110, 220, 255, 0.25),
          0 0 18px rgba(212, 168, 83, 0.18);
       transform: translateY(10px) scale(1.018);
-      filter: blur(0.2px);
     }
     100% {
       opacity: 1;
@@ -417,7 +408,6 @@
          0.6px 0 0 rgba(110, 200, 255, 0.08),
          0 0 0 rgba(212, 168, 83, 0);
       transform: translateY(0) scale(1);
-      filter: blur(0);
     }
   }
 
@@ -1998,3 +1988,18 @@
   }
   @media print { .deeper-note, .deeper-pill { display: none !important; } .deeper.is-live { height: auto; } .deeper.is-live .deeper-static { display: flex; } }
   @media (forced-colors: active) { .deeper-pill, .dv-card { border: 1px solid CanvasText; } }
+
+  /* === Figure steps (owner, 2026-11-04) ===
+     Replaces the fullscreen and pause buttons: a row of step buttons under an animated figure. Hover (mouse)
+     or a press hands the figure to the reader; "run" hands it back (book.js, first module). */
+  .fig-steps { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px auto 2px; max-width: 460px; }
+  .fig-steps button {
+    font: 12px/1 'DM Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.72);
+    background: none; border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 0 12px; min-height: 32px; cursor: pointer;
+  }
+  .fig-steps button:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+  .fig-steps button[aria-pressed="true"] { border-color: var(--accent, #d4a853); color: var(--accent, #d4a853); }
+  .fig-steps .fig-run { border-style: dashed; }
+  .diagram-card .fs-button, .diagram-card .fs-close, .diagram-card .fig-pause,
+  .light-diagram .fs-button, .light-diagram .fs-close, .light-diagram .fig-pause { display: none !important; }
+  .diagram-card > svg[data-beats] { cursor: pointer; }

@@ -1,131 +1,70 @@
+// Figures (owner, 2026-11-04: the fullscreen and pause buttons removed; "the intelligent interaction pays for
+// them"). A figure plays by itself while it is in view (the off-screen pauser below). One whose <svg> carries
+// data-beats (SMIL times) and data-beat-names (|-separated) gets a row of step buttons under it: hovering the
+// figure with a mouse, or pressing a step, hands it to the reader, who steps through those moments; moving the
+// mouse away, or pressing "run", hands it back. A figure the reader holds is marked data-user-paused, which the
+// off-screen pauser respects. Under reduced motion figures stay still and the steps still work.
 (function () {
   'use strict';
-
-  const ICON_EXPAND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>';
-  const ICON_CLOSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>';
-  const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="9" y1="6" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="18"/></svg>';
-  const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="8 5 19 12 8 19 8 5"/></svg>';
-
-  let activeCard = null;
-
-  function withTransition(card, mutate) {
-    if (document.startViewTransition) {
-      card.classList.add('transitioning');
-      const tx = document.startViewTransition(mutate);
-      tx.finished.finally(() => card.classList.remove('transitioning'));
-      return tx.finished;
-    } else {
-      mutate();
-      return Promise.resolve();
-    }
-  }
-
-  function enterFullscreen(card) {
-    if (activeCard) return;
-    activeCard = card;
-    document.dispatchEvent(new CustomEvent('utc:overlay', { detail: { name: 'fs', open: true } }));
-    // Run the morph transition uncluttered — no rainbow during the snap-to-fullscreen.
-    const done = withTransition(card, () => {
-      card.classList.add('is-fullscreen');
-      document.body.classList.add('has-fullscreen');
-    });
-    // After the card has landed, light up the rainbow. The liquid-bg is
-    // already in the DOM and painted; only opacity transitions, so this is
-    // a single GPU-composited animation — no first-paint cost, no filter
-    // chain interpolation, no staggered start times.
-    done.then(() => {
-      if (activeCard !== card) return;
-      document.body.classList.add('liquid-active');
-    }).catch(() => {});
-  }
-
-  function exitFullscreen() {
-    if (!activeCard) return;
-    const card = activeCard;
-    activeCard = null;
-    document.dispatchEvent(new CustomEvent('utc:overlay', { detail: { name: 'fs', open: false } }));
-    // Snap the rainbow off instantly — base style has no transition, so this
-    // applies in the same frame as the click. The View Transition then
-    // snapshots a clean (rainbow-free) state, eliminating the close lag.
-    document.body.classList.remove('liquid-active');
-    // Flag the html element so the close transition runs at 0.32s instead
-    // of the default 0.5s — feels immediate rather than luxurious.
-    document.documentElement.classList.add('is-closing-fullscreen');
-    withTransition(card, () => {
-      card.classList.remove('is-fullscreen');
-      document.body.classList.remove('has-fullscreen');
-    }).finally(() => {
-      document.documentElement.classList.remove('is-closing-fullscreen');
-    });
-  }
-
   document.querySelectorAll('.diagram-card, .light-diagram').forEach(card => {
-    const expandBtn = document.createElement('button');
-    expandBtn.className = 'fs-button';
-    expandBtn.type = 'button';
-    expandBtn.setAttribute('aria-label', 'View diagram fullscreen');
-    expandBtn.innerHTML = ICON_EXPAND;
-    expandBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      enterFullscreen(card);
-    });
-    card.appendChild(expandBtn);
-
-    const closeBtn = document.createElement('button');
-    closeBtn.className = 'fs-close';
-    closeBtn.type = 'button';
-    closeBtn.setAttribute('aria-label', 'Exit fullscreen');
-    closeBtn.innerHTML = ICON_CLOSE;
-    closeBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      exitFullscreen();
-    });
-    card.appendChild(closeBtn);
-
-    // Pause and play (WCAG 2.2.2): every animated figure loops, so the reader
-    // can stop it. A figure the reader paused stays paused, in the page and in
-    // fullscreen, until the reader plays it again: the off-screen pauser below
-    // checks data-user-paused before it unpauses anything. Under reduced motion
-    // figures start paused and the same button lets a reader play one.
     const svg = card.querySelector(':scope > svg');
-    if (svg && typeof svg.pauseAnimations === 'function' && svg.querySelector('animate, animateTransform, animateMotion, set')) {
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const key = 'utc-fig-paused:' + (card.id || '');
-      let stored = null;
-      try { stored = card.id ? sessionStorage.getItem(key) : null; } catch (err) { stored = null; }
-      const pauseBtn = document.createElement('button');
-      pauseBtn.className = 'fig-pause';
-      pauseBtn.type = 'button';
-      card.classList.add('has-pause');
-      const render = paused => {
-        pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
-        pauseBtn.setAttribute('aria-label', paused ? 'Play animation' : 'Pause animation');
-        pauseBtn.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
-      };
-      const setPaused = paused => {
-        if (paused) { card.dataset.userPaused = '1'; svg.pauseAnimations(); }
-        else { delete card.dataset.userPaused; card.dataset.userPlayed = '1'; svg.unpauseAnimations(); }
-        try { if (card.id) sessionStorage.setItem(key, paused ? '1' : '0'); } catch (err) { /* storage blocked: state lasts for this page view */ }
-        render(paused);
-      };
-      // Stored choice first ('1' paused, '0' played); with none, paused only under reduced motion.
-      if (stored === '1') { card.dataset.userPaused = '1'; svg.pauseAnimations(); }
-      if (stored === '0') card.dataset.userPlayed = '1';
-      render(stored === '1' || (stored !== '0' && reduce));
-      pauseBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        setPaused(pauseBtn.getAttribute('aria-pressed') !== 'true');
-      });
-      card.appendChild(pauseBtn);
+    if (!svg || !svg.dataset.beats || typeof svg.setCurrentTime !== 'function') return;
+    const times = svg.dataset.beats.trim().split(/\s+/).map(Number);
+    const names = (svg.dataset.beatNames || '').split('|');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const bar = document.createElement('div');
+    bar.className = 'fig-steps';
+    bar.setAttribute('role', 'group');
+    bar.setAttribute('aria-label', 'Step through the figure');
+    const steps = times.map((t, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'fig-step';
+      b.textContent = names[i] || String(i + 1);
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', e => { e.stopPropagation(); hold(); show(i); });
+      bar.appendChild(b);
+      return b;
+    });
+    const run = document.createElement('button');
+    run.type = 'button';
+    run.className = 'fig-run';
+    run.textContent = 'run';
+    run.setAttribute('aria-label', 'Run the figure by itself');
+    run.addEventListener('click', e => { e.stopPropagation(); release(true); });
+    bar.appendChild(run);
+    svg.insertAdjacentElement('afterend', bar);
+    let current = -1;
+    function hold() {
+      if (card.dataset.userPaused === '1') return;
+      card.dataset.userPaused = '1';
+      card.classList.add('is-stepping');
+      svg.pauseAnimations();
     }
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && activeCard && !e.defaultPrevented) exitFullscreen();
-  });
-
-  document.addEventListener('click', e => {
-    if (activeCard && !activeCard.contains(e.target)) exitFullscreen();
+    function show(i) {
+      current = i;
+      svg.setCurrentTime(times[i]);
+      steps.forEach((b, j) => b.setAttribute('aria-pressed', j === i ? 'true' : 'false'));
+    }
+    function release(force) {
+      if (card.dataset.userPaused !== '1' && !force) return;
+      delete card.dataset.userPaused;
+      card.classList.remove('is-stepping');
+      steps.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      current = -1;
+      if (!reduce.matches || force) svg.unpauseAnimations();
+    }
+    // the step nearest the moment the reader caught it
+    function nearest() {
+      const now = svg.getCurrentTime();
+      let best = 0;
+      times.forEach((t, i) => { if (t <= now + 0.01) best = i; });
+      return best;
+    }
+    card.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { hold(); show(nearest()); } });
+    card.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') release(false); });
+    // a tap on the picture itself steps on
+    svg.addEventListener('click', () => { hold(); show((current + 1) % times.length); });
   });
 })();
 

@@ -27,6 +27,11 @@ class Timeline:
         """Opt-in attributes for the <svg> so tools can read the cycle: data-dur and data-beats (SMIL seconds)."""
         bs = sorted(set(b[0] for b in self.beats()))
         return f' data-dur="{self.dur:g}" data-beats="{" ".join(f"{b:g}" for b in bs)}"'
+    def steps(self, pairs):
+        """Reader steps (2026-11-04): [(story tau, name)] in reading order -> the <svg> attributes book.js turns into step
+        buttons. Pick each tau inside a hold, where the frame is a complete still."""
+        ts = ' '.join(f'{round(self.t(tau), 3):g}' for tau, _ in pairs)
+        return f' data-beats="{ts}" data-beat-names="{"|".join(n for _, n in pairs)}"'
     def t(self, tau):
         return (tau - self.shift) % self.dur
     def anim(self, attr, pts, extra=''):

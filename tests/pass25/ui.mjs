@@ -267,65 +267,62 @@ test('sync shape: solid only after a 200; paused after 2 failures; 401 stops cal
   } finally { await ctx.close(); }
 });
 
-// Pass 30 (brief, Gate 1 motion): one shared pause and play control on every
-// animated figure. A figure the reader paused stays paused off-screen and in
-// fullscreen; the button is a keyboard-reachable tab stop; reduced motion
-// starts paused and the button plays it.
+// 2026-11-04 (owner): the fullscreen and pause buttons are gone; a figure with named steps (svg[data-beats]) has a row
+// of step buttons. Hover (mouse) or a step press hands it to the reader and holds it (the off-screen pauser leaves it
+// held); moving away or "run" hands it back; the buttons are tab stops; under reduced motion figures stay still and
+// the steps still show each moment.
 const FIG_STATE = id => document.querySelector('#' + id + ' > svg').animationsPaused();
-const FIG_BTN = id => { const b = document.querySelector('#' + id + ' > .fig-pause'); return b ? b.getAttribute('aria-pressed') : null; };
-async function firstAnimated(page) {
-  return page.evaluate(() => { const c = document.querySelector('.has-pause[id]'); return c ? c.id : null; });
+async function firstStepped(page) {
+  return page.evaluate(() => { const s = document.querySelector('.diagram-card[id] > svg[data-beats]'); return s ? s.parentElement.id : null; });
 }
-test('figure pause: pauses, stays paused off-screen and in fullscreen, plays again; keyboard', BOTH, async (t, b) => {
+test('figure steps: no fullscreen or pause buttons; a step holds the figure, run hands it back; keyboard', BOTH, async (t, b) => {
   const { ctx } = await newContext(b);
   try {
     const page = await openPart(ctx, 'part-1');
     await settle(page, 600);
-    const id = await firstAnimated(page);
-    if (!id) t.skipTest('no animated figure with an id on part-1');
-    const all = await page.evaluate(() => [...document.querySelectorAll('.diagram-card, .light-diagram')].filter(c => { const s = c.querySelector(':scope > svg'); return s && s.querySelector('animate, animateTransform, animateMotion, set'); }).map(c => !!c.querySelector(':scope > .fig-pause')));
-    t.check(all.length > 0 && all.every(Boolean), 'every animated figure has a pause button', `${all.filter(Boolean).length}/${all.length}`);
+    t.eq(await page.evaluate(() => document.querySelectorAll('.fs-button, .fs-close, .fig-pause').length), 0, 'no fullscreen or pause buttons');
+    const id = await firstStepped(page);
+    if (!id) t.skipTest('no figure with steps on part-1');
+    const ok = await page.evaluate(() => [...document.querySelectorAll('.diagram-card > svg[data-beats]')].every(s => { const bar = s.nextElementSibling; return bar && bar.classList.contains('fig-steps') && bar.querySelectorAll('button').length === s.dataset.beats.trim().split(/\s+/).length + 1; }));
+    t.check(ok, 'every figure with steps has its step buttons and run');
     await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
     await settle(page, 700);
     t.eq(await page.evaluate(FIG_STATE, id), false, 'in view: animating');
-    t.eq(await page.evaluate(FIG_BTN, id), 'false', 'aria-pressed false while playing');
-    await page.click('#' + id + ' > .fig-pause');
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'click: paused');
-    t.eq(await page.evaluate(FIG_BTN, id), 'true', 'aria-pressed true; label says play');
+    await page.focus('#' + id + ' .fig-steps button:first-child');
+    await page.keyboard.press('Enter');
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'a step (keyboard): held');
+    t.eq(await page.evaluate(id => document.querySelector('#' + id + ' .fig-steps button:first-child').getAttribute('aria-pressed'), id), 'true', 'the step is marked pressed');
+    const want = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[0], id);
+    const now = await page.evaluate(id => document.querySelector('#' + id + ' > svg').getCurrentTime(), id);
+    t.check(Math.abs(now - want) < 0.05, 'the figure shows that step', `${now} vs ${want}`);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await settle(page, 700);
     await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
-    await settle(page, 700);
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'back in view: still paused (the off-screen pauser did not unpause it)');
-    await page.click('#' + id + ' > .fs-button');
-    await settle(page, 900);
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'fullscreen: still paused');
-    const fsBtnVisible = await page.evaluate(id => { const bt = document.querySelector('#' + id + ' > .fig-pause'); return !!(bt && bt.getClientRects().length && getComputedStyle(bt).display !== 'none'); }, id);
-    t.check(fsBtnVisible, 'pause button visible in fullscreen');
-    await page.keyboard.press('Escape');
-    await settle(page, 700);
-    await page.focus('#' + id + ' > .fig-pause');
+    await settle(page, 2000);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'back in view: still held');
+    await page.focus('#' + id + ' .fig-run');
     await page.keyboard.press('Enter');
-    t.eq(await page.evaluate(FIG_STATE, id), false, 'keyboard Enter: plays again');
-    t.eq(await page.evaluate(FIG_BTN, id), 'false', 'aria-pressed false again');
-    const tabbable = await page.evaluate(id => document.querySelector('#' + id + ' > .fig-pause').tabIndex >= 0, id);
-    t.check(tabbable, 'pause button is a tab stop');
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'keyboard Enter on run: plays again');
+    const tabbable = await page.evaluate(id => [...document.querySelectorAll('#' + id + ' .fig-steps button')].every(x => x.tabIndex >= 0), id);
+    t.check(tabbable, 'step buttons are tab stops');
     t.check(page.__errors.length === 0, 'no console errors', page.__errors.join(' | '));
   } finally { await ctx.close(); }
 });
-test('figure pause under reduced motion: starts paused, the button plays it', CHR, async (t, b) => {
+test('figure steps under reduced motion: still, and a step shows its moment', CHR, async (t, b) => {
   const { ctx } = await newContext(b, { reducedMotion: 'reduce' });
   try {
     const page = await openPart(ctx, 'part-1');
     await settle(page, 600);
-    const id = await firstAnimated(page);
-    if (!id) t.skipTest('no animated figure with an id on part-1');
+    const id = await firstStepped(page);
+    if (!id) t.skipTest('no figure with steps on part-1');
     await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
     await settle(page, 600);
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'reduced motion: paused');
-    t.eq(await page.evaluate(FIG_BTN, id), 'true', 'button offers play');
-    await page.click('#' + id + ' > .fig-pause');
-    t.eq(await page.evaluate(FIG_STATE, id), false, 'reader plays it');
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'reduced motion: still');
+    await page.click('#' + id + ' .fig-steps button:nth-child(2)');
+    const want = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[1], id);
+    const now = await page.evaluate(id => document.querySelector('#' + id + ' > svg').getCurrentTime(), id);
+    t.check(Math.abs(now - want) < 0.05, 'the step shows its moment', `${now} vs ${want}`);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'and stays still');
   } finally { await ctx.close(); }
 });
 
