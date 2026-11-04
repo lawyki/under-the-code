@@ -1,83 +1,94 @@
-# Fig 2.6 · Inside a full adder (Pass 28, law 3). Two half adders (XOR + AND each) and an OR,
-# live: A, B and carry-in step through all eight cases; wires carrying a 1 turn gold.
-# Below, the addition the gates just did. t=0: 1 + 1 + 1 = 11.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, MUTED
+# Fig 2.6 · Inside a full adder (Pass 31, Part I, from an empty script). Job: function. Takeaway: when the first half
+# adder carries, its sum is 0, so the second cannot; one OR merges the carries.
+# Concept: the full adder wired from gates in Fig 2.3's grammar (wires lit gold while they carry 1), the two half
+# adders framed, the inputs stepping through all eight cases with the case strip below and the sum written out as the
+# adder computes it. t=0 is 1 + 1 + 1, where the first half adder carries and the second cannot.
+from figlib import Timeline, text, splice, GOLD, MUTED
 
 W, H = 400, 352
-STEP = 0.9
+INK, OFF = '#ece6da', 'rgba(255,255,255,0.55)'
+STEP = 1.1
 CASES = [(a_, b_, c_) for a_ in (0, 1) for b_ in (0, 1) for c_ in (0, 1)]
-T = Timeline(STEP * 8, shift=STEP * 7 + 0.45)
-OFF = 'rgba(255,255,255,0.35)'
-def when(vals):
-    pts = []
-    for i, v in enumerate(vals):
-        if i: pts.append((i * STEP - 0.001, 1.0 if vals[i - 1] else 0.0))
-        pts.append((i * STEP, 1.0 if v else 0.0))
-    pts.append((STEP * 8 - 0.001, 1.0 if vals[-1] else 0.0))
-    return T.anim('opacity', pts)
+T = Timeline(STEP * 8, shift=STEP * 7 + 0.5)            # t=0: 1 + 1 + 1
+def when(vals): return T.discrete('opacity', [(i * STEP, 1 if v else 0) for i, v in enumerate(vals)])
 o = []; a = o.append
-def wire(d, vals):
-    a(f'<path d="{d}" fill="none" stroke="{OFF}" stroke-width="2"/>')
-    a(f'<path d="{d}" fill="none" stroke="{GOLD}" stroke-width="2.6" opacity="0">{when(vals)}</path>')
-def value(cx, cy, vals, r=13):
-    a(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="#141414" stroke="{OFF}" stroke-width="1.5"/>')
-    a(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{GOLD}" fill-opacity="0.3" stroke="{GOLD}" stroke-width="1.8" opacity="0">{when(vals)}</circle>')
-    a(f'<text x="{cx}" y="{cy + 5}" text-anchor="middle" {MONO} font-size="14" fill="rgba(255,255,255,0.7)">0{when([not v for v in vals])}</text>')
-    a(f'<text x="{cx}" y="{cy + 5}" text-anchor="middle" {MONO} font-size="14" fill="#fff" opacity="0">1{when(vals)}</text>')
-def gate(kind, x, cy):        # input edge x, output at x + 54
-    if kind == 'AND':
-        a(f'<path d="M {x} {cy - 20} h 32 a 20 20 0 0 1 0 40 h -32 Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>')
-    else:
-        a(f'<path d="M {x} {cy - 20} Q {x + 14} {cy} {x} {cy + 20} Q {x + 36} {cy + 20} {x + 54} {cy} Q {x + 36} {cy - 20} {x} {cy - 20} Z" fill="#1a1a1a" stroke="#e8e8e8" stroke-width="2"/>')
-        if kind == 'XOR':
-            a(f'<path d="M {x - 7} {cy - 20} Q {x + 7} {cy} {x - 7} {cy + 20}" fill="none" stroke="#e8e8e8" stroke-width="2"/>')
-    a(f'<text x="{x + 24}" y="{cy + 5}" text-anchor="middle" {MONO} font-size="13" fill="rgba(255,255,255,0.75)">{kind}</text>')
-
-A = [c[0] for c in CASES]; B = [c[1] for c in CASES]; C = [c[2] for c in CASES]
-s1 = [x ^ y for x, y, _ in CASES]; c1 = [x & y for x, y, _ in CASES]
-S = [p ^ z for p, z in zip(s1, C)]; c2 = [p & z for p, z in zip(s1, C)]; CO = [p | q for p, q in zip(c1, c2)]
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-22 svgd-part1-22">')
 a('<title id="svgt-part1-22">Fig 2.6 · Inside a full adder · two half adders and an OR</title>')
-a('<desc id="svgd-part1-22">A full adder built from gates. A and B meet in an XOR and an AND: the first half adder. The XOR\'s output meets the carry-in in a second XOR and AND: '
-  'the second half adder; its XOR gives the sum bit. Either AND\'s carry, through an OR, gives the carry-out. The inputs step through all eight cases.</desc>')
-# wires (drawn first, under the gates)
-wire('M 57 50 H 80 V 260 H 110 M 80 60 H 110', A)
-wire('M 57 92 H 70 M 70 80 V 280 H 110 M 70 80 H 110', B)
-wire('M 164 70 H 186 V 180 H 222 M 186 100 H 222', s1)
-wire('M 200 33 V 120 H 222 M 200 120 V 200 H 222', C)
-wire('M 276 110 H 358', S)
-wire('M 276 190 H 290 V 222 H 302', c2)
-wire('M 164 270 H 290 V 238 H 302', c1)
-wire('M 356 230 H 358', CO)
-for jx, jy in ((80, 60), (70, 80), (186, 100), (200, 120)):
-    a(f'<circle cx="{jx}" cy="{jy}" r="3.5" fill="#e8e8e8"/>')
-# gates
-gate('XOR', 110, 70); gate('AND', 110, 270)
-gate('XOR', 222, 110); gate('AND', 222, 190)
-gate('OR', 302, 230)
-# values and their names
-value(44, 50, A); a(text(14, 55, 'A', size=14, fill=MUTED))
-value(44, 92, B); a(text(14, 97, 'B', size=14, fill=MUTED))
-value(200, 20, C); a(text(220, 25, 'carry in', size=14, fill=MUTED))
-value(372, 110, S); a(text(386, 88, 'sum', anchor='end', size=14, fill=MUTED))
-value(372, 230, CO); a(text(386, 208, 'carry out', anchor='end', size=14, fill=MUTED))
-# the addition just done, in digits
-for i, (x, y, z) in enumerate(CASES):
-    tot = x + y + z
-    pts = [(0.0, 0.0), (i * STEP - 0.001 if i else 0.0, 0.0), (i * STEP + 0.0005, 1.0), ((i + 1) * STEP - 0.002, 1.0), ((i + 1) * STEP - 0.001, 0.0), (STEP * 8 - 0.0005, 0.0)]
-    a(f'<text x="200" y="330" text-anchor="middle" {MONO} font-size="18" fill="#fff" opacity="0">{x} + {y} + {z} = <tspan fill="{GOLD}">{tot // 2}{tot % 2}</tspan>{T.anim("opacity", pts)}</text>')
-a(text(200, 348, 'carry out, then sum', anchor='middle', size=13, fill='rgba(255,255,255,0.45)'))
+a('<desc id="svgd-part1-22">A full adder built from gates. A and B meet in an XOR and an AND: the first half adder. The XOR\'s output meets '
+  'the carry-in in a second XOR and AND: the second half adder; its XOR gives the sum bit. Either AND\'s carry, through an OR, gives the '
+  'carry-out; the two never carry at once, because when the first carries its sum is 0. The inputs step through all eight cases and '
+  'the result is written out, from 0 + 0 + 0 = 00 to 1 + 1 + 1 = 11.</desc>')
+
+def wire(d, vals):
+    a(f'<path d="{d}" fill="none" stroke="{OFF}" stroke-width="2" opacity="0">{when([not v for v in vals])}</path>')
+    a(f'<path d="{d}" fill="none" stroke="{GOLD}" stroke-width="2.6" opacity="0">{when(vals)}</path>')
+def value(cx, cy, vals, r=14):
+    a(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{OFF}" stroke-width="1.5" opacity="0">{when([not v for v in vals])}</circle>')
+    a(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{when(vals)}</circle>')
+    a(f'<text data-role="object" x="{cx}" y="{cy + 5}" text-anchor="middle" font-family="DM Mono" font-size="15" fill="{MUTED}" opacity="0">{when([not v for v in vals])}0</text>')
+    a(f'<text data-role="object" x="{cx}" y="{cy + 5}" text-anchor="middle" font-family="DM Mono" font-size="15" fill="#fff" opacity="0">{when(vals)}1</text>')
+def dot(x, y): a(f'<circle cx="{x}" cy="{y}" r="2.6" fill="{INK}"/>')
+G = 'fill="none" stroke="#e8e8e8" stroke-width="2"'
+def and_g(x, y): a(f'<path d="M {x} {y - 20} h 26 a 20 20 0 0 1 0 40 h -26 Z" {G}/>'); return x + 46
+def or_g(x, y): a(f'<path d="M {x} {y - 20} Q {x + 14} {y} {x} {y + 20} Q {x + 34} {y + 20} {x + 50} {y} Q {x + 34} {y - 20} {x} {y - 20} Z" {G}/>'); return x + 50
+def xor_g(x, y):
+    a(f'<path d="M {x - 7} {y - 20} Q {x + 7} {y} {x - 7} {y + 20}" {G}/>')
+    return or_g(x, y)
+
+A_ = [c[0] for c in CASES]; B_ = [c[1] for c in CASES]; C_ = [c[2] for c in CASES]
+X1 = [x ^ y for x, y, _ in CASES]; A1 = [x & y for x, y, _ in CASES]
+S = [p ^ c for p, c in zip(X1, C_)]; A2 = [p & c for p, c in zip(X1, C_)]; CO = [p | q for p, q in zip(A1, A2)]
+
+# the half adders, framed
+a(f'<rect x="100" y="44" width="92" height="140" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
+a(f'<rect x="204" y="34" width="92" height="124" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
+a(text(146, 200, 'half adder', anchor='middle', size=14, fill=MUTED))
+a(text(250, 174, 'half adder', anchor='middle', size=14, fill=MUTED))
+
+# inputs
+value(44, 64, A_); a(text(44, 42, 'A', anchor='middle', size=14, fill=INK))
+value(44, 116, B_); a(text(44, 146, 'B', anchor='middle', size=14, fill=INK))
+value(212, 20, C_, r=12); a(text(230, 25, 'carry in', size=14, fill=INK))
+# first half adder: XOR1 and AND1 on A and B
+o_x1 = xor_g(122, 74); o_a1 = and_g(118, 150)
+wire('M 58 64 H 126', A_); wire('M 84 64 V 140 H 118', A_); dot(84, 64)
+wire('M 58 116 H 100 V 84 H 126', B_); wire('M 100 116 V 160 H 118', B_); dot(100, 116)
+# second half adder: XOR2 and AND2 on XOR1's sum and the carry-in
+o_x2 = xor_g(230, 64); o_a2 = and_g(226, 122)
+wire(f'M 212 32 V 112 H 226', C_); wire('M 212 54 H 234', C_); dot(212, 54)
+wire(f'M {o_x1} 74 H 234', X1); wire('M 196 74 V 132 H 226', X1); dot(196, 74)
+# outputs
+wire(f'M {o_x2} 64 H 322', S); value(336, 64, S); a(text(356, 69, 'sum', size=14, fill=INK))
+o_or = or_g(290, 214)
+wire(f'M {o_a2} 122 H 280 V 204 H 296', A2)
+wire(f'M {o_a1} 150 H 176 V 224 H 296', A1)
+wire(f'M {o_or} 214 H 346', CO); value(360, 214, CO)
+a(text(378, 248, 'carry out', anchor='end', size=14, fill=INK))
+
+# the sum written out
+for i, (x_, y_, c_) in enumerate(CASES):
+    s = x_ + y_ + c_
+    a(f'<text data-role="object" x="40" y="278" font-family="DM Mono" font-size="16" fill="{INK}" opacity="0">'
+      f'{when([k == i for k in range(8)])}{x_} + {y_} + {c_} = {s >> 1}{s & 1}</text>')
+a(text(40, 298, 'A + B + carry in = carry out, sum', size=14, fill=MUTED, ls='0'))
+# every case
+SY = 330
+for i, (x_, y_, c_) in enumerate(CASES):
+    cx = 42 + i * 45
+    a(text(cx, SY + 5, f'{x_}{y_}{c_}', anchor='middle', size=14, fill=INK, ls='0'))
+    a(f'<rect x="{cx - 20}" y="{SY - 14}" width="40" height="26" rx="6" fill="none" stroke="{GOLD}" stroke-width="2" opacity="0">'
+      f'{when([k == i for k in range(8)])}</rect>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('A full adder is two half adders and an OR. A and B meet in the first; its sum meets the carry-in in the second, which gives the sum bit; '
-           'either half adder\'s carry becomes the carry-out.')
+caption = ('One full adder of Fig 2.5, opened: two half adders, each an XOR and an AND, joined by an OR, as the inputs step through '
+           'all eight cases.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Half adder.</b> XOR gives the sum of two bits, AND their carry: 1 + 1 is 0, carry 1.</li>
           <li><b>Adding the carry.</b> The second half adder adds the incoming carry to the first sum.</li>
-          <li><b>One carry out.</b> The two half adders can never both carry, so an OR is enough. Chain four of these and you have Fig 2.5.</li>
+          <li><b>One carry out.</b> When the first half adder carries, its sum is 0, so the second cannot carry too: an OR is enough. Chain four of these and you have Fig 2.5.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-2-6">

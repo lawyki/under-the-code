@@ -1,73 +1,77 @@
-# Fig 2.1 · Why binary survives noise (Pass 28, law 3). The same voltage span, the same noise.
-# Binary: one threshold, wide bands, every bit read right. Ternary: two thresholds, narrow bands,
-# and one drift a binary wire would shrug off is read as the wrong digit. A cursor reads along.
-import math, random
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, RED, GREEN, MUTED
+# Fig 2.1 · Why binary survives noise (Pass 31, Part I, from an empty script). Job: function. Takeaway: binary
+# splits a wire's voltage into two wide bands, so noise that tips ternary's narrow bands leaves binary right.
+# Concept: the two wires as two gauges of the same height (the same span), binary cut once, ternary twice. The
+# fourth digit is on both: binary's 0 and ternary's 0, and the same noise lifts both by the same amount (the dot
+# jitters in step on both gauges). Binary's dot stays in its band; ternary's crosses into +1, which lights red.
+# Under each gauge, the five digits sent and read. t=0 is the worst moment of the noise: the misread on the plate.
+from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
 W, H = 400, 372
-X0, SW = 64, 63                       # first symbol x, symbol width (5 symbols)
-T = Timeline(7, shift=6.5)
-rnd = random.Random(11)
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
+TOP, BOT = 64, 264                      # the span: 1 at TOP, 0 at BOT
+V = lambda f: BOT - f * (BOT - TOP)
+DRIFT = 0.3
+T = Timeline(6, shift=0.0)
+# the shared noise: fraction of DRIFT over time (1 = the full lift), jittery, the peak at t=0
+NOISE = [(0.0, 1.0), (0.4, 0.55), (0.8, 0.7), (1.2, 0.25), (1.6, 0.4), (2.0, 0.1), (2.5, 0.3), (3.0, 0.05), (3.5, 0.35),
+         (4.0, 0.6), (4.4, 0.45), (4.8, 0.85), (5.2, 0.7), (5.6, 0.95), (6.0, 1.0)]
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-17 svgd-part1-17">')
 a('<title id="svgt-part1-17">Fig 2.1 · Why binary survives noise · one threshold against two</title>')
-a('<desc id="svgd-part1-17">Two wires with the same voltage span and the same noise. The binary wire has one threshold and wide bands; its five bits 0 1 1 0 1 are all read correctly. '
-  'The ternary wire squeezes three levels into the same span with two thresholds; a small drift on its fourth digit crosses a threshold and the 0 is read as +1.</desc>')
+a('<desc id="svgd-part1-17">Two wires with the same voltage span and the same noise, drawn as two gauges of the same height. The binary '
+  'wire has one threshold and two wide bands; the ternary wire squeezes three levels into the same span with two thresholds. Both '
+  'send 0 as their fourth digit and the same noise lifts both by the same amount: binary\'s level stays in its band, ternary\'s '
+  'crosses a threshold and the 0 is read as +1. Binary reads all five bits 0 1 1 0 1 right.</desc>')
 
-def panel(y0, name, levels, thresholds, seq, drift_at=None):
-    # levels: {digit: y}, thresholds: [y], seq: digits sent
-    a(text(20, y0 - 10, name, size=14, fill='rgba(255,255,255,0.8)'))
-    top, bot = min(levels.values()) - 14, max(levels.values()) + 14
-    a(f'<rect x="{X0}" y="{top}" width="{5 * SW}" height="{bot - top}" rx="3" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.12)"/>')
-    for d, y in levels.items():
-        a(text(X0 - 10, y + 5, d, anchor='end', size=15, fill='rgba(255,255,255,0.7)', ls='0'))
-    for y in thresholds:
-        a(f'<line x1="{X0}" y1="{y}" x2="{X0 + 5 * SW}" y2="{y}" stroke="{GOLD}" stroke-width="1.5" stroke-dasharray="5 4"/>')
-    # the signal: each digit's level plus the same small noise, and the same drift on the fourth digit
-    pts = []
-    for i, d in enumerate(seq):
-        for k in range(9):
-            x = X0 + i * SW + 4 + k * (SW - 8) / 8
-            n = rnd.uniform(-9, 9)
-            if drift_at == i: n -= 26 * math.sin(math.pi * k / 8)      # a drift upward, mid-symbol
-            pts.append((x, levels[d] + n))
-    a('<polyline points="' + ' '.join(f'{x:.1f},{y:.1f}' for x, y in pts) + f'" fill="none" stroke="{BLUE}" stroke-width="2" stroke-linejoin="round"/>')
-    return pts
+def gauge(x0, bands, level, label, sent, read, wrong):
+    w = 84
+    a(text(x0 + w / 2, 40, label, anchor='middle', size=15, fill=INK))
+    a(f'<rect x="{x0}" y="{TOP - 10}" width="{w}" height="{BOT - TOP + 20}" rx="5" fill="none" stroke="{EDGE}" stroke-width="1.4"/>')
+    # thresholds and band names
+    for (f0, f1, name) in bands:
+        a(text(x0 - 10, (V(f0) + V(f1)) / 2 + 5, name, anchor='end', size=14, fill=MUTED, ls='0'))
+    for (f0, f1, name) in bands[1:]:
+        a(f'<line x1="{x0}" y1="{V(f0):.1f}" x2="{x0 + w}" y2="{V(f0):.1f}" stroke="{GOLD}" stroke-width="1.5" stroke-dasharray="5 4"/>')
+    # the band the fourth digit is misread into lights red while the noise holds it there
+    if wrong:
+        f0, f1, _ = wrong
+        cross = (bands[-1][0] - level) / DRIFT          # noise fraction at which the dot crosses
+        pts = [(0.0, 1.0)]
+        for (t0, v0), (t1, v1) in zip(NOISE, NOISE[1:]):
+            pts.append((t1, 1.0 if v1 >= cross else 0.0))
+        a(f'<rect x="{x0 + 1}" y="{V(f1) - 9:.1f}" width="{w - 2}" height="{V(f0) - V(f1) + 9:.1f}" fill="none" stroke="{RED}" stroke-width="2.4">'
+          f'{T.discrete("opacity", pts)}</rect>')
+    # the sent level, and the dot the noise jostles
+    a(f'<line x1="{x0 + 8}" y1="{V(level):.1f}" x2="{x0 + w - 8}" y2="{V(level):.1f}" stroke="{BLUE}" stroke-width="1.5" opacity="0.6"/>')
+    ys = [(t, -(BOT - TOP) * DRIFT * v) for t, v in NOISE]
+    a(f'<g>{T.translate(ys, axis="y")}<circle cx="{x0 + w / 2}" cy="{V(level):.1f}" r="7" fill="{BLUE}" stroke="#111" stroke-width="1.5"/></g>')
+    # the five digits, sent and read
+    for k, (s, r) in enumerate(zip(sent, read)):
+        cx = x0 + w / 2 + (k - 2) * 30
+        a(text(cx, 312, s, anchor='middle', size=14, fill=MUTED, ls='0'))
+        a(text(cx, 340, r, anchor='middle', size=15, fill=RED if s != r else INK, ls='0'))
+    cx = x0 + w / 2 + 30
+    bad = sent[3] != read[3]
+    a(f'<rect x="{cx - 17}" y="294" width="34" height="56" rx="5" fill="none" stroke="{RED if bad else GOLD}" stroke-width="1.6"/>')
 
-def readout(y, seq, reads, t_of):
-    for i, (sent, got) in enumerate(zip(seq, reads)):
-        x = X0 + i * SW + SW / 2
-        ok = sent == got
-        col = '#fff' if ok else RED
-        a(f'<text x="{x}" y="{y}" text-anchor="middle" {MONO} font-size="17" fill="{col}">{got}'
-          f'{T.anim("opacity", [(0.0, 0.2), (t_of(i), 0.2), (t_of(i) + 0.05, 1.0), (6.9, 1.0), (6.95, 0.2)])}</text>')
-        if not ok:
-            a(f'<rect x="{x - 24}" y="{y - 19}" width="48" height="26" rx="5" fill="none" stroke="{RED}" stroke-width="1.8">'
-              f'{T.anim("opacity", [(0.0, 0.0), (t_of(i), 0.0), (t_of(i) + 0.05, 1.0), (6.9, 1.0), (6.95, 0.0)])}</rect>')
-
-t_of = lambda i: 0.5 + (i + 0.6) * 1.0
-B = {'1': 52, '0': 128}
-panel(36, 'BINARY · ONE THRESHOLD', B, [90], ['0', '1', '1', '0', '1'], drift_at=3)   # the same drift, absorbed
-a(text(X0 + 76, 84, 'threshold', size=13, fill=GOLD))
-readout(172, ['0', '1', '1', '0', '1'], ['0', '1', '1', '0', '1'], t_of)
-TER = {'+1': 222, '0': 258, '−1': 294}
-panel(206, 'TERNARY · TWO THRESHOLDS', TER, [240, 276], ['0', '+1', '−1', '0', '+1'], drift_at=3)
-readout(338, ['0', '+1', '−1', '0', '+1'], ['0', '+1', '−1', '+1', '+1'], t_of)
-a(text(X0 + 3.5 * SW, 364, 'sent 0, read +1', anchor='middle', size=13, fill=RED))
-# the reading cursor, one segment inside each wire's box so it never crosses a label
-for y1, y2 in ((40, 142), (210, 306)):
-  a(f'<line y1="{y1}" y2="{y2}" stroke="#fff" stroke-width="1.5" opacity="0">{T.anim("x1", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
-    f'{T.anim("x2", [(0.0, X0), (0.5, X0), (5.5, X0 + 5 * SW), (7.0, X0 + 5 * SW)])}'
-    f'{T.anim("opacity", [(0.0, 0.0), (0.45, 0.0), (0.5, 0.8), (5.5, 0.8), (5.6, 0.0), (7.0, 0.0)])}</line>')
+gauge(66, [(0.0, 0.5, '0'), (0.5, 1.0, '1')], 0.0, 'binary', ['0', '1', '1', '0', '1'], ['0', '1', '1', '0', '1'], None)
+gauge(276, [(0.0, 0.25, '−1'), (0.25, 0.75, '0'), (0.75, 1.0, '+1')], 0.5, 'ternary',
+      ['0', '+1', '−1', '0', '+1'], ['0', '+1', '−1', '+1', '+1'], (0.75, 1.0, '+1'))
+# the same lift, marked once between the gauges
+a(f'<path d="M 200 {V(0.5):.1f} V {V(0.5 + DRIFT) + 6:.1f} m -5 0 l 5 -6 l 5 6" fill="none" stroke="{INK}" stroke-width="1.6"/>')
+a(text(200, V(0.5) + 22, 'same', anchor='middle', size=14, fill=INK))
+a(text(200, V(0.5) + 39, 'noise', anchor='middle', size=14, fill=INK))
+a(text(213, 312, 'sent', anchor='middle', size=14, fill=MUTED))
+a(text(213, 340, 'read', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The same wire, the same noise. With one threshold binary leaves each level a wide margin; with two, ternary squeezes its bands until a drift binary would shrug off reads as the wrong digit.')
+caption = ('Two wires, the same span and the same noise: binary reads all five of its bits right, ternary misreads its fourth digit.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>A threshold.</b> The reader decides a digit by which side of a threshold the voltage is on.</li>
-          <li><b>The margin.</b> Binary's single threshold sits halfway: a level must drift half the span to flip. Ternary's two thresholds leave each level only a sixth of the span on either side.</li>
+          <li><b>A threshold.</b> The reader decides a digit by which side of a threshold the voltage is on (the dashed lines).</li>
+          <li><b>The margin.</b> Binary's single threshold sits halfway: a level must drift half the span to flip. Ternary's two thresholds put a level a quarter of the span from the nearest threshold, half binary's margin.</li>
           <li><b>The noise.</b> Ageing parts and temperature swings make small drifts constant, so the wider margin won.</li>
         </ol>
       </details>'''
