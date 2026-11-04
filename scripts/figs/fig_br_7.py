@@ -38,7 +38,6 @@ for k, (_, addr, _) in enumerate(STORES):
 for name, addr, y, h in REG:
     a(f'<rect x="{MX}" y="{y}" width="{MW}" height="{h - 4}" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
     a(text(MX + 10, y + 18, name, size=14, fill=INK, ls='0'))
-    a(text(MX + 10, y + 34, 'from ' + addr, size=14, fill=MUTED, ls='0'))
 for k, (i, _, col) in enumerate(STORES):
     _, _, y, h = REG[i]
     a(f'<rect x="{MX - 2}" y="{y - 2}" width="{MW + 4}" height="{h}" rx="5" fill="none" stroke="{GOLD}" stroke-width="2.6" opacity="0">{vis([(k * STEP + 0.2, (k + 1) * STEP)])}</rect>')
@@ -67,17 +66,15 @@ def cell(cy, lit=False):
     s = f'<rect x="{EX + 2}" y="{cy - 11}" width="26" height="22" rx="3" fill="none" stroke="{GREEN}" stroke-width="{2.2 if lit else 1.5}"/>'
     if lit: s += text(EX + 15, cy + 5, 'x', anchor='middle', size=14, fill=GREEN, role='object')
     return s
-effect(5, 0, cell, 'just stored', GREEN)
-effect(4, 1, screen, 'a pixel changes', BLUE)
-effect(3, 2, packet, 'a packet is sent', BLUE)
-effect(1, 3, clock, 'timer rate set', GOLD)
+effect(5, 0, cell, 'value', GREEN)
+effect(4, 1, screen, 'pixel', BLUE)
+effect(3, 2, packet, 'packet', BLUE)
+effect(1, 3, clock, 'timer', GOLD)
 a(text(20, 374, 'low addresses at the bottom, not to scale', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('To the CPU, the physical address space is one flat range, and only part of it is RAM: other ranges belong to devices, such '
-           'as the GPU\'s frame buffer (the screen\'s pixels) and the local APIC (each core\'s interrupt controller and timer). The same '
-           'store saves a value, changes a pixel or sets the timer, depending only on the address.')
+caption = 'One store instruction, four addresses: a value kept, a pixel, a packet, a timer.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

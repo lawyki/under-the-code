@@ -5,7 +5,7 @@
 # by itself (flow) while the CPU runs process B; the SSD raises an interrupt and process A is woken. t=0 is the end.
 from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-W, H = 400, 340
+W, H = 400, 228
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
 D = 12.0
 T = Timeline(D, shift=10.4)
@@ -42,7 +42,7 @@ a(text(32, 132, 'RAM', size=15, fill=GREEN))
 a(f'<rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="{EDGE}" stroke-width="1.4"/>')
 a(text(300, 137, 'command queue', anchor='middle', size=14, fill=MUTED))
 a(f'<rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{vis([(1.2, D)])}</rect>')
-a(text(32, 162, 'buffer at 0x4a20_0000', size=14, fill=INK, ls='0'))
+a(text(32, 162, 'buffer', size=14, fill=INK, ls='0'))
 for k in range(8):
     x = 32 + k * 43
     t = 3.0 + k * 0.5
@@ -60,17 +60,10 @@ a(f'<g opacity="0">{vis([(7.6, 9.6)])}<path d="M 214 34 H 188 m 7 -5 l -7 5 l 7 
 a(f'<path d="M 214 34 H 188" stroke="{EDGE}" stroke-dasharray="3 4"/>')
 a(text(200, 96, 'interrupt', anchor='middle', size=14, fill=RED))
 
-# the three steps
-for k, (s, span, col) in enumerate((('1  command queued, doorbell rung', (0.4, D), GOLD), ('2  the SSD fills RAM on its own', (2.6, D), GREEN),
-                                   ('3  an interrupt says done', (7.6, D), RED))):
-    y = 250 + k * 26
-    a(f'<g>{T.discrete("opacity", [(0.0, 0), (0.4, 1), (span[0], 0)])}' + text(20, y, s, size=14, fill=MUTED, ls='0') + '</g>')
-    a(f'<g opacity="0">{vis([span, (0.0, 0.4)])}' + text(20, y, s, size=14, fill=col, ls='0') + '</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One SSD read in the three steps drawn: the kernel queues a command and rings the doorbell, the drive fills the buffer while '
-           'process B runs, and an interrupt wakes process A.')
+caption = 'The drive fills RAM by itself while the CPU runs B; an interrupt says done.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

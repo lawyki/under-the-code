@@ -28,7 +28,7 @@ a('<desc id="svgd-part1-48">Four milliseconds of one CPU core with the timer set
 # the timer
 a(f'<circle cx="{X0 + 12}" cy="38" r="16" fill="none" stroke="{GOLD}" stroke-width="1.8"/>')
 a(f'<path d="M {X0 + 12} 38 V 28 M {X0 + 12} 38 L {X0 + 19} 42" stroke="{GOLD}" stroke-width="1.8" stroke-linecap="round"/>')
-a(text(X0 + 38, 43, 'timer · 1,000 ticks a second', size=14, fill=GOLD))
+a(text(X0 + 38, 43, 'timer', size=14, fill=GOLD))
 # the core's time line
 LY = 112
 a(text(20, LY - 24, 'one core', size=14, fill=MUTED))
@@ -50,7 +50,6 @@ for m in (1, 2, 3):
     a(f'<circle cx="{X0 + 12}" cy="38" r="20" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{vis([(t - 0.05, t + 0.45)])}</circle>')
     a(f'<path d="M {x} 62 V {LY - 8}" stroke="{GOLD}" stroke-width="3" opacity="0">{vis([(t - 0.05, t + 0.45)])}</path>')
 a(f'<rect x="{X0}" y="{LY + 112}" width="12" height="12" rx="2" fill="{GOLD}"/>')
-a(text(X0 + 20, LY + 123, 'kernel: the scheduler picks the next', size=14, fill=INK, ls='0'))
 # the time axis
 for m in range(5):
     a(f'<line x1="{X(m)}" y1="{LY + 50}" x2="{X(m)}" y2="{LY + 58}" stroke="{EDGE}"/>')
@@ -58,17 +57,16 @@ for m in range(5):
 # the hand sweeping the four milliseconds
 a(f'<g>{T.translate([(0.0, 0), (0.5, 0), (0.5 + SWEEP, X(4) - X0), (D - 0.2, X(4) - X0), (D - 0.01, 0)], axis="x")}'
   f'<path d="M {X0} {LY + 86} l -6 10 h 12 z" fill="{INK}"/></g>')
-a(text(20, 280, 'C never gave the CPU up; the tick took it', size=14, fill=RED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Four milliseconds of one core at 1,000 ticks a second: at each tick the kernel\'s scheduler picks the next process, and C, '
-           'stuck in an endless loop, loses the CPU like the others.')
+caption = "A tick every millisecond hands the core to the kernel, even from C's endless loop."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250, 300 or 1,000 per second; the kernel programs the timer in each core's interrupt controller (the local APIC on x86; on ARM, the generic timer) at boot.</li>
           <li><b>Not to scale.</b> The kernel slices are drawn wide enough to see; a real tick takes microseconds, and the scheduler often lets one process run for several ticks.</li>
+          <li><b>The gold slivers.</b> The kernel at each tick: its scheduler picks the next process.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-6">

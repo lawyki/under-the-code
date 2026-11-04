@@ -33,14 +33,11 @@ a(f'<rect x="200" y="322" width="180" height="46" rx="7" fill="none" stroke="{GR
 a(text(214, 350, 'RAM', size=15, fill=GREEN))
 a(f'<rect x="20" y="322" width="150" height="60" rx="7" fill="none" stroke="{RED}" stroke-width="1.5"/>')
 a(text(95, 345, 'page fault', anchor='middle', size=14, fill=RED))
-a(text(95, 365, 'kernel decides', anchor='middle', size=14, fill=MUTED))
 # the two stages inside the MMU, on the left; the address travels down the lane on the right
 a(f'<rect x="40" y="134" width="180" height="52" rx="6" fill="none" stroke="{EDGE}"/>')
 a(text(52, 155, 'page tables', size=14, fill=INK, ls='0'))
-a(text(52, 175, 'page → physical', size=14, fill=MUTED, ls='0'))
 a(f'<rect x="40" y="204" width="180" height="52" rx="6" fill="none" stroke="{EDGE}"/>')
 a(text(52, 225, 'check the bits', size=14, fill=INK, ls='0'))
-a(text(52, 245, 'user? writable?', size=14, fill=MUTED, ls='0'))
 a(f'<path d="M 222 160 H 232 M 222 230 H 232" stroke="{EDGE}"/>')
 
 def token(page, off, col, x, y):
@@ -69,19 +66,17 @@ def run(t0, vpage, ppage, ok):
           + text(30, 290, 'read-only: stop', size=14, fill=RED, ls='0') + '</g>')
 run(0.4, '…a3c4', '4a200', True)
 run(6.2, '…a3c5', '4a201', False)
-a(f'<g opacity="0">{vis([(0.0, 6.2)])}' + text(30, 290, 'offset unchanged', size=14, fill=MUTED, ls='0') + '</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Every load, store and instruction fetch goes through the MMU, which swaps the page number for a physical one using the '
-           'page tables the kernel wrote, then checks the permission bits. If the check fails, nothing reaches RAM: the MMU raises a '
-           'page fault and the kernel takes over.')
+caption = 'Each address is translated, then checked; a forbidden store never reaches RAM.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The walk.</b> On x86-64, CR3 holds the top table; nine bits of the address pick an entry at each of four levels, and the last twelve are the offset inside the 4 KiB page.</li>
           <li><b>The bits.</b> Each entry carries present, user/supervisor, writable and no-execute flags; a failed check raises a page fault (vector 14).</li>
           <li><b>The shortcut.</b> Most accesses skip the walk, because recent translations are kept close at hand (Fig BR.5).</li>
+          <li><b>The offset.</b> Only the page number is translated; the last twelve bits, the offset within the page, pass through unchanged.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-4">

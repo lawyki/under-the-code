@@ -34,7 +34,6 @@ BL = [(42, 'mov rax, 1'), (82, 'syscall'), (250, 'next instruction')]
 BR = [(116, 'entry: MSR_LSTAR'), (152, 'table[1]: write'), (188, 'write runs'), (224, 'sysret')]
 for y, s in BL: box(18, y, 166, s, BLUE)
 for y, s in BR: box(216, y, 166, s, GOLD)
-a(text(222, 108, 'set by the kernel', size=14, fill=MUTED))
 # the two crossings
 a(f'<path d="M 184 97 C 200 97 200 131 214 131" fill="none" stroke="{EDGE}" stroke-width="1.6"/>')
 a(f'<path d="M 216 239 C 200 239 200 265 186 265" fill="none" stroke="{EDGE}" stroke-width="1.6"/>')
@@ -63,8 +62,7 @@ for x, _ in REGS[1:]:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One <code>write</code> system call, time running down: the program in Ring 3 on the left, the kernel in Ring 0 on the '
-           'right, and below them the registers that carry the request and the way back. The round trip typically takes under a microsecond.')
+caption = 'One write call, time running down: Ring 3 across to Ring 0 and back.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -72,6 +70,7 @@ how = '''<details class="fig-how">
           <li><b>SYSCALL.</b> In one instruction the CPU saves RIP in RCX and RFLAGS in R11, sets CPL to 0, masks interrupts, and loads RIP from MSR_LSTAR, a register only the kernel can set.</li>
           <li><b>Dispatch.</b> The entry stub indexes the syscall table with RAX and runs that handler; the result comes back in RAX.</li>
           <li><b>SYSRET.</b> Restores RIP and RFLAGS from RCX and R11 and drops back to Ring 3. No scheduling is involved.</li>
+          <li><b>Who chose the address.</b> MSR_LSTAR is set by the kernel at boot: the program picks the service, never the destination.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-2">

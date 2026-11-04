@@ -37,7 +37,7 @@ a('<desc id="svgd-part1-47">A program\'s twelve memory accesses, by page (a3c4, 
   'two misses; real programs reach well over 99% hits.</desc>')
 
 # the accesses
-a(text(20, 26, 'pages the program touches', size=14, fill=MUTED))
+a(text(20, 26, 'pages', size=14, fill=MUTED))
 for k, p in enumerate(SEQ):
     x = 20 + k * 30
     _, hit, _, _, _ = hist[k]
@@ -45,14 +45,13 @@ for k, p in enumerate(SEQ):
     a(f'<rect x="{x}" y="36" width="26" height="30" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
     a(text(x + 13, 56, str(p), anchor='middle', size=15, fill=INK, ls='0', role='object'))
     a(f'<g opacity="0">{vis([(t + 0.3, D - 0.2)])}<rect x="{x}" y="70" width="26" height="5" rx="2" fill="{GREEN if hit else RED}"/></g>')
-a(text(20, 96, 'a3c? (the last digit shown)', size=14, fill=MUTED, ls='0'))
 # the current access: a gold frame stepping along
 xs = [(0.0, 0)] + [p for k in range(len(SEQ)) for p in ((T0 + k * STEP, k * 30), (T0 + k * STEP + 0.6, k * 30))] + [(D - 0.01, (len(SEQ) - 1) * 30)]
 a(f'<g opacity="0">{vis([(T0, D - 0.2)])}<g>{T.translate(xs, axis="x")}<rect x="17" y="33" width="32" height="36" rx="6" fill="none" stroke="{GOLD}" stroke-width="2.4"/></g></g>')
 
 # the TLB: four entries
 a(f'<rect x="20" y="112" width="218" height="176" rx="8" fill="none" stroke="{GOLD}" stroke-width="1.5"/>')
-a(text(34, 134, 'TLB · four entries', size=14, fill=GOLD))
+a(text(34, 134, 'TLB', size=14, fill=GOLD))
 SY = lambda i: 146 + i * 34
 def spans_for(pred):
     out, start = [], None
@@ -80,7 +79,6 @@ for i in range(4):
 a(f'<rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
 a(text(316, 172, 'page-table', anchor='middle', size=14, fill=INK))
 a(text(316, 190, 'walk', anchor='middle', size=14, fill=INK))
-a(text(316, 220, '4 more reads', anchor='middle', size=14, fill=MUTED))
 miss = [(T0 + k * STEP + 0.1, T0 + k * STEP + 0.7) for k, (_, hit, _, _, _) in enumerate(hist) if not hit]
 a(f'<rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="{RED}" stroke-width="2.4" opacity="0">{vis(miss)}</rect>')
 # the count
@@ -89,13 +87,13 @@ a(text(252, 268, f'hits {nh}', size=15, fill=GREEN)); a(text(252, 290, f'misses 
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Programs touch the same few pages again and again, so the TLB can answer most accesses at once. Only a miss pays for the '
-           'four-read walk, and its translation then replaces the entry used longest ago.')
+caption = 'Most accesses hit the TLB; only a miss pays for the walk.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Sizes.</b> From 64 entries to a few thousand per core, in one or two levels; one entry can also cover a 2 MiB or 1 GiB huge page.</li>
           <li><b>Tags.</b> On x86 the address-space tag is the PCID, so a switch of <code>CR3</code> need not empty the TLB.</li>
+          <li><b>The pages.</b> The strip shows each page by its last hex digit (a3c4, a3c5 and so on); a miss costs four more memory reads.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-5">

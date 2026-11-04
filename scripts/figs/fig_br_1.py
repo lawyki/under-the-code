@@ -56,8 +56,7 @@ a(text(300, 322, "kernel's handler", anchor='middle', size=14, fill=GOLD))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The same three instructions in each ring: <code>add</code> runs in both, while in Ring 3 the two privileged ones stop at '
-           '<code>#GP</code> and the CPU jumps to the handler the kernel registered.')
+caption = 'The same three instructions in each ring; in Ring 3 the privileged two stop.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -4163,7 +4163,7 @@ main:
 <rect x="216" y="300" width="168" height="34" rx="6" fill="none" stroke="#d4a853" stroke-width="1.6"/>
 <text x="300" y="322" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">kernel's handler</text>
 </svg>
-      <p id="chBridge-mode-p5" class="diagram-caption">The same three instructions in each ring: <code>add</code> runs in both, while in Ring 3 the two privileged ones stop at <code>#GP</code> and the CPU jumps to the handler the kernel registered.</p>
+      <p id="chBridge-mode-p5" class="diagram-caption">The same three instructions in each ring; in Ring 3 the privileged two stop.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4228,7 +4228,6 @@ main:
 <text x="226" y="208" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">write runs</text>
 <rect x="216" y="224" width="166" height="30" rx="5" fill="none" stroke="#d4a853" stroke-width="1.5"/>
 <text x="226" y="244" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">sysret</text>
-<text x="222" y="108" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">set by the kernel</text>
 <path d="M 184 97 C 200 97 200 131 214 131" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
 <path d="M 216 239 C 200 239 200 265 186 265" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.6"/>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.127227;0.127273;0.163636" calcMode="discrete" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;0.00 0;198.00 0;198.00 0;198.00 0;198.00 0;198.00 0;198.00 0;198.00 0;198.00 0;0.00 0;0.00 0" keyTimes="0.000000;0.126364;0.127273;0.163636;0.272727;0.309091;0.381818;0.436364;0.509091;0.545455;0.618182;0.654545;0.727273;0.763636;0.836364;0.890909;1.000000" dur="11s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 208.00;0 208.00;0 0.00;0 0.00;0 0.00;0 40.00;0 40.00;0 74.00;0 74.00;0 110.00;0 110.00;0 146.00;0 146.00;0 182.00;0 182.00;0 208.00;0 208.00" keyTimes="0.000000;0.126364;0.127273;0.163636;0.272727;0.309091;0.381818;0.436364;0.509091;0.545455;0.618182;0.654545;0.727273;0.763636;0.836364;0.890909;1.000000" dur="11s" repeatCount="indefinite"/><circle cx="101" cy="57" r="7" fill="none" stroke="#d4a853" stroke-width="2.4"/></g></g></g>
@@ -4247,7 +4246,7 @@ main:
 <rect x="146" y="300" width="108" height="56" rx="6" fill="none" stroke="#d4a853" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="0;0;1;0;1;0" keyTimes="0.000000;0.127273;0.381818;0.454545;0.836364;0.909091" calcMode="discrete" dur="11s" repeatCount="indefinite"/></rect>
 <rect x="274" y="300" width="108" height="56" rx="6" fill="none" stroke="#d4a853" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="0;0;1;0;1;0" keyTimes="0.000000;0.127273;0.381818;0.454545;0.836364;0.909091" calcMode="discrete" dur="11s" repeatCount="indefinite"/></rect>
 </svg>
-      <p id="chBridge-trap-p3" class="diagram-caption">One <code>write</code> system call, time running down: the program in Ring 3 on the left, the kernel in Ring 0 on the right, and below them the registers that carry the request and the way back. The round trip typically takes under a microsecond.</p>
+      <p id="chBridge-trap-p3" class="diagram-caption">One write call, time running down: Ring 3 across to Ring 0 and back.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4255,6 +4254,7 @@ main:
           <li><b>SYSCALL.</b> In one instruction the CPU saves RIP in RCX and RFLAGS in R11, sets CPL to 0, masks interrupts, and loads RIP from MSR_LSTAR, a register only the kernel can set.</li>
           <li><b>Dispatch.</b> The entry stub indexes the syscall table with RAX and runs that handler; the result comes back in RAX.</li>
           <li><b>SYSRET.</b> Restores RIP and RFLAGS from RCX and R11 and drops back to Ring 3. No scheduling is involved.</li>
+          <li><b>Who chose the address.</b> MSR_LSTAR is set by the kernel at boot: the program picks the service, never the destination.</li>
         </ol>
       </details>
     </div>
@@ -4273,7 +4273,6 @@ main:
 <rect x="118" y="18" width="154" height="34" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.6"/>
 <text x="195" y="40" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#86a8ff">IDTR</text>
 <path d="M 195.0 52 V 74 m -5 -6 l 5 6 l 5 -6" fill="none" stroke="#86a8ff" stroke-width="1.6"/>
-<text x="185" y="72" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">where the table is</text>
 <rect x="118" y="86" width="154" height="242" rx="6" fill="none" stroke="#ece6da" stroke-width="1.4"/>
 <text data-role="object" x="128" y="114" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#d4a853">0</text>
 <text x="164" y="114" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">divide error</text>
@@ -4310,7 +4309,15 @@ main:
 <rect x="121" y="299" width="148" height="30" rx="4" fill="none" stroke="#d4a853" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.583333;0.783292;0.783333" calcMode="discrete" dur="12s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.633333;0.783292;0.783333" calcMode="discrete" dur="12s" repeatCount="indefinite"/><path d="M 274 315 H 292 m -7 -5 l 7 5 l -7 5" fill="none" stroke="#d4a853" stroke-width="2.2"/><rect x="296" y="304" width="80" height="22" rx="4" fill="none" stroke="#d4a853" stroke-width="2.6"/></g>
 </svg>
-      <p id="chBridge-trap-p5" class="diagram-caption">When any trap fires, the CPU reads the IDT base address from its <code>IDTR</code> register, indexes by vector number, and jumps to the handler the kernel registered for that vector. The same table dispatches CPU exceptions (vectors 0–31), hardware interrupts from devices (vectors 32 and up), and on legacy x86 the <code>int 0x80</code> system call. Exactly the same machinery underlies every involuntary entry into the kernel.</p>
+      <p id="chBridge-trap-p5" class="diagram-caption">A vector number picks a row of the table, and the CPU jumps to its handler.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The table.</b> When any trap fires, the CPU reads the table's address from its <code>IDTR</code> register, indexes it by the vector number, and jumps to the handler the kernel registered there at boot.</li>
+          <li><b>Who raises a vector.</b> The CPU's own exceptions use vectors 0–31, hardware interrupts from devices 32 and up, and on legacy x86 the <code>int 0x80</code> system call uses 128.</li>
+          <li><b>One door for all.</b> Exactly the same machinery underlies every involuntary entry into the kernel.</li>
+        </ol>
+      </details>
     </div>
 
     <p id="chBridge-trap-p6">
@@ -4354,13 +4361,10 @@ main:
 <text x="214" y="350" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#9bd89b">RAM</text>
 <rect x="20" y="322" width="150" height="60" rx="7" fill="none" stroke="#ec8d8d" stroke-width="1.5"/>
 <text x="95" y="345" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ec8d8d">page fault</text>
-<text x="95" y="365" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">kernel decides</text>
 <rect x="40" y="134" width="180" height="52" rx="6" fill="none" stroke="rgba(255,255,255,0.55)"/>
 <text x="52" y="155" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">page tables</text>
-<text x="52" y="175" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">page → physical</text>
 <rect x="40" y="204" width="180" height="52" rx="6" fill="none" stroke="rgba(255,255,255,0.55)"/>
 <text x="52" y="225" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">check the bits</text>
-<text x="52" y="245" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">user? writable?</text>
 <path d="M 222 160 H 232 M 222 230 H 232" stroke="rgba(255,255,255,0.55)"/>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.166667;0.166667;0.666667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="90" y="44" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">load  0x7fff_fa3c_4010</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.166625;0.166667;0.666667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="90" y="44" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">store 0x7fff_fa3c_5010</text></g>
@@ -4368,15 +4372,15 @@ main:
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.166667;0.450000;0.666667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><path d="M 196 236 l 4 5 l 9 -10" fill="none" stroke="#9bd89b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.166625;0.166667;0.683333" calcMode="discrete" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 149.00;0 149.00;0 0.00;0 0.00;0 79.00;0 79.00;0 149.00;0 149.00;0 149.00" keyTimes="0.000000;0.165833;0.166667;0.683333;0.750000;0.833333;0.883333;0.950000;1.000000" dur="12s" repeatCount="indefinite"/><g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.166667;0.683333;0.800000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><rect x="238" y="68" width="88" height="26" rx="4" fill="none" stroke="#86a8ff" stroke-width="1.6"/><text data-role="object" x="282" y="86" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">…a3c5</text><rect x="330" y="68" width="46" height="26" rx="4" fill="none" stroke="#ece6da" stroke-width="1.6"/><text data-role="object" x="353" y="86" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">010</text></g><g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.166625;0.166667;0.800000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><rect x="238" y="68" width="88" height="26" rx="4" fill="none" stroke="#9bd89b" stroke-width="1.6"/><text data-role="object" x="282" y="86" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">4a201</text><rect x="330" y="68" width="46" height="26" rx="4" fill="none" stroke="#ece6da" stroke-width="1.6"/><text data-role="object" x="353" y="86" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">010</text></g></g></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.166625;0.166667;0.933333" calcMode="discrete" dur="12s" repeatCount="indefinite"/><path d="M 194 224 l 12 12 m 0 -12 l -12 12" stroke="#ec8d8d" stroke-width="2.6" stroke-linecap="round"/><path d="M 200 246 V 306 H 95 V 318 m -5 -7 l 5 7 l 5 -7" fill="none" stroke="#ec8d8d" stroke-width="1.8"/><text x="30" y="290" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">read-only: stop</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.166667;0.166667;0.683333" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="30" y="290" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">offset unchanged</text></g>
 </svg>
-      <p id="chBridge-mmu-p3" class="diagram-caption">Every load, store and instruction fetch goes through the MMU, which swaps the page number for a physical one using the page tables the kernel wrote, then checks the permission bits. If the check fails, nothing reaches RAM: the MMU raises a page fault and the kernel takes over.</p>
+      <p id="chBridge-mmu-p3" class="diagram-caption">Each address is translated, then checked; a forbidden store never reaches RAM.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The walk.</b> On x86-64, CR3 holds the top table; nine bits of the address pick an entry at each of four levels, and the last twelve are the offset inside the 4 KiB page.</li>
           <li><b>The bits.</b> Each entry carries present, user/supervisor, writable and no-execute flags; a failed check raises a page fault (vector 14).</li>
           <li><b>The shortcut.</b> Most accesses skip the walk, because recent translations are kept close at hand (Fig BR.5).</li>
+          <li><b>The offset.</b> Only the page number is translated; the last twelve bits, the offset within the page, pass through unchanged.</li>
         </ol>
       </details>
     </div>
@@ -4396,7 +4400,7 @@ main:
       <svg viewBox="0 0 400 332" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47" data-beats="2.95 5.95 10.55" data-beat-names="a hit|a miss|the end">
 <title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn't happen</title>
 <desc id="svgd-part1-47">A program's twelve memory accesses, by page (a3c4, a3c4, a3c5, a3c4, a3c5, a3c6, a3c4, a3c6, a3c7, a3c7, a3c4, a3c5), against a TLB of four entries holding recent page translations. A page already in the TLB is a hit, answered at once. A new page is a miss: the MMU pays the four-read page-table walk, and the new translation replaces the entry used longest ago. Ten hits, two misses; real programs reach well over 99% hits.</desc>
-<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">pages the program touches</text>
+<text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">pages</text>
 <rect x="20" y="36" width="26" height="30" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text data-role="object" x="33" y="56" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">4</text>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.083333;0.100000;0.175000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><rect x="20" y="70" width="26" height="5" rx="2" fill="#9bd89b"/></g>
@@ -4433,10 +4437,9 @@ main:
 <rect x="350" y="36" width="26" height="30" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text data-role="object" x="363" y="56" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">5</text>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.083333;0.100000;0.862500" calcMode="discrete" dur="12s" repeatCount="indefinite"/><rect x="350" y="70" width="26" height="5" rx="2" fill="#9bd89b"/></g>
-<text x="20" y="96" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">a3c? (the last digit shown)</text>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.083333;0.100000;0.150000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="330.00 0;330.00 0;0.00 0;0.00 0;0.00 0;30.00 0;30.00 0;60.00 0;60.00 0;90.00 0;90.00 0;120.00 0;120.00 0;150.00 0;150.00 0;180.00 0;180.00 0;210.00 0;210.00 0;240.00 0;240.00 0;270.00 0;270.00 0;300.00 0;300.00 0;330.00 0;330.00 0;330.00 0" keyTimes="0.000000;0.099167;0.100000;0.150000;0.200000;0.212500;0.262500;0.275000;0.325000;0.337500;0.387500;0.400000;0.450000;0.462500;0.512500;0.525000;0.575000;0.587500;0.637500;0.650000;0.700000;0.712500;0.762500;0.775000;0.825000;0.837500;0.887500;1.000000" dur="12s" repeatCount="indefinite"/><rect x="17" y="33" width="32" height="36" rx="6" fill="none" stroke="#d4a853" stroke-width="2.4"/></g></g>
 <rect x="20" y="112" width="218" height="176" rx="8" fill="none" stroke="#d4a853" stroke-width="1.5"/>
-<text x="34" y="134" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">TLB · four entries</text>
+<text x="34" y="134" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">TLB</text>
 <rect x="32" y="146" width="194" height="28" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.100000;0.100000;0.491667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text data-role="object" x="42" y="165" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">a3c2 → 51e0</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.099958;0.100000;0.491667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text data-role="object" x="42" y="165" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">a3c6 → 0907</text></g>
@@ -4458,17 +4461,17 @@ main:
 <rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>
 <text x="316" y="172" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ece6da">page-table</text>
 <text x="316" y="190" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ece6da">walk</text>
-<text x="316" y="220" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">4 more reads</text>
 <rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="#ec8d8d" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="0;0;1;0;1;0" keyTimes="0.000000;0.100000;0.470833;0.520833;0.658333;0.708333" calcMode="discrete" dur="12s" repeatCount="indefinite"/></rect>
 <text x="252" y="268" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#9bd89b">hits 10</text>
 <text x="252" y="290" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="#ec8d8d">misses 2</text>
 </svg>
-      <p id="chBridge-mmu-p6" class="diagram-caption">Programs touch the same few pages again and again, so the TLB can answer most accesses at once. Only a miss pays for the four-read walk, and its translation then replaces the entry used longest ago.</p>
+      <p id="chBridge-mmu-p6" class="diagram-caption">Most accesses hit the TLB; only a miss pays for the walk.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Sizes.</b> From 64 entries to a few thousand per core, in one or two levels; one entry can also cover a 2 MiB or 1 GiB huge page.</li>
           <li><b>Tags.</b> On x86 the address-space tag is the PCID, so a switch of <code>CR3</code> need not empty the TLB.</li>
+          <li><b>The pages.</b> The strip shows each page by its last hex digit (a3c4, a3c5 and so on); a miss costs four more memory reads.</li>
         </ol>
       </details>
     </div>
@@ -4499,7 +4502,7 @@ main:
 <desc id="svgd-part1-48">Four milliseconds of one CPU core with the timer set to a thousand ticks a second. Process A runs until the timer fires; the tick interrupts, the kernel runs for a moment and its scheduler picks process B; at the next tick, process C; at the next, A again. Process C is stuck in an endless loop and never gives up the CPU, but the tick takes it back exactly as it does from the others.</desc>
 <circle cx="48" cy="38" r="16" fill="none" stroke="#d4a853" stroke-width="1.8"/>
 <path d="M 48 38 V 28 M 48 38 L 55 42" stroke="#d4a853" stroke-width="1.8" stroke-linecap="round"/>
-<text x="74" y="43" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">timer · 1,000 ticks a second</text>
+<text x="74" y="43" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#d4a853">timer</text>
 <text x="20" y="88" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">one core</text>
 <rect x="36" y="112" width="78" height="44" rx="4" fill="none" stroke="#86a8ff" stroke-width="1.8"/>
 <text data-role="object" x="75" y="139" text-anchor="middle" font-family="DM Mono" font-size="16" letter-spacing="0.06em" fill="#86a8ff">A</text>
@@ -4524,7 +4527,6 @@ main:
 <circle cx="48" cy="38" r="20" fill="none" stroke="#d4a853" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.100000;0.745000;0.795000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></circle>
 <path d="M 288 62 V 104" stroke="#d4a853" stroke-width="3" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.100000;0.745000;0.795000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></path>
 <rect x="36" y="224" width="12" height="12" rx="2" fill="#d4a853"/>
-<text x="56" y="235" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">kernel: the scheduler picks the next</text>
 <line x1="36" y1="162" x2="36" y2="170" stroke="rgba(255,255,255,0.55)"/>
 <text x="36" y="188" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">0 ms</text>
 <line x1="120" y1="162" x2="120" y2="170" stroke="rgba(255,255,255,0.55)"/>
@@ -4536,14 +4538,14 @@ main:
 <line x1="372" y1="162" x2="372" y2="170" stroke="rgba(255,255,255,0.55)"/>
 <text x="372" y="188" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">4 ms</text>
 <g><animateTransform attributeName="transform" type="translate" values="336.00 0;336.00 0;0.00 0;0.00 0;0.00 0;336.00 0;336.00 0" keyTimes="0.000000;0.080000;0.099000;0.100000;0.150000;0.950000;1.000000" dur="10s" repeatCount="indefinite"/><path d="M 36 198 l -6 10 h 12 z" fill="#ece6da"/></g>
-<text x="20" y="280" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">C never gave the CPU up; the tick took it</text>
 </svg>
-      <p id="chBridge-timer-p3" class="diagram-caption">Four milliseconds of one core at 1,000 ticks a second: at each tick the kernel's scheduler picks the next process, and C, stuck in an endless loop, loses the CPU like the others.</p>
+      <p id="chBridge-timer-p3" class="diagram-caption">A tick every millisecond hands the core to the kernel, even from C's endless loop.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The rate.</b> Linux's tick is a build option, commonly 100, 250, 300 or 1,000 per second; the kernel programs the timer in each core's interrupt controller (the local APIC on x86; on ARM, the generic timer) at boot.</li>
           <li><b>Not to scale.</b> The kernel slices are drawn wide enough to see; a real tick takes microseconds, and the scheduler often lets one process run for several ticks.</li>
+          <li><b>The gold slivers.</b> The kernel at each tick: its scheduler picks the next process.</li>
         </ol>
       </details>
     </div>
@@ -4591,22 +4593,16 @@ main:
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.129950;0.130000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><text x="84" y="38" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">store x at 0xFEE0_0380</text></g>
 <rect x="20" y="66" width="170" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="84" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">boot code</text>
-<text x="30" y="100" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFF00_0000</text>
 <rect x="20" y="110" width="170" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="128" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">local APIC</text>
-<text x="30" y="144" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFEE0_0000</text>
 <rect x="20" y="154" width="170" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="172" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">interrupt router</text>
-<text x="30" y="188" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xFEC0_0000</text>
 <rect x="20" y="198" width="170" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="216" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">network card</text>
-<text x="30" y="232" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xD000_0000</text>
 <rect x="20" y="242" width="170" height="40" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="260" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">GPU frame buffer</text>
-<text x="30" y="276" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0xC000_0000</text>
 <rect x="20" y="286" width="170" height="60" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <text x="30" y="304" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">RAM</text>
-<text x="30" y="320" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">from 0x0000_0000</text>
 <rect x="18" y="284" width="174" height="64" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.150000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></rect>
 <path d="M 194 316.0 H 208" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.150000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></path>
 <rect x="18" y="240" width="174" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.400000;0.630000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></rect>
@@ -4615,17 +4611,17 @@ main:
 <path d="M 194 218.0 H 208" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.650000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></path>
 <rect x="18" y="108" width="174" height="44" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6" opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.129950;0.130000;0.900000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></rect>
 <path d="M 194 130.0 H 208" stroke="#d4a853" stroke-width="2" opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.129950;0.130000;0.900000" calcMode="discrete" dur="10s" repeatCount="indefinite"/></path>
-<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.180000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="305.0" width="26" height="22" rx="3" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="244" y="321" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">just stored</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.180000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="305.0" width="26" height="22" rx="3" fill="none" stroke="#9bd89b" stroke-width="2.2"/><text data-role="object" x="219" y="321" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#9bd89b">x</text><text x="244" y="321" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">just stored</text></g>
-<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.430000;0.630000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="204" y="251.0" width="30" height="22" rx="2" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="267" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">a pixel changes</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.430000;0.630000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="204" y="251.0" width="30" height="22" rx="2" fill="none" stroke="#86a8ff" stroke-width="2.2"/><rect x="221" y="258.0" width="6" height="6" fill="#d4a853"/><text x="244" y="267" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">a pixel changes</text></g>
-<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.680000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="209.0" width="22" height="18" rx="3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><path d="M 230 218.0 h 6 m -3 -3 l 3 3 l -3 3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="223" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">a packet is sent</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.680000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="209.0" width="22" height="18" rx="3" fill="none" stroke="#86a8ff" stroke-width="2.2"/><path d="M 230 218.0 h 6 m -3 -3 l 3 3 l -3 3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="223" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">a packet is sent</text></g>
-<g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0.000000;0.129950;0.130000;0.930000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><circle cx="218" cy="130.0" r="12" fill="none" stroke="#d4a853" stroke-width="1.5"/><path d="M 218 130.0 V 123.0 M 218 130.0 L 223 133.0" stroke="#d4a853" stroke-width="1.6" stroke-linecap="round"/><text x="244" y="135" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">timer rate set</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.129950;0.130000;0.930000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><circle cx="218" cy="130.0" r="12" fill="none" stroke="#d4a853" stroke-width="2.2"/><path d="M 218 130.0 V 123.0 M 218 130.0 L 223 133.0" stroke="#d4a853" stroke-width="1.6" stroke-linecap="round"/><text x="244" y="135" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#d4a853">timer rate set</text></g>
+<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.180000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="305.0" width="26" height="22" rx="3" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="244" y="321" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">value</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.180000;0.380000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="305.0" width="26" height="22" rx="3" fill="none" stroke="#9bd89b" stroke-width="2.2"/><text data-role="object" x="219" y="321" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#9bd89b">x</text><text x="244" y="321" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">value</text></g>
+<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.430000;0.630000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="204" y="251.0" width="30" height="22" rx="2" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="267" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">pixel</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.430000;0.630000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="204" y="251.0" width="30" height="22" rx="2" fill="none" stroke="#86a8ff" stroke-width="2.2"/><rect x="221" y="258.0" width="6" height="6" fill="#d4a853"/><text x="244" y="267" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">pixel</text></g>
+<g><animate attributeName="opacity" values="1;1;0;1" keyTimes="0.000000;0.130000;0.680000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="209.0" width="22" height="18" rx="3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><path d="M 230 218.0 h 6 m -3 -3 l 3 3 l -3 3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="223" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">packet</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.130000;0.680000;0.880000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><rect x="206" y="209.0" width="22" height="18" rx="3" fill="none" stroke="#86a8ff" stroke-width="2.2"/><path d="M 230 218.0 h 6 m -3 -3 l 3 3 l -3 3" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="244" y="223" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">packet</text></g>
+<g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0.000000;0.129950;0.130000;0.930000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><circle cx="218" cy="130.0" r="12" fill="none" stroke="#d4a853" stroke-width="1.5"/><path d="M 218 130.0 V 123.0 M 218 130.0 L 223 133.0" stroke="#d4a853" stroke-width="1.6" stroke-linecap="round"/><text x="244" y="135" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">timer</text></g>
+<g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.129950;0.130000;0.930000" calcMode="discrete" dur="10s" repeatCount="indefinite"/><circle cx="218" cy="130.0" r="12" fill="none" stroke="#d4a853" stroke-width="2.2"/><path d="M 218 130.0 V 123.0 M 218 130.0 L 223 133.0" stroke="#d4a853" stroke-width="1.6" stroke-linecap="round"/><text x="244" y="135" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#d4a853">timer</text></g>
 <text x="20" y="374" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">low addresses at the bottom, not to scale</text>
 </svg>
-      <p id="chBridge-io-p3" class="diagram-caption">To the CPU, the physical address space is one flat range, and only part of it is RAM: other ranges belong to devices, such as the GPU's frame buffer (the screen's pixels) and the local APIC (each core's interrupt controller and timer). The same store saves a value, changes a pixel or sets the timer, depending only on the address.</p>
+      <p id="chBridge-io-p3" class="diagram-caption">One store instruction, four addresses: a value kept, a pixel, a packet, a timer.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4644,7 +4640,7 @@ main:
 
     <div class="diagram-card fig-v2" id="fig-br-8">
       <div class="diagram-label">Fig BR.8&nbsp;· Direct memory access&nbsp;· the device writes RAM by itself</div>
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50" data-beats="3.4 7.1 10.6" data-beat-names="queue|fill|done">
+      <svg viewBox="0 0 400 228" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50" data-beats="3.4 7.1 10.6" data-beat-names="queue|fill|done">
 <title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>
 <desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM (read these blocks into the buffer at 0x4a20_0000) and rings the SSD's doorbell register. The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never copies the data during the transfer.</desc>
 <rect x="20" y="16" width="164" height="62" rx="7" fill="none" stroke="#86a8ff" stroke-width="1.5"/>
@@ -4662,7 +4658,7 @@ main:
 <rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/>
 <text x="300" y="137" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">command queue</text>
 <rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="#d4a853" stroke-width="2.4" opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.133292;0.133333;0.233333" calcMode="discrete" dur="12s" repeatCount="indefinite"/></rect>
-<text x="32" y="162" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">buffer at 0x4a20_0000</text>
+<text x="32" y="162" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">buffer</text>
 <rect x="32" y="172" width="38" height="30" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.3"/>
 <rect x="35" y="175" width="32" height="24" rx="3" fill="#9bd89b" opacity="0"><animate attributeName="opacity" values="1;0;0;1;0;1" keyTimes="0.000000;0.133292;0.133333;0.133333;0.166667;0.416667" calcMode="discrete" dur="12s" repeatCount="indefinite"/></rect>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.383333;0.420833" calcMode="discrete" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="-249.00 0;-249.00 0;0.00 0;0.00 0;-249.00 0;-249.00 0" keyTimes="0.000000;0.132500;0.133333;0.383333;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 109.00;0 109.00;0 0.00;0 0.00;0 109.00;0 109.00" keyTimes="0.000000;0.132500;0.133333;0.383333;0.416667;1.000000" dur="12s" repeatCount="indefinite"/><rect x="290" y="70" width="20" height="16" rx="3" fill="#9bd89b"/></g></g></g>
@@ -4691,14 +4687,8 @@ main:
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.766667;0.933333" calcMode="discrete" dur="12s" repeatCount="indefinite"/><path d="M 214 34 H 188 m 7 -5 l -7 5 l 7 5" fill="none" stroke="#ec8d8d" stroke-width="2.4"/></g>
 <path d="M 214 34 H 188" stroke="rgba(255,255,255,0.55)" stroke-dasharray="3 4"/>
 <text x="200" y="96" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ec8d8d">interrupt</text>
-<g><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.166667;0.166667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="250" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">1  command queued, doorbell rung</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;0;0;1;0;1" keyTimes="0.000000;0.133292;0.133333;0.133333;0.166667;0.166667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="250" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#d4a853">1  command queued, doorbell rung</text></g>
-<g><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.166667;0.350000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="276" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">2  the SSD fills RAM on its own</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;0;0;1;0;1" keyTimes="0.000000;0.133292;0.133333;0.133333;0.166667;0.350000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="276" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#9bd89b">2  the SSD fills RAM on its own</text></g>
-<g><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.166667;0.766667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">3  an interrupt says done</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;0;0;1;0;1" keyTimes="0.000000;0.133292;0.133333;0.133333;0.166667;0.766667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">3  an interrupt says done</text></g>
 </svg>
-      <p id="chBridge-io-p5" class="diagram-caption">One SSD read in the three steps drawn: the kernel queues a command and rings the doorbell, the drive fills the buffer while process B runs, and an interrupt wakes process A.</p>
+      <p id="chBridge-io-p5" class="diagram-caption">The drive fills RAM by itself while the CPU runs B; an interrupt says done.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -4728,7 +4718,7 @@ main:
 
     <div class="diagram-card fig-v2" id="fig-br-9">
       <div class="diagram-label">Fig BR.9&nbsp;· Hardware features → kernel → abstractions</div>
-      <svg viewBox="0 0 400 346" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51" data-beats="0.4 2 4.4 6.8 9.2 11.6" data-beat-names="whole|privilege|traps|MMU|timer|MMIO">
+      <svg viewBox="0 0 400 288" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-51 svgd-part1-51" data-beats="0.4 2 4.4 6.8 9.2 11.6" data-beat-names="whole|privilege|traps|MMU|timer|MMIO">
 <title id="svgt-part1-51">Fig BR.9 · Hardware features → kernel → abstractions</title>
 <desc id="svgd-part1-51">Five hardware features on the left, the abstractions programs rely on at the right, and the kernel joining each pair: the privilege bit gives a protected kernel apart from user programs, traps give system calls, the MMU and TLB give separate processes, the timer gives multitasking, and MMIO and DMA give files and networking. Each feature is then taken away in turn and its abstraction goes with it: without privilege any program can do anything, without traps there is no safe way into the kernel, without the MMU every program can read every other, without the timer a stuck loop keeps the CPU, and without MMIO and DMA there is no disk and no network.</desc>
 <text x="20" y="26" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#86a8ff">silicon</text>
@@ -4737,27 +4727,22 @@ main:
 <rect x="176" y="40" width="48" height="228" rx="8" fill="none" stroke="#d4a853" stroke-width="1.5"/>
 <g><animate attributeName="opacity" values="1;0;1;1" keyTimes="0.000000;0.070423;0.225352;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="46" width="140" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="32" y="67" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">privilege bit</text><path d="M 160 62 H 240" stroke="#d4a853" stroke-width="1.6"/><circle cx="200" cy="62" r="4" fill="#d4a853"/><rect x="240" y="46" width="140" height="32" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="252" y="67" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">kernel vs user</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.070423;0.225352;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="46" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="32" y="67" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">privilege bit</text><path d="M 26 62 H 154" stroke="#ec8d8d" stroke-width="2"/><rect x="240" y="46" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="252" y="67" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">kernel vs user</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.070423;0.225352;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">without the privilege bit:</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">any program can do anything</text></g>
 <g><animate attributeName="opacity" values="1;0;1;1" keyTimes="0.000000;0.239437;0.394366;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="92" width="140" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="32" y="113" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">traps</text><path d="M 160 108 H 240" stroke="#d4a853" stroke-width="1.6"/><circle cx="200" cy="108" r="4" fill="#d4a853"/><rect x="240" y="92" width="140" height="32" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="252" y="113" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">system calls</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.239437;0.394366;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="92" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="32" y="113" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">traps</text><path d="M 26 108 H 154" stroke="#ec8d8d" stroke-width="2"/><rect x="240" y="92" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="252" y="113" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">system calls</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.239437;0.394366;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">without traps:</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">no safe way into the kernel</text></g>
 <g><animate attributeName="opacity" values="1;0;1;1" keyTimes="0.000000;0.408451;0.563380;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="138" width="140" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="32" y="159" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">MMU · TLB</text><path d="M 160 154 H 240" stroke="#d4a853" stroke-width="1.6"/><circle cx="200" cy="154" r="4" fill="#d4a853"/><rect x="240" y="138" width="140" height="32" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="252" y="159" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">processes</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.408451;0.563380;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="138" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="32" y="159" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">MMU · TLB</text><path d="M 26 154 H 154" stroke="#ec8d8d" stroke-width="2"/><rect x="240" y="138" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="252" y="159" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">processes</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.408451;0.563380;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">without the MMU:</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">every program reads every other</text></g>
 <g><animate attributeName="opacity" values="1;0;1;1" keyTimes="0.000000;0.577465;0.732394;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="184" width="140" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="32" y="205" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">timer</text><path d="M 160 200 H 240" stroke="#d4a853" stroke-width="1.6"/><circle cx="200" cy="200" r="4" fill="#d4a853"/><rect x="240" y="184" width="140" height="32" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="252" y="205" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">multitasking</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.577465;0.732394;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="184" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="32" y="205" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">timer</text><path d="M 26 200 H 154" stroke="#ec8d8d" stroke-width="2"/><rect x="240" y="184" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="252" y="205" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">multitasking</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.577465;0.732394;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">without the timer:</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">a stuck loop keeps the CPU</text></g>
 <g><animate attributeName="opacity" values="1;0;1;1" keyTimes="0.000000;0.746479;0.901408;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="230" width="140" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.5"/><text x="32" y="251" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">MMIO · DMA</text><path d="M 160 246 H 240" stroke="#d4a853" stroke-width="1.6"/><circle cx="200" cy="246" r="4" fill="#d4a853"/><rect x="240" y="230" width="140" height="32" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.5"/><text x="252" y="251" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">files, network</text></g>
 <g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.746479;0.901408;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><rect x="20" y="230" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="32" y="251" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">MMIO · DMA</text><path d="M 26 246 H 154" stroke="#ec8d8d" stroke-width="2"/><rect x="240" y="230" width="140" height="32" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5" stroke-dasharray="4 4"/><text x="252" y="251" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">files, network</text></g>
-<g opacity="0"><animate attributeName="opacity" values="0;1;0;0" keyTimes="0.000000;0.746479;0.901408;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">without MMIO and DMA:</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ece6da">no disk and no network</text></g>
-<g opacity="0"><animate attributeName="opacity" values="1;0;1;0;0;1" keyTimes="0.000000;0.070423;0.901408;0.957711;0.957746;0.957746" calcMode="discrete" dur="14.2s" repeatCount="indefinite"/><text x="20" y="302" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">take a feature away,</text><text x="20" y="324" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">and its abstraction goes with it</text></g>
 </svg>
-      <p id="chBridge-synthesis-p3" class="diagram-caption">Each hardware feature on the left becomes, through the kernel, the abstraction on the right. Take the feature away and the abstraction goes with it: without the MMU there are no separate processes, and without the timer nothing can take the CPU from a program that never yields.</p>
+      <p id="chBridge-synthesis-p3" class="diagram-caption">Take a feature away and the abstraction it gives goes with it.</p>
       <details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Why the kernel.</b> Only code running with full privilege can program these features, so one program does it and every other program asks it through system calls.</li>
           <li><b>Not strictly one to one.</b> A process needs the MMU, traps and the timer together; each row shows the feature its abstraction cannot do without.</li>
+          <li><b>The losses.</b> Without the privilege bit any program can do anything; without traps there is no safe way into the kernel; without the MMU every program reads every other; without the timer a stuck loop keeps the CPU; without MMIO and DMA there is no disk and no network.</li>
         </ol>
       </details>
     </div>

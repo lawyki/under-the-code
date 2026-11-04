@@ -31,7 +31,6 @@ a('<desc id="svgd-part1-45">The interrupt descriptor table: 256 entries the kern
 a(f'<rect x="{TX}" y="18" width="{TW}" height="34" rx="5" fill="none" stroke="{BLUE}" stroke-width="1.6"/>')
 a(text(TX + TW / 2, 40, 'IDTR', anchor='middle', size=15, fill=BLUE))
 a(f'<path d="M {TX + TW / 2} 52 V {RY(0) - 22} m -5 -6 l 5 6 l 5 -6" fill="none" stroke="{BLUE}" stroke-width="1.6"/>')
-a(text(TX + TW / 2 - 10, 72, 'where the table is', anchor='end', size=14, fill=MUTED))
 # the table
 a(f'<rect x="{TX}" y="{RY(0) - 10}" width="{TW}" height="{RY(len(ROWS)) - RY(0) + 4}" rx="6" fill="none" stroke="{INK}" stroke-width="1.4"/>')
 for i, (v, name) in enumerate(ROWS):
@@ -62,14 +61,20 @@ for i, name, col, vec, t0 in SRC:
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('When any trap fires, the CPU reads the IDT base address from its <code>IDTR</code> register, indexes by vector number, and '
-           'jumps to the handler the kernel registered for that vector. The same table dispatches CPU exceptions (vectors 0–31), '
-           'hardware interrupts from devices (vectors 32 and up), and on legacy x86 the <code>int 0x80</code> system call. Exactly the '
-           'same machinery underlies every involuntary entry into the kernel.')
+caption = 'A vector number picks a row of the table, and the CPU jumps to its handler.'
+how = '''<details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The table.</b> When any trap fires, the CPU reads the table's address from its <code>IDTR</code> register, indexes it by the vector number, and jumps to the handler the kernel registered there at boot.</li>
+          <li><b>Who raises a vector.</b> The CPU's own exceptions use vectors 0–31, hardware interrupts from devices 32 and up, and on legacy x86 the <code>int 0x80</code> system call uses 128.</li>
+          <li><b>One door for all.</b> Exactly the same machinery underlies every involuntary entry into the kernel.</li>
+        </ol>
+      </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-3">
       <div class="diagram-label">Fig BR.3 · The interrupt descriptor table · 256 doors into the kernel</div>
       {svg}
       <p id="chBridge-trap-p5" class="diagram-caption">{caption}</p>
+      {how}
     </div>'''
 if __name__ == '__main__':
     splice('part-1', 'fig-br-3', 'chBridge-trap-p5', card)
