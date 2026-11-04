@@ -127,7 +127,6 @@ def panel(py, live):
           text(200, ST + 34, 'bridge', anchor='middle', size=14, fill=BLUE, role='label') +
           text(380, 17, 'current flows', anchor='end', size=15, fill=GOLD, role='label') + '</g>')
     else:
-        a(text(380, 17, 'no current', anchor='end', size=15, fill=MUTED, role='label'))
         a(text(200, ST + 72, 'p-type', anchor='middle', size=14, fill=RED, role='label'))
         a(text(80, ST - 12, 'source', anchor='middle', size=14, fill=BLUE, role='label'))
         a(text(322, ST - 12, 'drain', anchor='middle', size=14, fill=BLUE, role='label'))
@@ -140,9 +139,7 @@ panel(SB + 14, True)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('At 0 V (top) the electrons stay in the source and drain and the lamp is dark; at 1 V (bottom) the gate draws them '
-           'under the oxide into a channel and current flows. The gate never touches them: it pulls through the insulator, as a '
-           'rubbed balloon lifts hair, and that pull across a gap is an electric field.')
+caption = 'The same transistor at 0 V and at 1 V: electrons gather under the gate.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -151,6 +148,7 @@ how = '''<details class="fig-how">
           <li><b>The channel.</b> The gathered electrons form a thin bridge under the oxide, and the battery drives a current round the circuit: the lamp lights.</li>
           <li><b>Gate off.</b> At 0 V the pull stops, the electrons go back, the channel is gone and the lamp goes dark.</li>
           <li><b>The name.</b> MOSFET: metal-oxide-semiconductor field-effect transistor, the kind a modern chip holds billions of.</li>
+          <li><b>The field.</b> The gate never touches the electrons: it pulls through the insulator, as a rubbed balloon lifts hair, and that pull across a gap is an electric field.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-5">

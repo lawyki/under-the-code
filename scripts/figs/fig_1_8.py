@@ -95,9 +95,7 @@ trip('store C', GOLD, 2, 8.2); trip('8', BLUE, 5, 9.8, up=True)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One memory holds the program and its data; one bus, shared wires that the input and output devices (I/O) also use, '
-           'carries both to the CPU one transfer at a time. There the control unit reads each instruction and the ALU (arithmetic '
-           'and logic unit) computes.')
+caption = 'Every word, instruction or number, takes the same trip over the one bus.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -105,6 +103,7 @@ how = '''<details class="fig-how">
           <li><b>Execute.</b> The instruction asks for data, which travels over the same bus; the ALU does the arithmetic: 5 + 3.</li>
           <li><b>Store.</b> The result goes back up the bus into memory, and the counter moves on.</li>
           <li><b>One bus.</b> Code and data share it, so they take turns: the bottleneck the next sections return to.</li>
+          <li><b>Inside the CPU.</b> The control unit reads each instruction and the ALU (arithmetic and logic unit) computes; the input and output devices (I/O) share the same bus.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-8">

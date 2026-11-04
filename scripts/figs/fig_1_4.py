@@ -55,14 +55,10 @@ a(text(XC + 10, 222, 'emitter', size=14, fill=MUTED))
 path = f'M {XB} 140 V 26 H {XC} V 134 L {XC - 26} 155 L {XC - 26} 175 L {XC} 194 V 258 H {XB} V 160'
 dots = ''.join(f'<circle r="3.4" fill="{GOLD}"><animateMotion dur="3s" begin="{-k * 0.375:.3f}s" repeatCount="indefinite" path="{path}"/></circle>' for k in range(8))
 a(f'<g opacity="0">{disc(ON)}{dots}</g>')
-a(text(20, 288, 'no current, lamp dark', size=15, fill=MUTED, extra=f' opacity="0"'))
-a(f'<text x="20" y="292" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="{MUTED}">{disc(OFF)}no current, lamp dark</text>')
-a(f'<text x="20" y="292" font-family="DM Mono" font-size="15" letter-spacing="0.06em" fill="{GOLD}" opacity="0">{disc(ON)}current flows, lamp lit</text>')
 a('</svg>')
 svg = '\n'.join(l for l in o if 'opacity="0">no current' not in l)
 
-caption = ('0 V on the base and the lamp stays dark; 0.7 V and current flows, the way the arrow points, and it lights. This is the older '
-           'kind of transistor; modern chips are built from the field-effect kind, opened in Fig 1.5.')
+caption = 'Switch the base between 0 V and 0.7 V and watch the lamp.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -70,6 +66,7 @@ how = '''<details class="fig-how">
           <li><b>The loop.</b> The battery pushes current round the loop, through the lamp and the transistor. The transistor is the one gap in it: shut, the whole loop is dead.</li>
           <li><b>The threshold.</b> In this kind of transistor about 0.7 V on the base opens the path; below it, almost nothing flows. In the field-effect transistors of modern chips the control terminal is called the gate (Fig 1.5).</li>
           <li><b>The dots.</b> The current, drawn the way the emitter's arrow points, from + round to −. The electrons that carry it drift the other way.</li>
+          <li><b>The other kind.</b> This is the older kind of transistor; modern chips are built from the field-effect kind (Fig 1.5).</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-4">

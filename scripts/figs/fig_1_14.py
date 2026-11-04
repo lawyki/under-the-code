@@ -47,13 +47,11 @@ a(text(cx + 46, cy + 10, 'disk', size=14, fill=INK))
 # path 1: the direct reach, stopped at the wall
 a(f'<path d="M 82 88 V {WALL - 6}" stroke="{RED}" stroke-width="2.4"/>')
 a(f'<path d="M 74 {WALL - 8} l 16 16 m 0 -16 l -16 16" stroke="{RED}" stroke-width="2.6" stroke-linecap="round"/>')
-a(text(98, WALL + 19, 'blocked', size=14, fill=RED))
 # path 2: through the door, checked by the kernel, to the disk
 a(f'<path d="M {cx} 88 V 183 M {cx} 209 V {cy - 12}" stroke="{GOLD}" stroke-width="2.4"/>')
 a(text(cx + 30, WALL - 8, 'asks the kernel', size=14, fill=GOLD))
 a(f'<circle cx="{cx}" cy="196" r="13" fill="none" stroke="{GOLD}" stroke-width="2"/>')
 a(f'<path d="M {cx - 6} 196 l 4 5 l 8 -10" fill="none" stroke="{GOLD}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>')
-a(text(cx + 22, 201, 'checks first', size=14, fill=INK))
 
 # motion: the reach flashes and dies at the wall; the request travels down, the data travels back up
 a(f'<circle cx="82" cy="0" r="5" fill="{RED}" opacity="0">'
@@ -69,8 +67,7 @@ travel(BLUE, cy - 12, 88, 5.6, 7.4)      # the data, back up to the program
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The CPU runs each program at a privilege level, or ring: Ring 3 for programs, Ring 0 for the kernel. The red path, a '
-           'program reaching straight for the disk, is blocked; the gold one, a request to the kernel called a system call, is let through.')
+caption = 'The direct reach stops at the wall; the request goes through the one door.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

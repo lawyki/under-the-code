@@ -65,14 +65,14 @@ a(f'<rect x="20" y="{BY + 56}" width="{360 * 9 / 25:.1f}" height="12" rx="3" fil
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Five instructions of five stages each, overlapped like an assembly line, finish in 9 cycles instead of 25. Each still '
-           'takes five cycles; the gain is that once the pipeline is full, one instruction completes every cycle.')
+caption = 'Instructions step through five stations together; once the line is full, one finishes every cycle.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The stages.</b> Fetch, decode, execute, memory access (reading or writing data), writeback: in the usual short names IF, ID, EX, MEM and WB.</li>
           <li><b>The overlap.</b> Each instruction enters one cycle after the one before, so the stations always hold different instructions; in cycle 5 all five are busy at once.</li>
           <li><b>Beyond this.</b> Modern CPUs also duplicate stages and finish several instructions in one cycle.</li>
+          <li><b>The gain.</b> Each instruction still takes five cycles; the overlap is what turns 25 cycles into 9.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-11">

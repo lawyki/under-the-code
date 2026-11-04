@@ -67,12 +67,10 @@ a(f'<g fill="#9fb4ff" opacity="0.95"><circle cx="{px}" cy="{pf - 33}" r="4.2"/>'
   f'<path d="M {px - 6} {pf - 27} h 12 l 1.5 14 h -3 l -0.5 13 h -3.6 l -0.4 -10 l -0.4 10 h -3.6 l -0.5 -13 h -3 z"/></g>')
 a(text(20, 204, 'ENIAC · 1945', size=15, fill=INK))
 a(text(380, 204, '17,468 vacuum tubes', anchor='end', size=14, fill=HEAT))
-a(text(380, 222, '30 m of cabinets', anchor='end', size=14, fill=MUTED))
 
 # ---------- the ratio ----------
 a('<line x1="20" y1="244" x2="380" y2="244" stroke="rgba(255,255,255,0.12)"/>')
 a(text(200, 276, '×1.6 million switches', anchor='middle', size=17, fill=GOLD))
-a(text(200, 296, '79 years later', anchor='middle', size=14, fill=MUTED))
 a('<line x1="20" y1="314" x2="380" y2="314" stroke="rgba(255,255,255,0.12)"/>')
 
 # ---------- the M4 on a fingertip ----------
@@ -90,15 +88,14 @@ a(text(190, 404, 'transistors', size=14, fill=BLUE))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ("ENIAC's thirty metres of cabinets held 17,468 vacuum tubes; the M4 fits under a fingertip and holds 28 billion "
-           'transistors, about 1.6 million times as many switches. Each is drawn at its own scale: in life ENIAC\'s row of cabinets '
-           'is some two thousand times longer than the chip.')
+caption = "ENIAC's room of tubes against the M4 on a fingertip, each at its own scale."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The same job.</b> Both machines flip switches according to instructions; what changed is the size of the switch, from a glass tube to a speck of silicon.</li>
           <li><b>The red flashes.</b> As the figure plays, a tube burns out. ENIAC lost one about every two days; a chip's transistors run for years.</li>
           <li><b>The numbers.</b> 28,000,000,000 ÷ 17,468 ≈ 1.6 million. (From the 4004 of 1971 to the M4 the factor is twelve million: Fig 1.6.)</li>
+          <li><b>The scale.</b> ENIAC's cabinets ran thirty metres; in life they are some two thousand times longer than the chip.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-7">

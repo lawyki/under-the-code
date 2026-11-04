@@ -32,7 +32,7 @@ a(text(X1, Y(1e9) + 18, '1 billion', anchor='end', size=14, fill=MUTED))
 # the tenfold step, shown once with a bracket
 yb, yt = Y(1e5), Y(1e6)
 a(f'<path d="M {X1 - 4} {yb:.1f} h 8 M {X1} {yb:.1f} V {yt:.1f} M {X1 - 4} {yt:.1f} h 8" stroke="{INK}" stroke-width="1.4" fill="none"/>')
-a(text(X1 - 10, (yb + yt) / 2 + 5, 'each line ×10', anchor='end', size=14, fill=INK))
+a(text(X1 - 10, (yb + yt) / 2 + 5, '×10', anchor='end', size=14, fill=INK))
 
 # the doubling line, every two years from the 4004, clipped at the top
 yr_top = 1971 + (HI - log10(2300)) / (log10(2) / 2)
@@ -52,8 +52,7 @@ a(text(X1, 316, '2024: 28 billion', anchor='end', size=14, fill=INK))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each gridline is ten times the one below, so steady doubling draws a straight line. The chips follow the dashed '
-           'two-year line for more than forty years, then fall below it: 2,300 transistors in 1971, 28 billion in 2024.')
+caption = 'Doubling draws a straight line when each gridline is ten times the last.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

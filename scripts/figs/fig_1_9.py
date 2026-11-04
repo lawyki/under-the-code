@@ -50,7 +50,6 @@ arc(f'M {c[0]} {CT - 4} Q {(c[0] + c[1]) / 2} {CT - 46} {c[1] - 3} {CT - 8}', f'
 arc(f'M {c[1]} {CT - 4} Q {(c[1] + c[2]) / 2} {CT - 40} {c[2] - 3} {CT - 8}', f'M {c[2]} {CT - 3} l -9 -3 l 4 -7 z', [(5.25, 6.4)], '+3', (c[1] + c[2]) / 2, CT - 31)
 RY = CB + 56
 arc(f'M {c[2]} {RY} C {c[2]} {RY + 34} {c[0]} {RY + 34} {c[0]} {RY + 6}', f'M {c[0]} {RY} l -5 9 h 10 z', [(8.25, 9.0), (0.0, 0.4)])
-a(text((c[0] + c[2]) / 2, RY + 46, 'jump back', anchor='middle', size=14, fill=INK))
 
 # the gold frame: the instruction the counter points at
 xs, ws = [], []
@@ -82,8 +81,7 @@ for j, s in enumerate(['fetch', 'decode', 'execute', 'writeback']):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Follow the program counter: 0x00, then 0x05, then 0x08 (addresses written in hexadecimal, here the same as 0, 5 and 8), '
-           'because the first instruction takes five bytes and the second three; at 0x08 the jump sets it back to 0x00, so the program loops.')
+caption = "The counter steps by each instruction's length, and the jump sends it back."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -91,6 +89,7 @@ how = '''<details class="fig-how">
           <li><b>Decode.</b> Work out the operation and its operands from the bit pattern (Fig 1.10 takes one apart).</li>
           <li><b>Execute.</b> The ALU or another unit does the work: an addition, a comparison, an address.</li>
           <li><b>Writeback.</b> Store the result and move the counter on by the instruction's length; a jump sets the counter instead.</li>
+          <li><b>The addresses.</b> Written in hexadecimal: 0x05 is 5 and 0x08 is 8. The first instruction takes five bytes and the second three.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-9">

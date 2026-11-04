@@ -77,8 +77,7 @@ flow(dT, 8, 4); flow(dP, 8, 4)
 a('</svg>')
 svg = '\n'.join(l for l in o if "large current" not in l)
 
-caption = ('A vacuum tube and a transistor do the same job: a small control signal (the thin wire) decides whether a much larger current '
-           '(the thick loop) flows. The transistor does it in a sliver of crystal, with no glass, no glowing filament and nothing to burn out.')
+caption = 'One small signal (the thin wire) switches a large current (the thick loop) in both.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

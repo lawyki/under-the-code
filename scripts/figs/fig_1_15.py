@@ -6,7 +6,7 @@
 # read again stops at L1 in four seconds. t=0 is after both reads: the copies are in place and both times stated.
 from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-W, H = 400, 372
+W, H = 400, 322
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
 LEVELS = [('registers', 96, '1 s'), ('L1 cache', 100, '4 s'), ('L2 cache', 120, '12 s'), ('L3 cache', 146, '40 s'),
           ('RAM', 190, '3 min'), ('SSD', 226, '2 days'), ('hard disk', 250, '6 months')]
@@ -24,7 +24,7 @@ a('<desc id="svgd-part1-16">Seven levels from registers to hard disk, each bar l
 
 a(text(20, 26, 'bigger', size=14, fill=MUTED))
 a(f'<path d="M 82 21 h 34 m -6 -5 l 6 5 l -6 5" fill="none" stroke="{MUTED}" stroke-width="1.4"/>')
-a(text(380, 26, 'if a register took 1 s', anchor='end', size=14, fill=MUTED))
+a(text(380, 26, 'a register = 1 s', anchor='end', size=14, fill=MUTED))
 for i, (name, w, t) in enumerate(LEVELS):
     y = RY(i)
     col = GOLD if i == 0 else BLUE if i <= 3 else INK if i == 4 else 'rgba(236,230,218,0.75)'
@@ -63,13 +63,10 @@ a(f'<g opacity="0">{vis([(D - 0.3, D - 0.01)])}' + ''.join(
 
 # the result
 YR = RY(7) + 22
-a(text(20, YR, 'first read', size=14, fill=MUTED)); a(text(20, YR + 20, 'RAM, 3 min', size=15, fill=INK))
-a(text(380, YR, 'read again', anchor='end', size=14, fill=MUTED)); a(text(380, YR + 20, 'L1 copy, 4 s', anchor='end', size=15, fill=GOLD))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Each level down is bigger and far slower: at a scale where a register answers in one second, a hard disk takes six months. '
-           'A cache keeps a copy of what was just read, so reading it again costs seconds, not minutes.')
+caption = 'Each level down is bigger and slower; the copy a cache keeps makes the repeat fast.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

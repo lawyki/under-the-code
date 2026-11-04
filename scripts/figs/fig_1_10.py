@@ -6,7 +6,7 @@
 # that name EAX. t=0 is the finished translation.
 from figlib import Timeline, text, splice, GOLD, BLUE, MUTED
 
-W, H = 400, 396
+W, H = 400, 340
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
 T = Timeline(9, shift=8.0)
 ROWS = [('mov eax,', ' 5', ['B8'], ['05', '00', '00', '00']),
@@ -20,8 +20,6 @@ a('<desc id="svgd-part1-11">The three-line loop of Fig 1.9, written on the left 
   'operand its number, one for one. Below, the first byte opened: B8 is 10111 000 in binary; the top five bits mean move a value '
   'into a register, the bottom three name the register, 000 for EAX. The value 5 is stored lowest byte first, as 05 00 00 00.</desc>')
 
-a(text(20, 28, 'you write', size=14, fill=MUTED))
-a(text(196, 28, 'the processor runs', size=14, fill=MUTED))
 for k, (op, arg, obytes, abytes) in enumerate(ROWS):
     y = 46 + k * 46
     t0 = 1.0 + k * 1.6
@@ -44,8 +42,7 @@ for k, (op, arg, obytes, abytes) in enumerate(ROWS):
       f'{T.anim("opacity", [(0.0, 0.0), (t0 - 0.4, 0.0), (t0 - 0.3, 1.0), (t0 + 1.2, 1.0), (t0 + 1.3, 0.0)])}</rect>')
 
 # ---------- B8, opened ----------
-a('<line x1="20" y1="196" x2="380" y2="196" stroke="rgba(255,255,255,0.12)"/>')
-a(text(20, 224, 'B8, bit by bit', size=14, fill=GOLD))
+a(text(20, 224, 'B8', size=14, fill=GOLD))
 BITS = '10111000'
 for j, b in enumerate(BITS):
     x = 58 + j * 36
@@ -53,16 +50,13 @@ for j, b in enumerate(BITS):
     a(f'<rect x="{x}" y="238" width="32" height="34" rx="4" fill="none" stroke="{col}" stroke-width="1.5"/>')
     a(text(x + 16, 261, b, anchor='middle', size=16, fill=col, ls='0', role='object'))
 a(f'<path d="M 58 282 v 6 H {58 + 5 * 36 - 4} v -6" fill="none" stroke="{GOLD}" stroke-width="1.4"/>')
-a(text(58 + (5 * 36 - 4) / 2, 308, 'move a value', anchor='middle', size=14, fill=GOLD))
-a(text(58 + (5 * 36 - 4) / 2, 325, 'into a register', anchor='middle', size=14, fill=GOLD))
+a(text(58 + (5 * 36 - 4) / 2, 308, 'operation', anchor='middle', size=14, fill=GOLD))
 a(f'<path d="M {58 + 5 * 36} 282 v 6 H {58 + 8 * 36 - 4} v -6" fill="none" stroke="{BLUE}" stroke-width="1.4"/>')
 a(text(58 + 5 * 36 + (3 * 36 - 4) / 2, 308, 'EAX', anchor='middle', size=14, fill=BLUE))
-a(text(200, 370, '05 00 00 00 is 5, lowest byte first', anchor='middle', size=14, fill=INK))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The assembler swaps each name for its fixed code, one for one: mov eax becomes B8, add eax becomes 83 C0, jmp becomes EB, '
-           'and each operand becomes its number. Inside B8, five bits name the operation and three name the register.')
+caption = "Each name becomes its code, one for one; B8's bits name the operation and the register."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

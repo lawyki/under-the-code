@@ -6,7 +6,7 @@
 # track) and the machine's state under it reads running or idle. The words are p1's: cards, not jobs or decks.
 from figlib import Timeline, text, splice, GOLD, BLUE, MUTED
 
-W, H = 400, 300
+W, H = 400, 252
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
 X = lambda m: 20 + 6 * m                      # minutes past 9:00 to x
 RUNS = [(0, 10, False), (18, 24, False), (30, 40, True), (46, 55, False)]     # idle 25 of the 60 minutes
@@ -38,7 +38,6 @@ for m, lab in ((0, '9:00'), (30, '9:30'), (60, '10:00')):
 a(text(20, 84, 'you', size=14, fill=INK))
 a(stack(X(0) + 34, 70, GOLD))
 a(f'<path d="M {X(0) + 66} 82 H {X(60) - 34}" stroke="rgba(255,255,255,0.4)" stroke-dasharray="3 5" stroke-width="1.5"/>')
-a(text(X(30), 104, 'waiting', anchor='middle', size=14, fill=MUTED))
 # the printout at 10:00
 a(f'<path d="M {X(60) - 28} 68 h 22 v 28 h -22 z" fill="none" stroke="{INK}" stroke-width="1.3"/>')
 for k in range(4): a(f'<line x1="{X(60) - 24}" y1="{74 + k * 6}" x2="{X(60) - 10}" y2="{74 + k * 6}" stroke="{INK}" stroke-opacity="0.6"/>')
@@ -68,21 +67,17 @@ idle_spans.append((TAU(prev), D - 0.01))
 idle_spans[-1] = (TAU(prev), TAU(60))
 run_spans[0] = (0.0, run_spans[0][1])
 held = (TAU(60), D - 0.01)
-a(f'<text data-role="object" x="20" y="250" font-family="DM Mono" font-size="15" fill="{GOLD}" opacity="0">{vis(run_spans)}machine running</text>')
-a(f'<text data-role="object" x="20" y="250" font-family="DM Mono" font-size="15" fill="{MUTED}" opacity="0">{vis(idle_spans)}machine idle: the next cards go in</text>')
-a(f'<text data-role="object" x="20" y="250" font-family="DM Mono" font-size="15" fill="{INK}" opacity="0">{vis([held])}idle 25 of the 60 minutes</text>')
-a(text(20, 280, 'an illustrative hour', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('An illustrative hour: your cards run for ten minutes of it, and between one person\'s cards and the next, while the next '
-           'stack was loaded, the most expensive machine in the building sat idle.')
+caption = 'One illustrative hour: your cards run ten minutes, and in the gaps the machine stands idle.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>A job.</b> A stack of punched cards, roughly one line of program per card, carried to the machine room.</li>
           <li><b>The queue.</b> An operator loaded the stacks one after another; each person's cards had the whole computer while they ran.</li>
           <li><b>The cost.</b> A bug meant new cards and another hour's wait, and the machine stood idle in the gaps.</li>
+          <li><b>The hour.</b> Four stacks of cards run for 35 minutes in all; for the other 25 the machine waits while the next stack is loaded.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-13">
