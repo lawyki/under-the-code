@@ -67,3 +67,5 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [ ] Owner decides: merges 1.3 with 1.4 and 2.7 with 2.8, cut 1.10, BR.3's caption to two sentences
 - [ ] Gate 1 in WebKit (not installed in this container)
 - [ ] Parts II to V: not started; only on the owner's word
+- [x] Owner's first look (2026-11-04): steps replace fullscreen and pause, lag cut, 1.3 and 1.4 redone, collisions cleared, summary lines cut, deployed (`UNDER.md` §4ah)
+- [ ] Owner's next look at Part I
