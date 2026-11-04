@@ -34,36 +34,50 @@
     run.addEventListener('click', e => { e.stopPropagation(); release(true); });
     bar.appendChild(run);
     svg.insertAdjacentElement('afterend', bar);
-    let current = -1;
+    let current = -1, glide = 0, enterT = 0, leaveT = 0;
     function hold() {
       if (card.dataset.userPaused === '1') return;
       card.dataset.userPaused = '1';
       card.classList.add('is-stepping');
-      svg.pauseAnimations();
+      svg.pauseAnimations();                 // frozen where it is: no jump
     }
+    // glide the figure's clock to a step instead of cutting to it (eased, at most 0.7 s)
     function show(i) {
       current = i;
-      svg.setCurrentTime(times[i]);
       steps.forEach((b, j) => b.setAttribute('aria-pressed', j === i ? 'true' : 'false'));
+      cancelAnimationFrame(glide);
+      const from = svg.getCurrentTime(), to = times[i];
+      const span = Math.min(0.7, 0.15 + Math.abs(to - from) * 0.12) * 1000;
+      if (reduce.matches || span < 20) { svg.setCurrentTime(to); return; }
+      const t0 = performance.now();
+      const tick = now => {
+        const f = Math.min(1, (now - t0) / span), e = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+        svg.setCurrentTime(from + (to - from) * e);
+        if (f < 1 && card.dataset.userPaused === '1') glide = requestAnimationFrame(tick);
+      };
+      glide = requestAnimationFrame(tick);
     }
     function release(force) {
       if (card.dataset.userPaused !== '1' && !force) return;
+      cancelAnimationFrame(glide);
       delete card.dataset.userPaused;
       card.classList.remove('is-stepping');
       steps.forEach(b => b.setAttribute('aria-pressed', 'false'));
       current = -1;
-      if (!reduce.matches || force) svg.unpauseAnimations();
+      if (!reduce.matches || force) svg.unpauseAnimations();   // resumes from the moment it was held
     }
-    // the step nearest the moment the reader caught it
-    function nearest() {
-      const now = svg.getCurrentTime();
-      let best = 0;
-      times.forEach((t, i) => { if (t <= now + 0.01) best = i; });
-      return best;
-    }
-    card.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { hold(); show(nearest()); } });
-    card.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') release(false); });
-    // a tap on the picture itself steps on
+    // a mouse that rests on the figure takes it; one that only passes over does not
+    card.addEventListener('pointerenter', e => {
+      if (e.pointerType !== 'mouse') return;
+      clearTimeout(leaveT);
+      enterT = setTimeout(hold, 140);
+    });
+    card.addEventListener('pointerleave', e => {
+      if (e.pointerType !== 'mouse') return;
+      clearTimeout(enterT);
+      leaveT = setTimeout(() => release(false), 220);
+    });
+    // a tap on the picture glides to the next step
     svg.addEventListener('click', () => { hold(); show((current + 1) % times.length); });
   });
 })();
@@ -303,6 +317,7 @@
       const svg = entry.target;
       const card = svg.closest('.diagram-card, .light-diagram');
       const forcePlay = card && card.classList.contains('is-fullscreen');
+      if (card) card.classList.toggle('fig-offscreen', !entry.isIntersecting);
       if ((entry.isIntersecting || forcePlay) && !readerPaused(svg)) {
         if (typeof svg.unpauseAnimations === 'function') svg.unpauseAnimations();
       } else {
@@ -310,8 +325,8 @@
       }
     });
   }, {
-    rootMargin: '300px 0px',
-    threshold: 0
+    rootMargin: '0px',
+    threshold: 0.05
   });
 
   figures.forEach(svg => io.observe(svg));
