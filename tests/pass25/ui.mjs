@@ -292,6 +292,7 @@ test('figure steps: no fullscreen or pause buttons; a step holds the figure, run
     await page.keyboard.press('Enter');
     t.eq(await page.evaluate(FIG_STATE, id), true, 'a step (keyboard): held');
     t.eq(await page.evaluate(id => document.querySelector('#' + id + ' .fig-steps button:first-child').getAttribute('aria-pressed'), id), 'true', 'the step is marked pressed');
+    await settle(page, 900);   // a step glides to its moment
     const want = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[0], id);
     const now = await page.evaluate(id => document.querySelector('#' + id + ' > svg').getCurrentTime(), id);
     t.check(Math.abs(now - want) < 0.05, 'the figure shows that step', `${now} vs ${want}`);
