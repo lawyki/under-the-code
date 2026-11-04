@@ -14,7 +14,7 @@ CX = lambda i: 48 + 60 * i                  # cell centres
 CY0, CY1 = 62, 114                          # cell top and bottom
 BUS, CPU_T = 124, 222
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-9 svgd-part1-9">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-9 svgd-part1-9"{T.steps([(0.3, 'start'), (4.2, 'load A'), (7.8, 'add B'), (11.5, 'store C')])}>')
 a('<title id="svgt-part1-9">Fig 1.8 · Von Neumann architecture · one memory, one bus</title>')
 a('<desc id="svgd-part1-9">One memory, a row of numbered cells, holds a three-instruction program in cells 0 to 2 (load A, add B, '
   'store C) and its data in cells 3 to 5 (A = 5, B = 3, C = 0). One bus joins it to the CPU. The program counter steps through '
@@ -92,7 +92,6 @@ a(text(324, CPU_T + 98, 'register', anchor='middle', size=14, fill=MUTED))
 trip('load A', GOLD, 0, 1.0); trip('5', BLUE, 3, 2.6)
 trip('add B', GOLD, 1, 4.6); trip('3', BLUE, 4, 6.2)
 trip('store C', GOLD, 2, 8.2); trip('8', BLUE, 5, 9.8, up=True)
-a(text(200, 384, 'code and data: one memory, one bus', anchor='middle', size=15, fill=GOLD))
 a('</svg>')
 svg = '\n'.join(o)
 

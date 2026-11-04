@@ -16,7 +16,7 @@ T.beat(3.4, 'current flows, the lamp lights')
 OFF = T.beat(8.2, 'the gate goes back to 0 V')
 
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-6 svgd-part1-6"{T.beats_attr()}>')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-6 svgd-part1-6"{T.steps([(0.6, "gate 0 V"), (5.0, "gate 1 V")])}>')
 a('<title id="svgt-part1-6">Fig 1.5 · Inside the switch · a field-effect transistor in cross-section</title>')
 a('<desc id="svgd-part1-6">The same transistor twice, cut open. A slab of p-type silicon holds two n-type wells, the source and the '
   'drain, full of free electrons; above the gap between them a gate sits on a thin insulating oxide, and a wire with a lamp and a '

@@ -53,7 +53,7 @@ def d(pts): return 'M ' + ' L '.join(f'{x:g} {yy:g}' for x, yy in pts)
 
 out = []
 o = out.append
-o(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-3 svgd-part1-3">')
+o(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-3 svgd-part1-3" data-beats="0 3 6" data-beat-names="press 1|press 2|press 3">')
 o('<title id="svgt-part1-3">Fig 1.2 · Enigma · one key, a different lamp every press</title>')
 o('<desc id="svgd-part1-3">The key A is pressed three times. Each press steps the fast rotor one position before the current flows, '
   'so the current takes a different path out through three rotors, turns in the reflector, and returns on another wire: '

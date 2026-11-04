@@ -8,14 +8,14 @@ from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
 W, H = 400, 372
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
-LEVELS = [('registers', 86, '1 s'), ('L1 cache', 100, '4 s'), ('L2 cache', 120, '12 s'), ('L3 cache', 146, '40 s'),
+LEVELS = [('registers', 96, '1 s'), ('L1 cache', 100, '4 s'), ('L2 cache', 120, '12 s'), ('L3 cache', 146, '40 s'),
           ('RAM', 190, '3 min'), ('SSD', 226, '2 days'), ('hard disk', 250, '6 months')]
 RY = lambda i: 44 + i * 38                    # row top
 BX = 22                                       # bars start
 D = 12.0
 T = Timeline(D, shift=8.0)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-16 svgd-part1-16">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-16 svgd-part1-16"{T.steps([(3.9, '1st read'), (5.6, 'copies'), (6.9, 'read again')])}>')
 a('<title id="svgt-part1-16">Fig 1.15 · The hierarchy of forgetting · bigger and slower at every step</title>')
 a('<desc id="svgd-part1-16">Seven levels from registers to hard disk, each bar longer (more capacity, in tenfold steps) and slower. If a '
   'register access took one second, L1 would take 4 seconds, L2 12, L3 40, RAM 3 minutes, an SSD 2 days and a hard disk 6 months. '

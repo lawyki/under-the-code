@@ -14,7 +14,7 @@ D, SWEEP = 11.0, 9.0                         # the hand takes 9 s for the hour, 
 T = Timeline(D, shift=SWEEP + 0.5)
 TAU = lambda m: 0.5 + m / 60 * SWEEP
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-14 svgd-part1-14">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-14 svgd-part1-14"{T.steps([(1.25, '9:05'), (2.75, '9:15'), (5.75, '9:35'), (10.0, '10:00')])}>')
 a('<title id="svgt-part1-14">Fig 1.13 · Running a program in 1955 · one job, one user, one machine</title>')
 a('<desc id="svgd-part1-14">An illustrative hour, 9:00 to 10:00. You hand in your stack of punched cards at 9:00 and wait. The machine '
   'runs one person\'s cards at a time: four stacks, yours from 9:30 to 9:40, with empty gaps between them, 25 minutes in all, while '
@@ -31,11 +31,11 @@ def stack(x, y, col, n=3):
 
 # the clock line
 for m, lab in ((0, '9:00'), (30, '9:30'), (60, '10:00')):
-    a(f'<line x1="{X(m)}" y1="40" x2="{X(m)}" y2="212" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" stroke-dasharray="2 4"/>')
+    a(f'<line x1="{X(m)}" y1="38" x2="{X(m)}" y2="48" stroke="rgba(255,255,255,0.5)" stroke-width="0.8" stroke-dasharray="2 4"/>')
     a(text(X(m), 30, lab, anchor='start' if m == 0 else 'end' if m == 60 else 'middle', size=14, fill=MUTED))
 
 # you
-a(text(20, 62, 'you', size=14, fill=INK))
+a(text(20, 84, 'you', size=14, fill=INK))
 a(stack(X(0) + 34, 70, GOLD))
 a(f'<path d="M {X(0) + 66} 82 H {X(60) - 34}" stroke="rgba(255,255,255,0.4)" stroke-dasharray="3 5" stroke-width="1.5"/>')
 a(text(X(30), 104, 'waiting', anchor='middle', size=14, fill=MUTED))
@@ -55,8 +55,7 @@ a(text(X(14), MY + 26, 'idle', anchor='middle', size=14, fill=MUTED))
 
 # the sweeping hand, and what the machine is doing under it
 a(f'<g>{T.translate([(0.0, 0), (0.5, 0), (0.5 + SWEEP, X(60) - X(0)), (D - 0.2, X(60) - X(0)), (D - 0.01, 0)], axis="x")}'
-  f'<line x1="{X(0)}" y1="44" x2="{X(0)}" y2="{MY + 44}" stroke="{GOLD}" stroke-width="2"/>'
-  f'<circle cx="{X(0)}" cy="44" r="3.5" fill="{GOLD}"/></g>')
+  f'<path d="M {X(0)} 50 l -6 10 h 12 z" fill="{GOLD}"/></g>')
 def vis(spans):
     pts = [(0.0, 0)]
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]

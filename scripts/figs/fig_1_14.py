@@ -12,7 +12,7 @@ INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
 T = Timeline(9, shift=0.0)
 WALL = 128
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-15 svgd-part1-15">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-15 svgd-part1-15"{T.steps([(1.0, 'reach'), (3.4, 'ask'), (4.8, 'checked'), (7.2, 'data back')])}>')
 a('<title id="svgt-part1-15">Fig 1.14 · Protection rings · user programs, the kernel, the hardware</title>')
 a('<desc id="svgd-part1-15">Three layers: programs on top, the kernel in the middle, the hardware below, with a wall between programs '
   'and kernel that has one door. Your program reaching straight for the disk is stopped at the wall by the CPU. The same request '
@@ -50,7 +50,7 @@ a(f'<path d="M 74 {WALL - 8} l 16 16 m 0 -16 l -16 16" stroke="{RED}" stroke-wid
 a(text(98, WALL + 19, 'blocked', size=14, fill=RED))
 # path 2: through the door, checked by the kernel, to the disk
 a(f'<path d="M {cx} 88 V 183 M {cx} 209 V {cy - 12}" stroke="{GOLD}" stroke-width="2.4"/>')
-a(text(cx + 14, WALL - 8, 'asks the kernel', size=14, fill=GOLD))
+a(text(cx + 30, WALL - 8, 'asks the kernel', size=14, fill=GOLD))
 a(f'<circle cx="{cx}" cy="196" r="13" fill="none" stroke="{GOLD}" stroke-width="2"/>')
 a(f'<path d="M {cx - 6} 196 l 4 5 l 8 -10" fill="none" stroke="{GOLD}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>')
 a(text(cx + 22, 201, 'checks first', size=14, fill=INK))

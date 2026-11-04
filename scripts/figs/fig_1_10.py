@@ -13,7 +13,7 @@ ROWS = [('mov eax,', ' 5', ['B8'], ['05', '00', '00', '00']),
         ('add eax,', ' 3', ['83', 'C0'], ['03']),
         ('jmp', ' 0x00', ['EB'], ['F6'])]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-11 svgd-part1-11">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-11 svgd-part1-11"{T.steps([(2.2, 'mov'), (3.8, 'add'), (6.6, 'jmp')])}>')
 a('<title id="svgt-part1-11">Fig 1.10 · From assembly to binary · one instruction decoded</title>')
 a('<desc id="svgd-part1-11">The three-line loop of Fig 1.9, written on the left and assembled on the right, one line at a time: mov eax, 5 '
   'becomes B8 05 00 00 00; add eax, 3 becomes 83 C0 03; jmp 0x00 becomes EB F6. Each operation name becomes its fixed code and each '

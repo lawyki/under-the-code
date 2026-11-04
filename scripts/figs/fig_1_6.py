@@ -16,7 +16,7 @@ X = lambda yr: X0 + (yr - 1971) / (2024 - 1971) * (X1 - X0)
 Y = lambda v: Y0 - (log10(v) - LO) / (HI - LO) * (Y0 - Y1)
 T = Timeline(10, shift=8.0)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-7 svgd-part1-7">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-7 svgd-part1-7"{T.steps([(1.3, "1971"), (3.6, "2000"), (7.0, "2024")])}>')
 a("<title id=\"svgt-part1-7\">Fig 1.6 · Moore's Law · transistors per chip, 1971 to 2024</title>")
 a('<desc id="svgd-part1-7">Transistors per chip from 1971 to 2024, on a chart where each gridline is ten times the one below, from a '
   'thousand at the bottom to a hundred billion at the top. A dashed line doubles every two years. The chips land on it one by one, '
@@ -30,14 +30,14 @@ for d in range(LO, HI + 1):
 a(text(X1, Y(1e3) - 6, '1 thousand', anchor='end', size=14, fill=MUTED))
 a(text(X1, Y(1e9) + 18, '1 billion', anchor='end', size=14, fill=MUTED))
 # the tenfold step, shown once with a bracket
-yb, yt = Y(1e4), Y(1e5)
+yb, yt = Y(1e5), Y(1e6)
 a(f'<path d="M {X1 - 4} {yb:.1f} h 8 M {X1} {yb:.1f} V {yt:.1f} M {X1 - 4} {yt:.1f} h 8" stroke="{INK}" stroke-width="1.4" fill="none"/>')
 a(text(X1 - 10, (yb + yt) / 2 + 5, 'each line ×10', anchor='end', size=14, fill=INK))
 
 # the doubling line, every two years from the 4004, clipped at the top
 yr_top = 1971 + (HI - log10(2300)) / (log10(2) / 2)
 a(f'<line x1="{X(1971):.1f}" y1="{Y(2300):.1f}" x2="{X(yr_top):.1f}" y2="{Y1}" stroke="{GOLD}" stroke-width="1.6" stroke-dasharray="5 5" opacity="0.85"/>')
-a(text(X(1993) + 12, Y(2300 * 2 ** ((1993 - 1971) / 2)) + 26, '×2 every 2 years', anchor='start', size=14, fill=GOLD))
+a(text(X(1997), (Y(1e4) + Y(1e5)) / 2 + 5, '×2 every 2 years', anchor='start', size=14, fill=GOLD))
 
 # the chips, in time order
 for k, (name, yr, n) in enumerate(CHIPS):
@@ -46,11 +46,9 @@ for k, (name, yr, n) in enumerate(CHIPS):
     fill = BLUE
     a(f'<circle cx="{X(yr):.1f}" cy="{Y(n):.1f}" r="5.5" fill="{fill}" opacity="0">'
       f'{T.anim("opacity", [(0.0, 0.0), (t0 - 0.01, 0.0), (t0, 1.0), (9.8, 1.0)])}</circle>')
-a(text(X(1971) + 10, Y(2300) + 20, '2,300', size=14, fill=INK))
-a(text(X(2024) + 12, Y(28e9) + 30, '28 billion', anchor='end', size=14, fill=INK))
 # the years
-a(text(X0, 316, '1971', anchor='start', size=14, fill=MUTED))
-a(text(X1, 316, '2024', anchor='end', size=14, fill=MUTED))
+a(text(X0, 316, '1971: 2,300', anchor='start', size=14, fill=INK))
+a(text(X1, 316, '2024: 28 billion', anchor='end', size=14, fill=INK))
 a('</svg>')
 svg = '\n'.join(o)
 

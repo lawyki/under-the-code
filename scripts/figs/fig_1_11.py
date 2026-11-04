@@ -13,7 +13,7 @@ SX = lambda s: 54 + s * 73                    # station centres
 SY, DY = 104, 196                             # station row, finished row
 STAGES = ['fetch', 'decode', 'execute', 'memory', 'writeback']
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-12 svgd-part1-12">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-12 svgd-part1-12"{T.steps([(1.6, 'cycle 1'), (3.6, 'cycle 3'), (5.6, 'cycle 5'), (10.6, 'cycle 9')])}>')
 a('<title id="svgt-part1-12">Fig 1.11 · Pipelined execution · five instructions, five stages</title>')
 a('<desc id="svgd-part1-12">Five stations in a row, like an assembly line: fetch, decode, execute, memory, writeback. Five numbered '
   'instructions step along it one station per cycle, each entering as the one ahead moves on, so by cycle 5 every station is busy. '

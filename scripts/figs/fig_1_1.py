@@ -11,7 +11,7 @@ CX = lambda i: 52 + i * 50 + 23            # cell centres, cells 0..5
 TY = 74                                    # tape top
 T = Timeline(9, shift=0.0)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-2 svgd-part1-2">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-2 svgd-part1-2" data-beats="0.9 2.1 3.3 4.6 6.5" data-beat-names="mark 1|mark 2|mark 3|blank|write">')
 a('<title id="svgt-part1-2">Fig 1.1 · A Turing machine · three marks become four</title>')
 a('<desc id="svgd-part1-2">A tape holds three tally marks. A head reads one cell at a time and follows two rules: on a mark, move '
   'one cell right; on an empty cell, write a mark and stop. It walks past the three marks, writes a fourth in the first empty '

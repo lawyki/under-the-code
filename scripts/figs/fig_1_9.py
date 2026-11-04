@@ -14,7 +14,7 @@ X = lambda i: 22 + i * 34 + 8 * (i >= 5) + 8 * (i >= 8)       # left edge of byt
 CT, CB = 52, 88                                                 # cell top, bottom
 SPANS = [(0, 5, 'mov eax, 5', '0x00'), (5, 3, 'add eax, 3', '0x05'), (8, 2, 'jmp 0x00', '0x08')]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-10 svgd-part1-10">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-10 svgd-part1-10"{T.steps([(1.5, 'mov'), (4.5, 'add'), (7.5, 'jmp')])}>')
 a('<title id="svgt-part1-10">Fig 1.9 · The instruction cycle · fetch, decode, execute, writeback</title>')
 a('<desc id="svgd-part1-10">Memory as a row of ten bytes holding a three-instruction loop: mov eax, 5 in five bytes at 0x00, add eax, 3 '
   'in three bytes at 0x05, jmp 0x00 in two bytes at 0x08. The program counter steps from 0x00 to 0x05 (+5) and to 0x08 (+3), '
@@ -46,8 +46,8 @@ def arc(d, head, spans, label=None, lx=0, ly=0):
         extra = f' opacity="0">{lit(op)}</path' if op else '/'
         a(f'<path d="{head}" fill="{stroke}" stroke="none"{extra}>')
     if label: a(text(lx, ly, label, anchor='middle', size=15, fill=INK))
-arc(f'M {c[0]} {CT - 4} Q {(c[0] + c[1]) / 2} {CT - 46} {c[1] - 3} {CT - 8}', f'M {c[1]} {CT - 3} l -9 -3 l 4 -7 z', [(2.25, 3.4)], '+5', (c[0] + c[1]) / 2, CT - 28)
-arc(f'M {c[1]} {CT - 4} Q {(c[1] + c[2]) / 2} {CT - 40} {c[2] - 3} {CT - 8}', f'M {c[2]} {CT - 3} l -9 -3 l 4 -7 z', [(5.25, 6.4)], '+3', (c[1] + c[2]) / 2, CT - 25)
+arc(f'M {c[0]} {CT - 4} Q {(c[0] + c[1]) / 2} {CT - 46} {c[1] - 3} {CT - 8}', f'M {c[1]} {CT - 3} l -9 -3 l 4 -7 z', [(2.25, 3.4)], '+5', (c[0] + c[1]) / 2, CT - 34)
+arc(f'M {c[1]} {CT - 4} Q {(c[1] + c[2]) / 2} {CT - 40} {c[2] - 3} {CT - 8}', f'M {c[2]} {CT - 3} l -9 -3 l 4 -7 z', [(5.25, 6.4)], '+3', (c[1] + c[2]) / 2, CT - 31)
 RY = CB + 56
 arc(f'M {c[2]} {RY} C {c[2]} {RY + 34} {c[0]} {RY + 34} {c[0]} {RY + 6}', f'M {c[0]} {RY} l -5 9 h 10 z', [(8.25, 9.0), (0.0, 0.4)])
 a(text((c[0] + c[2]) / 2, RY + 46, 'jump back', anchor='middle', size=14, fill=INK))
@@ -79,7 +79,6 @@ for j, s in enumerate(['fetch', 'decode', 'execute', 'writeback']):
     a(f'<rect x="{x}" y="{SY}" width="85" height="30" rx="15" fill="rgba(212,168,83,0.2)" stroke="{GOLD}" stroke-width="2.2" opacity="0">{lit(spans)}</rect>')
     a(text(x + 42.5, SY + 20, s, anchor='middle', size=14, fill=INK, ls='0'))
     if j < 3: a(f'<path d="M {x + 87} {SY + 15} l 4 0" stroke="{EDGE}"/>')
-a(text(200, 346, 'every instruction, the same four steps', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
