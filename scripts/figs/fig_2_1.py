@@ -66,7 +66,7 @@ a(text(213, 340, 'read', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Two wires, the same span and the same noise: binary reads all five of its bits right, ternary misreads its fourth digit.')
+caption = "The same noise lifts both fourth digits; only ternary's crosses a threshold."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

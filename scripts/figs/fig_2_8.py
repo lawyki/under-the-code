@@ -7,7 +7,7 @@
 from math import sin, cos, radians
 from figlib import Timeline, text, splice, GOLD, RED, MUTED
 
-W, H = 400, 420
+W, H = 400, 396
 INK = '#ece6da'
 CX, CY, R = 200, 196, 128
 D = 10.0
@@ -64,22 +64,19 @@ for k, (tau, u) in enumerate(seq):
       + text(CX, CY + 26, format(u, '08b'), anchor='middle', size=14, fill=MUTED, ls='0', role='object') + '</g>')
 
 # what each seam means
-a(f'<g opacity="0">{vis([(4.0, 6.0)])}' + text(200, 380, '+127 + 1 = −128', anchor='middle', size=17, fill=RED, ls='0')
-  + text(200, 402, 'overflow: a silent wrap', anchor='middle', size=14, fill=RED) + '</g>')
-a(f'<g opacity="0">{vis([(0.0, 1.5), (8.0, D)])}' + text(200, 380, '−1 + 1 = 0', anchor='middle', size=17, fill=GOLD, ls='0')
-  + text(200, 402, 'the carry dropped: correct', anchor='middle', size=14, fill=GOLD) + '</g>')
-a(f'<g opacity="0">{vis([(1.5, 4.0), (6.0, 8.0)])}' + text(200, 380, 'adding turns the pointer clockwise', anchor='middle', size=14, fill=MUTED) + '</g>')
+a(f'<g opacity="0">{vis([(4.0, 6.0)])}' + text(200, 380, '+127 + 1 = −128', anchor='middle', size=17, fill=RED, ls='0') + '</g>')
+a(f'<g opacity="0">{vis([(0.0, 1.5), (8.0, D)])}' + text(200, 380, '−1 + 1 = 0', anchor='middle', size=17, fill=GOLD, ls='0') + '</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The 256 values of a signed byte sit on a wheel, not a line: adding turns the pointer clockwise. At the bottom +127 + 1 '
-           'silently becomes −128; at the top −1 + 1 becomes 0, the same wrap that makes subtraction free in Fig 2.7.')
+caption = 'Adding turns the pointer: +127 + 1 wraps to −128, and −1 + 1 to 0.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>The slots.</b> 0 at the top, positives clockwise to +127, negatives counter-clockwise from −1 to −128. The pointer here jumps 16 values at a time; a +1 is one notch of 256.</li>
           <li><b>The seam.</b> 01111111 + 1 = 10000000: the top bit flips, and a top bit of 1 means negative. Nothing in the hardware complains.</li>
           <li><b>Every width.</b> 32- and 64-bit integers have the same wheel, with about 4 billion and 18 quintillion slots.</li>
+          <li><b>Two wraps.</b> At the bottom the wrap is a silent overflow; at the top it is the dropped carry that makes subtraction by addition correct.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-2-8">

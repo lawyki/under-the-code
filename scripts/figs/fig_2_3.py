@@ -67,8 +67,7 @@ for i, (x_, y_) in enumerate(CASES):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('AND, OR and NOT, the three gates any circuit can be built from, in their standard symbols (unchanged since the 1960s), '
-           'as the inputs step through every case.')
+caption = 'The three gates, as their inputs step through every case.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

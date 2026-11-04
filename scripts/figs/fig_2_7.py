@@ -55,11 +55,11 @@ nx = X0 - 48
 a(f'<g opacity="0">{vis([(t9, D)])}<g>{T.translate([(0.0, 0), (t9 + 0.4, 0), (t9 + 1.4, 50), (D - 0.01, 50)], axis="y")}'
   + text(nx, 180, '1', anchor='middle', size=18, fill=RED, ls='0', role='object') + '</g></g>')
 a(f'<g opacity="0">{vis([(t9, D)])}<path d="M {X0 + 4} 62 Q {nx} 70 {nx} 162" fill="none" stroke="{RED}" stroke-width="1.6" stroke-dasharray="3 3"/></g>')
-a(text(nx - 14, 262, 'ninth bit: no room, dropped', size=14, fill=RED))
+a(text(nx - 14, 262, 'ninth bit', size=14, fill=RED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = '7 − 5 on the ordinary adder: 7 plus 11111011, with the ninth bit dropped.'
+caption = '7 − 5 on the ordinary adder: 7 plus 11111011, the ninth bit dropped.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -25,8 +25,6 @@ a(f'<path d="M {X0} {YT - 8} V {YB} H {X1 + 8}" fill="none" stroke="{EDGE}" stro
 a(text(X0, YB + 22, '0 h', anchor='middle', size=14, fill=MUTED)); a(text(X1, YB + 22, '100 h', anchor='middle', size=14, fill=MUTED))
 a(text(X0 - 8, YB + 5, '0', anchor='end', size=14, fill=MUTED))
 a(text(X1 - 10, YT - 4, '0.34 s', anchor='end', size=16, fill=RED))
-a(text(X0 + 14, YT + 18, 'each tick', size=14, fill=MUTED, ls='0'))
-a(text(X0 + 14, YT + 36, '0.000000095 s short', size=14, fill=MUTED, ls='0'))
 # the growing error: a solid line drawn along the dashed one, and its tip
 grow = [(0.0, 0.0), (0.4, 0.0), (0.4 + RUN, 1.0), (D - 0.2, 1.0), (D - 0.01, 0.0)]
 L = ((X1 - X0) ** 2 + (YB - YT) ** 2) ** 0.5
@@ -37,7 +35,7 @@ a(f'<g>{T.translate([(t, (X1 - X0) * v) for t, v in grow], axis="x")}<g>{T.trans
 
 # the radar track: the Scud stays put, the search window drifts off it
 TY = 280
-a(text(20, 206, 'where the radar looked', size=14, fill=INK))
+a(text(20, 206, 'radar', size=14, fill=INK))
 a(f'<line x1="20" y1="{TY}" x2="380" y2="{TY}" stroke="{EDGE}" stroke-dasharray="3 5"/>')
 a(f'<circle cx="{SCUD}" cy="{TY}" r="8" fill="{RED}"/>')
 a(text(SCUD, TY + 42, 'the Scud', anchor='middle', size=14, fill=RED))
@@ -46,13 +44,11 @@ a(f'<g>{T.translate([(t, -DRIFT * v) for t, v in grow], axis="x")}'
   f'</g>')
 a(text(SCUD - DRIFT, TY + 42, 'window', anchor='middle', size=14, fill=BLUE))
 a(f'<path d="M {SCUD - DRIFT} {TY - 34} v -8 H {SCUD} v 8" fill="none" stroke="{INK}" stroke-width="1.4"/>')
-a(text((2 * SCUD - DRIFT) / 2, TY - 48, '0.34 s × 1,676 m/s ≈ 570 m', anchor='middle', size=14, fill=INK, ls='0'))
-a(text(200, 360, 'the window was empty: the battery never fired', anchor='middle', size=14, fill=GOLD, ls='0'))
+a(text((2 * SCUD - DRIFT) / 2, TY - 48, '≈ 570 m', anchor='middle', size=14, fill=INK, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('After 100 hours of tenth-of-a-second ticks the clock was 0.34 s behind, about 570 m at a Scud\'s speed, so the radar '
-           'looked in the wrong place and the battery never fired.')
+caption = "The clock's error grows tick by tick, and the radar's window drifts off the Scud."
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

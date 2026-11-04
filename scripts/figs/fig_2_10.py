@@ -34,18 +34,17 @@ def fields(sign, exp, mant, spans):
     a(f'<g opacity="0">{vis(spans)}{"".join(g)}</g>')
 a(text(20, 42, 'sign', size=14, fill=RED))
 a(text(118, 42, 'exponent', anchor='middle', size=14, fill=BLUE))
-a(text(283, 42, 'mantissa, 52 bits', anchor='middle', size=14, fill=GOLD))
+a(text(283, 42, 'mantissa', anchor='middle', size=14, fill=GOLD))
 fields('0', '10000000001', '1010000000000…', A)
 fields('1', '01111111110', '1000000000000…', B)
 
 # the rebuild, three lines
 def rows(sign_s, exp_n, shift_s, spans):
     g = [text(20, 122, 'sign', size=14, fill=MUTED), text(380, 122, sign_s, anchor='end', size=15, fill=RED, ls='0'),
-         text(20, 148, f'exponent {exp_n} − 1023', size=14, fill=MUTED, ls='0'), text(380, 148, shift_s, anchor='end', size=15, fill=BLUE, ls='0')]
+         text(20, 148, f'exponent {exp_n} − 1023', size=14, fill=MUTED, ls='0'), '']
     a(f'<g opacity="0">{vis(spans)}{"".join(g)}</g>')
 rows('+', 1025, 'point 2 right', A)
 rows('−', 1022, 'point 1 left', B)
-a(text(20, 172, '(stored 1023 too high, so it can be negative)', size=14, fill=MUTED, ls='0'))
 
 # the digits and the sliding binary point
 CW, CX0, CY = 46, 112, 206
@@ -71,8 +70,7 @@ a(f'<g opacity="0">{vis([(5.0, D)])}{"".join(res_b)}</g>')
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('6.5 and −0.75 as doubles, each read straight off its sign, exponent and mantissa bits: the exponent slides the binary '
-           'point of 1.mantissa, right for 6.5 and left for −0.75.')
+caption = 'The exponent slides the binary point: two places right for 6.5, one left for −0.75.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -71,7 +71,6 @@ for i, (x_, y_, c_) in enumerate(CASES):
     s = x_ + y_ + c_
     a(f'<text data-role="object" x="40" y="278" font-family="DM Mono" font-size="16" fill="{INK}" opacity="0">'
       f'{when([k == i for k in range(8)])}{x_} + {y_} + {c_} = {s >> 1}{s & 1}</text>')
-a(text(40, 298, 'A + B + carry in = carry out, sum', size=14, fill=MUTED, ls='0'))
 # every case
 SY = 330
 for i, (x_, y_, c_) in enumerate(CASES):
@@ -82,8 +81,7 @@ for i, (x_, y_, c_) in enumerate(CASES):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One full adder of Fig 2.5, opened: two half adders, each an XOR and an AND, joined by an OR, as the inputs step through '
-           'all eight cases.')
+caption = 'Two half adders and an OR, through all eight cases.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

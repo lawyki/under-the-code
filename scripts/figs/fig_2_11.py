@@ -38,7 +38,6 @@ a(text(314, 29, 'stored', size=14, fill=BLUE))
 for y, name in ((76, '0.1'), (142, '0.2')):
     line(y, name)
     exact(X0 + 1.6 * STEP, y); stored(X0 + 2 * STEP, y)
-    a(text(X0 + 2 * STEP + 14, y - 12, 'a little high', size=14, fill=MUTED))
 
 # 0.3: d0 at tick 1 (where 0.3 is stored), d1 at tick 2
 Y = 230
@@ -51,7 +50,7 @@ mid = (d0 + d1) / 2
 # the exact sum lands halfway, then rounds up to the next double
 a(f'<path d="M {mid} {Y - 28} V {Y - 10}" stroke="{GOLD}" stroke-width="2"/>')
 a(f'<circle cx="{mid}" cy="{Y}" r="5" fill="none" stroke="{GOLD}" stroke-width="2"/>')
-a(text(mid, Y - 34, 'sum: halfway', anchor='middle', size=14, fill=GOLD))
+a(text(mid, Y - 34, 'sum', anchor='middle', size=14, fill=GOLD))
 a(f'<path d="M {mid + 8} {Y + 14} Q {(mid + d1) / 2} {Y + 30} {d1 - 6} {Y + 14}" fill="none" stroke="{GOLD}" stroke-width="1.8"/>')
 a(f'<path d="M {d1 - 3} {Y + 10} l -8 1 l 4 7 z" fill="{GOLD}"/>')
 a(f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (2.0, 0.0), (2.6, 1.0), (7.8, 1.0), (7.99, 0.0)])}'
@@ -60,15 +59,13 @@ a(f'<g opacity="0">{T.anim("opacity", [(0.0, 0.0), (2.0, 0.0), (2.6, 1.0), (7.8,
 a(f'<g opacity="0">{T.anim("opacity", [(0.3, 0.0), (0.5, 1.0), (2.6, 1.0), (2.8, 0.0)])}'
   f'<g>{T.translate([(0.0, 0), (1.4, 0), (2.4, d1 - mid), (7.99, d1 - mid)], axis="x")}'
   f'<g>{T.translate([(0.0, -40), (0.5, -40), (1.2, 0), (7.99, 0)], axis="y")}<circle cx="{mid}" cy="{Y}" r="6" fill="{GOLD}"/></g></g></g>')
-a(text(d1 + 14, Y + 30, 'tie rounds up', size=14, fill=GOLD))
 a(f'<path d="M {d0 + 10} {Y + 46} H {d1 - 10}" stroke="{MUTED}"/>')
 a(text(mid, Y + 64, '5.6 × 10⁻¹⁷', anchor='middle', size=14, fill=MUTED, ls='0'))
 a(text(200, 318, '0.1 + 0.2 prints 0.30000000000000004', anchor='middle', size=14, fill=INK, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('The doubles near each value, drawn to scale: 0.1 and 0.2 are both stored a little high, so the true sum of the stored '
-           'values falls exactly halfway between two doubles, and the tie rounds up to the one above where 0.3 is stored.')
+caption = 'Both stored values run high, so their sum lands halfway and rounds up.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
