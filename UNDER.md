@@ -3879,6 +3879,31 @@ No anchor id removed. New paragraphs took the next unused number: `ch6-classes-p
 ### Open
 The owner calls in `docs/audit/owner-calls.md`, chapter by chapter, plus those already open from Passes 29 and 30.
 
+## 4ah. Pass 31, Part I figures (2026-11-04): designed and deployed
+
+Numbered 4ah because 4af (owner calls) and 4ag (Pass 31's pass log) live on the unmerged branches `owner-calls` and `figures-final`. Owner, 2026-11-04: "Can you ONLY do the part I design. Ill take a look and say if it's shit. Push live when you are done. touch only part I." Built on `main` (1.0-rc2), not on `figures-final`, so the undeployed owner calls stay out. Run under the handoff's "keep it cheap" (`docs/pass-31-handoff.md` §0 on `figures-final`): one author, no workflows, no blind testers, no formal gate; the owner's read is the judge.
+
+### Method
+Each figure from an empty script, from its ledger row (takeaway, content, knows, Phase 2 inputs) and the section prose before it, in the Part I plate rules (`docs/pass-31-plates.md` on `figures-final`): viewBox 400 wide, labels 14 units or more, shapes outlined, solid fill only for the one thing that is on, the step, light and flow verbs, t=0 the finished story. Every old script was found stale against the live HTML (the audit edited the cards directly), so no old script was re-run: captions and How-it-works strips start from the live HTML. `scripts/figs/figlib.py` takes the Pass 31 helpers from `figures-final` and `splice` now writes the repo's own `public/` (or `FIG_PUBLIC`, a scratch copy) instead of a fixed path.
+
+### Per chapter
+- **Ch1 (472a493).** 1.3 the tube and the 1947 point-contact transistor drawn as they look; 1.4 one lamp circuit twice; 1.5 the exemplar; 1.6 gridlines each ten times the last, said on the plate; 1.7 ENIAC's room in perspective and the M4 on a fingertip; 1.8 one memory row, one bus; 1.9 the real bytes of the loop, the counter stepping +5, +3 and the jump; 1.10 the assembler's one-for-one swap by colour, B8 opened; 1.11 the pipeline as an assembly line; 1.13 a clock hand over the hour; 1.14 the wall with one door; 1.15 a read dropping down the ladder.
+- **Ch2 (71442a1).** 2.1 two gauges, one span, the same noise; 2.3 the gates at work with a case strip (the tables are the prose's); 2.4 every gate a NAND; 2.6 the full adder wired, eight cases; 2.7 the ninth bit falling out; 2.8 the wheel, stepping round; 2.10 the binary point sliding by the exponent, the bias said on the plate; 2.11 three number lines to scale, the old first panel dropped; 2.12 the error and the radar window drifting together.
+- **Ch3 (4e382d7).** 3.1 three 32-bit bars, fields to scale; 3.2 Intel adds in place, ARM loads, adds, stores; 3.3 RAX's nested names, two writes (the sixteen-name panel dropped); 3.4 seven arguments to their places; 3.5 frames pushed and popped; 3.6 RIP and RSP from call to ret.
+- **The Bridge (c9db127).** BR.1 one gate checking CPL; BR.2 the syscall round trip; BR.3 the IDT on the owner-calls facts (no SYSCALL source, devices from 32), replacing the 720-wide kept original; BR.4 translate, check, fault, no TLB; BR.5 twelve accesses against four entries, least recently used out; BR.6 a tick each millisecond; BR.7 one store, four addresses; BR.8 the three DMA steps; BR.9 each feature taken away in turn.
+
+### Captions changed
+1.10, 1.13 (cards, not jobs or decks), 2.10, 2.11, 3.2 (all six ARM lines, the ledger's fix), BR.4 (no TLB); the 3.2, 3.3, 1.4, 1.15, 2.6, 2.8, 2.10, BR.4 and BR.5 strips adjusted to their pictures. Facts checked by computation: the x86, ARM64 and RISC-V encodings (B8 05 00 00 00, 83 C0 03, EB F6, 0x91001400, 0x00550513) and the float offsets of 0.1, 0.2, 0.3 and their sum.
+
+### A finding
+Seventeen figures that Pass 30 and the audit had recorded at zero failed the 11 px floor at 360 px (13-unit labels): 2.4, 2.6, 2.7, 2.8, 2.12, 3.3, 3.4, 3.5, BR.1, BR.2, BR.4 to BR.9. All are redrawn at 14 or more.
+
+### Checks
+Gate 1 (`tests/pass28/figs.mjs`, Chromium, 320 to 1440, still, `--motion`, `--fullscreen`) at zero on every changed figure; WebKit not installed in the container, so not run. `clip.mjs` on part-1: 0 findings plain (6 runs) and `--state=fs` (282 runs). pass25 (Chromium): parity 20/0, marks 53/0, ui 71/0, invariants 391/15, traces 125/2; untouched `main` fails the same 15 (the tab-stop baseline, in all five parts) and the same 2 (the container's flick and throttled-fling timing checks). Part I has one tab stop more (193 against 192): BR.3 now animates and has the pause control. Anchors byte-identical (292). check:dashes clean. Glossary rebuilt: 484 entries unchanged (TLB now found by curated backfill, since BR.4's strip no longer names it).
+
+### Not done, left to the owner
+The ledger's merges (1.3 with 1.4, 2.7 with 2.8) and cut candidate 1.10: every figure keeps its slot. BR.3's caption stays three sentences (the ledger reserves the cut for the owner). The open fact items on `figures-final` (handoff §3) were not worked. The held figures are untouched. Parts II to V: nothing.
+
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)
 
 - **The three laws (owner, 2026-10-10) override older entries here.** No em

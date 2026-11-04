@@ -59,3 +59,11 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [ ] Owner reads the book, from `docs/owner-read-map.md`
 - [ ] Punch-list pass after the read (STATE.md, WHAT'S NEXT item 6)
 - [ ] Domain move and passkeys (owner's timing, ~early November); retire `/api/auth/request` after 2026-11-15
+
+## Pass 31 · Part I figures (owner, 2026-11-04: "ONLY do the part I design ... Push live when you are done")
+
+- [x] Ch1, Ch2, Ch3 and the Bridge redrawn, one commit per chapter, Gate 1 at zero (Chromium), deployed (c9db127; `UNDER.md` §4ah)
+- [ ] Owner reads Part I's figures and names any that fail
+- [ ] Owner decides: merges 1.3 with 1.4 and 2.7 with 2.8, cut 1.10, BR.3's caption to two sentences
+- [ ] Gate 1 in WebKit (not installed in this container)
+- [ ] Parts II to V: not started; only on the owner's word
