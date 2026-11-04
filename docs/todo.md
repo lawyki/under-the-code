@@ -69,3 +69,5 @@ Decision page for everything below marked "decide": https://claude.ai/artifact/N
 - [ ] Parts II to V: not started; only on the owner's word
 - [x] Owner's first look (2026-11-04): steps replace fullscreen and pause, lag cut, 1.3 and 1.4 redone, collisions cleared, summary lines cut, deployed (`UNDER.md` §4ah)
 - [ ] Owner's next look at Part I
+- [x] Smoother hover and scroll; the visual-first law on Part I (`docs/figure-method.md`), deployed
+- [ ] Owner looks at Part I's figures; then the method goes to Parts II to V, on his word
