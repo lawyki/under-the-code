@@ -1,62 +1,83 @@
-# Fig BR.7 · The physical address space · devices among the RAM (Pass 28, law 3, conceptual pass). The bottom 4 GiB of a
-# typical PC's physical address map as a column (addresses vary by machine): RAM from 0, a PCIe window with the GPU's
-# frame buffer and a network card's registers, the IO-APIC at 0xFEC0_0000, the local APIC at 0xFEE0_0000, firmware
-# just below 4 GiB. The CPU issues the same store instruction four times with four addresses; each lands in a different
-# region and does a different thing. t=0 (shift): all four effects shown.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
+# Fig BR.7 · The physical address space (Pass 31, Part I, from an empty script). Job: function. Takeaway: devices sit at
+# addresses among the RAM, so an ordinary store can change the screen or set a timer.
+# Concept: the physical address map as one column, low addresses at the bottom, RAM and the device ranges stacked in it;
+# beside each range what a store there does, drawn as the thing it touches (a value kept, a pixel, a packet, a clock).
+# The CPU runs the same store four times with four addresses (Part I's step verb); the range it lands in gets the gold
+# frame and its effect lights. t=0 is the store into the local APIC, which sets the timer.
+from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-REG = [  # (label, address shown, height, colour)
-    ('firmware ROM', '0xFF00_0000', 46, MUTED), ('local APIC', '0xFEE0_0000', 46, GOLD), ('IO-APIC', '0xFEC0_0000', 46, GOLD),
-    ('network card', '0xD000_0000', 46, BLUE), ('GPU frame buffer', '0xC000_0000', 46, BLUE), ('RAM', '0x0000_0000', 70, GREEN)]
-STORES = [(5, '0x0040_1000', 'stored, nothing else', GREEN), (4, '0xC000_0400', 'a pixel changes', BLUE),
-          (3, '0xD000_0018', 'a packet is sent', BLUE), (1, '0xFEE0_0380', 'timer rate set', GOLD)]
-W = 400
-D = 12.0
-T = Timeline(D, shift=11.4)
-TS = [1.0 + 2.4 * k for k in range(4)]
-lit = lambda t0, t1: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-first = lambda t1: T.anim('opacity', [(0.0, 0.0), (0.3, 0.0), (0.305, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-win = lambda t0: T.anim('opacity', [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (D, 1.0)])
-pulse = lambda t0: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t0 + 0.6, 0.0), (D, 0.0)])
+W, H = 400, 384
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
+STEP = 2.5
+D = STEP * 4
+T = Timeline(D, shift=STEP * 3 + 1.2)
+def vis(spans):
+    pts = [(0.0, 0)]
+    for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
+    return T.discrete('opacity', sorted(pts))
+MX, MW = 20, 170
+REG = [('boot code', '0xFF00_0000', 66, 44), ('local APIC', '0xFEE0_0000', 110, 44), ('interrupt router', '0xFEC0_0000', 154, 44),
+       ('network card', '0xD000_0000', 198, 44), ('GPU frame buffer', '0xC000_0000', 242, 44), ('RAM', '0x0000_0000', 286, 64)]
+# the four stores: (region index, address, effect colour)
+STORES = [(5, '0x0040_1000', GREEN), (4, '0xC000_2a00', BLUE), (3, '0xD000_0010', BLUE), (1, '0xFEE0_0380', GOLD)]
 o = []; a = o.append
-# the CPU and its instruction
-a(f'<rect x="20" y="12" width="360" height="40" rx="6" fill="{BLUE}" fill-opacity="0.08" stroke="{BLUE}" stroke-opacity="0.6"/>')
-a(text(32, 37, 'CPU:', size=13, fill=BLUE, ls='0'))
-for k, (_, addr, _, _) in enumerate(STORES):
-    t1 = TS[k + 1] if k + 1 < len(STORES) else None
-    body = text(80, 37, f'mov [{addr}], x', size=13, fill='#fff', ls='0')
-    vis = (first(t1) if k == 0 else lit(TS[k], t1)) if t1 else win(TS[k])
-    a(f'<g opacity="0">{vis}{body}</g>')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49 svgd-part1-49">')
+a('<title id="svgt-part1-49">Fig BR.7 · The physical address space · devices among the RAM</title>')
+a('<desc id="svgd-part1-49">The lowest 4 GiB of a typical PC\'s physical address map, top to bottom: the read-only boot code (firmware) just '
+  'below 4 GiB, the local APIC at 0xFEE0_0000, the interrupt router (IO-APIC) that passes device interrupts to the cores at 0xFEC0_0000, '
+  'a network card\'s registers and the GPU\'s frame buffer in a PCIe window, and RAM from address zero. The CPU runs the same store '
+  'instruction four times with four addresses: into RAM, where the value is simply stored; into the frame buffer, where a pixel '
+  'changes; into the network card\'s registers, which sends a packet; and into the local APIC, which sets the timer\'s rate.</desc>')
+
+# the CPU and the store it runs
+a(f'<rect x="20" y="14" width="360" height="38" rx="7" fill="none" stroke="{BLUE}" stroke-width="1.5"/>')
+a(text(32, 38, 'CPU', size=15, fill=BLUE))
+for k, (_, addr, _) in enumerate(STORES):
+    a(f'<g opacity="0">{vis([(k * STEP, (k + 1) * STEP)])}' + text(84, 38, f'store x at {addr}', size=14, fill=INK, ls='0') + '</g>')
 # the map
-MX, MW = 20, 196
-y = 76
-ys = []
-for lab, addr, h, col in REG:
-    a(f'<rect x="{MX}" y="{y}" width="{MW}" height="{h - 4}" rx="4" fill="{col}" fill-opacity="0.12" stroke="{col}" stroke-opacity="0.6"/>')
-    a(text(MX + 10, y + h / 2 - 5, lab, size=13, fill='#fff', ls='0'))
-    a(text(MX + 10, y + h / 2 + 12, 'from ' + addr, size=13, fill=MUTED, ls='0'))
-    ys.append(y + (h - 4) / 2)
-    y += h
-a(text(MX, y + 16, 'low addresses at the bottom, not to scale', size=13, fill=MUTED, ls='0'))
-# effects beside the map; each store's token runs from the CPU down to its region
-EX = MX + MW + 14
-for k, (ri, addr, eff, col) in enumerate(STORES):
-    ry = ys[ri]
-    t0 = TS[k]
-    a(f'<g opacity="0">{win(t0 + 0.8)}{text(EX, ry + 5, eff, size=13, fill=col, ls="0")}</g>')
-    a(f'<g class="fx" opacity="0">{pulse(t0 + 0.8)}<rect x="{MX - 2}" y="{ry - REG[ri][2] / 2}" width="{MW + 4}" height="{REG[ri][2]}" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>')
-    mv = T.translate([(0.0, 0.0), (t0, 0.0), (t0 + 0.8, ry - 52), (D, ry - 52)], 'y')
-    a(f'<g class="fx" opacity="0">{lit(t0, t0 + 0.81)}<g>{mv}<circle cx="{MX + MW - 14}" cy="52" r="6" fill="#fff"/></g></g>')
-H = y + 28
-o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-49 svgd-part1-49">')
-o.insert(1, '<title id="svgt-part1-49">Fig BR.7 · The physical address space · devices among the RAM</title>')
-o.insert(2, '<desc id="svgd-part1-49">The lowest 4 GiB of a typical PC\'s physical address map, top to bottom: firmware ROM just below 4 GiB, the local APIC at 0xFEE0_0000, the IO-APIC at 0xFEC0_0000, a network card\'s registers and the GPU\'s frame buffer in a PCIe window, and RAM from address zero. '
-  'The CPU runs the same store instruction four times with four addresses: into RAM, where the value is simply stored; into the frame buffer, where a pixel changes; into the network card\'s registers, which sends a packet; and into the local APIC, which sets the timer\'s rate.</desc>')
+for name, addr, y, h in REG:
+    a(f'<rect x="{MX}" y="{y}" width="{MW}" height="{h - 4}" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
+    a(text(MX + 10, y + 18, name, size=14, fill=INK, ls='0'))
+    a(text(MX + 10, y + 34, 'from ' + addr, size=14, fill=MUTED, ls='0'))
+for k, (i, _, col) in enumerate(STORES):
+    _, _, y, h = REG[i]
+    a(f'<rect x="{MX - 2}" y="{y - 2}" width="{MW + 4}" height="{h}" rx="5" fill="none" stroke="{GOLD}" stroke-width="2.6" opacity="0">{vis([(k * STEP + 0.2, (k + 1) * STEP)])}</rect>')
+    a(f'<path d="M {MX + MW + 4} {y + h / 2 - 2} H {MX + MW + 18}" stroke="{GOLD}" stroke-width="2" opacity="0">{vis([(k * STEP + 0.2, (k + 1) * STEP)])}</path>')
+
+# what each store does, drawn as what it touches
+EX = 204
+def effect(i, k, draw, words, col):
+    _, _, y, h = REG[i]
+    cy = y + h / 2 - 2
+    on = vis([(k * STEP + 0.5, (k + 1) * STEP)])
+    a(f'<g>{T.discrete("opacity", [(0.0, 1), (k * STEP + 0.5, 0), ((k + 1) * STEP, 1)])}{draw(cy)}' + text(EX + 40, cy + 5, words, size=14, fill=MUTED, ls='0') + '</g>')
+    a(f'<g opacity="0">{on}{draw(cy, lit=True)}' + text(EX + 40, cy + 5, words, size=14, fill=col, ls='0') + '</g>')
+def clock(cy, lit=False):
+    c = GOLD
+    return (f'<circle cx="{EX + 14}" cy="{cy}" r="12" fill="none" stroke="{c}" stroke-width="{2.2 if lit else 1.5}"/>'
+            f'<path d="M {EX + 14} {cy} V {cy - 7} M {EX + 14} {cy} L {EX + 19} {cy + 3}" stroke="{c}" stroke-width="1.6" stroke-linecap="round"/>')
+def packet(cy, lit=False):
+    return (f'<rect x="{EX + 2}" y="{cy - 9}" width="22" height="18" rx="3" fill="none" stroke="{BLUE}" stroke-width="{2.2 if lit else 1.5}"/>'
+            f'<path d="M {EX + 26} {cy} h 6 m -3 -3 l 3 3 l -3 3" fill="none" stroke="{BLUE}" stroke-width="1.5"/>')
+def screen(cy, lit=False):
+    s = f'<rect x="{EX}" y="{cy - 11}" width="30" height="22" rx="2" fill="none" stroke="{BLUE}" stroke-width="{2.2 if lit else 1.5}"/>'
+    if lit: s += f'<rect x="{EX + 17}" y="{cy - 4}" width="6" height="6" fill="{GOLD}"/>'
+    return s
+def cell(cy, lit=False):
+    s = f'<rect x="{EX + 2}" y="{cy - 11}" width="26" height="22" rx="3" fill="none" stroke="{GREEN}" stroke-width="{2.2 if lit else 1.5}"/>'
+    if lit: s += text(EX + 15, cy + 5, 'x', anchor='middle', size=14, fill=GREEN, role='object')
+    return s
+effect(5, 0, cell, 'just stored', GREEN)
+effect(4, 1, screen, 'a pixel changes', BLUE)
+effect(3, 2, packet, 'a packet is sent', BLUE)
+effect(1, 3, clock, 'timer rate set', GOLD)
+a(text(20, 374, 'low addresses at the bottom, not to scale', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('To the CPU, physical memory is one flat range of addresses, but only some of it is RAM: other ranges belong to devices. '
-           'The same store instruction saves a value, changes a pixel, sends a packet or sets the timer, depending only on the address.')
+caption = ('To the CPU, the physical address space is one flat range, and only part of it is RAM: other ranges belong to devices, such '
+           'as the GPU\'s frame buffer (the screen\'s pixels) and the local APIC (each core\'s interrupt controller and timer). The same '
+           'store saves a value, changes a pixel or sets the timer, depending only on the address.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -68,11 +89,8 @@ how = '''<details class="fig-how">
 card = f'''<div class="diagram-card fig-v2" id="fig-br-7">
       <div class="diagram-label">Fig BR.7 · The physical address space · devices among the RAM</div>
       {svg}
-      <p id="CAPID" class="diagram-caption">{caption}</p>
+      <p id="chBridge-io-p3" class="diagram-caption">{caption}</p>
       {how}
     </div>'''
 if __name__ == '__main__':
-    import re
-    s = open('/Users/yki/Documents/github/atheric/under-the-code/public/part-1.html').read()
-    i = s.index('id="fig-br-7"'); cap = re.search(r'<p id="([^"]+)" class="diagram-caption"', s[i:]).group(1)
-    splice('part-1', 'fig-br-7', cap, card.replace('CAPID', cap))
+    splice('part-1', 'fig-br-7', 'chBridge-io-p3', card)

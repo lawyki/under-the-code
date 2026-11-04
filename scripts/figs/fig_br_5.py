@@ -1,115 +1,109 @@
-# Fig BR.5 · The TLB · why the walk usually doesn't happen (Pass 28, law 3, conceptual pass). Twelve accesses from a
-# program working through a few pages, through a four-entry TLB (least recently used is evicted), simulated here. Each
-# access names its virtual page; a hit returns the frame at once, a miss runs the four-level walk and loads the entry,
-# evicting the oldest. Hits and misses are counted as they happen: 10 hits, 2 misses here; real programs, with far longer
-# runs and larger TLBs, usually hit more than 99% of the time. t=0 (shift): all twelve done.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
+# Fig BR.5 · The TLB (Pass 31, Part I, from an empty script). Job: function. Takeaway: programs reuse the same few
+# pages, so the TLB answers most translations and the slow walk runs rarely.
+# Concept: a program's twelve memory accesses, by page, stepping in one at a time (Part I's step verb) against a TLB of
+# four entries. A page already there lights its entry (a hit, green) and is done at once; a new page (red) pays the
+# four-read walk, and its translation replaces the entry used longest ago, tagged "oldest". The count runs below.
+# t=0 is the end: ten hits, two misses.
+from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-PAGES = ['a3c4', 'a3c4', 'a3c5', 'a3c4', 'a3c5', 'a3c6', 'a3c4', 'a3c6', 'a3c7', 'a3c7', 'a3c4', 'a3c5']
-FRAME = {'a3c4': 'a200', 'a3c5': 'b731', 'a3c6': '0907', 'a3c7': 'c152'}       # a3c4 → a200 as in Fig BR.4
-INIT = ['a3c4', 'a3c5', 'b210', 'b211']
-# simulate LRU
-tlb, events, slots_hist = INIT[:], [], []
-last = {p: -1 for p in tlb}
-for i, p in enumerate(PAGES):
-    if p in tlb:
-        events.append(('hit', None)); last[p] = i
+W, H = 400, 332
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
+SEQ = [4, 4, 5, 4, 5, 6, 4, 6, 7, 7, 4, 5]
+FRAME = {2: '51e0', 3: '7d10', 4: 'a200', 5: 'b731', 6: '0907', 7: 'c152'}
+STEP, T0 = 0.75, 0.6
+D = T0 + STEP * len(SEQ) + 2.4
+T = Timeline(D, shift=D - 1.2)
+def vis(spans):
+    pts = [(0.0, 0)]
+    for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
+    return T.discrete('opacity', sorted(pts))
+# simulate the TLB, least recently used out
+slots = [2, 3, 4, 5]; last = {2: -4, 3: -3, 4: -2, 5: -1}
+hist = []                                   # per step: (page, hit, slot index, slots after, oldest index after)
+for k, p in enumerate(SEQ):
+    if p in slots:
+        i = slots.index(p); hit = True
     else:
-        victim = min(tlb, key=lambda q: last[q])
-        k = tlb.index(victim); tlb[k] = p; last[p] = i
-        events.append(('miss', k))
-    slots_hist.append(tlb[:])
-HITS = sum(e == 'hit' for e, _ in events)
-assert (HITS, len(PAGES) - HITS) == (10, 2)
-W = 400
-D = 14.0
-T = Timeline(D, shift=13.4)
-STEP, T0 = 0.9, 0.8
-ts = lambda i: T0 + STEP * i
-lit = lambda t0, t1: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-first = lambda t1: T.anim('opacity', [(0.0, 0.0), (0.3, 0.0), (0.305, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-win = lambda t0: T.anim('opacity', [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (D, 1.0)])
-pulse = lambda t0: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t0 + 0.6, 0.0), (D, 0.0)])
+        i = min(range(4), key=lambda j: last[slots[j]]); slots[i] = p; hit = False
+    last[p] = k
+    oldest = min(range(4), key=lambda j: last[slots[j]])
+    hist.append((p, hit, i, list(slots), oldest))
 o = []; a = o.append
-# the access stream
-a(text(20, 22, 'virtual pages the program touches', size=13, fill=MUTED, ls='0'))
-CW = 30
-for i, p in enumerate(PAGES):
-    x = 20 + i * CW
-    hit = events[i][0] == 'hit'
-    a(f'<rect x="{x}" y="32" width="{CW - 4}" height="26" rx="4" fill="none" stroke="{BLUE}" stroke-opacity="0.5"/>')
-    a(text(x + (CW - 4) / 2, 50, p[-1], anchor='middle', size=13, fill='#fff', ls='0'))
-    mark = f'<rect x="{x}" y="62" width="{CW - 4}" height="6" rx="2" fill="{GREEN if hit else RED}"/>'
-    a(f'<g opacity="0">{win(ts(i))}{mark}</g>')
-    a(f'<g class="fx" opacity="0">{lit(ts(i), ts(i) + STEP)}<rect x="{x - 2}" y="30" width="{CW}" height="30" rx="5" fill="none" stroke="#fff" stroke-width="2"/></g>')
-a(text(20, 88, 'page a3c? (last digit shown)', size=13, fill=MUTED, ls='0'))
-# the TLB
-TY = 112
-a(f'<rect x="20" y="{TY}" width="360" height="152" rx="6" fill="{GOLD}" fill-opacity="0.06" stroke="{GOLD}" stroke-opacity="0.7"/>')
-a(text(32, TY + 22, 'TLB · four entries', size=13, fill=GOLD, ls='0'))
-SY = lambda k: TY + 34 + k * 28
-for k in range(4):
-    a(f'<rect x="32" y="{SY(k)}" width="200" height="24" rx="4" fill="none" stroke="{MUTED}" stroke-opacity="0.6"/>')
-    # value over time: before the first access, then after each access
-    seq = [INIT[k]] + [h[k] for h in slots_hist]
-    spans, cur, start = [], seq[0], 0.31
-    for i in range(1, len(seq)):
-        if seq[i] != cur:
-            spans.append((cur, start, ts(i - 1))); cur, start = seq[i], ts(i - 1)
-    spans.append((cur, start, None))
-    for p, t0, t1 in spans:
-        lab = f'{p} → {FRAME.get(p, "51e" + p[-1])}'
-        body = text(42, SY(k) + 17, lab, size=13, fill='#fff', ls='0')
-        vis = win(t0) if t1 is None else (first(t1) if t0 < 0.5 else lit(t0, t1))
-        a(f'<g opacity="0">{vis}{body}</g>')
-for i, (e, k) in enumerate(events):
-    if e == 'miss':
-        a(f'<g class="fx" opacity="0">{pulse(ts(i))}<rect x="30" y="{SY(k) - 2}" width="204" height="28" rx="5" fill="none" stroke="{RED}" stroke-width="2"/></g>')
-# the walk, lit on each miss
-a(f'<rect x="250" y="{SY(0)}" width="118" height="108" rx="5" fill="none" stroke="{MUTED}" stroke-opacity="0.5" stroke-dasharray="4 3"/>')
-a(text(309, SY(0) + 22, 'page-table', anchor='middle', size=13, fill=MUTED, ls='0'))
-a(text(309, SY(0) + 40, 'walk', anchor='middle', size=13, fill=MUTED, ls='0'))
-a(text(309, SY(0) + 70, '4 extra', anchor='middle', size=13, fill=MUTED, ls='0'))
-a(text(309, SY(0) + 88, 'memory reads', anchor='middle', size=13, fill=MUTED, ls='0'))
-for i, (e, k) in enumerate(events):
-    if e == 'miss':
-        a(f'<g class="fx" opacity="0">{lit(ts(i), ts(i) + 0.7)}<rect x="250" y="{SY(0)}" width="118" height="108" rx="5" fill="{RED}" fill-opacity="0.18" stroke="{RED}" stroke-width="2"/></g>')
-# the tally
-RY = TY + 182
-h = m = 0
-for i, (e, _) in enumerate(events):
-    h += e == 'hit'; m += e == 'miss'
-    t1 = ts(i + 1) if i + 1 < len(events) else None
-    body = text(20, RY, f'hits {h}', size=13, fill=GREEN, ls='0') + text(120, RY, f'misses {m}', size=13, fill=RED, ls='0')
-    vis = win(ts(i)) if t1 is None else lit(ts(i), t1)
-    a(f'<g opacity="0">{vis}{body}</g>')
-a(text(20, RY + 22, 'real programs: well over 99% hits', size=13, fill=MUTED, ls='0'))
-H = RY + 34
-o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47">')
-o.insert(1, '<title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn\'t happen</title>')
-o.insert(2, '<desc id="svgd-part1-47">Twelve memory accesses from a program working through a few pages, run through a four-entry TLB. Most name a page the TLB already holds and are translated at once. '
-  'Two name a page it does not hold: each of those runs the page-table walk, four extra memory reads, and loads the translation into the TLB, replacing the entry used longest ago. The count ends at ten hits and two misses; real programs usually hit well over 99% of the time.</desc>')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-47 svgd-part1-47">')
+a('<title id="svgt-part1-47">Fig BR.5 · The TLB · why the walk usually doesn\'t happen</title>')
+a('<desc id="svgd-part1-47">A program\'s twelve memory accesses, by page (a3c4, a3c4, a3c5, a3c4, a3c5, a3c6, a3c4, a3c6, a3c7, a3c7, a3c4, '
+  'a3c5), against a TLB of four entries holding recent page translations. A page already in the TLB is a hit, answered at once. A new '
+  'page is a miss: the MMU pays the four-read page-table walk, and the new translation replaces the entry used longest ago. Ten hits, '
+  'two misses; real programs reach well over 99% hits.</desc>')
+
+# the accesses
+a(text(20, 26, 'pages the program touches', size=14, fill=MUTED))
+for k, p in enumerate(SEQ):
+    x = 20 + k * 30
+    _, hit, _, _, _ = hist[k]
+    t = T0 + k * STEP
+    a(f'<rect x="{x}" y="36" width="26" height="30" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
+    a(text(x + 13, 56, str(p), anchor='middle', size=15, fill=INK, ls='0', role='object'))
+    a(f'<g opacity="0">{vis([(t + 0.3, D - 0.2)])}<rect x="{x}" y="70" width="26" height="5" rx="2" fill="{GREEN if hit else RED}"/></g>')
+a(text(20, 96, 'a3c? (the last digit shown)', size=14, fill=MUTED, ls='0'))
+# the current access: a gold frame stepping along
+xs = [(0.0, 0)] + [p for k in range(len(SEQ)) for p in ((T0 + k * STEP, k * 30), (T0 + k * STEP + 0.6, k * 30))] + [(D - 0.01, (len(SEQ) - 1) * 30)]
+a(f'<g opacity="0">{vis([(T0, D - 0.2)])}<g>{T.translate(xs, axis="x")}<rect x="17" y="33" width="32" height="36" rx="6" fill="none" stroke="{GOLD}" stroke-width="2.4"/></g></g>')
+
+# the TLB: four entries
+a(f'<rect x="20" y="112" width="218" height="176" rx="8" fill="none" stroke="{GOLD}" stroke-width="1.5"/>')
+a(text(34, 134, 'TLB · four entries', size=14, fill=GOLD))
+SY = lambda i: 146 + i * 34
+def spans_for(pred):
+    out, start = [], None
+    for k in range(len(SEQ) + 1):
+        on = pred(k)
+        t = 0.0 if k == 0 else T0 + (k - 1) * STEP + 0.35
+        if on and start is None: start = t
+        if not on and start is not None: out.append((start, t)); start = None
+    if start is not None: out.append((start, D))
+    return out
+init = [2, 3, 4, 5]
+for i in range(4):
+    a(f'<rect x="32" y="{SY(i)}" width="194" height="28" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
+    for p in FRAME:
+        sp = spans_for(lambda k, p=p, i=i: (init if k == 0 else hist[k - 1][3])[i] == p)
+        if sp:
+            a(f'<g opacity="0">{vis(sp)}' + text(42, SY(i) + 19, f'a3c{p} → {FRAME[p]}', size=14, fill=INK, ls='0', role='object') + '</g>')
+    # a hit lights the entry
+    hits = [(T0 + k * STEP + 0.3, T0 + k * STEP + 0.7) for k, (p, hit, j, _, _) in enumerate(hist) if hit and j == i]
+    a(f'<rect x="32" y="{SY(i)}" width="194" height="28" rx="4" fill="none" stroke="{GREEN}" stroke-width="2.4" opacity="0">{vis(hits)}</rect>')
+    # the entry used longest ago
+    olds = spans_for(lambda k, i=i: (0 if k == 0 else hist[k - 1][4]) == i)
+    a(f'<g opacity="0">{vis(olds)}' + text(220, SY(i) + 19, 'oldest', anchor='end', size=14, fill=MUTED, ls='0') + '</g>')
+# the walk, paid only on a miss
+a(f'<rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
+a(text(316, 172, 'page-table', anchor='middle', size=14, fill=INK))
+a(text(316, 190, 'walk', anchor='middle', size=14, fill=INK))
+a(text(316, 220, '4 more reads', anchor='middle', size=14, fill=MUTED))
+miss = [(T0 + k * STEP + 0.1, T0 + k * STEP + 0.7) for k, (_, hit, _, _, _) in enumerate(hist) if not hit]
+a(f'<rect x="252" y="146" width="128" height="96" rx="8" fill="none" stroke="{RED}" stroke-width="2.4" opacity="0">{vis(miss)}</rect>')
+# the count
+nh = sum(1 for h in hist if h[1]); nm = len(hist) - nh
+a(text(252, 268, f'hits {nh}', size=15, fill=GREEN)); a(text(252, 290, f'misses {nm}', size=15, fill=RED))
+a(text(20, 318, 'real programs: well over 99% hits', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Programs touch the same few pages again and again, so the TLB, a small cache of recent translations, can answer most accesses at once. '
-           'Only a miss pays for the four-read walk, and then the new translation replaces the entry used longest ago.')
+caption = ('Programs touch the same few pages again and again, so the TLB can answer most accesses at once. Only a miss pays for the '
+           'four-read walk, and its translation then replaces the entry used longest ago.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Sizes.</b> From 64 entries to a few thousand per core, in one or two levels; one entry can also cover a 2 MiB or 1 GiB huge page.</li>
-          <li><b>Keeping it true.</b> When the kernel changes a page-table entry it must drop the stale translation (<code>INVLPG</code> on x86), on every core that might hold it.</li>
-          <li><b>Switching processes.</b> Each process has its own tables; tagging entries with an address-space ID (PCID on x86) lets the TLB keep them through a switch.</li>
+          <li><b>Tags.</b> On x86 the address-space tag is the PCID, so a switch of <code>CR3</code> need not empty the TLB.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-5">
       <div class="diagram-label">Fig BR.5 · The TLB · why the walk usually doesn't happen</div>
       {svg}
-      <p id="CAPID" class="diagram-caption">{caption}</p>
+      <p id="chBridge-mmu-p6" class="diagram-caption">{caption}</p>
       {how}
     </div>'''
 if __name__ == '__main__':
-    import re
-    s = open('/Users/yki/Documents/github/atheric/under-the-code/public/part-1.html').read()
-    i = s.index('id="fig-br-5"'); cap = re.search(r'<p id="([^"]+)" class="diagram-caption"', s[i:]).group(1)
-    splice('part-1', 'fig-br-5', cap, card.replace('CAPID', cap))
+    splice('part-1', 'fig-br-5', 'chBridge-mmu-p6', card)

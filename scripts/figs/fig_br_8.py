@@ -1,83 +1,88 @@
-# Fig BR.8 · Direct memory access · the device writes RAM by itself (Pass 28, law 3, conceptual pass). One disk read.
-# 1: the kernel writes a small command into the SSD's registers: read these blocks into the buffer at 0x4a20_0000.
-# 2: the SSD streams the data straight into RAM, filling the buffer block by block, while the CPU runs another process.
-# 3: the SSD raises an interrupt; the kernel finishes the request and wakes the process that asked. The CPU never touches
-# the data. t=0 (shift): the buffer full, the waiting process woken.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, GREEN, RED, MUTED
+# Fig BR.8 · Direct memory access (Pass 31, Part I, from an empty script). Job: function. Takeaway: the device copies data
+# into RAM by itself, so the CPU runs other work until an interrupt says done.
+# Concept: CPU, SSD and RAM, and the read in its three steps, each lit as it happens (Part I's light verb): the kernel
+# puts a command in the queue in RAM and rings the SSD's doorbell; the SSD streams the data into the buffer block by block
+# by itself (flow) while the CPU runs process B; the SSD raises an interrupt and process A is woken. t=0 is the end.
+from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-W = 400
-D = 11.0
+W, H = 400, 340
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
+D = 12.0
 T = Timeline(D, shift=10.4)
-lit = lambda t0, t1: T.anim('opacity', [(0.0, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-first = lambda t1: T.anim('opacity', [(0.0, 0.0), (0.3, 0.0), (0.305, 1.0), (t1 - 0.008, 1.0), (t1 - 0.005, 0.0), (D, 0.0)])
-win = lambda t0: T.anim('opacity', [(0.0, 1.0), (0.3, 1.0), (0.305, 0.0), (t0 - 0.002, 0.0), (t0, 1.0), (D, 1.0)])
-TC, TS0, TS1, TI = 0.8, 2.2, 7.0, 7.6
-NB = 8
+def vis(spans):
+    pts = [(0.0, 0)]
+    for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
+    return T.discrete('opacity', sorted(pts))
+S1, S2, S3 = (0.4, 2.4), (2.6, 7.4), (7.6, D)
 o = []; a = o.append
-def box(x, y, w, h, col):
-    a(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" fill="{col}" fill-opacity="0.08" stroke="{col}" stroke-opacity="0.6"/>')
-box(20, 14, 170, 70, BLUE)
-a(text(32, 36, 'CPU', size=13, fill=BLUE, ls='0'))
-for t0, t1, s, col in ((0.31, TC, 'process A asks', MUTED), (TC, TS0, 'kernel: doorbell', GOLD), (TS0, TI, 'runs process B', BLUE),
-                       (TI, TI + 1.2, 'IRQ: kernel done', GOLD), (TI + 1.2, None, 'A woken', GREEN)):
-    vis = first(t1) if t0 < 0.5 else (win(t0) if t1 is None else lit(t0, t1))
-    a(f'<g opacity="0">{vis}{text(32, 62, s, size=13, fill=col, ls="0")}</g>')
-box(210, 14, 170, 70, GOLD)
-a(text(222, 36, 'NVMe SSD', size=13, fill=GOLD, ls='0'))
-a(f'<g opacity="0">{lit(TC + 0.6, TI)}{text(222, 62, "reading blocks", size=13, fill="#fff", ls="0")}</g>')
-a(f'<g opacity="0">{win(TI)}{text(222, 62, "done", size=13, fill="#fff", ls="0")}</g>')
-# RAM buffer
-RY = 120
-box(20, RY, 360, 74, GREEN)
-a(text(32, RY + 22, 'RAM: buffer at 0x4a20_0000', size=13, fill=GREEN, ls='0'))
-a(f'<rect x="250" y="{RY + 7}" width="118" height="22" rx="4" fill="none" stroke="{GOLD}" stroke-opacity="0.7"/>')  # the queue, its own small box
-a(text(309, RY + 22, 'command queue', anchor='middle', size=13, fill=GOLD, ls='0'))
-BW = (336 - (NB - 1) * 4) / NB
-for b in range(NB):
-    x = 32 + b * (BW + 4)
-    a(f'<rect x="{x:.1f}" y="{RY + 34}" width="{BW:.1f}" height="28" rx="3" fill="none" stroke="{GREEN}" stroke-opacity="0.5"/>')
-    tb = TS0 + (TS1 - TS0) * (b + 1) / NB
-    a(f'<g opacity="0">{win(tb)}<rect x="{x:.1f}" y="{RY + 34}" width="{BW:.1f}" height="28" rx="3" fill="{GREEN}" fill-opacity="0.75"/></g>')
-# the three movements
-def fly(x0, y0, x1, y1, t0, t1, col):
-    a(f'<g class="fx" opacity="0">{lit(t0, t1 + 0.01)}<g>{T.translate([(0.0, 0.0), (t0, 0.0), (t1, x1 - x0), (D, x1 - x0)], "x")}<g>{T.translate([(0.0, 0.0), (t0, 0.0), (t1, y1 - y0), (D, y1 - y0)], "y")}<circle cx="{x0}" cy="{y0}" r="6" fill="{col}"/></g></g></g>')
-fly(190, 49, 210, 49, TC, TC + 0.6, GOLD)                      # 1: command
-for b in range(NB):                                             # 2: data, block by block
-    t0 = TS0 + (TS1 - TS0) * b / NB
-    x = 32 + b * (BW + 4) + BW / 2
-    fly(295, 84, x, RY + 48, t0, t0 + (TS1 - TS0) / NB, GREEN)
-fly(210, 70, 190, 70, TI, TI + 0.6, RED)                        # 3: interrupt
-LY = RY + 100
-STEPS = [('1', 'command queued, doorbell rung', GOLD, TC), ('2', 'the SSD fills RAM on its own', GREEN, TS0), ('3', 'an interrupt says done', RED, TI)]
-for k, (n, s, col, t0) in enumerate(STEPS):
-    body = text(20, LY + k * 22, f'{n}  {s}', size=13, fill=col, ls='0')
-    a(f'<g opacity="0.3">{body}</g><g opacity="0">{win(t0)}{body}</g>')
-H = LY + 2 * 22 + 14
-o.insert(0, f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">')
-o.insert(1, '<title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>')
-o.insert(2, '<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM (read these blocks into the buffer at 0x4a20_0000) and rings the SSD\'s doorbell register. '
-  'The SSD then streams the data straight into RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the kernel completes the request and wakes process A. The CPU never copies the data during the transfer.</desc>')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-50 svgd-part1-50">')
+a('<title id="svgt-part1-50">Fig BR.8 · Direct memory access · the device writes RAM by itself</title>')
+a('<desc id="svgd-part1-50">A disk read by direct memory access. Process A asks for data; the kernel puts a small command in a queue in RAM '
+  '(read these blocks into the buffer at 0x4a20_0000) and rings the SSD\'s doorbell register. The SSD then streams the data straight into '
+  'RAM, filling the buffer block by block, while the CPU runs process B. When the transfer is finished the SSD raises an interrupt, the '
+  'kernel completes the request and wakes process A. The CPU never copies the data during the transfer.</desc>')
+
+# CPU and SSD
+a(f'<rect x="20" y="16" width="164" height="62" rx="7" fill="none" stroke="{BLUE}" stroke-width="1.5"/>')
+a(text(32, 38, 'CPU', size=15, fill=BLUE))
+a(f'<g opacity="0">{vis([S1])}' + text(32, 62, 'kernel: queue it', size=14, fill=GOLD, ls='0') + '</g>')
+a(f'<g opacity="0">{vis([S2])}' + text(32, 62, 'B runs', size=14, fill=GREEN, ls='0') + '</g>')
+a(f'<g opacity="0">{vis([S3, (0.0, 0.4)])}' + text(32, 62, 'A woken', size=14, fill=BLUE, ls='0') + '</g>')
+a(f'<rect x="216" y="16" width="164" height="62" rx="7" fill="none" stroke="{GOLD}" stroke-width="1.5"/>')
+a(text(228, 38, 'NVMe SSD', size=15, fill=GOLD))
+# the doorbell on the SSD, rung in step 1
+bx, by = 352, 50
+a(f'<path d="M {bx - 9} {by + 8} Q {bx - 9} {by - 10} {bx} {by - 10} Q {bx + 9} {by - 10} {bx + 9} {by + 8} Z M {bx - 3} {by + 11} h 6" fill="none" stroke="{GOLD}" stroke-width="1.6"/>')
+a(f'<g opacity="0">{vis([(1.6, 2.6)])}<path d="M {bx - 16} {by - 10} l -5 -4 M {bx + 16} {by - 10} l 5 -4 M {bx - 18} {by} h -6 M {bx + 18} {by} h 6" stroke="{GOLD}" stroke-width="1.8" stroke-linecap="round"/></g>')
+a(text(228, 62, 'doorbell', size=14, fill=MUTED))
+
+# RAM: the command queue and the buffer
+a(f'<rect x="20" y="110" width="360" height="104" rx="8" fill="none" stroke="{GREEN}" stroke-width="1.5"/>')
+a(text(32, 132, 'RAM', size=15, fill=GREEN))
+a(f'<rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="{EDGE}" stroke-width="1.4"/>')
+a(text(300, 137, 'command queue', anchor='middle', size=14, fill=MUTED))
+a(f'<rect x="230" y="118" width="140" height="28" rx="5" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{vis([(1.2, D)])}</rect>')
+a(text(32, 162, 'buffer at 0x4a20_0000', size=14, fill=INK, ls='0'))
+for k in range(8):
+    x = 32 + k * 43
+    t = 3.0 + k * 0.5
+    a(f'<rect x="{x}" y="172" width="38" height="30" rx="4" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
+    a(f'<rect x="{x + 3}" y="175" width="32" height="24" rx="3" fill="{GREEN}" opacity="0">{vis([(t + 0.4, D), (0.0, 0.4)])}</rect>')
+    # each block travels from the SSD down into the buffer
+    dx, dy = x + 19 - 300, 187 - 78
+    a(f'<g opacity="0">{vis([(t, t + 0.45)])}<g>{T.translate([(0.0, 0), (t, 0), (t + 0.4, dx), (D - 0.01, dx)], axis="x")}'
+      f'<g>{T.translate([(0.0, 0), (t, 0), (t + 0.4, dy), (D - 0.01, dy)], axis="y")}<rect x="290" y="70" width="20" height="16" rx="3" fill="{GREEN}"/></g></g></g>')
+# step 1: the command travels from the CPU to the queue
+a(f'<g opacity="0">{vis([(0.4, 1.3)])}<g>{T.translate([(0.0, 0), (0.4, 0), (1.2, 160), (D - 0.01, 160)], axis="x")}'
+  f'<g>{T.translate([(0.0, 0), (0.4, 0), (1.2, 52), (D - 0.01, 52)], axis="y")}<rect x="120" y="74" width="20" height="16" rx="3" fill="{GOLD}"/></g></g></g>')
+# step 3: the interrupt, from the SSD to the CPU
+a(f'<g opacity="0">{vis([(7.6, 9.6)])}<path d="M 214 34 H 188 m 7 -5 l -7 5 l 7 5" fill="none" stroke="{RED}" stroke-width="2.4"/></g>')
+a(f'<path d="M 214 34 H 188" stroke="{EDGE}" stroke-dasharray="3 4"/>')
+a(text(200, 96, 'interrupt', anchor='middle', size=14, fill=RED))
+
+# the three steps
+for k, (s, span, col) in enumerate((('1  command queued, doorbell rung', (0.4, D), GOLD), ('2  the SSD fills RAM on its own', (2.6, D), GREEN),
+                                   ('3  an interrupt says done', (7.6, D), RED))):
+    y = 250 + k * 26
+    a(text(20, y, s, size=14, fill=MUTED, ls='0'))
+    a(f'<g opacity="0">{vis([span, (0.0, 0.4)])}' + text(20, y, s, size=14, fill=col, ls='0') + '</g>')
+a(text(20, 330, 'the CPU never copies the data', size=14, fill=INK, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('With direct memory access the kernel only writes a small command telling the device where to put the data; the device then copies it into RAM on its own while the CPU runs something else. '
-           'An interrupt says when it is done, so the CPU handles the command and the completion but not the transfer.')
+caption = ('One SSD read in the three steps drawn: the kernel queues a command and rings the doorbell, the drive fills the buffer while '
+           'process B runs, and an interrupt wakes process A.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Queues.</b> Only the doorbell is a register write; the drive fetches the command itself from the queue in RAM, by DMA like the data.</li>
-          <li><b>The IOMMU.</b> A second address-translation unit, for devices: the kernel decides which parts of RAM each device may reach, so a faulty or untrusted device cannot write anywhere it likes.</li>
           <li><b>Scattered buffers.</b> The buffer need not be one block of RAM: the command can list many separate pages (PRP or SGL entries), and the drive fills each in turn.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-br-8">
       <div class="diagram-label">Fig BR.8 · Direct memory access · the device writes RAM by itself</div>
       {svg}
-      <p id="CAPID" class="diagram-caption">{caption}</p>
+      <p id="chBridge-io-p5" class="diagram-caption">{caption}</p>
       {how}
     </div>'''
 if __name__ == '__main__':
-    import re
-    s = open('/Users/yki/Documents/github/atheric/under-the-code/public/part-1.html').read()
-    i = s.index('id="fig-br-8"'); cap = re.search(r'<p id="([^"]+)" class="diagram-caption"', s[i:]).group(1)
-    splice('part-1', 'fig-br-8', cap, card.replace('CAPID', cap))
+    splice('part-1', 'fig-br-8', 'chBridge-io-p5', card)
