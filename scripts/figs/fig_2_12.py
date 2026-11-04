@@ -12,7 +12,7 @@ T = Timeline(D, shift=RUN + 1.2)
 X0, X1, YB, YT = 48, 360, 160, 52          # chart: 0..100 h across, 0..0.34 s up
 SCUD, DRIFT = 344, 200                     # the Scud's x on the track; 570 m drawn as DRIFT units
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-28 svgd-part1-28">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-28 svgd-part1-28"{T.steps([(0.2, 'hour 0'), (3.65, 'hour 50'), (8.5, 'hour 100')])}>')
 a('<title id="svgt-part1-28">Fig 2.12 · The Patriot missile · a clock that lost a third of a second</title>')
 a('<desc id="svgd-part1-28">A Patriot battery counted time in tenths of a second, but 0.1 chopped in binary made each tick about 0.000000095 '
   'seconds short. Above, the clock\'s error grows in a straight line over 100 hours, 3.6 million ticks, to 0.34 seconds. Below, the '
@@ -40,7 +40,7 @@ TY = 280
 a(text(20, 206, 'where the radar looked', size=14, fill=INK))
 a(f'<line x1="20" y1="{TY}" x2="380" y2="{TY}" stroke="{EDGE}" stroke-dasharray="3 5"/>')
 a(f'<circle cx="{SCUD}" cy="{TY}" r="8" fill="{RED}"/>')
-a(text(SCUD, TY + 32, 'the Scud', anchor='middle', size=14, fill=RED))
+a(text(SCUD, TY + 42, 'the Scud', anchor='middle', size=14, fill=RED))
 a(f'<g>{T.translate([(t, -DRIFT * v) for t, v in grow], axis="x")}'
   f'<rect x="{SCUD - 34}" y="{TY - 24}" width="68" height="48" rx="6" fill="none" stroke="{BLUE}" stroke-width="2"/>'
   f'</g>')

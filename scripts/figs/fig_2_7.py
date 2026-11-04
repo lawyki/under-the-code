@@ -25,7 +25,7 @@ def vis(spans):
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
     return T.discrete('opacity', sorted(pts))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-23 svgd-part1-23">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-23 svgd-part1-23"{T.steps([(0.3, 'start'), (2.8, 'carrying'), (8.0, 'result')])}>')
 a("<title id=\"svgt-part1-23\">Fig 2.7 · Computing 7 − 5 = 2 with two's complement</title>")
 a('<desc id="svgd-part1-23">Inside an 8-bit register, 00000111 (7) plus 11111011 (−5 in two\'s complement, which is 256 − 5), added column '
   'by column from the right. Every column carries 1 into the next, and the final carry is a ninth bit the register cannot hold. It '
@@ -56,7 +56,6 @@ a(f'<g opacity="0">{vis([(t9, D)])}<g>{T.translate([(0.0, 0), (t9 + 0.4, 0), (t9
   + text(nx, 180, '1', anchor='middle', size=18, fill=RED, ls='0', role='object') + '</g></g>')
 a(f'<g opacity="0">{vis([(t9, D)])}<path d="M {X0 + 4} 62 Q {nx} 70 {nx} 162" fill="none" stroke="{RED}" stroke-width="1.6" stroke-dasharray="3 3"/></g>')
 a(text(nx - 14, 262, 'ninth bit: no room, dropped', size=14, fill=RED))
-a(text(20, 288, 'the same adder as every addition', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 

@@ -11,7 +11,7 @@ W, H = 400, 330
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
 T = Timeline(8, shift=6.0)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-27 svgd-part1-27">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-27 svgd-part1-27"{T.steps([(1.3, 'sum lands'), (5.0, 'rounds up')])}>')
 a('<title id="svgt-part1-27">Fig 2.11 · 0.1 + 0.2 in binary · where the famous error lives</title>')
 a('<desc id="svgd-part1-27">Three number lines, each showing the neighbouring doubles near one value, to that value\'s own scale. 0.1 and '
   '0.2 cannot be stored exactly; each is stored as the nearest double, which lies slightly above the exact value. Near 0.3 the doubles '

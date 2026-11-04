@@ -14,7 +14,7 @@ def when(vals):
     pts = [(i * STEP, 1 if v else 0) for i, v in enumerate(vals)]
     return T.discrete('opacity', pts)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-19 svgd-part1-19">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-19 svgd-part1-19"{T.steps([(0.7, '0 0'), (2.0999999999999996, '0 1'), (3.5, '1 0'), (4.8999999999999995, '1 1')])}>')
 a('<title id="svgt-part1-19">Fig 2.3 · The three fundamental gates · AND, OR, NOT</title>')
 a('<desc id="svgd-part1-19">AND outputs 1 only when both inputs are 1. OR outputs 1 when at least one input is 1. NOT outputs the opposite '
   'of its one input. Each gate is drawn with its standard symbol, inputs A and B on the left, its output on the right named in words '

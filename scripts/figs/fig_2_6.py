@@ -12,7 +12,7 @@ CASES = [(a_, b_, c_) for a_ in (0, 1) for b_ in (0, 1) for c_ in (0, 1)]
 T = Timeline(STEP * 8, shift=STEP * 7 + 0.5)            # t=0: 1 + 1 + 1
 def when(vals): return T.discrete('opacity', [(i * STEP, 1 if v else 0) for i, v in enumerate(vals)])
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-22 svgd-part1-22">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-22 svgd-part1-22"{T.steps([(0.55, '000'), (1.6500000000000001, '001'), (2.75, '010'), (3.8500000000000005, '011'), (4.95, '100'), (6.05, '101'), (7.15, '110'), (8.250000000000002, '111')])}>')
 a('<title id="svgt-part1-22">Fig 2.6 · Inside a full adder · two half adders and an OR</title>')
 a('<desc id="svgd-part1-22">A full adder built from gates. A and B meet in an XOR and an AND: the first half adder. The XOR\'s output meets '
   'the carry-in in a second XOR and AND: the second half adder; its XOR gives the sum bit. Either AND\'s carry, through an OR, gives the '
@@ -42,8 +42,9 @@ S = [p ^ c for p, c in zip(X1, C_)]; A2 = [p & c for p, c in zip(X1, C_)]; CO = 
 # the half adders, framed
 a(f'<rect x="100" y="44" width="92" height="140" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
 a(f'<rect x="204" y="34" width="92" height="124" rx="8" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
-a(text(146, 200, 'half adder', anchor='middle', size=14, fill=MUTED))
-a(text(250, 174, 'half adder', anchor='middle', size=14, fill=MUTED))
+a(text(146, 38, 'half adder', anchor='middle', size=14, fill=MUTED))
+a(text(302, 128, 'half', size=14, fill=MUTED))
+a(text(302, 144, 'adder', size=14, fill=MUTED))
 
 # inputs
 value(44, 64, A_); a(text(44, 42, 'A', anchor='middle', size=14, fill=INK))

@@ -16,7 +16,7 @@ T = Timeline(6, shift=0.0)
 NOISE = [(0.0, 1.0), (0.4, 0.55), (0.8, 0.7), (1.2, 0.25), (1.6, 0.4), (2.0, 0.1), (2.5, 0.3), (3.0, 0.05), (3.5, 0.35),
          (4.0, 0.6), (4.4, 0.45), (4.8, 0.85), (5.2, 0.7), (5.6, 0.95), (6.0, 1.0)]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-17 svgd-part1-17">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-17 svgd-part1-17"{T.steps([(2.0, 'a little noise'), (5.9, 'a lot')])}>')
 a('<title id="svgt-part1-17">Fig 2.1 · Why binary survives noise · one threshold against two</title>')
 a('<desc id="svgd-part1-17">Two wires with the same voltage span and the same noise, drawn as two gauges of the same height. The binary '
   'wire has one threshold and two wide bands; the ternary wire squeezes three levels into the same span with two thresholds. Both '

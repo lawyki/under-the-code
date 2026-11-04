@@ -12,7 +12,7 @@ CASES = [(0, 0), (0, 1), (1, 0), (1, 1)]
 T = Timeline(STEP * 4, shift=STEP * 2 + 0.6)          # t=0: A = 1, B = 0
 def when(vals): return T.discrete('opacity', [(i * STEP, 1 if v else 0) for i, v in enumerate(vals)])
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-20 svgd-part1-20">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-20 svgd-part1-20"{T.steps([(0.7, '0 0'), (2.0999999999999996, '0 1'), (3.5, '1 0'), (4.8999999999999995, '1 1')])}>')
 a('<title id="svgt-part1-20">Fig 2.4 · Everything from NAND · NOT, AND and OR built from one gate</title>')
 a('<desc id="svgd-part1-20">Three circuits built only of NAND gates, the AND shape with a bubble. One NAND with its inputs tied together '
   'is NOT. A NAND followed by that NOT is AND. Inverting both inputs and then taking their NAND is OR, by De Morgan\'s law. The '
@@ -82,7 +82,6 @@ for i, (x_, y_) in enumerate(CASES):
     a(text(cx, SY + 5, f'{x_} {y_}', anchor='middle', size=15, fill=INK, ls='0'))
     a(f'<rect x="{cx - 26}" y="{SY - 15}" width="52" height="28" rx="6" fill="none" stroke="{GOLD}" stroke-width="2" opacity="0">'
       f'{when([k == i for k in range(4)])}</rect>')
-a(text(200, 382, 'every gate drawn here is a NAND', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 

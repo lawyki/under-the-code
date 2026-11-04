@@ -16,7 +16,7 @@ def vis(spans):
     return T.discrete('opacity', sorted(pts))
 A, B = [(0.0, 5.0)], [(5.0, D)]               # the two values' turns
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-26 svgd-part1-26">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-26 svgd-part1-26"{T.steps([(3.5, '6.5'), (8.5, '−0.75')])}>')
 a('<title id="svgt-part1-26">Fig 2.10 · IEEE 754 double precision · sign, exponent, mantissa</title>')
 a('<desc id="svgd-part1-26">A 64-bit double is a sign bit, an 11-bit exponent and a 52-bit mantissa, read as ±1.mantissa with the binary '
   'point moved by the exponent, which is stored 1023 too high. 6.5 has sign 0, exponent 10000000001 (1025, so 2) and mantissa 101 then '
@@ -68,7 +68,6 @@ res_a = [text(200, 286, '110.1 = 4 + 2 + 0.5', anchor='middle', size=15, fill=IN
 res_b = [text(200, 286, '0.11 = 0.5 + 0.25', anchor='middle', size=15, fill=INK, ls='0'), text(200, 322, '−0.75', anchor='middle', size=20, fill=GOLD, ls='0')]
 a(f'<g opacity="0">{vis([(0.0, 5.0)])}{"".join(res_a)}</g>')
 a(f'<g opacity="0">{vis([(5.0, D)])}{"".join(res_b)}</g>')
-a(text(200, 354, 'the exponent moves the point: floating point', anchor='middle', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 

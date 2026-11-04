@@ -19,7 +19,7 @@ def vis(spans):
 ang = lambda u: radians(u * 360 / 256)          # clockwise from the top
 P = lambda u, r: (CX + r * sin(ang(u)), CY - r * cos(ang(u)))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-24 svgd-part1-24">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-24 svgd-part1-24"{T.steps([(0.25, '0'), (4.2, '+127 + 1'), (8.5, '−1 + 1')])}>')
 a("<title id=\"svgt-part1-24\">Fig 2.8 · The two's-complement wheel · where addition wraps</title>")
 a('<desc id="svgd-part1-24">The 256 values of a signed 8-bit number around a dial: 0 at the top, positives clockwise down the right to +127, '
   'negatives up the left from −128 to −1, so +127 and −128 meet at the bottom. Adding turns the pointer clockwise; the value and its '
