@@ -34,7 +34,7 @@ for k, r in enumerate(REGS):
     a(text(x + 10, y + 18, r, size=14, fill=BLUE, ls='0'))
     a(text(x + 102, y + 18, str(k + 1), anchor='end', size=14, fill=MUTED, ls='0'))
 # the stack, for the seventh
-a(text(20, 240, 'stack: the seventh and on', size=14, fill=MUTED))
+a(text(20, 240, 'stack', size=14, fill=MUTED))
 a(f'<rect x="20" y="248" width="112" height="34" rx="5" fill="none" stroke="{EDGE}" stroke-width="1.5"/>')
 a(f'<rect x="136" y="248" width="244" height="34" rx="5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-dasharray="4 4"/>')
 # each argument travels to its place, in order
@@ -56,9 +56,7 @@ a(f'<g opacity="0">{vis([(8.0, D - 0.3)])}<path d="M 140 311 H 196 m -7 -5 l 7 5
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Under the System V convention (Linux, macOS, BSD) the first six integer or pointer arguments travel in RDI, RSI, RDX, RCX, '
-           'R8 and R9, the seventh and beyond on the stack, and the result comes back in RAX. That agreement lets code from any compiler '
-           'call any other.')
+caption = 'Arguments one to six go to registers, the seventh to the stack, the result to RAX.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

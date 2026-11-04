@@ -40,15 +40,14 @@ def row(y, vals, marks, t0):
         g.append(text(CX(i), y + 22, v, anchor='middle', size=15, fill=col or INK, ls='0', role='object'))
     a(f'<g opacity="0">{vis([(t0, D)])}{"".join(g)}</g>' if t0 else ''.join(g))
 row(112, ['11', '22', '33', '44', '55', '66', '77', '88'], {}, None)
-a(f'<g opacity="0">{vis([(1.4, D)])}' + text(X0, 176, 'mov al, 0xFF: only AL changes', size=14, fill=GOLD, ls='0') + '</g>')
+a(f'<g opacity="0">{vis([(1.4, D)])}' + text(X0, 176, 'mov al, 0xFF', size=14, fill=GOLD, ls='0') + '</g>')
 row(184, ['11', '22', '33', '44', '55', '66', '77', 'FF'], {7: GOLD}, 1.6)
-a(f'<g opacity="0">{vis([(3.6, D)])}' + text(X0, 246, 'mov eax, 1: the upper half cleared', size=14, fill=RED, ls='0') + '</g>')
+a(f'<g opacity="0">{vis([(3.6, D)])}' + text(X0, 246, 'mov eax, 1', size=14, fill=RED, ls='0') + '</g>')
 row(254, ['00', '00', '00', '00', '00', '00', '00', '01'], {0: RED, 1: RED, 2: RED, 3: RED, 4: GOLD, 5: GOLD, 6: GOLD, 7: GOLD}, 3.8)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One register, five names: RAX (2003) contains EAX (1985), which contains AX (1978), split into AH and AL. Writing AL '
-           'changes only that byte; writing EAX also clears the upper half, a rule of x86-64.')
+caption = 'One register, five names; a 32-bit write clears the upper half.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

@@ -30,14 +30,13 @@ def region(y, h, label, col, dash=False, sub=None):
     a(f'<rect x="{CX0}" y="{y}" width="{CW}" height="{h}" rx="5" fill="none" stroke="{col}" stroke-width="1.5"{d}/>')
     a(text(CX0 + 12, y + 21, label, size=14, fill=col, ls='0'))
     if sub: a(text(CX0 + 12, y + 39, sub, size=14, fill=MUTED, ls='0'))
-region(32, 50, 'kernel', RED, sub='off limits')
+region(32, 50, 'kernel', RED, sub=None)
 # the stack: frames pushed downward, one per call
 FR = [('main', 0.6, 9.4), ('f', 2.0, 7.8), ('g', 3.4, 6.2)]
 FY = lambda k: 92 + k * 38
 a(f'<rect x="{CX0}" y="88" width="{CW}" height="122" rx="5" fill="none" stroke="rgba(212,168,83,0.6)" stroke-width="1.4"/>')
 a(text(CX0 + CW + 14, 104, 'stack', size=14, fill=GOLD))
 a(f'<path d="M {CX0 + CW + 30} 114 V 160 m -5 -7 l 5 7 l 5 -7" fill="none" stroke="{GOLD}" stroke-width="1.6"/>')
-a(text(CX0 + CW + 14, 182, 'grows down', size=14, fill=MUTED))
 for k, (name, t0, t1) in enumerate(FR):
     y = FY(k)
     a(f'<g opacity="0">{vis([(t0, t1)])}<rect x="{CX0 + 6}" y="{y}" width="{CW - 12}" height="32" rx="4" fill="none" stroke="{GOLD}" stroke-width="1.8"/>'
@@ -48,23 +47,19 @@ rsp = [(0.0, FY(0)), (0.6, FY(0)), (2.0, FY(0)), (2.2, FY(1)), (3.4, FY(1)), (3.
 a(f'<g opacity="0">{vis([(0.6, 9.4)])}<g>{T.translate([(t, v - FY(0)) for t, v in rsp], axis="y")}'
   f'<path d="M {CX0 - 4} {FY(0) + 32} l -10 -6 v 12 z" fill="{INK}"/>' + text(CX0 - 18, FY(0) + 37, 'RSP', anchor='end', size=14, fill=INK) + '</g></g>')
 # the gap, the heap growing up, data, text
-a(text(CX0 + CW / 2, 246, 'unused', anchor='middle', size=14, fill=MUTED))
 a(f'<rect x="{CX0}" y="266" width="{CW}" height="66" rx="5" fill="none" stroke="rgba(134,168,255,0.6)" stroke-width="1.4"/>')
 a(text(CX0 + CW + 14, 282, 'heap', size=14, fill=BLUE))
-a(text(CX0 + CW + 14, 350, 'grows up', size=14, fill=MUTED))
 a(f'<path d="M {CX0 + CW + 30} 334 V 292 m -5 7 l 5 -7 l 5 7" fill="none" stroke="{BLUE}" stroke-width="1.6"/>')
 a(f'<rect x="{CX0 + 6}" y="300" width="{CW - 12}" height="26" rx="4" fill="none" stroke="{BLUE}" stroke-width="1.6"/>')
 a(text(CX0 + 18, 318, 'malloc block', size=14, fill=INK, ls='0'))
 a(f'<g opacity="0">{vis([(4.6, 9.8)])}<rect x="{CX0 + 6}" y="272" width="{CW - 12}" height="24" rx="4" fill="none" stroke="{BLUE}" stroke-width="1.6"/>'
   + text(CX0 + 18, 289, 'malloc block', size=14, fill=INK, ls='0') + '</g>')
-region(338, 30, 'data · global variables', GREEN)
-region(370, 30, 'text · machine code', INK)
+region(338, 30, 'data', GREEN)
+region(370, 30, 'text', INK)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Every process sees the same layout: machine code (text) and global variables (data) at the bottom; the heap, memory taken '
-           'with <code>malloc</code> while the program runs and kept until freed, growing up from them; the stack growing down from just '
-           'under the kernel, one frame of local values per call, gone when the call returns.')
+caption = 'Each call pushes a frame down the stack; the heap grows up from below.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>

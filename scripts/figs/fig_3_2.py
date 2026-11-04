@@ -39,31 +39,27 @@ def cell(x, y, name, before, after, t_change, col=BLUE, t_from=0.0, label_at=Non
     a(val(x + 48, y + 28, after, GOLD, [(t_change, D)]))
 
 # ---------- Intel: add in place ----------
-a(text(20, 28, 'Intel: one line', size=14, fill=INK))
+a(text(20, 28, 'Intel', size=14, fill=INK))
 pill(20, 48, 150, 'add [x], 3', GOLD, (0.6, 2.2))
 a(f'<path d="M 178 65 H 262 m -7 -6 l 7 6 l -7 6" fill="none" stroke="{GOLD}" stroke-width="2"/>')
-a(text(220, 56, 'in place', anchor='middle', size=14, fill=MUTED))
 cell(276, 44, 'memory', '5', '8', 1.6)
 
 # ---------- Rosetta 2, once ----------
 a(f'<rect x="40" y="118" width="320" height="52" rx="8" fill="none" stroke="{INK}" stroke-width="1.4"/>')
 a(text(200, 140, 'Rosetta 2', anchor='middle', size=15, fill=INK))
-a(text(200, 159, 'translates once, at first launch', anchor='middle', size=14, fill=MUTED, ls='0'))
 a(f'<path d="M 200 102 V 116 M 200 172 V 186 m -5 -6 l 5 6 l 5 -6" fill="none" stroke="{EDGE}" stroke-width="1.4"/>')
 
 # ---------- ARM: load, add, store ----------
-a(text(20, 204, 'ARM: cannot add in memory', size=14, fill=INK))
-pill(20, 224, 150, 'ldur  load', GOLD, (3.6, 5.6))
-pill(20, 270, 150, 'add   +3', GOLD, (5.8, 7.6))
-pill(20, 316, 150, 'stur  store', GOLD, (7.8, 9.8))
+a(text(20, 204, 'ARM', size=14, fill=INK))
+pill(20, 224, 150, 'ldur', GOLD, (3.6, 5.6))
+pill(20, 270, 150, 'add 3', GOLD, (5.8, 7.6))
+pill(20, 316, 150, 'stur', GOLD, (7.8, 9.8))
 cell(276, 232, 'memory', '5', '8', 9.6)
 cell(276, 336, 'register w8', '5', '8', 7.0, t_from=4.9, label_at=(266, 362))
 # the register is empty until the load arrives
 # the trips: down to the register, back up to memory
 a(f'<path d="M 304 276 V 330 m -5 -7 l 5 7 l 5 -7" fill="none" stroke="{EDGE}" stroke-width="1.6"/>')
 a(f'<path d="M 344 330 V 278 m -5 7 l 5 -7 l 5 7" fill="none" stroke="{EDGE}" stroke-width="1.6"/>')
-a(text(296, 308, 'load', anchor='end', size=14, fill=MUTED))
-a(text(352, 308, 'store', size=14, fill=MUTED))
 def trip(x, y0, y1, s, t0, t1):
     a(f'<g opacity="0">{vis([(t0, t1)])}<g>{T.translate([(0.0, 0), (t0, 0), (t1, y1 - y0), (D - 0.01, y1 - y0)], axis="y")}'
       f'<circle cx="{x}" cy="{y0}" r="12" fill="#141414" stroke="{GOLD}" stroke-width="1.6"/>'
@@ -73,9 +69,7 @@ trip(344, 356, 262, '8', 8.4, 9.5)
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Intel adds 3 to a value in memory in one line; ARM cannot add in memory, so Rosetta 2 turns that line into three: '
-           '<code>ldur</code> loads it into a register, <code>add</code> adds 3, <code>stur</code> stores it back. The whole three-line '
-           'app becomes six ARM lines.')
+caption = 'Intel adds in memory; ARM must load, add and store back.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
@@ -83,6 +77,7 @@ how = '''<details class="fig-how">
           <li><b>Ahead of time.</b> Rosetta reads the whole executable on first launch, writes an ARM version, and caches it; later launches skip the translation. Translated code runs at roughly 80% of native speed.</li>
           <li><b>One for many.</b> Any x86 sequence has some ARM sequence with the same observable result; the translator's job is to find it. The ARM shown here is a faithful translation, not Rosetta's literal output.</li>
           <li><b>The hard part.</b> x86 and ARM differ in the order in which one core's memory writes become visible to the others (Chapter 16). Apple's chips can enforce x86's order while translated code runs, so programs running on several cores at once behave as they did on Intel.</li>
+          <li><b>Once.</b> Rosetta 2 translates the app once, at its first launch.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-3-2">

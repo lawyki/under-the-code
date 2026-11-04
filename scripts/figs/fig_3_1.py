@@ -57,8 +57,7 @@ for k, (isa, asm, hexs, fields) in enumerate(ISAS):
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('"Add 5 to a register" in the three instruction sets that run the world: the same three ingredients, an opcode, a register '
-           'and the number 5, packed into 32 bits in three different orders.')
+caption = 'The same add, packed into 32 bits in three different orders.'
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
