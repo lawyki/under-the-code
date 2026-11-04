@@ -1,74 +1,97 @@
-# Fig 1.9 · The instruction cycle (Pass 28, law 3). Four stages on a ring; a packet goes
-# round once per instruction. In the middle, the program counter and the instruction:
-# mov eax, 5 (0x00, 5 bytes) · add eax, 3 (0x05, 3 bytes) · jmp 0x00 (0x08): the PC
-# advances by each instruction's length, and the jump sends it back to the start.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, MUTED
+# Fig 1.9 · The instruction cycle (Pass 31, Part I, from an empty script). Job: function. Takeaway: the program
+# counter advances by each instruction's length until an instruction sets it back, so the program loops.
+# Concept: memory as a row of bytes (Part I's recurring memory) holding the real bytes of a three-instruction loop:
+# five for mov, three for add, two for jmp. Above, the counter's steps (+5, +3); below, the jump back. The gold
+# frame (the active thing) steps over each instruction while the four stages light in turn beneath it, once per
+# instruction. The still already holds the loop: every step and the jump are drawn.
+from figlib import Timeline, text, splice, GOLD, BLUE, MUTED
 
-W, H = 400, 430
-C, R = (200, 200), 120
-CYC, N = 2.4, 3
-T = Timeline(CYC * N, shift=0.0)
-STAGES = [('Fetch', 'from memory', (200, 80)), ('Decode', 'what to do', (320, 200)),
-          ('Execute', 'do it', (200, 320)), ('Writeback', 'store, move PC', (80, 200))]
-PROG = [('0x00', 'mov eax, 5'), ('0x05', 'add eax, 3'), ('0x08', 'jmp 0x00')]
-D = CYC * N
-def window(t0, t1):           # on from t0 to t1 (snap), off otherwise
-    end = D - 0.0005               # the loop's end must not land on its start (they are the same instant)
-    # off a moment before the next one comes on, so two never show at once
-    if t0 <= 0: return T.anim('opacity', [(0.0, 1.0), (t1 - 0.002, 1.0), (t1 - 0.001, 0.0), (end, 0.0)])
-    return T.anim('opacity', [(0.0, 0.0), (t0 - 0.001, 0.0), (t0, 1.0), (min(t1, end) - 0.002, 1.0), (min(t1, end) - 0.001, 0.0), (end, 0.0)])
+W, H = 400, 360
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
+T = Timeline(9, shift=0.0)
+BYTES = ['B8', '05', '00', '00', '00', '83', 'C0', '03', 'EB', 'F6']
+X = lambda i: 22 + i * 34 + 8 * (i >= 5) + 8 * (i >= 8)       # left edge of byte i
+CT, CB = 52, 88                                                 # cell top, bottom
+SPANS = [(0, 5, 'mov eax, 5', '0x00'), (5, 3, 'add eax, 3', '0x05'), (8, 2, 'jmp 0x00', '0x08')]
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-10 svgd-part1-10">')
 a('<title id="svgt-part1-10">Fig 1.9 · The instruction cycle · fetch, decode, execute, writeback</title>')
-a('<desc id="svgd-part1-10">Four stages on a ring: fetch, decode, execute, writeback. One instruction goes round per cycle. '
-  'In the middle the program counter and the instruction: mov eax, 5 at 0x00, add eax, 3 at 0x05, jmp 0x00 at 0x08, which sends the counter back to 0x00.</desc>')
-# the ring and the packet going round it (under the stage boxes); it starts 45 degrees back,
-# so it sits on each stage in the middle of that stage's turn
-a(f'<circle cx="{C[0]}" cy="{C[1]}" r="{R}" fill="none" stroke="rgba(212,168,83,0.3)" stroke-width="2"/>')
-for ang in (45, 135, 225, 315):   # direction arrows on the ring, clockwise
-    import math
-    r = math.radians(ang - 90); x, y = C[0] + R * math.cos(r), C[1] + R * math.sin(r)
-    a(f'<g transform="translate({x:.1f},{y:.1f}) rotate({ang})"><polygon points="-5,-5 6,0 -5,5" fill="rgba(212,168,83,0.6)"/></g>')
-a(f'<g><animateTransform attributeName="transform" type="rotate" values="-45 {C[0]} {C[1]};315 {C[0]} {C[1]}" dur="{CYC}s" repeatCount="indefinite"/>'
-  f'<circle cx="{C[0]}" cy="{C[1] - R}" r="8" fill="{GOLD}" stroke="#0e0e0e" stroke-width="2"/></g>')
-# the stages; each lights while the instruction is in it
-for k, (name, sub, (x, y)) in enumerate(STAGES):
-    w = 124
-    a(f'<rect x="{x - w / 2:g}" y="{y - 28}" width="{w}" height="56" rx="8" fill="#171717" stroke="rgba(255,255,255,0.3)"/>')
-    pts = []
-    for c in range(N):
-        t0 = c * CYC + k * CYC / 4
-        pts.append((t0, t0 + CYC / 4))
-    for t0, t1 in pts:
-        a(f'<rect x="{x - w / 2:g}" y="{y - 28}" width="{w}" height="56" rx="8" fill="{GOLD}" fill-opacity="0.16" stroke="{GOLD}" stroke-width="2" opacity="0">{window(t0, t1)}</rect>')
-    a(text(x, y - 3, name, anchor='middle', size=17, fill='#fff', ls='0'))
-    a(text(x, y + 17, sub, anchor='middle', size=13, fill=MUTED, ls='0'))
-# the program counter and the instruction in flight
-a(text(200, 168, 'PC', anchor='middle', size=13, fill=MUTED))
-for c, (pc, ins) in enumerate(PROG):
-    t0, t1 = c * CYC, (c + 1) * CYC
-    a(f'<text x="200" y="192" text-anchor="middle" {MONO} font-size="18" fill="{BLUE}" opacity="0">{pc}{window(t0, t1)}</text>')
-    a(f'<text x="200" y="226" text-anchor="middle" {MONO} font-size="16" fill="#fff" opacity="0">{ins}{window(t0, t1)}</text>')
-# the program, all of it, with the current line marked
-a(text(20, 368, 'THE PROGRAM', size=13, fill=MUTED))
-for c, (pc, ins) in enumerate(PROG):
-    x = 20 + c * 124
-    a(f'<rect x="{x}" y="380" width="116" height="40" rx="5" fill="#141414" stroke="rgba(255,255,255,0.2)"/>')
-    a(f'<rect x="{x}" y="380" width="116" height="40" rx="5" fill="none" stroke="{GOLD}" stroke-width="1.8" opacity="0">{window(c * CYC, (c + 1) * CYC)}</rect>')
-    a(text(x + 8, 396, pc, size=13, fill=BLUE, ls='0'))
-    a(text(x + 8, 413, ins, size=13, fill='#fff', ls='0'))
+a('<desc id="svgd-part1-10">Memory as a row of ten bytes holding a three-instruction loop: mov eax, 5 in five bytes at 0x00, add eax, 3 '
+  'in three bytes at 0x05, jmp 0x00 in two bytes at 0x08. The program counter steps from 0x00 to 0x05 (+5) and to 0x08 (+3), '
+  'the length of each instruction, and the jump sets it back to 0x00, so the program loops. For every instruction the four stages '
+  'light in turn: fetch, decode, execute, writeback.</desc>')
+
+def lit(spans):
+    pts = [(0.0, 0.0)]
+    for t0, t1 in spans: pts += [(t0, 0.0), (t0 + 0.12, 1.0), (t1 - 0.12, 1.0), (t1, 0.0)]
+    pts = sorted(pts)
+    return T.anim('opacity', pts)
+
+# the bytes
+for i, b in enumerate(BYTES):
+    a(f'<rect x="{X(i)}" y="{CT}" width="32" height="{CB - CT}" rx="3" fill="none" stroke="{EDGE}" stroke-width="1.3"/>')
+    a(text(X(i) + 16, CT + 23, b, anchor='middle', size=14, fill=INK, ls='0', role='object'))
+# each instruction's start address and name
+for i0, n, name, addr in SPANS:
+    mid = X(i0) + (X(i0 + n - 1) + 32 - X(i0)) / 2
+    a(text(X(i0) + 16, CB + 22, addr, anchor='middle', size=14, fill=BLUE, ls='0'))
+    a(text(mid, CB + 44, name, anchor='middle', size=14, fill=GOLD, ls='0'))
+
+# the counter's steps above (+5, +3) and the jump back below
+c = [X(0) + 16, X(5) + 16, X(8) + 16]
+def arc(d, head, spans, label=None, lx=0, ly=0):
+    for stroke, op in ((EDGE, None), (GOLD, spans)):
+        extra = f' opacity="0">{lit(op)}</path' if op else '/'
+        a(f'<path d="{d}" fill="none" stroke="{stroke}" stroke-width="{2.2 if op else 1.5}"{extra}>')
+        extra = f' opacity="0">{lit(op)}</path' if op else '/'
+        a(f'<path d="{head}" fill="{stroke}" stroke="none"{extra}>')
+    if label: a(text(lx, ly, label, anchor='middle', size=15, fill=INK))
+arc(f'M {c[0]} {CT - 4} Q {(c[0] + c[1]) / 2} {CT - 46} {c[1] - 3} {CT - 8}', f'M {c[1]} {CT - 3} l -9 -3 l 4 -7 z', [(2.25, 3.4)], '+5', (c[0] + c[1]) / 2, CT - 28)
+arc(f'M {c[1]} {CT - 4} Q {(c[1] + c[2]) / 2} {CT - 40} {c[2] - 3} {CT - 8}', f'M {c[2]} {CT - 3} l -9 -3 l 4 -7 z', [(5.25, 6.4)], '+3', (c[1] + c[2]) / 2, CT - 25)
+RY = CB + 56
+arc(f'M {c[2]} {RY} C {c[2]} {RY + 34} {c[0]} {RY + 34} {c[0]} {RY + 6}', f'M {c[0]} {RY} l -5 9 h 10 z', [(8.25, 9.0), (0.0, 0.4)])
+a(text((c[0] + c[2]) / 2, RY + 46, 'jump back', anchor='middle', size=14, fill=INK))
+
+# the gold frame: the instruction the counter points at
+xs, ws = [], []
+for k, (i0, n, _, _) in enumerate(SPANS):
+    t0 = 3.0 * k
+    x, w = X(i0) - 4, X(i0 + n - 1) + 32 - X(i0) + 8
+    xs += [(t0, x), (t0 + 2.9, x)]; ws += [(t0, w), (t0 + 2.9, w)]
+xs.append((9.0, xs[0][1])); ws.append((9.0, ws[0][1]))
+a(f'<rect x="{xs[0][1]}" y="{CT - 4}" width="{ws[0][1]}" height="{CB - CT + 8}" rx="6" fill="none" stroke="{GOLD}" stroke-width="2.5">'
+  f'{T.anim("x", xs)}{T.anim("width", ws)}</rect>')
+
+# the program counter
+PY = 236
+a(text(20, PY + 22, 'program counter', size=14, fill=MUTED))
+a(f'<rect x="196" y="{PY}" width="90" height="34" rx="5" fill="none" stroke="{BLUE}" stroke-width="1.5"/>')
+for k, (_, _, _, addr) in enumerate(SPANS):
+    a(f'<text data-role="object" x="241" y="{PY + 23}" text-anchor="middle" font-family="DM Mono" font-size="16" fill="{BLUE}" opacity="0">'
+      f'{T.discrete("opacity", [(0.0, 1 if k == 0 else 0), (3.0, 1 if k == 1 else 0), (6.0, 1 if k == 2 else 0)])}{addr}</text>')
+
+# the four stages, lit in turn for every instruction
+SY = 290
+for j, s in enumerate(['fetch', 'decode', 'execute', 'writeback']):
+    x = 20 + j * 91
+    a(f'<rect x="{x}" y="{SY}" width="85" height="30" rx="15" fill="none" stroke="{EDGE}"/>')
+    spans = [(3.0 * k + 0.75 * j, 3.0 * k + 0.75 * (j + 1)) for k in range(3)]
+    a(f'<rect x="{x}" y="{SY}" width="85" height="30" rx="15" fill="rgba(212,168,83,0.2)" stroke="{GOLD}" stroke-width="2.2" opacity="0">{lit(spans)}</rect>')
+    a(text(x + 42.5, SY + 20, s, anchor='middle', size=14, fill=INK, ls='0'))
+    if j < 3: a(f'<path d="M {x + 87} {SY + 15} l 4 0" stroke="{EDGE}"/>')
+a(text(200, 346, 'every instruction, the same four steps', anchor='middle', size=14, fill=MUTED))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('Every core runs this loop: fetch the instruction the program counter names, decode it, execute it, write back the result, '
-           'and move the counter on, billions of times a second.')
+caption = ('Follow the program counter: 0x00, then 0x05, then 0x08 (addresses written in hexadecimal, here the same as 0, 5 and 8), '
+           'because the first instruction takes five bytes and the second three; at 0x08 the jump sets it back to 0x00, so the program loops.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Fetch.</b> Read the bytes at the address in the program counter.</li>
           <li><b>Decode.</b> Work out the operation and its operands from the bit pattern (Fig 1.10 takes one apart).</li>
           <li><b>Execute.</b> The ALU or another unit does the work: an addition, a comparison, an address.</li>
-          <li><b>Writeback.</b> Store the result and move the counter on by the instruction's length: 5 bytes, then 3. A jump sets the counter instead, which is how this program loops.</li>
+          <li><b>Writeback.</b> Store the result and move the counter on by the instruction's length; a jump sets the counter instead.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-9">

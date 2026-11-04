@@ -1,85 +1,104 @@
-# Fig 1.3 · The replacement (Pass 28, law 3). Two switches on one control signal:
-# when it turns on, electrons flow and both lamps light. The tube needs a filament
-# kept glowing hot; the transistor is a sliver of silicon. t=0: signal on.
-from figlib import Timeline, text, splice, MONO, GOLD, BLUE, MUTED
+# Fig 1.3 · The replacement (Pass 31, Part I, from an empty script). Job: real thing. Takeaway: a glowing tube
+# and a small piece of crystal each let a small signal switch a large current. Drawn as they look: a glass tube
+# on its pins, filament glowing, and the 1947 point-contact transistor (a plastic wedge pressing two gold
+# contacts onto a germanium crystal on its metal base). One small signal feeds both; when it is on, both lamps
+# light. t=0 is the on state, so the still is the whole story.
+from figlib import Timeline, text, obj, splice, GOLD, BLUE, MUTED
 
-W, H = 400, 392
-HEAT = '#f0a35a'
-T = Timeline(6, shift=3.0)
-ON = [(0.0, 0.0), (1.4, 0.0), (1.6, 1.0), (4.9, 1.0), (5.1, 0.0), (6.0, 0.0)]   # control signal
-ON_TXT = [(0.0, 0.0), (1.499, 0.0), (1.5, 1.0), (4.999, 1.0), (5.0, 0.0), (6.0, 0.0)]   # the words snap
-OFF_TXT = [(0.0, 1.0), (1.498, 1.0), (1.499, 0.0), (5.0, 0.0), (5.001, 1.0), (6.0, 1.0)]
+W, H = 400, 340
+INK, HEAT, WIRE = '#ece6da', '#f0a35a', 'rgba(255,255,255,0.55)'
+T = Timeline(6, shift=0.0)
+ON = [(0.0, 1.0), (3.6, 1.0), (3.8, 0.0), (5.6, 0.0), (5.8, 1.0)]          # the small signal: on, then off a while
+OFF = [(t, 1.0 - v) for t, v in ON]
 o = []; a = o.append
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-4 svgd-part1-4">')
-a('<title id="svgt-part1-4">Fig 1.3 · Vacuum tube and transistor · the same switch</title>')
-a('<desc id="svgd-part1-4">One small control signal drives both devices. When it turns on, electrons flow and both lamps light. '
-  'In the vacuum tube a filament, kept glowing hot, boils off electrons that reach the plate only when the grid lets them through. '
-  'In the transistor the control goes to the base of a small piece of silicon and current flows through it.</desc>')
+a('<title id="svgt-part1-4">Fig 1.3 · The replacement · the same switch, without the fire</title>')
+a('<desc id="svgd-part1-4">Left, a vacuum tube of 1906: a glass bulb on metal pins with a filament glowing hot inside. Right, the '
+  'first transistor, of 1947: a small plastic wedge pressing two gold contacts onto a sliver of crystal on a metal base. One small '
+  'signal is wired to both. While it is on, electrons cross the tube and current crosses the crystal, and both lamps light; when it '
+  'goes off, both lamps go dark, though the filament stays hot.</desc>')
 
 def lamp(cx, cy):
-    a(f'<circle cx="{cx}" cy="{cy}" r="15" fill="#151515" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>')
-    a(f'<circle cx="{cx}" cy="{cy}" r="15" fill="{GOLD}" opacity="0">{T.anim("opacity", ON)}</circle>')
-    a(f'<circle cx="{cx}" cy="{cy}" r="26" fill="{GOLD}" opacity="0">{T.anim("opacity", [(t, v * 0.18) for t, v in ON])}</circle>')
-    a(f'<path d="M {cx - 6} {cy + 4} l 3 -8 l 3 8 l 3 -8 l 3 8" fill="none" stroke="#0a0a0a" stroke-width="1.4" opacity="0.8"/>')
+    """The Part I lamp: dark outline when off, gold with rays while the signal is on."""
+    a(f'<circle cx="{cx}" cy="{cy}" r="14" fill="#151515" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>')
+    rays = ''.join(f'<line x1="{cx + 19 * c:.1f}" y1="{cy + 19 * s:.1f}" x2="{cx + 26 * c:.1f}" y2="{cy + 26 * s:.1f}"/>'
+                   for c, s in ((-1, 0), (1, 0), (-0.71, -0.71), (0.71, -0.71), (0, -1)))
+    a(f'<g opacity="0">{T.anim("opacity", ON)}<circle cx="{cx}" cy="{cy}" r="14" fill="{GOLD}"/>'
+      f'<g stroke="{GOLD}" stroke-width="2" stroke-linecap="round">{rays}</g></g>')
+    a(f'<path d="M {cx - 6} {cy + 3} l 3 -7 l 3 7 l 3 -7 l 3 7" fill="none" stroke="#3a2c10" stroke-width="1.6" stroke-linejoin="round"/>')
 
-def electrons(x, y0, y1, n=4, period=1.0, wobble=0):
-    g = [f'<g opacity="0">{T.anim("opacity", ON)}']
-    for k in range(n):
-        g.append(f'<circle cx="{x + (k % 2) * wobble - wobble / 2:g}" cy="{y0}" r="3" fill="{BLUE}">'
-                 f'<animate attributeName="cy" values="{y0};{y1}" dur="{period}s" begin="-{k * period / n:.2f}s" repeatCount="indefinite"/></circle>')
-    g.append('</g>'); a(''.join(g))
+# ---------- the tube (centre x 100) ----------
+TX = 100
+lamp(TX, 44)
+a(f'<line x1="{TX}" y1="58" x2="{TX}" y2="104" stroke="{WIRE}" stroke-width="2" opacity="0">{T.anim("opacity", OFF)}</line>')
+a(f'<line x1="{TX}" y1="58" x2="{TX}" y2="104" stroke="{GOLD}" stroke-width="2" opacity="0">{T.anim("opacity", ON)}</line>')
+# glass envelope with a soft highlight
+a(f'<path d="M {TX - 38} 250 V 128 A 38 38 0 0 1 {TX + 38} 128 V 250 Z" fill="none" stroke="rgba(220,230,240,0.6)" stroke-width="1.6"/>')
+a(f'<path d="M {TX - 28} 236 V 132 A 28 28 0 0 1 {TX - 12} 106" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="3" stroke-linecap="round"/>')
+# the plate (catches electrons), the grid (a coil of fine wire), the filament (always hot)
+a(f'<rect x="{TX - 20}" y="112" width="40" height="16" rx="2" fill="#8d8d8d" stroke="#bdbdbd"/>')
+a(f'<line x1="{TX}" y1="104" x2="{TX}" y2="112" stroke="#bdbdbd" stroke-width="2"/>')
+a(f'<path d="M {TX - 26} 176 ' + ' '.join(f'q 3.25 -6 6.5 0' for _ in range(8)) + '" fill="none" stroke="#bdbdbd" stroke-width="1.5"/>')
+a(f'<ellipse cx="{TX}" cy="214" rx="26" ry="13" fill="{HEAT}" opacity="0.22"/>')
+a(f'<path d="M {TX - 18} 220 l 6 -10 l 6 10 l 6 -10 l 6 10 l 6 -10 l 6 10" fill="none" stroke="{HEAT}" stroke-width="2.4" stroke-linejoin="round"/>')
+# electrons boil off the filament and cross to the plate only while the signal is on
+dots = []
+for k in range(4):
+    dots.append(f'<circle cx="{TX - 9 + k * 6}" cy="0" r="3" fill="{BLUE}"><animate attributeName="cy" values="204;132" '
+                f'dur="1.2s" begin="{-k * 0.3:.1f}s" repeatCount="indefinite"/></circle>')
+a(f'<g>{T.anim("opacity", ON)}{"".join(dots)}</g>')
+# while the signal is off the grid holds them back: they wait below it
+a(f'<g opacity="0">{T.anim("opacity", OFF)}' + ''.join(f'<circle cx="{TX + dx}" cy="194" r="3" fill="{BLUE}"/>' for dx in (-12, -2, 9)) + '</g>')
+# base and pins
+a(f'<rect x="{TX - 34}" y="250" width="68" height="20" rx="3" fill="#2a2a2a" stroke="rgba(255,255,255,0.35)"/>')
+for dx in (-20, -7, 7, 20):
+    a(f'<line x1="{TX + dx}" y1="270" x2="{TX + dx}" y2="282" stroke="#9a9a9a" stroke-width="2.4" stroke-linecap="round"/>')
+a(text(TX + 44, 222, 'filament,', size=14, fill=HEAT))
+a(text(TX + 44, 239, 'always hot', size=14, fill=HEAT))
+a(text(TX, 310, 'vacuum tube', anchor='middle', size=15, fill=INK))
+a(text(TX, 328, '1906', anchor='middle', size=14, fill=MUTED))
 
-# headings
-a(text(90, 26, 'VACUUM TUBE', anchor='middle', fill='rgba(255,255,255,0.75)'))
-a(text(90, 44, '1906', anchor='middle', fill=MUTED))
-a(text(315, 26, 'TRANSISTOR', anchor='middle', fill='rgba(255,255,255,0.75)'))
-a(text(315, 44, '1947', anchor='middle', fill=MUTED))
+# ---------- the transistor (centre x 300), the 1947 point-contact device ----------
+PX = 300
+lamp(PX, 44)
+a(f'<line x1="{PX}" y1="58" x2="{PX}" y2="170" stroke="{WIRE}" stroke-width="2" opacity="0">{T.anim("opacity", OFF)}</line>')
+a(f'<line x1="{PX}" y1="58" x2="{PX}" y2="170" stroke="{GOLD}" stroke-width="2" opacity="0">{T.anim("opacity", ON)}</line>')
+# the plastic wedge, with gold foil down its two faces meeting the crystal
+a(f'<path d="M {PX - 22} 170 H {PX + 22} L {PX + 3} 214 H {PX - 3} Z" fill="rgba(200,210,230,0.10)" stroke="rgba(220,230,240,0.6)" stroke-width="1.5" stroke-linejoin="round"/>')
+a(f'<path d="M {PX - 22} 171 L {PX - 3} 213 M {PX + 22} 171 L {PX + 3} 213" stroke="{GOLD}" stroke-width="2.2" stroke-linecap="round"/>')
+# the crystal on its metal base
+a(f'<rect x="{PX - 30}" y="214" width="60" height="14" rx="1.5" fill="#5f6674" stroke="#9aa3b4"/>')
+a(f'<line x1="{PX - 26}" y1="217" x2="{PX - 8}" y2="217" stroke="rgba(255,255,255,0.35)" stroke-width="1.4"/>')
+a(f'<rect x="{PX - 40}" y="228" width="80" height="12" rx="2" fill="#8d8d8d" stroke="#bdbdbd"/>')
+# current crosses the crystal while the signal is on
+a(f'<g opacity="0">{T.anim("opacity", ON)}<circle cx="{PX}" cy="221" r="9" fill="{GOLD}" opacity="0.3"/>'
+  f'<circle cx="{PX}" cy="0" r="3" fill="{BLUE}"><animate attributeName="cy" values="166;212" dur="0.9s" repeatCount="indefinite"/></circle>'
+  f'<circle cx="{PX}" cy="0" r="3" fill="{BLUE}"><animate attributeName="cy" values="166;212" dur="0.9s" begin="-0.45s" repeatCount="indefinite"/></circle></g>')
+a(text(PX + 36, 260, 'crystal', anchor='middle', size=14, fill=INK))
+a(text(PX, 310, 'transistor', anchor='middle', size=15, fill=INK))
+a(text(PX, 328, '1947', anchor='middle', size=14, fill=MUTED))
 
-# --- the tube (left) ---
-lamp(90, 80)
-a('<line x1="90" y1="95" x2="90" y2="128" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>')
-a('<rect x="58" y="112" width="64" height="176" rx="32" fill="rgba(160,190,220,0.06)" stroke="rgba(200,220,240,0.45)" stroke-width="1.5"/>')
-a('<rect x="70" y="128" width="40" height="8" rx="2" fill="#9a9a9a"/>')                       # plate
-a('<line x1="66" y1="206" x2="114" y2="206" stroke="#bdbdbd" stroke-width="2" stroke-dasharray="5 4"/>')   # grid
-a(f'<path d="M 72 262 l 6 -8 l 6 8 l 6 -8 l 6 8 l 6 -8 l 6 8" fill="none" stroke="{HEAT}" stroke-width="2.4"/>')  # filament
-a(f'<ellipse cx="90" cy="258" rx="30" ry="14" fill="{HEAT}" opacity="0.22"><animate attributeName="opacity" values="0.16;0.3;0.16" dur="1.6s" repeatCount="indefinite"/></ellipse>')
-electrons(90, 252, 140, n=5, period=0.9, wobble=14)
-a(text(132, 136, 'plate', fill=MUTED))
-a(text(132, 211, 'grid', fill=MUTED))
-a(text(132, 254, 'filament,', fill=HEAT))
-a(text(132, 272, 'always hot', fill=HEAT))
-# control into the grid
-a('<path d="M 66 206 H 20 V 326" fill="none" stroke="rgba(212,168,83,0.35)" stroke-width="2"/>')
-
-# --- the transistor (right) ---
-lamp(315, 80)
-a('<line x1="315" y1="95" x2="315" y2="186" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>')
-a('<line x1="315" y1="214" x2="315" y2="288" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"/>')
-a('<rect x="299" y="186" width="32" height="28" rx="3" fill="#2a2620" stroke="rgba(212,168,83,0.7)" stroke-width="1.5"/>')   # silicon
-electrons(315, 284, 98, n=6, period=1.2)
-a(text(324, 236, 'silicon', fill=MUTED))
-a(text(254, 192, 'base', anchor='middle', fill=MUTED))
-a('<path d="M 299 200 H 236 V 326" fill="none" stroke="rgba(212,168,83,0.35)" stroke-width="2"/>')
-
-# --- the one control signal ---
-a('<path d="M 20 326 H 236" fill="none" stroke="rgba(212,168,83,0.35)" stroke-width="2"/>')
-a(f'<path d="M 66 206 H 20 V 326 H 236 V 200 H 299" fill="none" stroke="{GOLD}" stroke-width="2.5" opacity="0">{T.anim("opacity", ON)}</path>')
-a(text(20, 356, 'SMALL CONTROL SIGNAL', fill=MUTED))
-a(f'<rect x="268" y="338" width="64" height="26" rx="13" fill="#1a1a1a" stroke="rgba(255,255,255,0.25)"/>')
-a(f'<text x="300" y="356" text-anchor="middle" {MONO} font-size="14" fill="rgba(255,255,255,0.55)">off{T.anim("opacity", OFF_TXT)}</text>')
-a(f'<rect x="268" y="338" width="64" height="26" rx="13" fill="rgba(212,168,83,0.25)" stroke="{GOLD}" opacity="0">{T.anim("opacity", ON)}</rect>')
-a(f'<text x="300" y="356" text-anchor="middle" {MONO} font-size="14" fill="{GOLD}" opacity="0">on{T.anim("opacity", ON_TXT)}</text>')
+# ---------- the one small signal, to the tube's grid and the transistor's base ----------
+SIG = f'M 170 173 H {TX + 26} M 230 173 H 250 V 234 H {PX - 40}'
+a(f'<path d="{SIG}" fill="none" stroke="{WIRE}" stroke-width="2" opacity="0">{T.anim("opacity", OFF)}</path>')
+a(f'<path d="{SIG}" fill="none" stroke="{GOLD}" stroke-width="2.4" opacity="0">{T.anim("opacity", ON)}</path>')
+a(f'<rect x="170" y="160" width="60" height="26" rx="13" fill="none" stroke="rgba(255,255,255,0.55)"/>')
+a(f'<g opacity="0">{T.anim("opacity", ON)}<rect x="170" y="160" width="60" height="26" rx="13" fill="{GOLD}"/></g>')
+a(f'<text x="200" y="178" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#1a1407" opacity="0">on{T.anim("opacity", ON)}</text>')
+a(f'<text x="200" y="178" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="{MUTED}" opacity="0">off{T.anim("opacity", OFF)}</text>')
+a(text(200, 132, 'small', anchor='middle', size=14, fill=GOLD))
+a(text(200, 149, 'signal', anchor='middle', size=14, fill=GOLD))
 a('</svg>')
 svg = '\n'.join(o)
 
 caption = ('A vacuum tube and a transistor do the same job: a small control signal decides whether a much larger current flows. '
-           'The transistor does it in a sliver of silicon, with no glass, no glowing filament and nothing to burn out.')
+           'The transistor does it in a sliver of crystal, with no glass, no glowing filament and nothing to burn out.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
-          <li><b>Tube.</b> A filament, kept hot, boils electrons off; the plate draws them across the vacuum; the grid between them, set by the control signal, lets them through or holds them back.</li>
-          <li><b>Transistor.</b> The control signal goes to the base, and current flows through the silicon between the other two terminals (the next figures open it).</li>
-          <li><b>Why it won.</b> A tube is hot, fragile and wears out: ENIAC's 17,468 tubes failed about every two days. A transistor has nothing to burn out, and it shrinks.</li>
+          <li><b>Tube.</b> A filament, kept hot, boils electrons off; the plate at the top draws them across the vacuum; the grid between them, a coil of fine wire set by the control signal, lets them through or holds them back.</li>
+          <li><b>Transistor.</b> The first one, built at Bell Labs in 1947: a plastic wedge presses two gold contacts onto a crystal of germanium. A small control signal between one contact and the metal base under the crystal lets a much larger current flow out through the other contact (the next figures open the switch).</li>
+          <li><b>Why it won.</b> A tube is hot, fragile and wears out: one of ENIAC's 17,468 tubes failed about every two days. A transistor has nothing to burn out, and it shrinks.</li>
         </ol>
       </details>'''
 card = f'''<div class="diagram-card fig-v2" id="fig-1-3">

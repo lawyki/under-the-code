@@ -12,10 +12,26 @@ class Timeline:
     complete one."""
     def __init__(self, dur, shift=0.0):
         self.dur, self.shift = float(dur), float(shift)
+        self._named = []        # beats a script names with beat()
+        self._keys = set()      # every story-time keyframe anim() and translate() were given
+    def beat(self, tau, name=''):
+        """Name a story beat (Pass 31). Returns tau, so it can wrap a keyframe time in place."""
+        self._named.append((float(tau), name))
+        return tau
+    def beats(self):
+        """The beats in SMIL time (seconds from t=0), sorted: the named ones if any were named, else every
+        keyframe time the timeline was given. Each is (smil_t, story_tau, name)."""
+        src = self._named or [(k, '') for k in self._keys]
+        return sorted(((round(self.t(tau), 4), tau, name) for tau, name in src), key=lambda b: (b[0], b[1]))
+    def beats_attr(self):
+        """Opt-in attributes for the <svg> so tools can read the cycle: data-dur and data-beats (SMIL seconds)."""
+        bs = sorted(set(b[0] for b in self.beats()))
+        return f' data-dur="{self.dur:g}" data-beats="{" ".join(f"{b:g}" for b in bs)}"'
     def t(self, tau):
         return (tau - self.shift) % self.dur
     def anim(self, attr, pts, extra=''):
         D = self.dur
+        self._keys.update(min(float(t), D) % D for t, _ in pts)
         # tau = dur is the same instant as tau = 0. A point there means "hold this to the end of the
         # loop": move it a hair earlier, so the hold survives and never shares an instant with tau = 0.
         pts = [(min(t, D - 0.0005), v) for t, v in pts]
@@ -31,9 +47,22 @@ class Timeline:
         kt = ';'.join(f'{t / D:.6f}' for t in ts)
         vs = ';'.join(f'{at(t):.3f}'.rstrip('0').rstrip('.') for t in ts)
         return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" dur="{D:g}s" repeatCount="indefinite"{extra}/>'
+    def discrete(self, attr, pts):
+        """A stepped animation of any attribute (a fill, say) from [(tau, value)]: each value holds from its tau
+        until the next one. Lets one object change its look without a second text drawn over it (Pass 31)."""
+        D = self.dur
+        self._keys.update(min(float(t), D) % D for t, _ in pts)
+        ev = sorted(((round(self.t(min(t, D - 0.0005)), 6), v) for t, v in pts), key=lambda p: p[0])
+        held = [v for t, v in ev if t <= 0.0]
+        first = held[-1] if held else ev[-1][1]
+        steps = [(0.0, first)] + [(t, v) for t, v in ev if t > 0.0]
+        kt = ';'.join(f'{t / D:.6f}' for t, _ in steps)
+        vs = ';'.join(str(v) for _, v in steps)
+        return f'<animate attributeName="{attr}" values="{vs}" keyTimes="{kt}" calcMode="discrete" dur="{D:g}s" repeatCount="indefinite"/>'
     def translate(self, pts, axis='y'):
         """animateTransform translate along one axis from [(tau, offset)] keyframes."""
         D = self.dur
+        self._keys.update(min(float(t), D) % D for t, _ in pts)
         pts = [(min(t, D - 0.0005), v) for t, v in pts]
         ev = sorted(((self.t(t), v) for t, v in pts), key=lambda p: p[0])
         def at(t):
@@ -55,12 +84,33 @@ PLEX = 'font-family="IBM Plex Mono"'
 PHOS, PHOS_SOFT, LISTING, PLATE, PANEL = '#84ffb2', 'rgba(198,222,206,0.85)', 'rgba(132,255,178,0.55)', '#0c120e', '#152016'
 FONT = MONO                     # the face text() uses; a part's script may set figlib.FONT = PLEX
 
-def text(x, y, s, anchor='start', size=14, fill=MUTED, extra='', ls='0.06em'):
-    return f'<text x="{x:g}" y="{y:g}" text-anchor="{anchor}" {FONT} font-size="{size}" letter-spacing="{ls}" fill="{fill}"{extra}>{s}</text>'
+ROLES = ('label', 'object')
+
+def text(x, y, s, anchor='start', size=14, fill=MUTED, extra='', ls='0.06em', role=None):
+    """role (Pass 31): 'label' (names, notes, legends: capped per panel) or 'object' (a glyph inside a drawn
+    object, at most 6 characters, free only inside an obj() group). None writes nothing (old output)."""
+    if role is not None and role not in ROLES:
+        raise ValueError(f'text role must be one of {ROLES} or None, not {role!r}')
+    r = f' data-role="{role}"' if role else ''
+    return f'<text{r} x="{x:g}" y="{y:g}" text-anchor="{anchor}" {FONT} font-size="{size}" letter-spacing="{ls}" fill="{fill}"{extra}>{s}</text>'
+
+def obj(*parts, extra=''):
+    """Group a drawn object with its object text (Pass 31): <g data-obj="1">shape(s) and text</g>. At least one
+    part must be a shape (not <text>). Untagged <text> inside is tagged data-role="object"; text tagged 'label'
+    keeps its tag and counts as a label. Parts may be strings or lists of strings."""
+    flat = []
+    for p in parts:
+        flat.extend(p if isinstance(p, (list, tuple)) else [p])
+    if not any(re.match(r'\s*<(?!text\b)[a-zA-Z]', p) for p in flat):
+        raise ValueError('obj() needs a shape (a non-<text> element) beside its text')
+    flat = [re.sub(r'^(\s*)<text(?![^>]*\bdata-role=)', r'\1<text data-role="object"', p) for p in flat]
+    return f'<g data-obj="1"{extra}>' + ''.join(flat) + '</g>'
 
 def splice(part, fig_id, caption_id, card):
     """Replace a figure card (label, svg, caption, optional how-it-works) in public/<part>.html."""
-    p = f'/Users/yki/Documents/github/atheric/under-the-code/public/{part}.html'
+    import os
+    # the repo's public/ beside this script, or FIG_PUBLIC (a scratch copy) when set
+    p = os.path.join(os.environ.get('FIG_PUBLIC') or os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'public'), f'{part}.html')
     s = open(p).read()
     m = re.search(r'<div class="(?:diagram-card|light-diagram)[^"]*" id="' + re.escape(fig_id) + r'">[\s\S]*?</svg>\s*<p id="'
                   + re.escape(caption_id) + r'"[\s\S]*?</p>\s*(?:<details class="fig-how">[\s\S]*?</details>\s*)?</div>', s)

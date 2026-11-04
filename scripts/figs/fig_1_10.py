@@ -1,93 +1,74 @@
-# Fig 1.10 · From assembly to binary (Pass 28, law 3). Phone-first, viewBox 400 wide,
-# no label under 14 units. Everything is drawn in the still; the motion is a highlight
-# that walks the decode in order: what you write, the bytes, the opcode's bits, the value.
-W, H = 400, 600
-GOLD, BLUE, RED = '#d4a853', '#86a8ff', '#ec8d8d'
-MUTED = 'rgba(255,255,255,0.6)'
-mono = 'font-family="DM Mono"'
-DUR = 8.0
+# Fig 1.10 · From assembly to binary (Pass 31, Part I, from an empty script). Job: function. Takeaway: the
+# assembler swaps each written name for its fixed number code, one for one, the form the processor runs.
+# Concept: Fig 1.9's own three-line loop, written on the left and assembled on the right, one line at a time
+# (Part I's step verb), the operation in gold and its operand in blue on both sides, so the one-for-one swap is
+# seen by colour. Below, the first byte opened: B8 is five bits that say "move a value into a register" and three
+# that name EAX. t=0 is the finished translation.
+from figlib import Timeline, text, splice, GOLD, BLUE, MUTED
+
+W, H = 400, 396
+INK, EDGE = '#ece6da', 'rgba(255,255,255,0.42)'
+T = Timeline(9, shift=8.0)
+ROWS = [('mov eax,', ' 5', ['B8'], ['05', '00', '00', '00']),
+        ('add eax,', ' 3', ['83', 'C0'], ['03']),
+        ('jmp', ' 0x00', ['EB'], ['F6'])]
 o = []; a = o.append
-
-def glow(x, y, w, h, t0, t1, color=GOLD, rx=6):
-    kt = [0, t0 / DUR, (t0 + 0.2) / DUR, (t1 - 0.2) / DUR, t1 / DUR, 1]
-    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{rx}" fill="none" stroke="{color}" stroke-width="3" opacity="0">'
-            f'<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="{";".join(f"{k:.4f}" for k in kt)}" dur="{DUR:g}s" repeatCount="indefinite"/></rect>')
-def label(x, y, s, anchor='start', size=14, fill=MUTED, extra=''):
-    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" {mono} font-size="{size}" letter-spacing="0.06em" fill="{fill}"{extra}>{s}</text>'
-
 a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-11 svgd-part1-11">')
 a('<title id="svgt-part1-11">Fig 1.10 · From assembly to binary · one instruction decoded</title>')
-a('<desc id="svgd-part1-11">mov eax, 5 assembles to five bytes, B8 05 00 00 00. The first byte, B8, is 10111 000 in binary: '
-  'the top five bits mean move a 32-bit value into a register, the bottom three name the register, 000 for EAX. '
-  'The next four bytes are the value 5, stored lowest byte first; read in reverse they are 00 00 00 05. Result: EAX holds 5.</desc>')
+a('<desc id="svgd-part1-11">The three-line loop of Fig 1.9, written on the left and assembled on the right, one line at a time: mov eax, 5 '
+  'becomes B8 05 00 00 00; add eax, 3 becomes 83 C0 03; jmp 0x00 becomes EB F6. Each operation name becomes its fixed code and each '
+  'operand its number, one for one. Below, the first byte opened: B8 is 10111 000 in binary; the top five bits mean move a value '
+  'into a register, the bottom three name the register, 000 for EAX. The value 5 is stored lowest byte first, as 05 00 00 00.</desc>')
 
-# 1 · what you write
-a(label(20, 30, 'YOU WRITE'))
-a('<rect x="20" y="42" width="360" height="52" rx="6" fill="#1a1200" stroke="rgba(212,168,83,0.55)"/>')
-a(f'<text x="200" y="77" text-anchor="middle" {mono} font-size="24" fill="#fff">mov eax, 5</text>')
-a(glow(20, 42, 360, 52, 0.2, 1.4))
-# assembler arrow
-a('<line x1="200" y1="100" x2="200" y2="128" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/><polygon points="194,126 200,136 206,126" fill="rgba(212,168,83,0.8)"/>')
-a(label(214, 122, 'assembler', size=14, fill='rgba(255,255,255,0.5)', extra=' font-style="italic"'))
+a(text(20, 28, 'you write', size=14, fill=MUTED))
+a(text(196, 28, 'the processor runs', size=14, fill=MUTED))
+for k, (op, arg, obytes, abytes) in enumerate(ROWS):
+    y = 46 + k * 46
+    t0 = 1.0 + k * 1.6
+    a(f'<rect x="16" y="{y}" width="118" height="34" rx="5" fill="none" stroke="{EDGE}"/>')
+    a(f'<text x="26" y="{y + 22}" font-family="DM Mono" font-size="15" letter-spacing="0">'
+      f'<tspan fill="{GOLD}">{op}</tspan><tspan fill="{BLUE}">{arg}</tspan></text>')
+    # the assembler's arrow
+    a(f'<path d="M 142 {y + 17} H 180 M 174 {y + 11} L 180 {y + 17} L 174 {y + 23}" fill="none" stroke="{INK}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>')
+    # the bytes, landing one line at a time
+    cells = [(b, GOLD) for b in obytes] + [(b, BLUE) for b in abytes]
+    show = T.anim('opacity', [(0.0, 0.0), (t0 - 0.01, 0.0), (t0 + 0.3, 1.0), (8.8, 1.0), (8.99, 0.0)])
+    g = []
+    for j, (b, col) in enumerate(cells):
+        x = 192 + j * 38
+        g.append(f'<rect x="{x}" y="{y}" width="34" height="34" rx="4" fill="none" stroke="{col}" stroke-width="1.5"/>')
+        g.append(text(x + 17, y + 22, b, anchor='middle', size=14, fill=col, ls='0', role='object'))
+    a(f'<g opacity="0">{show}{"".join(g)}</g>')
+    # the line being assembled gets the gold frame
+    a(f'<rect x="12" y="{y - 4}" width="126" height="42" rx="7" fill="none" stroke="{GOLD}" stroke-width="2.2" opacity="0">'
+      f'{T.anim("opacity", [(0.0, 0.0), (t0 - 0.4, 0.0), (t0 - 0.3, 1.0), (t0 + 1.2, 1.0), (t0 + 1.3, 0.0)])}</rect>')
 
-# 2 · the bytes the CPU reads
-a(label(20, 160, 'IN MEMORY · 5 BYTES'))
-bytes_ = ['B8', '05', '00', '00', '00']
-for i, b in enumerate(bytes_):
-    x = 20 + i * 74
-    op = i == 0
-    a(f'<rect x="{x}" y="172" width="64" height="56" rx="6" fill="{"rgba(212,168,83,0.28)" if op else "rgba(134,168,255,0.18)"}" stroke="{GOLD if op else BLUE}" stroke-width="1.5"/>')
-    a(f'<text x="{x + 32}" y="209" text-anchor="middle" {mono} font-size="24" fill="{GOLD if op else BLUE}">{b}</text>')
-    a(glow(x - 3, 169, 70, 62, 1.5 + i * 0.25, 2.3 + i * 0.25, GOLD if op else BLUE))
-
-# 3 · the opcode byte, bit by bit
-a('<path d="M 52 232 L 52 258" stroke="rgba(212,168,83,0.6)" stroke-width="1.5"/>')
-a(label(66, 254, 'B8, BIT BY BIT', fill='rgba(212,168,83,0.85)'))
-bits = '10111000'
-for i, bt in enumerate(bits):
-    x = 20 + i * 36 + (8 if i >= 5 else 0)
-    gold = i < 5
-    a(f'<rect x="{x}" y="268" width="32" height="36" rx="3" fill="{"rgba(212,168,83,0.5)" if gold else "rgba(236,141,141,0.42)"}" stroke="{GOLD if gold else RED}"/>')
-    a(f'<text x="{x + 16}" y="293" text-anchor="middle" {mono} font-size="18" fill="#0a0a0a" font-weight="500">{bt}</text>')
-a('<path d="M 20 312 V 318 H 196 V 312" fill="none" stroke="rgba(212,168,83,0.8)" stroke-width="1.5"/>')
-a('<path d="M 208 312 V 318 H 312 V 312" fill="none" stroke="rgba(236,141,141,0.85)" stroke-width="1.5"/>')
-a(label(108, 342, 'MOV', anchor='middle', size=18, fill=GOLD))
-a(label(108, 362, 'a value into', anchor='middle', fill=MUTED))
-a(label(108, 380, 'a register', anchor='middle', fill=MUTED))
-a(label(260, 342, 'EAX', anchor='middle', size=18, fill=RED))
-a(label(260, 362, 'register 000', anchor='middle', fill=MUTED))
-a(glow(16, 264, 186, 44, 3.0, 4.0))
-a(glow(204, 264, 112, 44, 3.4, 4.4, RED))
-
-# 4 · the value, stored lowest byte first
-a(label(20, 414, 'THE VALUE · LOW BYTE FIRST'))
-xs_stored = [20 + i * 62 for i in range(4)]      # 05 00 00 00 as stored
-xs_read = [20 + i * 62 for i in range(4)]        # 00 00 00 05 as a number
-for i, b in enumerate(['05', '00', '00', '00']):
-    a(f'<rect x="{xs_stored[i]}" y="426" width="54" height="36" rx="4" fill="rgba(134,168,255,0.18)" stroke="{BLUE}"/>')
-    a(f'<text x="{xs_stored[i] + 27}" y="451" text-anchor="middle" {mono} font-size="18" fill="{BLUE}">{b}</text>')
-for i in range(4):                                # each byte to its mirrored place
-    x1 = xs_stored[i] + 27; x2 = xs_read[3 - i] + 27
-    a(f'<line x1="{x1}" y1="464" x2="{x2}" y2="500" stroke="rgba(134,168,255,0.55)" stroke-width="1.5"/>')
-for i, b in enumerate(['00', '00', '00', '05']):
-    a(f'<rect x="{xs_read[i]}" y="502" width="54" height="36" rx="4" fill="rgba(134,168,255,0.3)" stroke="{BLUE}"/>')
-    a(f'<text x="{xs_read[i] + 27}" y="527" text-anchor="middle" {mono} font-size="18" fill="#fff">{b}</text>')
-a(f'<text x="284" y="529" {mono} font-size="24" fill="{BLUE}">= 5</text>')
-a(glow(16, 422, 250, 120, 4.5, 5.6, BLUE))
-
-# 5 · the result
-a(f'<text x="200" y="584" text-anchor="middle" {mono} font-size="22" fill="#fff">EAX <tspan fill="{GOLD}">←</tspan> 5</text>')
-a(glow(120, 558, 160, 38, 5.7, 7.4))
+# ---------- B8, opened ----------
+a('<line x1="20" y1="196" x2="380" y2="196" stroke="rgba(255,255,255,0.12)"/>')
+a(text(20, 224, 'B8, bit by bit', size=14, fill=GOLD))
+BITS = '10111000'
+for j, b in enumerate(BITS):
+    x = 58 + j * 36
+    col = GOLD if j < 5 else BLUE
+    a(f'<rect x="{x}" y="238" width="32" height="34" rx="4" fill="none" stroke="{col}" stroke-width="1.5"/>')
+    a(text(x + 16, 261, b, anchor='middle', size=16, fill=col, ls='0', role='object'))
+a(f'<path d="M 58 282 v 6 H {58 + 5 * 36 - 4} v -6" fill="none" stroke="{GOLD}" stroke-width="1.4"/>')
+a(text(58 + (5 * 36 - 4) / 2, 308, 'move a value', anchor='middle', size=14, fill=GOLD))
+a(text(58 + (5 * 36 - 4) / 2, 325, 'into a register', anchor='middle', size=14, fill=GOLD))
+a(f'<path d="M {58 + 5 * 36} 282 v 6 H {58 + 8 * 36 - 4} v -6" fill="none" stroke="{BLUE}" stroke-width="1.4"/>')
+a(text(58 + 5 * 36 + (3 * 36 - 4) / 2, 308, 'EAX', anchor='middle', size=14, fill=BLUE))
+a(text(200, 370, '05 00 00 00 is 5, lowest byte first', anchor='middle', size=14, fill=INK))
 a('</svg>')
 svg = '\n'.join(o)
 
-caption = ('One instruction as the CPU sees it: the first byte says what to do and to which register, '
-           'the next four hold the value, lowest byte first.')
+caption = ('The assembler swaps each name for its fixed code, one for one: mov eax becomes B8, add eax becomes 83 C0, jmp becomes EB, '
+           'and each operand becomes its number. Inside B8, five bits name the operation and three name the register.')
 how = '''<details class="fig-how">
         <summary>How it works</summary>
         <ol>
           <li><b>Opcode.</b> B8 is 10111 000. The top five bits mean “move a 32-bit value into a register”; the bottom three name the register, and 000 is EAX.</li>
           <li><b>Value.</b> x86 is little-endian: it stores the lowest byte first, so 5 sits in memory as 05&nbsp;00&nbsp;00&nbsp;00.</li>
+          <li><b>The jump.</b> F6 is not an address but a distance: minus ten bytes, counted from the end of the jump, which lands back on 0x00.</li>
           <li><b>Decode.</b> The decoder is a circuit that recognises these bit patterns and routes them to the right units; nothing is looked up by name.</li>
         </ol>
       </details>'''
@@ -98,14 +79,4 @@ card = f'''<div class="diagram-card fig-v2" id="fig-1-10">
       {how}
     </div>'''
 if __name__ == '__main__':
-    from figlib import splice
     splice('part-1', 'fig-1-10', 'ch1-cpu-p6', card)
-    raise SystemExit
-
-    import re
-    p = '/Users/yki/Documents/github/atheric/under-the-code/public/part-1.html'
-    s = open(p).read()
-    m = re.search(r'<div class="diagram-card[^"]*" id="fig-1-10">[\s\S]*?</svg>\s*<p id="ch1-cpu-p6"[\s\S]*?</p>\s*(?:<details class="fig-how">[\s\S]*?</details>\s*)?</div>', s)
-    assert m, 'fig-1-10 not found'
-    s = s[:m.start()] + card + s[m.end():]
-    open(p, 'w').write(s); print('fig 1.10 written', len(svg), 'bytes svg')
