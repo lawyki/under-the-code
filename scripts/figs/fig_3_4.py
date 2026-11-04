@@ -18,7 +18,7 @@ REGS = ['RDI', 'RSI', 'RDX', 'RCX', 'R8', 'R9']
 AX = lambda k: 52 + k * 50                     # argument chips
 BOX = lambda k: (20 + (k % 3) * 124, 104 + (k // 3) * 56)
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32 svgd-part1-32">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32 svgd-part1-32"{T.steps([(3.4, 'a to c'), (6.2, 'd to f'), (7.2, 'g'), (9.0, 'result')])}>')
 a('<title id="svgt-part1-32">Fig 3.4 · System V calling convention · which register holds which argument</title>')
 a('<desc id="svgd-part1-32">A call work(a, b, c, d, e, f, g) with seven arguments. Under the System V AMD64 convention the first six go, in '
   'order, into the registers RDI, RSI, RDX, RCX, R8 and R9; the seventh is passed on the stack. The function\'s result comes back '

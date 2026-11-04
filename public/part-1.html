@@ -3033,7 +3033,7 @@
 
     <div class="diagram-card fig-v2" id="fig-3-1">
       <div class="diagram-label">Fig 3.1&nbsp;· Same operation&nbsp;· three ISAs&nbsp;· three encodings</div>
-      <svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29">
+      <svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29" data-beats="1.5 3.7 5.9" data-beat-names="opcode|register|the 5">
 <title id="svgt-part1-29">Fig 3.1 · Same operation · three ISAs · three encodings</title>
 <desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, each drawn as the 32 bits it uses, with its fields to scale. x86-64 add rax, 5 is the bytes 48 83 C0 05: a 64-bit prefix, the opcode, a byte naming the register rax, and 5. ARM64 add x0, x0, 5 is 0x91001400: the opcode first, then a shift bit, then 5, then the two register numbers. RISC-V addi a0, a0, 5 (addi: add a number) is 0x00550513: 5 first and the opcode last. The same three ingredients sit in different places, so another chip reads each pattern differently.</desc>
 <rect x="24" y="18" width="16" height="16" rx="3" fill="#d4a853"/>
@@ -3089,7 +3089,6 @@
 <rect x="300" y="276" width="75" height="34" rx="3" fill="none" stroke="#d4a853" stroke-width="1.8"><animate attributeName="opacity" values="1;0;1" keyTimes="0.000000;0.080000;0.320000" calcMode="discrete" dur="7.5s" repeatCount="indefinite"/></rect>
 <rect x="300" y="276" width="75" height="34" rx="3" fill="none" stroke="#d4a853" stroke-width="3.2" opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0.000000;0.080000;0.320000" calcMode="discrete" dur="7.5s" repeatCount="indefinite"/></rect>
 <text x="376" y="330" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">0x00550513</text>
-<text x="24" y="362" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ece6da">32 bits each, three different orders</text>
 </svg>
       <p id="ch3-isa-p3" class="diagram-caption">"Add 5 to a register" in the three instruction sets that run the world: the same three ingredients, an opcode, a register and the number 5, packed into 32 bits in three different orders.</p>
       <details class="fig-how">
@@ -3112,7 +3111,7 @@
 
     <div class="diagram-card fig-v2" id="fig-3-2">
       <div class="diagram-label">Fig 3.2&nbsp;· Rosetta 2&nbsp;· an Intel app, translated once for an ARM chip</div>
-      <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-30 svgd-part1-30">
+      <svg viewBox="0 0 400 404" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-30 svgd-part1-30" data-beats="3.4 6.2 8.2 11.6" data-beat-names="Intel|load|add|store">
 <title id="svgt-part1-30">Fig 3.2 · Rosetta 2 · an Intel app, translated once for an ARM chip</title>
 <desc id="svgd-part1-30">One value, 5, in memory. Above, the Intel app adds 3 to it where it sits, in one instruction, and memory holds 8. Rosetta 2 translates the app once, on first launch. Below, the ARM translation cannot add in memory, so the one line becomes three: ldur loads the 5 into register w8, add makes it 8 there, and stur stores the 8 back into memory. The whole three-line app becomes six ARM lines.</desc>
 <text x="20" y="28" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ece6da">Intel: one line</text>
@@ -3153,7 +3152,6 @@
 <text x="352" y="308" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">store</text>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.083333;0.416667;0.491667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 94.00;0 94.00;0 0.00;0 0.00;0 94.00;0 94.00" keyTimes="0.000000;0.082500;0.083333;0.416667;0.491667;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="304" cy="262" r="12" fill="#141414" stroke="#d4a853" stroke-width="1.6"/><text data-role="object" x="304" y="267" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">5</text></g></g>
 <g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.083333;0.783333;0.875000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><g><animateTransform attributeName="transform" type="translate" values="0 -94.00;0 -94.00;0 0.00;0 0.00;0 -94.00;0 -94.00" keyTimes="0.000000;0.082500;0.083333;0.783333;0.875000;1.000000" dur="12s" repeatCount="indefinite"/><circle cx="344" cy="356" r="12" fill="#141414" stroke="#d4a853" stroke-width="1.6"/><text data-role="object" x="344" y="361" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">8</text></g></g>
-<text x="200" y="396" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">the app's 3 Intel lines become 6 ARM lines</text>
 </svg>
       <p id="ch3-isa-p5" class="diagram-caption">Intel adds 3 to a value in memory in one line; ARM cannot add in memory, so Rosetta 2 turns that line into three: <code>ldur</code> loads it into a register, <code>add</code> adds 3, <code>stur</code> stores it back. The whole three-line app becomes six ARM lines.</p>
       <details class="fig-how">
@@ -3212,7 +3210,7 @@
 
     <div class="diagram-card fig-v2" id="fig-3-3">
       <div class="diagram-label">Fig 3.3&nbsp;· The x86-64 register file&nbsp;· one register, five names</div>
-      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31">
+      <svg viewBox="0 0 400 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31" data-beats="2.3 4.5 7.5" data-beat-names="start|mov al|mov eax">
 <title id="svgt-part1-31">Fig 3.3 · The x86-64 register file · one register, five names</title>
 <desc id="svgd-part1-31">RAX holds eight bytes. Its lower four bytes are also called EAX (1985), the lower two AX (1978), and those two bytes AH and AL; RAX itself dates from 2003. Starting from 11 22 33 44 55 66 77 88, mov al, 0xFF changes only the lowest byte (only AL changes). mov eax, 1 writes the lower half and clears the upper half too: 00 00 00 00 00 00 00 01.</desc>
 <path d="M 40 44 v -6 H 356 v 6" fill="none" stroke="#ece6da" stroke-width="1.5"/>
@@ -3228,7 +3226,6 @@
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.187438;0.187500;0.387500" calcMode="discrete" dur="8s" repeatCount="indefinite"/><rect x="40" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="58" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">11</text><rect x="80" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="98" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">22</text><rect x="120" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="138" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">33</text><rect x="160" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="178" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">44</text><rect x="200" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="218" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">55</text><rect x="240" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="258" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">66</text><rect x="280" y="184" width="36" height="34" rx="4" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.4"/><text data-role="object" x="298" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">77</text><rect x="320" y="184" width="36" height="34" rx="4" fill="none" stroke="#d4a853" stroke-width="2.2"/><text data-role="object" x="338" y="206" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">FF</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.187438;0.187500;0.637500" calcMode="discrete" dur="8s" repeatCount="indefinite"/><text x="40" y="246" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">mov eax, 1: the upper half cleared</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.187438;0.187500;0.662500" calcMode="discrete" dur="8s" repeatCount="indefinite"/><rect x="40" y="254" width="36" height="34" rx="4" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><text data-role="object" x="58" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">00</text><rect x="80" y="254" width="36" height="34" rx="4" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><text data-role="object" x="98" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">00</text><rect x="120" y="254" width="36" height="34" rx="4" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><text data-role="object" x="138" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">00</text><rect x="160" y="254" width="36" height="34" rx="4" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><text data-role="object" x="178" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ec8d8d">00</text><rect x="200" y="254" width="36" height="34" rx="4" fill="none" stroke="#d4a853" stroke-width="2.2"/><text data-role="object" x="218" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">00</text><rect x="240" y="254" width="36" height="34" rx="4" fill="none" stroke="#d4a853" stroke-width="2.2"/><text data-role="object" x="258" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">00</text><rect x="280" y="254" width="36" height="34" rx="4" fill="none" stroke="#d4a853" stroke-width="2.2"/><text data-role="object" x="298" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">00</text><rect x="320" y="254" width="36" height="34" rx="4" fill="none" stroke="#d4a853" stroke-width="2.2"/><text data-role="object" x="338" y="276" text-anchor="middle" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#d4a853">01</text></g>
-<text x="40" y="316" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">a 32-bit write zeroes the top 32 bits</text>
 </svg>
       <p id="ch3-registers-p3" class="diagram-caption">One register, five names: RAX (2003) contains EAX (1985), which contains AX (1978), split into AH and AL. Writing AL changes only that byte; writing EAX also clears the upper half, a rule of x86-64.</p>
       <details class="fig-how">
@@ -3264,7 +3261,7 @@
 
     <div class="diagram-card fig-v2" id="fig-3-4">
       <div class="diagram-label">Fig 3.4&nbsp;· System V calling convention&nbsp;· which register holds which argument</div>
-      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32 svgd-part1-32">
+      <svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-32 svgd-part1-32" data-beats="4.8 7.6 8.6 10.4" data-beat-names="a to c|d to f|g|result">
 <title id="svgt-part1-32">Fig 3.4 · System V calling convention · which register holds which argument</title>
 <desc id="svgd-part1-32">A call work(a, b, c, d, e, f, g) with seven arguments. Under the System V AMD64 convention the first six go, in order, into the registers RDI, RSI, RDX, RCX, R8 and R9; the seventh is passed on the stack. The function's result comes back in RAX and lands in r.</desc>
 <text x="20" y="28" text-anchor="start" font-family="DM Mono" font-size="15" letter-spacing="0" fill="#ece6da">int r = work(a, b, c, d, e, f, g);</text>
@@ -3343,11 +3340,11 @@
 
     <div class="diagram-card fig-v2" id="fig-3-5">
       <div class="diagram-label">Fig 3.5&nbsp;· A process's virtual address space</div>
-      <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-33 svgd-part1-33">
+      <svg viewBox="0 0 400 428" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-33 svgd-part1-33" data-beats="7.3 8.6 0.2 2.8" data-beat-names="main|f|g|return">
 <title id="svgt-part1-33">Fig 3.5 · A process's virtual address space</title>
 <desc id="svgd-part1-33">A column of addresses, highest at the top. The kernel's part is off limits. Below it the stack, which grows downward: frames for main, f and g are pushed as the calls happen (main calls f, f calls g) and popped as they return, RSP marking the bottom edge. Far below, the heap grows upward as memory is allocated. Below the heap, the data region of global variables, and at the bottom the program's machine code, read-only.</desc>
 <text x="60" y="22" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">high addresses</text>
-<text x="60" y="412" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">low addresses</text>
+<text x="60" y="420" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">low addresses</text>
 <rect x="60" y="32" width="210" height="50" rx="5" fill="none" stroke="#ec8d8d" stroke-width="1.5"/>
 <text x="72" y="53" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#ec8d8d">kernel</text>
 <text x="72" y="71" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">off limits</text>
@@ -3452,7 +3449,7 @@ main:
 
     <div class="diagram-card fig-v2" id="fig-3-6">
       <div class="diagram-label">Fig 3.6&nbsp;· The stack during a function call</div>
-      <svg viewBox="0 0 400 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34">
+      <svg viewBox="0 0 400 318" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34" data-beats="8 10 0 3.2 5.4" data-beat-names="main|call|in add|ret|back">
 <title id="svgt-part1-34">Fig 3.6 · The stack during a function call</title>
 <desc id="svgd-part1-34">Left, the code: main, whose call add is followed by pop rbp, and add, which saves rbp, adds, restores rbp and returns. RIP, the register that holds the next instruction to run, is drawn as a frame on that line. Right, the stack, growing down, with RSP, the stack pointer, at its top. main's frame (the saved rbp of main's caller, then main's local variables) sits on the stack. call add pushes the return address, the next line of main, and jumps into add. add pushes main's rbp; on the way out pop rbp removes it, and ret pops the return address into RIP, so execution continues in main at the next line.</desc>
 <text x="40" y="30" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="rgba(255,255,255,0.6)">main</text>
@@ -3472,7 +3469,6 @@ main:
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.133333;0.583333;0.916667" calcMode="discrete" dur="12s" repeatCount="indefinite"/><rect x="236" y="164" width="146" height="32" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.6"/><text x="248" y="185" text-anchor="start" font-family="DM Mono" font-size="14" letter-spacing="0" fill="#86a8ff">main's rbp</text></g>
 <g><animateTransform attributeName="transform" type="translate" values="0 80.00;0 80.00;0 40.00;0 40.00;0 0.00;0 0.00;0 0.00;0 0.00;0 0.00;0 40.00;0 40.00;0 80.00;0 80.00" keyTimes="0.000000;0.133333;0.154167;0.333333;0.354167;0.558333;0.582500;0.583333;0.750000;0.770833;0.916667;0.937500;1.000000" dur="12s" repeatCount="indefinite"/><path d="M 230 100 l -10 -7 v 14 z" fill="#ece6da"/><text x="214" y="105" text-anchor="end" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ece6da">RSP</text></g>
 <g opacity="0"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0.000000;0.333333;0.583333;0.750000" calcMode="discrete" dur="12s" repeatCount="indefinite"/><path d="M 236 140 C 196 140 200 86 176 86" fill="none" stroke="#d4a853" stroke-width="1.6" stroke-dasharray="4 4"/><path d="M 174 86 l 8 -5 v 10 z" fill="#d4a853"/></g>
-<text x="200" y="306" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0" fill="rgba(255,255,255,0.6)">call saves where to come back; ret goes there</text>
 </svg>
       <p id="ch3-call-p5" class="diagram-caption">The stack and RIP through one call of <code>add</code>, from <code>call</code> to <code>ret</code>.</p>
       <details class="fig-how">

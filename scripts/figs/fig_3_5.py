@@ -6,7 +6,7 @@
 # edge; a block of heap appears as the program allocates. t=0 is the deepest moment: main, f and g on the stack.
 from figlib import Timeline, text, splice, GOLD, BLUE, RED, GREEN, MUTED
 
-W, H = 400, 420
+W, H = 400, 428
 INK, EDGE = '#ece6da', 'rgba(255,255,255,0.55)'
 D = 10.0
 T = Timeline(D, shift=4.2)
@@ -16,7 +16,7 @@ def vis(spans):
     return T.discrete('opacity', sorted(pts))
 CX0, CW = 60, 210                               # the column
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-33 svgd-part1-33">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-33 svgd-part1-33"{T.steps([(1.5, 'main'), (2.8, 'f'), (4.4, 'g'), (7.0, 'return')])}>')
 a("<title id=\"svgt-part1-33\">Fig 3.5 · A process's virtual address space</title>")
 a('<desc id="svgd-part1-33">A column of addresses, highest at the top. The kernel\'s part is off limits. Below it the stack, which grows '
   'downward: frames for main, f and g are pushed as the calls happen (main calls f, f calls g) and popped as they return, RSP marking '
@@ -24,7 +24,7 @@ a('<desc id="svgd-part1-33">A column of addresses, highest at the top. The kerne
   'at the bottom the program\'s machine code, read-only.</desc>')
 
 a(text(CX0, 22, 'high addresses', size=14, fill=MUTED))
-a(text(CX0, 412, 'low addresses', size=14, fill=MUTED))
+a(text(CX0, 420, 'low addresses', size=14, fill=MUTED))
 def region(y, h, label, col, dash=False, sub=None):
     d = ' stroke-dasharray="4 4"' if dash else ''
     a(f'<rect x="{CX0}" y="{y}" width="{CW}" height="{h}" rx="5" fill="none" stroke="{col}" stroke-width="1.5"{d}/>')

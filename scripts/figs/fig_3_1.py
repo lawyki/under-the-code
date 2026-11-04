@@ -15,7 +15,7 @@ ISAS = [('x86-64', 'add rax, 5', '48 83 C0 05', [(8, 'x', '48'), (8, 'op', '83')
         ('ARM64', 'add x0, x0, 5', '0x91001400', [(9, 'op', ''), (1, 'x', ''), (12, 'num', '5'), (5, 'reg', 'x0'), (5, 'reg', 'x0')]),
         ('RISC-V', 'addi a0, a0, 5', '0x00550513', [(12, 'num', '5'), (5, 'reg', 'a0'), (3, 'x', ''), (5, 'reg', 'a0'), (7, 'op', '')])]
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-29 svgd-part1-29"{T.steps([(1.5, 'opcode'), (3.7, 'register'), (5.9, 'the 5')])}>')
 a('<title id="svgt-part1-29">Fig 3.1 · Same operation · three ISAs · three encodings</title>')
 a('<desc id="svgd-part1-29">"Add 5 to a register" in three instruction sets, each drawn as the 32 bits it uses, with its fields to scale. '
   'x86-64 add rax, 5 is the bytes 48 83 C0 05: a 64-bit prefix, the opcode, a byte naming the register rax, and 5. ARM64 add x0, x0, 5 '
@@ -54,7 +54,6 @@ for k, (isa, asm, hexs, fields) in enumerate(ISAS):
             a(text(x + w / 2, y + 32, lab, anchor='middle', size=14, fill=INK if role == 'x' else col, ls='0', role='object'))
         x += w
     a(text(376, y + 64, hexs, anchor='end', size=14, fill=MUTED, ls='0'))
-a(text(24, 362, '32 bits each, three different orders', size=14, fill=INK))
 a('</svg>')
 svg = '\n'.join(o)
 

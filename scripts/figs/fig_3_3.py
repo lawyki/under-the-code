@@ -17,7 +17,7 @@ def vis(spans):
     for t0, t1 in spans: pts += [(t0, 1), (t1, 0)]
     return T.discrete('opacity', sorted(pts))
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-31 svgd-part1-31"{T.steps([(0.8, 'start'), (3.0, 'mov al'), (6.0, 'mov eax')])}>')
 a('<title id="svgt-part1-31">Fig 3.3 · The x86-64 register file · one register, five names</title>')
 a('<desc id="svgd-part1-31">RAX holds eight bytes. Its lower four bytes are also called EAX (1985), the lower two AX (1978), and those two '
   'bytes AH and AL; RAX itself dates from 2003. Starting from 11 22 33 44 55 66 77 88, mov al, 0xFF changes only the lowest byte '
@@ -44,7 +44,6 @@ a(f'<g opacity="0">{vis([(1.4, D)])}' + text(X0, 176, 'mov al, 0xFF: only AL cha
 row(184, ['11', '22', '33', '44', '55', '66', '77', 'FF'], {7: GOLD}, 1.6)
 a(f'<g opacity="0">{vis([(3.6, D)])}' + text(X0, 246, 'mov eax, 1: the upper half cleared', size=14, fill=RED, ls='0') + '</g>')
 row(254, ['00', '00', '00', '00', '00', '00', '00', '01'], {0: RED, 1: RED, 2: RED, 3: RED, 4: GOLD, 5: GOLD, 6: GOLD, 7: GOLD}, 3.8)
-a(text(X0, 316, 'a 32-bit write zeroes the top 32 bits', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 

@@ -23,7 +23,7 @@ def steps(pairs):
     pts.append((D - 0.3, prev)); pts.append((D - 0.01, pairs[0][1]))
     return pts
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-34 svgd-part1-34"{T.steps([(1.0, 'main'), (3.0, 'call'), (5.0, 'in add'), (8.2, 'ret'), (10.4, 'back')])}>')
 a('<title id="svgt-part1-34">Fig 3.6 · The stack during a function call</title>')
 a('<desc id="svgd-part1-34">Left, the code: main, whose call add is followed by pop rbp, and add, which saves rbp, adds, restores rbp and '
   'returns. RIP, the register that holds the next instruction to run, is drawn as a frame on that line. Right, the stack, growing '
@@ -67,7 +67,6 @@ a(f'<g>{T.translate([(t, v - SY(1)) for t, v in rsp], axis="y")}'
 # the return address names main's next line
 a(f'<g opacity="0">{vis([(2.0, 9.0)])}<path d="M {SX} {SY(2) + 16} C 196 {SY(2) + 16} 200 {LY[1]} 176 {LY[1]}" fill="none" stroke="{GOLD}" stroke-width="1.6" stroke-dasharray="4 4"/>'
   f'<path d="M 174 {LY[1]} l 8 -5 v 10 z" fill="{GOLD}"/></g>')
-a(text(200, 306, 'call saves where to come back; ret goes there', anchor='middle', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 

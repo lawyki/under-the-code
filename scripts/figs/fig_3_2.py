@@ -19,7 +19,7 @@ def val(x, y, s, col, spans, size=18):
     return (f'<text data-role="object" x="{x}" y="{y}" text-anchor="middle" font-family="DM Mono" font-size="{size}" '
             f'fill="{col}" opacity="0">{vis(spans)}{s}</text>')
 o = []; a = o.append
-a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-30 svgd-part1-30">')
+a(f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-30 svgd-part1-30"{T.steps([(2.4, 'Intel'), (5.2, 'load'), (7.2, 'add'), (10.6, 'store')])}>')
 a('<title id="svgt-part1-30">Fig 3.2 · Rosetta 2 · an Intel app, translated once for an ARM chip</title>')
 a('<desc id="svgd-part1-30">One value, 5, in memory. Above, the Intel app adds 3 to it where it sits, in one instruction, and memory holds 8. '
   'Rosetta 2 translates the app once, on first launch. Below, the ARM translation cannot add in memory, so the one line becomes three: '
@@ -70,7 +70,6 @@ def trip(x, y0, y1, s, t0, t1):
       f'<text data-role="object" x="{x}" y="{y0 + 5}" text-anchor="middle" font-family="DM Mono" font-size="14" fill="{GOLD}">{s}</text></g></g>')
 trip(304, 262, 356, '5', 4.0, 4.9)
 trip(344, 356, 262, '8', 8.4, 9.5)
-a(text(200, 396, 'the app\'s 3 Intel lines become 6 ARM lines', anchor='middle', size=14, fill=MUTED, ls='0'))
 a('</svg>')
 svg = '\n'.join(o)
 
