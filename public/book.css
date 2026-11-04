@@ -2000,3 +2000,9 @@
   .liquid-bg::before, .liquid-bg::after { animation: none !important; }
   /* the rail's unmarked dots no longer pulse forever (each pulse repainted its glow): they rest at the pulse's middle */
   .mark-dot, .mark-dot::before, .mark-dot::after { animation: none !important; }
+  /* no entrance animation as blocks scroll in (2026-11-04: the largest share of dropped frames on scroll) */
+  .reveal, .reveal.revealed { opacity: 1 !important; transform: none !important; transition: none !important; }
+  /* each figure card is its own island: its animation never invalidates the page around it (sizes unchanged) */
+  .diagram-card, .light-diagram { contain: layout paint style; }
+  /* the fixed and sticky bars get their own layers, so the page scrolling under them does not repaint them */
+  .book-nav, .chapter-nav, .section-rail { will-change: transform; }
