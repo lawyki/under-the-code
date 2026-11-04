@@ -14,6 +14,10 @@ The process grew far heavier than the job. One keep panel alone ran 282 agents (
 
 Everything below records where things stand; read its heavier procedures (panels, review loops, verification rounds) as history and options, not as the default.
 
+## 0b. Part I done on `main` (2026-11-04)
+
+Owner, 2026-11-04: "Can you ONLY do the part I design. Ill take a look and say if it's shit. Push live when you are done. touch only part I." Done on `main`, not on this branch, and deployed: 36 Part I figures (Ch1 1.3 to 1.11 and 1.13 to 1.15, Ch2 2.1, 2.3, 2.4, 2.6 to 2.8, 2.10 to 2.12, Ch3 3.1 to 3.6, the Bridge BR.1 to BR.9), commits 472a493, 71442a1, 4e382d7, c9db127; record `UNDER.md` §4ah and the STATE header on `main`. Each Part I row of `docs/pass-31-ledger.tsv` now says what was drawn, the gate run and its commit. Untouched: 1.1, 1.2, 2.2, 2.5 and the held rows. Not done: merges, the 1.10 cut, BR.3's caption, the open fact items of section 3, Parts II to V. This branch is now behind `main` for `public/part-1.html` and `scripts/figs/` (fig_1_*, fig_2_*, fig_3_*, fig_br_*, figlib.py): take `main`'s versions for Part I when the branches meet. Phase 2 for Parts II to V starts only on the owner's word.
+
 ## 1. Read first, in this order
 
 1. This file.
