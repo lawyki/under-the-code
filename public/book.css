@@ -1978,27 +1978,36 @@
   @media print { .deeper-note, .deeper-pill { display: none !important; } .deeper.is-live { height: auto; } .deeper.is-live .deeper-static { display: flex; } }
   @media (forced-colors: active) { .deeper-pill, .dv-card { border: 1px solid CanvasText; } }
 
-  /* === Figure steps (owner, 2026-11-04) ===
-     Replaces the fullscreen and pause buttons: a row of step buttons under an animated figure (book.js, first
-     module). Second round: no "run" button; with a mouse the row shows only while the pointer is on the figure
-     (its space stays reserved, so nothing moves), the lit button (.is-now) follows the animation, and only the
-     row itself holds the figure. On touch screens the row always shows. */
-  .fig-steps { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px auto 2px; max-width: 460px; }
+  /* === Figure controls (owner, 2026-11-05, third round) ===
+     A media player's row under an animated figure (book.js, first module): play/pause, then one button per step.
+     A step jumps to its moment and pauses; the lit step (.is-now) follows the animation while it plays; the pressed
+     one marks where a paused figure stands. With a mouse the row shows while the pointer is on the figure and
+     always while it is paused (its space stays reserved, so nothing moves); on touch screens it always shows. */
+  .fig-steps { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 10px auto 2px; max-width: 460px; }
   .fig-steps button {
     font: 12px/1 'DM Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.72);
     background: none; border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 0 12px; min-height: 32px; cursor: pointer;
   }
+  .fig-steps .fig-play { width: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; margin-right: 4px; color: #fff; border-color: rgba(255,255,255,0.5); }
+  .fig-steps .fig-play svg { width: 14px; height: 14px; display: block; }
+  .is-paused > .fig-steps .fig-play { color: #111; background: var(--accent, #d4a853); border-color: var(--accent, #d4a853); }
   .fig-steps button:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
-  .fig-steps button.is-now { border-color: rgba(255,255,255,0.6); color: #fff; }
-  .fig-steps button[aria-pressed="true"] { border-color: var(--accent, #d4a853); color: var(--accent, #d4a853); }
+  .is-paused > .fig-steps .fig-play:hover { color: #111; }
+  .fig-steps .fig-step.is-now { border-color: rgba(255,255,255,0.6); color: #fff; }
+  .fig-steps .fig-step[aria-pressed="true"] { border-color: var(--accent, #d4a853); color: var(--accent, #d4a853); }
+  .diagram-card > svg[data-beats], .light-diagram > svg[data-beats] { cursor: pointer; }
+  /* a step is a cut, softened: the picture dips and comes back, it never scrubs through the clock */
+  @keyframes figCut { from { opacity: 0.45; } to { opacity: 1; } }
+  .fig-cut { animation: figCut 0.22s ease-out; }
   @media (hover: hover) and (pointer: fine) {
     .fig-steps { opacity: 0; transition: opacity 0.18s ease; }
     .diagram-card:hover > .fig-steps, .light-diagram:hover > .fig-steps,
-    .fig-steps:has(:focus-visible), .is-stepping > .fig-steps { opacity: 1; }
-    .fig-steps button { transition: border-color 0.2s ease, color 0.2s ease; }
+    .fig-steps:has(:focus-visible), .is-paused > .fig-steps { opacity: 1; }
+    .fig-steps button { transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease; }
   }
-  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) {
     .fig-steps, .fig-steps button { transition: none; }
+    .fig-cut { animation: none; }
   }
   /* while the page scrolls the figures on screen hold still, their CSS animations too (book.js pauser) */
   .fig-hush, .fig-hush * { animation-play-state: paused !important; }
