@@ -1979,19 +1979,32 @@
   @media (forced-colors: active) { .deeper-pill, .dv-card { border: 1px solid CanvasText; } }
 
   /* === Figure steps (owner, 2026-11-04) ===
-     Replaces the fullscreen and pause buttons: a row of step buttons under an animated figure. Hover (mouse)
-     or a press hands the figure to the reader; "run" hands it back (book.js, first module). */
+     Replaces the fullscreen and pause buttons: a row of step buttons under an animated figure (book.js, first
+     module). Second round: no "run" button; with a mouse the row shows only while the pointer is on the figure
+     (its space stays reserved, so nothing moves), the lit button (.is-now) follows the animation, and only the
+     row itself holds the figure. On touch screens the row always shows. */
   .fig-steps { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 10px auto 2px; max-width: 460px; }
   .fig-steps button {
     font: 12px/1 'DM Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.72);
     background: none; border: 1px solid rgba(255,255,255,0.28); border-radius: 999px; padding: 0 12px; min-height: 32px; cursor: pointer;
   }
   .fig-steps button:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+  .fig-steps button.is-now { border-color: rgba(255,255,255,0.6); color: #fff; }
   .fig-steps button[aria-pressed="true"] { border-color: var(--accent, #d4a853); color: var(--accent, #d4a853); }
-  .fig-steps .fig-run { border-style: dashed; }
+  @media (hover: hover) and (pointer: fine) {
+    .fig-steps { opacity: 0; transition: opacity 0.18s ease; }
+    .diagram-card:hover > .fig-steps, .light-diagram:hover > .fig-steps,
+    .fig-steps:has(:focus-visible), .is-stepping > .fig-steps { opacity: 1; }
+    .fig-steps button { transition: border-color 0.2s ease, color 0.2s ease; }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+    .fig-steps, .fig-steps button { transition: none; }
+  }
+  /* while the page scrolls the figures on screen hold still, their CSS animations too (book.js pauser) */
+  .fig-hush, .fig-hush * { animation-play-state: paused !important; }
   .diagram-card .fs-button, .diagram-card .fs-close, .diagram-card .fig-pause,
   .light-diagram .fs-button, .light-diagram .fs-close, .light-diagram .fig-pause { display: none !important; }
-  .diagram-card > svg[data-beats] { cursor: pointer; }
+  @media (hover: none) { .diagram-card > svg[data-beats] { cursor: pointer; } }
 
   /* off-screen figure cards stop their CSS animations too (book.js sets .fig-offscreen) */
   .fig-offscreen, .fig-offscreen * { animation-play-state: paused !important; }

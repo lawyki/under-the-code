@@ -1,9 +1,11 @@
 // Figures (owner, 2026-11-04: the fullscreen and pause buttons removed; "the intelligent interaction pays for
 // them"). A figure plays by itself while it is in view (the off-screen pauser below). One whose <svg> carries
-// data-beats (SMIL times) and data-beat-names (|-separated) gets a row of step buttons under it: hovering the
-// figure with a mouse, or pressing a step, hands it to the reader, who steps through those moments; moving the
-// mouse away, or pressing "run", hands it back. A figure the reader holds is marked data-user-paused, which the
-// off-screen pauser respects. Under reduced motion figures stay still and the steps still work.
+// data-beats (SMIL times) and data-beat-names (|-separated) gets a row of step buttons under it (owner,
+// 2026-11-04, second round): with a mouse the row shows only while the pointer is on the figure, and the lit
+// button follows the animation. The figure keeps running under the pointer; only the button row holds it, and
+// a press glides it to that moment. Leaving the row lets it run on from there. On touch the row always shows;
+// a tap on a step holds it there, a tap on the lit step lets it run on. A figure the reader holds is marked
+// data-user-paused, which the pauser below respects. Under reduced motion figures stay still and steps work.
 (function () {
   'use strict';
   document.querySelectorAll('.diagram-card, .light-diagram').forEach(card => {
@@ -22,63 +24,106 @@
       b.className = 'fig-step';
       b.textContent = names[i] || String(i + 1);
       b.setAttribute('aria-pressed', 'false');
-      b.addEventListener('click', e => { e.stopPropagation(); hold(); show(i); });
       bar.appendChild(b);
       return b;
     });
-    const run = document.createElement('button');
-    run.type = 'button';
-    run.className = 'fig-run';
-    run.textContent = 'run';
-    run.setAttribute('aria-label', 'Run the figure by itself');
-    run.addEventListener('click', e => { e.stopPropagation(); release(true); });
-    bar.appendChild(run);
     svg.insertAdjacentElement('afterend', bar);
-    let current = -1, glide = 0, enterT = 0, leaveT = 0;
+    // the figure's loop: the longest repeating animation that starts with the figure (the beats sit inside it)
+    let cycle = 0;
+    svg.querySelectorAll('animate, animateTransform, animateMotion').forEach(a => {
+      if (a.hasAttribute('begin') || a.getAttribute('repeatCount') !== 'indefinite') return;
+      const d = parseFloat(a.getAttribute('dur')); if (d > cycle) cycle = d;
+    });
+    if (!cycle) cycle = Math.max(...times) + 1;
+    const order = times.map((t, i) => [t, i]).sort((a, b) => a[0] - b[0]);
+    // the step the figure is in now: the last beat its clock has passed in this loop
+    function stepAt(t) {
+      const ph = ((t % cycle) + cycle) % cycle;
+      let k = order[order.length - 1][1];
+      for (const [bt, i] of order) if (bt <= ph + 0.01) k = i;
+      return k;
+    }
+    let current = -1, now = -1, glide = 0, leaveT = 0, live = 0, lastPointer = 'mouse';
+    function markNow(i) {
+      if (i === now) return;
+      if (now >= 0) steps[now].classList.remove('is-now');
+      now = i;
+      if (i >= 0) steps[i].classList.add('is-now');
+    }
+    // while the reader is on the figure, the buttons follow the animation: the lit one is where it is now
+    function follow() { markNow(stepAt(svg.getCurrentTime())); }
+    function startFollow() { if (!live) { follow(); live = setInterval(follow, 200); } }
+    function stopFollow() { clearInterval(live); live = 0; }
     function hold() {
       if (card.dataset.userPaused === '1') return;
       card.dataset.userPaused = '1';
       card.classList.add('is-stepping');
       svg.pauseAnimations();                 // frozen where it is: no jump
+      follow();
     }
-    // glide the figure's clock to a step instead of cutting to it (eased, at most 0.7 s)
+    // glide the figure's clock to a step, the short way round the loop (eased, at most 0.7 s)
     function show(i) {
       current = i;
       steps.forEach((b, j) => b.setAttribute('aria-pressed', j === i ? 'true' : 'false'));
+      markNow(i);
       cancelAnimationFrame(glide);
-      const from = svg.getCurrentTime(), to = times[i];
+      const from = svg.getCurrentTime();
+      const base = Math.floor(from / cycle) * cycle;
+      let to = base + times[i];
+      if (to - from > cycle / 2 && to - cycle >= 0) to -= cycle;
+      else if (from - to > cycle / 2) to += cycle;
       const span = Math.min(0.7, 0.15 + Math.abs(to - from) * 0.12) * 1000;
       if (reduce.matches || span < 20) { svg.setCurrentTime(to); return; }
       const t0 = performance.now();
-      const tick = now => {
-        const f = Math.min(1, (now - t0) / span), e = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
+      const tick = n => {
+        const f = Math.min(1, (n - t0) / span), e = f < 0.5 ? 2 * f * f : 1 - Math.pow(-2 * f + 2, 2) / 2;
         svg.setCurrentTime(from + (to - from) * e);
         if (f < 1 && card.dataset.userPaused === '1') glide = requestAnimationFrame(tick);
       };
       glide = requestAnimationFrame(tick);
     }
-    function release(force) {
-      if (card.dataset.userPaused !== '1' && !force) return;
+    function release() {
+      if (card.dataset.userPaused !== '1') return;
       cancelAnimationFrame(glide);
       delete card.dataset.userPaused;
       card.classList.remove('is-stepping');
       steps.forEach(b => b.setAttribute('aria-pressed', 'false'));
       current = -1;
-      if (!reduce.matches || force) svg.unpauseAnimations();   // resumes from the moment it was held
+      if (reduce.matches) return;            // reduced motion: it stays where the reader left it
+      if (window.UTCFigures) window.UTCFigures.play(svg);   // resumes from that moment, if on screen and not mid-scroll
+      else svg.unpauseAnimations();
     }
-    // a mouse that rests on the figure takes it; one that only passes over does not
-    card.addEventListener('pointerenter', e => {
+    steps.forEach((b, i) => b.addEventListener('click', e => {
+      e.stopPropagation();
+      // a touch has no hover to leave: tapping the lit step again lets the figure run on
+      if (lastPointer !== 'mouse' && current === i) { release(); return; }
+      hold(); show(i);
+    }));
+    bar.addEventListener('pointerdown', e => { lastPointer = e.pointerType || 'mouse'; });
+    // only the button row takes the figure: the mouse on it holds the picture, leaving it lets it run on
+    bar.addEventListener('pointerenter', e => {
       if (e.pointerType !== 'mouse') return;
       clearTimeout(leaveT);
-      enterT = setTimeout(hold, 140);
+      hold();
     });
-    card.addEventListener('pointerleave', e => {
+    bar.addEventListener('pointerleave', e => {
       if (e.pointerType !== 'mouse') return;
-      clearTimeout(enterT);
-      leaveT = setTimeout(() => release(false), 220);
+      // a button the mouse pressed keeps focus in some browsers: only a keyboard focus keeps the figure held
+      leaveT = setTimeout(() => { if (!bar.querySelector(':focus-visible')) release(); }, 120);
     });
-    // a tap on the picture glides to the next step
-    svg.addEventListener('click', () => { hold(); show((current + 1) % times.length); });
+    // the keyboard: a step in focus holds the figure; focus leaving the row lets it run on
+    bar.addEventListener('focusin', () => { if (bar.querySelector(':focus-visible')) { clearTimeout(leaveT); hold(); } });
+    bar.addEventListener('focusout', e => { if (!bar.contains(e.relatedTarget) && !bar.matches(':hover')) release(); });
+    // the buttons follow the animation only while they can be seen
+    card.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') startFollow(); });
+    card.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { stopFollow(); if (card.dataset.userPaused !== '1') markNow(-1); } });
+    // on a touch screen a tap on the picture glides to the next step
+    let svgPointer = 'mouse';
+    svg.addEventListener('pointerdown', e => { svgPointer = e.pointerType || 'mouse'; });
+    svg.addEventListener('click', () => {
+      if (svgPointer === 'mouse') return;
+      hold(); show(((current < 0 ? now : current) + 1) % times.length);
+    });
   });
 })();
 
@@ -280,7 +325,10 @@
   if (!('IntersectionObserver' in window)) return;
 
   const allSvgs = document.querySelectorAll('svg');
-  const figures = document.querySelectorAll('.diagram-card > svg, .light-diagram > svg');
+  // every picture that animates, not only the figure cards: the chapter heroes and the cover ran unmanaged,
+  // off screen too, for as long as the page was open (2026-11-04, second round)
+  const figures = Array.from(allSvgs).filter(svg =>
+    !svg.parentElement.closest('svg') && svg.querySelector('animate, animateTransform, animateMotion, set'));
   if (!figures.length) return;
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -312,15 +360,44 @@
     if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations();
   });
 
+  // While the page scrolls, the figures on screen hold still (2026-11-04, second round). A running SMIL figure
+  // restyles and repaints on the main thread every frame, and that was the dropped frames left on scroll (in
+  // Chromium 3.3 % of wheel frames with figures running, 0.2 % without; WebKit likewise). They run on from the
+  // same moment 160 ms after the scroll stops, so the reader never loses a step.
+  const visible = new Set();
+  let scrolling = false, scrollT = 0;
+  const canRun = svg => !scrolling && !readerPaused(svg);
+  function play(svg) {
+    if (!visible.has(svg) || !canRun(svg)) return;
+    if (typeof svg.unpauseAnimations === 'function') svg.unpauseAnimations();
+  }
+  window.UTCFigures = { play };
+  function hush(on) {
+    visible.forEach(svg => {
+      const card = cardOf(svg);
+      if (card) card.classList.toggle('fig-hush', on);   // the card's CSS animations hold too
+      if (on) { if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations(); }
+      else play(svg);
+    });
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrolling) { scrolling = true; hush(true); }
+    clearTimeout(scrollT);
+    scrollT = setTimeout(() => { scrolling = false; hush(false); }, 160);
+  }, { passive: true });
+
   const io = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const svg = entry.target;
       const card = svg.closest('.diagram-card, .light-diagram');
-      const forcePlay = card && card.classList.contains('is-fullscreen');
       if (card) card.classList.toggle('fig-offscreen', !entry.isIntersecting);
-      if ((entry.isIntersecting || forcePlay) && !readerPaused(svg)) {
-        if (typeof svg.unpauseAnimations === 'function') svg.unpauseAnimations();
+      if (entry.isIntersecting) {
+        visible.add(svg);
+        if (scrolling && card) card.classList.add('fig-hush');
+        play(svg);
       } else {
+        visible.delete(svg);
+        if (card) card.classList.remove('fig-hush');
         if (typeof svg.pauseAnimations === 'function') svg.pauseAnimations();
       }
     });
