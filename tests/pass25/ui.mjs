@@ -275,57 +275,60 @@ const FIG_STATE = id => document.querySelector('#' + id + ' > svg').animationsPa
 async function firstStepped(page) {
   return page.evaluate(() => { const s = document.querySelector('.diagram-card[id] > svg[data-beats]'); return s ? s.parentElement.id : null; });
 }
-test('figure steps: no fullscreen, pause or run buttons; a step holds the figure, leaving the row hands it back; keyboard', BOTH, async (t, b) => {
+test('figure controls: play/pause and steps; a step jumps to its moment and pauses; play runs on; keyboard', BOTH, async (t, b) => {
   const { ctx } = await newContext(b);
   try {
     const page = await openPart(ctx, 'part-1');
     await settle(page, 600);
-    t.eq(await page.evaluate(() => document.querySelectorAll('.fs-button, .fs-close, .fig-pause').length), 0, 'no fullscreen or pause buttons');
+    t.eq(await page.evaluate(() => document.querySelectorAll('.fs-button, .fs-close, .fig-pause, .fig-run').length), 0, 'no fullscreen, old pause or run buttons');
     const id = await firstStepped(page);
     if (!id) t.skipTest('no figure with steps on part-1');
-    const ok = await page.evaluate(() => [...document.querySelectorAll('.diagram-card > svg[data-beats]')].every(s => { const bar = s.nextElementSibling; return bar && bar.classList.contains('fig-steps') && bar.querySelectorAll('button').length === s.dataset.beats.trim().split(/\s+/).length; }));
-    t.check(ok, 'every figure with steps has its step buttons, and no run button');
+    const ok = await page.evaluate(() => [...document.querySelectorAll('.diagram-card > svg[data-beats]')].every(s => { const bar = s.nextElementSibling; return bar && bar.classList.contains('fig-steps') && bar.querySelectorAll('.fig-play').length === 1 && bar.querySelectorAll('.fig-step').length === s.dataset.beats.trim().split(/\s+/).length; }));
+    t.check(ok, 'every figure with steps has one play/pause button and its step buttons');
     await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center', behavior: 'instant' }), id);
     await settle(page, 700);
     t.eq(await page.evaluate(FIG_STATE, id), false, 'in view: animating');
-    await page.focus('#' + id + ' .fig-steps button:nth-child(2)');
-    await page.keyboard.press('Shift+Tab');   // a keyboard move: the focus is :focus-visible, which holds the figure
+    await page.focus('#' + id + ' .fig-play');
+    await page.keyboard.press('Tab');           // the steps are one tab stop
     await page.keyboard.press('Enter');
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'a step (keyboard): held');
-    t.eq(await page.evaluate(id => document.querySelector('#' + id + ' .fig-steps button:first-child').getAttribute('aria-pressed'), id), 'true', 'the step is marked pressed');
-    await settle(page, 900);   // a step glides to its moment
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'a step (keyboard): paused');
+    t.eq(await page.evaluate(id => document.querySelector('#' + id + ' .fig-step').getAttribute('aria-pressed'), id), 'true', 'the step is marked pressed');
     const want = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[0], id);
-    // the step glides the short way round the figure's loop, so compare the moment within the loop
     const now = await page.evaluate(id => { const s = document.querySelector('#' + id + ' > svg'); let c = 0; s.querySelectorAll('animate, animateTransform, animateMotion').forEach(a => { if (!a.hasAttribute('begin') && a.getAttribute('repeatCount') === 'indefinite') c = Math.max(c, parseFloat(a.getAttribute('dur'))); }); const t = s.getCurrentTime(); return c ? ((t % c) + c) % c : t; }, id);
-    t.check(Math.abs(now - want) < 0.05, 'the figure shows that step', `${now} vs ${want}`);
+    t.check(Math.abs(now - want) < 0.05, 'the figure shows that step at once', `${now} vs ${want}`);
+    await page.keyboard.press('ArrowRight');
+    const want2 = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[1], id);
+    const now2 = await page.evaluate(id => { const s = document.querySelector('#' + id + ' > svg'); let c = 0; s.querySelectorAll('animate, animateTransform, animateMotion').forEach(a => { if (!a.hasAttribute('begin') && a.getAttribute('repeatCount') === 'indefinite') c = Math.max(c, parseFloat(a.getAttribute('dur'))); }); const t = s.getCurrentTime(); return c ? ((t % c) + c) % c : t; }, id);
+    t.check(Math.abs(now2 - want2) < 0.05, 'ArrowRight: the next step', `${now2} vs ${want2}`);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
     await settle(page, 700);
     await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center', behavior: 'instant' }), id);
-    await settle(page, 2000);
-    t.eq(await page.evaluate(FIG_STATE, id), true, 'back in view: still held');
-    await page.evaluate(() => document.activeElement && document.activeElement.blur());
-    await settle(page, 300);
-    t.eq(await page.evaluate(FIG_STATE, id), false, 'focus leaves the row: plays again');
-    const tabbable = await page.evaluate(id => [...document.querySelectorAll('#' + id + ' .fig-steps button')].every(x => x.tabIndex >= 0), id);
-    t.check(tabbable, 'step buttons are tab stops');
+    await settle(page, 1200);
+    t.eq(await page.evaluate(FIG_STATE, id), true, 'back in view: still paused');
+    await page.click('#' + id + ' .fig-play');
+    await settle(page, 200);
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'play: runs on');
     t.check(page.__errors.length === 0, 'no console errors', page.__errors.join(' | '));
   } finally { await ctx.close(); }
 });
-test('figure steps under reduced motion: still, and a step shows its moment', CHR, async (t, b) => {
+test('figure controls under reduced motion: still, a step shows its moment, play when asked', CHR, async (t, b) => {
   const { ctx } = await newContext(b, { reducedMotion: 'reduce' });
   try {
     const page = await openPart(ctx, 'part-1');
     await settle(page, 600);
     const id = await firstStepped(page);
     if (!id) t.skipTest('no figure with steps on part-1');
-    await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center' }), id);
+    await page.evaluate(id => document.getElementById(id).scrollIntoView({ block: 'center', behavior: 'instant' }), id);
     await settle(page, 600);
     t.eq(await page.evaluate(FIG_STATE, id), true, 'reduced motion: still');
-    await page.click('#' + id + ' .fig-steps button:nth-child(2)');
+    await page.click('#' + id + ' .fig-step:nth-of-type(3)');
     const want = await page.evaluate(id => +document.querySelector('#' + id + ' > svg').dataset.beats.split(' ')[1], id);
-    const now = await page.evaluate(id => document.querySelector('#' + id + ' > svg').getCurrentTime(), id);
+    const now = await page.evaluate(id => { const s = document.querySelector('#' + id + ' > svg'); let c = 0; s.querySelectorAll('animate, animateTransform, animateMotion').forEach(a => { if (!a.hasAttribute('begin') && a.getAttribute('repeatCount') === 'indefinite') c = Math.max(c, parseFloat(a.getAttribute('dur'))); }); const t = s.getCurrentTime(); return c ? ((t % c) + c) % c : t; }, id);
     t.check(Math.abs(now - want) < 0.05, 'the step shows its moment', `${now} vs ${want}`);
     t.eq(await page.evaluate(FIG_STATE, id), true, 'and stays still');
+    await page.click('#' + id + ' .fig-play');
+    await settle(page, 200);
+    t.eq(await page.evaluate(FIG_STATE, id), false, 'play when asked: runs');
   } finally { await ctx.close(); }
 });
 
