@@ -20,9 +20,18 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - *Counts on the axis, not on the plot (Fig 1.6).* Labels on lines and dots read as clipping.
 - *Owner-praised figures (1.1, 1.2, 1.7)* are scenes: a real object or one calm mechanism, very few words.
 
+- *Start from what the reader already knows (2026-11-12).* A vacuum tube means nothing to a newcomer; a light bulb beside it says hot, fragile and short-lived without a word (Fig 1.3). A finger on a switch is the transistor's whole idea (Fig 1.4).
+- *The same picture twice, one thing changed (Fig 1.4).* Two identical loops, a finger in one and a signal in the other: the comparison is the explanation.
+- *Follow one real thing through (Fig 1.9).* One instruction's actual bytes moving through the machine teach the four steps; four step names on a wheel do not.
+- *Zoom for big numbers (Fig 1.6).* Each step shrinks the whole previous picture into one tile, with a magnifier callout saying so.
+- *Cause, then effect, as separate steps (Fig 1.5).* Charge appears on the gate; electrons gather; only then does current run.
+
 ## What fails
 
 - Result lines inside the figure ("code and data: one memory, one bus"): the caption, or the picture itself, already says it.
 - Legends, when one colour rule would do.
 - Explanatory sub-labels under names ("off limits to the program", "page → physical").
 - Labels placed on gridlines, wires or dots.
+- Symbols a newcomer has not been taught, used as the picture itself (a circuit schematic, plus and minus signs with no name).
+- Step names arranged in a shape (a wheel of four words): a list in disguise.
+- A dark fill behind a named shape: Gate 1 judges every fill, so shapes are outlines and moving tokens are solid colour.
