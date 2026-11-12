@@ -31,7 +31,7 @@ def hint(x, y):
     and shows it only while the figure waits (card class is-armed, set by live-figures.js)."""
     return (f'<g class="fig-hint" transform="translate({x} {y})">'
             f'<circle class="fig-hint-ring" r="11" fill="none" stroke="{GOLD}" stroke-width="1.8"/>'
-            f'<g class="fig-hint-cursor"><path d="M 0 0 V 18 L 4.9 13.8 L 8.2 21 L 11.4 19.5 L 8.2 12.5 L 14.4 12.3 Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round" paint-order="stroke"/></g></g>')
+            f'<g class="fig-hint-cursor"><path d="M 0 0 V 18 L 4.9 13.8 L 8.2 21 L 11.4 19.5 L 8.2 12.5 L 14.4 12.3 Z" fill="#fff" stroke="{GOLD}" stroke-width="1.5" stroke-linejoin="round"/></g></g>')
 
 def put(fig_id, viewbox, beats, names, title, desc, body, caption=None, strip=None, label=None, attrs=''):
     s = open(PAGE).read()

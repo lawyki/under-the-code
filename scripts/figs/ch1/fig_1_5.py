@@ -15,7 +15,7 @@ b.append(f'<path class="lv-wire" d="{loop}" fill="none" stroke="{GOLD}" stroke-w
 # battery (minus end toward the source: the electrons leave it there)
 b.append(f'<rect x="216" y="{WY-11}" width="44" height="22" rx="3" fill="none" stroke="{INK}" stroke-width="2"/>')
 b.append(f'<rect x="260" y="{WY-5}" width="5" height="10" rx="1" fill="{INK}"/>')
-b.append(text(228, WY + 4.5, '−', 15, MUTE) + text(249, WY + 5, '+', 15, INK))
+b.append(text(228, WY + 4.5, '−', 15, INK) + text(249, WY + 5, '+', 15, INK))
 # lamp
 lx, ly = 140, WY - 30
 b.append(f'<rect x="{lx-7}" y="{WY-14}" width="14" height="15" rx="2" fill="none" stroke="{INK}" stroke-width="2"/>')

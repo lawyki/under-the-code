@@ -11,7 +11,7 @@ b = []
 # memory: fourteen bytes, three instructions
 bytes_ = ['B8', '05', '00', '00', '00', 'BB', '03', '00', '00', '00', '01', 'D8', '', '']
 for i, v in enumerate(bytes_):
-    if i in (1, 2, 3, 4, 6, 7, 8, 9, 11, 13): b.append(line(f'M {MX+i*BW} {MY+3} V {MY+MH-3}', INK, 1, ' stroke-opacity="0.45"'))
+    if i in (1, 2, 3, 4, 6, 7, 8, 9, 11): b.append(line(f'M {MX+i*BW} {MY+3} V {MY+MH-3}', INK, 1, ' stroke-opacity="0.45"'))
     if v: b.append(text(MX + i*BW + BW/2, MY + 16.5, v, 11.5, MUTE))
 for start, n in ((0, 5), (5, 5), (10, 2), (12, 2)):
     b.append(f'<rect x="{MX+start*BW}" y="{MY}" width="{n*BW}" height="{MH}" rx="3" fill="none" stroke="{INK}" stroke-width="1.6"{' stroke-opacity="0.45"' if start == 12 else ''}/>')
