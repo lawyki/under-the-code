@@ -10,7 +10,7 @@ Every Part I figure was screenshotted at each of its steps (375 and 1440 px) and
 
 | Fig | Was | Now |
 |---|---|---|
-| 2.1 | Two steps; the read row showed ternary's wrong +1, boxed in red, even while the level was nowhere near a threshold. | The same two steps. The digit and its box follow the level: 0 in gold until it crosses, +1 in red while it is over. (A noise slider replaced the steps for a few hours and was taken out: the owner's rule, "do not replace a working simple figure with a complex one".) |
+| 2.1 | Two gauges, three thresholds, a noise arrow, two rows of five digits on each side, two steps. The owner, seeing it for the first time: "way too complex". | Redrawn to one look: two boxes (two levels, three levels), a dot in each shaken by the same noise, and one reading under each. The left stays "read as 0"; the right turns red, "read as 2", while its dot is over the line. No steps, no digit rows. |
 | 2.2 | A loop through the four cases. | The reader works Shannon's two switches. Each press opens or closes one; the lamp lights only with both closed, and Boole's circles light with them. The press-here mark sits on the first switch not yet tried. |
 | 2.5 | A loop. | Waits unsolved with the mark on the first adder; one press lets the carry ripple once and the answer stays. The line "carries ripple right to left" went: the caption says it. |
 | 2.7 | "ninth bit" stood under nothing in the first two steps. | The label appears with the bit. |
@@ -28,3 +28,7 @@ Left as they are: 2.3, 2.4, 2.6, 2.8 (each shows its mechanism and has its steps
 ## Checked
 
 Gate 1 still and motion with fullscreen (Chromium): 0 fails on 2.1, 2.2, 2.5, 2.7, 2.9, 2.10, 2.11, 2.12. `clip` part-1 (Chromium and WebKit): 0. The reader-driven figures (2.2, 2.5) driven by touch in Chromium and WebKit, with and without reduced motion. Dashes clean, anchors unchanged.
+
+## After the owner saw the set
+
+"Almost all of them are much too complex. They should be figures, not entire games. They should be places to learn, not things TO learn." The scan's bar ("does it show its mechanism?") was the wrong one: most Pass 28 figures pass it and still take work to read. The bar from here is in `docs/figure-method.md` (one look, one idea). Fig 2.1 is the first redrawn to it; the rest of Part I is to be judged again on that test, figure by figure, with the owner seeing each.
