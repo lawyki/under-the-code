@@ -90,47 +90,6 @@
     }
   };
 
-  // Fig 2.1: noise on a wire. The slider sets how hard both levels are shaken (by the same amount); a digit is misread
-  // while its level is past a threshold. Ternary's margin is 50 units, binary's 100, and the noise tops out at 62.
-  LIVE.noise = function (svg, card) {
-    const dots = Array.from(svg.querySelectorAll('.lv-dot')), bad = Array.from(svg.querySelectorAll('.lv-bad'));
-    const ok = svg.querySelector('.lv-ok'), read = svg.querySelector('.lv-read-t'), arrow = svg.querySelector('.lv-arrow');
-    if (dots.length < 2 || !read || !arrow) return;
-    const TOP = 62, MARGIN = 50;
-    const W = [1, 0.55, 0.7, 0.25, 0.4, 0.1, 0.3, 0.05, 0.35, 0.6, 0.45, 0.85, 0.7, 0.95];   // one shake, six seconds
-    const { input } = slider(svg, { max: 1, step: 0.02, label: 'Noise', left: 'quiet', right: 'noisy' });
-    let amp = 0, raf = 0, visible = !('IntersectionObserver' in window), wrong = null, wrongUntil = 0;
-    function render(now) {
-      let w = 1;                                                // still pictures show the noise at its largest
-      if (!reduce.matches) { const p = (now / 6000 * W.length) % W.length, i = Math.floor(p); w = W[i] + (W[(i + 1) % W.length] - W[i]) * (p - i); }
-      const lift = amp * TOP * w;
-      dots.forEach(d => d.setAttribute('transform', 'translate(0 ' + (-lift).toFixed(1) + ')'));
-      if (lift > MARGIN && !reduce.matches) wrongUntil = now + 1100;              // a misread digit stays misread long enough to be seen
-      const is = lift > MARGIN || now < wrongUntil;
-      if (is !== wrong) {
-        wrong = is;
-        bad.forEach(el => el.setAttribute('opacity', is ? 1 : 0));
-        ok.setAttribute('opacity', is ? 0 : 1);
-        read.textContent = is ? '+1' : '0';
-        read.setAttribute('fill', is ? '#ec8d8d' : '#ece6da');
-      }
-      const top = 164 - amp * TOP;
-      arrow.setAttribute('opacity', amp > 0.12 ? 1 : 0);
-      arrow.setAttribute('d', 'M 200 164 V ' + top.toFixed(1) + ' m -5 6 l 5 -6 l 5 6');
-    }
-    function frame(now) { raf = 0; render(now); if (visible && !reduce.matches && (amp > 0 || now < wrongUntil)) raf = requestAnimationFrame(frame); }
-    const tick = () => { if (!raf) raf = requestAnimationFrame(frame); };
-    input.addEventListener('input', () => {
-      amp = parseFloat(input.value);
-      input.setAttribute('aria-valuetext', Math.round(amp * 100) + ' percent noise');
-      tick();
-    });
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(es => es.forEach(en => { visible = en.isIntersecting; if (visible) tick(); })).observe(card);
-    }
-    render(0);
-  };
-
   // A figure the reader starts with one press (owner, 2026-11-12: "the animation is started by the user, only one
   // press"). It rests at its first moment with the press-here mark showing (.fig-hint in the picture, card class
   // is-armed); a click, a tap or the key button plays data-run="start end" (SMIL seconds) once, then it rests again

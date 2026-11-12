@@ -32,6 +32,8 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - *The reader starts it (2026-11-12, owner: "a pattern, not an exception").* A figure with a cause the reader can supply rests until pressed, with the press-here mark (a ring and a small pointer) on the thing to press. One press runs it once; it then rests again. The reader's finger replaces any drawn hand (Fig 1.4).
 - *Not everything is a figure.* A card is for something the reader works or steps through. A mechanism that only needs to be seen running can sit in the text as a small picture (the loop in Chapter 1, section 04).
 
+- *Simplicity pays (owner, 2026-11-12: "do not replace a working simple figure with a complex one").* When a simple figure works, fix its fault and leave its form. A control, a new motion or a new layer is added only where the simple figure cannot carry the idea. Fig 2.1 is the case: its two steps worked, one row was wrong; the row was fixed and the slider that had replaced the steps was taken out again.
+
 ## What fails
 
 - Result lines inside the figure ("code and data: one memory, one bus"): the caption, or the picture itself, already says it.
