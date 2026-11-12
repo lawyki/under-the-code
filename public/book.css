@@ -2009,6 +2009,20 @@
     .fig-steps, .fig-steps button { transition: none; }
     .fig-cut { animation: none; }
   }
+  /* === Live figures (owner, 2026-11-12) ===
+     A figure the reader drives (live-figures.js): one slider under the picture sets one quantity. */
+  .fig-live { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px auto 2px; max-width: 420px;
+    font: 12px/1 'DM Mono', ui-monospace, monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.72); white-space: nowrap; }
+  .fig-live input[type="range"] { flex: 1 1 auto; min-width: 0; height: 32px; margin: 0; background: none; cursor: pointer; accent-color: var(--accent, #d4a853);
+    -webkit-appearance: none; appearance: none; touch-action: pan-y; }
+  .fig-live input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.32); }
+  .fig-live input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.32); }
+  .fig-live input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; margin-top: -9px; border-radius: 50%; border: 0; background: var(--accent, #d4a853); }
+  .fig-live input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; border: 0; background: var(--accent, #d4a853); }
+  .fig-live input[type="range"]:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 4px; }
+  /* a small running picture set in the text itself, on the paper: no card, no caption, no controls */
+  .text-loop { max-width: 300px; margin: 4px auto 30px; }
+  .text-loop svg { display: block; width: 100%; height: auto; }
   /* while the page scrolls the figures on screen hold still, their CSS animations too (book.js pauser) */
   .fig-hush, .fig-hush * { animation-play-state: paused !important; }
   .diagram-card .fs-button, .diagram-card .fs-close, .diagram-card .fig-pause,

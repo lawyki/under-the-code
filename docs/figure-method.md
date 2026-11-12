@@ -21,10 +21,13 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - *Owner-praised figures (1.1, 1.2, 1.7)* are scenes: a real object or one calm mechanism, very few words.
 
 - *Start from what the reader already knows (2026-11-12).* A vacuum tube means nothing to a newcomer; a light bulb beside it says hot, fragile and short-lived without a word (Fig 1.3). A finger on a switch is the transistor's whole idea (Fig 1.4).
-- *The same picture twice, one thing changed (Fig 1.4).* Two identical loops, a finger in one and a signal in the other: the comparison is the explanation.
+- *The same picture, one thing changed, one after the other (Fig 1.4).* One lamp loop: first a finger closes the gap, then a transistor sits in the same gap and a signal does the finger's job. In time, not side by side (see What fails).
 - *Follow one real thing through (Fig 1.9).* One instruction's actual bytes moving through the machine teach the four steps; four step names on a wheel do not.
 - *Zoom for big numbers (Fig 1.6).* Each step shrinks the whole previous picture into one tile, with a magnifier callout saying so.
 - *Cause, then effect, as separate steps (Fig 1.5).* Charge appears on the gate; electrons gather; only then does current run.
+
+- *Let the reader's hand be the cause (2026-11-12).* Where one quantity controls the picture (a gate voltage), give it a slider and let the picture answer; a threshold found by one's own hand is remembered (Fig 1.5, `live-figures.js`). One control, the value shown in the picture where the eye is, one sweep by itself so the reader sees what the control does.
+- *A loop can live in the text.* A small always-running picture on the paper, with no card or controls, carries "this repeats" better than a full figure (section 04 of Chapter 1).
 
 ## What fails
 
@@ -35,3 +38,4 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - Symbols a newcomer has not been taught, used as the picture itself (a circuit schematic, plus and minus signs with no name).
 - Step names arranged in a shape (a wheel of four words): a list in disguise.
 - A dark fill behind a named shape: Gate 1 judges every fill, so shapes are outlines and moving tokens are solid colour.
+- Two small pictures side by side. Halving a circuit to show it twice makes every part too small to read on a phone and the stand-in marks (a stub for a finger) stop being recognisable. One picture, full size, changed in time (Fig 1.4, round four to five).
