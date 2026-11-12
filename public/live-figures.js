@@ -156,7 +156,7 @@
     }
     function run() {
       if (running) return;
-      running = true;
+      running = true; card.dataset.pressed = '1';
       card.classList.remove('is-armed'); card.classList.add('is-running');
       key.disabled = true;
       svg.setCurrentTime(t0);
@@ -173,6 +173,10 @@
     svg.addEventListener('click', run);
     key.addEventListener('click', run);
     rest(tRest);
+    // WebKit starts a picture's clock at load and forgets a moment set before it: set the waiting moment again then
+    const again = () => { if (!running && card.classList.contains('is-armed') && Math.abs(svg.getCurrentTime() - tRest) > 0.01 && !card.dataset.pressed) rest(tRest); };
+    if (document.readyState !== 'complete') window.addEventListener('load', () => { again(); setTimeout(again, 300); });
+    else setTimeout(again, 300);
   };
 
   // Switches the reader works (Fig 2.2): each press area (data-sw="A") flips its switch. A part with data-when="A&B"
