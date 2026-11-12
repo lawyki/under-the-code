@@ -48,3 +48,16 @@ Why round four's 1.4 failed: two half-size circuits side by side made every part
 Checked: every state at 1440 and 375 px; Gate 1 still and motion with fullscreen, Chromium: 0 fails on 1.3, 1.4, 1.5, 1.6, 1.9; `clip` part-1 (Chromium and WebKit): 0; dashes clean; anchors and glossary unchanged. Fig 1.5 driven in Chromium and WebKit: the sweep runs once, keys and drag work, under reduced motion it answers the slider in still states with no sweep. pass25 `invariants` on part-1: only the known tab-stop count (its baseline predates the figure controls; the slider adds one stop). Blind reader (Haiku): all four "mostly clear"; from its points the hand's cuff was closed (two loose lines read as cut off) and the loop's lit word now follows the dot.
 
 `book.css` is now `?v=20261112a` on every page.
+
+## Round six (same day)
+
+Owner: 1.4's circuit is right now "but the hand is out of place and it doesn't even look like a hand"; make it a pattern: "a small ... pointer ... icon, stylized and modern ... small animation. So it means that you should click on it ... the animation is started by the user, only one press". 1.5 "better", but "too much things going on". The loop in the text "exactly what I wanted"; its arrows "have clipping". "Not all of them need to be even figures, only the more interactable things."
+
+| What | Now |
+|---|---|
+| the press-here mark | A gold ring on the thing to press and a white pointer with its tip on it; the ring breathes out, the pointer dips. `hint(x, y)` in `plate.py`, `.fig-hint` in `book.css`. It shows only while a figure waits for the reader. |
+| 1.4 | No drawn hand: the reader's press is the finger. It rests with the switch open and the mark on it. One press: the lever closes, current runs, the lamp lights; the lever opens; the transistor takes its place; a signal lights the lamp; it rests again. `data-live="press" data-run="0.05 10.4"` (`live-figures.js`); a key button for the keyboard appears on focus. |
+| 1.5 | Fewer marks: holes only under the gate, carrying their name down with them; six electrons a well; no arrow; no dots on the outer wire, which turns gold as in Fig 1.4; only the channel shows electrons moving. No automatic sweep: the same mark sits on the slider and drags a little. |
+| the loop | Solid arrowheads in the track's own opaque colour; nothing shows through. |
+
+Checked: press behaviour in Chromium and WebKit (one press, a second ignored, holds off screen, returns to rest, key button, reduced motion plays when asked); Gate 1 still and motion 0 fails on 1.3, 1.4, 1.5, 1.6, 1.9; clip 0.

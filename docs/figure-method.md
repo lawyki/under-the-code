@@ -29,6 +29,9 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - *Let the reader's hand be the cause (2026-11-12).* Where one quantity controls the picture (a gate voltage), give it a slider and let the picture answer; a threshold found by one's own hand is remembered (Fig 1.5, `live-figures.js`). One control, the value shown in the picture where the eye is, one sweep by itself so the reader sees what the control does.
 - *A loop can live in the text.* A small always-running picture on the paper, with no card or controls, carries "this repeats" better than a full figure (section 04 of Chapter 1).
 
+- *The reader starts it (2026-11-12, owner: "a pattern, not an exception").* A figure with a cause the reader can supply rests until pressed, with the press-here mark (a ring and a small pointer) on the thing to press. One press runs it once; it then rests again. The reader's finger replaces any drawn hand (Fig 1.4).
+- *Not everything is a figure.* A card is for something the reader works or steps through. A mechanism that only needs to be seen running can sit in the text as a small picture (the loop in Chapter 1, section 04).
+
 ## What fails
 
 - Result lines inside the figure ("code and data: one memory, one bus"): the caption, or the picture itself, already says it.
@@ -39,3 +42,5 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - Step names arranged in a shape (a wheel of four words): a list in disguise.
 - A dark fill behind a named shape: Gate 1 judges every fill, so shapes are outlines and moving tokens are solid colour.
 - Two small pictures side by side. Halving a circuit to show it twice makes every part too small to read on a phone and the stand-in marks (a stub for a finger) stop being recognisable. One picture, full size, changed in time (Fig 1.4, round four to five).
+- A drawn hand: hard to draw well small, and it stands between the reader and the switch. Let the reader press.
+- See-through marks crossing each other (an arrowhead at 55 % over a line at 40 %): the overlap shows as a darker patch and reads as a clipping fault. Use one opaque colour.
