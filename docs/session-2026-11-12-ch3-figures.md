@@ -18,3 +18,14 @@ These five are kept originals. The scan's second reader, and my own look, agree 
 ## Checked
 
 Gate 1 still and motion with fullscreen (Chromium): 0 fails on 3.1, 3.2, 3.4, 3.6. Dashes clean, anchors unchanged.
+
+## 2026-11-13 · simplify (Chapter 3 and the Bridge)
+
+Owner: "now just simplify most of them. You don't need to repeat in text what the figure is already saying."
+
+- **Fig 3.1**: the three colour chips above the picture repeated the three step buttons under it, and the hex under each row repeated the row. Both are gone; the figure is the three rows.
+- **Titles** of 3.1 to 3.4 and BR.1 to BR.8 lose the clause that restated the picture.
+- Captions here were already one short line each. Figs 3.7 to 3.11 (kept originals) are not touched.
+- Still dense, not yet redrawn: 3.3, 3.4, 3.6, BR.2, BR.7, BR.9, and 2.6 in Chapter 2.
+
+Gate 1 still and motion with fullscreen (Chromium): 0 fails on the eleven touched.
