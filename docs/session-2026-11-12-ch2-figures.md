@@ -10,7 +10,7 @@ Every Part I figure was screenshotted at each of its steps (375 and 1440 px) and
 
 | Fig | Was | Now |
 |---|---|---|
-| 2.1 | Two gauges, three thresholds, a noise arrow, two rows of five digits on each side, two steps. The owner, seeing it for the first time: "way too complex". | Redrawn to one look: two boxes (two levels, three levels), a dot in each shaken by the same noise, and one reading under each. The left stays "read as 0"; the right turns red, "read as 2", while its dot is over the line. No steps, no digit rows. |
+| 2.1 | Two gauges, three thresholds, a noise arrow, two rows of five digits on each side, two steps ("way too complex"). A first redraw as two boxes with dots and readings was still wrong ("way too much text and isn't visible what it even represents"). | Five lamps, the lamp of Figs 1.3 to 1.5: two (dark, bright) and three (dark, half, bright), all flickering by the same amount. Off and on stay plain; the half-lit lamp keeps looking like its neighbours. The only text is the digit under each lamp. |
 | 2.2 | A loop through the four cases. | The reader works Shannon's two switches. Each press opens or closes one; the lamp lights only with both closed, and Boole's circles light with them. The press-here mark sits on the first switch not yet tried. |
 | 2.5 | A loop. | Waits unsolved with the mark on the first adder; one press lets the carry ripple once and the answer stays. The line "carries ripple right to left" went: the caption says it. |
 | 2.7 | "ninth bit" stood under nothing in the first two steps. | The label appears with the bit. |

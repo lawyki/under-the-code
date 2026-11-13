@@ -1,50 +1,37 @@
-"""Fig 2.1: why two levels and not three. Redrawn 2026-11-12 after the owner saw the Pass 28 figure for the first
-time: "way too complex ... figures, not entire games ... places to learn, not things TO learn."
-One idea, seen in one look: the same noise shakes a signal on a two-level wire and on a three-level wire. On two
-levels it stays in its zone and is still read right; on three it strays into the zone above and is read wrong.
-Two boxes, their dividing lines, one dot each, one line of reading under each. No steps, no rows of digits."""
+"""Fig 2.1: why two levels and not three. Third form, 2026-11-13. The owner on the second (two boxes, dots,
+"read as 0"): "way too much text and isn't visible what it even represents."
+So: the lamp the reader already knows from Figs 1.3 to 1.5, and their own eye as the judge. Two lamps, off and
+on, flicker: still plainly off and on. Three lamps, off, half and full, flicker by the same amount: the half-lit
+one keeps looking like its neighbours. The only text is the digit each lamp stands for."""
 import sys; sys.path.insert(0, __file__.rsplit('/', 2)[0] + '/ch1')
 from plate import *
-CREAM = '#ece6da'; BAD = '#ec8d8d'
-D = 6.0
-TOP, BOT = 52, 226                       # the wire's span: its highest and lowest level
-SPAN = BOT - TOP
-LIFT = [60, 33, 42, 15, 24, 6, 18, 3, 21, 36, 27, 51, 42, 57, 60, 60]          # the noise, one shake (Pass 28's)
-KT = [0, 1/15, 2/15, 3/15, 4/15, 5/15, 0.416667, 0.5, 0.583333, 10/15, 11/15, 12/15, 13/15, 14/15, 0.999917, 1]
-lift = [v * 0.87 for v in LIFT]
-wob = xform('translate', [f'0 {-v:.1f}' for v in lift], KT, D)
-# when the three-level signal is past its dividing line (a quarter of the span above the middle level)
-margin = SPAN / 4
-over = []; t_in = 0.0 if lift[0] > margin else None
-for i in range(len(KT) - 1):
-    a, b_ = lift[i], lift[i + 1]
-    if (a > margin) != (b_ > margin):
-        t = (KT[i] + (KT[i + 1] - KT[i]) * (margin - a) / (b_ - a)) * D
-        if t_in is None: t_in = t
-        else: over.append((t_in, t)); t_in = None
-if t_in is not None: over.append((t_in, D))
-calm = [(e, s) for (_, e), (s, _) in zip(over, over[1:])]
+D = 4.8
+NOISE = [0.30, -0.12, 0.22, -0.28, 0.05, 0.27, -0.20, 0.14, -0.30, 0.18, -0.06, 0.30]      # one flicker, the same for every lamp
+KT = [i / (len(NOISE) - 1) for i in range(len(NOISE))]
 b = []
-def wire(x, title, lines, names):
-    b.append(text(x + 45, 34, title, 15, CREAM))
-    b.append(f'<rect x="{x}" y="{TOP-10}" width="90" height="{SPAN+20}" rx="6" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>')
-    for y in lines: b.append(f'<line x1="{x}" y1="{y:.1f}" x2="{x+90}" y2="{y:.1f}" stroke="{GOLD}" stroke-width="1.5" stroke-dasharray="5 4"/>')
-    for n, y in names: b.append(text(x + 16, y + 5, n, 14, MUTE))
-# two levels: the signal is sent low
-wire(56, 'two levels', [TOP + SPAN / 2], [('1', TOP + SPAN / 4), ('0', TOP + 3 * SPAN / 4)])
-b.append(f'<line x1="92" y1="{BOT}" x2="132" y2="{BOT}" stroke="{BLUE}" stroke-width="1.5" stroke-opacity="0.6"/>')
-b.append(f'<g>{wob}<circle cx="105" cy="{BOT}" r="7.5" fill="{BLUE}"/></g>')
-b.append(text(101, 262, 'read as 0', 15, CREAM))
-# three levels in the same span: the signal is sent in the middle
-mid = TOP + SPAN / 2
-wire(214, 'three levels', [TOP + SPAN / 4, TOP + 3 * SPAN / 4], [('2', TOP + SPAN / 8 - 2), ('1', mid), ('0', BOT - SPAN / 8 + 2)])
-b.append(f'<line x1="250" y1="{mid}" x2="290" y2="{mid}" stroke="{BLUE}" stroke-width="1.5" stroke-opacity="0.6"/>')
-b.append(show(f'<rect x="215.5" y="{TOP-8.5}" width="87" height="{SPAN/4+8.5:.1f}" rx="5" fill="none" stroke="{BAD}" stroke-width="2.4"/>'
-              + text(259, 262, 'read as 2', 15, BAD), over, D))
-b.append(show(text(259, 262, 'read as 1', 15, CREAM), calm, D))
-b.append(f'<g>{wob}<circle cx="263" cy="{mid}" r="7.5" fill="{BLUE}"/></g>')
-put('fig-2-1', '20 10 320 268', None, None,
+def lamp(x, y, level, shift):
+    """A lamp whose light is its level (0, 0.5 or 1) plus the noise; shift staggers the lamps so they do not blink as one."""
+    r = 20
+    seq = NOISE[shift:] + NOISE[1:shift + 1]
+    vals = ['%.2f' % min(1, max(0, level + n)) for n in seq]
+    base = (f'<rect x="{x-8}" y="{y+r-3}" width="16" height="17" rx="2" fill="none" stroke="{INK}" stroke-width="2"/>'
+            f'<circle cx="{x}" cy="{y}" r="{r}" fill="none" stroke="{INK}" stroke-width="2"/>')
+    fil = f'M {x-7} {y+r-4} V {y+5} l 3.5 -7 l 3.5 7 l 3.5 -7 l 3.5 7 V {y+r-4}'
+    rays = ''.join(line(f'M {x+dx*27:.1f} {y+dy*27:.1f} L {x+dx*33:.1f} {y+dy*33:.1f}', GOLD, 2.4)
+                   for dx, dy in [(-0.97, -0.26), (-0.71, -0.71), (-0.26, -0.97), (0.26, -0.97), (0.71, -0.71), (0.97, -0.26)])
+    light = (f'<g opacity="{vals[0]}">{anim("opacity", vals, KT, D)}<circle cx="{x}" cy="{y}" r="{r}" fill="{GOLD}" stroke="{GOLD}" stroke-width="2"/>{rays}</g>')
+    b.append(light + base + line(fil, INK, 1.6))
+Y = 70
+for x, level, name, sh in ((62, 0, '0', 0), (132, 1, '1', 4)):
+    lamp(x, Y, level, sh); b.append(text(x, Y + 62, name, 15, MUTE))
+b.append(f'<line x1="186" y1="{Y-34}" x2="186" y2="{Y+66}" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-dasharray="2 6"/>')
+for x, level, name, sh in ((240, 0, '0', 0), (310, 0.5, '1', 7), (380, 1, '2', 4)):
+    lamp(x, Y, level, sh); b.append(text(x, Y + 62, name, 15, MUTE))
+put('fig-2-1', '14 10 414 136', None, None,
     'Fig 2.1 · Why binary survives noise · one threshold against two',
-    'Two wires with the same voltage span, drawn as two boxes of the same height. The left wire has two levels, 0 and 1, with one dividing line across the middle. The right wire squeezes three levels, 0, 1 and 2, into the same height, with two dividing lines. A dot in each shows the signal: the left sends 0, the right sends 1, and the same noise shakes both upward by the same amount. The left dot never reaches its dividing line and is always read as 0. The right dot keeps crossing the line above it: while it is over, the top zone is outlined in red and the reading under the box changes from 1 to 2.',
+    'Five lamps in two groups, all flickering by the same amount. On the left, two lamps stand for the two levels of a binary wire: one dark, labelled 0, and one bright, labelled 1. Flicker and all, the dark one never looks bright and the bright one never looks dark. On the right, three lamps stand for the three levels of a ternary wire: dark (0), half lit (1) and bright (2). With the same flicker the half-lit lamp is at times as dim as the dark one and at times as bright as the bright one, so its level cannot be told reliably.',
     b,
-    caption='The same noise leaves two levels readable; with three, the signal strays into the level above.')
+    caption='With the same flicker, off and on stay easy to tell apart; half-lit does not.',
+    strip=[('The lamps', 'Each lamp stands for one level a wire can be held at: its brightness is the voltage. Two lamps are binary\'s two levels; three are ternary\'s.'),
+           ('The flicker', 'Noise. Ageing parts and temperature swings nudge every voltage a little, all the time.'),
+           ('The margin', 'A level is read by which side of a dividing line it falls on. With two levels the line sits halfway, so a level must drift half the span to be misread. Three levels in the same span leave each only a quarter of the span, half of binary\'s margin.')])
