@@ -55,7 +55,7 @@ labels = [('1971', '2,300', 0, 3.0), ('1991', '2.4 million', 3.0, 6.0), ('2011',
 for yr, n, a, b in labels:
     body.append(show(text(X, Y + S + 26, yr, 16, MUTE, 'start') + text(X + S, Y + S + 26, n, 16, GOLD if a else INK, 'end'), [(a, b)], D))
 put('fig-1-6', f'{X-22} 8 {S+44} {S+114}', [1.5, 5.0, 8.0, 11.0], ['1971', '1991', '2011', '2024'],
-    'Fig 1.6 · Moore\'s Law · transistors on one chip',
+    'Fig 1.6 · Moore\'s Law',
     'A square filled with 2,300 dots, one per transistor of the 1971 Intel 4004. Twenty years of doubling later, in 1991, the whole square has shrunk to a single small gold tile in a grid of 1,024 such tiles: about 2.4 million transistors. In 2011 that whole grid is again one gold tile among 1,024: about 2.4 billion. In 2024 the 2011 picture is one of twelve: the 28 billion transistors of the Apple M4.',
     body,
     caption='Each gold square is the whole picture before it.',
@@ -64,4 +64,4 @@ put('fig-1-6', f'{X-22} 8 {S+44} {S+114}', [1.5, 5.0, 8.0, 11.0], ['1971', '1991
            ('On the line', 'Real chips kept close to it: about 1.2 million transistors in 1989 and 3.1 million in 1993; 2.3 to 2.6 billion in the largest processors of 2011.'),
            ('The slowdown', 'Thirteen more years at the old pace would have made 90 copies by 2024. The Apple M4 has 28 billion transistors: twelve.'),
            ('Not a law', 'Moore described what the industry was doing, and the industry then planned by it; nothing in physics promised it.')],
-    label='Fig 1.6&nbsp;· Moore\'s Law&nbsp;· transistors on one chip')
+    label='Fig 1.6&nbsp;· Moore\'s Law')

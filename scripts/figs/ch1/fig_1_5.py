@@ -52,10 +52,10 @@ b.append(text(190, 80, 'gate', 14, MUTE, 'end', ' class="lv-gname"') + text(196,
 b.append(text(60, 118, 'source', 14, MUTE, 'end') + text(320, 118, 'drain', 14, MUTE, 'start'))
 b.append(text(88, 198, 'electrons', 13, BLUE))
 put('fig-1-5', '4 -24 372 248', None, None,
-    'Fig 1.5 · Inside the switch · a field-effect transistor',
+    'Fig 1.5 · Inside the switch',
     'A cross-section of a transistor that the reader controls with a slider. A block of p-type silicon, with a row of plus signs under the gate for its holes, holds two n-type wells full of free electrons, drawn as blue dots: the source on the left and the drain on the right. Between them, on top, a metal gate sits on a thin insulating layer. A wire joins source and drain through a battery and a lamp. As the gate voltage is raised from 0, positive charge gathers on the gate, the holes beneath it are pushed down, and electrons creep in from both wells along the underside of the insulator. At about 0.7 volts the two rows meet: electrons then stream from the source across the bridge into the drain, the wire of the loop turns gold and the lamp lights, brighter as the voltage rises. Lower the voltage and the bridge breaks, the stream stops and the lamp goes dark.',
     b,
-    caption='Raise the gate voltage until the electrons meet: the bridge closes and the lamp lights.',
+    caption='A field-effect transistor, the kind every chip is made of.',
     strip=[('The silicon', 'Source and drain are n-type, full of free electrons (the blue dots); the body between them is p-type, with holes (the plus signs). Where the two kinds meet, electrons fill the nearby holes and leave a thin barrier, so nothing joins source to drain.'),
            ('The pull', 'A positive voltage puts positive charge on the gate. Opposite charges attract: it draws electrons in from both wells and pushes the holes away beneath it.'),
            ('The threshold', 'Below about 0.7 V the two rows of electrons do not meet and nothing flows. Once they join, the bridge (the channel) carries electrons from source to drain: the switch is on. More voltage, more current. Back at 0 V the electrons return to their wells and the switch is off.'),

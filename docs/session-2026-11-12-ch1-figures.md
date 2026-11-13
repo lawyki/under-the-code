@@ -61,3 +61,14 @@ Owner: 1.4's circuit is right now "but the hand is out of place and it doesn't e
 | the loop | Solid arrowheads in the track's own opaque colour; nothing shows through. |
 
 Checked: press behaviour in Chromium and WebKit (one press, a second ignored, holds off screen, returns to rest, key button, reduced motion plays when asked); Gate 1 still and motion 0 fails on 1.3, 1.4, 1.5, 1.6, 1.9; clip 0.
+
+## 2026-11-13 · simplify
+
+Owner: "now just simplify most of them. You don't need to repeat in text what the figure is already saying."
+
+- **Fig 1.9** redrawn simpler. Memory is a short program in plain words, one line at each address ("put 5 in eax", "put 3 in ebx", "add ebx to eax"); a gold pointer marks the line being run. Gone: the row of hex bytes and its dividers, the line that translated the bytes, the program-counter box, the "registers" and "ALU" labels. The four steps are as before. The caption names the pointer, which the picture cannot.
+- **Captions** of 1.4 and 1.5 no longer narrate the figure ("A transistor is a switch that a signal presses."; "A field-effect transistor, the kind every chip is made of.").
+- **Titles** of 1.5, 1.6, 1.8, 1.12, 1.13 and 1.15 lose the clause that restated the picture.
+- Not touched: 1.1, 1.2, 1.3, 1.7 (praised), 1.10 to 1.14 pictures.
+
+Gate 1 still and motion with fullscreen (Chromium): 0 fails on 1.4, 1.5, 1.6, 1.9.
