@@ -32,3 +32,21 @@ Gate 1 still and motion with fullscreen (Chromium): 0 fails on 2.1, 2.2, 2.5, 2.
 ## After the owner saw the set
 
 "Almost all of them are much too complex. They should be figures, not entire games. They should be places to learn, not things TO learn." The scan's bar ("does it show its mechanism?") was the wrong one: most Pass 28 figures pass it and still take work to read. The bar from here is in `docs/figure-method.md` (one look, one idea). Fig 2.1 is the first redrawn to it; the rest of Part I is to be judged again on that test, figure by figure, with the owner seeing each.
+
+## 2026-11-13 · simplify
+
+Owner on the lamps: "Looks really good, now just simplify most of them. You don't need to repeat in text what the figure is already saying."
+
+| Fig | Now |
+|---|---|
+| 2.2 | The four-case strip and the two gold lines of words are gone: the reader's two presses are the cases. Circles, circuit, the two names. |
+| 2.3, 2.4 | The row of cases drawn under the picture repeated the step buttons: gone. So are "A and B", "A or B", "not A" beside gates already named. |
+| 2.6 | The row of cases is gone. Still the densest figure of the chapter (five gate symbols). |
+| 2.9 | Redrawn. Eight ones; the check reads −1, the copy reads 255; a red line runs out of the buffer. Was a column of text in three numbered steps. |
+| 2.10 | Redrawn. Sign, exponent and mantissa as three plain values; the point slides two places through 1 1 0 1; the place values appear; +6.5. One example, no steps. |
+| 2.11 | Redrawn as a ruler whose ticks are the only numbers a double can hold near 0.3. "0.3" sits on a tick; "0.1 + 0.2" lands between two and is moved up to the next, 0.30000000000000004. |
+| 2.12 | Redrawn as one scene: the Scud, the box where the radar looks, an hour counter. The box slides away as the hours run to 100; a bracket reads 570 m. |
+| titles | The third clause, which restated the picture, is cut from every title in the chapter. |
+| captions | Each now says what the picture cannot (2.1: "Each lamp is a voltage level; the flicker is noise.") or a few words. |
+
+"How it works" keeps the audited facts; only words that named removed parts were changed. Gate 1 still and motion with fullscreen (Chromium): 0 fails on all twelve; clip 0.

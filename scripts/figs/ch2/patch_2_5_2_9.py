@@ -18,8 +18,4 @@ seg = s[a:e]
 seg = re.sub(r'<text[^>]*>carries ripple right to left</text>\n?', '', seg)
 if 'fig-hint' not in seg: seg = seg + hint(358, 164) + '\n'
 s = s[:a] + seg.replace('viewBox="0 0 400 300"', 'viewBox="0 0 400 258"') + s[e:]
-# --- Fig 2.9
-m = svg_tag('fig-2-9')
-if 'data-beats' not in m.group(0):
-    s = s[:m.end()-1] + ' data-beats="3 5.8 8.7" data-beat-names="the check|read as unsigned|the copy">' + s[m.end():]
-open(PAGE, 'w').write(s); print('patched 2.5 and 2.9')
+open(PAGE, 'w').write(s); print('patched 2.5')
