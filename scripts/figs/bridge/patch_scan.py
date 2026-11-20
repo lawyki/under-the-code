@@ -59,4 +59,18 @@ sub('fig-br-5', '<text x="252" y="290" text-anchor="start" font-family="DM Mono"
 # BR.8
 lab = '<text x="200" y="96" text-anchor="middle" font-family="DM Mono" font-size="14" letter-spacing="0.06em" fill="#ec8d8d">interrupt</text>'
 sub('fig-br-8', lab, '<g opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0.000000;0.133333;0.766667;0.933333" calcMode="discrete" dur="12s" repeatCount="indefinite"/>' + lab + '</g>')
-open(PAGE, 'w').write(s); print('patched BR.4 BR.6')
+# BR.2, 2026-11-20 (owner: "simplify"): the row of three register boxes under the round trip (RAX, RCX, R11 and what
+# each holds at each step) is detail only an expert needs, and "How it works" already gives it. The picture is the trip.
+a_ = s.index('id="fig-br-2"'); e_ = s.index('</svg>', a_); c_ = s[a_:e_]
+if 'viewBox="0 0 400 376"' in c_:
+    keep = []
+    for ln in c_.split('\n'):
+        m = re.search(r'<(?:rect|text)[^>]* y="(\d+(?:\.\d+)?)"', ln)
+        if m and float(m.group(1)) >= 296 and (ln.lstrip().startswith('<rect') or ln.lstrip().startswith('<text')): continue
+        keep.append(ln)
+    c_ = '\n'.join(keep).replace('viewBox="0 0 400 376"', 'viewBox="0 0 400 292"')
+    c_ = c_.replace('In user mode, Ring 3, the program puts 1, the number of write, in RAX and executes SYSCALL. The CPU saves RIP, the return address, in RCX and RFLAGS, its status bits, in R11 (a spare register), switches to Ring 0 and jumps',
+                    'In user mode, Ring 3, the program puts 1, the number of write, in the register RAX and executes SYSCALL. The CPU notes where to come back to, switches to Ring 0 and jumps')
+    c_ = c_.replace('runs write, puts the result, 6 bytes written, in RAX, and executes SYSRET', 'runs write, and executes SYSRET')
+    s = s[:a_] + c_ + s[e_:]
+open(PAGE, 'w').write(s); print('patched the Bridge')

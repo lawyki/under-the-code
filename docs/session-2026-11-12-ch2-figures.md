@@ -50,3 +50,11 @@ Owner on the lamps: "Looks really good, now just simplify most of them. You don'
 | captions | Each now says what the picture cannot (2.1: "Each lamp is a voltage level; the flicker is noise.") or a few words. |
 
 "How it works" keeps the audited facts; only words that named removed parts were changed. Gate 1 still and motion with fullscreen (Chromium): 0 fails on all twelve; clip 0.
+
+## 2026-11-20 · the dense ones
+
+- **Fig 2.6** redrawn as what its caption always said: two half adders and an OR, three named boxes. One sum runs through, 1 + 1 + 1; each wire has an empty ring that fills with its bit as the box before it lights. Gone: five gate symbols, two dashed groups, eight step buttons. The gates inside a half adder stay in "How it works".
+- **Fig 3.3**: the years beside RAX, EAX and AX move to the strip. **Fig BR.7**: the note under the picture moves to the strip. **Fig BR.2**: the row of three register boxes (RAX, RCX, R11) is gone; the strip already gives it. Captions of 3.3 and BR.2 no longer repeat their titles.
+- Left as they are: 3.4, 3.6, BR.9 (each reads at a look once its steps are used).
+
+Gate 1 still and motion with fullscreen (Chromium): 0 fails on 2.6, 3.3, BR.2, BR.7; clip 0.
