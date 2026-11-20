@@ -102,7 +102,7 @@ const CURATED_TERMS = [
   'compiler', 'bytecode', 'GIL',
   'inheritance', 'vtable', 'RAII', 'move semantics',
   // Memory-safety attacks (Part I Ch 3 + woven elsewhere)
-  'buffer overflow', 'stack canary', 'ASLR', 'DEP', 'NX', 'ROP', 'JOP', 'CFI',
+  'buffer overflow', 'stack canary', 'ASLR', 'DEP', 'NX', 'ROP', 'gadget', 'JOP', 'CFI',
   'PAC', 'CET', 'race condition', 'TOCTOU',
   // Network — link & physical (Part III Ch 8)
   'CSMA/CD', 'NRZ', 'Manchester encoding', 'modulation',

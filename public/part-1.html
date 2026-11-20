@@ -3017,54 +3017,71 @@ main:
       stack grows downward, so the values pushed before <code>buffer</code> sit at higher
       addresses, but the copy fills <code>buffer</code> from its lowest address up and runs
       on into them: the saved RBP, and just past it, the <strong>return address</strong>.
-      Fig 3.7 lists memory with the lowest address at the top, the reverse of Fig 3.6,
-      so there the copy runs down the page.
+      Fig 3.7 draws the frame as Fig 3.6 draws the stack, highest address at the top,
+      so there the copy climbs the page.
     </p>
 
-    <div class="diagram-card" id="fig-3-7">
-      <div class="diagram-label">Fig 3.7 · Stack frame of greet(): normal vs overflow</div>
-      <svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-37"><title id="svgt-part1-37">Fig 3.7 · Stack frame of greet(): normal vs overflow</title>
-        <g transform="translate(40,40)">
-          <text x="140" y="12" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.7)">NORMAL: name = "Tiger"</text>
-          <rect x="0" y="20" width="280" height="100" rx="3" fill="#1a1a1a" stroke="rgba(255,255,255,0.1)"/>
-          <text x="140" y="44" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.85)">"Tiger\0" + 11 unused bytes</text>
-          <text x="140" y="60" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">buffer[16]</text>
-          <line x1="0" y1="76" x2="280" y2="76" stroke="rgba(255,255,255,0.1)"/>
-          <text x="140" y="93" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.55)">saved rbp</text>
-          <line x1="0" y1="100" x2="280" y2="100" stroke="rgba(255,255,255,0.1)"/>
-          <text x="140" y="116" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)">return address → caller</text>
-          <text x="140" y="142" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.7)">function returns normally</text>
-        </g>
-
-        <g transform="translate(400,40)">
-          <text x="140" y="12" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.8)">ATTACK: name = 16 'A's + 8 bytes + addr</text>
-          <rect x="0" y="20" width="280" height="100" rx="3" fill="#1a0e0e" stroke="rgba(232,120,120,0.5)"/>
-          <text x="140" y="44" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.9)">"AAAAAAAAAAAAAAAA"</text>
-          <text x="140" y="60" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">buffer[16]: full</text>
-          <line x1="0" y1="76" x2="280" y2="76" stroke="rgba(232,120,120,0.4)"/>
-          <text x="140" y="93" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)">"BBBBBBBB" overwrote rbp</text>
-          <line x1="0" y1="100" x2="280" y2="100" stroke="rgba(232,120,120,0.4)"/>
-          <text x="140" y="116" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,1)" font-weight="500">0x4011e7 → attacker's code</text>
-          <text x="140" y="142" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.8)">on ret, CPU jumps wherever attacker said</text>
-        </g>
-
-        <g transform="translate(40,220)">
-          <text x="320" y="12" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(255,255,255,0.5)" letter-spacing="0.1em">ANATOMY OF THE OVERWRITE</text>
-          <rect x="0" y="24" width="640" height="40" rx="4" fill="#1a1a1a" stroke="rgba(255,255,255,0.08)"/>
-          <text x="20" y="50" font-family="DM Mono" font-size="11" fill="rgba(255,255,255,0.7)">strcpy writes:</text>
-          <rect x="160" y="32" width="200" height="22" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.4)"/>
-          <text x="260" y="48" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,0.9)">A A A A A A A A A A A A A A A A</text>
-          <rect x="360" y="32" width="120" height="22" fill="rgba(232,120,120,0.28)" stroke="rgba(232,120,120,0.5)"/>
-          <text x="420" y="48" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,0.95)">B B B B B B B B</text>
-          <rect x="480" y="32" width="148" height="22" fill="rgba(232,120,120,0.4)" stroke="rgba(232,120,120,0.7)"/>
-          <text x="554" y="48" text-anchor="middle" font-family="DM Mono" font-size="11" fill="rgba(232,120,120,1)">0x4011e7</text>
-          <text x="260" y="80" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">↑ 16-byte buffer</text>
-          <text x="420" y="80" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">↑ saved rbp</text>
-          <text x="554" y="80" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">↑ return address</text>
-          <text x="320" y="130" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)">No bounds check. strcpy keeps writing. The return address is just bytes, and bytes can be replaced.</text>
-        </g>
-      </svg>
-      <p id="ch3-overflow-p4" class="diagram-caption">On the left, normal use: the buffer holds the input, the saved RBP and return address are intact, and the function returns to its caller. On the right, an oversized input keeps writing past the buffer, eventually overwriting the saved RBP and the return address. When <code>ret</code> executes, RIP gets loaded with whatever the attacker placed there.</p>
+    <div class="diagram-card fig-v2" id="fig-3-7">
+      <div class="diagram-label">Fig 3.7&nbsp;· A buffer overflow</div>
+      <svg viewBox="6 30 362 154" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-37 svgd-part1-37" data-beats="1.0 8.0" data-beat-names="fits|too long">
+<title id="svgt-part1-37">Fig 3.7 · A buffer overflow</title>
+<desc id="svgd-part1-37">The stack frame of greet(), drawn with the highest address at the top, as in Fig 3.6. From the top: a gold row holding the return address into main; a blue row holding main's saved RBP; and the buffer, sixteen byte cells in two rows, the lowest address at the bottom left. First the name Tiger is copied in: five letters and a zero byte fill six cells and ten stay empty; the two rows above are untouched. Then a name of thirty-two A's is copied in: the A's fill all sixteen cells of the buffer, then climb on, replacing the saved RBP and then the return address; those two rows turn red and their names, saved rbp and return address, appear beside them.</desc>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.6489" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><rect x="22" y="40" width="208" height="30" rx="5" fill="none" stroke="#d4a853" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.6489" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="126" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">return: main</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6489" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><rect x="22" y="40" width="208" height="30" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><path d="M 48 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><text x="242" y="60" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">return address</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6489" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="35.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6611" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="61.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6733" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="87.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6856" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="113.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6978" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="139.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.7100" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="165.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.7222" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="191.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.7344" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="217.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.5511" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><rect x="22" y="74" width="208" height="30" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.5511" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="126" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#86a8ff">main's rbp</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5511" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><rect x="22" y="74" width="208" height="30" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><path d="M 48 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><text x="242" y="94" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">saved rbp</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5511" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="35.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5633" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="61.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5756" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="87.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5878" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="113.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6000" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="139.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6122" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="165.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6244" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="191.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6367" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="217.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<rect x="22" y="114" width="208" height="30" rx="5" fill="none" stroke="#ece6da" stroke-width="1.6"/><path d="M 48 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 118 V 140" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><rect x="22" y="144" width="208" height="30" rx="5" fill="none" stroke="#ece6da" stroke-width="1.6"/><path d="M 48 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 148 V 170" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/>
+<text x="242" y="149" text-anchor="start" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">buffer</text>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="35.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">T</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="61.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">i</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="87.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">g</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="113.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">e</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="139.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">r</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="165.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="13" fill="rgba(255,255,255,0.6)">\0</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3556" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="35.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3678" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="61.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3800" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="87.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3922" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="113.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4044" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="139.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4167" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="165.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4289" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="191.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4411" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="217.0" y="164" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4533" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="35.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4656" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="61.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4778" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="87.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4900" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="113.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5022" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="139.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5144" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="165.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5267" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="191.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5389" calcMode="discrete" dur="9.0s" repeatCount="indefinite"/><text x="217.0" y="134" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+</svg>
+      <p id="ch3-overflow-p4" class="diagram-caption">On <code>ret</code>, the CPU jumps to whatever the return row holds.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The frame.</b> As in Fig 3.6: <code>call</code> pushed the return address, greet() saved main's RBP under it, and the 16-byte buffer sits below both, at the lowest addresses.</li>
+          <li><b>The copy.</b> <code>strcpy</code> fills the buffer from its lowest address upward and stops only at a zero byte. "Tiger" and its zero take 6 bytes and leave 10 unused.</li>
+          <li><b>Too long.</b> Thirty-two A's: 16 fill the buffer, the next 8 replace the saved RBP, the last 8 the return address. An attacker writes chosen bytes where the A's are.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>From overwrite to code execution</h3>
@@ -3139,98 +3156,74 @@ main:
       This works only while the attacker cannot guess the canary, and the program picks a fresh random one each time it starts. An attacker who can read process memory through a separate information leak, however, can sometimes recover it.
     </p>
 
-    <div class="diagram-card" id="fig-3-8">
-      <div class="diagram-label">Fig 3.8 · The stack canary · a tripwire between buffer and return address</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-38"><title id="svgt-part1-38">Fig 3.8 · The stack canary · a tripwire between buffer and return address</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">SAME OVERFLOW · CANARY DETECTS IT BEFORE RIP IS HIJACKED</text>
-
-        <!-- LEFT: normal execution -->
-        <g transform="translate(40, 60)">
-          <text x="140" y="0" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.85)" letter-spacing="0.15em">NORMAL · CANARY INTACT</text>
-
-          <rect x="0" y="14" width="280" height="220" rx="6" fill="rgba(150,216,150,0.04)" stroke="rgba(150,216,150,0.4)"/>
-
-          <!-- Stack growing down — labels on left, frames inside -->
-          <g font-family="DM Mono" font-size="10">
-            <!-- Saved return address -->
-            <rect x="10" y="28" width="260" height="36" rx="3" fill="rgba(232,120,120,0.1)" stroke="rgba(232,120,120,0.4)"/>
-            <text x="140" y="48" text-anchor="middle" fill="rgba(232,120,120,0.85)">saved RIP (return addr)</text>
-            <text x="140" y="60" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.55)">0x0040 1234 (caller)</text>
-            <!-- Saved RBP -->
-            <rect x="10" y="68" width="260" height="36" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.2)"/>
-            <text x="140" y="88" text-anchor="middle" fill="rgba(255,255,255,0.7)">saved RBP</text>
-            <text x="140" y="100" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.4)">previous frame ptr</text>
-            <!-- CANARY -->
-            <rect x="10" y="108" width="260" height="36" rx="3" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.85)" stroke-width="1.4"/>
-            <text x="140" y="128" text-anchor="middle" fill="rgba(212,168,83,0.95)" letter-spacing="0.1em">CANARY · 0x47A1F392B5...</text>
-            <text x="140" y="140" text-anchor="middle" font-size="8" fill="rgba(212,168,83,0.65)">random, set at process start</text>
-            <!-- Buffer -->
-            <rect x="10" y="148" width="260" height="74" rx="3" fill="rgba(100,150,255,0.08)" stroke="rgba(100,150,255,0.45)"/>
-            <text x="140" y="168" text-anchor="middle" fill="rgba(100,150,255,0.85)">char buf[64]</text>
-            <text x="140" y="184" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.5)">"hello\0" fits in buffer</text>
-            <text x="140" y="208" text-anchor="middle" font-size="9" fill="rgba(150,216,150,0.85)" font-style="italic">no overflow → canary unchanged</text>
-          </g>
-
-          <!-- Return check -->
-          <g transform="translate(0, 248)">
-            <rect x="0" y="0" width="280" height="46" rx="5" fill="rgba(150,216,150,0.12)" stroke="rgba(150,216,150,0.6)"/>
-            <text x="140" y="20" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.95)">prologue stored canary == stack canary?</text>
-            <text x="140" y="36" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(150,216,150,0.95)">→ yes · ret to caller normally ✓</text>
-          </g>
-
-          <!-- Stack-grows-down arrow -->
-          <line x1="-20" y1="20" x2="-20" y2="230" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-          <polygon points="-24,224 -20,234 -16,224" fill="rgba(255,255,255,0.4)"/>
-          <text x="-30" y="125" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(255,255,255,0.45)" letter-spacing="0.15em" transform="rotate(-90, -30, 125)">STACK GROWS DOWN</text>
-        </g>
-
-        <!-- RIGHT: overflow execution -->
-        <g transform="translate(400, 60)">
-          <text x="140" y="0" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)" letter-spacing="0.15em">OVERFLOW · CANARY CLOBBERED</text>
-
-          <rect x="0" y="14" width="280" height="220" rx="6" fill="rgba(232,120,120,0.04)" stroke="rgba(232,120,120,0.45)"/>
-
-          <g font-family="DM Mono" font-size="10">
-            <!-- Saved return address - CORRUPTED -->
-            <rect x="10" y="28" width="260" height="36" rx="3" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.85)" stroke-width="1.4"/>
-            <text x="140" y="48" text-anchor="middle" fill="rgba(232,120,120,0.95)">saved RIP (return addr)</text>
-            <text x="140" y="60" text-anchor="middle" font-size="8" fill="rgba(232,120,120,0.85)">0x4141 4141 ← attacker-controlled</text>
-            <!-- Saved RBP - corrupted -->
-            <rect x="10" y="68" width="260" height="36" rx="3" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.85)" stroke-width="1.4"/>
-            <text x="140" y="88" text-anchor="middle" fill="rgba(232,120,120,0.95)">saved RBP</text>
-            <text x="140" y="100" text-anchor="middle" font-size="8" fill="rgba(232,120,120,0.85)">0x4141 4141 4141 4141</text>
-            <!-- CANARY - clobbered (the trap) -->
-            <rect x="10" y="108" width="260" height="36" rx="3" fill="rgba(232,120,120,0.28)" stroke="rgba(232,120,120,0.95)" stroke-width="1.6">
-              <animate attributeName="stroke-opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite"/>
-            </rect>
-            <text x="140" y="128" text-anchor="middle" fill="rgba(232,120,120,1)" letter-spacing="0.1em">CANARY · 0x41414141...</text>
-            <text x="140" y="140" text-anchor="middle" font-size="8" fill="rgba(232,120,120,0.85)">overwritten: does not match</text>
-            <!-- Buffer overflowed -->
-            <rect x="10" y="148" width="260" height="74" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.6)"/>
-            <text x="140" y="168" text-anchor="middle" fill="rgba(232,120,120,0.85)">char buf[64]</text>
-            <text x="140" y="184" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.55)">"AAAA…AAAA": 200 bytes, oversize</text>
-            <text x="140" y="208" text-anchor="middle" font-size="9" fill="rgba(232,120,120,0.95)" font-style="italic">overflow walks upward through the canary</text>
-          </g>
-
-          <!-- Return check - DETECTS -->
-          <g transform="translate(0, 248)">
-            <rect x="0" y="0" width="280" height="46" rx="5" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.85)" stroke-width="1.4"/>
-            <text x="140" y="20" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">prologue stored canary == stack canary?</text>
-            <text x="140" y="36" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.95)">→ no · __stack_chk_fail() → abort ✗</text>
-          </g>
-
-          <!-- Stack-grows-down arrow -->
-          <line x1="-20" y1="20" x2="-20" y2="230" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-          <polygon points="-24,224 -20,234 -16,224" fill="rgba(255,255,255,0.4)"/>
-          <!-- Overflow-grows-up arrow inside buffer -->
-          <line x1="290" y1="220" x2="290" y2="34" stroke="rgba(232,120,120,0.7)" stroke-width="1.4" stroke-dasharray="3,3" class="flow-dash"/>
-          <polygon points="286,40 290,30 294,40" fill="rgba(232,120,120,0.85)"/>
-          <text x="304" y="125" text-anchor="middle" font-family="DM Mono" font-size="7" fill="rgba(232,120,120,0.85)" letter-spacing="0.15em" transform="rotate(90, 304, 125)">OVERFLOW WRITES UPWARD</text>
-        </g>
-
-        <text x="360" y="334" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">The canary is between the buffer and the saved RIP: the overflow must trample it on the way</text>
-      </svg>
-      <p id="ch3-defenses-p4" class="diagram-caption">A stack canary is a randomly-chosen value placed by the compiler between local variables and the saved return address. The function's prologue writes the value; the function's epilogue, just before <code>ret</code>, checks that it has not changed. A buffer overflow that wants to overwrite the saved RIP must walk upward through memory, which means it must overwrite the canary first. When the epilogue's check fails, the program calls <code>__stack_chk_fail</code> and aborts before <code>ret</code> can transfer control. The defence assumes that the attacker cannot leak the canary value through some other channel, and it is one of several reasons modern programs make information disclosure a serious vulnerability class on its own.</p>
+    <div class="diagram-card fig-v2" id="fig-3-8">
+      <div class="diagram-label">Fig 3.8&nbsp;· The stack canary</div>
+      <svg viewBox="6 30 362 188" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-38 svgd-part1-38" data-beats="0.8 6.4 9.0" data-beat-names="before|overflow|check">
+<title id="svgt-part1-38">Fig 3.8 · The stack canary</title>
+<desc id="svgd-part1-38">The frame of Fig 3.7 with one row added. From the top: the return address into main, main's saved RBP, a green row labelled canary, holding eight random bytes, and the sixteen byte cells of the buffer. The same overlong name is copied in: the A's fill the buffer, then cross the canary, the saved RBP and the return address, and those three rows turn red. Then, beside the canary row, the result of the check that runs just before ret appears: changed, stop.</desc>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.5320" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="40" width="208" height="30" rx="5" fill="none" stroke="#d4a853" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.5320" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="126" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">return: main</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5320" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="40" width="208" height="30" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><path d="M 48 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 44 V 66" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><text x="242" y="60" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">return address</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5320" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5430" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="61.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5540" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="87.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5650" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="113.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5760" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="139.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5870" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="165.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5980" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="191.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6090" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="217.0" y="60" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.4440" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="74" width="208" height="30" rx="5" fill="none" stroke="#86a8ff" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.4440" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="126" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#86a8ff">main's rbp</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4440" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="74" width="208" height="30" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><path d="M 48 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 78 V 100" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><text x="242" y="94" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">saved rbp</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4440" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4550" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="61.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4660" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="87.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4770" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="113.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4880" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="139.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4990" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="165.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5100" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="191.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.5210" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="217.0" y="94" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3560" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="108" width="208" height="30" rx="5" fill="none" stroke="#9bd89b" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3560" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">3a</text><text x="61.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">f1</text><text x="87.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">07</text><text x="113.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">c9</text><text x="139.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">5e</text><text x="165.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">b2</text><text x="191.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">8d</text><text x="217.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="13" fill="#9bd89b">64</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3560" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><rect x="22" y="108" width="208" height="30" rx="5" fill="none" stroke="#ec8d8d" stroke-width="2.2"/><path d="M 48 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 112 V 134" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3560" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3670" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="61.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3780" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="87.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3890" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="113.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4000" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="139.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4110" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="165.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4220" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="191.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.4330" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="217.0" y="128" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">A</text></g>
+<rect x="22" y="148" width="208" height="30" rx="5" fill="none" stroke="#ece6da" stroke-width="1.6"/><path d="M 48 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 152 V 174" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><rect x="22" y="178" width="208" height="30" rx="5" fill="none" stroke="#ece6da" stroke-width="1.6"/><path d="M 48 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 74 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 100 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 126 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 152 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 178 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/><path d="M 204 182 V 204" fill="none" stroke="#ece6da" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.45"/>
+<text x="242" y="183" text-anchor="start" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">buffer</text>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.1800" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.1910" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="61.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2020" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="87.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2130" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="113.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2240" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="139.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2350" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="165.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2460" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="191.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2570" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="217.0" y="198" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2680" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="35.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2790" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="61.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.2900" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="87.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3010" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="113.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3120" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="139.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3230" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="165.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3340" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="191.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3450" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="217.0" y="168" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">A</text></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.7000" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="242" y="128" text-anchor="start" font-family="DM Mono" font-size="14" fill="#9bd89b">canary</text></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.7000" calcMode="discrete" dur="10.0s" repeatCount="indefinite"/><text x="242" y="128" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">changed: stop</text></g>
+</svg>
+      <p id="ch3-defenses-p4" class="diagram-caption">The check runs just before <code>ret</code>, so the forged return address is never used.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The canary.</b> A random value, picked when the program starts (StackGuard, 1998). A function that holds a buffer keeps it just above its local variables, below the saved RBP and the return address.</li>
+          <li><b>The check.</b> Code the compiler adds before <code>ret</code> compares the canary with the original. If they differ, the program aborts.</li>
+          <li><b>The limit.</b> It holds only while the value stays secret: a separate bug that leaks memory can reveal the canary, and an attacker who knows it writes it back in place.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Defence two: non-executable memory (DEP / NX bit)</h3>
@@ -3263,109 +3256,60 @@ main:
       hardware, and became default on most operating systems by the late 2000s.
     </p>
 
-    <div class="diagram-card" id="fig-3-9">
-      <div class="diagram-label">Fig 3.9 · ASLR · the same binary, three random load layouts</div>
-      <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-39"><title id="svgt-part1-39">Fig 3.9 · ASLR · the same binary, three random load layouts</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(212,168,83,0.85)" letter-spacing="0.18em">SAME PROGRAM · THREE LAUNCHES · THREE DIFFERENT MAPS</text>
-
-        <!-- Three address-space columns -->
-        <g transform="translate(60, 60)">
-          <!-- Run 1 -->
-          <text x="80" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.85)" letter-spacing="0.15em">RUN 1 · 09:14:22</text>
-          <rect x="0" y="14" width="160" height="240" fill="#0d0d0d" stroke="rgba(100,150,255,0.4)"/>
-
-          <!-- Stack high -->
-          <rect x="2" y="16" width="156" height="44" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.5)"/>
-          <text x="80" y="36" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">stack</text>
-          <text x="80" y="50" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7FFE 9A23 ____</text>
-
-          <!-- Gap -->
-          <rect x="2" y="62" width="156" height="32" fill="rgba(255,255,255,0.02)"/>
-          <text x="80" y="82" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">…unmapped…</text>
-
-          <!-- libc -->
-          <rect x="2" y="96" width="156" height="44" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.5)"/>
-          <text x="80" y="116" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">libc.so.6</text>
-          <text x="80" y="130" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7F4C 3D11 ____</text>
-
-          <!-- Gap -->
-          <rect x="2" y="142" width="156" height="32" fill="rgba(255,255,255,0.02)"/>
-
-          <!-- Heap -->
-          <rect x="2" y="176" width="156" height="44" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="80" y="196" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">heap</text>
-          <text x="80" y="210" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x55A8 0040 ____</text>
-
-          <!-- text -->
-          <rect x="2" y="222" width="156" height="30" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.5)"/>
-          <text x="80" y="240" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.85)">.text · 0x562B 4400 ____</text>
-        </g>
-
-        <g transform="translate(280, 60)">
-          <!-- Run 2 -->
-          <text x="80" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)" letter-spacing="0.15em">RUN 2 · 09:15:48</text>
-          <rect x="0" y="14" width="160" height="240" fill="#0d0d0d" stroke="rgba(150,216,150,0.4)"/>
-
-          <rect x="2" y="22" width="156" height="44" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.5)"/>
-          <text x="80" y="42" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">stack</text>
-          <text x="80" y="56" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7FFD C812 ____</text>
-
-          <rect x="2" y="68" width="156" height="32" fill="rgba(255,255,255,0.02)"/>
-          <text x="80" y="88" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">…unmapped…</text>
-
-          <rect x="2" y="116" width="156" height="44" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.5)"/>
-          <text x="80" y="136" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">libc.so.6</text>
-          <text x="80" y="150" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7F2D 6E55 ____</text>
-
-          <rect x="2" y="162" width="156" height="20" fill="rgba(255,255,255,0.02)"/>
-
-          <rect x="2" y="184" width="156" height="44" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="80" y="204" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">heap</text>
-          <text x="80" y="218" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x55C4 0020 ____</text>
-
-          <rect x="2" y="230" width="156" height="22" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.5)"/>
-          <text x="80" y="246" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(100,150,255,0.85)">.text · 0x55F1 8800 ____</text>
-        </g>
-
-        <g transform="translate(500, 60)">
-          <!-- Run 3 -->
-          <text x="80" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" letter-spacing="0.15em">RUN 3 · 09:18:11</text>
-          <rect x="0" y="14" width="160" height="240" fill="#0d0d0d" stroke="rgba(212,168,83,0.4)"/>
-
-          <rect x="2" y="14" width="156" height="44" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.5)"/>
-          <text x="80" y="34" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">stack</text>
-          <text x="80" y="48" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7FFE F005 ____</text>
-
-          <rect x="2" y="60" width="156" height="44" fill="rgba(255,255,255,0.02)"/>
-          <text x="80" y="84" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">…unmapped…</text>
-
-          <rect x="2" y="106" width="156" height="44" fill="rgba(212,168,83,0.18)" stroke="rgba(212,168,83,0.5)"/>
-          <text x="80" y="126" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">libc.so.6</text>
-          <text x="80" y="140" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x7F89 2B40 ____</text>
-
-          <rect x="2" y="152" width="156" height="40" fill="rgba(255,255,255,0.02)"/>
-
-          <rect x="2" y="194" width="156" height="44" fill="rgba(150,216,150,0.18)" stroke="rgba(150,216,150,0.5)"/>
-          <text x="80" y="214" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">heap</text>
-          <text x="80" y="228" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.55)">0x55B9 8000 ____</text>
-
-          <rect x="2" y="240" width="156" height="14" fill="rgba(100,150,255,0.18)" stroke="rgba(100,150,255,0.5)"/>
-          <text x="80" y="251" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(100,150,255,0.85)">.text · 0x5577 C200 ____</text>
-        </g>
-
-        <!-- Bottom: address-space ribbon -->
-        <g transform="translate(60, 320)">
-          <text x="0" y="0" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)" letter-spacing="0.1em">low</text>
-          <text x="600" y="0" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.7)" letter-spacing="0.1em" text-anchor="end">high</text>
-          <line x1="0" y1="8" x2="600" y2="8" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
-
-          <!-- Run 1 .text and stack markers -->
-          <circle cx="170" cy="8" r="3" fill="rgba(100,150,255,0.85)"/>
-          <circle cx="490" cy="8" r="3" fill="rgba(232,120,120,0.85)"/>
-          <text x="300" y="22" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.55)">Each region's base is shifted by ~16 bits of randomness on every launch</text>
-        </g>
-      </svg>
-      <p id="ch3-defenses-p7" class="diagram-caption">Three launches of the same executable, on the same machine, within seconds of each other. The .text segment, the heap, the libraries, and the stack each load at a different random address every time. An attacker who has overwritten a return address must guess where to redirect it. On 64-bit Linux the entropy is high enough (typically 28–30 bits for libraries, 24–28 bits for the heap, 30–32 bits for the stack) that brute-force guessing crashes the program long before a successful guess. ASLR is not perfect. Small entropy pockets, leaks of address fragments and partial overwrites can sometimes be exploited. Still, it raises the cost of every memory-corruption attack. It is, in a real sense, the reason modern software is roughly survivable.</p>
+    <div class="diagram-card fig-v2" id="fig-3-9">
+      <div class="diagram-label">Fig 3.9&nbsp;· ASLR</div>
+      <svg viewBox="0 12 360 248" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-39 svgd-part1-39">
+<title id="svgt-part1-39">Fig 3.9 · ASLR</title>
+<desc id="svgd-part1-39">Three launches of the same program, side by side, each drawn as a tall column of memory with the highest addresses at the top. Every column holds the same four blocks in the same order: the stack at the top, then the libraries, then the heap resting on the program's code at the bottom. In each launch the blocks sit at different heights. A dashed red line, the one address an attacker aims at, crosses all three columns at the same height. In the first launch it lands on the libraries, marked with a dot. In the second and third it passes through empty space, marked with a cross.</desc>
+<text x="66.0" y="30" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">launch 1</text>
+<rect x="14" y="40" width="104" height="192" rx="6" fill="none" stroke="#ece6da" stroke-opacity="0.45" stroke-width="1.2"/>
+<rect x="19" y="52" width="94" height="24" rx="4" fill="none" stroke="#d4a853" stroke-width="1.6"/>
+<text x="66.0" y="69" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">stack</text>
+<rect x="19" y="104" width="94" height="24" rx="4" fill="none" stroke="#9bd89b" stroke-width="1.6"/>
+<text x="66.0" y="121" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#9bd89b">libraries</text>
+<rect x="19" y="168" width="94" height="24" rx="4" fill="none" stroke="#86a8ff" stroke-width="1.6"/>
+<text x="66.0" y="185" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#86a8ff">heap</text>
+<rect x="19" y="192" width="94" height="24" rx="4" fill="none" stroke="#ece6da" stroke-width="1.6"/>
+<text x="66.0" y="209" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">code</text>
+<text x="180.0" y="30" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">launch 2</text>
+<rect x="128" y="40" width="104" height="192" rx="6" fill="none" stroke="#ece6da" stroke-opacity="0.45" stroke-width="1.2"/>
+<rect x="133" y="76" width="94" height="24" rx="4" fill="none" stroke="#d4a853" stroke-width="1.6"/>
+<text x="180.0" y="93" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">stack</text>
+<rect x="133" y="140" width="94" height="24" rx="4" fill="none" stroke="#9bd89b" stroke-width="1.6"/>
+<text x="180.0" y="157" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#9bd89b">libraries</text>
+<rect x="133" y="178" width="94" height="24" rx="4" fill="none" stroke="#86a8ff" stroke-width="1.6"/>
+<text x="180.0" y="195" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#86a8ff">heap</text>
+<rect x="133" y="202" width="94" height="24" rx="4" fill="none" stroke="#ece6da" stroke-width="1.6"/>
+<text x="180.0" y="219" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">code</text>
+<text x="294.0" y="30" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">launch 3</text>
+<rect x="242" y="40" width="104" height="192" rx="6" fill="none" stroke="#ece6da" stroke-opacity="0.45" stroke-width="1.2"/>
+<rect x="247" y="46" width="94" height="24" rx="4" fill="none" stroke="#d4a853" stroke-width="1.6"/>
+<text x="294.0" y="63" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">stack</text>
+<rect x="247" y="80" width="94" height="24" rx="4" fill="none" stroke="#9bd89b" stroke-width="1.6"/>
+<text x="294.0" y="97" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#9bd89b">libraries</text>
+<rect x="247" y="140" width="94" height="24" rx="4" fill="none" stroke="#86a8ff" stroke-width="1.6"/>
+<text x="294.0" y="157" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#86a8ff">heap</text>
+<rect x="247" y="164" width="94" height="24" rx="4" fill="none" stroke="#ece6da" stroke-width="1.6"/>
+<text x="294.0" y="181" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ece6da">code</text>
+<path d="M 2 116 H 14" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M 113 116 H 133" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M 137 116 H 227" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M 227 116 H 247" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M 251 116 H 356" fill="none" stroke="#ec8d8d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 4"/>
+<circle cx="19" cy="116" r="5" fill="#ec8d8d"/>
+<path d="M 174 110 l 12 12 m 0 -12 l -12 12" fill="none" stroke="#ec8d8d" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M 288 110 l 12 12 m 0 -12 l -12 12" fill="none" stroke="#ec8d8d" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="180" y="252" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#ec8d8d">the address the attacker aims at</text>
+</svg>
+      <p id="ch3-defenses-p7" class="diagram-caption">An address that worked in one launch points at nothing in the next.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>Each launch.</b> The operating system loads the code, the libraries, the heap and the stack at fresh random addresses. Their order stays; their positions do not. Not to scale.</li>
+          <li><b>How random.</b> On 64-bit Linux a library can land in any of about 268 million places (28 random bits), and one wrong guess crashes the program.</li>
+          <li><b>The limit.</b> A library loads as one block, so a single leaked address locates all of it.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>Return-Oriented Programming, and defence four</h3>
@@ -3385,134 +3329,87 @@ main:
       The leaks above undid the canary and ASLR, and ROP undid DEP, which forced another layer. A <code>ret</code> is an indirect jump: its destination is read from memory as the program runs. In <strong>Control Flow Integrity</strong> (CFI), the compiler records where indirect jumps may legally land and the runtime refuses any transfer to an address off that list. Two further defences guard the return address itself. A shadow stack keeps a second copy of each return address out of reach of ordinary writes, and <code>ret</code> halts the program if the copies differ; recent Intel CPUs build it in as CET (Control-flow Enforcement Technology). ARM Pointer Authentication (PAC), in Apple Silicon, tags each return address with a code computed from it and a key the program cannot read, checked before <code>ret</code>.
     </p>
 
-    <div class="diagram-card" id="fig-3-10">
-      <div class="diagram-label">Fig 3.10 · Return-Oriented Programming · arbitrary computation from existing code</div>
-      <svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40"><title id="svgt-part1-40">Fig 3.10 · Return-Oriented Programming · arbitrary computation from existing code</title>
-        <text x="360" y="26" text-anchor="middle" font-family="DM Mono" font-size="10" fill="rgba(232,120,120,0.85)" letter-spacing="0.18em">NO NEW CODE INJECTED · ONLY TINY FRAGMENTS OF LIBC, WIRED TOGETHER</text>
-
-        <!-- LEFT: smashed stack -->
-        <g transform="translate(40, 60)">
-          <text x="100" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)" letter-spacing="0.15em">SMASHED STACK</text>
-          <text x="100" y="14" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">attacker-controlled return addresses</text>
-          <rect x="0" y="22" width="200" height="280" rx="6" fill="#0d0d0d" stroke="rgba(232,120,120,0.45)"/>
-
-          <g font-family="DM Mono" font-size="10">
-            <rect x="6" y="30" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="14" y="50" fill="rgba(255,255,255,0.7)">ret →</text>
-            <text x="100" y="50" text-anchor="middle" fill="rgba(212,168,83,0.95)">addr of G1</text>
-            <text x="14" y="62" font-size="7" fill="rgba(255,255,255,0.4)">[smashed RIP]</text>
-
-            <rect x="6" y="70" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="100" y="90" text-anchor="middle" fill="rgba(212,168,83,0.95)">value: 0x68</text>
-            <text x="14" y="102" font-size="7" fill="rgba(255,255,255,0.4)">[arg for G1's pop]</text>
-
-            <rect x="6" y="110" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="100" y="130" text-anchor="middle" fill="rgba(212,168,83,0.95)">addr of G2</text>
-            <text x="14" y="142" font-size="7" fill="rgba(255,255,255,0.4)">[next gadget]</text>
-
-            <rect x="6" y="150" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="100" y="170" text-anchor="middle" fill="rgba(212,168,83,0.95)">value: "/bin/sh"</text>
-            <text x="14" y="182" font-size="7" fill="rgba(255,255,255,0.4)">[arg for system]</text>
-
-            <rect x="6" y="190" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="100" y="210" text-anchor="middle" fill="rgba(212,168,83,0.95)">addr of G3</text>
-            <text x="14" y="222" font-size="7" fill="rgba(255,255,255,0.4)">[next gadget]</text>
-
-            <rect x="6" y="230" width="188" height="36" rx="3" fill="rgba(232,120,120,0.14)" stroke="rgba(232,120,120,0.5)"/>
-            <text x="100" y="250" text-anchor="middle" fill="rgba(232,120,120,0.95)">addr of system()</text>
-            <text x="14" y="262" font-size="7" fill="rgba(255,255,255,0.4)">[final target]</text>
-
-            <rect x="6" y="270" width="188" height="26" rx="3" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.15)"/>
-            <text x="100" y="288" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.4)">…rest of payload…</text>
-          </g>
-        </g>
-
-        <!-- MIDDLE: arrow showing flow -->
-        <g transform="translate(252, 96)">
-          <text x="60" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.65)" letter-spacing="0.15em">RIP READS DOWN</text>
-          <line x1="0" y1="20" x2="120" y2="20" stroke="rgba(212,168,83,0.55)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="115,16 125,20 115,24" fill="rgba(212,168,83,0.85)"/>
-
-          <line x1="0" y1="100" x2="120" y2="100" stroke="rgba(212,168,83,0.55)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="115,96 125,100 115,104" fill="rgba(212,168,83,0.85)"/>
-
-          <line x1="0" y1="180" x2="120" y2="180" stroke="rgba(212,168,83,0.55)" stroke-width="1.4" stroke-dasharray="4,3" class="flow-dash"/>
-          <polygon points="115,176 125,180 115,184" fill="rgba(212,168,83,0.85)"/>
-        </g>
-
-        <!-- RIGHT: gadgets in libc -->
-        <g transform="translate(390, 60)">
-          <text x="140" y="0" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)" letter-spacing="0.15em">GADGETS · IN libc.so.6</text>
-          <text x="140" y="14" text-anchor="middle" font-family="serif" font-size="9" font-style="italic" fill="rgba(255,255,255,0.5)">existing code, ending in ret</text>
-
-          <!-- Gadget 1 -->
-          <rect x="0" y="22" width="280" height="44" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.55)"/>
-          <text x="14" y="40" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">G1: 0x7F4C…2A0</text>
-          <g font-family="DM Mono" font-size="10">
-            <text x="14" y="56" fill="rgba(255,255,255,0.85)">pop rdi</text>
-            <text x="80" y="56" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="272" y="56" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// load arg</text>
-          </g>
-
-          <!-- Gadget 2 -->
-          <rect x="0" y="102" width="280" height="44" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.55)"/>
-          <text x="14" y="120" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">G2: 0x7F4C…59C</text>
-          <g font-family="DM Mono" font-size="10">
-            <text x="14" y="136" fill="rgba(255,255,255,0.85)">pop rsi</text>
-            <text x="80" y="136" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="272" y="136" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// load 2nd arg</text>
-          </g>
-
-          <!-- Gadget 3 -->
-          <rect x="0" y="182" width="280" height="44" rx="5" fill="#1a1200" stroke="rgba(212,168,83,0.55)"/>
-          <text x="14" y="200" font-family="DM Mono" font-size="9" fill="rgba(212,168,83,0.85)">G3: 0x7F4C…814</text>
-          <g font-family="DM Mono" font-size="10">
-            <text x="14" y="216" fill="rgba(255,255,255,0.85)">xor rdx, rdx</text>
-            <text x="115" y="216" fill="rgba(255,255,255,0.5)">; ret</text>
-            <text x="272" y="216" text-anchor="end" fill="rgba(255,255,255,0.4)" font-style="italic">// zero env</text>
-          </g>
-
-          <!-- Final destination -->
-          <rect x="0" y="240" width="280" height="56" rx="6" fill="rgba(232,120,120,0.18)" stroke="rgba(232,120,120,0.85)" stroke-width="1.5"/>
-          <text x="14" y="258" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.95)">system() · existing libc function</text>
-          <g font-family="DM Mono" font-size="10">
-            <text x="14" y="278" fill="rgba(255,255,255,0.85)">execve("/bin/sh", …)</text>
-            <text x="14" y="290" fill="rgba(232,120,120,0.95)" font-style="italic">→ shell</text>
-          </g>
-        </g>
-
-        <!-- Animated travelling RIP pulse -->
-        <circle cy="106" cx="240" r="4" fill="rgba(232,120,120,0.95)">
-          <animate attributeName="cx" values="240;240;530;530;240;240;530;530;240;240;530" dur="6s" repeatCount="indefinite"/>
-          <animate attributeName="cy" values="106;106;104;104;186;186;184;184;266;266;284" dur="6s" repeatCount="indefinite"/>
-          <animate attributeName="opacity" values="0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95;0.95" dur="6s" repeatCount="indefinite"/>
-        </circle>
-
-        <text x="360" y="388" text-anchor="middle" font-family="serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.55)">Every gadget ends with ret · ret pops the next address from the stack · the stack is the program</text>
-      </svg>
-      <p id="ch3-defenses-p10" class="diagram-caption">Return-Oriented Programming, demonstrated by Hovav Shacham in 2007. The attacker still smashes the stack, but instead of injecting new code (DEP would forbid it), the new "program" is a sequence of return addresses, each pointing to a tiny <em>gadget</em>: a one-or-two-instruction snippet ending in <code>ret</code>, somewhere in the existing libraries. The first <code>ret</code> after the overflow pops the first gadget address into RIP. That gadget executes its tiny op, then its own <code>ret</code> pops the next gadget address from the stack, and so on. With a sufficiently large library, gadgets for any required operation can be found. Every program links libc, which has hundreds of thousands of bytes of code. ROP turned an entire field of defence (mark code non-executable) into a starting point. Modern hardware mitigations (CFI, shadow stacks, ARM PAC, Intel CET) are the response.</p>
+    <div class="diagram-card fig-v2" id="fig-3-10">
+      <div class="diagram-label">Fig 3.10&nbsp;· Return-oriented programming</div>
+      <svg viewBox="8 18 370 176" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-40 svgd-part1-40">
+<title id="svgt-part1-40">Fig 3.10 · Return-oriented programming</title>
+<desc id="svgd-part1-40">Two columns. On the left, the stack after an overflow, highest address at the top: three gold slots, each a return address the attacker wrote, numbered 1 at the bottom to 3 at the top. On the right, three short fragments of code that already exist in the program: one loads a register, one adds 1, one writes a byte, and each ends in ret. An arrow runs from each return address to its fragment. The pairs light one after another from the bottom, and the stack pointer, RSP, steps up with them: return 1 and its fragment, then return 2 and its fragment, then return 3 and its fragment.</desc>
+<text x="108" y="38" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">stack</text><text x="286" y="38" text-anchor="middle" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">code already there</text>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="152" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="1.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="152" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="3"/></g>
+<text x="108" y="173" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">return: 1</text>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><text x="40" y="173" text-anchor="end" font-family="DM Mono" font-size="13" fill="#ece6da">RSP</text><path d="M 52 168 l -8 -5 v 10 Z" fill="#ece6da"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="152" width="168" height="32" rx="5" fill="none" stroke="#ece6da" stroke-opacity="0.7" stroke-width="1.5"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="152" width="168" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6"/></g>
+<text x="212" y="173" text-anchor="start" font-family="DM Mono" font-size="13" fill="#ece6da">load a register</text><text x="360" y="173" text-anchor="end" font-family="DM Mono" font-size="14" fill="#d4a853">ret</text>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 168 H 190" fill="none" stroke="#ece6da" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.6"/><path d="M 198 168 l -9 -5 v 10 Z" fill="#ece6da" fill-opacity="0.6"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0" keyTimes="0.0000;0.3333" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 168 H 190" fill="none" stroke="#d4a853" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 198 168 l -9 -5 v 10 Z" fill="#d4a853"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="104" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="1.6"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="104" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="3"/></g>
+<text x="108" y="125" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">return: 2</text>
+<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><text x="40" y="125" text-anchor="end" font-family="DM Mono" font-size="13" fill="#ece6da">RSP</text><path d="M 52 120 l -8 -5 v 10 Z" fill="#ece6da"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="104" width="168" height="32" rx="5" fill="none" stroke="#ece6da" stroke-opacity="0.7" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="104" width="168" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6"/></g>
+<text x="212" y="125" text-anchor="start" font-family="DM Mono" font-size="13" fill="#ece6da">add 1</text><text x="360" y="125" text-anchor="end" font-family="DM Mono" font-size="14" fill="#d4a853">ret</text>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 120 H 190" fill="none" stroke="#ece6da" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.6"/><path d="M 198 120 l -9 -5 v 10 Z" fill="#ece6da" fill-opacity="0.6"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1;0" keyTimes="0.0000;0.3333;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 120 H 190" fill="none" stroke="#d4a853" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 198 120 l -9 -5 v 10 Z" fill="#d4a853"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.6667;1.0000" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="56" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="1.6"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="56" y="56" width="104" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="3"/></g>
+<text x="108" y="77" text-anchor="middle" font-family="DM Mono" font-size="14" fill="#d4a853">return: 3</text>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><text x="40" y="77" text-anchor="end" font-family="DM Mono" font-size="13" fill="#ece6da">RSP</text><path d="M 52 72 l -8 -5 v 10 Z" fill="#ece6da"/></g>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.6667;1.0000" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="56" width="168" height="32" rx="5" fill="none" stroke="#ece6da" stroke-opacity="0.7" stroke-width="1.5"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><rect x="202" y="56" width="168" height="32" rx="5" fill="none" stroke="#d4a853" stroke-width="2.6"/></g>
+<text x="212" y="77" text-anchor="start" font-family="DM Mono" font-size="13" fill="#ece6da">write a byte</text><text x="360" y="77" text-anchor="end" font-family="DM Mono" font-size="14" fill="#d4a853">ret</text>
+<g opacity="1"><animate attributeName="opacity" values="1;0;1" keyTimes="0.0000;0.6667;1.0000" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 72 H 190" fill="none" stroke="#ece6da" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.6"/><path d="M 198 72 l -9 -5 v 10 Z" fill="#ece6da" fill-opacity="0.6"/></g>
+<g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0.0000;0.6667" calcMode="discrete" dur="6.0s" repeatCount="indefinite"/><path d="M 164 72 H 190" fill="none" stroke="#d4a853" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/><path d="M 198 72 l -9 -5 v 10 Z" fill="#d4a853"/></g>
+</svg>
+      <p id="ch3-defenses-p10" class="diagram-caption">No new code: each return address borrows a fragment that is already there.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>The stack.</b> After the overflow, the attacker's bytes sit where return addresses belong. They are addresses, not code, so the NX bit has nothing to refuse.</li>
+          <li><b>A gadget.</b> A few instructions that already exist in the program or its libraries and happen to end in <code>ret</code>.</li>
+          <li><b>The chain.</b> Each <code>ret</code> pops the next address off the stack and jumps to it, so the gadgets run in the order the stack lists them (Hovav Shacham, 2007).</li>
+          <li><b>The answer.</b> A shadow stack (Intel CET) or pointer authentication (ARM PAC) checks a return address before <code>ret</code> uses it.</li>
+        </ol>
+      </details>
     </div>
 
-    <div class="diagram-card" id="fig-3-11">
-      <div class="diagram-label">Fig 3.11 · The arms race, in one diagram</div>
-      <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-41"><title id="svgt-part1-41">Fig 3.11 · The arms race, in one diagram</title>
-        <line x1="60" y1="280" x2="660" y2="280" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-        <text x="60" y="300" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">1988</text>
-        <text x="660" y="300" text-anchor="end" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.4)">today</text>
-
-        <g transform="translate(80,40)"><circle cx="0" cy="240" r="6" fill="rgba(232,120,120,0.8)"/><line x1="0" y1="234" x2="0" y2="180" stroke="rgba(232,120,120,0.4)"/><text x="0" y="170" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">ATTACK</text><text x="0" y="155" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">Morris Worm</text><text x="0" y="140" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">1988 · stack overflow</text></g>
-
-        <g transform="translate(180,40)"><circle cx="0" cy="240" r="6" fill="rgba(150,216,150,0.8)"/><line x1="0" y1="234" x2="0" y2="200" stroke="rgba(150,216,150,0.4)"/><text x="0" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">DEFENCE</text><text x="0" y="175" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">StackGuard</text><text x="0" y="160" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">1998 · canaries</text></g>
-
-        <g transform="translate(280,40)"><circle cx="0" cy="240" r="6" fill="rgba(150,216,150,0.8)"/><line x1="0" y1="234" x2="0" y2="170" stroke="rgba(150,216,150,0.4)"/><text x="0" y="160" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">DEFENCE</text><text x="0" y="145" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">DEP / NX bit</text><text x="0" y="130" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">2003 · non-exec stack</text></g>
-
-        <g transform="translate(380,40)"><circle cx="0" cy="240" r="6" fill="rgba(150,216,150,0.8)"/><line x1="0" y1="234" x2="0" y2="200" stroke="rgba(150,216,150,0.4)"/><text x="0" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">DEFENCE</text><text x="0" y="175" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">ASLR</text><text x="0" y="160" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">2001+ · randomisation</text></g>
-
-        <g transform="translate(490,40)"><circle cx="0" cy="240" r="6" fill="rgba(232,120,120,0.8)"/><line x1="0" y1="234" x2="0" y2="170" stroke="rgba(232,120,120,0.4)"/><text x="0" y="160" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(232,120,120,0.85)">ATTACK</text><text x="0" y="145" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">Return-Oriented Prog.</text><text x="0" y="130" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">2007 · gadget chains</text></g>
-
-        <g transform="translate(620,40)"><circle cx="0" cy="240" r="6" fill="rgba(150,216,150,0.8)"/><line x1="0" y1="234" x2="0" y2="200" stroke="rgba(150,216,150,0.4)"/><text x="0" y="190" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(150,216,150,0.85)">DEFENCE</text><text x="0" y="175" text-anchor="middle" font-family="DM Mono" font-size="9" fill="rgba(255,255,255,0.6)">CFI · PAC · CET</text><text x="0" y="160" text-anchor="middle" font-family="DM Mono" font-size="8" fill="rgba(255,255,255,0.3)">2017+ · hardware-signed</text></g>
-      </svg>
-      <p id="ch3-defenses-p11" class="diagram-caption">Each red dot is an attack technique that broke the previous defence. Each green dot is a hardware or compiler change that responded. The arms race continues, and at each step the cost of exploitation rises while the cost of a single mistake by a programmer in C or C++ falls more slowly.</p>
+    <div class="diagram-card fig-v2" id="fig-3-11">
+      <div class="diagram-label">Fig 3.11&nbsp;· The arms race</div>
+      <svg viewBox="20 14 300 208" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svgt-part1-41 svgd-part1-41">
+<title id="svgt-part1-41">Fig 3.11 · The arms race</title>
+<desc id="svgd-part1-41">A timeline read from top to bottom, each entry a year, a dot and a name. 1988, in red: buffer overflow. 1998, in green: stack canary. 2001, in green: ASLR. 2003, in green: NX bit. 2007, in red: ROP. 2018, in green: checked returns.</desc>
+<path d="M 96 36 V 206" fill="none" stroke="#ece6da" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round" stroke-opacity="0.5"/>
+<text x="80" y="41" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">1988</text>
+<circle cx="96" cy="36" r="6.5" fill="#ec8d8d"/>
+<text x="114" y="41" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">buffer overflow</text>
+<text x="80" y="75" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">1998</text>
+<circle cx="96" cy="70" r="6.5" fill="#9bd89b"/>
+<text x="114" y="75" text-anchor="start" font-family="DM Mono" font-size="14" fill="#9bd89b">stack canary</text>
+<text x="80" y="109" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">2001</text>
+<circle cx="96" cy="104" r="6.5" fill="#9bd89b"/>
+<text x="114" y="109" text-anchor="start" font-family="DM Mono" font-size="14" fill="#9bd89b">ASLR</text>
+<text x="80" y="143" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">2003</text>
+<circle cx="96" cy="138" r="6.5" fill="#9bd89b"/>
+<text x="114" y="143" text-anchor="start" font-family="DM Mono" font-size="14" fill="#9bd89b">NX bit</text>
+<text x="80" y="177" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">2007</text>
+<circle cx="96" cy="172" r="6.5" fill="#ec8d8d"/>
+<text x="114" y="177" text-anchor="start" font-family="DM Mono" font-size="14" fill="#ec8d8d">ROP</text>
+<text x="80" y="211" text-anchor="end" font-family="DM Mono" font-size="14" fill="rgba(255,255,255,0.6)">2018</text>
+<circle cx="96" cy="206" r="6.5" fill="#9bd89b"/>
+<text x="114" y="211" text-anchor="start" font-family="DM Mono" font-size="14" fill="#9bd89b">checked returns</text>
+</svg>
+      <p id="ch3-defenses-p11" class="diagram-caption">Attacks in red, the defences that answered them in green.</p>
+      <details class="fig-how">
+        <summary>How it works</summary>
+        <ol>
+          <li><b>1988.</b> One of the Morris worm's ways in is a buffer overflow in fingerd.</li>
+          <li><b>1998 to 2003.</b> StackGuard's canary; address randomisation, first in the PaX patch for Linux; the NX bit in x86 hardware, after software versions from 1997.</li>
+          <li><b>2007.</b> Return-oriented programming reuses code that is already there, which the NX bit cannot refuse.</li>
+          <li><b>2018.</b> Pointer authentication ships in Apple's chips; Intel's shadow stack (CET) follows in 2020.</li>
+        </ol>
+      </details>
     </div>
 
     <h3>The deeper lesson</h3>

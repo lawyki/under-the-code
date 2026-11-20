@@ -1,5 +1,7 @@
 # under-the-code — STATE
 
+**PART I FIGURES REWORKED WITH THE OWNER, 2026-11-12 → 2026-11-20 (`UNDER.md` §4ai; `docs/figure-method.md`).** His two rules: understandable, and simple. Deployed 2026-11-20 (main 0baa5a2). After that, Figs 3.7 to 3.11 were redrawn on his word and wait on branch `claude/vigilant-knuth-mntpdf` for "deploy". Next: his look; then the same method on Part II.
+
 **VISUAL-FIRST LAW ON PART I, 2026-11-04 (`docs/figure-method.md`; `UNDER.md` §4ah, last subsection):** figure text cut, captions one sentence, detail in the strips; hover and scrolling smoother. Deployed. Next: the owner's look at Part I; then the method goes to Parts II to V.
 
 **PART I FIGURES REFINED AFTER THE OWNER'S FIRST LOOK, 2026-11-04 (`UNDER.md` §4ah, last subsection):** steps instead of the fullscreen and pause buttons (sitewide), less repaint, 1.3 and 1.4 redone, labels off the marks, summary lines cut; deployed. Waiting on the owner's next look.
