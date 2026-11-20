@@ -34,6 +34,8 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 
 - *A place to learn, not a thing to learn (owner, 2026-11-12: "figures, not entire games ... places to learn, not things TO learn"; "do not replace a working simple figure with a complex one").* The test is one look: a newcomer should be able to say what the picture shows before reading its caption. One idea a figure. No rows of digits, no notation to decode, no reading order to work out, and steps or a control only where the idea cannot be seen without them. "It shows its mechanism" is not enough: the Pass 28 Fig 2.1 showed its mechanism with two gauges, three thresholds, an arrow, twenty digits in two rows and two steps, and the owner, seeing it for the first time, called it way too complex. A second try, two boxes with dots and "read as 0", was still a diagram to decode ("way too much text and isn't visible what it even represents"). The third is five flickering lamps: a thing the reader knows, judged by the reader's own eye, with one digit under each. Abstract boxes, dots and readouts are not simpler than gauges; a recognisable thing is.
 
+- *Show the actual thing (owner, 2026-11-20, on a full adder redrawn as three named boxes: "before is better: if you can show the actual map of gates; do it ... keep it as simple as possible").* Simple means fewer words, fewer controls and nothing said twice. It does not mean a box with a name in place of the mechanism. If the real gates, the real wires or the real layout can be shown, show them, and strip everything round them.
+
 ## What fails
 
 - Result lines inside the figure ("code and data: one memory, one bus"): the caption, or the picture itself, already says it.
@@ -46,3 +48,4 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - Two small pictures side by side. Halving a circuit to show it twice makes every part too small to read on a phone and the stand-in marks (a stub for a finger) stop being recognisable. One picture, full size, changed in time (Fig 1.4, round four to five).
 - A drawn hand: hard to draw well small, and it stands between the reader and the switch. Let the reader press.
 - See-through marks crossing each other (an arrowhead at 55 % over a line at 40 %): the overlap shows as a darker patch and reads as a clipping fault. Use one opaque colour.
+- A named box in place of the mechanism ("half adder", "OR" as rectangles): simpler to draw, and it teaches nothing the caption did not already say.

@@ -58,3 +58,7 @@ Owner on the lamps: "Looks really good, now just simplify most of them. You don'
 - Left as they are: 3.4, 3.6, BR.9 (each reads at a look once its steps are used).
 
 Gate 1 still and motion with fullscreen (Chromium): 0 fails on 2.6, 3.3, BR.2, BR.7; clip 0.
+
+## 2026-11-20 · Fig 2.6 back to its gates
+
+Owner, on the three-box redraw: "before is better: if you can show the actual map of gates; do it." The Pass 28 gate map is restored (two XOR, two AND, one OR, the two half adders outlined, all eight cases), without the row of cases that repeated the step buttons. `scripts/figs/ch2/fig_2_6.py` is deleted; the generator is `scripts/figs/fig_2_6.py` plus `ch2/simplify.py`. The rule is in `docs/figure-method.md`: simple means fewer words, not a box in place of the mechanism.
