@@ -41,3 +41,7 @@ What the reviewers changed (blind readers, a second reader, two fact checks; twe
 - 3.10: the list ran down the page while every stack in the chapter has its first-used address lowest; it now climbs, with Fig 3.6's RSP mark. "add" became "add 1" to match the prose's "increment a counter". "forged" left the caption.
 - 3.11: the 1988 note no longer reads as if fingerd was the worm's only way in.
 Not acted on: the Morris "23" (owner ruling, `UNDER.md`); a baseline value beside "changed" in 3.8 (the "before" step shows it).
+
+## 2026-11-24 · the five redone
+
+Owner on the 2026-11-20 redraws: "worse design" (3.11), "DONT make THEM LOOK CHILDISH", "not understantable by anyone now and they look toys ... please fix it", and, when I said I would restore the old manner: "no you are not restoring them. You are fixing them." The redo and what it learned: `UNDER.md` §4ai and `docs/figure-method.md` ("Understandable comes first; simple is not cryptic", "Drawn for an adult"). The fragments in 3.10 run top to bottom again, headed "in order of use" (the reviewers' alternative to flipping the list). Deployed on his word the same day.

@@ -3916,7 +3916,7 @@ Owner: "Still pretty glitchy overall. Not the figures as such but the whole site
 
 ## 4ai. Part I figures with the owner, figure by figure (2026-11-12 → 2026-11-20)
 
-The owner looked at Part I one figure at a time and steered; I drew, tested blind with small models, and deployed on his word (main at 0baa5a2, 2026-11-20; Figs 3.7 to 3.11 after that on the branch until he says so). Session notes: `docs/session-2026-11-12-ch1-figures.md`, `-ch2-figures.md`, `-ch3-figures.md`, `-bridge-figures.md`. The method as it now stands: `docs/figure-method.md`.
+The owner looked at Part I one figure at a time and steered; I drew, tested blind with small models, and deployed on his word (main at 0baa5a2, 2026-11-20; Figs 3.7 to 3.11 deployed 2026-11-24). Session notes: `docs/session-2026-11-12-ch1-figures.md`, `-ch2-figures.md`, `-ch3-figures.md`, `-bridge-figures.md`. The method as it now stands: `docs/figure-method.md`.
 
 **The owner's two rules: understandable, and simple.** What they turned out to mean, each learned from a figure he sent back:
 - *A thing the reader knows.* Fig 2.1 went from gauges and digit rows, to boxes with dots ("isn't visible what it even represents"), to five flickering lamps ("looks really good").
@@ -3927,14 +3927,16 @@ The owner looked at Part I one figure at a time and steered; I drew, tested blin
 
 **Changed:** Ch1: 1.3, 1.4, 1.5, 1.6, 1.9 redrawn, the loop added, 1.12 repaired. Ch2: 2.1, 2.9, 2.10, 2.11, 2.12 redrawn, 2.2 and 2.5 reader-driven, 2.3, 2.4, 2.6, 2.7 trimmed (2.6 keeps its gates). Ch3: 3.1 to 3.4, 3.6 trimmed or repaired. Bridge: BR.2 to BR.8 repaired or trimmed. New code: `public/live-figures.js`, `.fig-live`, `.fig-hint`, `.text-loop` in `book.css`; generators in `scripts/figs/ch1`, `ch2`, `ch3`, `bridge`.
 
-### Figs 3.7 to 3.11 redrawn (2026-11-20)
-Owner: "fix errors and simplify the one's. I have repeatedly only given two rules: understantable & simple." These five had been kept originals since 2026-10-11 (two earlier redraw attempts stopped). Redrawn phone-first in the picture language of Figs 3.5 and 3.6; every error listed for them in `docs/audit/owner-calls.md` (Chapter 3) is gone with the old drawings:
-- **3.7** one frame, highest address at the top like Fig 3.6: `return: main`, `main's rbp`, the buffer as sixteen cells. "Tiger" fits (ten cells left, where the old label said 11); then the A's climb through both rows above. `ch3-overflow-p3` no longer says the figure runs the other way.
-- **3.8** the same frame with a canary row; forty A's cross it; the label beside it turns to "changed: stop".
-- **3.9** three launches, the same four blocks at different heights, one dashed line for the attacker's address: it lands on the libraries once and on nothing twice. The three unsourced entropy ranges gave way to one documented number (§4g).
-- **3.10** the idea only: three return addresses on the stack, three fragments of existing code that end in `ret`, RSP stepping up as in Fig 3.6. No addresses, no payload.
-- **3.11** a plain timeline read downward, in date order: 1988, 1998, 2001, 2003, 2007, 2018.
-Captions are one line; what the long captions held is in the prose or the strips. The glossary keeps `gadget` and `PAC` at Chapter 3 by name (the old captions had carried them). Checked: blind readers and a second reader on screenshots, two fact checks (against the chapter and from outside knowledge); Gate 1 still and motion with fullscreen at zero with the five off the exceptions list; clip 0; dashes clean; anchors unchanged.
+### Figs 3.7 to 3.11 redrawn (2026-11-20, redone 2026-11-24)
+Owner, 2026-11-20: "fix errors and simplify the one's. I have repeatedly only given two rules: understantable & simple." These five had been kept originals since 2026-10-11 (4 to 6 px labels on a phone, the errors listed in `docs/audit/owner-calls.md`, Chapter 3).
+
+A first redraw (2026-11-20) cut them to bare blocks and acronyms. Owner, 2026-11-24: "worse design", "DONT make THEM LOOK CHILDISH", "not understantable by anyone now and they look toys". What it had thrown away is what made the old drawings followable: every box said in plain words what it is, what it holds and what happens to it, and a normal case stood against an attack case. The redo keeps that, at a size a phone can show, in one fine-lined manner (`scripts/figs/ch3/card.py`):
+- **3.7** one frame, highest address at the top like Fig 3.6, switched between two cases. Normal: return address "back to main", saved RBP "main's frame pointer", buffer "Tiger\0 + 10 unused" (the old label said 11); `ret` returns to main. Attack: the copy runs upward, the buffer full of A's, the saved RBP overwritten, the return address replaced with the address of the buffer; `ret` runs the attacker's bytes. `ch3-overflow-p3` no longer says the figure runs the other way.
+- **3.8** the same frame with a canary row and the check before `ret`: "is the canary unchanged?" yes, return to main; no, the program stops.
+- **3.9** three launches, the same four blocks at different heights, one dashed line for the attacker's address, and under each launch the word for what it finds: hit, miss, miss. The three unsourced entropy ranges gave way to one documented number (§4g).
+- **3.10** the idea only: the smashed stack as return addresses "in order of use", each pointing at a fragment of existing code that ends in `ret`. No addresses, no payload.
+- **3.11** a two-sided timeline read downward, attacks left of the line and defences right, each with its year, its name and a plain gloss, in date order.
+Captions are one line; what the long captions held is in the prose or the strips. The glossary keeps `gadget` and `PAC` at Chapter 3 by name. The first redraw was reviewed by blind readers, a second reader and two fact checks, and their fact findings carry over (the 28-bit number, forty against thirty-two bytes, "one of the worm's ways in"); the redo was checked by eye at 375 and 1440 px and by Gate 1 (still and motion, fullscreen, Chromium: zero, with the five off the exceptions list), clip 0, dashes clean, anchors unchanged.
 Open, not touched: Fig 15.2 (Part IV, kept original) still says "2003+ · randomisation" and "2017+ · hardware-signed RA" against this chapter's 2001 and 2018; the Morris "23" stays (owner ruling).
 
 ## 5. Known non-defects / deliberate choices (do not "fix" blindly)

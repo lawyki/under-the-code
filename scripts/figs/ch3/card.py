@@ -33,11 +33,27 @@ def card(fig_id, n, cap_id, viewbox, title, desc, body, caption, strip, beats=No
     </div>'''
     open(PAGE, 'w').write(s[:a] + new + s[e:]); print('card', fig_id, len(new))
 
-# --- the stack frame of greet(), drawn as Fig 3.6 draws a stack: highest address at the top
-X0, CW, RH = 22, 26, 30                 # eight byte cells to a row
-def row(y, col, spans, D, w=1.6):
-    r = f'<rect x="{X0}" y="{y}" width="{8*CW}" height="{RH}" rx="5" fill="none" stroke="{col}" stroke-width="{w}"/>'
-    return show(r, spans, D) if spans else r
-def cells(y):
-    return ''.join(line(f'M {X0+i*CW} {y+4} V {y+RH-4}', INK, 1, ' stroke-opacity="0.45"') for i in range(1, 8))
-def letter(i, y, ch, col, size=14): return text(X0 + i * CW + CW / 2, y + 20, ch, size, col)
+# --- one drawing manner for the five (owner, 2026-11-24: the first redraws were "not understandable by anyone" and
+# "look toys"). What the old drawings did right and the first redraws threw away: every box says in plain words what
+# it is, what it holds and what happens to it, and a normal case stands against an attack case. Kept here, at a
+# size a phone can show: fine lines, square corners, 13-unit type in a 372-wide viewBox, names in small capitals.
+FS, SW, RX = 13, 1.2, 2
+def cap(x, y, s_, col=MUTE, anchor='start'):
+    return text(x, y, s_.upper(), FS, col, anchor, ' letter-spacing="0.08em"')
+def run(x, y, parts, anchor='start'):
+    """One line of text in several colours: parts = [(words, colour), ...]."""
+    spans = ''.join(f'<tspan fill="{c}">{w}</tspan>' for w, c in parts)
+    return f'<text x="{x}" y="{y}" text-anchor="{anchor}" font-family="DM Mono" font-size="{FS}" xml:space="preserve">{spans}</text>'
+FX, FW, FH = 14, 300, 38                 # a frame row: its name above, what it holds below
+def frow(y, name, parts, col, name_col=MUTE):
+    return (f'<rect x="{FX}" y="{y}" width="{FW}" height="{FH}" rx="{RX}" fill="none" stroke="{col}" stroke-width="{SW}"/>'
+            + cap(FX + 12, y + 15, name, name_col) + run(FX + 12, y + 31, parts))
+def verdict(y, question, answer, col):
+    return (f'<rect x="{FX}" y="{y}" width="{FW}" height="{FH}" rx="{RX}" fill="none" stroke="{col}" stroke-width="{SW}" stroke-dasharray="5 3"/>'
+            + text(FX + 12, y + 15, question, FS, MUTE, 'start') + text(FX + 12, y + 31, answer, FS, col, 'start'))
+def upward(y0, y1, words, spans, D):
+    """The copy runs up the page: an arrow beside the frame, named along its length."""
+    x = FX + FW + 22
+    g = (line(f'M {x} {y0} V {y1+8}', RED, 1.3, ' stroke-dasharray="5 4"') + f'<path d="M {x} {y1} l -5 9 h 10 Z" fill="{RED}"/>'
+         + f'<text transform="translate({x+20} {(y0+y1)/2}) rotate(90)" text-anchor="middle" font-family="DM Mono" font-size="{FS}" letter-spacing="0.08em" fill="{RED}">{words.upper()}</text>')
+    return show(g, spans, D)

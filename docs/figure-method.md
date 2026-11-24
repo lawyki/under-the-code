@@ -36,6 +36,9 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 
 - *Show the actual thing (owner, 2026-11-20, on a full adder redrawn as three named boxes: "before is better: if you can show the actual map of gates; do it ... keep it as simple as possible").* Simple means fewer words, fewer controls and nothing said twice. It does not mean a box with a name in place of the mechanism. If the real gates, the real wires or the real layout can be shown, show them, and strip everything round them.
 
+- *Understandable comes first; simple is not cryptic (owner, 2026-11-24, on Figs 3.7 to 3.11 cut to bare blocks: "not understantable by anyone now and they look toys").* A figure about something the reader has never seen must say, in plain words in the picture, what each part is, what it holds and what happens to it: "RETURN ADDRESS · back to main", "ret → runs the attacker's bytes". Cut what is said twice; never cut the words that make it followable. A normal case against the broken case tells the story.
+- *Drawn for an adult.* Fine lines, square corners, type at reading size (never display size), small quiet marks, names in small capitals. Big rounded blocks, fat coloured dots and oversized letters read as toys.
+
 ## What fails
 
 - Result lines inside the figure ("code and data: one memory, one bus"): the caption, or the picture itself, already says it.
@@ -49,3 +52,5 @@ The owner's law: the card already has its "How it works" strip, so the picture a
 - A drawn hand: hard to draw well small, and it stands between the reader and the switch. Let the reader press.
 - See-through marks crossing each other (an arrowhead at 55 % over a line at 40 %): the overlap shows as a darker patch and reads as a clipping fault. Use one opaque colour.
 - A named box in place of the mechanism ("half adder", "OR" as rectangles): simpler to draw, and it teaches nothing the caption did not already say.
+- Bare acronyms and unlabelled blocks ("ROP", "NX bit", a row of A's with no words): minimal, and unreadable to the person the book is for.
+- A timeline as a column of big dots and words: a list, and a childish one.
